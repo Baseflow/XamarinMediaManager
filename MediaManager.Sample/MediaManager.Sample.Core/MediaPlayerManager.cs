@@ -8,7 +8,7 @@ namespace MediaManager.Sample.Core
     {
         public async Task Play()
         {
-            await CrossMediaManager.Current.Play();
+            await CrossMediaManager.Current.Play("http://www.montemagno.com/sample.mp3");
         }
     }
 }

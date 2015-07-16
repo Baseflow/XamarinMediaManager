@@ -38,9 +38,9 @@ namespace MediaManager.Plugin
 
         public event BufferingEventHandler Buffering;
 
-        public async Task Play()
+        public async Task Play(string url)
         {
-            await binder.GetMediaPlayerService().Play();
+            await binder.GetMediaPlayerService().Play(url);
         }
 
         public async Task Stop()
@@ -58,9 +58,9 @@ namespace MediaManager.Plugin
             await binder.GetMediaPlayerService().Seek(position);
         }
 
-        public async Task PlayNext()
+        public async Task PlayNext(string url)
         {
-            await binder.GetMediaPlayerService().PlayNext();
+            await binder.GetMediaPlayerService().PlayNext(url);
         }
 
         public async Task PlayPause()
@@ -68,9 +68,9 @@ namespace MediaManager.Plugin
             await binder.GetMediaPlayerService().PlayPause();
         }
 
-        public async Task PlayPrevious()
+        public async Task PlayPrevious(string url)
         {
-            await binder.GetMediaPlayerService().PlayPrevious();
+            await binder.GetMediaPlayerService().PlayPrevious(url);
         }
 
         /*public async Task PlayByPosition(int index)

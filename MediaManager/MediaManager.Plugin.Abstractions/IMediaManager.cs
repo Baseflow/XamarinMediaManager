@@ -13,14 +13,14 @@ namespace MediaManager.Plugin.Abstractions
 
     /// <summary>
     /// The main purpose of this class is to be a controlling unit for all the single MediaItem implementations, who
-    /// in themselve can play their media, but need a central controling unit, surrounding them ;)
+    /// in themselve can play their media, but need a central controling unit, surrounding them
     /// </summary>
     public interface IMediaManager
     {
         /// <summary>
         /// Reading the current status of the player (STOPPED, PAUSED, PLAYING, LOADING - initialization and buffering is combined here)
         /// </summary>
-        //PlayerStatus Status { get; }
+        PlayerStatus Status { get; }
 
         /// <summary>
         /// Raised when the status changes (playing, pause, buffering)
@@ -45,7 +45,7 @@ namespace MediaManager.Plugin.Abstractions
         /// <summary>
         /// Starts playing from the current position
         /// </summary>
-        Task Play();
+        Task Play(string url);
 
         /// <summary>
         /// Stops playing
@@ -88,7 +88,7 @@ namespace MediaManager.Plugin.Abstractions
         /// Should be the same as calling PlayByPosition(Queue.size()+1)
         /// Maybe you'll want to preload the next song into memory ...
         /// </summary>
-        Task PlayNext();
+        Task PlayNext(string url);
 
         /// <summary>
         /// Start playing if nothing is playing, otherwise it pauses the current media
@@ -99,7 +99,7 @@ namespace MediaManager.Plugin.Abstractions
         /// Should be the same as calling PlayByPosition(Queue.size()-1).
         /// Maybe you'll want to keep the last song in memory ...
         /// </summary>
-        Task PlayPrevious();
+        Task PlayPrevious(string url);
 
         /// <summary>
         /// Start playing a track by its position in the Queue

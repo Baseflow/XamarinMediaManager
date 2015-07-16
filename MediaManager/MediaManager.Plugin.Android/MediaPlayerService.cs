@@ -33,7 +33,7 @@ namespace MediaManager.Plugin
         public const string ActionNext = "com.xamarin.action.NEXT";
         public const string ActionPrevious = "com.xamarin.action.PREVIOUS";
 
-        private const string audioUrl = @"http://www.montemagno.com/sample.mp3";
+        private string audioUrl { get; set; }
 
         public MediaPlayer mediaPlayer;
         private AudioManager audioManager;
@@ -225,7 +225,7 @@ namespace MediaManager.Plugin
 
         public async void OnCompletion (MediaPlayer mp)
         {
-            await PlayNext ();
+            await PlayNext (audioUrl);
         }
 
         public bool OnError (MediaPlayer mp, MediaError what, int extra)
@@ -302,6 +302,13 @@ namespace MediaManager.Plugin
         /// <summary>
         /// Intializes the player.
         /// </summary>
+        public async Task Play (string url)
+        {
+            if(!string.IsNullOrEmpty(url))
+                audioUrl = url;
+            await Play ();
+        }
+
         public async Task Play ()
         {
             if (mediaPlayer != null && MediaPlayerState == PlaybackStateCompat.StatePaused) {
@@ -373,7 +380,7 @@ namespace MediaManager.Plugin
             });
         }
 
-        public async Task PlayNext ()
+        public async Task PlayNext (string url = "")
         {
             if (mediaPlayer != null) {
                 mediaPlayer.Reset ();
@@ -383,10 +390,10 @@ namespace MediaManager.Plugin
 
             UpdatePlaybackState(PlaybackStateCompat.StateSkippingToNext);
 
-            await Play();
+            await Play(url);
         }
 
-        public async Task PlayPrevious ()
+        public async Task PlayPrevious (string url = "")
         {
             // Start current track from beginning if it's the first track or the track has played more than 3sec and you hit "playPrevious".
             if (Position > 3000)
@@ -403,7 +410,7 @@ namespace MediaManager.Plugin
 
                 UpdatePlaybackState(PlaybackStateCompat.StateSkippingToPrevious);
 
-                await Play();
+                await Play(url);
             }
         }
 
