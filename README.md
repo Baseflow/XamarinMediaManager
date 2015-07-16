@@ -15,5 +15,13 @@ Cross platform plugin to play media from shared code.
 
 Call **MediaManager.Current** from any project or PCL to gain access to APIs.
 
+See Sample for usage.
+
+### **IMPORTANT**
+**Android:**
+
+You must request `AccessWifiState`, `Internet`, `MediaContentControl` and `WakeLock` permissions
+
+
 #### Contributors
 * [martijn00](https://github.com/martijn00)
