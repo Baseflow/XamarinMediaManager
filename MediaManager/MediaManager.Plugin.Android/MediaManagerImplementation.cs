@@ -11,6 +11,7 @@ namespace MediaManager.Plugin
     /// <summary>
     /// Implementation for Feature
     /// </summary>
+    [Android.Runtime.Preserve(AllMembers = true)]
     public class MediaManagerImplementation : IMediaManager
     {
         private Context applicationContext;
