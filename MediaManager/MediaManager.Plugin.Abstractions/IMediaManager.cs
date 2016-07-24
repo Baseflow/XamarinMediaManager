@@ -11,6 +11,8 @@ namespace MediaManager.Plugin.Abstractions
 
     public delegate void BufferingEventHandler(object sender, EventArgs e);
 
+    public delegate void TrackFinishedEventHandler(object sender, EventArgs e);
+
     /// <summary>
     /// The main purpose of this class is to be a controlling unit for all the single MediaItem implementations, who
     /// in themselve can play their media, but need a central controling unit, surrounding them
@@ -41,6 +43,11 @@ namespace MediaManager.Plugin.Abstractions
         /// Raised each time the buffering is updated by the player.
         /// </summary>
         event BufferingEventHandler Buffering;
+
+        /// <summary>
+        /// Raised when a track is finished playing.
+        /// </summary>
+        event TrackFinishedEventHandler TrackFinished;
 
         /// <summary>
         /// Starts playing from the current position

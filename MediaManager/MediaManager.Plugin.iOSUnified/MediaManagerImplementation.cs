@@ -77,6 +77,8 @@ namespace MediaManager.Plugin
 
       public event BufferingEventHandler Buffering;
 
+      public event TrackFinishedEventHandler TrackFinished;
+
       protected virtual void OnStatusChanged(EventArgs e)
       {
           if (StatusChanged != null)
