@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
-
+using Android.Support.V4.Media.Session;
 
 namespace MediaManager.Plugin
 {
@@ -37,6 +37,8 @@ namespace MediaManager.Plugin
         public event PlayingEventHandler Playing;
 
         public event BufferingEventHandler Buffering;
+
+        public event TrackFinishedEventHandler TrackFinished;
 
         public async Task Play(string url)
         {
@@ -129,6 +131,20 @@ namespace MediaManager.Plugin
             }
         }
 
+        //public void SetAlternateRemoteCallback(MediaSessionCompat.Callback callback)
+        //{
+        //    if (binder == null)
+        //        return;
+
+        //    MediaPlayerService mps = binder.GetMediaPlayerService();
+        //    if (mps == null)
+        //        return;
+
+        //    mps.AlternateRemoteCallback = callback;
+        //}
+
+        public MediaSessionCompat.Callback AlternateRemoteCallback { get; set; }
+
         private class MediaPlayerServiceConnection : Java.Lang.Object, IServiceConnection
         {
             private MediaManagerImplementation instance;
@@ -147,10 +163,14 @@ namespace MediaManager.Plugin
                     instance.binder = binder;
                     instance.isBound = true;
 
+                    if (instance.AlternateRemoteCallback != null)
+                        binder.GetMediaPlayerService().AlternateRemoteCallback = instance.AlternateRemoteCallback;
+
                     binder.GetMediaPlayerService().CoverReloaded += (object sender, EventArgs e) => { if (instance.CoverReloaded != null) instance.CoverReloaded(sender, e); };
                     binder.GetMediaPlayerService().StatusChanged += (object sender, EventArgs e) => { if (instance.StatusChanged != null) instance.StatusChanged(sender, e); };
                     binder.GetMediaPlayerService().Playing += (object sender, EventArgs e) => { if (instance.Playing != null) instance.Playing(sender, e); };
                     binder.GetMediaPlayerService().Buffering += (object sender, EventArgs e) => { if (instance.Buffering != null) instance.Buffering(sender, e); };
+                    binder.GetMediaPlayerService().TrackFinished += (object sender, EventArgs e) => { if (instance.TrackFinished != null) instance.TrackFinished(sender, e); };
                 }
             }
 
