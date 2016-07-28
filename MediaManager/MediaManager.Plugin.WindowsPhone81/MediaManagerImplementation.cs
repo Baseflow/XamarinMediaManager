@@ -29,8 +29,9 @@ namespace MediaManager.Plugin
       public event PlayingEventHandler Playing;
 
       public event BufferingEventHandler Buffering;
+        public event TrackFinishedEventHandler TrackFinished;
 
-      public async Task Play(string url)
+        public async Task Play(string url)
       {
           await Play();
       }
