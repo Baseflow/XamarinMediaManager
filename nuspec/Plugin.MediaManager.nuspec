@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
-        <id>Xam.Plugin.MediaManager</id>
-        <version>0.0.2</version>
+        <id>Plugin.MediaManager</id>
+        <version>0.0.1</version>
         <title>Cross platform media player for Xamarin</title>
         <authors>Martijn van Dijk</authors>
         <owners>Martijn van Dijk</owners>
@@ -10,7 +10,7 @@
         <projectUrl>https://github.com/martijn00/XamarinMediaManager</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Cross platform Xamarin plugin to play Media from PCL. Currently only supports audio playback on Android and iOS.</description>
-        <summary>Cross platform Xamarin plugin to play Media from PCL</summary>
+        <summary>MediaManager for playing cross platform media</summary>
         <tags>xamarin, monodroid, C#, xamarin.android, android, ios, mediaplayer, audio</tags>
         <dependencies>
             <group targetFramework=".NETFramework0.0" />
