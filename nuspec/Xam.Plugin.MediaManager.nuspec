@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Xam.Plugin.MediaManager</id>
-        <version>0.0.1</version>
+        <version>0.0.2</version>
         <title>Cross platform media player for Xamarin</title>
         <authors>Martijn van Dijk</authors>
         <owners>Martijn van Dijk</owners>
@@ -12,43 +12,32 @@
         <description>Cross platform Xamarin plugin to play Media from PCL. Currently only supports audio playback on Android and iOS.</description>
         <summary>Cross platform Xamarin plugin to play Media from PCL</summary>
         <tags>xamarin, monodroid, C#, xamarin.android, android, ios, mediaplayer, audio</tags>
-		<dependencies>
-			<group targetFramework="net">
-			</group>
-			<group targetFramework="win">
-			</group>
-			<group targetFramework="wp">
-			</group>
-			<group targetFramework="wpa">
-			</group>
-			<group targetFramework="MonoAndroid">
-				<dependency id="Xamarin.Android.Support.v4" version="23.4.0.1" />
-				<dependency id="Xamarin.Android.Support.v7.AppCompat" version="23.4.0.1" />
-			</group>
-			<group targetFramework="Xamarin.iOS10">
-			</group>
-			<group targetFramework="Xamarin.Mac20">
-			</group>
-			<group targetFramework="portable-net45+win+wpa81+wp80">
-			</group>
-			<group targetFramework="uap">
-			</group>
-			<group targetFramework="dotnet">
-			</group>
-		</dependencies>
+        <dependencies>
+            <group targetFramework=".NETFramework0.0" />
+            <group targetFramework="Windows0.0" />
+            <group targetFramework="WindowsPhone0.0" />
+            <group targetFramework="WindowsPhoneAppx0.0" />
+            <group targetFramework="MonoAndroid0.0">
+                <dependency id="Xamarin.Android.Support.v4" version="23.4.0.1" />
+                <dependency id="Xamarin.Android.Support.v7.AppCompat" version="23.4.0.1" />
+            </group>
+            <group targetFramework="Unsupported0.0" />
+            <group targetFramework=".NETPortable0.0-net45+win+wpa81+wp80" />
+        </dependencies>
     </metadata>
     <files>
-        <file src="..\MediaManager\MediaManager.Plugin.Android\bin\Release\MediaManager.Plugin.Abstractions.dll" target="lib\MonoAndroid\MediaManager.Plugin.Abstractions.dll" />
-        <file src="..\MediaManager\MediaManager.Plugin.Android\bin\Release\MediaManager.Plugin.Abstractions.xml" target="lib\MonoAndroid\MediaManager.Plugin.Abstractions.xml" />
-        <file src="..\MediaManager\MediaManager.Plugin.Android\bin\Release\MediaManager.Plugin.dll" target="lib\MonoAndroid\MediaManager.Plugin.dll" />
-        <file src="..\MediaManager\MediaManager.Plugin.Android\bin\Release\MediaManager.Plugin.XML" target="lib\MonoAndroid\MediaManager.Plugin.xml" />
-        <file src="..\MediaManager\MediaManager.Plugin.Abstractions\bin\Release\MediaManager.Plugin.Abstractions.dll" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\MediaManager.Plugin.Abstractions.dll" />
-        <file src="..\MediaManager\MediaManager.Plugin.Abstractions\bin\Release\MediaManager.Plugin.Abstractions.XML" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\MediaManager.Plugin.Abstractions.xml" />
-        <file src="..\MediaManager\MediaManager.Plugin\bin\Release\MediaManager.Plugin.dll" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\MediaManager.Plugin.dll" />
-        <file src="..\MediaManager\MediaManager.Plugin\bin\Release\MediaManager.Plugin.XML" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\MediaManager.Plugin.xml" />
-        <file src="..\MediaManager\MediaManager.Plugin.iOSUnified\bin\iPhone\Release\MediaManager.Plugin.Abstractions.dll" target="lib\Xamarin.iOS10\MediaManager.Plugin.Abstractions.dll" />
-        <file src="..\MediaManager\MediaManager.Plugin.iOSUnified\bin\iPhone\Release\MediaManager.Plugin.Abstractions.xml" target="lib\Xamarin.iOS10\MediaManager.Plugin.Abstractions.xml" />
-        <file src="..\MediaManager\MediaManager.Plugin.iOSUnified\bin\iPhone\Release\MediaManager.Plugin.dll" target="lib\Xamarin.iOS10\MediaManager.Plugin.dll" />
-        <file src="..\MediaManager\MediaManager.Plugin.iOSUnified\bin\iPhone\Release\MediaManager.Plugin.XML" target="lib\Xamarin.iOS10\MediaManager.Plugin.xml" />
+        <file src="..\MediaManager\Plugin.MediaManager.Android\bin\Release\Plugin.MediaManager.Abstractions.dll" target="lib\MonoAndroid\Plugin.MediaManager.Abstractions.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.Android\bin\Release\Plugin.MediaManager.Abstractions.xml" target="lib\MonoAndroid\Plugin.MediaManager.Abstractions.xml" />
+        <file src="..\MediaManager\Plugin.MediaManager.Android\bin\Release\Plugin.MediaManager.dll" target="lib\MonoAndroid\Plugin.MediaManager.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.Android\bin\Release\Plugin.MediaManager.dll.mdb" target="lib\MonoAndroid\Plugin.MediaManager.dll.mdb" />
+        <file src="..\MediaManager\Plugin.MediaManager.Android\bin\Release\Plugin.MediaManager.XML" target="lib\MonoAndroid\Plugin.MediaManager.xml" />
+        <file src="..\MediaManager\Plugin.MediaManager.Abstractions\bin\Release\Plugin.MediaManager.Abstractions.dll" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Plugin.MediaManager.Abstractions.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.Abstractions\bin\Release\Plugin.MediaManager.Abstractions.XML" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Plugin.MediaManager.Abstractions.xml" />
+        <file src="..\MediaManager\Plugin.MediaManager\bin\Release\Plugin.MediaManager.dll" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Plugin.MediaManager.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager\bin\Release\Plugin.MediaManager.XML" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Plugin.MediaManager.xml" />
+        <file src="..\MediaManager\Plugin.MediaManager.iOS\bin\iPhone\Release\Plugin.MediaManager.Abstractions.dll" target="lib\Xamarin.iOS10\Plugin.MediaManager.Abstractions.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.iOS\bin\iPhone\Release\Plugin.MediaManager.Abstractions.xml" target="lib\Xamarin.iOS10\Plugin.MediaManager.Abstractions.xml" />
+        <file src="..\MediaManager\Plugin.MediaManager.iOS\bin\iPhone\Release\Plugin.MediaManager.dll" target="lib\Xamarin.iOS10\Plugin.MediaManager.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.iOS\bin\iPhone\Release\Plugin.MediaManager.XML" target="lib\Xamarin.iOS10\Plugin.MediaManager.xml" />
     </files>
 </package>
