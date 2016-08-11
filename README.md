@@ -3,7 +3,7 @@
 Cross platform plugin to play media from shared code.
 
 ### Setup
-* Available on NuGet: https://www.nuget.org/packages/Xam.Plugin.MediaManager/
+* Available on NuGet: https://www.nuget.org/packages/Plugin.MediaManager/
 * Install into your PCL project and Client projects.
 
 **Supports**
