@@ -37,6 +37,9 @@ namespace Plugin.MediaManager
 
         private string audioUrl { get; set; }
 
+        private bool manuallyPaused = false;
+        private bool transientPaused = false;
+
         public MediaPlayer mediaPlayer;
         private AudioManager audioManager;
 
@@ -345,6 +348,7 @@ namespace Plugin.MediaManager
 
         public async Task Play()
         {
+            manuallyPaused = false;
             if (mediaPlayer != null && MediaPlayerState == PlaybackStateCompat.StatePaused)
             {
                 //We are simply paused so just start again
@@ -439,7 +443,7 @@ namespace Plugin.MediaManager
 
             System.Uri baseUri = new System.Uri(albumFolder);
             string albumArtPath;
-                albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Folder.jpg");
+            albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Folder.jpg");
             if (albumArtPath == null)
             {
                 albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Cover.jpg");
@@ -564,6 +568,9 @@ namespace Plugin.MediaManager
 
                 if (mediaPlayer.IsPlaying)
                     mediaPlayer.Pause();
+
+                if (!transientPaused)
+                    manuallyPaused = true;
 
                 UpdatePlaybackState(PlaybackStateCompat.StatePaused);
             });
@@ -857,12 +864,15 @@ namespace Plugin.MediaManager
                     if (mediaPlayer == null)
                         InitializePlayer();
 
-                    if (!mediaPlayer.IsPlaying)
+                    if (!mediaPlayer.IsPlaying && !manuallyPaused)
                     {
                         mediaPlayer.Start();
+                        UpdatePlaybackState(PlaybackStateCompat.StatePlaying);
                     }
 
                     mediaPlayer.SetVolume(1.0f, 1.0f);//Turn it up!
+
+                    transientPaused = false;
                     break;
                 case AudioFocus.Loss:
                     //We have lost focus stop!
@@ -870,6 +880,7 @@ namespace Plugin.MediaManager
                     break;
                 case AudioFocus.LossTransient:
                     //We have lost focus for a short time, but likely to resume so pause
+                    transientPaused = true;
                     Pause();
                     break;
                 case AudioFocus.LossTransientCanDuck:
