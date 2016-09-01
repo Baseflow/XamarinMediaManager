@@ -15,6 +15,8 @@ namespace Plugin.MediaManager
   /// </summary>
   public class MediaManagerImplementation : NSObject, IMediaManager
   {
+        public IMediaQueue Queue { get; set; } = new MediaQueue();
+
         private AVPlayer _player;
         private AVPlayer player
         {
@@ -105,6 +107,27 @@ namespace Plugin.MediaManager
                 Buffering(this, e);
         }
 
+        public async Task Play(IMediaFile mediaFile)
+        {
+            switch (mediaFile.Type)
+            {
+                case MediaFileType.AudioUrl:
+                    await Play(mediaFile.Url);
+                    break;
+                case MediaFileType.VideoUrl:
+                    break;
+                case MediaFileType.AudioFile:
+                    break;
+                case MediaFileType.VideoFile:
+                    break;
+                case MediaFileType.Other:
+                    break;
+                default:
+                    await Task.FromResult(0);
+                    break;
+            }
+        }
+
         public async Task Play(string url)
         {
             if (!string.IsNullOrEmpty(url))
@@ -130,7 +153,7 @@ namespace Plugin.MediaManager
             try
             {
                 // Start off with the status LOADING.
-                Status = PlayerStatus.LOADING;
+                Status = PlayerStatus.BUFFERING;
 
                 Cover = null;
 
@@ -246,23 +269,37 @@ namespace Plugin.MediaManager
             });
         }
 
-        public async Task PlayNext(string url = "")
+        public async Task PlayNext()
         {
-            await Stop();
-            await Play(url);
+            if (Queue.HasNext())
+            {
+                await Stop();
+
+                Queue.SetNextAsCurrent();
+                await Play();
+            }
+            else
+            {
+                // If you don't have a next song in the queue, stop and show the meta-data of the first song.
+                await Stop();
+                Queue.SetIndexAsCurrent(0);
+                Cover = null;
+            }
         }
 
-        public async Task PlayPrevious(string url = "")
+        public async Task PlayPrevious()
         {
             // Start current track from beginning if it's the first track or the track has played more than 3sec and you hit "playPrevious".
-            if (Position > 3000)
+            if (!Queue.HasPrevious() || Position > 3000)
             {
                 await Seek(0);
             }
             else
             {
                 await Stop();
-                await Play(url);
+
+                Queue.SetPreviousAsCurrent();
+                await Play();
             }
         }
 
@@ -380,7 +417,7 @@ namespace Plugin.MediaManager
         private void ObserveStatus()
         {
             Console.WriteLine("Status Observed Method {0}", player.Status);
-            if (player.Status == AVPlayerStatus.ReadyToPlay && Status == PlayerStatus.LOADING)
+            if (player.Status == AVPlayerStatus.ReadyToPlay && Status == PlayerStatus.BUFFERING)
             {
                 Status = PlayerStatus.PLAYING;
                 player.Play();
@@ -396,5 +433,5 @@ namespace Plugin.MediaManager
         {
             OnBuffering(EventArgs.Empty);
         }
-  }
+    }
 }

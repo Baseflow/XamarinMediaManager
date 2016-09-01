@@ -27,6 +27,19 @@ namespace Plugin.MediaManager
             applicationContext.BindService(mediaPlayerServiceIntent, mediaPlayerServiceConnection, Bind.AutoCreate);
         }
 
+        public IMediaQueue Queue
+        {
+            get
+            {
+                return binder.GetMediaPlayerService().Queue;
+            }
+
+            set
+            {
+                binder.GetMediaPlayerService().Queue = value;
+            }
+        }
+
         public event StatusChangedEventHandler StatusChanged;
 
         public event CoverReloadedEventHandler CoverReloaded;
@@ -57,19 +70,19 @@ namespace Plugin.MediaManager
             await binder.GetMediaPlayerService().Seek(position);
         }
 
-        public async Task PlayNext(string url)
+        public async Task PlayNext()
         {
-            await binder.GetMediaPlayerService().PlayNext(url);
+            await binder.GetMediaPlayerService().PlayNext();
+        }
+
+        public async Task PlayPrevious()
+        {
+            await binder.GetMediaPlayerService().PlayPrevious();
         }
 
         public async Task PlayPause()
         {
             await binder.GetMediaPlayerService().PlayPause();
-        }
-
-        public async Task PlayPrevious(string url)
-        {
-            await binder.GetMediaPlayerService().PlayPrevious(url);
         }
 
         /*public async Task PlayByPosition(int index)
@@ -125,6 +138,27 @@ namespace Plugin.MediaManager
                 applicationContext.UnbindService(mediaPlayerServiceConnection);
 
                 isBound = false;
+            }
+        }
+
+        public async Task Play(IMediaFile mediaFile)
+        {
+            switch (mediaFile.Type)
+            {
+                case MediaFileType.AudioUrl:
+                    await Play(mediaFile.Url);
+                    break;
+                case MediaFileType.VideoUrl:
+                    break;
+                case MediaFileType.AudioFile:
+                    break;
+                case MediaFileType.VideoFile:
+                    break;
+                case MediaFileType.Other:
+                    break;
+                default:
+                    await Task.FromResult(0);
+                    break;
             }
         }
 

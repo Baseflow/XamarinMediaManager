@@ -20,7 +20,9 @@ namespace MediaSample.Droid
             // and attach an event to it
             Button button = FindViewById<Button>(Resource.Id.myButton);
 
-            button.Click += delegate { button.Text = string.Format("{0} clicks!", count++); };
+            button.Click += delegate { 
+                
+            };
         }
     }
 }
