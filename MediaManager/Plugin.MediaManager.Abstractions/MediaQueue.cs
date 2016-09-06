@@ -11,6 +11,11 @@ namespace Plugin.MediaManager.Abstractions
 {
     public class MediaQueue : IMediaQueue
     {
+        public MediaQueue ()
+        {
+            _queue = new ObservableCollection<IMediaFile>();
+        }
+
         private ObservableCollection<IMediaFile> _queue;
 
         private ObservableCollection<IMediaFile> _unshuffledQueue;
