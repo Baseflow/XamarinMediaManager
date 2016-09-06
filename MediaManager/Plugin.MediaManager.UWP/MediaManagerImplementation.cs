@@ -1,84 +1,79 @@
-using Plugin.MediaManager.Abstractions;
 using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Playback;
-using Windows.Storage;
-using Windows.Storage.FileProperties;
+using Plugin.MediaManager.Abstractions;
 
 namespace Plugin.MediaManager
 {
     /// <summary>
-    /// Implementation for Feature
+    ///     Implementation for Feature
     /// </summary>
     public class MediaManagerImplementation : IMediaManager
     {
         private readonly MediaPlayer _player;
         private object _cover;
         private TaskCompletionSource<bool> _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
+        private TaskCompletionSource<bool> _seekTaskCompletionSource = new TaskCompletionSource<bool>();
         private PlayerStatus _status;
         private readonly Timer _playProgressTimer;
 
         public MediaManagerImplementation()
         {
-            _player = BackgroundMediaPlayer.Current;
+            _player = new MediaPlayer();
+
             _playProgressTimer = new Timer(state =>
             {
-                if (_player?.CurrentState == MediaPlayerState.Playing)
+                if (_player.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
                 {
                     Playing?.Invoke(this, EventArgs.Empty);
                 }
             }, null, 0, int.MaxValue);
 
-            _player.CurrentStateChanged += (sender, args) =>
+
+
+            _player.PlaybackSession.PlaybackStateChanged += (sender, args) =>
             {
-                switch (sender.CurrentState)
+                switch (sender.PlaybackState)
                 {
-                    case MediaPlayerState.Closed:
-                        Status = PlayerStatus.STOPPED;
+                    case MediaPlaybackState.None:
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
-                    case MediaPlayerState.Opening:
+                    case MediaPlaybackState.Opening:
                         Status = PlayerStatus.BUFFERING;
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
-                    case MediaPlayerState.Buffering:
+                    case MediaPlaybackState.Buffering:
                         Status = PlayerStatus.BUFFERING;
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
-                    case MediaPlayerState.Playing:
-                        Status = PlayerStatus.PLAYING;
+                    case MediaPlaybackState.Playing:
+                        Status = sender.Position == TimeSpan.Zero ? PlayerStatus.STOPPED : PlayerStatus.PLAYING;
                         _playProgressTimer.Change(0, 50);
                         break;
-                    case MediaPlayerState.Paused:
+                    case MediaPlaybackState.Paused:
                         Status = PlayerStatus.PAUSED;
-                        _playProgressTimer.Change(0, int.MaxValue);
-                        break;
-                    case MediaPlayerState.Stopped:
-                        Status = PlayerStatus.STOPPED;
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             };
+
             _player.MediaEnded += (sender, args) => { TrackFinished?.Invoke(this, EventArgs.Empty); };
             _player.BufferingStarted += (sender, args) => { Buffering?.Invoke(this, EventArgs.Empty); };
             _player.BufferingEnded += (sender, args) => { Buffering?.Invoke(this, EventArgs.Empty); };
+            _player.PlaybackSession.SeekCompleted += (sender, args) => { };
 
-            _player.MediaFailed +=
-                (sender, args) =>
-                {
-                    _playProgressTimer.Change(0, int.MaxValue);
-                    _loadMediaTaskCompletionSource.SetException(new Exception("Media failed to load"));
-                };
-
-            _player.MediaOpened += (sender, args) =>
+            _player.MediaFailed += (sender, args) =>
             {
-                _loadMediaTaskCompletionSource.SetResult(true);
+                _playProgressTimer.Change(0, int.MaxValue);
+                _loadMediaTaskCompletionSource.SetException(new Exception("Media failed to load"));
             };
+
+            _player.MediaOpened += (sender, args) => { _loadMediaTaskCompletionSource.SetResult(true); };
         }
 
         public int Buffered
@@ -86,7 +81,7 @@ namespace Plugin.MediaManager
             get
             {
                 if (_player == null) return 0;
-                return (int)(_player.BufferingProgress * _player.NaturalDuration.TotalMilliseconds);
+                return (int)(_player.PlaybackSession.BufferingProgress * _player.PlaybackSession.NaturalDuration.TotalMilliseconds);
             }
         }
 
@@ -100,10 +95,10 @@ namespace Plugin.MediaManager
             }
         }
 
-        public int Duration => (int)(_player?.NaturalDuration.TotalMilliseconds ?? -1);
-        public int Position => (int)(_player?.Position.TotalMilliseconds ?? 0);
+        public int Duration => (int)(_player?.PlaybackSession.NaturalDuration.TotalMilliseconds ?? -1);
+        public int Position => (int)(_player?.PlaybackSession.Position.TotalMilliseconds ?? 0);
 
-        public IMediaQueue Queue { get; set; } = new MediaQueue();
+        public IMediaQueue Queue { get; set; }
 
         public PlayerStatus Status
         {
@@ -123,7 +118,7 @@ namespace Plugin.MediaManager
 
         public Task Pause()
         {
-            if (_player.CurrentState == MediaPlayerState.Paused)
+            if (_player.PlaybackSession.PlaybackState == MediaPlaybackState.Paused)
             {
                 _player.Play();
             }
@@ -136,27 +131,7 @@ namespace Plugin.MediaManager
 
         public async Task Play(IMediaFile mediaFile)
         {
-            switch (mediaFile.Type)
-            {
-                case MediaFileType.AudioUrl:
-                    await Play(mediaFile.Url);
-                    break;
-                case MediaFileType.VideoUrl:
-                    throw new NotImplementedException();
-                    break;
-                case MediaFileType.AudioFile:
-                    throw new NotImplementedException();
-                    break;
-                case MediaFileType.VideoFile:
-                    throw new NotImplementedException();
-                    break;
-                case MediaFileType.Other:
-                    throw new NotImplementedException();
-                    break;
-                default:
-                    await Task.FromResult(0);
-                    break;
-            }
+            await Play(mediaFile.Url);
         }
 
         public async Task Play(string url)
@@ -164,10 +139,15 @@ namespace Plugin.MediaManager
             _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
             try
             {
+                // Todo: sync this with the playback queue
+                MediaPlaybackList mediaPlaybackList = new MediaPlaybackList();
+
                 var mediaSource = MediaSource.CreateFromUri(new Uri(url));
-                _player.Source = mediaSource;
+                MediaPlaybackItem item = new MediaPlaybackItem(mediaSource);
+                TryToLoadCover(item);
+                mediaPlaybackList.Items.Add(item);
+                _player.Source = mediaPlaybackList;
                 await _loadMediaTaskCompletionSource.Task;
-                await TryToLoadCover(url);
                 _player.Play();
             }
             catch (Exception)
@@ -176,46 +156,40 @@ namespace Plugin.MediaManager
             }
         }
 
-        private async Task TryToLoadCover(string url)
+        private void TryToLoadCover(MediaPlaybackItem item)
         {
             try
             {
-                StorageFile file = await StorageFile.GetFileFromPathAsync(url);
-                using (StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView, 300))
-                {
-                    if (thumbnail != null && thumbnail.Type == ThumbnailType.Image)
-                    {
-                        Cover = thumbnail;
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Unable to get cover for url: " + url);
-                    }
-                }
+                Cover = item.GetDisplayProperties().Thumbnail;
             }
             catch (Exception)
             {
-                Debug.WriteLine("Unable to get cover for url: " + url);
+                Debug.WriteLine("Unable to get cover for item");
             }
         }
 
-        public Task PlayNext()
+        public async Task PlayNext(string url)
+        {
+            await Stop();
+            await Play(url);
+        }
+
+        public async Task PlayNext()
         {
             if (Queue.HasNext())
             {
-                Stop();
+                await Stop();
 
                 Queue.SetNextAsCurrent();
-                Play();
+                await Play();
             }
             else
             {
                 // If you don't have a next song in the queue, stop and show the meta-data of the first song.
-                Stop();
+                await Stop();
                 Queue.SetIndexAsCurrent(0);
                 Cover = null;
             }
-            return Task.CompletedTask;
         }
 
         public async Task PlayPause()
@@ -230,38 +204,39 @@ namespace Plugin.MediaManager
             }
         }
 
-        public Task PlayPrevious()
+        public async Task PlayPrevious()
         {
             // Start current track from beginning if it's the first track or the track has played more than 3sec and you hit "playPrevious".
             if (!Queue.HasPrevious() || Position > 3000)
             {
-                Seek(0);
+                await Seek(0);
             }
             else
             {
-                Stop();
+                await Stop();
 
                 Queue.SetPreviousAsCurrent();
-                Play();
+                await Play();
             }
-            return Task.CompletedTask;
         }
 
-        public Task Seek(int position)
+        public async Task Seek(int position)
         {
-            _player.Position = TimeSpan.FromSeconds(position);
-            return Task.CompletedTask;
+            _seekTaskCompletionSource = new TaskCompletionSource<bool>();
+            _player.PlaybackSession.Position = TimeSpan.FromSeconds(position);
+            await Task.CompletedTask;
         }
 
         public Task Stop()
         {
-            _player.PlaybackRate = 0;
+            _player.PlaybackSession.PlaybackRate = 0;
+            _player.PlaybackSession.Position = TimeSpan.Zero;
             return Task.CompletedTask;
         }
 
         private Task Play()
         {
-            _player.PlaybackRate = 1;
+            _player.PlaybackSession.PlaybackRate = 1;
             _player.Play();
             return Task.CompletedTask;
         }
