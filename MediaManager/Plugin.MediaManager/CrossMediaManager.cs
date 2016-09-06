@@ -8,7 +8,7 @@ namespace Plugin.MediaManager
   /// </summary>
   public class CrossMediaManager
   {
-    static Lazy<IMediaManager> Implementation = new Lazy<IMediaManager>(() => CreateMediaManager(), System.Threading.LazyThreadSafetyMode.PublicationOnly);
+    static readonly Lazy<IMediaManager> Implementation = new Lazy<IMediaManager>(CreateMediaManager, System.Threading.LazyThreadSafetyMode.PublicationOnly);
 
     /// <summary>
     /// Current settings to use
