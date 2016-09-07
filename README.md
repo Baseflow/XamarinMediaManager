@@ -9,6 +9,7 @@ Cross platform plugin to play media from shared code.
 **Supports**
 * Xamarin.iOS
 * Xamarin.Android
+* Windows UWP
 
 
 ### API Usage
@@ -25,3 +26,6 @@ You must request `AccessWifiState`, `Internet`, `MediaContentControl` and `WakeL
 
 #### Contributors
 * [martijn00](https://github.com/martijn00)
+* [modplug](https://github.com/modplug)
+* [jmartine2](https://github.com/jmartine2)
+* [SimonSimCity](https://github.com/SimonSimCity)
