@@ -6,7 +6,7 @@ namespace Plugin.MediaManager.Abstractions
         STOPPED,
         PAUSED,
         PLAYING,
-        LOADING
+        BUFFERING
     }
 }
 

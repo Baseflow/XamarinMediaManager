@@ -20,6 +20,11 @@ namespace Plugin.MediaManager.Abstractions
     public interface IMediaManager
     {
         /// <summary>
+        /// Optional Queue to play media in sequences
+        /// </summary>
+        IMediaQueue Queue { get; set; }
+
+        /// <summary>
         /// Reading the current status of the player (STOPPED, PAUSED, PLAYING, LOADING - initialization and buffering is combined here)
         /// </summary>
         PlayerStatus Status { get; }
@@ -48,6 +53,11 @@ namespace Plugin.MediaManager.Abstractions
         /// Raised when a track is finished playing.
         /// </summary>
         event TrackFinishedEventHandler TrackFinished;
+
+        /// <summary>
+        /// Starts playing from the current position
+        /// </summary>
+        Task Play(IMediaFile mediaFile);
 
         /// <summary>
         /// Starts playing from the current position
@@ -95,7 +105,7 @@ namespace Plugin.MediaManager.Abstractions
         /// Should be the same as calling PlayByPosition(Queue.size()+1)
         /// Maybe you'll want to preload the next song into memory ...
         /// </summary>
-        Task PlayNext(string url);
+        Task PlayNext();
 
         /// <summary>
         /// Start playing if nothing is playing, otherwise it pauses the current media
@@ -106,7 +116,7 @@ namespace Plugin.MediaManager.Abstractions
         /// Should be the same as calling PlayByPosition(Queue.size()-1).
         /// Maybe you'll want to keep the last song in memory ...
         /// </summary>
-        Task PlayPrevious(string url);
+        Task PlayPrevious();
 
         /// <summary>
         /// Start playing a track by its position in the Queue

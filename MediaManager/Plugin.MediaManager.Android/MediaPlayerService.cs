@@ -40,6 +40,8 @@ namespace Plugin.MediaManager
         private bool manuallyPaused = false;
         private bool transientPaused = false;
 
+        public IMediaQueue Queue { get; set; } = new MediaQueue();
+
         public MediaPlayer mediaPlayer;
         private AudioManager audioManager;
 
@@ -77,7 +79,7 @@ namespace Plugin.MediaManager
 
                     case PlaybackStateCompat.StateConnecting:
                     case PlaybackStateCompat.StateBuffering:
-                        return PlayerStatus.LOADING;
+                        return PlayerStatus.BUFFERING;
 
                     case PlaybackStateCompat.StateError:
                     case PlaybackStateCompat.StateStopped:
@@ -250,7 +252,7 @@ namespace Plugin.MediaManager
 
         public async void OnCompletion(MediaPlayer mp)
         {
-            //await PlayNext (audioUrl);
+            await PlayNext ();
             if (TrackFinished != null)
                 TrackFinished(this, new EventArgs());
         }
@@ -511,39 +513,48 @@ namespace Plugin.MediaManager
             });
         }
 
-        public async Task PlayNext(string url = "")
+        public async Task PlayNext()
         {
-            if (mediaPlayer != null)
+            if (Queue.HasNext())
             {
-                mediaPlayer.Reset();
-                mediaPlayer.Release();
-                mediaPlayer = null;
+                UpdatePlaybackState(PlaybackStateCompat.StateSkippingToNext);
+
+                if (mediaPlayer != null)
+                {
+                    mediaPlayer.Reset();
+                }
+
+                Queue.SetNextAsCurrent();
+                await Play();
             }
+            else
+            {
+                // If you don't have a next song in the queue, stop and show the meta-data of the first song.
+                UpdatePlaybackState(PlaybackStateCompat.StateStopped);
+                mediaPlayer.Reset();
 
-            UpdatePlaybackState(PlaybackStateCompat.StateSkippingToNext);
-
-            await Play(url);
+                Queue.SetIndexAsCurrent(0);
+            }
         }
 
-        public async Task PlayPrevious(string url = "")
+        public async Task PlayPrevious()
         {
             // Start current track from beginning if it's the first track or the track has played more than 3sec and you hit "playPrevious".
-            if (Position > 3000)
+            if (!Queue.HasPrevious() || Position > 3000)
             {
                 await Seek(0);
             }
             else
             {
+                UpdatePlaybackState(PlaybackStateCompat.StateSkippingToPrevious);
+
                 if (mediaPlayer != null)
                 {
                     mediaPlayer.Reset();
-                    mediaPlayer.Release();
-                    mediaPlayer = null;
                 }
 
-                UpdatePlaybackState(PlaybackStateCompat.StateSkippingToPrevious);
-
-                await Play(url);
+                Queue.SetPreviousAsCurrent();
+                await Play();
             }
         }
 
