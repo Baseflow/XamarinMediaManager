@@ -224,6 +224,19 @@ namespace Plugin.MediaManager
         {
             mediaPlayer = new MediaPlayer();
 
+            SetMediaPlayerOptions();
+        }
+
+        private void InitializePlayerWithURL(string audioUrl)
+        {
+            Android.Net.Uri uri = Android.Net.Uri.Parse(Android.Net.Uri.Encode(audioUrl));
+            mediaPlayer = MediaPlayer.Create(ApplicationContext, uri);
+
+            SetMediaPlayerOptions();
+        }
+
+        private void SetMediaPlayerOptions()
+        {
             //Tell our player to sream music
             mediaPlayer.SetAudioStreamType(Stream.Music);
 
@@ -235,7 +248,6 @@ namespace Plugin.MediaManager
             mediaPlayer.SetOnErrorListener(this);
             mediaPlayer.SetOnPreparedListener(this);
         }
-
 
         public void OnBufferingUpdate(MediaPlayer mp, int percent)
         {
@@ -252,7 +264,7 @@ namespace Plugin.MediaManager
 
         public async void OnCompletion(MediaPlayer mp)
         {
-            await PlayNext ();
+            await PlayNext();
             if (TrackFinished != null)
                 TrackFinished(this, new EventArgs());
         }
@@ -370,10 +382,7 @@ namespace Plugin.MediaManager
                 mediaPlayer = null;
             }
 
-            //if (mediaPlayer == null)
             InitializePlayer();
-
-            //if(mediaSessionCompat == null)
             InitMediaSession();
 
             if (mediaPlayer.IsPlaying)
@@ -382,54 +391,160 @@ namespace Plugin.MediaManager
                 return;
             }
 
+            bool DataSourceSet = false;
             try
             {
-                MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
-
-                await mediaPlayer.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(audioUrl));
-
-                await metaRetriever.SetDataSourceAsync(audioUrl, new Dictionary<string, string>());
-
-                var focusResult = audioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.Gain);
-                if (focusResult != AudioFocusRequest.Granted)
-                {
-                    //could not get audio focus
-                    Console.WriteLine("Could not get audio focus");
-                }
-
-                UpdatePlaybackState(PlaybackStateCompat.StateBuffering);
-                mediaPlayer.PrepareAsync();
-
-                AquireWifiLock();
-                UpdateMediaMetadataCompat(metaRetriever);
-                StartNotification();
-
-                byte[] imageByteArray = metaRetriever.GetEmbeddedPicture();
-                if (imageByteArray == null)
-                {
-                    Bitmap coverBitmap = GetCurrentTrackCover();
-                    if (coverBitmap != null)
-                        Cover = coverBitmap;
-                    else
-                        Cover = await BitmapFactory.DecodeResourceAsync(Resources, Resource.Drawable.ButtonStar);
-                }
-                else
-                    Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
+                await SetMediaPlayerDataSource(ApplicationContext, mediaPlayer, audioUrl);
+                DataSourceSet = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                UpdatePlaybackState(PlaybackStateCompat.StateStopped);
-
-                if (mediaPlayer != null)
+                try
                 {
-                    mediaPlayer.Reset();
-                    mediaPlayer.Release();
-                    mediaPlayer = null;
+                    InitializePlayerWithURL(audioUrl);
+                    DataSourceSet = true;
                 }
-
-                //unable to start playback log error
-                Console.WriteLine(ex);
+                catch (Exception)
+                {
+                    DataSourceSet = false;
+                }
             }
+
+            bool StartedPlayback = false;
+            if (DataSourceSet)
+            {
+                try
+                {
+                    MediaMetadataRetriever metaRetriever = await GetMetadataRetriever();
+
+                    var focusResult = audioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.Gain);
+                    if (focusResult != AudioFocusRequest.Granted)
+                    {
+                        //could not get audio focus
+                        Console.WriteLine("Could not get audio focus");
+                    }
+
+                    UpdatePlaybackState(PlaybackStateCompat.StateBuffering);
+                    mediaPlayer.PrepareAsync();
+
+                    AquireWifiLock();
+                    UpdateMediaMetadataCompat(metaRetriever);
+                    StartNotification();
+
+                    byte[] imageByteArray = metaRetriever.GetEmbeddedPicture();
+                    if (imageByteArray == null)
+                    {
+                        Bitmap coverBitmap = GetCurrentTrackCover();
+                        if (coverBitmap != null)
+                            Cover = coverBitmap;
+                        else
+                            Cover = await BitmapFactory.DecodeResourceAsync(Resources, Resource.Drawable.ButtonStar);
+                    }
+                    else
+                        Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
+                    StartedPlayback = true;
+                }
+                catch (Exception ex)
+                {
+                    StartedPlayback = false;
+                    //unable to start playback log error
+                    Console.WriteLine(ex);
+                }
+                if (!StartedPlayback)
+                {
+                    UpdatePlaybackState(PlaybackStateCompat.StateStopped);
+
+                    if (mediaPlayer != null)
+                    {
+                        mediaPlayer.Reset();
+                        mediaPlayer.Release();
+                        mediaPlayer = null;
+                    }
+                }
+            }
+        }
+
+        private async Task<MediaMetadataRetriever> GetMetadataRetriever()
+        {
+            MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
+
+            Java.IO.File file = new Java.IO.File(audioUrl);
+            Java.IO.FileInputStream inputStream = new Java.IO.FileInputStream(file);
+            await metaRetriever.SetDataSourceAsync(inputStream.FD);
+            return metaRetriever;
+        }
+
+        private async Task SetMediaPlayerDataSource(Context context, MediaPlayer mp, String fileInfo)
+        {
+            try
+            {
+                if (Build.VERSION.SdkInt < BuildVersionCodes.Honeycomb)
+                    try
+                    {
+                        await SetMediaPlayerDataSourcePreHoneyComb(context, mp, fileInfo);
+                    }
+                    catch (Exception e)
+                    {
+                        await SetMediaPlayerDataSourcePostHoneyComb(context, mp, fileInfo);
+                    }
+                else
+                    await SetMediaPlayerDataSourcePostHoneyComb(context, mp, fileInfo);
+
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    await SetMediaPlayerDataSourceUsingFileDescriptor(context, mp, fileInfo);
+                }
+                catch (Exception)
+                {
+                    String uri = GetUriFromPath(context, fileInfo);
+                    mp.Reset();
+                    await mp.SetDataSourceAsync(uri);
+                }
+            }
+        }
+
+        private async Task SetMediaPlayerDataSourcePreHoneyComb(Context context, MediaPlayer mp, String fileInfo)
+        {
+            mp.Reset();
+            await mp.SetDataSourceAsync(fileInfo);
+        }
+
+        private async Task SetMediaPlayerDataSourcePostHoneyComb(Context context, MediaPlayer mp, String fileInfo)
+        {
+            mp.Reset();
+            Android.Net.Uri uri = Android.Net.Uri.Parse(Android.Net.Uri.Encode(fileInfo));
+            await mp.SetDataSourceAsync(context, uri);
+        }
+
+        private async Task SetMediaPlayerDataSourceUsingFileDescriptor(Context context, MediaPlayer mp, String fileInfo)
+        {
+            Java.IO.File file = new Java.IO.File(fileInfo);
+            Java.IO.FileInputStream inputStream = new Java.IO.FileInputStream(file);
+            mp.Reset();
+            await mp.SetDataSourceAsync(inputStream.FD);
+            inputStream.Close();
+        }
+
+        private static String GetUriFromPath(Context context, String path)
+        {
+            Android.Net.Uri uri = MediaStore.Audio.Media.GetContentUriForPath(path);
+            ICursor cursor = context.ContentResolver.Query(uri, null, MediaStore.Audio.Media.InterfaceConsts.Data + "='" + path + "'", null, null);
+            bool firstSuccess = cursor.MoveToFirst();
+            if (!firstSuccess)
+                return path;
+
+            int idColumnIndex = cursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.Id);
+            long id = cursor.GetLong(idColumnIndex);
+            cursor.Close();
+
+            if (!uri.ToString().EndsWith(id.ToString()))
+            {
+                return uri + "/" + id;
+            }
+            return uri.ToString();
         }
 
         private Bitmap GetCurrentTrackCover()
@@ -464,9 +579,6 @@ namespace Plugin.MediaManager
 
         private static string TryGetAlbumArtPathByFilename(System.Uri baseUri, string filename)
         {
-            //if (!filename.EndsWith("/"))
-            //    filename += "/";
-
             System.Uri testUri = new System.Uri(baseUri, filename);
             string testPath = testUri.LocalPath;
             if (System.IO.File.Exists(testPath))
@@ -481,25 +593,6 @@ namespace Plugin.MediaManager
                 return null;
 
             return System.IO.Path.GetDirectoryName(audioUrl);
-
-
-
-            ////var theUri = MediaStore.Audio.Media.ExternalContentUri;
-            //Android.Net.Uri theUri = new Android.Net.Uri.Parse("content://media/external/audio/albumart");
-            //string path = null;
-            //// The projection contains the columns we want to return in our query.
-            //string[] projection = new[] { Android.Provider.MediaStore.Audio.AlbumColumns.AlbumArt };
-            //using (ICursor cursor = ContentResolver.Query(theUri, projection, null, null, null))
-            ////ManagedQuery(uri, projection, null, null, null))
-            //{
-            //    if (cursor != null)
-            //    {
-            //        int columnIndex = cursor.GetColumnIndexOrThrow(projection[0]);
-            //        cursor.MoveToFirst();
-            //        path = cursor.GetString(columnIndex);
-            //    }
-            //}
-            //return path;
         }
 
         public async Task Seek(int position)

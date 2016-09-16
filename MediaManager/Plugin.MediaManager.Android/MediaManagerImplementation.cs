@@ -166,18 +166,6 @@ namespace Plugin.MediaManager
             }
         }
 
-        //public void SetAlternateRemoteCallback(MediaSessionCompat.Callback callback)
-        //{
-        //    if (binder == null)
-        //        return;
-
-        //    MediaPlayerService mps = binder.GetMediaPlayerService();
-        //    if (mps == null)
-        //        return;
-
-        //    mps.AlternateRemoteCallback = callback;
-        //}
-
         public MediaSessionCompat.Callback AlternateRemoteCallback { get; set; }
 
         private class MediaPlayerServiceConnection : Java.Lang.Object, IServiceConnection
