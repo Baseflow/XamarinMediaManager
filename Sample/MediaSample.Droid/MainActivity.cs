@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
+using MediaManager.Sample.Core;
 
 namespace MediaSample.Droid
 {
@@ -20,8 +21,10 @@ namespace MediaSample.Droid
             // and attach an event to it
             Button button = FindViewById<Button>(Resource.Id.myButton);
 
-            button.Click += delegate { 
-                
+            button.Click += delegate {
+                var media = new MediaPlayerManager();
+                media.Play();
+
             };
         }
     }
