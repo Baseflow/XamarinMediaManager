@@ -70,7 +70,7 @@ namespace Plugin.MediaManager
         public async Task Play(string url)
         {
             await BinderReady();
-            await binder.GetMediaPlayerService().Play(url);
+            await binder.GetMediaPlayerService().Play(url, MediaFileType.AudioUrl);
         }
 
 
@@ -171,13 +171,15 @@ namespace Plugin.MediaManager
             switch (mediaFile.Type)
             {
                 case MediaFileType.AudioUrl:
-                    await Play(mediaFile.Url);
+                    await BinderReady();
+                    await binder.GetMediaPlayerService().Play(mediaFile.Url, MediaFileType.AudioUrl);
                     break;
                 case MediaFileType.VideoUrl:
                     throw new NotImplementedException();
                     break;
                 case MediaFileType.AudioFile:
-                    throw new NotImplementedException();
+                    await BinderReady();
+                    await binder.GetMediaPlayerService().Play(mediaFile.Url, MediaFileType.AudioFile);
                     break;
                 case MediaFileType.VideoFile:
                     throw new NotImplementedException();
