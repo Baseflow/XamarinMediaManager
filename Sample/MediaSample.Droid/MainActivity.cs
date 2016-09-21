@@ -21,9 +21,9 @@ namespace MediaSample.Droid
             // and attach an event to it
             Button button = FindViewById<Button>(Resource.Id.myButton);
 
-            button.Click += delegate {
+            button.Click += async delegate {
                 var media = new MediaPlayerManager();
-                media.Play();
+                await media.Play();
 
             };
         }

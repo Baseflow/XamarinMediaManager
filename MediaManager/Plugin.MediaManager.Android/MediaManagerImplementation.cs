@@ -5,6 +5,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V4.Media.Session;
+using Java.Util.Concurrent;
 
 namespace Plugin.MediaManager
 {
@@ -50,38 +51,62 @@ namespace Plugin.MediaManager
 
         public event TrackFinishedEventHandler TrackFinished;
 
+
+        private async Task BinderReady()
+        {
+            int repeat = 10;
+            while ((binder == null) && (repeat > 0))
+            {
+                await Task.Delay(100);
+                repeat--;
+            }
+            if (repeat == 0)
+            {
+                throw new System.TimeoutException("Could not connect to service");
+            }
+        }
+
+
         public async Task Play(string url)
         {
+            await BinderReady();
             await binder.GetMediaPlayerService().Play(url);
         }
 
+
         public async Task Stop()
         {
+            await BinderReady();
             await binder.GetMediaPlayerService().Stop();
         }
 
         public async Task Pause()
         {
+            await BinderReady();
             await binder.GetMediaPlayerService().Pause();
         }
 
         public async Task Seek(int position)
         {
+            await BinderReady();
             await binder.GetMediaPlayerService().Seek(position);
         }
 
         public async Task PlayNext()
         {
+            await BinderReady();
             await binder.GetMediaPlayerService().PlayNext();
         }
 
         public async Task PlayPrevious()
         {
+            await BinderReady();
             await binder.GetMediaPlayerService().PlayPrevious();
         }
 
         public async Task PlayPause()
         {
+            await BinderReady();
             await binder.GetMediaPlayerService().PlayPause();
         }
 
