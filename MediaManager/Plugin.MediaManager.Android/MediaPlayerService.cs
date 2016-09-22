@@ -35,7 +35,9 @@ namespace Plugin.MediaManager
         public const string ActionNext = "com.xamarin.action.NEXT";
         public const string ActionPrevious = "com.xamarin.action.PREVIOUS";
 
-        private string audioUrl { get; set; }
+        private string currentAudioUrl { get; set; }
+        private MediaFileType currentFileType { get; set; }
+
 
         private bool manuallyPaused = false;
         private bool transientPaused = false;
@@ -353,11 +355,14 @@ namespace Plugin.MediaManager
         /// <summary>
         /// Intializes the player.
         /// </summary>
-        public async Task Play(string url)
+        public async Task Play(string url, MediaFileType type)
         {
             if (!string.IsNullOrEmpty(url))
-                audioUrl = url;
-            await Play();
+            {
+                currentAudioUrl = url;
+                currentFileType = type;
+                await Play();
+            }
         }
 
         public async Task Play()
@@ -394,14 +399,14 @@ namespace Plugin.MediaManager
             bool DataSourceSet = false;
             try
             {
-                await SetMediaPlayerDataSource(ApplicationContext, mediaPlayer, audioUrl);
+                await SetMediaPlayerDataSource(ApplicationContext, mediaPlayer, currentAudioUrl);
                 DataSourceSet = true;
             }
             catch (Exception)
             {
                 try
                 {
-                    InitializePlayerWithURL(audioUrl);
+                    InitializePlayerWithURL(currentAudioUrl);
                     DataSourceSet = true;
                 }
                 catch (Exception)
@@ -468,9 +473,27 @@ namespace Plugin.MediaManager
         {
             MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
 
-            Java.IO.File file = new Java.IO.File(audioUrl);
-            Java.IO.FileInputStream inputStream = new Java.IO.FileInputStream(file);
-            await metaRetriever.SetDataSourceAsync(inputStream.FD);
+            switch (currentFileType)
+            {
+                case MediaFileType.AudioUrl:
+                    await metaRetriever.SetDataSourceAsync(currentAudioUrl, new Dictionary<string, string>());
+                    break;
+                case MediaFileType.VideoUrl:
+                    break;
+                case MediaFileType.AudioFile:
+                    Java.IO.File file = new Java.IO.File(currentAudioUrl);
+                    Java.IO.FileInputStream inputStream = new Java.IO.FileInputStream(file);
+                    await metaRetriever.SetDataSourceAsync(inputStream.FD);
+                    break;
+                case MediaFileType.VideoFile:
+                    break;
+                case MediaFileType.Other:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+
             return metaRetriever;
         }
 
@@ -589,10 +612,10 @@ namespace Plugin.MediaManager
 
         private string GetCurrentSongFolder()
         {
-            if (!new System.Uri(audioUrl).IsFile)
+            if (!new System.Uri(currentAudioUrl).IsFile)
                 return null;
 
-            return System.IO.Path.GetDirectoryName(audioUrl);
+            return System.IO.Path.GetDirectoryName(currentAudioUrl);
         }
 
         public async Task Seek(int position)
