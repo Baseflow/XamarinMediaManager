@@ -716,7 +716,14 @@ namespace Plugin.MediaManager
                 }
 
                 UpdatePlaybackState(PlaybackStateCompat.StateStopped);
-                mediaPlayer.Reset();
+
+                try
+                {
+                    mediaPlayer.Reset();
+                }
+                catch (Java.Lang.IllegalStateException)
+                { }
+
                 StopNotification();
                 StopForeground(true);
                 ReleaseWifiLock();
@@ -887,23 +894,23 @@ namespace Plugin.MediaManager
 
             if (action.Equals(ActionPlay))
             {
-                mediaControllerCompat.GetTransportControls().Play();
+                mediaControllerCompat?.GetTransportControls()?.Play();
             }
             else if (action.Equals(ActionPause))
             {
-                mediaControllerCompat.GetTransportControls().Pause();
+                mediaControllerCompat?.GetTransportControls()?.Pause();
             }
             else if (action.Equals(ActionPrevious))
             {
-                mediaControllerCompat.GetTransportControls().SkipToPrevious();
+                mediaControllerCompat?.GetTransportControls()?.SkipToPrevious();
             }
             else if (action.Equals(ActionNext))
             {
-                mediaControllerCompat.GetTransportControls().SkipToNext();
+                mediaControllerCompat?.GetTransportControls()?.SkipToNext();
             }
             else if (action.Equals(ActionStop))
             {
-                mediaControllerCompat.GetTransportControls().Stop();
+                mediaControllerCompat?.GetTransportControls()?.Stop();
             }
         }
 
@@ -924,7 +931,7 @@ namespace Plugin.MediaManager
         /// </summary>
         private void ReleaseWifiLock()
         {
-            if (wifiLock == null)
+            if (wifiLock == null || !wifiLock.IsHeld)
                 return;
 
             wifiLock.Release();
