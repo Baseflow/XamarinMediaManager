@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Plugin.MediaManager</id>
-        <version>0.0.5</version>
+        <version>0.0.7</version>
         <title>MediaManager for Xamarin</title>
         <authors>Martijn van Dijk</authors>
         <owners>Martijn van Dijk</owners>
@@ -10,16 +10,14 @@
         <projectUrl>https://github.com/martijn00/XamarinMediaManager</projectUrl>
         <iconUrl>https://raw.githubusercontent.com/martijn00/XamarinMediaManager/master/icon_MediaManager.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Cross platform Xamarin plugin to play Media from PCL. Currently only supports audio playback on Android, iOS and UWP.</description>
+        <description>Cross platform Xamarin plugin to play Media from PCL. Supports audio playback on Android, iOS, UWP, tvOS and Mac.</description>
         <summary>MediaManager for playing cross platform media in Xamarin</summary>
-        <tags>xamarin, monodroid, C#, xamarin.android, android, ios, uwp, mediaplayer, audio</tags>
+        <tags>xamarin, monodroid, C#, xamarin.android, android, ios, uwp, tvOS, Mac, mediaplayer, audio, streaming, background, media</tags>
         <dependencies>
-            <group targetFramework=".NETFramework0.0" />
             <group targetFramework="MonoAndroid0.0">
                 <dependency id="Xamarin.Android.Support.v4" version="23.4.0.1" />
                 <dependency id="Xamarin.Android.Support.v7.AppCompat" version="23.4.0.1" />
             </group>
-            <group targetFramework=".NETPortable0.0-net45+win+wpa81+wp80" />
         </dependencies>
     </metadata>
     <files>
@@ -42,5 +40,11 @@
         <file src="..\MediaManager\Plugin.MediaManager.iOS\bin\iPhone\Release\Plugin.MediaManager.Abstractions.xml" target="lib\Xamarin.iOS10\Plugin.MediaManager.Abstractions.xml" />
         <file src="..\MediaManager\Plugin.MediaManager.iOS\bin\iPhone\Release\Plugin.MediaManager.dll" target="lib\Xamarin.iOS10\Plugin.MediaManager.dll" />
         <file src="..\MediaManager\Plugin.MediaManager.iOS\bin\iPhone\Release\Plugin.MediaManager.XML" target="lib\Xamarin.iOS10\Plugin.MediaManager.xml" />
+        <file src="..\MediaManager\Plugin.MediaManager.MacOS\bin\Release\Plugin.MediaManager.Abstractions.dll" target="lib\Xamarin.Mac\Plugin.MediaManager.Abstractions.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.MacOS\bin\Release\Plugin.MediaManager.Abstractions.xml" target="lib\Xamarin.Mac\Plugin.MediaManager.Abstractions.xml" />
+        <file src="..\MediaManager\Plugin.MediaManager.MacOS\bin\Release\Plugin.MediaManager.dll" target="lib\Xamarin.Mac\Plugin.MediaManager.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.tvOS\bin\Release\Plugin.MediaManager.Abstractions.dll" target="lib\Xamarin.tvOS\Plugin.MediaManager.Abstractions.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.tvOS\bin\Release\Plugin.MediaManager.Abstractions.xml" target="lib\Xamarin.tvOS\Plugin.MediaManager.Abstractions.xml" />
+        <file src="..\MediaManager\Plugin.MediaManager.tvOS\bin\Release\Plugin.MediaManager.dll" target="lib\Xamarin.tvOS\Plugin.MediaManager.dll" />
     </files>
 </package>
