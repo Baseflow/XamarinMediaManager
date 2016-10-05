@@ -1018,7 +1018,10 @@ namespace Plugin.MediaManager
                     Pause();
                     break;
                 case AudioFocus.LossTransientCanDuck:
-                    //We have lost focus but should till play at a muted 10% volume
+                    //We have lost focus but should still play at a muted 10% volume
+                    if (mediaPlayer == null)
+                        return;
+
                     if (mediaPlayer.IsPlaying)
                         mediaPlayer.SetVolume(.1f, .1f);//turn it down!
                     break;
