@@ -23,7 +23,7 @@
 |Windows WPF|No|
 |.Net Framework|Yes|4.5|
 |.Net Standard|Future|
-|Xamarin.Mac|Yes||
+|Xamarin.Mac|Yes|3.0|
 |Xamarin.tvOS|Yes||
 
 ### Example Usage
