@@ -1,22 +1,46 @@
-## Media Plugin for Xamarin and Windows
+## MediaManager - Cross platform media plugin for Xamarin and Windows
+* Designed to be simple and easy to use
+* Stand alone for easy integration with existing projects and frameworks
+* Native plackback of media file
+* Native notifications and remote controls
 
-Cross platform plugin to play media from shared code.
+### Setup & Usage
+* Available on NuGet: https://www.nuget.org/packages/Plugin.MediaManager/ [![NuGet](https://img.shields.io/nuget/v/Plugin.MediaManager.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.MediaManager/)
+* Install into each project that utilizes MediaManager
 
-### Setup
-* Available on NuGet: https://www.nuget.org/packages/Plugin.MediaManager/
-* Install into your PCL project and Client projects.
+### Build Status: [![Build status](https://ci.appveyor.com/api/projects/status/c9c6recwcu7k0s15?svg=true)](https://ci.appveyor.com/project/martijn00/xamarinmediamanager)
 
-**Supports**
-* Xamarin.iOS
-* Xamarin.Android
-* Windows UWP
+**Platform Support**
 
+|Platform|Supported|Version|
+| ------------------- | :-----------: | :------------------: |
+|Xamarin.iOS|Yes|iOS 7+|
+|Xamarin.Android|Yes|API 9+|
+|Windows Phone Silverlight|No||
+|Windows Phone RT|No||
+|Windows Store RT|No||
+|Windows 10 UWP|Yes|10+|
+|Windows WPF|No|
+|.Net Framework|Yes|4.5|
+|.Net Standard|Future|
+|Xamarin.Mac|Yes|3.0|
+|Xamarin.tvOS|Yes||
 
-### API Usage
+### Example Usage
 
-Call **MediaManager.Current** from any project or PCL to gain access to APIs.
+### Add the NuGet package to your PCL 
+* In Visual Studio - Tools > NuGet Package Manager > Manage Packages for Solution
+* Select the Browse tab, search for MediaManager
+* Select Plugin.MediaManager
+* Install into each project within your solution
 
-See Sample for usage.
+Call **MediaManager.Current** from any .Net library or Xamarin project to gain access to APIs.
+
+```csharp
+await CrossMediaManager.Current.Play("http://www.montemagno.com/sample.mp3");
+```
+
+See Sample for more details.
 
 ### **IMPORTANT**
 **Android:**

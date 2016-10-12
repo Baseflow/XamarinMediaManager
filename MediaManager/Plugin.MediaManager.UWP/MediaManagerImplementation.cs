@@ -50,7 +50,7 @@ namespace Plugin.MediaManager
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
                     case MediaPlaybackState.Playing:
-                        Status = sender.Position == TimeSpan.Zero ? PlayerStatus.STOPPED : PlayerStatus.PLAYING;
+                        Status = PlayerStatus.PLAYING;
                         _playProgressTimer.Change(0, 50);
                         break;
                     case MediaPlaybackState.Paused:
