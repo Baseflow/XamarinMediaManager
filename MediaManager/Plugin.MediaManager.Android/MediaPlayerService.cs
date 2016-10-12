@@ -446,7 +446,16 @@ namespace Plugin.MediaManager
                             Cover = await BitmapFactory.DecodeResourceAsync(Resources, Resource.Drawable.ButtonStar);
                     }
                     else
-                        Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
+                    {
+                        try
+                        {
+                            Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
+                        }
+                        catch (Java.Lang.OutOfMemoryError)
+                        {
+                            Cover = null;
+                        }
+                    }
                     StartedPlayback = true;
                 }
                 catch (Exception ex)
@@ -934,7 +943,13 @@ namespace Plugin.MediaManager
             if (wifiLock == null || !wifiLock.IsHeld)
                 return;
 
-            wifiLock.Release();
+            try
+            {
+                wifiLock.Release();
+            }
+            catch (Java.Lang.RuntimeException)
+            { }
+
             wifiLock = null;
         }
 
