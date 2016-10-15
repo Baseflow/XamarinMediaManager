@@ -96,18 +96,23 @@ namespace Plugin.MediaManager.Abstractions
             }
         }
 
+        /// <summary>
+        /// Occurs when the collection changes.
+        /// </summary>
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
         private bool CollectionChangedEventDisabled;
 
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
+            if (PropertyChanged != null)
             {
-                handler(this, new PropertyChangedEventArgs(name));
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
 
@@ -239,6 +244,7 @@ namespace Plugin.MediaManager.Abstractions
         }
 
         private CancellationTokenSource shuffleCancellation = new CancellationTokenSource();
+
         public void ToggleShuffle()
         {
             if (!Shuffle)
@@ -341,7 +347,7 @@ namespace Plugin.MediaManager.Abstractions
                     if (_current != current)
                     {
                         _current = current;
-						OnPropertyChanged(nameof(Current));
+                        OnPropertyChanged(nameof(Current));
                     }
                 });
 
