@@ -14,17 +14,19 @@ namespace Plugin.MediaManager.Abstractions
         public MediaQueue ()
         {
             _queue = new ObservableCollection<IMediaFile>();
+            RegisterCountTriggers();
         }
 
         private ObservableCollection<IMediaFile> _queue;
 
         private ObservableCollection<IMediaFile> _unshuffledQueue;
 
+        private int _count;
         public int Count
         {
             get
             {
-                return _unshuffledQueue?.Count ?? _queue?.Count ?? 0;
+                return _count;
             }
         }
 
@@ -286,6 +288,22 @@ namespace Plugin.MediaManager.Abstractions
                 _unshuffledQueue = null;
             }
             OnPropertyChanged(nameof(Shuffle));
+        }
+
+        private void RegisterCountTriggers()
+        {
+            _queue.CollectionChanged += (sender, e) =>
+            {
+                var count = _queue.Count;
+
+                if (_count != count)
+                {
+                    _count = count;
+                    OnPropertyChanged(nameof(Count));
+                }
+            };
+
+            _count = _queue.Count;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
