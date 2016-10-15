@@ -15,6 +15,7 @@ namespace Plugin.MediaManager.Abstractions
         {
             _queue = new ObservableCollection<IMediaFile>();
             RegisterCountTriggers();
+            RegisterCurrentTriggers();
         }
 
         private ObservableCollection<IMediaFile> _queue;
@@ -304,6 +305,42 @@ namespace Plugin.MediaManager.Abstractions
             };
 
             _count = _queue.Count;
+        }
+
+        private void RegisterCurrentTriggers()
+        {
+            var updateProperty = new Action(() =>
+                {
+                    IMediaFile current = null;
+                    if (Count - 1 >= Index && Index >= 0)
+                    {
+                        current = _queue[Index];
+                    }
+
+                    if (_current != current)
+                    {
+                        _current = current;
+						OnPropertyChanged(nameof(Current));
+                    }
+                });
+
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(Index))
+                {
+                    updateProperty();
+                }
+            };
+
+            _queue.CollectionChanged += (sender, e) =>
+            {
+                updateProperty();
+            };
+
+            if (Count - 1 >= Index && Index >= 0)
+            {
+                _current = _queue[Index];
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
