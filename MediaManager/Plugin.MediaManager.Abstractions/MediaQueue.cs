@@ -144,7 +144,12 @@ namespace Plugin.MediaManager.Abstractions
         {
             Index = -1;
             _queue.Clear();
-            _unshuffledQueue = null;
+
+            if (_unshuffledQueue != null)
+            {
+                _unshuffledQueue = null;
+                OnPropertyChanged(nameof(Shuffle));
+            }
         }
 
         public bool Contains(IMediaFile item)
