@@ -14,6 +14,13 @@ namespace Plugin.MediaManager.Abstractions
         public MediaQueue ()
         {
             _queue = new ObservableCollection<IMediaFile>();
+
+            _queue.CollectionChanged += (sender, e) =>
+            {
+                if (CollectionChanged != null)
+                    CollectionChanged(sender, e);
+            };
+
             RegisterCountTriggers();
             RegisterCurrentTriggers();
         }
