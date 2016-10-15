@@ -25,9 +25,9 @@ namespace Plugin.MediaManager.Abstractions
             RegisterCurrentTriggers();
         }
 
-        private ObservableCollection<IMediaFile> _queue;
+		protected ObservableCollection<IMediaFile> _queue { get; private set; }
 
-        private ObservableCollection<IMediaFile> _unshuffledQueue;
+		protected ObservableCollection<IMediaFile> _unshuffledQueue;
 
         private int _count;
         public int Count
@@ -308,7 +308,7 @@ namespace Plugin.MediaManager.Abstractions
             OnPropertyChanged(nameof(Shuffle));
         }
 
-        private void ReplaceQueueWith(IEnumerable<IMediaFile> files)
+		protected void ReplaceQueueWith(IEnumerable<IMediaFile> files)
         {
             CollectionChangedEventDisabled = true;
             _queue.Clear();
