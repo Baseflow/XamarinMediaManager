@@ -260,13 +260,11 @@ namespace Plugin.MediaManager.Abstractions
                     elements.RemoveAt(Index);
                 }
 
+				var random = new Random();
                 for (var i = elements.Count - 1; i > 1; i--)
                 {
                     // Get a random index
-                    //var swapIndex = Math.Abs((int)WinRTCrypto.CryptographicBuffer.GenerateRandomNumber()) % (i + 1);
-
-                    var random = new Random((int)DateTime.Now.Ticks);
-                    var swapIndex = random.Next(0, i + 1);
+					var swapIndex = random.Next(0, i + 1);
 
                     var tmp = elements[i];
                     elements[i] = elements[swapIndex];
