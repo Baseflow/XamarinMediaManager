@@ -17,7 +17,7 @@ namespace Plugin.MediaManager.Abstractions
 
             _queue.CollectionChanged += (sender, e) =>
             {
-                if (CollectionChanged != null)
+                if (CollectionChanged != null && !CollectionChangedEventDisabled)
                     CollectionChanged(sender, e);
             };
 
@@ -97,6 +97,9 @@ namespace Plugin.MediaManager.Abstractions
         }
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        private bool CollectionChangedEventDisabled;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name)
@@ -286,8 +289,7 @@ namespace Plugin.MediaManager.Abstractions
                 }
 
                 // Replace queue with randomized collection
-                _queue.Clear();
-                _queue.AddRange(elements);
+                ReplaceQueueWith(elements);
 
                 Index = 0;
             }
@@ -295,12 +297,21 @@ namespace Plugin.MediaManager.Abstractions
             {
                 // Reset queues
                 var newIndex = _unshuffledQueue.IndexOf(Current);
-                _queue.Clear();
-                _queue.AddRange(_unshuffledQueue);
+                ReplaceQueueWith(_unshuffledQueue);
                 Index = newIndex;
                 _unshuffledQueue = null;
             }
             OnPropertyChanged(nameof(Shuffle));
+        }
+
+        private void ReplaceQueueWith(IEnumerable<IMediaFile> files)
+        {
+            CollectionChangedEventDisabled = true;
+            _queue.Clear();
+            _queue.AddRange(files);
+            CollectionChangedEventDisabled = false;
+            if (CollectionChanged != null)
+                CollectionChanged(_queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         private void RegisterCountTriggers()
