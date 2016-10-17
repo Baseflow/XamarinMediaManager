@@ -6,7 +6,7 @@ using System.Linq;
 using NUnit.Framework;
 using Plugin.MediaManager.Abstractions;
 
-namespace Plugin.MediaManager.Abstraction.Tests
+namespace Plugin.MediaManager.Tests.Tests
 {
     [TestFixture]
     public class MediaQueueTests
