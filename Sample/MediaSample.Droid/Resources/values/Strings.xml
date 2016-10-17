@@ -1,5 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="hello">Hello World, Click Me!</string>
-	<string name="app_name">MediaSample.Droid</string>
+  <string name="Hello">Hello World, Click Me!</string>
+  <string name="ApplicationName">MediaManager</string>
+  <string name="play">Play</string>
+  <string name="pause">Pause</string>
+  <string name="stop">Stop</string>
+  <string name="mp3_url">Enter mp3 url</string>
 </resources>

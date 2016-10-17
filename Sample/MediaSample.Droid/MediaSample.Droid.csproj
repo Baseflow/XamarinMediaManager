@@ -67,18 +67,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\Main.axml" />
-    <AndroidResource Include="Resources\values\Strings.xml" />
-    <AndroidResource Include="Resources\mipmap-hdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-mdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-xhdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-xxhdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\drawable\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\MediaManager\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
       <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
@@ -87,10 +75,132 @@
       <Project>{56a56f17-7de1-4ca1-9617-bf32e971ac84}</Project>
       <Name>Plugin.MediaManager.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MediaSample.Core\MediaManager.Sample.Core.csproj">
-      <Project>{19955052-96fc-4149-84dd-c95a4c846c87}</Project>
-      <Name>MediaManager.Sample.Core</Name>
+    <ProjectReference Include="..\MediaSample.Core\MediaSample.Core.csproj">
+      <Project>{19955052-96FC-4149-84DD-C95A4C846C87}</Project>
+      <Name>MediaSample.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\album_art.jpg" />
+    <AndroidResource Include="Resources\drawable\button_next.xml" />
+    <AndroidResource Include="Resources\drawable\button_option.xml" />
+    <AndroidResource Include="Resources\drawable\button_pause.xml" />
+    <AndroidResource Include="Resources\drawable\button_play.xml" />
+    <AndroidResource Include="Resources\drawable\button_previous.xml" />
+    <AndroidResource Include="Resources\drawable\button_resume.xml" />
+    <AndroidResource Include="Resources\drawable\button_shuffleplay.xml" />
+    <AndroidResource Include="Resources\drawable\seekbar_control.xml" />
+    <AndroidResource Include="Resources\drawable\seekbar_progress.xml" />
+    <AndroidResource Include="Resources\drawable\toggle_repeat.xml" />
+    <AndroidResource Include="Resources\drawable\toggle_repeat_active.xml" />
+    <AndroidResource Include="Resources\drawable\toggle_repeat_static.xml" />
+    <AndroidResource Include="Resources\drawable\toggle_shuffle.xml" />
+    <AndroidResource Include="Resources\drawable\toggle_shuffle_active.xml" />
+    <AndroidResource Include="Resources\drawable\toggle_shuffle_static.xml" />
+    <AndroidResource Include="Resources\drawable\togglebutton_playpause.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\btn_pause_active.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\btn_pause_static.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\btn_play_active.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\btn_play_static.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon_next_active.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon_next_static.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon_options_active.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon_options_static.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon_play.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon_prev_active.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon_prev_static.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon_repeat_active.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon_repeat_static.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon_shuffle_active.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon_shuffle_static.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\seekbar_background.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\seekbar_default.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\seekbar_disabled.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\seekbar_focused.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\seekbar_pressed.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\seekbar_primary.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\seekbar_secondary.9.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\btn_pause_active.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\btn_pause_static.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\btn_play_active.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\btn_play_static.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon_next_active.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon_next_static.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon_options_active.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon_options_static.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon_play.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon_prev_active.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon_prev_static.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon_repeat_active.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon_repeat_static.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon_shuffle_active.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon_shuffle_static.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\seekbar_background.9.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\seekbar_default.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\seekbar_disabled.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\seekbar_focused.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\seekbar_pressed.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\seekbar_primary.9.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\seekbar_secondary.9.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\btn_pause_active.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\btn_pause_static.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\btn_play_active.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\btn_play_static.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_next_active.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_next_static.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_options_active.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_options_static.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_play.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_prev_inactive.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_prev_static.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_repeat_active.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_repeat_static.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_shuffle_active.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon_shuffle_static.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\seekbar_background.9.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\seekbar_default.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\seekbar_disabled.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\seekbar_focused.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\seekbar_pressed.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\seekbar_primary.9.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\seekbar_secondary.9.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\btn_pause_active.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\btn_pause_static.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\btn_play_active.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\btn_play_static.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_next_active.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_next_static.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_options_active.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_options_static.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_prev_active.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_prev_static.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_repeat_active.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_repeat_static.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_shuffle_active.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_shuffle_static.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\seekbar_background.9.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\seekbar_default.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\seekbar_disabled.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\seekbar_focused.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\seekbar_pressed.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\seekbar_primary.9.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\seekbar_secondary.9.png" />
+    <AndroidResource Include="Resources\layout\Main.axml" />
+    <AndroidResource Include="Resources\values\Colors.xml" />
+    <AndroidResource Include="Resources\values\Dimens.xml" />
+    <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\values\Styles.xml" />
+    <AndroidResource Include="Resources\values-v21\Styles.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\drawable\" />
+    <Folder Include="Resources\drawable-hdpi\" />
+    <Folder Include="Resources\drawable-mdpi\" />
+    <Folder Include="Resources\drawable-xhdpi\" />
+    <Folder Include="Resources\drawable-xxhdpi\" />
+    <Folder Include="Resources\layout\" />
+    <Folder Include="Resources\values\" />
+    <Folder Include="Resources\values-v21\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.4.0.1\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.4.0.1\build\Xamarin.Android.Support.Vector.Drawable.targets')" />

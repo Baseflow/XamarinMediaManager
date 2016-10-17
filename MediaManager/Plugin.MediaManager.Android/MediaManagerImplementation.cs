@@ -176,17 +176,14 @@ namespace Plugin.MediaManager
                     break;
                 case MediaFileType.VideoUrl:
                     throw new NotImplementedException();
-                    break;
                 case MediaFileType.AudioFile:
                     await BinderReady();
                     await binder.GetMediaPlayerService().Play(mediaFile.Url, MediaFileType.AudioFile);
                     break;
                 case MediaFileType.VideoFile:
                     throw new NotImplementedException();
-                    break;
                 case MediaFileType.Other:
                     throw new NotImplementedException();
-                    break;
                 default:
                     await Task.FromResult(0);
                     break;

@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaSample.iOS", "Sample\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaSample.UWP", "Sample\MediaSample.UWP\MediaSample.UWP.csproj", "{BC83287D-8247-4033-A946-B8C547A7F534}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaManager.Sample.Core", "Sample\MediaSample.Core\MediaManager.Sample.Core.csproj", "{19955052-96FC-4149-84DD-C95A4C846C87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaSample.Core", "Sample\MediaSample.Core\MediaSample.Core.csproj", "{19955052-96FC-4149-84DD-C95A4C846C87}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.tvOS", "MediaManager\Plugin.MediaManager.tvOS\Plugin.MediaManager.tvOS.csproj", "{E8573584-8377-45DC-89C6-C34678DEB264}"
 EndProject
