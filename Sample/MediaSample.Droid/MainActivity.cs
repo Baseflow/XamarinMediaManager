@@ -84,6 +84,8 @@ namespace MediaSample.Droid
             {
                 
             };
+
+            ViewModel.MediaPlayer.Play("http://www.montemagno.com/sample.mp3");
         }
     }
 }
