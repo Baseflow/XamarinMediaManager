@@ -25,9 +25,9 @@ namespace Plugin.MediaManager.Abstractions
             RegisterCurrentTriggers();
         }
 
-		protected ObservableCollection<IMediaFile> _queue { get; private set; }
+        protected ObservableCollection<IMediaFile> _queue { get; private set; }
 
-		protected ObservableCollection<IMediaFile> _unshuffledQueue;
+        protected ObservableCollection<IMediaFile> _unshuffledQueue;
 
         private int _count;
         public int Count
@@ -266,11 +266,11 @@ namespace Plugin.MediaManager.Abstractions
                     elements.RemoveAt(Index);
                 }
 
-				var random = new Random();
+                var random = new Random();
                 for (var i = elements.Count - 1; i > 1; i--)
                 {
                     // Get a random index
-					var swapIndex = random.Next(0, i + 1);
+                    var swapIndex = random.Next(0, i + 1);
 
                     var tmp = elements[i];
                     elements[i] = elements[swapIndex];
@@ -308,7 +308,7 @@ namespace Plugin.MediaManager.Abstractions
             OnPropertyChanged(nameof(Shuffle));
         }
 
-		protected void ReplaceQueueWith(IEnumerable<IMediaFile> files)
+        protected void ReplaceQueueWith(IEnumerable<IMediaFile> files)
         {
             CollectionChangedEventDisabled = true;
             _queue.Clear();
