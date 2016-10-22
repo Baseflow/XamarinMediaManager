@@ -16,7 +16,6 @@ namespace Plugin.MediaManager
         private readonly MediaPlayer _player;
         private object _cover;
         private TaskCompletionSource<bool> _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
-        private TaskCompletionSource<bool> _seekTaskCompletionSource = new TaskCompletionSource<bool>();
         private PlayerStatus _status;
         private readonly Timer _playProgressTimer;
 
@@ -28,11 +27,10 @@ namespace Plugin.MediaManager
             {
                 if (_player.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
                 {
-                    Playing?.Invoke(this, EventArgs.Empty);
+                    var progress = _player.PlaybackSession.Position.TotalSeconds /_player.PlaybackSession.NaturalDuration.TotalSeconds;
+                    Playing?.Invoke(this, new PlaybackPositionChangedEventArgs(progress, _player.PlaybackSession.Position));
                 }
             }, null, 0, int.MaxValue);
-
-
 
             _player.PlaybackSession.PlaybackStateChanged += (sender, args) =>
             {
@@ -63,8 +61,13 @@ namespace Plugin.MediaManager
             };
 
             _player.MediaEnded += (sender, args) => { TrackFinished?.Invoke(this, EventArgs.Empty); };
-            _player.BufferingStarted += (sender, args) => { Buffering?.Invoke(this, EventArgs.Empty); };
-            _player.BufferingEnded += (sender, args) => { Buffering?.Invoke(this, EventArgs.Empty); };
+            _player.BufferingStarted += (sender, args) => { Buffering?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero)); };
+            _player.PlaybackSession.BufferingProgressChanged += (sender, args) =>
+            {
+                var bufferedTime = TimeSpan.FromSeconds(_player.PlaybackSession.BufferingProgress * _player.PlaybackSession.NaturalDuration.TotalSeconds);
+                Buffering?.Invoke(this, new BufferingChangedEventArgs(_player.PlaybackSession.BufferingProgress, bufferedTime));
+            };
+            _player.BufferingEnded += (sender, args) => { Buffering?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero)); };
             _player.PlaybackSession.SeekCompleted += (sender, args) => { };
 
             _player.MediaFailed += (sender, args) =>
@@ -106,7 +109,7 @@ namespace Plugin.MediaManager
             private set
             {
                 _status = value;
-                StatusChanged?.Invoke(this, EventArgs.Empty);
+                StatusChanged?.Invoke(this, new PlayerStatusChangedEventArgs(_status));
             }
         }
 
@@ -222,7 +225,6 @@ namespace Plugin.MediaManager
 
         public async Task Seek(int position)
         {
-            _seekTaskCompletionSource = new TaskCompletionSource<bool>();
             _player.PlaybackSession.Position = TimeSpan.FromSeconds(position);
             await Task.CompletedTask;
         }
