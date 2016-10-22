@@ -165,6 +165,154 @@ namespace Plugin.MediaManager.Abstraction.Tests
         }
 
 		[TestFixture]
+		private class ArrayIndex
+		{
+			[Test]
+			public void SetNotCurrent()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+						new MediaFile() { Id = 2 },
+						new MediaFile() { Id = 3 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(1);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				queue[0] = new MediaFile() { Id = 4 };
+
+				Assert.AreEqual(3, queue.Count);
+				Assert.AreEqual(tracks[1], queue.Current);
+				Assert.AreEqual(1, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(0, propertyChangedEvents.Count);
+				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems?.Count == 1 && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count);
+			}
+
+			[Test]
+			public void SetCurrent()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+						new MediaFile() { Id = 2 },
+						new MediaFile() { Id = 3 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(1);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				var newMediaFile = new MediaFile() { Id = 4 };
+				queue[1] = newMediaFile;
+
+				Assert.AreEqual(3, queue.Count);
+				Assert.AreEqual(newMediaFile, queue.Current);
+				Assert.AreEqual(1, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
+				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
+				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Count);
+				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems?.Count == 1 && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count);
+			}
+		
+			[Test]
+			public void SetOutOfRange()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+						new MediaFile() { Id = 2 },
+						new MediaFile() { Id = 3 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(1);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				Assert.Throws<ArgumentOutOfRangeException>(() =>
+				{
+					queue[3] = new MediaFile() { Id = 4 };
+				});
+
+				Assert.AreEqual(3, queue.Count);
+				Assert.AreEqual(tracks[1], queue.Current);
+				Assert.AreEqual(1, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(0, propertyChangedEvents.Count);
+				Assert.AreEqual(0, collectionChangedEvents.Count);
+			}
+
+			[Test]
+			public void SetNull()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+						new MediaFile() { Id = 2 },
+						new MediaFile() { Id = 3 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(1);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				Assert.Throws<ArgumentNullException>(() =>
+				{
+					queue[1] = null;
+				});
+
+				Assert.AreEqual(3, queue.Count);
+				Assert.AreEqual(tracks[1], queue.Current);
+				Assert.AreEqual(1, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(0, propertyChangedEvents.Count);
+				Assert.AreEqual(0, collectionChangedEvents.Count);
+			}
+		}
+
+		[TestFixture]
 		private class RemoveAndRemoveAt
 		{
 			[Test]
@@ -348,6 +496,232 @@ namespace Plugin.MediaManager.Abstraction.Tests
 				Assert.AreEqual(3, propertyChangedEvents.Count);
 				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems?.Count == 1).Count());
 				Assert.AreEqual(1, collectionChangedEvents.Count);
+			}
+
+			[Test]
+			public void RemoveAt_OutOfRange()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+						new MediaFile() { Id = 2 },
+						new MediaFile() { Id = 3 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(1);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				Assert.Throws<ArgumentOutOfRangeException>(() =>
+				{
+					queue.RemoveAt(4);
+				});
+
+				Assert.AreEqual(3, queue.Count);
+				Assert.AreEqual(tracks[1], queue.Current);
+				Assert.AreEqual(1, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(0, propertyChangedEvents.Count);
+				Assert.AreEqual(0, collectionChangedEvents.Count);
+			}
+
+			[Test]
+			public void RemoveAt_OutOfRange_Empty()
+			{
+				var queue = new MediaQueue();
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				Assert.Throws<ArgumentOutOfRangeException>(() =>
+				{
+					queue.RemoveAt(-1);
+				});
+
+				Assert.AreEqual(0, queue.Count);
+				Assert.AreEqual(null, queue.Current);
+				Assert.AreEqual(-1, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(0, propertyChangedEvents.Count);
+				Assert.AreEqual(0, collectionChangedEvents.Count);
+			}
+		}
+
+		[TestFixture]
+		private class Insert
+		{
+			[Test]
+			public void Insert_PostCurrent()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(0);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				queue.Insert(1, new MediaFile() { Id = 2 });
+
+				Assert.AreEqual(2, queue.Count);
+				Assert.AreEqual(tracks[0], queue.Current);
+				Assert.AreEqual(0, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
+				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Count);
+				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems?.Count == 1 && e.OldItems == null).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count);
+			}
+
+			[Test]
+			public void Insert_PreCurrent()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(0);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				queue.Insert(0, new MediaFile() { Id = 2 });
+
+				Assert.AreEqual(2, queue.Count);
+				Assert.AreEqual(tracks[0], queue.Current);
+				Assert.AreEqual(1, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(2, propertyChangedEvents.Count);
+				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems?.Count == 1 && e.OldItems == null).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count);
+			}
+
+			[Test]
+			public void Insert_Empty()
+			{
+				var queue = new MediaQueue();
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				var newMediaFile = new MediaFile() { Id = 1 };
+				queue.Insert(0, newMediaFile);
+
+				Assert.AreEqual(1, queue.Count);
+				Assert.AreEqual(newMediaFile, queue.Current);
+				Assert.AreEqual(0, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(3, propertyChangedEvents.Count);
+				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems?.Count == 1 && e.OldItems == null).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count);
+			}
+
+			[Test]
+			public void Insert_OutOfRange_Empty()
+			{
+				var queue = new MediaQueue();
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				var newMediaFile = new MediaFile() { Id = 1 };
+
+				Assert.Throws<ArgumentOutOfRangeException>(() =>
+				{
+					queue.Insert(1, newMediaFile);
+				});
+
+				Assert.AreEqual(0, queue.Count);
+				Assert.AreEqual(null, queue.Current);
+				Assert.AreEqual(-1, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(0, propertyChangedEvents.Count);
+				Assert.AreEqual(0, collectionChangedEvents.Count);
+			}
+
+			[Test]
+			public void Insert_OutOfRange()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(0);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				Assert.Throws<ArgumentOutOfRangeException>(() =>
+				{
+					queue.Insert(2, new MediaFile() { Id = 2 });
+				});
+
+				Assert.AreEqual(1, queue.Count);
+				Assert.AreEqual(tracks[0], queue.Current);
+				Assert.AreEqual(0, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(0, propertyChangedEvents.Count);
+				Assert.AreEqual(0, collectionChangedEvents.Count);
 			}
 		}
 
