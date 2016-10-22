@@ -194,4 +194,6 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+## Android Auto-generated files
 Resource.designer.cs

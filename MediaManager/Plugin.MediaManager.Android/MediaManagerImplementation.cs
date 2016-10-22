@@ -16,6 +16,12 @@ namespace Plugin.MediaManager
 
         private bool isBound = false;
         private MediaPlayerServiceBinder binder;
+        public MediaPlayerServiceBinder Binder { 
+            get {
+                return binder;
+            } 
+        }
+
         private MediaPlayerServiceConnection mediaPlayerServiceConnection;
         private Intent mediaPlayerServiceIntent;
 
@@ -51,7 +57,6 @@ namespace Plugin.MediaManager
 
         public event TrackFinishedEventHandler TrackFinished;
 
-
         private async Task BinderReady()
         {
             int repeat = 10;
@@ -66,13 +71,11 @@ namespace Plugin.MediaManager
             }
         }
 
-
         public async Task Play(string url)
         {
             await BinderReady();
             await binder.GetMediaPlayerService().Play(url, MediaFileType.AudioUrl);
         }
-
 
         public async Task Stop()
         {
@@ -176,17 +179,14 @@ namespace Plugin.MediaManager
                     break;
                 case MediaFileType.VideoUrl:
                     throw new NotImplementedException();
-                    break;
                 case MediaFileType.AudioFile:
                     await BinderReady();
                     await binder.GetMediaPlayerService().Play(mediaFile.Url, MediaFileType.AudioFile);
                     break;
                 case MediaFileType.VideoFile:
                     throw new NotImplementedException();
-                    break;
                 case MediaFileType.Other:
                     throw new NotImplementedException();
-                    break;
                 default:
                     await Task.FromResult(0);
                     break;
@@ -209,18 +209,18 @@ namespace Plugin.MediaManager
                 var mediaPlayerServiceBinder = service as MediaPlayerServiceBinder;
                 if (mediaPlayerServiceBinder != null)
                 {
-                    var binder = (MediaPlayerServiceBinder)service;
-                    instance.binder = binder;
+                    var serviceBinder = (MediaPlayerServiceBinder)service;
+                    instance.binder = serviceBinder;
                     instance.isBound = true;
 
                     if (instance.AlternateRemoteCallback != null)
-                        binder.GetMediaPlayerService().AlternateRemoteCallback = instance.AlternateRemoteCallback;
+                        serviceBinder.GetMediaPlayerService().AlternateRemoteCallback = instance.AlternateRemoteCallback;
 
-                    binder.GetMediaPlayerService().CoverReloaded += (object sender, EventArgs e) => { if (instance.CoverReloaded != null) instance.CoverReloaded(sender, e); };
-                    binder.GetMediaPlayerService().StatusChanged += (object sender, EventArgs e) => { if (instance.StatusChanged != null) instance.StatusChanged(sender, e); };
-                    binder.GetMediaPlayerService().Playing += (object sender, EventArgs e) => { if (instance.Playing != null) instance.Playing(sender, e); };
-                    binder.GetMediaPlayerService().Buffering += (object sender, EventArgs e) => { if (instance.Buffering != null) instance.Buffering(sender, e); };
-                    binder.GetMediaPlayerService().TrackFinished += (object sender, EventArgs e) => { if (instance.TrackFinished != null) instance.TrackFinished(sender, e); };
+                    serviceBinder.GetMediaPlayerService().CoverReloaded += (object sender, EventArgs e) => { if (instance.CoverReloaded != null) instance.CoverReloaded(sender, e); };
+                    serviceBinder.GetMediaPlayerService().StatusChanged += (object sender, EventArgs e) => { if (instance.StatusChanged != null) instance.StatusChanged(sender, e); };
+                    serviceBinder.GetMediaPlayerService().Playing += (object sender, EventArgs e) => { if (instance.Playing != null) instance.Playing(sender, e); };
+                    serviceBinder.GetMediaPlayerService().Buffering += (object sender, EventArgs e) => { if (instance.Buffering != null) instance.Buffering(sender, e); };
+                    serviceBinder.GetMediaPlayerService().TrackFinished += (object sender, EventArgs e) => { if (instance.TrackFinished != null) instance.TrackFinished(sender, e); };
                 }
             }
 
