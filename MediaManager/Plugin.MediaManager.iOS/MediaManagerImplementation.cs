@@ -46,7 +46,7 @@ namespace Plugin.MediaManager
             };
         }
 
-        public static NSString StatusObservationContext = new NSString("AVCustomEditPlayerViewControllerStatusObservationContext");
+        public static readonly NSString StatusObservationContext = new NSString("AVCustomEditPlayerViewControllerStatusObservationContext");
         public static NSString RateObservationContext = new NSString("AVCustomEditPlayerViewControllerRateObservationContext");
 
         private void InitializePlayer()
@@ -67,7 +67,10 @@ namespace Plugin.MediaManager
 
             player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate (CMTime time)
             {
-                OnPlaying(EventArgs.Empty);
+                var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
+                var totalProgress = Position/
+                                    totalDuration.TotalMilliseconds;
+                OnPlaying(new PlaybackPositionChangedEventArgs(totalProgress, TimeSpan.FromSeconds(Position)));
             });
         }
 
@@ -81,30 +84,24 @@ namespace Plugin.MediaManager
 
         public event TrackFinishedEventHandler TrackFinished;
 
-        protected virtual void OnStatusChanged(EventArgs e)
+        protected virtual void OnStatusChanged(PlayerStatusChangedEventArgs e)
         {
-            if (StatusChanged != null)
-                StatusChanged(this, e);
+            StatusChanged?.Invoke(this, e);
         }
 
         protected virtual void OnCoverReloaded(EventArgs e)
         {
-            if (CoverReloaded != null)
-                CoverReloaded(this, e);
+            CoverReloaded?.Invoke(this, e);
         }
 
-        protected virtual void OnPlaying(EventArgs e)
+        protected virtual void OnPlaying(PlaybackPositionChangedEventArgs e)
         {
-            Console.WriteLine("Playing Position: " + Position);
-
-            if (Playing != null)
-                Playing(this, e);
+            Playing?.Invoke(this, e);
         }
 
-        protected virtual void OnBuffering(EventArgs e)
+        protected virtual void OnBuffering(BufferingChangedEventArgs e)
         {
-            if (Buffering != null)
-                Buffering(this, e);
+            Buffering?.Invoke(this, e);
         }
 
         public async Task Play(IMediaFile mediaFile)
@@ -228,7 +225,7 @@ namespace Plugin.MediaManager
             private set
             {
                 status = value;
-                OnStatusChanged(EventArgs.Empty);
+                OnStatusChanged(new PlayerStatusChangedEventArgs(status));
             }
         }
 
@@ -435,7 +432,16 @@ namespace Plugin.MediaManager
 
         private void ObserveLoadedTimeRanges()
         {
-            OnBuffering(EventArgs.Empty);
+            var loadedTimeRanges = _player.CurrentItem.LoadedTimeRanges;
+            if (loadedTimeRanges.Length > 0)
+            {
+                CMTimeRange range = loadedTimeRanges[0].CMTimeRangeValue;
+                var duration = TimeSpan.FromSeconds(range.Duration.Seconds);
+                var totalDuration = _player.CurrentItem.Duration;
+                var bufferProgress = duration.TotalSeconds/totalDuration.Seconds;
+                OnBuffering(new BufferingChangedEventArgs(bufferProgress, duration));
+            }
+            OnBuffering(new BufferingChangedEventArgs(0, TimeSpan.Zero));
         }
     }
 }
