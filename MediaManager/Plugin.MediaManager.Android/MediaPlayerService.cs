@@ -94,7 +94,7 @@ namespace Plugin.MediaManager
             private set
             {
                 status = value;
-                OnStatusChanged(EventArgs.Empty);
+                OnStatusChanged(new PlayerStatusChangedEventArgs(status));
             }
         }
 
@@ -127,16 +127,20 @@ namespace Plugin.MediaManager
             // Create a runnable, restarting itself if the status still is "playing"
             PlayingHandlerRunnable = new Java.Lang.Runnable(() =>
             {
-                OnPlaying(EventArgs.Empty);
-
                 if (MediaPlayerState == PlaybackStateCompat.StatePlaying)
                 {
                     PlayingHandler.PostDelayed(PlayingHandlerRunnable, 250);
+                    var progress = mediaPlayer.CurrentPosition/mediaPlayer.Duration;
+                    OnPlaying(new PlaybackPositionChangedEventArgs(progress, TimeSpan.FromMilliseconds(mediaPlayer.CurrentPosition)));
+                }
+                else
+                {
+                    OnPlaying(new PlaybackPositionChangedEventArgs(0, TimeSpan.Zero));
                 }
             });
 
             // On Status changed to PLAYING, start raising the Playing event
-            StatusChanged += (object sender, EventArgs e) =>
+            StatusChanged += (sender, args) => 
             {
                 if (MediaPlayerState == PlaybackStateCompat.StatePlaying)
                 {
@@ -145,10 +149,9 @@ namespace Plugin.MediaManager
             };
         }
 
-        protected virtual void OnStatusChanged(EventArgs e)
+        protected virtual void OnStatusChanged(PlayerStatusChangedEventArgs e)
         {
-            if (StatusChanged != null)
-                StatusChanged(this, e);
+            StatusChanged?.Invoke(this, e);
         }
 
         protected virtual void OnCoverReloaded(EventArgs e)
@@ -161,16 +164,14 @@ namespace Plugin.MediaManager
             }
         }
 
-        protected virtual void OnPlaying(EventArgs e)
+        protected virtual void OnPlaying(PlaybackPositionChangedEventArgs e)
         {
-            if (Playing != null)
-                Playing(this, e);
+            Playing?.Invoke(this, e);
         }
 
-        protected virtual void OnBuffering(EventArgs e)
+        protected virtual void OnBuffering(BufferingChangedEventArgs e)
         {
-            if (Buffering != null)
-                Buffering(this, e);
+            Buffering?.Invoke(this, e);
         }
 
         /// <summary>
@@ -261,6 +262,7 @@ namespace Plugin.MediaManager
             if (newBufferedTime != Buffered)
             {
                 Buffered = newBufferedTime;
+                OnBuffering(new BufferingChangedEventArgs((double)percent / 100, TimeSpan.FromMilliseconds(newBufferedTime)));
             }
         }
 
@@ -331,7 +333,6 @@ namespace Plugin.MediaManager
             private set
             {
                 buffered = value;
-                OnBuffering(EventArgs.Empty);
             }
         }
 
@@ -775,7 +776,7 @@ namespace Plugin.MediaManager
                     }
                 }
 
-                OnStatusChanged(EventArgs.Empty);
+                OnStatusChanged(new PlayerStatusChangedEventArgs(status));
 
                 if (state == PlaybackStateCompat.StatePlaying || state == PlaybackStateCompat.StatePaused)
                 {
