@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace Plugin.MediaManager.Abstractions
 {
-    public interface IMediaQueue : ICollection<IMediaFile>, INotifyCollectionChanged, INotifyPropertyChanged
+    public interface IMediaQueue : IList<IMediaFile>, INotifyCollectionChanged, INotifyPropertyChanged
     {
         /// <summary>
         /// Activates or deactivates the Repeat option

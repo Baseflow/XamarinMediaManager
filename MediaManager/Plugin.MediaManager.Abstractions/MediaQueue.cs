@@ -96,6 +96,30 @@ namespace Plugin.MediaManager.Abstractions
             }
         }
 
+        public IMediaFile this[int index]
+        {
+            get
+            {
+                return _queue[index];
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                if (Shuffle)
+                {
+                    var unshuffledIndex = _unshuffledQueue.IndexOf(_queue[index]);
+                    _unshuffledQueue[unshuffledIndex] = value;
+                }
+
+                _queue[index] = value;
+            }
+        }
+
         /// <summary>
         /// Occurs when the collection changes.
         /// </summary>
@@ -192,15 +216,14 @@ namespace Plugin.MediaManager.Abstractions
 
         public bool Remove(IMediaFile item)
         {
-            var result = _queue.Remove(item);
-
-            // If shuffle is enabled, we need to remove the item from the backup queue too
-            if (result && Shuffle)
+            int index = _queue.IndexOf(item);
+            if (index >= 0)
             {
-                _unshuffledQueue.Remove(item);
+                RemoveAt(index);
+                return true;
             }
 
-            return result;
+            return false;
         }
 
         public void SetIndexAsCurrent(int index)
@@ -373,6 +396,79 @@ namespace Plugin.MediaManager.Abstractions
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _queue.GetEnumerator();
+        }
+
+        public int IndexOf(IMediaFile item)
+        {
+            return _queue.IndexOf(item);
+        }
+
+        public void Insert(int index, IMediaFile item)
+        {
+            if (Shuffle)
+            {
+                _unshuffledQueue.Add(item);
+            }
+
+            var changedIndexInternally = false;
+            if (index <= Index || Index == -1)
+            {
+                _index++;
+                changedIndexInternally = true;
+            }
+
+            try
+            {
+                _queue.Insert(index, item);
+            }
+            catch (Exception)
+            {
+                if (changedIndexInternally)
+                {
+                    _index--;
+                }
+                throw;
+            }
+
+            // Only to fire off the index when also the property Current is updated (by triggering RemoveAt())
+            if (changedIndexInternally)
+            {
+                OnPropertyChanged(nameof(Index));
+            }
+        }
+
+        public void RemoveAt(int index)
+        {
+            if (index < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            // If shuffle is enabled, we need to remove the item from the backup queue too
+            if (Shuffle)
+            {
+                _unshuffledQueue.Remove(_queue[index]);
+            }
+
+            var changedIndexInternally = false;
+            if (index < Index)
+            {
+                _index--;
+                changedIndexInternally = true;
+            }
+            else if (index == Index && Index == Count - 1)
+            {
+                _index = index - 1;
+                changedIndexInternally = true;
+            }
+
+            _queue.RemoveAt(index);
+
+            // Only to fire off the index when also the property Current is updated (by triggering RemoveAt())
+            if (changedIndexInternally)
+            {
+                OnPropertyChanged(nameof(Index));
+            }
         }
     }
 }
