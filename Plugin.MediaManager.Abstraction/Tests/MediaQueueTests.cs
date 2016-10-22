@@ -164,6 +164,193 @@ namespace Plugin.MediaManager.Abstraction.Tests
             }
         }
 
+		[TestFixture]
+		private class RemoveAndRemoveAt
+		{
+			[Test]
+			public void RemoveItem_PostCurrent()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+						new MediaFile() { Id = 2 },
+						new MediaFile() { Id = 3 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(1);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				queue.Remove(tracks[2]);
+
+				Assert.AreEqual(2, queue.Count);
+				Assert.AreEqual(tracks[1], queue.Current);
+				Assert.AreEqual(1, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
+				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Count);
+				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count);
+			}
+
+			[Test]
+			public void RemoveItem_PreCurrent()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+						new MediaFile() { Id = 2 },
+						new MediaFile() { Id = 3 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(1);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				queue.Remove(tracks[0]);
+
+				Assert.AreEqual(2, queue.Count);
+				Assert.AreEqual(tracks[1], queue.Current);
+				Assert.AreEqual(0, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(2, propertyChangedEvents.Count);
+				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count);
+			}
+
+			[Test]
+			public void Remove_CurrentItem()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+						new MediaFile() { Id = 2 },
+						new MediaFile() { Id = 3 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(1);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				queue.Remove(tracks[1]);
+
+				Assert.AreEqual(2, queue.Count);
+				Assert.AreEqual(tracks[2], queue.Current);
+				Assert.AreEqual(1, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
+				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(2, propertyChangedEvents.Count);
+				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count);
+			}
+
+			[Test]
+			public void Remove_CurrentAndLastItem()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+						new MediaFile() { Id = 2 },
+						new MediaFile() { Id = 3 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(2);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				queue.Remove(tracks[2]);
+
+				Assert.AreEqual(2, queue.Count);
+				Assert.AreEqual(tracks[1], queue.Current);
+				Assert.AreEqual(1, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(3, propertyChangedEvents.Count);
+				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count);
+			}
+
+			[Test]
+			public void Remove_CurrentOnlyAndLastItem()
+			{
+				var queue = new MediaQueue();
+
+				var tracks = new[]
+					{
+						new MediaFile() { Id = 1 },
+					};
+
+				queue.AddRange(tracks);
+				queue.SetIndexAsCurrent(0);
+
+				IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+				IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+				queue.Remove(tracks[0]);
+
+				Assert.AreEqual(0, queue.Count);
+				Assert.AreEqual(null, queue.Current);
+				Assert.AreEqual(-1, queue.Index);
+				Assert.AreEqual(false, queue.Repeat);
+				Assert.AreEqual(false, queue.Shuffle);
+
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(3, propertyChangedEvents.Count);
+				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count);
+			}
+		}
+
         [TestFixture]
         private class ToggleShuffle
         {

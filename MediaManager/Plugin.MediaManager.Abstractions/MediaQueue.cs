@@ -192,15 +192,14 @@ namespace Plugin.MediaManager.Abstractions
 
         public bool Remove(IMediaFile item)
         {
-            var result = _queue.Remove(item);
-
-            // If shuffle is enabled, we need to remove the item from the backup queue too
-            if (result && Shuffle)
+            int index = _queue.IndexOf(item);
+            if (index >= 0)
             {
-                _unshuffledQueue.Remove(item);
+                RemoveAt(index);
+                return true;
             }
 
-            return result;
+            return false;
         }
 
         public void SetIndexAsCurrent(int index)
