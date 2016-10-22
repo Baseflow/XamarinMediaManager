@@ -3,7 +3,6 @@ using Android.OS;
 using MediaManager.Sample.Core;
 using Android.Support.V7.App;
 using Android.Content.PM;
-using Android.Support.V7.Widget;
 using Android.Widget;
 using System;
 using Android.Graphics;
@@ -61,7 +60,7 @@ namespace MediaSample.Droid
             var position = FindViewById<TextView>(Resource.Id.textview_position);
             var duration = FindViewById<TextView>(Resource.Id.textview_duration);
             var seekbar = FindViewById<SeekBar>(Resource.Id.player_seekbar);
-            ViewModel.MediaPlayer.Playing += (object sender, EventArgs e) =>
+            ViewModel.MediaPlayer.Playing += (sender, e) => 
             {
                 RunOnUiThread(() =>
                 {
@@ -73,7 +72,7 @@ namespace MediaSample.Droid
                 });
             };
 
-            ViewModel.MediaPlayer.Buffering += (object sender, EventArgs e) =>
+            ViewModel.MediaPlayer.Buffering += (sender, args) => 
             {
                 RunOnUiThread(() =>
                 {
@@ -92,7 +91,7 @@ namespace MediaSample.Droid
 
             var title = FindViewById<TextView>(Resource.Id.textview_title);
             var subtitle = FindViewById<TextView>(Resource.Id.textview_subtitle);
-            ViewModel.MediaPlayer.StatusChanged += (object sender, EventArgs e) =>
+            ViewModel.MediaPlayer.StatusChanged += (sender, args) => 
             {
                 var mediaPlayer = ((MediaManagerImplementation)ViewModel.MediaPlayer).Binder.GetMediaPlayerService();
 
