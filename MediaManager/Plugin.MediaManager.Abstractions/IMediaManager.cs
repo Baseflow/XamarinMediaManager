@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
@@ -24,93 +22,27 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Player responseble for audio playback
         /// </summary>
-        IAudioPlayer AudioPlayer { get; set; }
+        IAudioPlayer AudioPlayer { get; }
 
         /// <summary>
         /// Player responseble for video playback
         /// </summary>
-        IVideoPlayer VideoPlayer { get; set; }
+        IVideoPlayer VideoPlayer { get; }
 
         /// <summary>
         /// Queue to play media in sequences
         /// </summary>
-        IMediaQueue MediaQueue { get; set; }
+        IMediaQueue MediaQueue { get; }
 
         /// <summary>
         /// Manages notifications to the native system
         /// </summary>
-        IMediaNotificationManager  MediaNotificationManager { get; set; }
+        IMediaNotificationManager  MediaNotificationManager { get; }
 
         /// <summary>
         /// Extracts media information to put it into an IMediaFile
         /// </summary>
-        IMediaExtractor MediaExtractor { get; set; }
-
-        /// <summary>
-        /// Reading the current status of the player
-        /// </summary>
-        MediaPlayerStatus Status { get; }
-
-        /// <summary>
-        /// Gets the players position in milliseconds
-        /// </summary>
-        TimeSpan Position { get; }
-
-        /// <summary>
-        /// Gets the source duration in milliseconds
-        /// If the response is -1, the duration is unknown or the player is still buffering.
-        /// </summary>
-        TimeSpan Duration { get; }
-
-        /// <summary>
-        /// Gets the buffered time in milliseconds
-        /// </summary>
-        TimeSpan Buffered { get; }
-
-        /// <summary>
-        /// Raised when the status changes
-        /// </summary>
-        event StatusChangedEventHandler StatusChanged;
-
-        /// <summary>
-        /// Raised at least every second when the player is playing.
-        /// </summary>
-        event PlayingChangedEventHandler PlayingChanged;
-
-        /// <summary>
-        /// Raised each time the buffering is updated by the player.
-        /// </summary>
-        event BufferingChangedEventHandler BufferingChanged;
-
-        /// <summary>
-        /// Raised when media is finished playing.
-        /// </summary>
-        event MediaFinishedEventHandler MediaFinished;
-
-        /// <summary>
-        /// Raised when media is failed playing.
-        /// </summary>
-        event MediaFailedEventHandler MediaFailed;
-
-        /// <summary>
-        /// Starts playing from the current position
-        /// </summary>
-        Task Play(IMediaFile mediaFile);
-
-        /// <summary>
-        /// Starts playing from the current position
-        /// </summary>
-        Task Play(string url);
-
-        /// <summary>
-        /// Start playing if nothing is playing, otherwise it pauses the current media
-        /// </summary>
-        Task PlayPause();
-
-        /// <summary>
-        /// Stops playing but retains position
-        /// </summary>
-        Task Pause();
+        IMediaExtractor MediaExtractor { get; }
 
         /// <summary>
         /// Should be the same as calling PlayByPosition(Queue.size()+1)
@@ -128,15 +60,5 @@ namespace Plugin.MediaManager.Abstractions
         /// Start playing a track by its position in the Queue
         /// </summary>
         Task PlayByPosition(int index);
-
-        /// <summary>
-        /// Stops playing
-        /// </summary>
-        Task Stop();
-
-        /// <summary>
-        /// Changes position to the specified number of milliseconds from zero
-        /// </summary>
-        Task Seek(TimeSpan position);
     }
 }

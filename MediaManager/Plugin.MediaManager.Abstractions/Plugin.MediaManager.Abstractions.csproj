@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMediaManager.cs" />
+    <Compile Include="IPlaybackManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IMediaQueue.cs" />
     <Compile Include="IMediaFile.cs" />
@@ -59,10 +60,7 @@
     <Compile Include="EventArguments\QueueMediaChangedEventArgs.cs" />
     <Compile Include="EventArguments\QueueEndedEventArgs.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Implementations\" />
-    <Folder Include="EventArguments\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

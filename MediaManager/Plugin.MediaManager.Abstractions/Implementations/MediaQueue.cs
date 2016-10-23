@@ -271,9 +271,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 Index = _queue.IndexOf(item);
         }
 
-        public void ToggleRepeat()
+        public void ToggleRepeat(RepeatType repeatType)
         {
-            switch (Repeat)
+            switch (repeatType)
             {
                 case RepeatType.None:
                     Repeat = RepeatType.RepeatOne;

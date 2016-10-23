@@ -71,7 +71,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Turns on or off repeat.
         /// </summary>
-        void ToggleRepeat();
+        void ToggleRepeat(RepeatType repeatType);
     }
 }
 
