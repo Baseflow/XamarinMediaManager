@@ -38,6 +38,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MediaManagerBase.cs" />
     <Compile Include="IMediaManager.cs" />
     <Compile Include="IPlaybackManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
