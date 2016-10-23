@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Plugin.MediaManager.Abstractions
+namespace Plugin.MediaManager.Abstractions.EventArguments
 {
     public class BufferingChangedEventArgs : EventArgs
     {

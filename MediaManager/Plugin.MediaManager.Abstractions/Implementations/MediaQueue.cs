@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 
-namespace Plugin.MediaManager.Abstractions
+namespace Plugin.MediaManager.Abstractions.Implementations
 {
     public class MediaQueue : IMediaQueue
     {
@@ -74,8 +74,24 @@ namespace Plugin.MediaManager.Abstractions
             }
         }
 
-        private bool repeat;
-        public bool Repeat
+        public bool Shuffle
+        {
+            get
+            {
+                return _unshuffledQueue != null;
+            }
+        }
+
+        private bool IsRepeat
+        {
+            get
+            {
+                return repeat == RepeatType.RepeatAll || repeat == RepeatType.RepeatOne;
+            }
+        }
+
+        private RepeatType repeat;
+        public RepeatType Repeat
         {
             get
             {
@@ -85,14 +101,6 @@ namespace Plugin.MediaManager.Abstractions
             {
                 repeat = value;
                 OnPropertyChanged(nameof(Repeat));
-            }
-        }
-
-        public bool Shuffle
-        {
-            get
-            {
-                return _unshuffledQueue != null;
             }
         }
 
@@ -131,6 +139,8 @@ namespace Plugin.MediaManager.Abstractions
         /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+        public event QueueEndedEventHandler QueueEnded;
+        public event QueueMediaChangedEventHandler QueueMediaChanged;
 
         protected void OnPropertyChanged(string name)
         {
@@ -206,12 +216,12 @@ namespace Plugin.MediaManager.Abstractions
 
         public bool HasNext()
         {
-            return Index + 1 < _queue.Count || Repeat;
+            return Index + 1 < _queue.Count || IsRepeat;
         }
 
         public bool HasPrevious()
         {
-            return Index - 1 >= 0 || Repeat;
+            return Index - 1 >= 0 || IsRepeat;
         }
 
         public bool Remove(IMediaFile item)
@@ -263,7 +273,18 @@ namespace Plugin.MediaManager.Abstractions
 
         public void ToggleRepeat()
         {
-            Repeat = !Repeat;
+            switch (Repeat)
+            {
+                case RepeatType.None:
+                    Repeat = RepeatType.RepeatOne;
+                    break;
+                case RepeatType.RepeatOne:
+                    Repeat = RepeatType.RepeatAll;
+                    break;
+                case RepeatType.RepeatAll:
+                    Repeat = RepeatType.None;
+                    break;
+            }
         }
 
         private CancellationTokenSource shuffleCancellation = new CancellationTokenSource();

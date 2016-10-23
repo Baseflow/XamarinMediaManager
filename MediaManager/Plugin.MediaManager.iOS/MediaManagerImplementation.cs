@@ -70,7 +70,7 @@ namespace Plugin.MediaManager
                 var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
                 var totalProgress = Position/
                                     totalDuration.TotalMilliseconds;
-                OnPlaying(new PlaybackPositionChangedEventArgs(totalProgress, TimeSpan.FromSeconds(Position)));
+                OnPlaying(new PlayingChangedEventArgs(totalProgress, TimeSpan.FromSeconds(Position)));
             });
         }
 
@@ -84,7 +84,7 @@ namespace Plugin.MediaManager
 
         public event TrackFinishedEventHandler TrackFinished;
 
-        protected virtual void OnStatusChanged(PlayerStatusChangedEventArgs e)
+        protected virtual void OnStatusChanged(StatusChangedEventArgs e)
         {
             StatusChanged?.Invoke(this, e);
         }
@@ -94,7 +94,7 @@ namespace Plugin.MediaManager
             CoverReloaded?.Invoke(this, e);
         }
 
-        protected virtual void OnPlaying(PlaybackPositionChangedEventArgs e)
+        protected virtual void OnPlaying(PlayingChangedEventArgs e)
         {
             Playing?.Invoke(this, e);
         }
@@ -225,7 +225,7 @@ namespace Plugin.MediaManager
             private set
             {
                 status = value;
-                OnStatusChanged(new PlayerStatusChangedEventArgs(status));
+                OnStatusChanged(new StatusChangedEventArgs(status));
             }
         }
 

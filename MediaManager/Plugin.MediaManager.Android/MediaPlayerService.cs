@@ -94,7 +94,7 @@ namespace Plugin.MediaManager
             private set
             {
                 status = value;
-                OnStatusChanged(new PlayerStatusChangedEventArgs(status));
+                OnStatusChanged(new StatusChangedEventArgs(status));
             }
         }
 
@@ -131,11 +131,11 @@ namespace Plugin.MediaManager
                 {
                     PlayingHandler.PostDelayed(PlayingHandlerRunnable, 250);
                     var progress = mediaPlayer.CurrentPosition/mediaPlayer.Duration;
-                    OnPlaying(new PlaybackPositionChangedEventArgs(progress, TimeSpan.FromMilliseconds(mediaPlayer.CurrentPosition)));
+                    OnPlaying(new PlayingChangedEventArgs(progress, TimeSpan.FromMilliseconds(mediaPlayer.CurrentPosition)));
                 }
                 else
                 {
-                    OnPlaying(new PlaybackPositionChangedEventArgs(0, TimeSpan.Zero));
+                    OnPlaying(new PlayingChangedEventArgs(0, TimeSpan.Zero));
                 }
             });
 
@@ -149,7 +149,7 @@ namespace Plugin.MediaManager
             };
         }
 
-        protected virtual void OnStatusChanged(PlayerStatusChangedEventArgs e)
+        protected virtual void OnStatusChanged(StatusChangedEventArgs e)
         {
             StatusChanged?.Invoke(this, e);
         }
@@ -164,7 +164,7 @@ namespace Plugin.MediaManager
             }
         }
 
-        protected virtual void OnPlaying(PlaybackPositionChangedEventArgs e)
+        protected virtual void OnPlaying(PlayingChangedEventArgs e)
         {
             Playing?.Invoke(this, e);
         }
@@ -776,7 +776,7 @@ namespace Plugin.MediaManager
                     }
                 }
 
-                OnStatusChanged(new PlayerStatusChangedEventArgs(status));
+                OnStatusChanged(new StatusChangedEventArgs(status));
 
                 if (state == PlaybackStateCompat.StatePlaying || state == PlaybackStateCompat.StatePaused)
                 {

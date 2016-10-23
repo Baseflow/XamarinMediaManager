@@ -186,7 +186,7 @@ namespace Plugin.MediaManager
                         serviceBinder.GetMediaPlayerService().AlternateRemoteCallback = instance.AlternateRemoteCallback;
 
                     serviceBinder.GetMediaPlayerService().CoverReloaded += (object sender, EventArgs e) => { instance.CoverReloaded?.Invoke(sender, e); };
-                    serviceBinder.GetMediaPlayerService().StatusChanged += (object sender, PlayerStatusChangedEventArgs e) => { instance.StatusChanged?.Invoke(sender, e); };
+                    serviceBinder.GetMediaPlayerService().StatusChanged += (object sender, StatusChangedEventArgs e) => { instance.StatusChanged?.Invoke(sender, e); };
                     serviceBinder.GetMediaPlayerService().Playing += (sender, args) => { instance.Playing?.Invoke(sender, args); };
                     serviceBinder.GetMediaPlayerService().Buffering += (sender, args) => { instance.Buffering?.Invoke(sender, args); };
                     serviceBinder.GetMediaPlayerService().TrackFinished += (object sender, EventArgs e) => { instance.TrackFinished?.Invoke(sender, e); };

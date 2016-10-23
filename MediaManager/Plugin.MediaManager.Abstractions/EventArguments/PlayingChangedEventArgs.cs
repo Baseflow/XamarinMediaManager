@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Plugin.MediaManager.Abstractions
+namespace Plugin.MediaManager.Abstractions.EventArguments
 {
-    public class PlaybackPositionChangedEventArgs : EventArgs
+    public class PlayingChangedEventArgs : EventArgs
     {
-        public PlaybackPositionChangedEventArgs(double progress, TimeSpan position)
+        public PlayingChangedEventArgs(double progress, TimeSpan position)
         {
             Progress = progress;
             Position = position;
