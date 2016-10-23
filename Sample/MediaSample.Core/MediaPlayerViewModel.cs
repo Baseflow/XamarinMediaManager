@@ -46,7 +46,7 @@ namespace MediaManager.Sample.Core
         {
             get
             {
-                return mediaPlayer.Duration.Seconds > 0 ? mediaPlayer.Duration.Seconds : 0;
+                return mediaPlayer.Duration.TotalSeconds > 0 ? Convert.ToInt32(mediaPlayer.Duration.TotalSeconds) : 0;
             }
         }
 
@@ -84,7 +84,7 @@ namespace MediaManager.Sample.Core
                 if (IsSeeking)
                     return _position;
 
-                return mediaPlayer.Position.Seconds > 0 ? mediaPlayer.Position.Seconds : 0;
+                return mediaPlayer.Position.TotalSeconds > 0 ? Convert.ToInt32(mediaPlayer.Position.TotalSeconds) : 0;
             }
             set
             {
@@ -97,7 +97,7 @@ namespace MediaManager.Sample.Core
         {
             get
             {
-                return mediaPlayer.Buffered.Seconds;
+                return Convert.ToInt32(mediaPlayer.Buffered.TotalSeconds);
             }
         }
 

@@ -12,10 +12,10 @@ namespace Plugin.MediaManager
         {
             Init();
         }
-        public override IAudioPlayer AudioPlayer { get; } = new AudioPlayerImplementation();
-        public override IVideoPlayer VideoPlayer { get; }
-        public override IMediaQueue MediaQueue { get; }
-        public override IMediaNotificationManager MediaNotificationManager { get; }
-        public override IMediaExtractor MediaExtractor { get; }
+        public override IAudioPlayer AudioPlayer { get; set; } = new AudioPlayerImplementation();
+        public override IVideoPlayer VideoPlayer { get; set; }
+        public override IMediaQueue MediaQueue { get; set; }
+        public override IMediaNotificationManager MediaNotificationManager { get; set; }
+        public override IMediaExtractor MediaExtractor { get; set; }
     }
 }

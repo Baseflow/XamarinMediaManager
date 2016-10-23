@@ -68,6 +68,8 @@
     <Compile Include="MediaPlayerServiceBinder.cs" />
     <Compile Include="MusicBroadcastReceiver.cs" />
     <Compile Include="RemoteControlBroadcastReceiver.cs" />
+    <Compile Include="AudioPlayerImplementation.cs" />
+    <Compile Include="MediaPlayerServiceConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

@@ -22,7 +22,7 @@ namespace Plugin.MediaManager
 {
     [Service]
     [IntentFilter(new[] { ActionPlay, ActionPause, ActionStop, ActionTogglePlayback, ActionNext, ActionPrevious })]
-    public class MediaPlayerService : Service, AudioManager.IOnAudioFocusChangeListener,
+    public class MediaPlayerService : Service, IPlaybackManager, AudioManager.IOnAudioFocusChangeListener,
     MediaPlayer.IOnBufferingUpdateListener,
     MediaPlayer.IOnCompletionListener,
     MediaPlayer.IOnErrorListener,
@@ -110,11 +110,13 @@ namespace Plugin.MediaManager
 
         //public event CoverReloadedEventHandler CoverReloaded;
 
-        public event PlayingChangedEventHandler Playing;
+        public event PlayingChangedEventHandler PlayingChanged;
 
-        public event BufferingChangedEventHandler Buffering;
+        public event BufferingChangedEventHandler BufferingChanged;
 
         public event MediaFinishedEventHandler MediaFinished;
+
+        public event MediaFailedEventHandler MediaFailed;
 
         private Handler PlayingHandler;
         private Java.Lang.Runnable PlayingHandlerRunnable;
@@ -168,12 +170,12 @@ namespace Plugin.MediaManager
 
         protected virtual void OnPlaying(PlayingChangedEventArgs e)
         {
-            Playing?.Invoke(this, e);
+            PlayingChanged?.Invoke(this, e);
         }
 
         protected virtual void OnBuffering(BufferingChangedEventArgs e)
         {
-            Buffering?.Invoke(this, e);
+            BufferingChanged?.Invoke(this, e);
         }
 
         /// <summary>
@@ -261,9 +263,9 @@ namespace Plugin.MediaManager
                 duration = mp.Duration;
 
             int newBufferedTime = duration * percent / 100;
-            if (newBufferedTime != Buffered)
+            if (newBufferedTime != Convert.ToInt32(Buffered.TotalSeconds))
             {
-                Buffered = newBufferedTime;
+                Buffered = TimeSpan.FromSeconds(newBufferedTime);
                 OnBuffering(new BufferingChangedEventArgs((double)percent / 100, TimeSpan.FromMilliseconds(newBufferedTime)));
             }
         }
@@ -271,8 +273,7 @@ namespace Plugin.MediaManager
         public async void OnCompletion(MediaPlayer mp)
         {
             await PlayNext();
-            if (MediaFinished != null)
-                MediaFinished(this, new EventArgs());
+            MediaFinished?.Invoke(this, new MediaFinishedEventArgs());
         }
 
         public bool OnError(MediaPlayer mp, MediaError what, int extra)
@@ -295,40 +296,40 @@ namespace Plugin.MediaManager
             UpdatePlaybackState(PlaybackStateCompat.StatePlaying);
         }
 
-        public int Position
+        public TimeSpan Position
         {
             get
             {
                 if (mediaPlayer == null
                     || (MediaPlayerState != PlaybackStateCompat.StatePlaying
                         && MediaPlayerState != PlaybackStateCompat.StatePaused))
-                    return -1;
+                    return TimeSpan.FromSeconds(-1);
                 else
-                    return mediaPlayer.CurrentPosition;
+                    return TimeSpan.FromSeconds(mediaPlayer.CurrentPosition);
             }
         }
 
-        public int Duration
+        public TimeSpan Duration
         {
             get
             {
                 if (mediaPlayer == null
                     || (MediaPlayerState != PlaybackStateCompat.StatePlaying
                         && MediaPlayerState != PlaybackStateCompat.StatePaused))
-                    return 0;
+                    return TimeSpan.Zero;
                 else
-                    return mediaPlayer.Duration;
+                    return TimeSpan.FromSeconds(mediaPlayer.Duration);
             }
         }
 
-        private int buffered = 0;
+        private TimeSpan buffered = TimeSpan.Zero;
 
-        public int Buffered
+        public TimeSpan Buffered
         {
             get
             {
                 if (mediaPlayer == null)
-                    return 0;
+                    return TimeSpan.Zero;
                 else
                     return buffered;
             }
@@ -353,6 +354,11 @@ namespace Plugin.MediaManager
                 cover = value as Bitmap;
                 OnCoverReloaded(EventArgs.Empty);
             }
+        }
+
+        public async Task Play(IMediaFile mediaFile)
+        {
+            await Play(mediaFile.Url, mediaFile.Type);
         }
 
         /// <summary>
@@ -630,13 +636,13 @@ namespace Plugin.MediaManager
             return System.IO.Path.GetDirectoryName(currentAudioUrl);
         }
 
-        public async Task Seek(int position)
+        public async Task Seek(TimeSpan position)
         {
             await Task.Run(() =>
             {
                 if (mediaPlayer != null)
                 {
-                    mediaPlayer.SeekTo(position);
+                    mediaPlayer.SeekTo(Convert.ToInt32(position.TotalSeconds));
                 }
             });
         }
@@ -664,7 +670,7 @@ namespace Plugin.MediaManager
                 Queue.SetIndexAsCurrent(0);
             }
         }
-
+        /*
         public async Task PlayPrevious()
         {
             // Start current track from beginning if it's the first track or the track has played more than 3sec and you hit "playPrevious".
@@ -684,7 +690,7 @@ namespace Plugin.MediaManager
                 Queue.SetPreviousAsCurrent();
                 await Play();
             }
-        }
+        }*/
 
         public async Task PlayPause()
         {
@@ -1076,7 +1082,7 @@ namespace Plugin.MediaManager
 
             public override void OnSkipToPrevious()
             {
-                mediaPlayerService.GetMediaPlayerService().PlayPrevious();
+                //mediaPlayerService.GetMediaPlayerService().PlayPrevious();
                 base.OnSkipToPrevious();
             }
 

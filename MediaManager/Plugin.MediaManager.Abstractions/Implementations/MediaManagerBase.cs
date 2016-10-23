@@ -13,13 +13,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         private IPlaybackManager _currentPlaybackManager;
         private IMediaFile _currentMediaFile;
 
-        public IMediaQueue Queue { get; } = new MediaQueue();
-        public abstract IAudioPlayer AudioPlayer { get; }
-        public abstract IVideoPlayer VideoPlayer { get; }
-        public abstract IMediaQueue MediaQueue { get;  }
-        public abstract IMediaNotificationManager MediaNotificationManager { get; }
-        public abstract IMediaExtractor MediaExtractor { get; }
-
+        public IMediaQueue Queue { get; set; } = new MediaQueue();
+        public abstract IAudioPlayer AudioPlayer { get; set; }
+        public abstract IVideoPlayer VideoPlayer { get; set; }
+        public abstract IMediaQueue MediaQueue { get; set; }
+        public abstract IMediaNotificationManager MediaNotificationManager { get; set; }
+        public abstract IMediaExtractor MediaExtractor { get; set; }
 
         /// <summary>
         /// Hooks up eventhandlers 
@@ -42,7 +41,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 var item = Queue[Queue.Index + 1];
                 SetCurrentPlayer(item);
                 Queue.SetNextAsCurrent();
-                await _currentPlaybackManager.Play(item.Url);
+                await _currentPlaybackManager.Play(item);
             }
             else
             {
@@ -116,9 +115,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await _currentPlaybackManager.Play(mediaFile);
         }
 
-        public async Task Play(string url)
+        public async Task Play(string url, MediaFileType fileType)
         {
-            await _currentPlaybackManager.Play(url);
+            await _currentPlaybackManager.Play(url, fileType);
         }
 
         public async Task PlayPause()

@@ -9,6 +9,7 @@ using Android.Graphics;
 using Plugin.MediaManager;
 using Android.Media;
 using Android.Support.V4.Media.Session;
+using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace MediaSample.Droid
 {
@@ -76,7 +77,7 @@ namespace MediaSample.Droid
             {
                 RunOnUiThread(() =>
                 {
-                    seekbar.SecondaryProgress = ViewModel.MediaPlayer.Buffered.Seconds;
+                    seekbar.SecondaryProgress = Convert.ToInt32(ViewModel.MediaPlayer.Buffered.TotalSeconds);
                 });
             };
             /*
@@ -93,7 +94,7 @@ namespace MediaSample.Droid
             var subtitle = FindViewById<TextView>(Resource.Id.textview_subtitle);
             ViewModel.MediaPlayer.StatusChanged += (sender, args) => 
             {
-                var mediaPlayer = ((MediaManagerImplementation)ViewModel.MediaPlayer).Binder.GetMediaPlayerService();
+                var mediaPlayer = ((AudioPlayerImplementation)ViewModel.MediaPlayer.AudioPlayer).Binder.GetMediaPlayerService();
 
                 var metadata = mediaPlayer.mediaControllerCompat.Metadata;
                 if (metadata != null)
@@ -107,7 +108,7 @@ namespace MediaSample.Droid
                 }
             };
 
-            ViewModel.MediaPlayer.Play("http://www.montemagno.com/sample.mp3");
+            ViewModel.MediaPlayer.Play("http://www.montemagno.com/sample.mp3", MediaFileType.AudioUrl);
         }
     }
 }

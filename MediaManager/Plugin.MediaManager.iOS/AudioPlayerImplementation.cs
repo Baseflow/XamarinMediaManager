@@ -102,7 +102,7 @@ namespace Plugin.MediaManager
             }
         }
 
-        public async Task Play(string url)
+        public async Task Play(string url, MediaFileType fileType)
         {
             if (!string.IsNullOrEmpty(url))
                 nsUrl = NSUrl.FromString(url);

@@ -60,7 +60,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Starts playing from the current position
         /// </summary>
-        Task Play(string url);
+        Task Play(string url, MediaFileType fileType);
 
         /// <summary>
         /// Start playing if nothing is playing, otherwise it pauses the current media
