@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Plugin.MediaManager.Abstractions
 {
-    public interface IAudioPlayer : IPlaybackControl
+    public interface IAudioPlayer : IPlaybackManager
     {
     }
 }

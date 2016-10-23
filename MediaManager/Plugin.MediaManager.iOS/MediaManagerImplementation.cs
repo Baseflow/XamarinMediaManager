@@ -9,14 +9,14 @@ namespace Plugin.MediaManager
     /// <summary>
     ///     Implementation for MediaManager
     /// </summary>
-    public class MediaManagerImplementation : IMediaManager, IPlaybackControl, IDisposable
+    public class MediaManagerImplementation : IMediaManager, IPlaybackManager, IDisposable
     {
-        private IPlaybackControl _currentPlaybackControl;
+        private IPlaybackManager _currentPlaybackManager;
         private IMediaFile _currentMediaFile;
 
         public MediaManagerImplementation()
         {
-            _currentPlaybackControl = AudioPlayer;
+            _currentPlaybackManager = AudioPlayer;
             AudioPlayer.BufferingChanged += OnBufferingChanged;
             AudioPlayer.MediaFailed += OnMediaFailed;
             AudioPlayer.MediaFinished += OnMediaFinished;
@@ -35,16 +35,16 @@ namespace Plugin.MediaManager
         {
             if (Queue.HasNext())
             {
-                await _currentPlaybackControl.Stop();
+                await _currentPlaybackManager.Stop();
                 var item = Queue[Queue.Index + 1];
                 SetCurrentPlayer(item);
                 Queue.SetNextAsCurrent();
-                await _currentPlaybackControl.Play(item.Url);
+                await _currentPlaybackManager.Play(item.Url);
             }
             else
             {
                 // If you don't have a next song in the queue, stop and show the meta-data of the first song.
-                await _currentPlaybackControl.Stop();
+                await _currentPlaybackManager.Stop();
                 var item = Queue[0];
                 SetCurrentPlayer(item);
                 Queue.SetIndexAsCurrent(0);
@@ -59,7 +59,7 @@ namespace Plugin.MediaManager
                 {
                     case MediaFileType.AudioUrl:
                     case MediaFileType.AudioFile:
-                        _currentPlaybackControl = AudioPlayer;
+                        _currentPlaybackManager = AudioPlayer;
                         break;
                     case MediaFileType.VideoUrl:
                     case MediaFileType.VideoFile:
@@ -76,15 +76,15 @@ namespace Plugin.MediaManager
             // Start current track from beginning if it's the first track or the track has played more than 3sec and you hit "playPrevious".
             if (!Queue.HasPrevious() || (Position > TimeSpan.FromSeconds(3)))
             {
-                await _currentPlaybackControl.Seek(TimeSpan.Zero);
+                await _currentPlaybackManager.Seek(TimeSpan.Zero);
             }
             else
             {
-                await _currentPlaybackControl.Stop();
+                await _currentPlaybackManager.Stop();
                 var previousItem = Queue[Queue.Index - 1];
                 SetCurrentPlayer(previousItem);
                 Queue.SetPreviousAsCurrent();
-                await _currentPlaybackControl.Play(previousItem);
+                await _currentPlaybackManager.Play(previousItem);
             }
         }
 
@@ -92,13 +92,13 @@ namespace Plugin.MediaManager
         {
             var item = Queue[index];
             SetCurrentPlayer(item);
-            await _currentPlaybackControl.Play(item);
+            await _currentPlaybackManager.Play(item);
         }
 
-        public MediaPlayerStatus Status => _currentPlaybackControl.Status;
-        public TimeSpan Position => _currentPlaybackControl.Position;
-        public TimeSpan Duration => _currentPlaybackControl.Duration;
-        public TimeSpan Buffered => _currentPlaybackControl.Buffered;
+        public MediaPlayerStatus Status => _currentPlaybackManager.Status;
+        public TimeSpan Position => _currentPlaybackManager.Position;
+        public TimeSpan Duration => _currentPlaybackManager.Duration;
+        public TimeSpan Buffered => _currentPlaybackManager.Buffered;
         public event StatusChangedEventHandler StatusChanged;
         public event PlayingChangedEventHandler PlayingChanged;
         public event BufferingChangedEventHandler BufferingChanged;
@@ -110,64 +110,64 @@ namespace Plugin.MediaManager
         {
             _currentMediaFile = mediaFile;
             SetCurrentPlayer(mediaFile);
-            await _currentPlaybackControl.Play(mediaFile);
+            await _currentPlaybackManager.Play(mediaFile);
         }
 
         public async Task Play(string url)
         {
-            await _currentPlaybackControl.Play(url);
+            await _currentPlaybackManager.Play(url);
         }
 
         public async Task PlayPause()
         {
             if ((Status == MediaPlayerStatus.Paused) || (Status == MediaPlayerStatus.Stopped))
-                await _currentPlaybackControl.Play(_currentMediaFile);
+                await _currentPlaybackManager.Play(_currentMediaFile);
             else
-                await _currentPlaybackControl.Pause();
+                await _currentPlaybackManager.Pause();
         }
 
         public async Task Pause()
         {
-            await _currentPlaybackControl.Pause();
+            await _currentPlaybackManager.Pause();
         }
 
         public async Task Stop()
         {
-            await _currentPlaybackControl.Stop();
+            await _currentPlaybackManager.Stop();
         }
 
         public async Task Seek(TimeSpan position)
         {
-            await _currentPlaybackControl.Seek(position);
+            await _currentPlaybackManager.Seek(position);
         }
 
         private void OnStatusChanged(object sender, StatusChangedEventArgs e)
         {
-            if (sender == _currentPlaybackControl)
+            if (sender == _currentPlaybackManager)
                 StatusChanged?.Invoke(sender, e);
         }
 
         private void OnPlayingChanged(object sender, PlayingChangedEventArgs e)
         {
-            if (sender == _currentPlaybackControl)
+            if (sender == _currentPlaybackManager)
                 PlayingChanged?.Invoke(sender, e);
         }
 
         private void OnMediaFinished(object sender, MediaFinishedEventArgs e)
         {
-            if (sender == _currentPlaybackControl)
+            if (sender == _currentPlaybackManager)
                 MediaFinished?.Invoke(sender, e);
         }
 
         private void OnMediaFailed(object sender, MediaFailedEventArgs e)
         {
-            if (sender == _currentPlaybackControl)
+            if (sender == _currentPlaybackManager)
                 MediaFailed?.Invoke(sender, e);
         }
 
         private void OnBufferingChanged(object sender, BufferingChangedEventArgs e)
         {
-            if (sender == _currentPlaybackControl)
+            if (sender == _currentPlaybackManager)
                 BufferingChanged?.Invoke(sender, e);
         }
 

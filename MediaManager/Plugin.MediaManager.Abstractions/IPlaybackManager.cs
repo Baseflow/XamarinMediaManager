@@ -4,7 +4,7 @@ using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
-    public interface IPlaybackControl
+    public interface IPlaybackManager
     {
         /// <summary>
         /// Reading the current status of the player
