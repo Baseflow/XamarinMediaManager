@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Plugin.MediaManager.Abstractions
 {
-    public interface IVideoPlayer
+    public interface IVideoPlayer : IPlaybackManager
     {
     }
 }

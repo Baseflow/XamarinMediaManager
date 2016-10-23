@@ -96,7 +96,7 @@ namespace Plugin.MediaManager
             private set
             {
                 status = value;
-                OnStatusChanged(new StatusChangedEventArgs(status));
+                StatusChanged?.Invoke(this, new StatusChangedEventArgs(status));
             }
         }
 
@@ -135,11 +135,11 @@ namespace Plugin.MediaManager
                 {
                     PlayingHandler.PostDelayed(PlayingHandlerRunnable, 250);
                     var progress = mediaPlayer.CurrentPosition/mediaPlayer.Duration;
-                    OnPlaying(new PlayingChangedEventArgs(progress, TimeSpan.FromMilliseconds(mediaPlayer.CurrentPosition)));
+                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(progress, TimeSpan.FromMilliseconds(mediaPlayer.CurrentPosition)));
                 }
                 else
                 {
-                    OnPlaying(new PlayingChangedEventArgs(0, TimeSpan.Zero));
+                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(0, TimeSpan.Zero));
                 }
             });
 
@@ -151,31 +151,6 @@ namespace Plugin.MediaManager
                     PlayingHandler.PostDelayed(PlayingHandlerRunnable, 0);
                 }
             };
-        }
-
-        protected virtual void OnStatusChanged(StatusChangedEventArgs e)
-        {
-            StatusChanged?.Invoke(this, e);
-        }
-
-        protected virtual void OnCoverReloaded(EventArgs e)
-        {
-            /*if (CoverReloaded != null)
-            {
-                CoverReloaded(this, e);
-                StartNotification();
-                UpdateMediaMetadataCompat();
-            }*/
-        }
-
-        protected virtual void OnPlaying(PlayingChangedEventArgs e)
-        {
-            PlayingChanged?.Invoke(this, e);
-        }
-
-        protected virtual void OnBuffering(BufferingChangedEventArgs e)
-        {
-            BufferingChanged?.Invoke(this, e);
         }
 
         /// <summary>
@@ -266,7 +241,7 @@ namespace Plugin.MediaManager
             if (newBufferedTime != Convert.ToInt32(Buffered.TotalSeconds))
             {
                 Buffered = TimeSpan.FromSeconds(newBufferedTime);
-                OnBuffering(new BufferingChangedEventArgs((double)percent / 100, TimeSpan.FromMilliseconds(newBufferedTime)));
+                BufferingChanged?.Invoke(this, new BufferingChangedEventArgs((double)percent / 100, TimeSpan.FromMilliseconds(newBufferedTime)));
             }
         }
 
@@ -352,7 +327,7 @@ namespace Plugin.MediaManager
             private set
             {
                 cover = value as Bitmap;
-                OnCoverReloaded(EventArgs.Empty);
+                //OnCoverReloaded(EventArgs.Empty);
             }
         }
 
@@ -784,7 +759,7 @@ namespace Plugin.MediaManager
                     }
                 }
 
-                OnStatusChanged(new StatusChangedEventArgs(status));
+                StatusChanged?.Invoke(this, new StatusChangedEventArgs(status));
 
                 if (state == PlaybackStateCompat.StatePlaying || state == PlaybackStateCompat.StatePaused)
                 {

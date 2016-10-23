@@ -145,7 +145,7 @@ namespace Plugin.MediaManager
             private set
             {
                 _status = value;
-                OnStatusChanged(new StatusChangedEventArgs(_status));
+                StatusChanged?.Invoke(this, new StatusChangedEventArgs(_status));
             }
         }
 
@@ -193,25 +193,9 @@ namespace Plugin.MediaManager
                 var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
                 var totalProgress = Position.TotalMilliseconds/
                                     totalDuration.TotalMilliseconds;
-                OnPlaying(new PlayingChangedEventArgs(totalProgress, Position));
+                PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position));
             });
         }
-
-        protected virtual void OnStatusChanged(StatusChangedEventArgs e)
-        {
-            StatusChanged?.Invoke(this, e);
-        }
-
-        protected virtual void OnPlaying(PlayingChangedEventArgs e)
-        {
-            PlayingChanged?.Invoke(this, e);
-        }
-
-        protected virtual void OnBuffering(BufferingChangedEventArgs e)
-        {
-            BufferingChanged?.Invoke(this, e);
-        }
-
 
         private async Task Play()
         {
@@ -312,9 +296,9 @@ namespace Plugin.MediaManager
                 var duration = TimeSpan.FromSeconds(range.Duration.Seconds);
                 var totalDuration = _player.CurrentItem.Duration;
                 var bufferProgress = duration.TotalSeconds/totalDuration.Seconds;
-                OnBuffering(new BufferingChangedEventArgs(bufferProgress, duration));
+                BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(bufferProgress, duration));
             }
-            OnBuffering(new BufferingChangedEventArgs(0, TimeSpan.Zero));
+            BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
         }
     }
 }
