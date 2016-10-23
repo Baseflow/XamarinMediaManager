@@ -37,6 +37,7 @@
     <DocumentationFile>bin\Release\Plugin.MediaManager.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Java.Interop" />
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />

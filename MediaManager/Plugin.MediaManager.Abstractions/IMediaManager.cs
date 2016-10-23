@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 
 namespace Plugin.MediaManager.Abstractions
 {
-    public delegate void StatusChangedEventHandler(object sender, EventArgs e);
+    public delegate void StatusChangedEventHandler(object sender, PlayerStatusChangedEventArgs e);
 
     public delegate void CoverReloadedEventHandler(object sender, EventArgs e);
 
-    public delegate void PlayingEventHandler(object sender, EventArgs e);
+    public delegate void PlayingEventHandler(object sender, PlaybackPositionChangedEventArgs e);
 
-    public delegate void BufferingEventHandler(object sender, EventArgs e);
+    public delegate void BufferingEventHandler(object sender, BufferingChangedEventArgs e);
 
     public delegate void TrackFinishedEventHandler(object sender, EventArgs e);
 

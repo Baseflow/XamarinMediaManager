@@ -22,13 +22,13 @@ namespace MediaSample.UWP
             CrossMediaManager.Current.StatusChanged += CurrentOnStatusChanged;
         }
 
-        private async void CurrentOnStatusChanged(object sender, EventArgs eventArgs)
+        private async void CurrentOnStatusChanged(object sender, PlayerStatusChangedEventArgs eventArgs)
         {
             await
                 CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                     () =>
                     {
-                        PlayerState.Text = Enum.GetName(typeof(PlayerStatus), CrossMediaManager.Current.Status);
+                        PlayerState.Text = Enum.GetName(typeof(PlayerStatus), eventArgs.Status);
                         switch (CrossMediaManager.Current.Status)
                         {
                             case PlayerStatus.STOPPED:
@@ -47,13 +47,13 @@ namespace MediaSample.UWP
                     });
         }
 
-        private async void CurrentOnPlaying(object sender, EventArgs eventArgs)
+        private async void CurrentOnPlaying(object sender, PlaybackPositionChangedEventArgs eventArgs)
         {
             await
                 CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                     () =>
                     {
-                        Progress.Value = (double) CrossMediaManager.Current.Position;
+                        Progress.Value = eventArgs.Progress;
                     });
         }
 

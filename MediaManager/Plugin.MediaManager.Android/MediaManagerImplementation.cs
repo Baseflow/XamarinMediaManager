@@ -5,7 +5,6 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V4.Media.Session;
-using Java.Util.Concurrent;
 
 namespace Plugin.MediaManager
 {
@@ -118,45 +117,15 @@ namespace Plugin.MediaManager
             await binder.GetMediaPlayerService().PlayByPosition(index);
         }*/
 
-        public PlayerStatus Status
-        {
-            get
-            {
-                return binder.GetMediaPlayerService().Status;
-            }
-        }
+        public PlayerStatus Status => binder.GetMediaPlayerService().Status;
 
-        public int Position
-        {
-            get
-            {
-                return binder.GetMediaPlayerService().Position;
-            }
-        }
+        public int Position => binder.GetMediaPlayerService().Position;
 
-        public int Duration
-        {
-            get
-            {
-                return binder.GetMediaPlayerService().Duration;
-            }
-        }
+        public int Duration => binder.GetMediaPlayerService().Duration;
 
-        public int Buffered
-        {
-            get
-            {
-                return binder.GetMediaPlayerService().Buffered;
-            }
-        }
+        public int Buffered => binder.GetMediaPlayerService().Buffered;
 
-        public object Cover
-        {
-            get
-            {
-                return binder.GetMediaPlayerService().Cover;
-            }
-        }
+        public object Cover => binder.GetMediaPlayerService().Cover;
 
         public void UnbindMediaPlayerService()
         {
@@ -216,11 +185,11 @@ namespace Plugin.MediaManager
                     if (instance.AlternateRemoteCallback != null)
                         serviceBinder.GetMediaPlayerService().AlternateRemoteCallback = instance.AlternateRemoteCallback;
 
-                    serviceBinder.GetMediaPlayerService().CoverReloaded += (object sender, EventArgs e) => { if (instance.CoverReloaded != null) instance.CoverReloaded(sender, e); };
-                    serviceBinder.GetMediaPlayerService().StatusChanged += (object sender, EventArgs e) => { if (instance.StatusChanged != null) instance.StatusChanged(sender, e); };
-                    serviceBinder.GetMediaPlayerService().Playing += (object sender, EventArgs e) => { if (instance.Playing != null) instance.Playing(sender, e); };
-                    serviceBinder.GetMediaPlayerService().Buffering += (object sender, EventArgs e) => { if (instance.Buffering != null) instance.Buffering(sender, e); };
-                    serviceBinder.GetMediaPlayerService().TrackFinished += (object sender, EventArgs e) => { if (instance.TrackFinished != null) instance.TrackFinished(sender, e); };
+                    serviceBinder.GetMediaPlayerService().CoverReloaded += (object sender, EventArgs e) => { instance.CoverReloaded?.Invoke(sender, e); };
+                    serviceBinder.GetMediaPlayerService().StatusChanged += (object sender, PlayerStatusChangedEventArgs e) => { instance.StatusChanged?.Invoke(sender, e); };
+                    serviceBinder.GetMediaPlayerService().Playing += (sender, args) => { instance.Playing?.Invoke(sender, args); };
+                    serviceBinder.GetMediaPlayerService().Buffering += (sender, args) => { instance.Buffering?.Invoke(sender, args); };
+                    serviceBinder.GetMediaPlayerService().TrackFinished += (object sender, EventArgs e) => { instance.TrackFinished?.Invoke(sender, e); };
                 }
             }
 
