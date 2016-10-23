@@ -5,9 +5,9 @@ namespace Plugin.MediaManager
     /// <summary>
     ///     Implementation for MediaManager
     /// </summary>
-    public class MediaManagerImplementationIOS : MediaManagerBase
+    public class MediaManagerImplementation : MediaManagerBase
     {
-        public MediaManagerImplementationIOS()
+        public MediaManagerImplementation()
         {
             Init();
         }
