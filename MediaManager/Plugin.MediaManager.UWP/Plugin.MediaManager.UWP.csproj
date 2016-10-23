@@ -112,6 +112,7 @@
     <Compile Include="..\Plugin.MediaManager\CrossMediaManager.cs">
       <Link>CrossMediaManager.cs</Link>
     </Compile>
+    <Compile Include="AudioPlayerImplementation.cs" />
     <Compile Include="MediaManagerImplementation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Plugin.MediaManager.UWP.rd.xml" />
