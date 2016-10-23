@@ -15,6 +15,8 @@ using Android.Net;
 using Android.Provider;
 using Android.Database;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager
 {
@@ -60,9 +62,9 @@ namespace Plugin.MediaManager
             }
         }
 
-        private PlayerStatus status;
+        private MediaPlayerStatus status;
 
-        public PlayerStatus Status
+        public MediaPlayerStatus Status
         {
             get
             {
@@ -74,21 +76,21 @@ namespace Plugin.MediaManager
                     case PlaybackStateCompat.StateSkippingToPrevious:
                     case PlaybackStateCompat.StateSkippingToQueueItem:
                     case PlaybackStateCompat.StatePlaying:
-                        return PlayerStatus.PLAYING;
+                    return MediaPlayerStatus.Playing;
 
                     case PlaybackStateCompat.StatePaused:
-                        return PlayerStatus.PAUSED;
+                        return MediaPlayerStatus.Paused;
 
                     case PlaybackStateCompat.StateConnecting:
                     case PlaybackStateCompat.StateBuffering:
-                        return PlayerStatus.BUFFERING;
+                        return MediaPlayerStatus.Buffering;
 
                     case PlaybackStateCompat.StateError:
                     case PlaybackStateCompat.StateStopped:
-                        return PlayerStatus.STOPPED;
+                        return MediaPlayerStatus.Stopped;
 
                     default:
-                        return PlayerStatus.STOPPED;
+                    return MediaPlayerStatus.Stopped;
                 }
             }
             private set
@@ -106,13 +108,13 @@ namespace Plugin.MediaManager
 
         public event StatusChangedEventHandler StatusChanged;
 
-        public event CoverReloadedEventHandler CoverReloaded;
+        //public event CoverReloadedEventHandler CoverReloaded;
 
-        public event PlayingEventHandler Playing;
+        public event PlayingChangedEventHandler Playing;
 
-        public event BufferingEventHandler Buffering;
+        public event BufferingChangedEventHandler Buffering;
 
-        public event TrackFinishedEventHandler TrackFinished;
+        public event MediaFinishedEventHandler MediaFinished;
 
         private Handler PlayingHandler;
         private Java.Lang.Runnable PlayingHandlerRunnable;
@@ -156,12 +158,12 @@ namespace Plugin.MediaManager
 
         protected virtual void OnCoverReloaded(EventArgs e)
         {
-            if (CoverReloaded != null)
+            /*if (CoverReloaded != null)
             {
                 CoverReloaded(this, e);
                 StartNotification();
                 UpdateMediaMetadataCompat();
-            }
+            }*/
         }
 
         protected virtual void OnPlaying(PlayingChangedEventArgs e)
@@ -269,8 +271,8 @@ namespace Plugin.MediaManager
         public async void OnCompletion(MediaPlayer mp)
         {
             await PlayNext();
-            if (TrackFinished != null)
-                TrackFinished(this, new EventArgs());
+            if (MediaFinished != null)
+                MediaFinished(this, new EventArgs());
         }
 
         public bool OnError(MediaPlayer mp, MediaError what, int extra)

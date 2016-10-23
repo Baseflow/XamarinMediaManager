@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 
-namespace Plugin.MediaManager.Abstractions
+namespace Plugin.MediaManager.Abstractions.Implementations
 {
     /// <summary>
     ///     Implementation for MediaManager

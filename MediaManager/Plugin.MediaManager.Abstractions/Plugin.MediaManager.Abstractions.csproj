@@ -38,7 +38,6 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MediaManagerBase.cs" />
     <Compile Include="IMediaManager.cs" />
     <Compile Include="IPlaybackManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -60,6 +59,7 @@
     <Compile Include="Implementations\RepeatType.cs" />
     <Compile Include="EventArguments\QueueMediaChangedEventArgs.cs" />
     <Compile Include="EventArguments\QueueEndedEventArgs.cs" />
+    <Compile Include="Implementations\MediaManagerBase.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
