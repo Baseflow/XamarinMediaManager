@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using NUnit.Framework;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Tests.Tests
 {
@@ -138,7 +139,7 @@ namespace Plugin.MediaManager.Tests.Tests
 
                 queue.AddRange(tracks);
                 queue.ToggleShuffle();
-                queue.ToggleRepeat();
+                queue.ToggleRepeat(queue.Repeat);
 
                 IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
                 IList<PropertyChangedEventArgs> propertyChangedEvents = new List<PropertyChangedEventArgs>();

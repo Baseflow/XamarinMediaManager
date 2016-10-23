@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Plugin.MediaManager;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace MediaManager.Sample.Core
 {
@@ -45,7 +46,7 @@ namespace MediaManager.Sample.Core
         {
             get
             {
-                return mediaPlayer.Duration > 0 ? mediaPlayer.Duration : 0;
+                return mediaPlayer.Duration.Seconds > 0 ? mediaPlayer.Duration.Seconds : 0;
             }
         }
 
@@ -65,7 +66,7 @@ namespace MediaManager.Sample.Core
                         // When disable user-seeking, update the position with the position-value
                         if (value == false)
                         {
-                            await mediaPlayer.Seek(Position);
+                            await mediaPlayer.Seek(TimeSpan.FromSeconds(Position));
                         }
 
                         _isSeeking = value;
@@ -83,7 +84,7 @@ namespace MediaManager.Sample.Core
                 if (IsSeeking)
                     return _position;
 
-                return mediaPlayer.Position > 0 ? mediaPlayer.Position : 0;
+                return mediaPlayer.Position.Seconds > 0 ? mediaPlayer.Position.Seconds : 0;
             }
             set
             {
@@ -96,7 +97,7 @@ namespace MediaManager.Sample.Core
         {
             get
             {
-                return mediaPlayer.Buffered;
+                return mediaPlayer.Buffered.Seconds;
             }
         }
 
@@ -104,11 +105,11 @@ namespace MediaManager.Sample.Core
         {
             get
             {
-                return mediaPlayer.Status == PlayerStatus.PLAYING || mediaPlayer.Status == PlayerStatus.BUFFERING;
+                return mediaPlayer.Status == MediaPlayerStatus.Playing || mediaPlayer.Status == MediaPlayerStatus.Buffering;
             }
         }
 
-        public PlayerStatus Status
+        public MediaPlayerStatus Status
         {
             get
             {
@@ -120,7 +121,7 @@ namespace MediaManager.Sample.Core
         {
             get
             {
-                return mediaPlayer.Cover;
+                return mediaPlayer.MediaQueue.Current.Cover;
             }
         }
 
@@ -139,12 +140,12 @@ namespace MediaManager.Sample.Core
 
             mediaPlayer.StatusChanged -= OnStatusChanged;
             mediaPlayer.StatusChanged += OnStatusChanged;
-            mediaPlayer.Playing -= OnPlaying;
-            mediaPlayer.Playing += OnPlaying;
-            mediaPlayer.Buffering -= OnBuffering;
-            mediaPlayer.Buffering += OnBuffering;
-            mediaPlayer.CoverReloaded -= OnCoverReloaded;
-            mediaPlayer.CoverReloaded += OnCoverReloaded;
+            mediaPlayer.PlayingChanged -= OnPlaying;
+            mediaPlayer.PlayingChanged += OnPlaying;
+            mediaPlayer.BufferingChanged -= OnBuffering;
+            mediaPlayer.BufferingChanged += OnBuffering;
+            //mediaPlayer.CoverReloaded -= OnCoverReloaded;
+            //mediaPlayer.CoverReloaded += OnCoverReloaded;
 
             queue.PropertyChanged -= OnQueuePropertyChanged;
             queue.PropertyChanged += OnQueuePropertyChanged;

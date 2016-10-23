@@ -60,7 +60,7 @@ namespace MediaSample.Droid
             var position = FindViewById<TextView>(Resource.Id.textview_position);
             var duration = FindViewById<TextView>(Resource.Id.textview_duration);
             var seekbar = FindViewById<SeekBar>(Resource.Id.player_seekbar);
-            ViewModel.MediaPlayer.Playing += (sender, e) => 
+            ViewModel.MediaPlayer.PlayingChanged += (sender, e) => 
             {
                 RunOnUiThread(() =>
                 {
@@ -72,14 +72,14 @@ namespace MediaSample.Droid
                 });
             };
 
-            ViewModel.MediaPlayer.Buffering += (sender, args) => 
+            ViewModel.MediaPlayer.BufferingChanged += (sender, args) => 
             {
                 RunOnUiThread(() =>
                 {
-                    seekbar.SecondaryProgress = ViewModel.MediaPlayer.Buffered;
+                    seekbar.SecondaryProgress = ViewModel.MediaPlayer.Buffered.Seconds;
                 });
             };
-
+            /*
             ViewModel.MediaPlayer.CoverReloaded += (object sender, EventArgs e) =>
             {
                 RunOnUiThread(() =>
@@ -88,7 +88,7 @@ namespace MediaSample.Droid
                     cover.SetImageBitmap(ViewModel.Cover as Bitmap);
                 });
             };
-
+*/
             var title = FindViewById<TextView>(Resource.Id.textview_title);
             var subtitle = FindViewById<TextView>(Resource.Id.textview_subtitle);
             ViewModel.MediaPlayer.StatusChanged += (sender, args) => 

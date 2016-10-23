@@ -17,7 +17,7 @@ namespace Plugin.MediaManager.Abstractions
     /// The main purpose of this class is to be a controlling unit for all the single MediaItem implementations, who
     /// in themselve can play their media, but need a central controling unit, surrounding them
     /// </summary>
-    public interface IMediaManager
+    public interface IMediaManager : IPlaybackManager
     {
         /// <summary>
         /// Player responseble for audio playback
