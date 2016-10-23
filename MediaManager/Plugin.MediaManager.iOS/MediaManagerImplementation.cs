@@ -1,447 +1,183 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using AVFoundation;
-using CoreFoundation;
-using CoreMedia;
-using Foundation;
 using Plugin.MediaManager.Abstractions;
-using UIKit;
+using Plugin.MediaManager.Abstractions.EventArguments;
+using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
-  /// <summary>
-  /// Implementation for MediaManager
-  /// </summary>
-  public class MediaManagerImplementation : NSObject, IMediaManager
-  {
-        public IMediaQueue Queue { get; set; } = new MediaQueue();
-
-        private AVPlayer _player;
-        private AVPlayer player
-        {
-            get
-            {
-                if (_player == null)
-                    InitializePlayer();
-
-                return _player;
-            }
-        }
-
-        NSUrl nsUrl { get; set; }
+    /// <summary>
+    ///     Implementation for MediaManager
+    /// </summary>
+    public class MediaManagerImplementation : IMediaManager, IPlaybackControl, IDisposable
+    {
+        private IPlaybackControl _currentPlaybackControl;
+        private IMediaFile _currentMediaFile;
 
         public MediaManagerImplementation()
         {
-            Status = PlayerStatus.STOPPED;
-
-            // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
-            Buffering += (sender, e) =>
-            {
-              // If the player is ready to play, it's paused and the status is still on PLAYING, go on!
-              if (player.Status == AVPlayerStatus.ReadyToPlay && Rate == 0.0f && Status == PlayerStatus.PLAYING)
-                {
-                    player.Play();
-                }
-            };
+            _currentPlaybackControl = AudioPlayer;
+            AudioPlayer.BufferingChanged += OnBufferingChanged;
+            AudioPlayer.MediaFailed += OnMediaFailed;
+            AudioPlayer.MediaFinished += OnMediaFinished;
+            AudioPlayer.PlayingChanged += OnPlayingChanged;
+            AudioPlayer.StatusChanged += OnStatusChanged;
         }
 
-        public static readonly NSString StatusObservationContext = new NSString("AVCustomEditPlayerViewControllerStatusObservationContext");
-        public static NSString RateObservationContext = new NSString("AVCustomEditPlayerViewControllerRateObservationContext");
-
-        private void InitializePlayer()
-        {
-            _player = new AVPlayer();
-
-            AVAudioSession avSession = AVAudioSession.SharedInstance();
-
-            // By setting the Audio Session category to AVAudioSessionCategorPlayback, audio will continue to play when the silent switch is enabled, or when the screen is locked.
-            avSession.SetCategory(AVAudioSessionCategory.Playback);
-
-            NSError activationError = null;
-            avSession.SetActive(true, out activationError);
-            if (activationError != null)
-            {
-                Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
-            }
-
-            player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate (CMTime time)
-            {
-                var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
-                var totalProgress = Position/
-                                    totalDuration.TotalMilliseconds;
-                OnPlaying(new PlayingChangedEventArgs(totalProgress, TimeSpan.FromSeconds(Position)));
-            });
-        }
-
-        public event StatusChangedEventHandler StatusChanged;
-
-        public event CoverReloadedEventHandler CoverReloaded;
-
-        public event PlayingEventHandler Playing;
-
-        public event BufferingEventHandler Buffering;
-
-        public event TrackFinishedEventHandler TrackFinished;
-
-        protected virtual void OnStatusChanged(StatusChangedEventArgs e)
-        {
-            StatusChanged?.Invoke(this, e);
-        }
-
-        protected virtual void OnCoverReloaded(EventArgs e)
-        {
-            CoverReloaded?.Invoke(this, e);
-        }
-
-        protected virtual void OnPlaying(PlayingChangedEventArgs e)
-        {
-            Playing?.Invoke(this, e);
-        }
-
-        protected virtual void OnBuffering(BufferingChangedEventArgs e)
-        {
-            Buffering?.Invoke(this, e);
-        }
-
-        public async Task Play(IMediaFile mediaFile)
-        {
-            switch (mediaFile.Type)
-            {
-                case MediaFileType.AudioUrl:
-                    await Play(mediaFile.Url);
-                    break;
-                case MediaFileType.VideoUrl:
-                    throw new NotImplementedException();
-                    break;
-                case MediaFileType.AudioFile:
-                    throw new NotImplementedException();
-                    break;
-                case MediaFileType.VideoFile:
-                    throw new NotImplementedException();
-                    break;
-                case MediaFileType.Other:
-                    throw new NotImplementedException();
-                    break;
-                default:
-                    await Task.FromResult(0);
-                    break;
-            }
-        }
-
-        public async Task Play(string url)
-        {
-            if (!string.IsNullOrEmpty(url))
-                nsUrl = NSUrl.FromString(url);
-            await Play();
-        }
-
-        public async Task Play()
-        {
-            await Play(async () => await PlayNext());
-        }
-
-        public async Task Play(Func<Task> ifNotAvailable)
-        {
-            if (Status == PlayerStatus.PAUSED)
-            {
-                Status = PlayerStatus.PLAYING;
-                //We are simply paused so just start again
-                player.Play();
-                return;
-            }
-
-            try
-            {
-                // Start off with the status LOADING.
-                Status = PlayerStatus.BUFFERING;
-
-                Cover = null;
-
-                AVAsset nsAsset = AVUrlAsset.FromUrl(nsUrl);
-                AVPlayerItem streamingItem = AVPlayerItem.FromAsset(nsAsset);
-
-                nsAsset.LoadValuesAsynchronously(new string[] { "commonMetadata" }, delegate
-                {
-                    foreach (AVMetadataItem item in streamingItem.Asset.CommonMetadata)
-                    {
-                        if (item.KeySpace == AVMetadata.KeySpaceID3 && item.CommonKey == AVMetadata.CommonKeyArtwork)
-                        {
-                            if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
-                                Cover = UIImage.LoadFromData(item.Value as NSData);
-                            else
-                            {
-                                NSObject data;
-                                (item.Value as NSMutableDictionary).TryGetValue(new NSString("data"), out data);
-                                Cover = UIImage.LoadFromData(data as NSData);
-                            }
-                        }
-                    }
-
-                    if (Cover == null)
-                    {
-                        Cover = UIImage.FromFile("placeholder_cover.png");
-                    }
-                });
-
-                if (player.CurrentItem != null)
-                {
-                    // Remove the observer before destructing the current item
-                    player.CurrentItem.RemoveObserver(this, new NSString("status"));
-                }
-
-                player.ReplaceCurrentItemWithPlayerItem(streamingItem);
-                streamingItem.AddObserver(this, new NSString("status"), NSKeyValueObservingOptions.New, player.Handle);
-                streamingItem.AddObserver(this, new NSString("loadedTimeRanges"), NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New, player.Handle);
-
-                player.CurrentItem.SeekingWaitsForVideoCompositionRendering = true;
-                player.CurrentItem.AddObserver(this, (NSString)"status", NSKeyValueObservingOptions.New |
-                    NSKeyValueObservingOptions.Initial, StatusObservationContext.Handle);
-
-                NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification, async (notification) =>
-                {
-                    await PlayNext();
-                }, player.CurrentItem);
-
-                player.Play();
-            }
-            catch (Exception ex)
-            {
-                Status = PlayerStatus.STOPPED;
-
-                //unable to start playback log error
-                Console.WriteLine("Unable to start playback: " + ex);
-            }
-        }
-
-        private PlayerStatus status;
-
-        public PlayerStatus Status
-        {
-            get
-            {
-                return status;
-            }
-            private set
-            {
-                status = value;
-                OnStatusChanged(new StatusChangedEventArgs(status));
-            }
-        }
-
-        public async Task Stop()
-        {
-            await Task.Run(() =>
-            {
-                if (player.CurrentItem == null)
-                    return;
-
-                if (player.Rate != 0.0)
-                    player.Pause();
-
-                player.CurrentItem.Seek(CMTime.FromSeconds(0d, 1));
-
-                Status = PlayerStatus.STOPPED;
-            });
-        }
-
-        public async Task Pause()
-        {
-            await Task.Run(() =>
-            {
-                Status = PlayerStatus.PAUSED;
-
-                if (player.CurrentItem == null)
-                {
-                    return;
-                }
-
-                if (player.Rate != 0.0)
-                    player.Pause();
-            });
-        }
-
-        public async Task Seek(int position)
-        {
-            await Task.Run(() =>
-            {
-                if (player.CurrentItem != null)
-                    player.CurrentItem.Seek(CMTime.FromSeconds((double)position / 1000, 1));
-            });
-        }
+        public IMediaQueue Queue { get; } = new MediaQueue();
+        public IAudioPlayer AudioPlayer { get; } = new AudioPlayerImplementation();
+        public IVideoPlayer VideoPlayer { get; private set; }
+        public IMediaQueue MediaQueue { get; private set; }
+        public IMediaNotificationManager MediaNotificationManager { get; }
+        public IMediaExtractor MediaExtractor { get; }
 
         public async Task PlayNext()
         {
             if (Queue.HasNext())
             {
-                await Stop();
-
+                await _currentPlaybackControl.Stop();
+                var item = Queue[Queue.Index + 1];
+                SetCurrentPlayer(item);
                 Queue.SetNextAsCurrent();
-                await Play();
+                await _currentPlaybackControl.Play(item.Url);
             }
             else
             {
                 // If you don't have a next song in the queue, stop and show the meta-data of the first song.
-                await Stop();
+                await _currentPlaybackControl.Stop();
+                var item = Queue[0];
+                SetCurrentPlayer(item);
                 Queue.SetIndexAsCurrent(0);
-                Cover = null;
+                //Cover = null;
             }
+        }
+
+        private void SetCurrentPlayer(IMediaFile item)
+        {
+            if (item != null)
+                switch (item.Type)
+                {
+                    case MediaFileType.AudioUrl:
+                    case MediaFileType.AudioFile:
+                        _currentPlaybackControl = AudioPlayer;
+                        break;
+                    case MediaFileType.VideoUrl:
+                    case MediaFileType.VideoFile:
+                        break;
+                    case MediaFileType.Other:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
         }
 
         public async Task PlayPrevious()
         {
             // Start current track from beginning if it's the first track or the track has played more than 3sec and you hit "playPrevious".
-            if (!Queue.HasPrevious() || Position > 3000)
+            if (!Queue.HasPrevious() || (Position > TimeSpan.FromSeconds(3)))
             {
-                await Seek(0);
+                await _currentPlaybackControl.Seek(TimeSpan.Zero);
             }
             else
             {
-                await Stop();
-
+                await _currentPlaybackControl.Stop();
+                var previousItem = Queue[Queue.Index - 1];
+                SetCurrentPlayer(previousItem);
                 Queue.SetPreviousAsCurrent();
-                await Play();
+                await _currentPlaybackControl.Play(previousItem);
             }
+        }
+
+        public async Task PlayByPosition(int index)
+        {
+            var item = Queue[index];
+            SetCurrentPlayer(item);
+            await _currentPlaybackControl.Play(item);
+        }
+
+        public MediaPlayerStatus Status => _currentPlaybackControl.Status;
+        public TimeSpan Position => _currentPlaybackControl.Position;
+        public TimeSpan Duration => _currentPlaybackControl.Duration;
+        public TimeSpan Buffered => _currentPlaybackControl.Buffered;
+        public event StatusChangedEventHandler StatusChanged;
+        public event PlayingChangedEventHandler PlayingChanged;
+        public event BufferingChangedEventHandler BufferingChanged;
+        public event MediaFinishedEventHandler MediaFinished;
+        public event MediaFailedEventHandler MediaFailed;
+
+
+        public async Task Play(IMediaFile mediaFile)
+        {
+            _currentMediaFile = mediaFile;
+            SetCurrentPlayer(mediaFile);
+            await _currentPlaybackControl.Play(mediaFile);
+        }
+
+        public async Task Play(string url)
+        {
+            await _currentPlaybackControl.Play(url);
         }
 
         public async Task PlayPause()
         {
-            if (Status == PlayerStatus.PAUSED || Status == PlayerStatus.STOPPED)
-            {
-                await Play();
-            }
+            if ((Status == MediaPlayerStatus.Paused) || (Status == MediaPlayerStatus.Stopped))
+                await _currentPlaybackControl.Play(_currentMediaFile);
             else
-            {
-                await Pause();
-            }
+                await _currentPlaybackControl.Pause();
         }
 
-        public float Rate
+        public async Task Pause()
         {
-            get
-            {
-                if (player != null)
-                {
-                    return player.Rate;
-                }
-                else
-                {
-                    return 0.0f;
-                }
-            }
-            set
-            {
-                if (player != null)
-                {
-                    player.Rate = value;
-                }
-            }
+            await _currentPlaybackControl.Pause();
         }
 
-        public int Position
+        public async Task Stop()
         {
-            get
-            {
-                if (player.CurrentItem == null)
-                    return -1;
-                else
-                    return (int)(player.CurrentItem.CurrentTime.Seconds * 1000);
-            }
+            await _currentPlaybackControl.Stop();
         }
 
-        public int Duration
+        public async Task Seek(TimeSpan position)
         {
-            get
-            {
-                if (player.CurrentItem == null)
-                    return 0;
-                else
-                    return (int)(player.CurrentItem.Duration.Seconds * 1000);
-            }
+            await _currentPlaybackControl.Seek(position);
         }
 
-        public int Buffered
+        private void OnStatusChanged(object sender, StatusChangedEventArgs e)
         {
-            get
-            {
-                var buffered = 0;
-                if (player.CurrentItem != null)
-                {
-                    buffered = (int)(player.CurrentItem.LoadedTimeRanges.Select(tr => tr.CMTimeRangeValue.Start.Seconds + tr.CMTimeRangeValue.Duration.Seconds).Max() * 1000);
-                }
-
-                Console.WriteLine("Buffered size: " + buffered);
-
-                return buffered;
-            }
+            if (sender == _currentPlaybackControl)
+                StatusChanged?.Invoke(sender, e);
         }
 
-
-
-        private UIImage cover;
-        public object Cover
+        private void OnPlayingChanged(object sender, PlayingChangedEventArgs e)
         {
-            get
-            {
-                if (player.CurrentItem == null)
-                    return null;
-                else
-                    return cover;
-            }
-            private set
-            {
-                cover = value as UIImage;
-                OnCoverReloaded(EventArgs.Empty);
-            }
+            if (sender == _currentPlaybackControl)
+                PlayingChanged?.Invoke(sender, e);
         }
 
-        public override void ObserveValue(NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr context)
+        private void OnMediaFinished(object sender, MediaFinishedEventArgs e)
         {
-            Console.WriteLine("Observer triggered for {0}", keyPath);
-
-            switch ((string)keyPath)
-            {
-                case "status":
-                    ObserveStatus();
-                    return;
-
-                case "loadedTimeRanges":
-                    ObserveLoadedTimeRanges();
-                    return;
-
-                default:
-                    Console.WriteLine("Observer triggered for {0} not resolved ...", keyPath);
-                    return;
-            }
+            if (sender == _currentPlaybackControl)
+                MediaFinished?.Invoke(sender, e);
         }
 
-        private void ObserveStatus()
+        private void OnMediaFailed(object sender, MediaFailedEventArgs e)
         {
-            Console.WriteLine("Status Observed Method {0}", player.Status);
-            if (player.Status == AVPlayerStatus.ReadyToPlay && Status == PlayerStatus.BUFFERING)
-            {
-                Status = PlayerStatus.PLAYING;
-                player.Play();
-            }
-            else if (player.Status == AVPlayerStatus.Failed)
-            {
-                Status = PlayerStatus.STOPPED;
-                Console.WriteLine("Stream Failed");
-            }
+            if (sender == _currentPlaybackControl)
+                MediaFailed?.Invoke(sender, e);
         }
 
-        private void ObserveLoadedTimeRanges()
+        private void OnBufferingChanged(object sender, BufferingChangedEventArgs e)
         {
-            var loadedTimeRanges = _player.CurrentItem.LoadedTimeRanges;
-            if (loadedTimeRanges.Length > 0)
-            {
-                CMTimeRange range = loadedTimeRanges[0].CMTimeRangeValue;
-                var duration = TimeSpan.FromSeconds(range.Duration.Seconds);
-                var totalDuration = _player.CurrentItem.Duration;
-                var bufferProgress = duration.TotalSeconds/totalDuration.Seconds;
-                OnBuffering(new BufferingChangedEventArgs(bufferProgress, duration));
-            }
-            OnBuffering(new BufferingChangedEventArgs(0, TimeSpan.Zero));
+            if (sender == _currentPlaybackControl)
+                BufferingChanged?.Invoke(sender, e);
+        }
+
+        public void Dispose()
+        {
+            AudioPlayer.BufferingChanged -= OnBufferingChanged;
+            AudioPlayer.MediaFailed -= OnMediaFailed;
+            AudioPlayer.MediaFinished -= OnMediaFinished;
+            AudioPlayer.PlayingChanged -= OnPlayingChanged;
+            AudioPlayer.StatusChanged -= OnStatusChanged;
         }
     }
 }
