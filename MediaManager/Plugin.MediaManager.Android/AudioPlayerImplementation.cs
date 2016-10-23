@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.OS;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
@@ -122,6 +124,41 @@ namespace Plugin.MediaManager
         {
             await BinderReady();
             await binder.GetMediaPlayerService().Stop();
+        }
+
+        private class MediaPlayerServiceConnection : Java.Lang.Object, IServiceConnection
+        {
+            private AudioPlayerImplementation instance;
+
+            public MediaPlayerServiceConnection(AudioPlayerImplementation mediaPlayer)
+            {
+                this.instance = mediaPlayer;
+            }
+
+            public void OnServiceConnected(ComponentName name, IBinder service)
+            {
+                var mediaPlayerServiceBinder = service as MediaPlayerServiceBinder;
+                if (mediaPlayerServiceBinder != null)
+                {
+                    var serviceBinder = (MediaPlayerServiceBinder)service;
+                    instance.Binder = serviceBinder;
+                    instance.isBound = true;
+
+                    if (instance.AlternateRemoteCallback != null)
+                        serviceBinder.GetMediaPlayerService().AlternateRemoteCallback = instance.AlternateRemoteCallback;
+
+                    //serviceBinder.GetMediaPlayerService().CoverReloaded += (object sender, EventArgs e) => { instance.CoverReloaded?.Invoke(sender, e); };
+                    serviceBinder.GetMediaPlayerService().StatusChanged += (object sender, StatusChangedEventArgs e) => { instance.StatusChanged?.Invoke(sender, e); };
+                    serviceBinder.GetMediaPlayerService().PlayingChanged += (sender, args) => { instance.PlayingChanged?.Invoke(sender, args); };
+                    serviceBinder.GetMediaPlayerService().BufferingChanged += (sender, args) => { instance.BufferingChanged?.Invoke(sender, args); };
+                    serviceBinder.GetMediaPlayerService().MediaFinished += (sender, args) => { instance.MediaFinished?.Invoke(sender, args); };
+                }
+            }
+
+            public void OnServiceDisconnected(ComponentName name)
+            {
+                instance.isBound = false;
+            }
         }
     }
 }
