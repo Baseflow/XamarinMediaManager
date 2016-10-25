@@ -82,5 +82,11 @@ namespace Plugin.MediaManager
         {
             throw new NotImplementedException();
         }
+
+        public IVideoSurface RenderSurface { get; set; }
+        public void SetVideoSurface(IVideoSurface videoSurface)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
