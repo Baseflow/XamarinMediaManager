@@ -76,5 +76,20 @@ namespace Plugin.MediaManager.Abstractions
         /// Start playing a track by its position in the Queue
         /// </summary>
         Task PlayByPosition(int index);
+
+        /// <summary>
+        /// Adds all MediaFiles to the Queue and starts playing the first item
+        /// </summary>
+        Task Play(IEnumerable<IMediaFile> mediaFiles);
+
+        /// <summary>
+        /// Raised when metadata of MediaFile is changed
+        /// </summary>
+        event MediaFileChangedEventHandler MediaFileChanged;
+
+        /// <summary>
+        /// Raised when mediadata of MediaFile failed to update
+        /// </summary>
+        event MediaFileFailedEventHandler MediaFileFailed;
     }
 }
