@@ -216,6 +216,13 @@ namespace Plugin.MediaManager
             ElementCompositionPreview.SetElementChildVisual(canvas, container);
         }
 
+        public VideoAspectMode AspectMode { get; }
+
+        public void SetAspectMode(VideoAspectMode aspectMode)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task<MediaSource> CreateMediaSource(string url, MediaFileType fileType)
         {
             switch (fileType)

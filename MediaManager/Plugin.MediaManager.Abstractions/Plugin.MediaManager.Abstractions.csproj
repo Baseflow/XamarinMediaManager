@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMediaManager.cs" />
+    <Compile Include="Implementations\VideoAspectMode.cs" />
     <Compile Include="IPlaybackManager.cs" />
     <Compile Include="IVideoSurface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

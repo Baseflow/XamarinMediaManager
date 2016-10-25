@@ -88,5 +88,12 @@ namespace Plugin.MediaManager
         {
             throw new NotImplementedException();
         }
+
+        public VideoAspectMode AspectMode { get; }
+
+        public void SetAspectMode(VideoAspectMode aspectMode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
