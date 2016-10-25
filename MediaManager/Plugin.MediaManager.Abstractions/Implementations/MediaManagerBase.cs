@@ -11,12 +11,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
     /// </summary>
     public abstract class MediaManagerBase : IMediaManager, IDisposable
     {
-        private IMediaFile _currentMediaFile;
         private IPlaybackManager _currentPlaybackManager;
         private IPlaybackManager CurrentPlaybackManager { 
             get {
                 if (_currentPlaybackManager == null && _currentMediaFile != null)
-                    SetCurrentPlayer(_currentMediaFile);
+                    SetCurrentPlayer(_currentMediaFile.Type);
                 else if (_currentPlaybackManager == null)
                     throw new Exception("No player is set");
                 return _currentPlaybackManager;
@@ -33,7 +32,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             RemoveEventHandlers();
         }
 
-        public virtual IMediaQueue MediaQueue { get; set; } = new MediaQueue();
+        public virtual IMediaQueue MediaQueue { get; protected set; } =  new MediaQueue();
         public abstract IAudioPlayer AudioPlayer { get; set; }
         public abstract IVideoPlayer VideoPlayer { get; set; }
         public abstract IMediaNotificationManager MediaNotificationManager { get; set; }
@@ -45,7 +44,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             {
                 await CurrentPlaybackManager.Stop();
                 var item = MediaQueue[MediaQueue.Index + 1];
-                SetCurrentPlayer(item.Type);
                 MediaQueue.SetNextAsCurrent();
                 await CurrentPlaybackManager.Play(item);
             }
@@ -54,7 +52,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 // If you don't have a next song in the queue, stop and show the meta-data of the first song.
                 await CurrentPlaybackManager.Stop();
                 var item = MediaQueue[0];
-                SetCurrentPlayer(item.Type);
                 MediaQueue.SetIndexAsCurrent(0);
                 //Cover = null;
             }
@@ -178,7 +175,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 }
                 catch (Exception e)
                 {
-                    MediaFileFailed?.Invoke(this, new MediaFileFailedEventArgs(e));
+                    MediaFileFailed?.Invoke(this, new MediaFileFailedEventArgs(e, mediaFile));
                 }
             }
         }

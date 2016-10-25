@@ -51,11 +51,6 @@ namespace Plugin.MediaManager.Abstractions
         IMediaExtractor MediaExtractor { get; }
 
         /// <summary>
-        /// Adds all MediaFiles to the Queue and starts playing the first item
-        /// </summary>
-        Task Play(IEnumerable<IMediaFile> mediaFiles);
-
-        /// <summary>
         /// Creates new MediaFile object, adds it to the queue and starts playing
         /// </summary>
         Task Play(string url, MediaFileType fileType);

@@ -16,6 +16,7 @@ namespace Plugin.MediaManager
         private readonly Timer _playProgressTimer;
         private TaskCompletionSource<bool> _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
         private MediaPlayerStatus _status;
+        private IMediaFile _currentMediaFile;
 
         public AudioPlayerImplementation()
         {
@@ -73,7 +74,7 @@ namespace Plugin.MediaManager
                 }
             };
 
-            _player.MediaEnded += (sender, args) => { MediaFinished?.Invoke(this, new MediaFinishedEventArgs()); };
+            _player.MediaEnded += (sender, args) => { MediaFinished?.Invoke(this, new MediaFinishedEventArgs(_currentMediaFile)); };
             _player.PlaybackSession.BufferingProgressChanged += (sender, args) =>
             {
                 var bufferedTime =
@@ -136,12 +137,8 @@ namespace Plugin.MediaManager
 
         public async Task Play(IMediaFile mediaFile)
         {
+            _currentMediaFile = mediaFile;
             await Play(mediaFile.Url);
-        }
-
-        public async Task Play(string url, MediaFileType fileType)
-        {
-            await Play(url);
         }
 
         public async Task Seek(TimeSpan position)
@@ -157,7 +154,7 @@ namespace Plugin.MediaManager
             return Task.CompletedTask;
         }
 
-        public async Task Play(string url)
+        private async Task Play(string url)
         {
             _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
             try

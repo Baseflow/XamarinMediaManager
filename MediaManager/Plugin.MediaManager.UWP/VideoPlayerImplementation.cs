@@ -22,6 +22,7 @@ namespace Plugin.MediaManager
         private MediaSource _currentMediaSource;
         private TaskCompletionSource<bool> _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
         private MediaPlayerStatus _status;
+        private IMediaFile _currentMediaFile;
 
         public VideoPlayerImplementation()
         {
@@ -81,7 +82,7 @@ namespace Plugin.MediaManager
                 }
             };
 
-            _player.MediaEnded += (sender, args) => { MediaFinished?.Invoke(this, new MediaFinishedEventArgs()); };
+            _player.MediaEnded += (sender, args) => { MediaFinished?.Invoke(this, new MediaFinishedEventArgs(_currentMediaFile)); };
             _player.PlaybackSession.BufferingProgressChanged += (sender, args) =>
             {
                 var bufferedTime =
@@ -144,6 +145,7 @@ namespace Plugin.MediaManager
 
         public async Task Play(IMediaFile mediaFile)
         {
+            _currentMediaFile = mediaFile;
             await Play(mediaFile.Url, mediaFile.Type);
         }
 

@@ -59,11 +59,6 @@ namespace Plugin.MediaManager.Abstractions
         Task Play(IMediaFile mediaFile);
 
         /// <summary>
-        /// Creates new MediaFile object, adds it to the queue and starts playing
-        /// </summary>
-        Task Play(string url, MediaFileType fileType);
-
-        /// <summary>
         /// Start playing if nothing is playing, otherwise it pauses the current media
         /// </summary>
         Task PlayPause();
