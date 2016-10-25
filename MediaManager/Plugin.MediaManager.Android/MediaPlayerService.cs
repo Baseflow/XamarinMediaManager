@@ -44,8 +44,6 @@ namespace Plugin.MediaManager
         private bool manuallyPaused = false;
         private bool transientPaused = false;
 
-        public IMediaQueue Queue { get; set; } = new MediaQueue();
-
         public MediaPlayer mediaPlayer;
         private AudioManager audioManager;
 
@@ -107,15 +105,9 @@ namespace Plugin.MediaManager
         private const int NotificationId = 1;
 
         public event StatusChangedEventHandler StatusChanged;
-
-        //public event CoverReloadedEventHandler CoverReloaded;
-
         public event PlayingChangedEventHandler PlayingChanged;
-
         public event BufferingChangedEventHandler BufferingChanged;
-
         public event MediaFinishedEventHandler MediaFinished;
-
         public event MediaFailedEventHandler MediaFailed;
         public event MediaFileChangedEventHandler MediaFileChanged;
         public event MediaFileFailedEventHandler MediaFileFailed;
@@ -198,6 +190,7 @@ namespace Plugin.MediaManager
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                MediaFailed?.Invoke(this, new MediaFailedEventArgs("Cannot initilize mediasession", ex));
             }
         }
 
@@ -249,8 +242,8 @@ namespace Plugin.MediaManager
 
         public async void OnCompletion(MediaPlayer mp)
         {
-            await PlayNext();
-            MediaFinished?.Invoke(this, new MediaFinishedEventArgs());
+            //await PlayNext();
+            //MediaFinished?.Invoke(this, new MediaFinishedEventArgs());
         }
 
         public bool OnError(MediaPlayer mp, MediaError what, int extra)
@@ -333,26 +326,14 @@ namespace Plugin.MediaManager
             }
         }
 
-        public async Task Play(IMediaFile mediaFile)
+        public async Task Play(IMediaFile mediaFile = null)
         {
-            await Play(mediaFile.Url, mediaFile.Type);
-        }
-
-        /// <summary>
-        /// Intializes the player.
-        /// </summary>
-        public async Task Play(string url, MediaFileType type)
-        {
-            if (!string.IsNullOrEmpty(url))
+            if (mediaFile != null && !string.IsNullOrEmpty(mediaFile.Url))
             {
-                currentAudioUrl = url;
-                currentFileType = type;
-                await Play();
+                currentAudioUrl = mediaFile.Url;
+                currentFileType = mediaFile.Type;
             }
-        }
 
-        public async Task Play()
-        {
             manuallyPaused = false;
             if (mediaPlayer != null && MediaPlayerState == PlaybackStateCompat.StatePaused)
             {
@@ -395,9 +376,10 @@ namespace Plugin.MediaManager
                     InitializePlayerWithURL(currentAudioUrl);
                     DataSourceSet = true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     DataSourceSet = false;
+                    MediaFileFailed?.Invoke(this, new MediaFileFailedEventArgs(ex, mediaFile));
                 }
             }
 
@@ -437,9 +419,10 @@ namespace Plugin.MediaManager
                         {
                             Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
                         }
-                        catch (Java.Lang.OutOfMemoryError)
+                        catch (Java.Lang.OutOfMemoryError ex)
                         {
                             Cover = null;
+                            MediaFileFailed?.Invoke(this, new MediaFileFailedEventArgs(ex, mediaFile));
                         }
                     }
                     StartedPlayback = true;
@@ -447,8 +430,7 @@ namespace Plugin.MediaManager
                 catch (Exception ex)
                 {
                     StartedPlayback = false;
-                    //unable to start playback log error
-                    Console.WriteLine(ex);
+                    MediaFailed?.Invoke(this, new MediaFailedEventArgs("", ex));
                 }
                 if (!StartedPlayback)
                 {
@@ -623,7 +605,7 @@ namespace Plugin.MediaManager
                 }
             });
         }
-
+        /*
         public async Task PlayNext()
         {
             if (Queue.HasNext())
@@ -716,7 +698,7 @@ namespace Plugin.MediaManager
                 {
                     mediaPlayer.Reset();
                 }
-                catch (Java.Lang.IllegalStateException)
+                catch (Java.Lang.IllegalStateException ex)
                 { }
 
                 StopNotification();
@@ -770,7 +752,7 @@ namespace Plugin.MediaManager
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                MediaFailed?.Invoke(this, new MediaFailedEventArgs("", ex));
             }
         }
 
@@ -948,7 +930,7 @@ namespace Plugin.MediaManager
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                MediaFailed?.Invoke(this, new MediaFailedEventArgs("", ex));
             }
         }
 
@@ -1058,7 +1040,7 @@ namespace Plugin.MediaManager
 
             public override void OnSkipToNext()
             {
-                mediaPlayerService.GetMediaPlayerService().PlayNext();
+                //mediaPlayerService.GetMediaPlayerService().PlayNext();
                 base.OnSkipToNext();
             }
 

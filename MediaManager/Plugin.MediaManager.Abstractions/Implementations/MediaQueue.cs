@@ -142,12 +142,10 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public event QueueEndedEventHandler QueueEnded;
         public event QueueMediaChangedEventHandler QueueMediaChanged;
 
-        protected void OnPropertyChanged(string name)
+        protected virtual void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void Add(IMediaFile item)

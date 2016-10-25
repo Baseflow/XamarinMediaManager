@@ -103,13 +103,6 @@ namespace Plugin.MediaManager
             }
         }
 
-        public async Task Play(string url, MediaFileType fileType)
-        {
-            if (!string.IsNullOrEmpty(url))
-                nsUrl = NSUrl.FromString(url);
-            await Play();
-        }
-
         public async Task Stop()
         {
             await Task.Run(() =>
@@ -158,12 +151,6 @@ namespace Plugin.MediaManager
         public event MediaFileFailedEventHandler MediaFileFailed;
         public event MediaFileChangedEventHandler MediaFileChanged;
 
-        public async Task Play(IMediaFile mediaFile)
-        {
-            nsUrl = new NSUrl(mediaFile.Url);
-            await Play();
-        }
-
         public async Task Seek(TimeSpan position)
         {
             await Task.Run(() => { Player.CurrentItem?.Seek(CMTime.FromSeconds(position.TotalSeconds, 1)); });
@@ -200,8 +187,11 @@ namespace Plugin.MediaManager
             });
         }
 
-        private async Task Play()
+        public async Task Play(IMediaFile mediaFile = null)
         {
+            if(mediaFile != null)
+                nsUrl = new NSUrl(mediaFile.Url);
+
             if (Status == MediaPlayerStatus.Paused)
             {
                 Status = MediaPlayerStatus.Playing;
@@ -231,7 +221,7 @@ namespace Plugin.MediaManager
                     StatusObservationContext.Handle);
 
                 NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification,
-                    notification => MediaFinished?.Invoke(this, new MediaFinishedEventArgs()), Player.CurrentItem);
+                                                               notification => MediaFinished?.Invoke(this, new MediaFinishedEventArgs(mediaFile)), Player.CurrentItem);
 
                 Player.Play();
             }
@@ -302,11 +292,6 @@ namespace Plugin.MediaManager
                 BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(bufferProgress, duration));
             }
             BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
-        }
-
-        public Task Play(IEnumerable<IMediaFile> mediaFiles)
-        {
-            throw new NotImplementedException();
         }
     }
 }

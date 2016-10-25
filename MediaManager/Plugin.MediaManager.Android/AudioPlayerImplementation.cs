@@ -93,22 +93,16 @@ namespace Plugin.MediaManager
             {
                 case MediaFileType.AudioUrl:
                     await BinderReady();
-                    await binder.GetMediaPlayerService().Play(mediaFile.Url, MediaFileType.AudioUrl);
+                    await binder.GetMediaPlayerService().Play(mediaFile);
                     break;
                 case MediaFileType.AudioFile:
                     await BinderReady();
-                    await binder.GetMediaPlayerService().Play(mediaFile.Url, MediaFileType.AudioFile);
+                    await binder.GetMediaPlayerService().Play(mediaFile);
                     break;
                 default:
                     await Task.FromResult(0);
                     break;
             }
-        }
-
-        public async Task Play(string url, MediaFileType fileType)
-        {
-            await BinderReady();
-            await binder.GetMediaPlayerService().Play(url, fileType);
         }
 
         public async Task PlayPause()

@@ -62,6 +62,7 @@
     <Compile Include="Implementations\MediaManagerBase.cs" />
     <Compile Include="EventArguments\MediaFileChangedEventArgs.cs" />
     <Compile Include="EventArguments\MediaFileFailedEventArgs.cs" />
+    <Compile Include="Implementations\MediaFile.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

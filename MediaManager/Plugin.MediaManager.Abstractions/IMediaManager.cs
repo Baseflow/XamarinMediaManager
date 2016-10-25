@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.EventArguments;
+using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
@@ -47,6 +49,16 @@ namespace Plugin.MediaManager.Abstractions
         /// Extracts media information to put it into an IMediaFile
         /// </summary>
         IMediaExtractor MediaExtractor { get; }
+
+        /// <summary>
+        /// Adds all MediaFiles to the Queue and starts playing the first item
+        /// </summary>
+        Task Play(IEnumerable<IMediaFile> mediaFiles);
+
+        /// <summary>
+        /// Creates new MediaFile object, adds it to the queue and starts playing
+        /// </summary>
+        Task Play(string url, MediaFileType fileType);
 
         /// <summary>
         /// Should be the same as calling PlayByPosition(Queue.size()+1)
