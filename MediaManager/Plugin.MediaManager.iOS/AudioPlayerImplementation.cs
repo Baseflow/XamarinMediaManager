@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -154,6 +155,8 @@ namespace Plugin.MediaManager
         public event BufferingChangedEventHandler BufferingChanged;
         public event MediaFinishedEventHandler MediaFinished;
         public event MediaFailedEventHandler MediaFailed;
+        public event MediaFileChangedEventHandler MediaFileUpdated;
+        public event MediaFileFailedEventHandler MediaFileFailed;
 
         public async Task Play(IMediaFile mediaFile)
         {
@@ -299,6 +302,11 @@ namespace Plugin.MediaManager
                 BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(bufferProgress, duration));
             }
             BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
+        }
+
+        public Task Play(IEnumerable<IMediaFile> mediaFiles)
+        {
+            throw new NotImplementedException();
         }
     }
 }

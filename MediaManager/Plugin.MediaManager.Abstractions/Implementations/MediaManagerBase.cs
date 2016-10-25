@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
@@ -13,10 +14,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         private IPlaybackManager _currentPlaybackManager;
         private IMediaFile _currentMediaFile;
 
-        public IMediaQueue Queue { get; set; } = new MediaQueue();
+        public virtual IMediaQueue MediaQueue { get; set; } = new MediaQueue();
         public abstract IAudioPlayer AudioPlayer { get; set; }
         public abstract IVideoPlayer VideoPlayer { get; set; }
-        public abstract IMediaQueue MediaQueue { get; set; }
         public abstract IMediaNotificationManager MediaNotificationManager { get; set; }
         public abstract IMediaExtractor MediaExtractor { get; set; }
 
@@ -25,31 +25,26 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         /// </summary>
         protected void Init()
         {
-            _currentPlaybackManager = AudioPlayer;
-            AudioPlayer.BufferingChanged += OnBufferingChanged;
-            AudioPlayer.MediaFailed += OnMediaFailed;
-            AudioPlayer.MediaFinished += OnMediaFinished;
-            AudioPlayer.PlayingChanged += OnPlayingChanged;
-            AudioPlayer.StatusChanged += OnStatusChanged;
+
         }
 
         public async Task PlayNext()
         {
-            if (Queue.HasNext())
+            if (MediaQueue.HasNext())
             {
                 await _currentPlaybackManager.Stop();
-                var item = Queue[Queue.Index + 1];
+                var item = MediaQueue[MediaQueue.Index + 1];
                 SetCurrentPlayer(item);
-                Queue.SetNextAsCurrent();
+                MediaQueue.SetNextAsCurrent();
                 await _currentPlaybackManager.Play(item);
             }
             else
             {
                 // If you don't have a next song in the queue, stop and show the meta-data of the first song.
                 await _currentPlaybackManager.Stop();
-                var item = Queue[0];
+                var item = MediaQueue[0];
                 SetCurrentPlayer(item);
-                Queue.SetIndexAsCurrent(0);
+                MediaQueue.SetIndexAsCurrent(0);
                 //Cover = null;
             }
         }
@@ -57,6 +52,8 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         private void SetCurrentPlayer(IMediaFile item)
         {
             if (item != null)
+            {
+                RemoveEventHandlers();
                 switch (item.Type)
                 {
                     case MediaFileType.AudioUrl:
@@ -65,34 +62,37 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                         break;
                     case MediaFileType.VideoUrl:
                     case MediaFileType.VideoFile:
+                        _currentPlaybackManager = VideoPlayer;
                         break;
                     case MediaFileType.Other:
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+                AddEventHandlers();
+            }
         }
 
         public async Task PlayPrevious()
         {
             // Start current track from beginning if it's the first track or the track has played more than 3sec and you hit "playPrevious".
-            if (!Queue.HasPrevious() || (Position > TimeSpan.FromSeconds(3)))
+            if (!MediaQueue.HasPrevious() || (Position > TimeSpan.FromSeconds(3)))
             {
                 await _currentPlaybackManager.Seek(TimeSpan.Zero);
             }
             else
             {
                 await _currentPlaybackManager.Stop();
-                var previousItem = Queue[Queue.Index - 1];
+                var previousItem = MediaQueue[MediaQueue.Index - 1];
                 SetCurrentPlayer(previousItem);
-                Queue.SetPreviousAsCurrent();
+                MediaQueue.SetPreviousAsCurrent();
                 await _currentPlaybackManager.Play(previousItem);
             }
         }
 
         public async Task PlayByPosition(int index)
         {
-            var item = Queue[index];
+            var item = MediaQueue[index];
             SetCurrentPlayer(item);
             await _currentPlaybackManager.Play(item);
         }
@@ -106,13 +106,25 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public event BufferingChangedEventHandler BufferingChanged;
         public event MediaFinishedEventHandler MediaFinished;
         public event MediaFailedEventHandler MediaFailed;
-
+        public event MediaFileChangedEventHandler MediaFileChanged;
+        public event MediaFileFailedEventHandler MediaFileFailed;
+        public event MediaFileChangedEventHandler MediaFileUpdated;
 
         public async Task Play(IMediaFile mediaFile)
         {
+            MediaQueue.Clear();
+            MediaQueue.Add(mediaFile);
+
             _currentMediaFile = mediaFile;
             SetCurrentPlayer(mediaFile);
             await _currentPlaybackManager.Play(mediaFile);
+        }
+
+        public async Task Play(IEnumerable<IMediaFile> mediaFiles)
+        {
+            MediaQueue.Clear();
+            MediaQueue.AddRange(mediaFiles);
+            await PlayNext();
         }
 
         public async Task Play(string url, MediaFileType fileType)
@@ -173,13 +185,27 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 BufferingChanged?.Invoke(sender, e);
         }
 
+        private void AddEventHandlers()
+        {
+            _currentPlaybackManager.BufferingChanged += OnBufferingChanged;
+            _currentPlaybackManager.MediaFailed += OnMediaFailed;
+            _currentPlaybackManager.MediaFinished += OnMediaFinished;
+            _currentPlaybackManager.PlayingChanged += OnPlayingChanged;
+            _currentPlaybackManager.StatusChanged += OnStatusChanged;
+        }
+
+        private void RemoveEventHandlers()
+        {
+            _currentPlaybackManager.BufferingChanged -= OnBufferingChanged;
+            _currentPlaybackManager.MediaFailed -= OnMediaFailed;
+            _currentPlaybackManager.MediaFinished -= OnMediaFinished;
+            _currentPlaybackManager.PlayingChanged -= OnPlayingChanged;
+            _currentPlaybackManager.StatusChanged -= OnStatusChanged;
+        }
+
         public void Dispose()
         {
-            AudioPlayer.BufferingChanged -= OnBufferingChanged;
-            AudioPlayer.MediaFailed -= OnMediaFailed;
-            AudioPlayer.MediaFinished -= OnMediaFinished;
-            AudioPlayer.PlayingChanged -= OnPlayingChanged;
-            AudioPlayer.StatusChanged -= OnStatusChanged;
+            RemoveEventHandlers();
         }
     }
 }

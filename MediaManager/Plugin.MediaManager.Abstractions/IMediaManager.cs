@@ -13,6 +13,10 @@ namespace Plugin.MediaManager.Abstractions
 
     public delegate void MediaFailedEventHandler(object sender, MediaFailedEventArgs e);
 
+    public delegate void MediaFileChangedEventHandler(object sender, MediaFileChangedEventArgs e);
+
+    public delegate void MediaFileFailedEventHandler(object sender, MediaFileFailedEventArgs e);
+
     /// <summary>
     /// The main purpose of this class is to be a controlling unit for all the single MediaItem implementations, who
     /// in themselve can play their media, but need a central controling unit, surrounding them

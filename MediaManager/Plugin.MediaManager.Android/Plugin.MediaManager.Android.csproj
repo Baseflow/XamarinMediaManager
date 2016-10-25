@@ -87,6 +87,7 @@
     <Compile Include="MusicBroadcastReceiver.cs" />
     <Compile Include="RemoteControlBroadcastReceiver.cs" />
     <Compile Include="AudioPlayerImplementation.cs" />
+    <Compile Include="VideoPlayerImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

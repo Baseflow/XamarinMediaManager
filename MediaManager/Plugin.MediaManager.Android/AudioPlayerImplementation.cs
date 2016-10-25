@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -77,6 +78,8 @@ namespace Plugin.MediaManager
         public event MediaFinishedEventHandler MediaFinished;
         public event PlayingChangedEventHandler PlayingChanged;
         public event StatusChangedEventHandler StatusChanged;
+        public event MediaFileChangedEventHandler MediaFileUpdated;
+        public event MediaFileFailedEventHandler MediaFileFailed;
 
         public async Task Pause()
         {
@@ -124,6 +127,11 @@ namespace Plugin.MediaManager
         {
             await BinderReady();
             await binder.GetMediaPlayerService().Stop();
+        }
+
+        public Task Play(IEnumerable<IMediaFile> mediaFiles)
+        {
+            throw new NotImplementedException();
         }
 
         private class MediaPlayerServiceConnection : Java.Lang.Object, IServiceConnection

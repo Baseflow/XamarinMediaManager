@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.Implementations;
 
@@ -53,12 +54,27 @@ namespace Plugin.MediaManager.Abstractions
         event MediaFailedEventHandler MediaFailed;
 
         /// <summary>
-        /// Starts playing from the current position
+        /// Raised when metadata of MediaFile is changed
+        /// </summary>
+        event MediaFileChangedEventHandler MediaFileUpdated;
+
+        /// <summary>
+        /// Raised when mediadata of MediaFile failed to update
+        /// </summary>
+        event MediaFileFailedEventHandler MediaFileFailed;
+
+        /// <summary>
+        /// Adds MediaFile to the Queue and starts playing
         /// </summary>
         Task Play(IMediaFile mediaFile);
 
         /// <summary>
-        /// Starts playing from the current position
+        /// Adds all MediaFiles to the Queue and starts playing the first item
+        /// </summary>
+        Task Play(IEnumerable<IMediaFile> mediaFiles);
+
+        /// <summary>
+        /// Creates new MediaFile object, adds it to the queue and starts playing
         /// </summary>
         Task Play(string url, MediaFileType fileType);
 

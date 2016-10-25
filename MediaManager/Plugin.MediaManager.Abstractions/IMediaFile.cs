@@ -6,6 +6,8 @@ namespace Plugin.MediaManager.Abstractions
 {
     public interface IMediaFile : INotifyPropertyChanged
     {
+        Guid Id { get; set; }
+
         /// <summary>
         /// Indicator for player which type of file it should play
         /// </summary>
