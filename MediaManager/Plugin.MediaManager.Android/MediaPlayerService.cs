@@ -117,6 +117,8 @@ namespace Plugin.MediaManager
         public event MediaFinishedEventHandler MediaFinished;
 
         public event MediaFailedEventHandler MediaFailed;
+        public event MediaFileChangedEventHandler MediaFileChanged;
+        public event MediaFileFailedEventHandler MediaFileFailed;
 
         private Handler PlayingHandler;
         private Java.Lang.Runnable PlayingHandlerRunnable;
@@ -1026,6 +1028,11 @@ namespace Plugin.MediaManager
                     break;
 
             }
+        }
+
+        public Task Play(IEnumerable<IMediaFile> mediaFiles)
+        {
+            throw new NotImplementedException();
         }
 
         public class MediaSessionCallback : MediaSessionCompat.Callback

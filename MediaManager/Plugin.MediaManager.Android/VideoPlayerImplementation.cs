@@ -43,7 +43,7 @@ namespace Plugin.MediaManager
         public event BufferingChangedEventHandler BufferingChanged;
         public event MediaFailedEventHandler MediaFailed;
         public event MediaFileFailedEventHandler MediaFileFailed;
-        public event MediaFileChangedEventHandler MediaFileUpdated;
+        public event MediaFileChangedEventHandler MediaFileChanged;
         public event MediaFinishedEventHandler MediaFinished;
         public event PlayingChangedEventHandler PlayingChanged;
         public event StatusChangedEventHandler StatusChanged;

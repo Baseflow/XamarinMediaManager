@@ -7,7 +7,7 @@ namespace Plugin.MediaManager.Tests
 {
     class MediaFile : IMediaFile
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; } = new Guid();
         public MediaFileType Type { get; set; }
         public string Url { get; set; }
 
