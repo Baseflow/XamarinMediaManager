@@ -8,15 +8,10 @@ namespace Plugin.MediaManager
     /// </summary>
     public class MediaManagerImplementation : MediaManagerBase
     {
-        public MediaManagerImplementation()
-        {
-            Init();
-        }
-
         public override IAudioPlayer AudioPlayer { get; set; }  = new AudioPlayerImplementation();
-        public override IVideoPlayer VideoPlayer { get; set; }
+        public override IVideoPlayer VideoPlayer { get; set; } = new VideoPlayerImplementation();
         public override IMediaQueue MediaQueue { get; set; }
         public override IMediaNotificationManager MediaNotificationManager { get; set; }
-        public override IMediaExtractor MediaExtractor { get; set; }
+        public override IMediaExtractor MediaExtractor { get; set; } = new MediaExtractorImplementation();
     }
 }
