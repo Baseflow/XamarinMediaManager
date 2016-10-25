@@ -15,6 +15,7 @@ namespace Plugin.MediaManager
         private readonly MediaPlayer _player;
         private readonly Timer _playProgressTimer;
         private TaskCompletionSource<bool> _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
+        private MediaPlayerStatus _status;
 
         public AudioPlayerImplementation()
         {
@@ -30,6 +31,13 @@ namespace Plugin.MediaManager
                 }
             }, null, 0, int.MaxValue);
 
+            _player.MediaFailed += (sender, args) =>
+                {
+                    _status = MediaPlayerStatus.Failed;
+                    _playProgressTimer.Change(0, int.MaxValue);
+                    MediaFailed?.Invoke(this, new MediaFailedEventArgs(args.ErrorMessage, args.ExtendedErrorCode));
+                };
+
             _player.PlaybackSession.PlaybackStateChanged += (sender, args) =>
             {
                 switch (sender.PlaybackState)
@@ -38,26 +46,26 @@ namespace Plugin.MediaManager
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
                     case MediaPlaybackState.Opening:
-                        State = MediaPlayerStatus.Loading;
+                        Status = MediaPlayerStatus.Loading;
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
                     case MediaPlaybackState.Buffering:
-                        State = MediaPlayerStatus.Buffering;
+                        Status = MediaPlayerStatus.Buffering;
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
                     case MediaPlaybackState.Playing:
-                        if (sender.PlaybackRate <= 0)
+                        if (sender.PlaybackRate <= 0 && sender.Position == TimeSpan.Zero)
                         {
-                            State = MediaPlayerStatus.Stopped;
+                            Status = MediaPlayerStatus.Stopped;
                         }
                         else
                         {
-                            State = MediaPlayerStatus.Playing;
+                            Status = MediaPlayerStatus.Playing;
                             _playProgressTimer.Change(0, 50);
                         }
                         break;
                     case MediaPlaybackState.Paused:
-                        State = MediaPlayerStatus.Paused;
+                        Status = MediaPlayerStatus.Paused;
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
                     default:
@@ -76,25 +84,16 @@ namespace Plugin.MediaManager
             };
 
             _player.PlaybackSession.SeekCompleted += (sender, args) => { };
-
-            _player.MediaFailed += (sender, args) =>
-            {
-                _playProgressTimer.Change(0, int.MaxValue);
-                _loadMediaTaskCompletionSource.SetException(new Exception("Media failed to load"));
-            };
-
             _player.MediaOpened += (sender, args) => { _loadMediaTaskCompletionSource.SetResult(true); };
         }
 
-        public IMediaQueue Queue { get; set; }
-
-        public MediaPlayerStatus State
+        public MediaPlayerStatus Status
         {
-            get { return Status; }
+            get { return _status; }
             private set
             {
-                Status = value;
-                StatusChanged?.Invoke(this, new StatusChangedEventArgs(Status));
+                _status = value;
+                StatusChanged?.Invoke(this, new StatusChangedEventArgs(_status));
             }
         }
 
@@ -116,8 +115,6 @@ namespace Plugin.MediaManager
         }
 
         public TimeSpan Duration => _player?.PlaybackSession.NaturalDuration ?? TimeSpan.Zero;
-        public MediaPlayerStatus Status { get; private set; }
-
         public TimeSpan Position => _player?.PlaybackSession.Position ?? TimeSpan.Zero;
 
         public Task Pause()
@@ -131,7 +128,7 @@ namespace Plugin.MediaManager
 
         public async Task PlayPause()
         {
-            if ((Status == MediaPlayerStatus.Paused) || (Status == MediaPlayerStatus.Stopped))
+            if ((_status == MediaPlayerStatus.Paused) || (_status == MediaPlayerStatus.Stopped))
                 await Play();
             else
                 await Pause();
