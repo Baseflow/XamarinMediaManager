@@ -108,7 +108,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public event MediaFailedEventHandler MediaFailed;
         public event MediaFileChangedEventHandler MediaFileChanged;
         public event MediaFileFailedEventHandler MediaFileFailed;
-        public event MediaFileChangedEventHandler MediaFileUpdated;
 
         public async Task Play(IMediaFile mediaFile)
         {
@@ -185,6 +184,18 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 BufferingChanged?.Invoke(sender, e);
         }
 
+        private void OnMediaFileChanged(object sender, MediaFileChangedEventArgs e)
+        {
+            if (sender == _currentPlaybackManager)
+                MediaFileChanged?.Invoke(sender, e);
+        }
+
+        private void OnMediaFileFailed(object sender, MediaFileFailedEventArgs e)
+        {
+            if (sender == _currentPlaybackManager)
+                MediaFileFailed?.Invoke(sender, e);
+        }
+
         private void AddEventHandlers()
         {
             _currentPlaybackManager.BufferingChanged += OnBufferingChanged;
@@ -192,6 +203,8 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _currentPlaybackManager.MediaFinished += OnMediaFinished;
             _currentPlaybackManager.PlayingChanged += OnPlayingChanged;
             _currentPlaybackManager.StatusChanged += OnStatusChanged;
+            _currentPlaybackManager.MediaFileChanged += OnMediaFileChanged;
+            _currentPlaybackManager.MediaFileFailed += OnMediaFileFailed;
         }
 
         private void RemoveEventHandlers()
@@ -201,6 +214,8 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _currentPlaybackManager.MediaFinished -= OnMediaFinished;
             _currentPlaybackManager.PlayingChanged -= OnPlayingChanged;
             _currentPlaybackManager.StatusChanged -= OnStatusChanged;
+            _currentPlaybackManager.MediaFileChanged -= OnMediaFileChanged;
+            _currentPlaybackManager.MediaFileFailed -= OnMediaFileFailed;
         }
 
         public void Dispose()

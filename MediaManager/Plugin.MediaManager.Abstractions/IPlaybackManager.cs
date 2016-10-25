@@ -56,7 +56,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Raised when metadata of MediaFile is changed
         /// </summary>
-        event MediaFileChangedEventHandler MediaFileUpdated;
+        event MediaFileChangedEventHandler MediaFileChanged;
 
         /// <summary>
         /// Raised when mediadata of MediaFile failed to update

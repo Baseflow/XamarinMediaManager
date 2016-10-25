@@ -78,7 +78,7 @@ namespace Plugin.MediaManager
         public event MediaFinishedEventHandler MediaFinished;
         public event PlayingChangedEventHandler PlayingChanged;
         public event StatusChangedEventHandler StatusChanged;
-        public event MediaFileChangedEventHandler MediaFileUpdated;
+        public event MediaFileChangedEventHandler MediaFileChanged;
         public event MediaFileFailedEventHandler MediaFileFailed;
 
         public async Task Pause()

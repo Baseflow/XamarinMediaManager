@@ -155,8 +155,8 @@ namespace Plugin.MediaManager
         public event BufferingChangedEventHandler BufferingChanged;
         public event MediaFinishedEventHandler MediaFinished;
         public event MediaFailedEventHandler MediaFailed;
-        public event MediaFileChangedEventHandler MediaFileUpdated;
         public event MediaFileFailedEventHandler MediaFileFailed;
+        public event MediaFileChangedEventHandler MediaFileChanged;
 
         public async Task Play(IMediaFile mediaFile)
         {
