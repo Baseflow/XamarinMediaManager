@@ -59,11 +59,6 @@ namespace Plugin.MediaManager.Abstractions
         Task Play(IMediaFile mediaFile);
 
         /// <summary>
-        /// Start playing if nothing is playing, otherwise it pauses the current media
-        /// </summary>
-        Task PlayPause();
-
-        /// <summary>
         /// Stops playing but retains position
         /// </summary>
         Task Pause();

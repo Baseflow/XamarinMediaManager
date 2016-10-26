@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Android.App;
+using Android.Content.Res;
+using Android.Widget;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
 
@@ -8,36 +11,28 @@ namespace Plugin.MediaManager
 {
     public class VideoPlayerImplementation : IVideoPlayer
     {
-        public TimeSpan Buffered
+        public IVideoSurface RenderSurface { get; private set; }
+        public void SetVideoSurface(IVideoSurface videoSurface)
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            if (!(videoSurface is VideoSurface))
+                throw new ArgumentException("Not a valid video surface");
+
+            var canvas = (VideoSurface)videoSurface;
+            RenderSurface = canvas;
         }
 
-        public TimeSpan Duration
+        public VideoAspectMode AspectMode { get; }
+
+        public void SetAspectMode(VideoAspectMode aspectMode)
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
         }
 
-        public TimeSpan Position
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public MediaPlayerStatus Status
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+        VideoView VideoViewCanvas { 
+            get 
+            { 
+                return (VideoView)RenderSurface;
+            } 
         }
 
         public event BufferingChangedEventHandler BufferingChanged;
@@ -48,52 +43,61 @@ namespace Plugin.MediaManager
         public event PlayingChangedEventHandler PlayingChanged;
         public event StatusChangedEventHandler StatusChanged;
 
-        public Task Pause()
+        public TimeSpan Buffered
         {
-            throw new NotImplementedException();
+            get
+            {
+                return TimeSpan.FromSeconds(VideoViewCanvas.BufferPercentage);
+            }
         }
 
-        public Task Play(IEnumerable<IMediaFile> mediaFiles)
+        public TimeSpan Duration
         {
-            throw new NotImplementedException();
+            get
+            {
+                return TimeSpan.FromSeconds(VideoViewCanvas.Duration);
+            }
         }
 
-        public Task Play(IMediaFile mediaFile)
+        public TimeSpan Position
         {
-            throw new NotImplementedException();
+            get
+            {
+                return TimeSpan.FromSeconds(VideoViewCanvas.CurrentPosition);
+            }
         }
 
-        public Task Play(string url, MediaFileType fileType)
+        public MediaPlayerStatus Status
         {
-            throw new NotImplementedException();
+            get
+            {
+                return MediaPlayerStatus.Playing;
+            }
         }
 
-        public Task PlayPause()
+        public async Task Pause()
         {
-            throw new NotImplementedException();
+            VideoViewCanvas.Pause();
         }
 
-        public Task Seek(TimeSpan position)
+        public async Task Play(IMediaFile mediaFile)
         {
-            throw new NotImplementedException();
+            VideoViewCanvas.SetVideoURI(Android.Net.Uri.Parse(mediaFile.Url));
+
+            var mediaController = new MediaController(Application.Context);
+            mediaController.SetAnchorView(VideoViewCanvas);
+            VideoViewCanvas.SetMediaController(mediaController);
+            VideoViewCanvas.Start();
         }
 
-        public Task Stop()
+        public async Task Seek(TimeSpan position)
         {
-            throw new NotImplementedException();
+            VideoViewCanvas.SeekTo(Convert.ToInt32(position.TotalMilliseconds));
         }
 
-        public IVideoSurface RenderSurface { get; set; }
-        public void SetVideoSurface(IVideoSurface videoSurface)
+        public async Task Stop()
         {
-            throw new NotImplementedException();
-        }
-
-        public VideoAspectMode AspectMode { get; }
-
-        public void SetAspectMode(VideoAspectMode aspectMode)
-        {
-            throw new NotImplementedException();
+            VideoViewCanvas.StopPlayback();
         }
     }
 }

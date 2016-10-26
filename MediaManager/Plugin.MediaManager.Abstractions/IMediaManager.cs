@@ -78,6 +78,11 @@ namespace Plugin.MediaManager.Abstractions
         Task Play(IEnumerable<IMediaFile> mediaFiles);
 
         /// <summary>
+        /// Start playing if nothing is playing, otherwise it pauses the current media
+        /// </summary>
+        Task PlayPause();
+
+        /// <summary>
         /// Raised when metadata of MediaFile is changed
         /// </summary>
         event MediaFileChangedEventHandler MediaFileChanged;
