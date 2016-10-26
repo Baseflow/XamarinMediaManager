@@ -19,15 +19,20 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public object Cover { get; set; }
 
+        public string Artist { get; set; }
+
+        public string Title { get; set; }
+
         public MediaFileType Type { get; set; }
 
         public string Url { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

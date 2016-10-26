@@ -6,6 +6,9 @@ namespace Plugin.MediaManager.Abstractions
 {
     public interface IMediaFile : INotifyPropertyChanged
     {
+        /// <summary>
+        /// A unique identifier for this media file
+        /// </summary>
         Guid Id { get; set; }
 
         /// <summary>
@@ -22,6 +25,17 @@ namespace Plugin.MediaManager.Abstractions
         /// Object that contains the cover
         /// </summary>
         object Cover { get; set; }
+
+        /// <summary>
+        /// The performing artist if available
+        /// </summary>
+        string Artist { get; set; }
+
+        /// <summary>
+        /// The media title if available
+        /// Defaults to filename
+        /// </summary>
+        string Title { get; set; }
     }
 }
 
