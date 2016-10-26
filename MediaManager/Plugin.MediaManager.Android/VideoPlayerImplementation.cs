@@ -82,5 +82,18 @@ namespace Plugin.MediaManager
         {
             throw new NotImplementedException();
         }
+
+        public IVideoSurface RenderSurface { get; set; }
+        public void SetVideoSurface(IVideoSurface videoSurface)
+        {
+            throw new NotImplementedException();
+        }
+
+        public VideoAspectMode AspectMode { get; }
+
+        public void SetAspectMode(VideoAspectMode aspectMode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

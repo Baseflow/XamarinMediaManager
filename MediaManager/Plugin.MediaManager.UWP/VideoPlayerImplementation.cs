@@ -1,24 +1,30 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.Storage;
+using Windows.UI.Composition;
+using Windows.UI.Xaml.Hosting;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
-    public class AudioPlayerImplementation : IAudioPlayer
+    public class VideoPlayerImplementation : IVideoPlayer
     {
         private readonly MediaPlayer _player;
         private readonly Timer _playProgressTimer;
+        private MediaSource _currentMediaSource;
         private TaskCompletionSource<bool> _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
         private MediaPlayerStatus _status;
         private IMediaFile _currentMediaFile;
 
-        public AudioPlayerImplementation()
+        public VideoPlayerImplementation()
         {
             _player = new MediaPlayer();
 
@@ -28,16 +34,18 @@ namespace Plugin.MediaManager
                 {
                     var progress = _player.PlaybackSession.Position.TotalSeconds/
                                    _player.PlaybackSession.NaturalDuration.TotalSeconds;
+                    if (double.IsNaN(progress))
+                        progress = 0;
                     PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(progress, _player.PlaybackSession.Position));
                 }
             }, null, 0, int.MaxValue);
 
             _player.MediaFailed += (sender, args) =>
-                {
-                    _status = MediaPlayerStatus.Failed;
-                    _playProgressTimer.Change(0, int.MaxValue);
-                    MediaFailed?.Invoke(this, new MediaFailedEventArgs(args.ErrorMessage, args.ExtendedErrorCode));
-                };
+            {
+                _status = MediaPlayerStatus.Failed;
+                _playProgressTimer.Change(0, int.MaxValue);
+                MediaFailed?.Invoke(this, new MediaFailedEventArgs(args.ErrorMessage, args.ExtendedErrorCode));
+            };
 
             _player.PlaybackSession.PlaybackStateChanged += (sender, args) =>
             {
@@ -55,7 +63,7 @@ namespace Plugin.MediaManager
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
                     case MediaPlaybackState.Playing:
-                        if (sender.PlaybackRate <= 0 && sender.Position == TimeSpan.Zero)
+                        if ((sender.PlaybackRate <= 0) && (sender.Position == TimeSpan.Zero))
                         {
                             Status = MediaPlayerStatus.Stopped;
                         }
@@ -138,7 +146,33 @@ namespace Plugin.MediaManager
         public async Task Play(IMediaFile mediaFile)
         {
             _currentMediaFile = mediaFile;
-            await Play(mediaFile.Url);
+            await Play(mediaFile.Url, mediaFile.Type);
+        }
+
+        public async Task Play(string url, MediaFileType fileType)
+        {
+            _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
+            try
+            {
+                if (_currentMediaSource != null)
+                {
+                    _currentMediaSource.StateChanged -= MediaSourceOnStateChanged;
+                    _currentMediaSource.OpenOperationCompleted -= MediaSourceOnOpenOperationCompleted;
+                }
+                // Todo: sync this with the playback queue
+                var mediaPlaybackList = new MediaPlaybackList();
+                _currentMediaSource = await CreateMediaSource(url, fileType);
+                _currentMediaSource.StateChanged += MediaSourceOnStateChanged;
+                _currentMediaSource.OpenOperationCompleted += MediaSourceOnOpenOperationCompleted;
+                var item = new MediaPlaybackItem(_currentMediaSource);
+                mediaPlaybackList.Items.Add(item);
+                _player.Source = mediaPlaybackList;
+                _player.Play();
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("Unable to open url: " + url);
+            }
         }
 
         public async Task Seek(TimeSpan position)
@@ -151,26 +185,89 @@ namespace Plugin.MediaManager
         {
             _player.PlaybackSession.PlaybackRate = 0;
             _player.PlaybackSession.Position = TimeSpan.Zero;
+            Status = MediaPlayerStatus.Stopped;
             return Task.CompletedTask;
         }
 
-        private async Task Play(string url)
+        public IVideoSurface RenderSurface { get; private set; }
+
+        public void SetVideoSurface(IVideoSurface videoSurface)
         {
-            _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
-            try
+            if (!(videoSurface is VideoSurface))
+                throw new ArgumentException("Not a valid video surface");
+
+            var canvas = (VideoSurface) videoSurface;
+            RenderSurface = canvas;
+            _player.SetSurfaceSize(new Size(canvas.ActualWidth, canvas.ActualHeight));
+
+            var compositor = ElementCompositionPreview.GetElementVisual(canvas).Compositor;
+            var surface = _player.GetSurface(compositor);
+
+            var spriteVisual = compositor.CreateSpriteVisual();
+            spriteVisual.Size =
+                new Vector2((float) canvas.ActualWidth, (float) canvas.ActualHeight);
+
+            CompositionBrush brush = compositor.CreateSurfaceBrush(surface.CompositionSurface);
+            spriteVisual.Brush = brush;
+
+            var container = compositor.CreateContainerVisual();
+            container.Children.InsertAtTop(spriteVisual);
+
+            ElementCompositionPreview.SetElementChildVisual(canvas, container);
+        }
+
+        public VideoAspectMode AspectMode { get; }
+
+        public void SetAspectMode(VideoAspectMode aspectMode)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<MediaSource> CreateMediaSource(string url, MediaFileType fileType)
+        {
+            switch (fileType)
             {
-                // Todo: sync this with the playback queue
-                var mediaPlaybackList = new MediaPlaybackList();
-                var mediaSource = MediaSource.CreateFromUri(new Uri(url));
-                var item = new MediaPlaybackItem(mediaSource);
-                mediaPlaybackList.Items.Add(item);
-                _player.Source = mediaPlaybackList;
-                await _loadMediaTaskCompletionSource.Task;
-                _player.Play();
+                case MediaFileType.AudioUrl:
+                case MediaFileType.VideoUrl:
+                    return MediaSource.CreateFromUri(new Uri(url));
+                case MediaFileType.AudioFile:
+                case MediaFileType.VideoFile:
+                    return MediaSource.CreateFromStorageFile(await StorageFile.GetFileFromPathAsync(url));
+                case MediaFileType.Other:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(fileType), fileType, null);
             }
-            catch (Exception)
+            return MediaSource.CreateFromUri(new Uri(url));
+        }
+
+        private void MediaSourceOnOpenOperationCompleted(MediaSource sender,
+            MediaSourceOpenOperationCompletedEventArgs args)
+        {
+            if (args.Error != null)
+                MediaFailed?.Invoke(this, new MediaFailedEventArgs(args.Error.ToString(), args.Error.ExtendedError));
+        }
+
+        private void MediaSourceOnStateChanged(MediaSource sender, MediaSourceStateChangedEventArgs args)
+        {
+            switch (args.NewState)
             {
-                Debug.WriteLine("Unable to open url: " + url);
+                case MediaSourceState.Initial:
+                    Status = MediaPlayerStatus.Loading;
+                    break;
+                case MediaSourceState.Opening:
+                    Status = MediaPlayerStatus.Loading;
+                    break;
+                case MediaSourceState.Failed:
+                    Status = MediaPlayerStatus.Failed;
+                    break;
+                case MediaSourceState.Closed:
+                    Status = MediaPlayerStatus.Stopped;
+                    break;
+                case MediaSourceState.Opened:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

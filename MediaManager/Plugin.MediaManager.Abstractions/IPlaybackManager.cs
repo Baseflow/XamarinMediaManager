@@ -54,16 +54,6 @@ namespace Plugin.MediaManager.Abstractions
         event MediaFailedEventHandler MediaFailed;
 
         /// <summary>
-        /// Raised when metadata of MediaFile is changed
-        /// </summary>
-        event MediaFileChangedEventHandler MediaFileChanged;
-
-        /// <summary>
-        /// Raised when mediadata of MediaFile failed to update
-        /// </summary>
-        event MediaFileFailedEventHandler MediaFileFailed;
-
-        /// <summary>
         /// Adds MediaFile to the Queue and starts playing
         /// </summary>
         Task Play(IMediaFile mediaFile);
