@@ -105,12 +105,6 @@ namespace Plugin.MediaManager
             }
         }
 
-        public async Task PlayPause()
-        {
-            await BinderReady();
-            await binder.GetMediaPlayerService().PlayPause();
-        }
-
         public async Task Seek(TimeSpan position)
         {
             await BinderReady();

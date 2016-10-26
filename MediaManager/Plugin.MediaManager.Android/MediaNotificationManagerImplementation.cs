@@ -51,8 +51,8 @@ namespace Plugin.MediaManager
             NotificationManagerCompat.From(Application.Context).Notify(NotificationId, builder.Build());*/
         }
 
-        private NotificationCompat.Action GenerateActionCompat(int icon, String title, String intentAction)
-        {
+        //private NotificationCompat.Action GenerateActionCompat(int icon, String title, String intentAction)
+        //{
             /*
             Intent intent = new Intent(Application.Context, typeof(MediaPlayerService));
             intent.SetAction(intentAction);
@@ -64,7 +64,7 @@ namespace Plugin.MediaManager
             PendingIntent pendingIntent = PendingIntent.GetService(Application.Context, 1, intent, flags);
 
             return new NotificationCompat.Action.Builder(icon, title, pendingIntent).Build();*/
-        }
+        //}
 
         private void AddPlayPauseActionCompat(NotificationCompat.Builder builder)
         {
