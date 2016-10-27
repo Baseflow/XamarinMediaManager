@@ -5,6 +5,9 @@ using Android.Support.V7.App;
 using Android.Content.PM;
 using Android.Widget;
 using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.Runtime.CompilerServices;
 using Android.Graphics;
 using Plugin.MediaManager;
 using Android.Media;
@@ -21,7 +24,7 @@ namespace MediaSample.Droid
               ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class MainActivity : AppCompatActivity
     {
-        private MediaPlayerViewModel ViewModel => new MediaPlayerViewModel();
+        private MediaPlayerViewModel ViewModel { get; set; }
 
         private Android.Support.V7.Widget.Toolbar toolbar;
 
@@ -29,6 +32,7 @@ namespace MediaSample.Droid
         {
             base.OnCreate(savedInstanceState);
 
+            ViewModel = new MediaPlayerViewModel();
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
@@ -46,7 +50,7 @@ namespace MediaSample.Droid
                 await ViewModel.MediaPlayer.PlayPrevious();
             };
 
-            var playpause = FindViewById<Button>(Resource.Id.btnPlayPause);
+            var playpause = FindViewById<ToggleButton>(Resource.Id.btnPlayPause);
             playpause.Click += async (sender, args) =>
             {
                 await ViewModel.MediaPlayer.PlayPause();
@@ -61,54 +65,70 @@ namespace MediaSample.Droid
             var position = FindViewById<TextView>(Resource.Id.textview_position);
             var duration = FindViewById<TextView>(Resource.Id.textview_duration);
             var seekbar = FindViewById<SeekBar>(Resource.Id.player_seekbar);
-            ViewModel.MediaPlayer.PlayingChanged += (sender, e) => 
-            {
-                RunOnUiThread(() =>
-                {
-                    seekbar.Max = ViewModel.Duration;
-                    seekbar.Progress = ViewModel.Position;
 
-                    position.Text = ViewModel.GetFormattedTime(ViewModel.Position);
-                    duration.Text = ViewModel.GetFormattedTime(ViewModel.Duration);
-                });
-            };
-
-            ViewModel.MediaPlayer.BufferingChanged += (sender, args) => 
+            seekbar.ProgressChanged += (sender, args) =>
             {
-                RunOnUiThread(() =>
+                if (args.FromUser)
                 {
-                    seekbar.SecondaryProgress = Convert.ToInt32(ViewModel.MediaPlayer.Buffered.TotalSeconds);
-                });
-            };
-            /*
-            ViewModel.MediaPlayer.CoverReloaded += (object sender, EventArgs e) =>
-            {
-                RunOnUiThread(() =>
-                {
-                    var cover = FindViewById<ImageView>(Resource.Id.imageview_cover);
-                    cover.SetImageBitmap(ViewModel.Cover as Bitmap);
-                });
-            };
-*/
-            var title = FindViewById<TextView>(Resource.Id.textview_title);
-            var subtitle = FindViewById<TextView>(Resource.Id.textview_subtitle);
-            ViewModel.MediaPlayer.StatusChanged += (sender, args) => 
-            {
-                var mediaPlayer = ((AudioPlayerImplementation)ViewModel.MediaPlayer.AudioPlayer).Binder.GetMediaPlayerService();
-
-                var metadata = mediaPlayer.mediaControllerCompat.Metadata;
-                if (metadata != null)
-                {
-                    RunOnUiThread(() =>
-                    {
-                        title.Text = metadata.GetString(MediaMetadata.MetadataKeyTitle);
-                        subtitle.Text = metadata.GetString(MediaMetadata.MetadataKeyArtist);
-                        playpause.Selected = mediaPlayer.mediaControllerCompat.PlaybackState.State == PlaybackStateCompat.StatePlaying;
-                    });
+                    ViewModel.MediaPlayer.Seek(TimeSpan.FromSeconds(args.Progress));
                 }
             };
 
-            ViewModel.MediaPlayer.Play("http://www.montemagno.com/sample.mp3", MediaFileType.AudioUrl);
+            ViewModel.MediaPlayer.PlayingChanged += (sender, e) =>
+            {
+                Console.WriteLine($"Playing changed: Progress => {e.Progress}");
+                RunOnUiThread(() =>
+                {
+                    seekbar.Max = Convert.ToInt32(e.Duration.TotalSeconds);
+                    seekbar.Progress = Convert.ToInt32(Math.Floor(e.Progress));
+
+                    position.Text = $"{e.Position.Minutes:00}:{e.Position.Seconds:00}";
+                    duration.Text = $"{e.Duration.Minutes:00}:{e.Duration.Seconds:00}";
+                });
+            };
+
+            ViewModel.MediaPlayer.BufferingChanged += (sender, args) =>
+            {
+                RunOnUiThread(() =>
+                {
+                    Console.WriteLine($"BufferingChanged: {args.BufferProgress}");
+                    seekbar.SecondaryProgress = Convert.ToInt32(args.BufferedTime.TotalSeconds);
+                });
+            };
+
+
+            ViewModel.MediaPlayer.StatusChanged += (sender, e) =>
+            {
+                Console.WriteLine($"StausChanged {e.Status}");
+                RunOnUiThread(() =>
+                {
+                    playpause.Checked = e.Status == MediaPlayerStatus.Playing || e.Status == MediaPlayerStatus.Loading || e.Status == MediaPlayerStatus.Buffering;
+                });
+            };
+
+            ViewModel.MediaPlayer.MediaFailed += (sender, e) =>
+            {
+                Console.WriteLine($"Media failed: Message => {e.Exception.Message}");
+            };
+
+            var title = FindViewById<TextView>(Resource.Id.textview_title);
+            var subtitle = FindViewById<TextView>(Resource.Id.textview_subtitle);
+            ViewModel.MediaPlayer.MediaFileChanged += (sender, args) =>
+            {
+                Console.WriteLine($"File changed: {args.File.Title}"); ;
+                RunOnUiThread(() =>
+                {
+                    title.Text = args.File.Title;
+                    subtitle.Text = args.File.Artist;
+                    var cover = FindViewById<ImageView>(Resource.Id.imageview_cover);
+                    cover.SetImageBitmap(args.File.Cover as Bitmap);
+                });
+            };
+
+            ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "http://www.montemagno.com/sample.mp3" });
+            ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "http://www.bensound.org/bensound-music/bensound-anewbeginning.mp3" });
+            ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "http://www.bensound.org/bensound-music/bensound-goinghigher.mp3" });
+            ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "http://www.bensound.org/bensound-music/bensound-tenderness.mp3" });
         }
     }
 }

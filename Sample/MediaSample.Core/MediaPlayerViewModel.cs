@@ -24,13 +24,12 @@ namespace MediaManager.Sample.Core
                 return mediaPlayer;
             }
         }
-
-        private readonly IMediaQueue queue;
+        
         public IMediaQueue Queue
         {
             get
             {
-                return queue;
+                return mediaPlayer.MediaQueue;
             }
         }
 
@@ -38,7 +37,7 @@ namespace MediaManager.Sample.Core
         {
             get
             {
-                return queue.Current;
+                return Queue.Current;
             }
         }
 
@@ -136,7 +135,6 @@ namespace MediaManager.Sample.Core
         public MediaPlayerViewModel()
         {
             mediaPlayer = CrossMediaManager.Current;
-            queue = new MediaQueue();
 
             mediaPlayer.StatusChanged -= OnStatusChanged;
             mediaPlayer.StatusChanged += OnStatusChanged;
@@ -147,8 +145,8 @@ namespace MediaManager.Sample.Core
             //mediaPlayer.CoverReloaded -= OnCoverReloaded;
             //mediaPlayer.CoverReloaded += OnCoverReloaded;
 
-            queue.PropertyChanged -= OnQueuePropertyChanged;
-            queue.PropertyChanged += OnQueuePropertyChanged;
+            mediaPlayer.MediaQueue.PropertyChanged -= OnQueuePropertyChanged;
+            mediaPlayer.MediaQueue.PropertyChanged += OnQueuePropertyChanged;
         }
 
         private void OnQueuePropertyChanged(object sender, PropertyChangedEventArgs e)

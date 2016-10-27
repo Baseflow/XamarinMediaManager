@@ -7,10 +7,10 @@ namespace Plugin.MediaManager.Tests
 {
     class MediaFile : IMediaFile
     {
-        public Guid Id { get; set; } = new Guid();
+        public int Id { get; set; }
         public MediaFileType Type { get; set; }
         public string Url { get; set; }
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         public override string ToString()
@@ -30,5 +30,9 @@ namespace Plugin.MediaManager.Tests
                 throw new NotImplementedException();
             }
         }
+
+        public string Artist { get; set; }
+        public string Album { get; set; }
+        public string Title { get; set; }
     }
 }
