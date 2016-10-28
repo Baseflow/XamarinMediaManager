@@ -201,6 +201,12 @@ namespace Plugin.MediaManager
                 currentFile = mediaFile;
             }
 
+            if (currentFile == null)
+            {
+                MediaFileFailed?.Invoke(this, new MediaFileFailedEventArgs(new Exception("No mediafile set"), null));
+                return;
+            }
+
             manuallyPaused = false;
             if (mediaPlayer != null && MediaPlayerState == PlaybackStateCompat.StatePaused)
             {
@@ -347,7 +353,6 @@ namespace Plugin.MediaManager
 
         public async Task Seek(TimeSpan position)
         {
-            await Pause();
             await Task.Run(() =>
             {
                 if (mediaPlayer != null)
@@ -355,7 +360,6 @@ namespace Plugin.MediaManager
                     mediaPlayer.SeekTo(Convert.ToInt32(position.TotalMilliseconds));
                 }
             });
-            await Play();
         }
 
         public async Task Pause()

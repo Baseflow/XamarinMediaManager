@@ -183,8 +183,10 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             {
                 try
                 {
+                    var index = MediaQueue.IndexOf(mediaFile);
                     var info = await MediaExtractor.ExtractMediaInfo(mediaFile);
-                    MediaFileChanged?.Invoke(CurrentPlaybackManager, new MediaFileChangedEventArgs(info));
+                    if(index >= 0) { MediaQueue[index] = info;}
+                    OnMediaFileChanged(CurrentPlaybackManager, new MediaFileChangedEventArgs(info));
                 }
                 catch (Exception e)
                 {
@@ -196,6 +198,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         private void OnStatusChanged(object sender, StatusChangedEventArgs e)
         {
             if (sender != CurrentPlaybackManager) return;
+            MediaNotificationManager.UpdateNotifications(MediaQueue.Current, e.Status);
             StatusChanged?.Invoke(sender, e);
         }
 
@@ -228,8 +231,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         private void OnMediaFileChanged(object sender, MediaFileChangedEventArgs e)
         {
-            if(sender == CurrentPlaybackManager)
+            if (sender == CurrentPlaybackManager)
+            {
                 MediaNotificationManager.UpdateNotifications(e.File, Status);
+                MediaFileChanged?.Invoke(sender, e);
+            }
+                
         }
 
         private void AddEventHandlers()
@@ -239,7 +246,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _currentPlaybackManager.MediaFinished += OnMediaFinished;
             _currentPlaybackManager.PlayingChanged += OnPlayingChanged;
             _currentPlaybackManager.StatusChanged += OnStatusChanged;
-            MediaFileChanged += OnMediaFileChanged;
+            _currentPlaybackManager.MediaFileChanged += OnMediaFileChanged;
         }
 
         private void RemoveEventHandlers()

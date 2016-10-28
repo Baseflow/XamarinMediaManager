@@ -76,11 +76,11 @@ namespace MediaSample.Droid
 
             ViewModel.MediaPlayer.PlayingChanged += (sender, e) =>
             {
-                Console.WriteLine($"Playing changed: Progress => {e.Progress}");
+                Console.WriteLine($"Playing changed: Progress => {e.Progress}%");
                 RunOnUiThread(() =>
                 {
                     seekbar.Max = Convert.ToInt32(e.Duration.TotalSeconds);
-                    seekbar.Progress = Convert.ToInt32(Math.Floor(e.Progress));
+                    seekbar.Progress = Convert.ToInt32(Math.Floor(e.Position.TotalSeconds));
 
                     position.Text = $"{e.Position.Minutes:00}:{e.Position.Seconds:00}";
                     duration.Text = $"{e.Duration.Minutes:00}:{e.Duration.Seconds:00}";
@@ -115,19 +115,19 @@ namespace MediaSample.Droid
             var subtitle = FindViewById<TextView>(Resource.Id.textview_subtitle);
             ViewModel.MediaPlayer.MediaFileChanged += (sender, args) =>
             {
-                Console.WriteLine($"File changed: {args.File.Title}"); ;
+                Console.WriteLine($"File changed: {args.File.Metadata.Title}"); ;
                 RunOnUiThread(() =>
                 {
-                    title.Text = args.File.Title;
-                    subtitle.Text = args.File.Artist;
+                    title.Text = args.File.Metadata.Title;
+                    subtitle.Text = args.File.Metadata.Artist;
                     var cover = FindViewById<ImageView>(Resource.Id.imageview_cover);
-                    cover.SetImageBitmap(args.File.Cover as Bitmap);
+                    cover.SetImageBitmap(args.File.Metadata.Cover as Bitmap);
                 });
             };
 
-            ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "http://www.montemagno.com/sample.mp3" });
-            ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "http://www.bensound.org/bensound-music/bensound-anewbeginning.mp3" });
+            ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3" });
             ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "http://www.bensound.org/bensound-music/bensound-goinghigher.mp3" });
+            ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "http://www.montemagno.com/sample.mp3" });
             ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "http://www.bensound.org/bensound-music/bensound-tenderness.mp3" });
         }
     }

@@ -20,34 +20,35 @@ namespace Plugin.MediaManager
 
         public async Task<IMediaFile> ExtractMediaInfo(IMediaFile mediaFile)
         {
+            if (mediaFile.MetadataExtracted) return mediaFile;
             MediaMetadataRetriever metaRetriever = await GetMetadataRetriever(mediaFile);
             SetMetadata(mediaFile, metaRetriever);
             byte[] imageByteArray = metaRetriever.GetEmbeddedPicture();
             if (imageByteArray == null)
             {
-               mediaFile.Cover = GetTrackCover(mediaFile);
-                
+               mediaFile.Metadata.Cover = GetTrackCover(mediaFile);
             }
             else
             {
                 try
                 {
-                    mediaFile.Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
+                    mediaFile.Metadata.Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
                 }
                 catch (Java.Lang.OutOfMemoryError ex)
                 {
-                    mediaFile.Cover = null;
+                    mediaFile.Metadata.Cover = null;
                     throw;
                 }
             }
+            mediaFile.MetadataExtracted = true;
             return mediaFile;
         }
 
         private void SetMetadata(IMediaFile mediaFile, MediaMetadataRetriever retriever)
         {
-            mediaFile.Title = retriever?.ExtractMetadata(MetadataKey.Title) ?? "Unknow";
-            mediaFile.Artist = retriever?.ExtractMetadata(MetadataKey.Artist) ?? "Unknow";
-            mediaFile.Album = retriever?.ExtractMetadata(MetadataKey.Album);
+            mediaFile.Metadata.Title = retriever?.ExtractMetadata(MetadataKey.Title) ?? "Unknown";
+            mediaFile.Metadata.Artist = retriever?.ExtractMetadata(MetadataKey.Artist) ?? "Unknown";
+            mediaFile.Metadata.Album = retriever?.ExtractMetadata(MetadataKey.Album);
         }
 
         private async Task<MediaMetadataRetriever> GetMetadataRetriever(IMediaFile currentFile)

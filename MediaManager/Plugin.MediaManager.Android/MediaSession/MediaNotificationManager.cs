@@ -94,10 +94,10 @@ namespace Plugin.MediaManager
 
         private void SetMetadata(IMediaFile mediaFile)
         {
-            _builder.SetContentTitle(mediaFile.Title);
-            _builder.SetContentText(mediaFile.Artist);
-            _builder.SetContentInfo(mediaFile.Album);
-            _builder.SetLargeIcon(mediaFile.Cover as Bitmap);
+            _builder.SetContentTitle(mediaFile.Metadata.Title);
+            _builder.SetContentText(mediaFile.Metadata.Artist);
+            _builder.SetContentInfo(mediaFile.Metadata.Album);
+            _builder.SetLargeIcon(mediaFile.Metadata.Cover as Bitmap);
         }
 
         private Android.Support.V4.App.NotificationCompat.Action GenerateActionCompat(int icon, string title, string intentAction)

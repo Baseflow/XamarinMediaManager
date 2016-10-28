@@ -1,5 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
@@ -12,34 +12,31 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Indicator for player which type of file it should play
         /// </summary>
-        Implementations.MediaFileType Type { get; set; }
+        MediaFileType Type { get; set; }
 
         /// <summary>
-        /// Url to media on the internet or on the file system
+        /// Gets or sets the URL.
         /// </summary>
+        /// <value>
+        /// The URL.
+        /// </value>
         string Url { get; set; }
 
         /// <summary>
-        /// Object that contains the cover
+        /// Gets or sets the metadata.
         /// </summary>
-        object Cover { get; set; }
+        /// <value>
+        /// The metadata.
+        /// </value>
+        IMediaFileMetadata Metadata { get; set; }
 
         /// <summary>
-        /// The performing artist if available
+        /// Gets or sets a value indicating whether [metadata extracted].
         /// </summary>
-        string Artist { get; set; }
-
-
-        /// <summary>
-        /// The album title of the mediafile.
-        /// </summary>
-        string Album { get; set; }
-
-        /// <summary>
-        /// The media title if available
-        /// Defaults to filename
-        /// </summary>
-        string Title { get; set; }
+        /// <value>
+        ///   <c>true</c> if [metadata extracted]; otherwise, <c>false</c>.
+        /// </value>
+        bool MetadataExtracted { get; set; }
     }
 }
 

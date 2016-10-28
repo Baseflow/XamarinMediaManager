@@ -120,7 +120,7 @@ namespace MediaManager.Sample.Core
         {
             get
             {
-                return mediaPlayer.MediaQueue.Current.Cover;
+                return mediaPlayer.MediaQueue.Current.Metadata.Cover;
             }
         }
 

@@ -7,8 +7,6 @@ using Android.OS;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
-using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
@@ -133,9 +131,9 @@ namespace Plugin.MediaManager
             if (currentTrack != null)
             {
                 builder
-                    .PutString(MediaMetadata.MetadataKeyAlbum, currentTrack.Artist)
-                    .PutString(MediaMetadata.MetadataKeyArtist, currentTrack.Artist)
-                    .PutString(MediaMetadata.MetadataKeyTitle, currentTrack.Title);
+                    .PutString(MediaMetadata.MetadataKeyAlbum, currentTrack.Metadata.Artist)
+                    .PutString(MediaMetadata.MetadataKeyArtist, currentTrack.Metadata.Artist)
+                    .PutString(MediaMetadata.MetadataKeyTitle, currentTrack.Metadata.Title);
             }
             else
             {
@@ -148,7 +146,7 @@ namespace Plugin.MediaManager
                         CurrentSession?.Controller?.Metadata?.GetString(MediaMetadata.MetadataKeyTitle));
             }
 
-            builder.PutBitmap(MediaMetadata.MetadataKeyAlbumArt, currentTrack?.Cover as Bitmap);
+            builder.PutBitmap(MediaMetadata.MetadataKeyAlbumArt, currentTrack?.Metadata.Cover as Bitmap);
             CurrentSession?.SetMetadata(builder.Build());
         }
     }

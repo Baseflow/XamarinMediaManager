@@ -11,7 +11,7 @@
         /// <value>
         /// The titel.
         /// </value>
-        string Titel { get; set; }
+        string Title { get; set; }
 
         /// <summary>
         /// Gets or sets the artist.
@@ -20,6 +20,14 @@
         /// The artist.
         /// </value>
         string Artist { get; set; }
+
+        /// <summary>
+        /// Gets or sets the album.
+        /// </summary>
+        /// <value>
+        /// The album.
+        /// </value>
+        string Album { get; set; }
 
         /// <summary>
         /// Gets or sets the cover.
