@@ -1,4 +1,3 @@
-using Android.App;
 using Android.Content;
 using Android.Media;
 

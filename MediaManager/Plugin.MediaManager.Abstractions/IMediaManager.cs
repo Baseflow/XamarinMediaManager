@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
@@ -53,7 +52,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Creates new MediaFile object, adds it to the queue and starts playing
         /// </summary>
-        Task Play(string url, MediaFileType fileType);
+        Task Play(string url, Implementations.MediaFileType fileType);
 
         /// <summary>
         /// Should be the same as calling PlayByPosition(Queue.size()+1)
