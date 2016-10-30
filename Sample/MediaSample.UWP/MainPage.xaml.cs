@@ -4,7 +4,8 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Plugin.MediaManager;
-using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.EventArguments;
+using Plugin.MediaManager.Abstractions.Implementations;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -18,28 +19,33 @@ namespace MediaSample.UWP
         public MainPage()
         {
             InitializeComponent();
-            CrossMediaManager.Current.Playing += CurrentOnPlaying;
-            CrossMediaManager.Current.StatusChanged += CurrentOnStatusChanged;
+            CrossMediaManager.Current.PlayingChanged += OnPlayingChanged;
+            CrossMediaManager.Current.StatusChanged += OnStatusChanged;
+            CrossMediaManager.Current.VideoPlayer.SetVideoSurface(VideoCanvas);
         }
 
-        private async void CurrentOnStatusChanged(object sender, PlayerStatusChangedEventArgs eventArgs)
+        private async void OnStatusChanged(object sender, StatusChangedEventArgs e)
         {
             await
                 CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                     () =>
                     {
-                        PlayerState.Text = Enum.GetName(typeof(PlayerStatus), eventArgs.Status);
+                        PlayerState.Text = Enum.GetName(typeof(MediaPlayerStatus), e.Status);
                         switch (CrossMediaManager.Current.Status)
                         {
-                            case PlayerStatus.STOPPED:
+                            case MediaPlayerStatus.Stopped:
                                 Progress.Value = 0;
                                 break;
-                            case PlayerStatus.PAUSED:
+                            case MediaPlayerStatus.Paused:
                                 break;
-                            case PlayerStatus.PLAYING:
-                                Progress.Maximum = CrossMediaManager.Current.Duration;
+                            case MediaPlayerStatus.Playing:
+                                Progress.Maximum = 1;
                                 break;
-                            case PlayerStatus.BUFFERING:
+                            case MediaPlayerStatus.Buffering:
+                                break;
+                                case MediaPlayerStatus.Loading:
+                                break;
+                            case MediaPlayerStatus.Failed:
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
@@ -47,19 +53,20 @@ namespace MediaSample.UWP
                     });
         }
 
-        private async void CurrentOnPlaying(object sender, PlaybackPositionChangedEventArgs eventArgs)
+        private async void OnPlayingChanged(object sender, PlayingChangedEventArgs e)
         {
             await
                 CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                     () =>
                     {
-                        Progress.Value = eventArgs.Progress;
+                        Progress.Value = e.Progress;
                     });
         }
 
         private async void PlayUrl(object sender, RoutedEventArgs e)
         {
-            await CrossMediaManager.Current.Play(@"http://www.montemagno.com/sample.mp3");
+            //await CrossMediaManager.Current.Play(@"http://www.montemagno.com/sample.mp3", MediaFileType.AudioUrl);
+            await CrossMediaManager.Current.Play(@"C:\Users\erlend\Videos\IMG_0140.mov", MediaFileType.VideoFile);
         }
 
         private async void Pause(object sender, RoutedEventArgs e)
