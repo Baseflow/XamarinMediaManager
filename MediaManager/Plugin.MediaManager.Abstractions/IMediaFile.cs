@@ -40,19 +40,6 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Gets or sets a value indicating whether [metadata extracted].
         /// </summary>
-        object Cover { get; set; }
-
-        /// <summary>
-        /// The performing artist if available
-        /// </summary>
-        string Artist { get; set; }
-
-        /// <summary>
-        /// The media title if available
-        /// Defaults to filename
-        /// </summary>
-        string Title { get; set; }
-
         /// <value>
         ///   <c>true</c> if [metadata extracted]; otherwise, <c>false</c>.
         /// </value>
