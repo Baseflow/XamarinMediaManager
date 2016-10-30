@@ -194,7 +194,7 @@ namespace Plugin.MediaManager
             private set { buffered = value; }
         }
 
-        public async Task Play(IMediaFile mediaFile = null)
+        public virtual async Task Play(IMediaFile mediaFile = null)
         {
             if (mediaFile != null && !string.IsNullOrEmpty(mediaFile.Url))
             {

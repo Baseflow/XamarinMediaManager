@@ -20,10 +20,11 @@ namespace Plugin.MediaManager
         public event MediaFileChangedEventHandler MediaFileChanged;
         public event MediaFileFailedEventHandler MediaFileFailed;
 
-        private Context applicationContext;
+        public Context applicationContext;
         private MediaPlayerServiceConnection mediaPlayerServiceConnection;
         private Intent mediaPlayerServiceIntent;
         private MediaSessionManagerImplementation _sessionManager;
+
         private bool isBound;
 
         public TimeSpan Position => binder.GetMediaPlayerService().Position;
@@ -33,9 +34,9 @@ namespace Plugin.MediaManager
         public TimeSpan Buffered => binder.GetMediaPlayerService().Buffered;
 
         public MediaSessionCompat.Callback AlternateRemoteCallback { get; set; }
-        private MediaPlayerStatus status;
 
-        public MediaPlayerStatus Status
+        private MediaPlayerStatus status;
+        public virtual MediaPlayerStatus Status
         {
             get
             {
@@ -67,7 +68,7 @@ namespace Plugin.MediaManager
         {
             _sessionManager = sessionManager;
             applicationContext = Application.Context;
-            mediaPlayerServiceIntent = new Intent(applicationContext, typeof(MediaPlayerService));
+            mediaPlayerServiceIntent = GetMediaServiceIntent();
             mediaPlayerServiceConnection = new MediaPlayerServiceConnection(this);
             applicationContext.BindService(mediaPlayerServiceIntent, mediaPlayerServiceConnection, Bind.AutoCreate);
             _sessionManager.OnStatusChanged += (sender, i) => Status = GetStatusByCompatValue(i);
@@ -79,6 +80,11 @@ namespace Plugin.MediaManager
             
         }
 
+        public virtual Intent GetMediaServiceIntent()
+        {
+            return new Intent(applicationContext, typeof(MediaPlayerService));
+        }
+
         public void UnbindMediaPlayerService()
         {
             if (isBound)
@@ -88,33 +94,28 @@ namespace Plugin.MediaManager
             }
         }
 
-        public async Task Pause()
+        public virtual async Task Pause()
         {
             await BinderReady();
             await binder.GetMediaPlayerService().Pause();
         }
 
-        public async Task Play(IMediaFile mediaFile)
+        public virtual async Task Play(IMediaFile mediaFile)
         {
             await BinderReady();
             await binder.GetMediaPlayerService().Play(mediaFile);
         }
 
-        public async Task Seek(TimeSpan position)
+        public virtual async Task Seek(TimeSpan position)
         {
             await BinderReady();
             await binder.GetMediaPlayerService().Seek(position);
         }
 
-        public async Task Stop()
+        public virtual async Task Stop()
         {
             await BinderReady();
             await binder.GetMediaPlayerService().Stop();
-        }
-
-        public Task Play(IEnumerable<IMediaFile> mediaFiles)
-        {
-            throw new NotImplementedException();
         }
 
         internal void OnServiceConnected(MediaPlayerServiceBinder serviceBinder)
@@ -152,7 +153,7 @@ namespace Plugin.MediaManager
             }
         }
 
-        private void OnPlaying()
+        public void OnPlaying()
         {
             var progress = (Position.TotalSeconds/Duration.TotalSeconds) * 100;
             var position = Position;
@@ -174,7 +175,7 @@ namespace Plugin.MediaManager
                 duration.TotalSeconds >= 0 ? duration : TimeSpan.Zero));
         }
 
-        private MediaPlayerStatus GetStatusByCompatValue(int state)
+        public MediaPlayerStatus GetStatusByCompatValue(int state)
         {
             switch (state)
             {

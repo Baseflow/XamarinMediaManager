@@ -42,12 +42,16 @@
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
     <Reference Include="ExoPlayer">
-      <HintPath>..\packages\Xam.Plugins.Android.ExoPlayer.2.0.4\lib\MonoAndroid\ExoPlayer.dll</HintPath>
+      <HintPath>..\..\packages\Xam.Plugins.Android.ExoPlayer.2.0.4\lib\MonoAndroid\ExoPlayer.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ExoPlayerImplementation.cs" />
+    <Compile Include="ExoPlayerAudioImplementation.cs" />
+    <Compile Include="ExoPlayerVideoImplementation.cs" />
+    <Compile Include="ExoPlayerAudioService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
