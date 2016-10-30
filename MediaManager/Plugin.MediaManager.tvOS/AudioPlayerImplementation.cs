@@ -182,7 +182,7 @@ namespace Plugin.MediaManager
 				var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
 				var totalProgress = Position.TotalMilliseconds /
 									totalDuration.TotalMilliseconds;
-				PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position));
+                PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position, Duration));
 			});
 		}
 

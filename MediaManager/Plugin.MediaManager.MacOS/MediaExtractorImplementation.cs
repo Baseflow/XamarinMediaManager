@@ -22,7 +22,7 @@ namespace Plugin.MediaManager
 				var nsUrl = new NSUrl(mediaFile.Url);
 
 				// Default title to filename
-				mediaFile.Title = nsUrl.LastPathComponent;
+				mediaFile.Metadata.Title = nsUrl.LastPathComponent;
 
 				var asset = AVAsset.FromUrl(nsUrl);
 				await asset.LoadValuesTaskAsync(assetsToLoad.ToArray());
@@ -31,16 +31,16 @@ namespace Plugin.MediaManager
 				{
 					if (avMetadataItem.CommonKey == AVMetadata.CommonKeyArtist)
 					{
-						mediaFile.Artist = ((NSString)avMetadataItem.Value).ToString();
+						mediaFile.Metadata.Artist = ((NSString)avMetadataItem.Value).ToString();
 					}
 					else if (avMetadataItem.CommonKey == AVMetadata.CommonKeyTitle)
 					{
-						mediaFile.Title = ((NSString)avMetadataItem.Value).ToString();
+						mediaFile.Metadata.Title = ((NSString)avMetadataItem.Value).ToString();
 					}
 					else if (avMetadataItem.CommonKey == AVMetadata.CommonKeyArtwork)
 					{
 						var image = NSObject.FromObject(avMetadataItem.DataValue);
-						mediaFile.Cover = image;
+						mediaFile.Metadata.Cover = image;
 					}
 				}
 				return mediaFile;

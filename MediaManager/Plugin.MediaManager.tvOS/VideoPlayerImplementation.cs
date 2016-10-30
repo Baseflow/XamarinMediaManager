@@ -150,6 +150,7 @@ namespace Plugin.MediaManager
         public event BufferingChangedEventHandler BufferingChanged;
         public event MediaFinishedEventHandler MediaFinished;
         public event MediaFailedEventHandler MediaFailed;
+        public event MediaFileChangedEventHandler MediaFileChanged;
 
         public async Task Seek(TimeSpan position)
         {
@@ -175,7 +176,7 @@ namespace Plugin.MediaManager
                 var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
                 var totalProgress = Position.TotalMilliseconds /
                                     totalDuration.TotalMilliseconds;
-                PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position));
+                PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position, Duration));
             });
         }
 
