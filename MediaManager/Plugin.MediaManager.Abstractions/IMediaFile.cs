@@ -1,9 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
+using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
+    /// <summary>
+    /// Information about the mediafile
+    /// </summary>
+    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public interface IMediaFile : INotifyPropertyChanged
     {
         /// <summary>
@@ -17,12 +22,23 @@ namespace Plugin.MediaManager.Abstractions
         MediaFileType Type { get; set; }
 
         /// <summary>
-        /// Url to media on the internet or on the file system
+        /// Gets or sets the URL.
         /// </summary>
+        /// <value>
+        /// The URL.
+        /// </value>
         string Url { get; set; }
 
         /// <summary>
-        /// Object that contains the cover
+        /// Gets or sets the metadata.
+        /// </summary>
+        /// <value>
+        /// The metadata.
+        /// </value>
+        IMediaFileMetadata Metadata { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [metadata extracted].
         /// </summary>
         object Cover { get; set; }
 
@@ -36,6 +52,11 @@ namespace Plugin.MediaManager.Abstractions
         /// Defaults to filename
         /// </summary>
         string Title { get; set; }
+
+        /// <value>
+        ///   <c>true</c> if [metadata extracted]; otherwise, <c>false</c>.
+        /// </value>
+        bool MetadataExtracted { get; set; }
     }
 }
 

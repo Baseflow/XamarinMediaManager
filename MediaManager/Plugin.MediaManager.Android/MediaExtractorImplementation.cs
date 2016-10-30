@@ -12,31 +12,58 @@ namespace Plugin.MediaManager
 {
     public class MediaExtractorImplementation : IMediaExtractor
     {
-        IMediaFile File;
+        private Resources _resources;
+        public MediaExtractorImplementation(Resources resources)
+        {
+            _resources = resources;
+        }
 
         public async Task<IMediaFile> ExtractMediaInfo(IMediaFile mediaFile)
         {
-            File = mediaFile;
-            var metaDataRetriever = await GetMetadataRetriever();
-
-            //TODO: Add metaDataRetriever properties to File
-
-            return File;
+            if (mediaFile.MetadataExtracted) return mediaFile;
+            MediaMetadataRetriever metaRetriever = await GetMetadataRetriever(mediaFile);
+            SetMetadata(mediaFile, metaRetriever);
+            byte[] imageByteArray = metaRetriever.GetEmbeddedPicture();
+            if (imageByteArray == null)
+            {
+                mediaFile.Metadata.Cover = GetTrackCover(mediaFile);
+            }
+            else
+            {
+                try
+                {
+                    mediaFile.Metadata.Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
+                }
+                catch (Java.Lang.OutOfMemoryError ex)
+                {
+                    mediaFile.Metadata.Cover = null;
+                    throw;
+                }
+            }
+            mediaFile.MetadataExtracted = true;
+            return mediaFile;
         }
 
-        private async Task<MediaMetadataRetriever> GetMetadataRetriever()
+        private void SetMetadata(IMediaFile mediaFile, MediaMetadataRetriever retriever)
+        {
+            mediaFile.Metadata.Title = retriever?.ExtractMetadata(MetadataKey.Title) ?? "Unknown";
+            mediaFile.Metadata.Artist = retriever?.ExtractMetadata(MetadataKey.Artist) ?? "Unknown";
+            mediaFile.Metadata.Album = retriever?.ExtractMetadata(MetadataKey.Album);
+        }
+
+        private async Task<MediaMetadataRetriever> GetMetadataRetriever(IMediaFile currentFile)
         {
             MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
 
-            switch (File.Type)
+            switch (currentFile.Type)
             {
                 case MediaFileType.AudioUrl:
-                    await metaRetriever.SetDataSourceAsync(File.Url, new Dictionary<string, string>());
+                    await metaRetriever.SetDataSourceAsync(currentFile.Url, new Dictionary<string, string>());
                     break;
                 case MediaFileType.VideoUrl:
                     break;
                 case MediaFileType.AudioFile:
-                    Java.IO.File file = new Java.IO.File(File.Url);
+                    Java.IO.File file = new Java.IO.File(currentFile.Url);
                     Java.IO.FileInputStream inputStream = new Java.IO.FileInputStream(file);
                     await metaRetriever.SetDataSourceAsync(inputStream.FD);
                     break;
@@ -52,44 +79,9 @@ namespace Plugin.MediaManager
             return metaRetriever;
         }
 
-        private string TryGetAlbumArtPathByFilename(System.Uri baseUri, string filename)
+        private Bitmap GetTrackCover(IMediaFile currentTrack)
         {
-            System.Uri testUri = new System.Uri(baseUri, filename);
-            string testPath = testUri.LocalPath;
-            if (System.IO.File.Exists(testPath))
-                return testPath;
-            else
-                return null;
-        }
-
-        private async Task GetCoverFromMetaData(MediaMetadataRetriever metaRetriever)
-        {
-            byte[] imageByteArray = metaRetriever.GetEmbeddedPicture();
-            if (imageByteArray == null)
-            {
-                Bitmap coverBitmap = GetCurrentTrackCover();
-                if (coverBitmap != null)
-                    File.Cover = coverBitmap;
-                else
-                    File.Cover = await BitmapFactory.DecodeResourceAsync(Resources, Resource.Drawable.ButtonStar);
-            }
-            else
-            {
-                try
-                {
-                    File.Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
-                }
-                catch (Java.Lang.OutOfMemoryError ex)
-                {
-                    File.Cover = null;
-                    //MediaFileFailed?.Invoke(this, new MediaFileFailedEventArgs(ex, mediaFile));
-                }
-            }
-        }
-
-        private Bitmap GetCurrentTrackCover()
-        {
-            string albumFolder = GetCurrentSongFolder();
+            string albumFolder = GetCurrentSongFolder(currentTrack);
             if (albumFolder == null)
                 return null;
 
@@ -113,16 +105,25 @@ namespace Plugin.MediaManager
             }
 
             Bitmap bitmap = BitmapFactory.DecodeFile(albumArtPath);
-
-            return bitmap;
+            return bitmap ?? BitmapFactory.DecodeResource(_resources, Resource.Drawable.IcMediaPlay);
         }
 
-        private string GetCurrentSongFolder()
+        private static string TryGetAlbumArtPathByFilename(System.Uri baseUri, string filename)
         {
-            if (!new System.Uri(File.Url).IsFile)
+            System.Uri testUri = new System.Uri(baseUri, filename);
+            string testPath = testUri.LocalPath;
+            if (System.IO.File.Exists(testPath))
+                return testPath;
+            else
+                return null;
+        }
+
+        private string GetCurrentSongFolder(IMediaFile currentFile)
+        {
+            if (!new System.Uri(currentFile.Url).IsFile)
                 return null;
 
-            return System.IO.Path.GetDirectoryName(File.Url);
+            return System.IO.Path.GetDirectoryName(currentFile.Url);
         }
     }
 }

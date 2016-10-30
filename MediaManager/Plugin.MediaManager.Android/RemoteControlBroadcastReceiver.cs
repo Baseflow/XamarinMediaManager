@@ -1,4 +1,3 @@
-using Android.App;
 using Android.Content;
 using Android.Views;
 
@@ -24,8 +23,6 @@ namespace Plugin.MediaManager
 		/// <param name="intent">Intent.</param>
 		public override void OnReceive (Context context, Intent intent)
 		{
-
-
 			if (intent.Action != Intent.ActionMediaButton)
 				return;
 

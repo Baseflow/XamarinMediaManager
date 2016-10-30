@@ -9,8 +9,8 @@
     <RootNamespace>Plugin.MediaManager</RootNamespace>
     <AssemblyName>Plugin.MediaManager</AssemblyName>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
-	<AndroidResgenClass>Resource</AndroidResgenClass>
-	<MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-	<AndroidSupportedAbis>arm64-v8a;armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>arm64-v8a;armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,7 +33,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Plugin.MediaManager.XML</DocumentationFile>
-    <AndroidSigningKeyAlias></AndroidSigningKeyAlias>
+    <AndroidSigningKeyAlias>
+    </AndroidSigningKeyAlias>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -73,17 +74,19 @@
       <Link>CrossMediaManager.cs</Link>
     </Compile>
     <Compile Include="MediaManagerImplementation.cs" />
+    <Compile Include="MediaSession\MediaNotificationManager.cs" />
+    <Compile Include="MediaPlayerService\MediaPlayerServiceConnection.cs" />
+    <Compile Include="MediaSession\MediaSessionManagerImplementation.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MediaPlayerService.cs" />
-    <Compile Include="MediaPlayerServiceBinder.cs" />
+    <Compile Include="MediaPlayerService\MediaPlayerService.cs" />
+    <Compile Include="MediaPlayerService\MediaPlayerServiceBinder.cs" />
     <Compile Include="MusicBroadcastReceiver.cs" />
     <Compile Include="RemoteControlBroadcastReceiver.cs" />
-    <Compile Include="AudioPlayerImplementation.cs" />
-    <Compile Include="VideoPlayerImplementation.cs" />
-    <Compile Include="VideoSurface.cs" />
+    <Compile Include="Audio\AudioPlayerImplementation.cs" />
+    <Compile Include="Video\VideoPlayerImplementation.cs" />
+    <Compile Include="Video\VideoSurface.cs" />
     <Compile Include="MediaExtractorImplementation.cs" />
-    <Compile Include="MediaNotificationManagerImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

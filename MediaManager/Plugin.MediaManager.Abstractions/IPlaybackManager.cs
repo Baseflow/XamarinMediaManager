@@ -49,6 +49,11 @@ namespace Plugin.MediaManager.Abstractions
         event MediaFinishedEventHandler MediaFinished;
 
         /// <summary>
+        /// Raised when media is finished playing.
+        /// </summary>
+        event MediaFileChangedEventHandler MediaFileChanged;
+
+        /// <summary>
         /// Raised when media is failed playing.
         /// </summary>
         event MediaFailedEventHandler MediaFailed;
