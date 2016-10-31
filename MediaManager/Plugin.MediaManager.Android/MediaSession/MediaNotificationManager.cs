@@ -27,7 +27,7 @@ namespace Plugin.MediaManager
         {
             _sessionToken = sessionToken;
             _appliactionContext = appliactionContext;
-            _intent = new Intent(_appliactionContext, typeof(MediaPlayerService));
+            _intent = new Intent(_appliactionContext, typeof(MediaServiceBase));
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Plugin.MediaManager
         /// </summary>
         public void StartNotification(IMediaFile mediaFile, bool mediaIsPlaying)
         {
-            _intent.SetAction(MediaPlayerService.ActionStop);
+            _intent.SetAction(MediaServiceBase.ActionStop);
             _pendingCancelIntent = PendingIntent.GetService(_appliactionContext, 1, _intent, PendingIntentFlags.CancelCurrent);
             _notificationStyle.SetMediaSession(_sessionToken);
             _notificationStyle.SetShowCancelButton(mediaIsPlaying);
@@ -66,7 +66,7 @@ namespace Plugin.MediaManager
             SetMetadata(mediaFile);
             AddActionButtons(mediaIsPlaying);
 
-            NotificationManagerCompat.From(_appliactionContext).Notify(MediaPlayerService.NotificationId, _builder.Build());
+            NotificationManagerCompat.From(_appliactionContext).Notify(MediaServiceBase.NotificationId, _builder.Build());
         }
 
 
@@ -84,7 +84,7 @@ namespace Plugin.MediaManager
             {
                 SetMetadata(mediaFile);
                 AddActionButtons(isPlaying);
-                nm.Notify(MediaPlayerService.NotificationId, _builder.Build());
+                nm.Notify(MediaServiceBase.NotificationId, _builder.Build());
             }
             else
             {
@@ -102,11 +102,11 @@ namespace Plugin.MediaManager
 
         private Android.Support.V4.App.NotificationCompat.Action GenerateActionCompat(int icon, string title, string intentAction)
         {
-            Intent intent = new Intent(_appliactionContext, typeof(MediaPlayerService));
+            Intent intent = new Intent(_appliactionContext, typeof(MediaServiceBase));
             intent.SetAction(intentAction);
 
             PendingIntentFlags flags = PendingIntentFlags.UpdateCurrent;
-            if (intentAction.Equals(MediaPlayerService.ActionStop))
+            if (intentAction.Equals(MediaServiceBase.ActionStop))
                 flags = PendingIntentFlags.CancelCurrent;
 
             PendingIntent pendingIntent = PendingIntent.GetService(_appliactionContext, 1, intent, flags);
@@ -117,11 +117,11 @@ namespace Plugin.MediaManager
         private void AddActionButtons(bool mediaIsPlaying)
         {
             _builder.MActions.Clear();
-            _builder.AddAction(GenerateActionCompat(Resource.Drawable.IcMediaPrevious, "Previous", MediaPlayerService.ActionPrevious));
+            _builder.AddAction(GenerateActionCompat(Resource.Drawable.IcMediaPrevious, "Previous", MediaServiceBase.ActionPrevious));
             _builder.AddAction(mediaIsPlaying
-                ? GenerateActionCompat(Resource.Drawable.IcMediaPause, "Pause", MediaPlayerService.ActionPause)
-                : GenerateActionCompat(Resource.Drawable.IcMediaPlay, "Play", MediaPlayerService.ActionPlay));
-            _builder.AddAction(GenerateActionCompat(Resource.Drawable.IcMediaNext, "Next", MediaPlayerService.ActionNext));
+                ? GenerateActionCompat(Resource.Drawable.IcMediaPause, "Pause", MediaServiceBase.ActionPause)
+                : GenerateActionCompat(Resource.Drawable.IcMediaPlay, "Play", MediaServiceBase.ActionPlay));
+            _builder.AddAction(GenerateActionCompat(Resource.Drawable.IcMediaNext, "Next", MediaServiceBase.ActionNext));
         }
     }
 }

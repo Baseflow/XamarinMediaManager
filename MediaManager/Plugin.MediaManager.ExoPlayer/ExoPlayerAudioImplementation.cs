@@ -6,15 +6,10 @@ using Plugin.MediaManager.Abstractions;
 
 namespace Plugin.MediaManager.ExoPlayer
 {
-    public class ExoPlayerAudioImplementation : AudioPlayerImplementation
+    public class ExoPlayerAudioImplementation : AudioPlayerImplementation<ExoPlayerAudioService>
     {
         public ExoPlayerAudioImplementation(MediaSessionManagerImplementation sessionManager) : base(sessionManager)
         {
-        }
-
-        public override Android.Content.Intent GetMediaServiceIntent()
-        {
-            return new Intent(applicationContext, typeof(ExoPlayerAudioService));
         }
     }
 }

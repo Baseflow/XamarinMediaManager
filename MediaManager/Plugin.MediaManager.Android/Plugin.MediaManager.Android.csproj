@@ -71,13 +71,14 @@
       <Link>CrossMediaManager.cs</Link>
     </Compile>
     <Compile Include="MediaManagerImplementation.cs" />
+    <Compile Include="MediaPlayerService\MediaPlayerService.cs" />
     <Compile Include="MediaSession\MediaNotificationManager.cs" />
-    <Compile Include="MediaPlayerService\MediaPlayerServiceConnection.cs" />
+    <Compile Include="MediaPlayerService\MediaServiceConnection.cs" />
     <Compile Include="MediaSession\MediaSessionManagerImplementation.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MediaPlayerService\MediaPlayerService.cs" />
-    <Compile Include="MediaPlayerService\MediaPlayerServiceBinder.cs" />
+    <Compile Include="MediaPlayerService\MediaServiceBase.cs" />
+    <Compile Include="MediaPlayerService\MediaServiceBinder.cs" />
     <Compile Include="MusicBroadcastReceiver.cs" />
     <Compile Include="RemoteControlBroadcastReceiver.cs" />
     <Compile Include="Audio\AudioPlayerImplementation.cs" />

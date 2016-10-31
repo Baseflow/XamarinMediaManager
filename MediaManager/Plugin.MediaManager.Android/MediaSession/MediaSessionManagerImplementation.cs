@@ -15,12 +15,12 @@ namespace Plugin.MediaManager
         private Context applicationContext;
         private MediaControllerCompat mediaControllerCompat;
         private MediaSessionCompat mediaSessionCompat;
-        private MediaPlayerServiceBinder _binder;
+        private MediaServiceBinder _binder;
         private string _packageName;
         
-        public IMediaNotificationManager NotificationManager { get; internal set; }
+        public IMediaNotificationManager NotificationManager { get; set; }
 
-        internal event EventHandler<string> OnNotificationActionFired;
+        public event EventHandler<string> OnNotificationActionFired;
         internal event EventHandler<int> OnStatusChanged;
 
         internal int MediaPlayerState => mediaControllerCompat?.PlaybackState?.State ?? PlaybackStateCompat.StateNone;
@@ -31,12 +31,12 @@ namespace Plugin.MediaManager
 
         internal ComponentName RemoteComponentName { get; set; }
       
-        internal MediaSessionManagerImplementation(Context appContext)
+        public MediaSessionManagerImplementation(Context appContext)
         {
             applicationContext = appContext;
         }
 
-        internal void InitMediaSession(string packageName, MediaPlayerServiceBinder binder)
+        internal void InitMediaSession(string packageName, MediaServiceBinder binder)
         {
             try
             {
