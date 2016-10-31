@@ -15,6 +15,7 @@ namespace Plugin.MediaManager.ExoPlayer
         public override async Task Play(IMediaFile mediaFile = null)
         {
             //TODO: Implement ExoPlayer here
+            await base.Play(mediaFile);
         }
     }
 }

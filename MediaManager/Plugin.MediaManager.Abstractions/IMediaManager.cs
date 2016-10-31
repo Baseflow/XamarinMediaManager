@@ -4,16 +4,7 @@ using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager.Abstractions
 {
-    public delegate void StatusChangedEventHandler(object sender, StatusChangedEventArgs e);
-
-    public delegate void PlayingChangedEventHandler(object sender, PlayingChangedEventArgs e);
-
-    public delegate void BufferingChangedEventHandler(object sender, BufferingChangedEventArgs e);
-
-    public delegate void MediaFinishedEventHandler(object sender, MediaFinishedEventArgs e);
-
-    public delegate void MediaFailedEventHandler(object sender, MediaFailedEventArgs e);
-
+    
     public delegate void MediaFileChangedEventHandler(object sender, MediaFileChangedEventArgs e);
 
     public delegate void MediaFileFailedEventHandler(object sender, MediaFileFailedEventArgs e);
@@ -27,27 +18,37 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Player responseble for audio playback
         /// </summary>
-        IAudioPlayer AudioPlayer { get; }
+        IAudioPlayer AudioPlayer { get; set; }
 
         /// <summary>
         /// Player responseble for video playback
         /// </summary>
-        IVideoPlayer VideoPlayer { get; }
+        IVideoPlayer VideoPlayer { get; set; }
 
         /// <summary>
         /// Queue to play media in sequences
         /// </summary>
-        IMediaQueue MediaQueue { get; }
+        IMediaQueue MediaQueue { get; set; }
 
         /// <summary>
         /// Manages notifications to the native system
         /// </summary>
-        IMediaNotificationManager  MediaNotificationManager { get; }
+        IMediaNotificationManager  MediaNotificationManager { get; set; }
 
         /// <summary>
         /// Extracts media information to put it into an IMediaFile
         /// </summary>
-        IMediaExtractor MediaExtractor { get; }
+        IMediaExtractor MediaExtractor { get; set; }
+
+        /// <summary>
+        /// Raised when media is finished playing.
+        /// </summary>
+        event MediaFileChangedEventHandler MediaFileChanged;
+
+        /// <summary>
+        /// Raised when mediadata of MediaFile failed to update
+        /// </summary>
+        event MediaFileFailedEventHandler MediaFileFailed;
 
         /// <summary>
         /// Creates new MediaFile object, adds it to the queue and starts playing
@@ -80,15 +81,5 @@ namespace Plugin.MediaManager.Abstractions
         /// Start playing if nothing is playing, otherwise it pauses the current media
         /// </summary>
         Task PlayPause();
-
-        /// <summary>
-        /// Raised when metadata of MediaFile is changed
-        /// </summary>
-        event MediaFileChangedEventHandler MediaFileChanged;
-
-        /// <summary>
-        /// Raised when mediadata of MediaFile failed to update
-        /// </summary>
-        event MediaFileFailedEventHandler MediaFileFailed;
     }
 }

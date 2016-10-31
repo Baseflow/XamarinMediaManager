@@ -98,6 +98,10 @@
       <Project>{19955052-96FC-4149-84DD-C95A4C846C87}</Project>
       <Name>MediaSample.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\MediaManager\Plugin.MediaManager.ExoPlayer\Plugin.MediaManager.ExoPlayer.csproj">
+      <Project>{06EF2F1F-8A8E-47D6-9FC8-BBC521783F13}</Project>
+      <Name>Plugin.MediaManager.ExoPlayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\album_art.jpg" />

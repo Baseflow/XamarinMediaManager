@@ -13,6 +13,7 @@ using Plugin.MediaManager;
 using Android.Media;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.ExoPlayer;
 
 namespace MediaSample.Droid
 {
@@ -43,6 +44,8 @@ namespace MediaSample.Droid
                 SupportActionBar.SetDisplayHomeAsUpEnabled(true);
                 SupportActionBar.SetHomeButtonEnabled(true);
             }
+
+            //CrossMediaManager.Current.AudioPlayer = new ExoPlayerAudioImplementation(((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager);
 
             var previous = FindViewById<ImageButton>(Resource.Id.btnPrevious);
             previous.Click += async (sender, args) =>

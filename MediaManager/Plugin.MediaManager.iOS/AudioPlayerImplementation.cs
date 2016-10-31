@@ -148,8 +148,6 @@ namespace Plugin.MediaManager
         public event BufferingChangedEventHandler BufferingChanged;
         public event MediaFinishedEventHandler MediaFinished;
         public event MediaFailedEventHandler MediaFailed;
-        public event MediaFileFailedEventHandler MediaFileFailed;
-        public event MediaFileChangedEventHandler MediaFileChanged;
 
         public async Task Seek(TimeSpan position)
         {
@@ -233,6 +231,8 @@ namespace Plugin.MediaManager
                 //unable to start playback log error
                 Console.WriteLine("Unable to start playback: " + ex);
             }
+
+            await Task.CompletedTask;
         }
 
         public override void ObserveValue(NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr context)

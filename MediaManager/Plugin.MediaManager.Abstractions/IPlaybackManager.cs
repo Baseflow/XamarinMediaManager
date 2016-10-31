@@ -1,10 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
+    public delegate void StatusChangedEventHandler(object sender, StatusChangedEventArgs e);
+
+    public delegate void PlayingChangedEventHandler(object sender, PlayingChangedEventArgs e);
+
+    public delegate void BufferingChangedEventHandler(object sender, BufferingChangedEventArgs e);
+
+    public delegate void MediaFinishedEventHandler(object sender, MediaFinishedEventArgs e);
+
+    public delegate void MediaFailedEventHandler(object sender, MediaFailedEventArgs e);
+
     public interface IPlaybackManager
     {
         /// <summary>
@@ -47,11 +58,6 @@ namespace Plugin.MediaManager.Abstractions
         /// Raised when media is finished playing.
         /// </summary>
         event MediaFinishedEventHandler MediaFinished;
-
-        /// <summary>
-        /// Raised when media is finished playing.
-        /// </summary>
-        event MediaFileChangedEventHandler MediaFileChanged;
 
         /// <summary>
         /// Raised when media is failed playing.

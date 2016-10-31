@@ -32,7 +32,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             RemoveEventHandlers();
         }
 
-        public virtual IMediaQueue MediaQueue { get; protected set; } =  new MediaQueue();
+        public virtual IMediaQueue MediaQueue { get; set; } =  new MediaQueue();
         public abstract IAudioPlayer AudioPlayer { get; set; }
         public abstract IVideoPlayer VideoPlayer { get; set; }
         public abstract IMediaNotificationManager MediaNotificationManager { get; set; }
@@ -190,7 +190,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 }
                 catch (Exception e)
                 {
-                    MediaFileFailed?.Invoke(this, new MediaFileFailedEventArgs(e, mediaFile));
+                    OnMediaFileFailed(this, new MediaFileFailedEventArgs(e, mediaFile));
                 }
             }
         }
@@ -239,6 +239,16 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 
         }
 
+        private void OnMediaFileFailed(object sender, MediaFileFailedEventArgs e)
+        {
+            if (sender == CurrentPlaybackManager)
+            {
+                MediaNotificationManager.UpdateNotifications(e.File, Status);
+                MediaFileFailed?.Invoke(sender, e);
+            }
+
+        }
+
         private void AddEventHandlers()
         {
             _currentPlaybackManager.BufferingChanged += OnBufferingChanged;
@@ -246,7 +256,8 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _currentPlaybackManager.MediaFinished += OnMediaFinished;
             _currentPlaybackManager.PlayingChanged += OnPlayingChanged;
             _currentPlaybackManager.StatusChanged += OnStatusChanged;
-            _currentPlaybackManager.MediaFileChanged += OnMediaFileChanged;
+            MediaFileChanged += OnMediaFileChanged;
+            MediaFileFailed += OnMediaFileFailed;
         }
 
         private void RemoveEventHandlers()
@@ -257,6 +268,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _currentPlaybackManager.PlayingChanged -= OnPlayingChanged;
             _currentPlaybackManager.StatusChanged -= OnStatusChanged;
             MediaFileChanged -= OnMediaFileChanged;
+            MediaFileFailed -= OnMediaFileFailed;
         }
     }
 }
