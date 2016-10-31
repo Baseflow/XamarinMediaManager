@@ -8,9 +8,9 @@
     <ProjectGuid>{586D5119-52D8-40B1-9BB5-CC7FDB033B86}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Plugin.MediaManager.XamarinForms.iOS</RootNamespace>
+    <RootNamespace>Plugin.MediaManager.Forms.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>Plugin.MediaManager.XamarinForms.iOS</AssemblyName>
+    <AssemblyName>Plugin.MediaManager.Forms.iOS</AssemblyName>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -62,19 +62,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MediaManager\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
+    <ProjectReference Include="..\..\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
       <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MediaManager\Plugin.MediaManager.iOS\Plugin.MediaManager.iOS.csproj">
+    <ProjectReference Include="..\..\Plugin.MediaManager.iOS\Plugin.MediaManager.iOS.csproj">
       <Project>{2882aeeb-d4cd-4eb9-8a6c-6653b33681f0}</Project>
       <Name>Plugin.MediaManager.iOS</Name>
       <IsAppExtension>false</IsAppExtension>
       <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
-    <ProjectReference Include="..\Plugin.MediaManager.XamarinForms\Plugin.MediaManager.XamarinForms.csproj">
+    <ProjectReference Include="..\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.csproj">
       <Project>{67f9d3a8-f71e-4428-913f-c37ae82cdb24}</Project>
-      <Name>Plugin.MediaManager.XamarinForms</Name>
+      <Name>Plugin.MediaManager.Forms</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

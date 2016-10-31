@@ -9,8 +9,8 @@
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Plugin.MediaManager.XamarinForms.Android</RootNamespace>
-    <AssemblyName>Plugin.MediaManager.XamarinForms.Android</AssemblyName>
+    <RootNamespace>Plugin.MediaManager.Forms.Android</RootNamespace>
+    <AssemblyName>Plugin.MediaManager.Forms.Android</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
@@ -109,17 +109,17 @@
     <AndroidResource Include="Resources\Values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MediaManager\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
+    <ProjectReference Include="..\..\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
       <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MediaManager\Plugin.MediaManager.Android\Plugin.MediaManager.Android.csproj">
+    <ProjectReference Include="..\..\Plugin.MediaManager.Android\Plugin.MediaManager.Android.csproj">
       <Project>{56a56f17-7de1-4ca1-9617-bf32e971ac84}</Project>
       <Name>Plugin.MediaManager.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Plugin.MediaManager.XamarinForms\Plugin.MediaManager.XamarinForms.csproj">
+    <ProjectReference Include="..\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.csproj">
       <Project>{67f9d3a8-f71e-4428-913f-c37ae82cdb24}</Project>
-      <Name>Plugin.MediaManager.XamarinForms</Name>
+      <Name>Plugin.MediaManager.Forms</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
