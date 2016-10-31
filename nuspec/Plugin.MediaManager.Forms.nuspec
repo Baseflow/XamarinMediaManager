@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>Plugin.MediaManager.Forms</id>
         <version>0.1.0-beta2</version>
@@ -14,10 +14,20 @@
         <summary>Forms Support for Cross Platform MediaManager</summary>
         <tags>xamarin, monodroid, C#, xamarin.android, android, ios, uwp, Windows, tvOS, Mac, MacOS, mediaplayer, audio, video, streaming, background, media, Forms</tags>
         <dependencies>
-			<dependency id="Plugin.MediaManager" version="0.1.0-beta2" />
-			<dependency id="Xamarin.Forms" version="2.3.2.127" />
+            <dependency id="Plugin.MediaManager" version="0.1.0-beta2" />
+            <dependency id="Xamarin.Forms" version="2.3.2.127" />
         </dependencies>
     </metadata>
     <files>
+        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.Android\bin\Release\Plugin.MediaManager.Forms.Android.dll" target="lib\MonoAndroid\Plugin.MediaManager.Forms.Android.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.Android\bin\Release\Plugin.MediaManager.Forms.Android.dll.mdb" target="lib\MonoAndroid\Plugin.MediaManager.Forms.Android.dll.mdb" />
+        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.Android\bin\Release\Plugin.MediaManager.Forms.dll" target="lib\MonoAndroid\Plugin.MediaManager.Forms.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.Android\bin\Release\Plugin.MediaManager.Forms.dll.mdb" target="lib\MonoAndroid\Plugin.MediaManager.Forms.dll.mdb" />
+        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms\bin\Release\Plugin.MediaManager.Forms.dll" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Plugin.MediaManager.Forms.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms\bin\Release\Plugin.MediaManager.Forms.dll.mdb" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Plugin.MediaManager.Forms.dll.mdb" />
+        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.iOS\bin\Release\Plugin.MediaManager.Forms.dll" target="lib\xamarinios\Plugin.MediaManager.Forms.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.iOS\bin\Release\Plugin.MediaManager.Forms.dll.mdb" target="lib\xamarinios\Plugin.MediaManager.Forms.dll.mdb" />
+        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.iOS\bin\Release\Plugin.MediaManager.Forms.iOS.dll" target="lib\xamarinios\Plugin.MediaManager.Forms.iOS.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.iOS\bin\Release\Plugin.MediaManager.Forms.iOS.dll.mdb" target="lib\xamarinios\Plugin.MediaManager.Forms.iOS.dll.mdb" />
     </files>
 </package>
