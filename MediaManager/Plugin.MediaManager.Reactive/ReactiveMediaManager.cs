@@ -11,7 +11,7 @@ using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Reactive
 {
-    public class RXMediaManager : IDisposable
+    public class ReactiveMediaManager : IDisposable
     {
         private readonly BehaviorSubject<bool> _canPlaySubject = new BehaviorSubject<bool>(false);
         private readonly CompositeDisposable _cd = new CompositeDisposable();
@@ -25,7 +25,7 @@ namespace Plugin.MediaManager.Reactive
         private readonly BehaviorSubject<string> _titleSubject = new BehaviorSubject<string>(string.Empty);
         private string _filePath;
 
-        public RXMediaManager()
+        public ReactiveMediaManager()
         {
             var bufferObservable = Observable.FromEventPattern<BufferingChangedEventHandler, BufferingChangedEventArgs>(
                     h => CrossMediaManager.Current.BufferingChanged += h,
