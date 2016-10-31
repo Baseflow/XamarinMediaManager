@@ -28,7 +28,7 @@ namespace Plugin.MediaManager
                 {
                     var progress = _player.PlaybackSession.Position.TotalSeconds/
                                    _player.PlaybackSession.NaturalDuration.TotalSeconds;
-                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(progress, _player.PlaybackSession.Position));
+                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(progress, _player.PlaybackSession.Position, _player.PlaybackSession.NaturalDuration));
                 }
             }, null, 0, int.MaxValue);
 
@@ -102,6 +102,7 @@ namespace Plugin.MediaManager
         public event PlayingChangedEventHandler PlayingChanged;
         public event BufferingChangedEventHandler BufferingChanged;
         public event MediaFinishedEventHandler MediaFinished;
+        public event MediaFileChangedEventHandler MediaFileChanged;
         public event MediaFailedEventHandler MediaFailed;
 
         public TimeSpan Buffered
