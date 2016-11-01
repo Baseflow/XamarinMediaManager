@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.tvOS", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.MacOS", "MediaManager\Plugin.MediaManager.MacOS\Plugin.MediaManager.MacOS.csproj", "{7ED0F28D-8838-4E24-9FA9-E3FA0B5649BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Tests", "MediaManager\Plugin.MediaManager.Tests\Plugin.MediaManager.Tests.csproj", "{0E7E2F98-F621-44FE-91C3-D554749F4628}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.ExoPlayer", "MediaManager\Plugin.MediaManager.ExoPlayer\Plugin.MediaManager.ExoPlayer.csproj", "{06EF2F1F-8A8E-47D6-9FC8-BBC521783F13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Reactive", "MediaManager\Plugin.MediaManager.Reactive\Plugin.MediaManager.Reactive.csproj", "{DB2BAFBA-2A85-4E9B-8E9D-0A607A661E84}"

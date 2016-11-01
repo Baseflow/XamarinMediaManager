@@ -13,7 +13,7 @@ namespace Plugin.MediaManager
 
         public override IAudioPlayer AudioPlayer
         {
-            get { return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(MediaSessionManager)); }
+            get {return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation<MediaPlayerService>(MediaSessionManager));}
             set { _audioPlayer = value; }
         }
 
@@ -39,19 +39,19 @@ namespace Plugin.MediaManager
 
         private async void HandleNotificationActions(object sender, string action)
         {
-            if (action.Equals(MediaPlayerService.ActionPlay) || action.Equals(MediaPlayerService.ActionPause))
+            if (action.Equals(MediaServiceBase.ActionPlay) || action.Equals(MediaServiceBase.ActionPause))
             {
                 await PlayPause();
             }
-            else if (action.Equals(MediaPlayerService.ActionPrevious))
+            else if (action.Equals(MediaServiceBase.ActionPrevious))
             {
                 await PlayPrevious();
             }
-            else if (action.Equals(MediaPlayerService.ActionNext))
+            else if (action.Equals(MediaServiceBase.ActionNext))
             {
                 await PlayNext();
             }
-            else if (action.Equals(MediaPlayerService.ActionStop))
+            else if (action.Equals(MediaServiceBase.ActionStop))
             {
                 await Stop();
             }

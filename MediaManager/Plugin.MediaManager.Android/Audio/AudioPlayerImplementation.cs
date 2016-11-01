@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -10,7 +11,7 @@ using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
-    public class AudioPlayerImplementation : IAudioPlayer
+    public class AudioPlayerImplementation<TService> : IAudioPlayer where TService : MediaServiceBase
     {
         public event BufferingChangedEventHandler BufferingChanged;
         public event MediaFailedEventHandler MediaFailed;
@@ -21,7 +22,7 @@ namespace Plugin.MediaManager
         public event MediaFileFailedEventHandler MediaFileFailed;
 
         public Context applicationContext;
-        private MediaPlayerServiceConnection mediaPlayerServiceConnection;
+        private MediaServiceConnection mediaPlayerServiceConnection;
         private Intent mediaPlayerServiceIntent;
         private MediaSessionManagerImplementation _sessionManager;
 
@@ -51,8 +52,8 @@ namespace Plugin.MediaManager
             }
         }
 
-        private MediaPlayerServiceBinder binder;
-        public MediaPlayerServiceBinder Binder
+        private MediaServiceBinder binder;
+        public MediaServiceBinder Binder
         {
             get
             {
@@ -69,8 +70,8 @@ namespace Plugin.MediaManager
             _sessionManager = sessionManager;
             applicationContext = Application.Context;
             mediaPlayerServiceIntent = GetMediaServiceIntent();
-            mediaPlayerServiceConnection = new MediaPlayerServiceConnection(this);
-            applicationContext.BindService(mediaPlayerServiceIntent, mediaPlayerServiceConnection, Bind.AutoCreate);
+            mediaPlayerServiceConnection = new MediaServiceConnection(this);
+            var success = applicationContext.BindService(mediaPlayerServiceIntent, mediaPlayerServiceConnection, Bind.AutoCreate);
             _sessionManager.OnStatusChanged += (sender, i) => Status = GetStatusByCompatValue(i);
             StatusChanged += (sender, args) =>
             {
@@ -80,7 +81,7 @@ namespace Plugin.MediaManager
             
         }
 
-        public virtual Intent GetMediaServiceIntent()
+        public Intent GetMediaServiceIntent()
         {
             return new Intent(applicationContext, typeof(MediaPlayerService));
         }
@@ -118,7 +119,7 @@ namespace Plugin.MediaManager
             await binder.GetMediaPlayerService().Stop();
         }
 
-        internal void OnServiceConnected(MediaPlayerServiceBinder serviceBinder)
+        internal void OnServiceConnected(MediaServiceBinder serviceBinder)
         {
             Binder = serviceBinder;
             isBound = true;

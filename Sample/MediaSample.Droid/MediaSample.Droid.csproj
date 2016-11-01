@@ -23,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;_ANDROID_</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -90,9 +90,9 @@
       <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\MediaManager\Plugin.MediaManager.Android\Plugin.MediaManager.Android.csproj">
-      <Project>{56a56f17-7de1-4ca1-9617-bf32e971ac84}</Project>
-      <Name>Plugin.MediaManager.Android</Name>
+    <ProjectReference Include="..\..\MediaManager\Plugin.MediaManager.ExoPlayer\Plugin.MediaManager.ExoPlayer.csproj">
+      <Project>{06ef2f1f-8a8e-47d6-9fc8-bbc521783f13}</Project>
+      <Name>Plugin.MediaManager.ExoPlayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\MediaSample.Core\MediaSample.Core.csproj">
       <Project>{19955052-96FC-4149-84DD-C95A4C846C87}</Project>

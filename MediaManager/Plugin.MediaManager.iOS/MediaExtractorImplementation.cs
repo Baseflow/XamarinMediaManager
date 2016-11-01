@@ -44,6 +44,7 @@ namespace Plugin.MediaManager
                         mediaFile.Metadata.Cover = image;
                     }
                 }
+                mediaFile.MetadataExtracted = true;
                 return mediaFile;
             }
             catch (Exception)

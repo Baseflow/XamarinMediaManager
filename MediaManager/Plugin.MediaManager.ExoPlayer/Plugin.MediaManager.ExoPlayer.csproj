@@ -46,6 +46,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Plugin.MediaManager\CrossMediaManager.cs">
+      <Link>CrossMediaManager.cs</Link>
+    </Compile>
+    <Compile Include="MediaManagerImplementation.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExoPlayerAudioImplementation.cs" />
