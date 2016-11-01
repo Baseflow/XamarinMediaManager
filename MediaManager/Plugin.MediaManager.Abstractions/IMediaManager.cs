@@ -1,116 +1,65 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager.Abstractions
 {
-    public delegate void StatusChangedEventHandler(object sender, EventArgs e);
+    
+    public delegate void MediaFileChangedEventHandler(object sender, MediaFileChangedEventArgs e);
 
-    public delegate void CoverReloadedEventHandler(object sender, EventArgs e);
-
-    public delegate void PlayingEventHandler(object sender, EventArgs e);
-
-    public delegate void BufferingEventHandler(object sender, EventArgs e);
-
-    public delegate void TrackFinishedEventHandler(object sender, EventArgs e);
+    public delegate void MediaFileFailedEventHandler(object sender, MediaFileFailedEventArgs e);
 
     /// <summary>
     /// The main purpose of this class is to be a controlling unit for all the single MediaItem implementations, who
     /// in themselve can play their media, but need a central controling unit, surrounding them
     /// </summary>
-    public interface IMediaManager
+    public interface IMediaManager : IPlaybackManager
     {
         /// <summary>
-        /// Optional Queue to play media in sequences
+        /// Player responseble for audio playback
         /// </summary>
-        IMediaQueue Queue { get; set; }
+        IAudioPlayer AudioPlayer { get; set; }
 
         /// <summary>
-        /// Reading the current status of the player (STOPPED, PAUSED, PLAYING, LOADING - initialization and buffering is combined here)
+        /// Player responseble for video playback
         /// </summary>
-        PlayerStatus Status { get; }
+        IVideoPlayer VideoPlayer { get; set; }
 
         /// <summary>
-        /// Raised when the status changes (playing, pause, buffering)
+        /// Queue to play media in sequences
         /// </summary>
-        event StatusChangedEventHandler StatusChanged;
+        IMediaQueue MediaQueue { get; set; }
 
         /// <summary>
-        /// Raised when the cover on the player changes
+        /// Manages notifications to the native system
         /// </summary>
-        event CoverReloadedEventHandler CoverReloaded;
+        IMediaNotificationManager  MediaNotificationManager { get; set; }
 
         /// <summary>
-        /// Raised at least every second when the player is playing.
+        /// Extracts media information to put it into an IMediaFile
         /// </summary>
-        event PlayingEventHandler Playing;
+        IMediaExtractor MediaExtractor { get; set; }
 
         /// <summary>
-        /// Raised each time the buffering is updated by the player.
+        /// Raised when media is finished playing.
         /// </summary>
-        event BufferingEventHandler Buffering;
+        event MediaFileChangedEventHandler MediaFileChanged;
 
         /// <summary>
-        /// Raised when a track is finished playing.
+        /// Raised when mediadata of MediaFile failed to update
         /// </summary>
-        event TrackFinishedEventHandler TrackFinished;
+        event MediaFileFailedEventHandler MediaFileFailed;
 
         /// <summary>
-        /// Starts playing from the current position
+        /// Creates new MediaFile object, adds it to the queue and starts playing
         /// </summary>
-        Task Play(IMediaFile mediaFile);
-
-        /// <summary>
-        /// Starts playing from the current position
-        /// </summary>
-        Task Play(string url);
-
-        /// <summary>
-        /// Stops playing
-        /// </summary>
-        Task Stop();
-
-        /// <summary>
-        /// Stops playing but retains position
-        /// </summary>
-        Task Pause();
-
-        /// <summary>
-        /// Gets the players position in milliseconds
-        /// </summary>
-        int Position { get; }
-
-        /// <summary>
-        /// Gets the source duration in milliseconds
-        /// If the response is -1, the duration is unknown or the player is still buffering.
-        /// </summary>
-        int Duration { get; }
-
-        /// <summary>
-        /// Gets the buffered time in milliseconds
-        /// </summary>
-        int Buffered { get; }
-
-        /// <summary>
-        /// Gets the current cover. The class for the instance depends on the platform.
-        /// Returns NULL if unknown.
-        /// </summary>
-        object Cover { get; }
-
-        /// <summary>
-        /// Changes position to the specified number of milliseconds from zero
-        /// </summary>
-        Task Seek(int position);
+        Task Play(string url, Implementations.MediaFileType fileType);
 
         /// <summary>
         /// Should be the same as calling PlayByPosition(Queue.size()+1)
         /// Maybe you'll want to preload the next song into memory ...
         /// </summary>
         Task PlayNext();
-
-        /// <summary>
-        /// Start playing if nothing is playing, otherwise it pauses the current media
-        /// </summary>
-        Task PlayPause();
 
         /// <summary>
         /// Should be the same as calling PlayByPosition(Queue.size()-1).
@@ -121,6 +70,16 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Start playing a track by its position in the Queue
         /// </summary>
-        //Task PlayByPosition(int index);
+        Task PlayByPosition(int index);
+
+        /// <summary>
+        /// Adds all MediaFiles to the Queue and starts playing the first item
+        /// </summary>
+        Task Play(IEnumerable<IMediaFile> mediaFiles);
+
+        /// <summary>
+        /// Start playing if nothing is playing, otherwise it pauses the current media
+        /// </summary>
+        Task PlayPause();
     }
 }

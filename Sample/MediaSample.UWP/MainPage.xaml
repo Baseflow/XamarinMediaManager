@@ -5,11 +5,13 @@
     xmlns:local="using:MediaSample.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mediaManager="using:Plugin.MediaManager"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <mediaManager:VideoSurface Height="300" Width="600" x:Name="VideoCanvas"></mediaManager:VideoSurface>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Player state:"></TextBlock>
                 <TextBlock x:Name="PlayerState"></TextBlock>

@@ -1,5 +1,6 @@
 ﻿using Plugin.MediaManager.Abstractions;
 using System;
+using System.Diagnostics;
 
 namespace Plugin.MediaManager
 {
@@ -8,7 +9,7 @@ namespace Plugin.MediaManager
   /// </summary>
   public class CrossMediaManager
   {
-    static readonly Lazy<IMediaManager> Implementation = new Lazy<IMediaManager>(CreateMediaManager, System.Threading.LazyThreadSafetyMode.PublicationOnly);
+    static readonly Lazy<IMediaManager> Implementation = new Lazy<IMediaManager>(CreateMediaManager);
 
     /// <summary>
     /// Current settings to use
@@ -17,25 +18,27 @@ namespace Plugin.MediaManager
     {
       get
       {
-        var ret = Implementation.Value;
-        if (ret == null)
+      
+        if (Implementation.Value == null)
         {
           throw NotImplementedInReferenceAssembly();
         }
-        return ret;
+        return Implementation.Value;
       }
     }
 
     static IMediaManager CreateMediaManager()
     {
 #if PORTABLE
+        Debug.WriteLine("PORTABLE Reached");
         return null;
 #else
-        return new MediaManagerImplementation();
+            Debug.WriteLine("Other reached");
+            return new MediaManagerImplementation();
 #endif
-    }
+        }
 
-    internal static Exception NotImplementedInReferenceAssembly()
+        internal static Exception NotImplementedInReferenceAssembly()
     {
       return new NotImplementedException("This functionality is not implemented in the portable version of this assembly.  You should reference the NuGet package from your main application project in order to reference the platform-specific implementation.");
     }
