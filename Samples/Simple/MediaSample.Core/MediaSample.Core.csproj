@@ -35,11 +35,11 @@
     <Compile Include="MediaPlayerViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MediaManager\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
       <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\MediaManager\Plugin.MediaManager\Plugin.MediaManager.csproj">
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager\Plugin.MediaManager.csproj">
       <Project>{a6fcef44-d2ba-42c7-b3cb-13667bcd7b54}</Project>
       <Name>Plugin.MediaManager</Name>
     </ProjectReference>
