@@ -13,7 +13,9 @@ namespace Plugin.MediaManager.Forms.Android
             base.OnElementChanged(e);
             if (Control == null)
             {
-                SetNativeControl(new VideoSurface(Context));
+                var videoSurface = new VideoSurface(Context);
+                SetNativeControl(videoSurface);
+                CrossMediaManager.Current.VideoPlayer.SetVideoSurface(videoSurface);
             }
         }
     }
