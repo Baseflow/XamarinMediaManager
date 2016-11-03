@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Android;
 using Android.App;
 using Android.Content;
-using Android.Content.Res;
 using Android.Database;
-using Android.Graphics;
 using Android.Media;
 using Android.Net;
 using Android.Net.Wifi;
@@ -15,9 +12,9 @@ using Android.Provider;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.MediaSession;
 
-namespace Plugin.MediaManager
+namespace Plugin.MediaManager.MediaPlayerService
 {
     [Service]
     [IntentFilter(new[] {ActionPlay, ActionPause, ActionStop, ActionTogglePlayback, ActionNext, ActionPrevious})]

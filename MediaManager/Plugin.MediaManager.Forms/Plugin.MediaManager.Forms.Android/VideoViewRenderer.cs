@@ -1,10 +1,10 @@
-using Plugin.MediaManager.XamarinForms;
-using Plugin.MediaManager.XamarinForms.Android;
+using Plugin.MediaManager.Forms;
+using Plugin.MediaManager.Forms.Android;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(VideoView), typeof(VideoViewRenderer))]
-namespace Plugin.MediaManager.XamarinForms.Android
+namespace Plugin.MediaManager.Forms.Android
 {
     public class VideoViewRenderer : ViewRenderer<VideoView, VideoSurface>
     {

@@ -2,6 +2,8 @@ using Android.App;
 using Android.Content.Res;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.Audio;
+using Plugin.MediaManager.MediaSession;
 
 namespace Plugin.MediaManager
 {
@@ -39,19 +41,19 @@ namespace Plugin.MediaManager
 
         private async void HandleNotificationActions(object sender, string action)
         {
-            if (action.Equals(MediaPlayerService.ActionPlay) || action.Equals(MediaPlayerService.ActionPause))
+            if (action.Equals(MediaPlayerService.MediaPlayerService.ActionPlay) || action.Equals(MediaPlayerService.MediaPlayerService.ActionPause))
             {
                 await PlayPause();
             }
-            else if (action.Equals(MediaPlayerService.ActionPrevious))
+            else if (action.Equals(MediaPlayerService.MediaPlayerService.ActionPrevious))
             {
                 await PlayPrevious();
             }
-            else if (action.Equals(MediaPlayerService.ActionNext))
+            else if (action.Equals(MediaPlayerService.MediaPlayerService.ActionNext))
             {
                 await PlayNext();
             }
-            else if (action.Equals(MediaPlayerService.ActionStop))
+            else if (action.Equals(MediaPlayerService.MediaPlayerService.ActionStop))
             {
                 await Stop();
             }

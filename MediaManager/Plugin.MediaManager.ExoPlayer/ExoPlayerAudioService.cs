@@ -8,7 +8,7 @@ using Plugin.MediaManager.Abstractions;
 
 namespace Plugin.MediaManager.ExoPlayer
 {
-    public class ExoPlayerAudioService : MediaPlayerService
+    public class ExoPlayerAudioService : MediaPlayerService.MediaPlayerService
     {
         private IExoPlayer mediaPlayer;
 

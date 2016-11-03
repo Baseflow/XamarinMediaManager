@@ -1,9 +1,9 @@
-﻿using Plugin.MediaManager.XamarinForms;
-using Plugin.MediaManager.XamarinForms.UWP;
+﻿using Plugin.MediaManager.Forms;
+using Plugin.MediaManager.Forms.UWP;
 using Xamarin.Forms.Platform.UWP;
 
 [assembly: ExportRenderer(typeof(VideoView), typeof(VideoViewRenderer))]
-namespace Plugin.MediaManager.XamarinForms.UWP
+namespace Plugin.MediaManager.Forms.UWP
 {
     public class VideoViewRenderer : ViewRenderer<VideoView, VideoSurface>
     {
