@@ -66,7 +66,7 @@ namespace MediaSample.UWP
         private async void PlayUrl(object sender, RoutedEventArgs e)
         {
             //await CrossMediaManager.Current.Play(@"http://www.montemagno.com/sample.mp3", MediaFileType.AudioUrl);
-            await CrossMediaManager.Current.Play(@"C:\Users\erlend\Videos\IMG_0140.mov", MediaFileType.VideoFile);
+            await CrossMediaManager.Current.Play(@"http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", MediaFileType.VideoUrl);
         }
 
         private async void Pause(object sender, RoutedEventArgs e)
