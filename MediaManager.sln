@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaForms", "Samples\Forms
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaForms.iOS", "Samples\Forms\iOS\MediaForms.iOS.csproj", "{27196501-89FA-4E1D-A356-7E9AA94AADD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaForms.Droid", "Samples\Forms\Droid\MediaForms.Droid.csproj", "{12B95EC8-F026-40D6-994D-364022F785C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaForms.Android", "Samples\Forms\Droid\MediaForms.Android.csproj", "{12B95EC8-F026-40D6-994D-364022F785C0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simple", "Simple", "{FD4A1000-6540-4A1D-BE65-40249DE24BFE}"
 EndProject

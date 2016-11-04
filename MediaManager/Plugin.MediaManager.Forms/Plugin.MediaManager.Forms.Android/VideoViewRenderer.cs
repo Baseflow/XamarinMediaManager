@@ -1,3 +1,4 @@
+using System;
 using Plugin.MediaManager.Forms;
 using Plugin.MediaManager.Forms.Android;
 using Xamarin.Forms;
@@ -8,15 +9,31 @@ namespace Plugin.MediaManager.Forms.Android
 {
     public class VideoViewRenderer : ViewRenderer<VideoView, VideoSurface>
     {
+        private VideoSurface _videoSurface;
+
+        public static async void Init()
+        {
+            var temp = DateTime.Now;
+        }
+
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> e)
         {
             base.OnElementChanged(e);
             if (Control == null)
             {
-                var videoSurface = new VideoSurface(Context);
-                SetNativeControl(videoSurface);
-                CrossMediaManager.Current.VideoPlayer.SetVideoSurface(videoSurface);
+                _videoSurface = new VideoSurface(Context);
+                SetNativeControl(_videoSurface);
+                CrossMediaManager.Current.VideoPlayer.SetVideoSurface(_videoSurface);
             }
+        }
+
+        protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
+        {
+            var p = _videoSurface.LayoutParameters;
+            p.Height = heightMeasureSpec;
+            p.Width = widthMeasureSpec;
+            _videoSurface.LayoutParameters = p;
+            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }
 }
