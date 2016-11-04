@@ -2,6 +2,7 @@ using Android.App;
 using Android.Content.Res;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.ExoPlayer;
 
 namespace Plugin.MediaManager
 {
@@ -10,10 +11,11 @@ namespace Plugin.MediaManager
     {
         private IAudioPlayer _audioPlayer;
         private IVideoPlayer _videPlayer;
+        private IMediaExtractor _mediaExtraxtor;
 
         public override IAudioPlayer AudioPlayer
         {
-            get {return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation<MediaPlayerService>(MediaSessionManager));}
+            get {return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation<ExoPlayerAudioService>(MediaSessionManager));}
             set { _audioPlayer = value; }
         }
 
@@ -29,7 +31,12 @@ namespace Plugin.MediaManager
             set { MediaSessionManager.NotificationManager = value; }
         }
 
-        public override IMediaExtractor MediaExtractor { get; set; } = new MediaExtractorImplementation(Resources.System);
+        public override IMediaExtractor MediaExtractor
+        {
+            get { return _mediaExtraxtor ?? (_mediaExtraxtor = new MediaExtractorImplementation(Resources.System, RequestProperties)); }
+            set { _mediaExtraxtor = value; }
+        }
+
         public MediaSessionManagerImplementation MediaSessionManager { get; set; } = new MediaSessionManagerImplementation(Application.Context);
 
         public MediaManagerImplementation()

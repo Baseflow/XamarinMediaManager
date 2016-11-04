@@ -2,8 +2,7 @@
 
 namespace Plugin.MediaManager
 {
-    public class MediaServiceBinder : Binder
-    {
+    public class MediaServiceBinder: Binder { 
         private MediaServiceBase service;
 
         public MediaServiceBinder(MediaServiceBase service)
@@ -11,9 +10,9 @@ namespace Plugin.MediaManager
             this.service = service;
         }
 
-        public MediaServiceBase GetMediaPlayerService()
+        public TService GetMediaPlayerService<TService>() where TService : MediaServiceBase
         {
-            return service;
+            return service as TService;
         }
     }
 }

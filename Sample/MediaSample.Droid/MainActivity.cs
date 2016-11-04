@@ -5,24 +5,19 @@ using Android.Support.V7.App;
 using Android.Content.PM;
 using Android.Widget;
 using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using Android.Graphics;
-using Plugin.MediaManager;
-using Android.Media;
-using Android.Support.V4.Media.Session;
+using Newtonsoft.Json.Serialization;
 using Plugin.MediaManager.Abstractions.Implementations;
-using Plugin.MediaManager.ExoPlayer;
 
 namespace MediaSample.Droid
 {
-    [Activity(Label = "MediaSample.Droid", 
-              MainLauncher = true, 
-              Icon = "@drawable/icon_play", 
-              Theme="@style/AppTheme",
-              LaunchMode = LaunchMode.SingleTop,
-              ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
+    [Activity(Label = "MediaSample.Droid",
+         MainLauncher = true,
+         Icon = "@drawable/icon_play",
+         Theme = "@style/AppTheme",
+         LaunchMode = LaunchMode.SingleTop,
+         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class MainActivity : AppCompatActivity
     {
         private MediaPlayerViewModel ViewModel { get; set; }
@@ -78,15 +73,23 @@ namespace MediaSample.Droid
             };
 
             ViewModel.MediaPlayer.PlayingChanged += (sender, e) =>
+
             {
-                Console.WriteLine($"Playing changed: Progress => {e.Progress}%");
                 RunOnUiThread(() =>
                 {
-                    seekbar.Max = Convert.ToInt32(e.Duration.TotalSeconds);
-                    seekbar.Progress = Convert.ToInt32(Math.Floor(e.Position.TotalSeconds));
+                    try
+                    {
+                        seekbar.Max = Convert.ToInt32(e.Duration.TotalSeconds);
+                        seekbar.Progress = Convert.ToInt32(Math.Floor(e.Position.TotalSeconds));
 
-                    position.Text = $"{e.Position.Minutes:00}:{e.Position.Seconds:00}";
-                    duration.Text = $"{e.Duration.Minutes:00}:{e.Duration.Seconds:00}";
+                        position.Text = $"{e.Position.Minutes:00}:{e.Position.Seconds:00}";
+                        duration.Text = $"{e.Duration.Minutes:00}:{e.Duration.Seconds:00}";
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Exception : PlayingChanged: {ex.Message}");
+                    }
                 });
             };
 
@@ -94,8 +97,15 @@ namespace MediaSample.Droid
             {
                 RunOnUiThread(() =>
                 {
-                    Console.WriteLine($"BufferingChanged: {args.BufferProgress}");
-                    seekbar.SecondaryProgress = Convert.ToInt32(args.BufferedTime.TotalSeconds);
+                    try
+                    {
+                        Console.WriteLine($"BufferingChanged: {args.BufferedTime.TotalSeconds}");
+                        seekbar.SecondaryProgress = Convert.ToInt32(args.BufferedTime.TotalSeconds);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Exception : BufferingChanged: {ex.Message}");
+                    }
                 });
             };
 
@@ -105,33 +115,97 @@ namespace MediaSample.Droid
                 Console.WriteLine($"StausChanged {e.Status}");
                 RunOnUiThread(() =>
                 {
-                    playpause.Checked = e.Status == MediaPlayerStatus.Playing || e.Status == MediaPlayerStatus.Loading || e.Status == MediaPlayerStatus.Buffering;
+                    try
+                    {
+                        playpause.Checked = e.Status == MediaPlayerStatus.Playing || e.Status == MediaPlayerStatus.Loading ||
+                        e.Status == MediaPlayerStatus.Buffering;
+                        if (e.Status == MediaPlayerStatus.Stopped || e.Status == MediaPlayerStatus.Failed || e.Status == MediaPlayerStatus.Loading)
+                        {
+                            seekbar.Progress = 0;
+                            seekbar.SecondaryProgress = 0;
+                            position.Text = "00:00";
+                            duration.Text = "00:00";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        Console.WriteLine($"Exception : StausChanged: {ex.Message}");
+                    }
+
                 });
             };
 
             ViewModel.MediaPlayer.MediaFailed += (sender, e) =>
             {
-                Console.WriteLine($"Media failed: Message => {e.Exception.Message}");
+                try
+                {
+                    Console.WriteLine($"Media failed => {e.Description}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception : MediaFailed: {ex.Message}");
+                }
+            };
+
+            ViewModel.MediaPlayer.MediaFileFailed += (sender, e) =>
+            {
+                try
+                {
+                    Console.WriteLine($"Media file ({e.File.Url}) failed: Message => {e.MediaExeption.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception : MediaFileFailed: {ex.Message}");
+                }
             };
 
             var title = FindViewById<TextView>(Resource.Id.textview_title);
             var subtitle = FindViewById<TextView>(Resource.Id.textview_subtitle);
             ViewModel.MediaPlayer.MediaFileChanged += (sender, args) =>
             {
-                Console.WriteLine($"File changed: {args.File.Metadata.Title}"); ;
+                try
+                {
+                    Console.WriteLine($"File changed: {args.File.Metadata.Title}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception : MediaFileChanged: {ex.Message}");
+                }
+
                 RunOnUiThread(() =>
                 {
-                    title.Text = args.File.Metadata.Title;
-                    subtitle.Text = args.File.Metadata.Artist;
-                    var cover = FindViewById<ImageView>(Resource.Id.imageview_cover);
-                    cover.SetImageBitmap(args.File.Metadata.Cover as Bitmap);
+                    try
+                    {
+                        if (args.File.Url == ViewModel.Queue.Current.Url)
+                        {
+                            title.Text = args.File.Metadata.Title;
+                            subtitle.Text = args.File.Metadata.Artist;
+                            var cover = FindViewById<ImageView>(Resource.Id.imageview_cover);
+                            cover.SetImageBitmap(args.File.Metadata.Cover as Bitmap);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Exception : MediaFileChangedUI: {ex.Message}");
+                    }
                 });
             };
 
+            ViewModel.Queue.Clear();
             ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3" });
             ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "http://www.bensound.org/bensound-music/bensound-goinghigher.mp3" });
             ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "http://www.montemagno.com/sample.mp3" });
             ViewModel.Queue.Add(new MediaFile() { Type = MediaFileType.AudioUrl, Url = "http://www.bensound.org/bensound-music/bensound-tenderness.mp3" });
+        }
+
+    }
+    public class UnderscoreMappingResolver : DefaultContractResolver
+    {
+        protected override string ResolvePropertyName(string propertyName)
+        {
+            return Regex.Replace(
+                propertyName, @"([A-Z])([A-Z][a-z])|([a-z0-9])([A-Z])", "$1$3_$2$4").ToLower();
         }
     }
 }

@@ -23,5 +23,11 @@ namespace Plugin.MediaManager.ExoPlayer
             get { return _videPlayer ?? (_videPlayer = new ExoPlayerVideoImplementation()); }
             set { _videPlayer = value; }
         }
+
+        public override IMediaNotificationManager MediaNotificationManager
+        {
+            get { return MediaSessionManager.NotificationManager; }
+            set { MediaSessionManager.NotificationManager = value; }
+        }
     }
 }

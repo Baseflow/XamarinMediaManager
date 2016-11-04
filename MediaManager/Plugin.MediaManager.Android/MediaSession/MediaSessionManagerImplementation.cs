@@ -1,6 +1,7 @@
 using System;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Graphics;
 using Android.Media;
 using Android.OS;
@@ -46,7 +47,6 @@ namespace Plugin.MediaManager
                     PendingIntent pIntent = PendingIntent.GetActivity(applicationContext, 0, nIntent, 0);
 
                     RemoteComponentName = new ComponentName(packageName, new RemoteControlBroadcastReceiver().ComponentName);
-
                     mediaSessionCompat = new MediaSessionCompat(applicationContext, "XamarinStreamingAudio", RemoteComponentName, pIntent);
                     mediaControllerCompat = new MediaControllerCompat(applicationContext, mediaSessionCompat.SessionToken);
                 }

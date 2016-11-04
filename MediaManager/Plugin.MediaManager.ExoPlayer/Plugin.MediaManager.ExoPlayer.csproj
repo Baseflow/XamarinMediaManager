@@ -54,7 +54,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExoPlayerAudioImplementation.cs" />
     <Compile Include="ExoPlayerVideoImplementation.cs" />
-    <Compile Include="ExoPlayerAudioService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

@@ -24,6 +24,8 @@ namespace Plugin.MediaManager
         private AVPlayer _player;
         private MediaPlayerStatus _status;
 
+        public Dictionary<string, string> RequestProperties { get; set; }
+
         public AudioPlayerImplementation()
         {
             _status = MediaPlayerStatus.Stopped;
@@ -153,6 +155,7 @@ namespace Plugin.MediaManager
         {
             await Task.Run(() => { Player.CurrentItem?.Seek(CMTime.FromSeconds(position.TotalSeconds, 1)); });
         }
+
 
         public async Task PlayPause()
         {

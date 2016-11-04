@@ -12,11 +12,10 @@ using Android.Provider;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
+using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
-    [Service]
-    [IntentFilter(new[] {ActionPlay, ActionPause, ActionStop, ActionTogglePlayback, ActionNext, ActionPrevious})]
     public abstract class MediaServiceBase : Service, AudioManager.IOnAudioFocusChangeListener
     {
         //Actions
@@ -62,6 +61,8 @@ namespace Plugin.MediaManager
 
         public abstract TimeSpan Buffered { get; }
 
+        public Dictionary<string, string> RequestProperties { get; set; }
+
         /// <summary>
         /// On create simply detect some of our managers
         /// </summary>
@@ -84,26 +85,12 @@ namespace Plugin.MediaManager
 
         public virtual async Task Play(IMediaFile mediaFile = null)
         {
+            if(!ValidateMediaFile(mediaFile) || CheckIfFileAlreadyIsPlaying(mediaFile).Result)
+                return;
+
+            CurrentFile = mediaFile;
+
             bool dataSourceSet;
-            if (!string.IsNullOrEmpty(mediaFile?.Url))
-                CurrentFile = mediaFile;
-
-            if (CurrentFile == null || mediaFile == null)
-            {
-                OnMediaFileFailed(new MediaFileFailedEventArgs(new Exception("No mediafile set"), null));
-                return;
-            }
-
-            if (MediaPlayerState == PlaybackStateCompat.StatePaused)
-            {
-                await TogglePlayPause(true);
-                ManuallyPaused = false;
-                SessionManager.UpdatePlaybackState(PlaybackStateCompat.StatePlaying, Position.Seconds);
-                SessionManager.UpdateMetadata(mediaFile);
-                SessionManager.NotificationManager.StartNotification(mediaFile);
-                return;
-            }
-
             try
             {
                 InitializePlayer();
@@ -125,7 +112,6 @@ namespace Plugin.MediaManager
                         Console.WriteLine("Could not get audio focus");
 
                     AquireWifiLock();
-                    SessionManager.UpdatePlaybackState(PlaybackStateCompat.StateBuffering, Position.Seconds);
                 }
                 catch (Exception ex)
                 {
@@ -136,7 +122,12 @@ namespace Plugin.MediaManager
 
         public abstract Task Seek(TimeSpan position);
 
-        public abstract Task Pause();
+        public virtual Task Pause()
+        {
+            OnStatusChanged(new StatusChangedEventArgs(MediaPlayerStatus.Paused));
+            SessionManager.UpdatePlaybackState(PlaybackStateCompat.StatePaused, Position.Seconds);
+            return Task.CompletedTask;
+        }
 
         public virtual async Task Stop()
         {
@@ -157,14 +148,7 @@ namespace Plugin.MediaManager
 
         public abstract Task<bool> SetMediaPlayerDataSource();
 
-        [Obsolete("deprecated")]
-        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
-        {
-            HandleIntent(intent);
-            return base.OnStartCommand(intent, flags, startId);
-        }
-
-        private void HandleIntent(Intent intent)
+        public void HandleIntent(Intent intent)
         {
             if (intent == null || intent.Action == null)
                 return;
@@ -207,7 +191,7 @@ namespace Plugin.MediaManager
         {
             Binder = new MediaServiceBinder(this);
             return Binder;
-        }
+        } 
 
         public override bool OnUnbind(Intent intent)
         {
@@ -225,8 +209,6 @@ namespace Plugin.MediaManager
             StopForeground(true);
             ReleaseWifiLock();
             SessionManager.Release();
-
-
         }
 
         /// <summary>
@@ -241,11 +223,9 @@ namespace Plugin.MediaManager
             switch (focusChange)
             {
                 case AudioFocus.Gain:
-                   //TODO: SET ABSTRACT METHODS
-                    if (TransientPaused && !ManuallyPaused)
+                   if (TransientPaused && !ManuallyPaused)
                     {
                         await Play();
-                        SessionManager.UpdatePlaybackState(PlaybackStateCompat.StatePlaying, Position.Seconds);
                     }
 
                     SetVolume(1.0f, 1.0f);//Turn it up!
@@ -327,6 +307,39 @@ namespace Plugin.MediaManager
         protected virtual void OnMediaFileFailed(MediaFileFailedEventArgs e)
         {
             MediaFileFailed?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Checks if player just paused.
+        /// </summary>
+        /// <param name="mediaFile">The media file.</param>
+        private async Task<bool> CheckIfFileAlreadyIsPlaying(IMediaFile mediaFile)
+        {
+            if (CurrentFile != null && !string.IsNullOrEmpty(mediaFile?.Url) && mediaFile?.Url == CurrentFile?.Url && MediaPlayerState != PlaybackStateCompat.StatePaused)
+            {
+                await Seek(TimeSpan.Zero);
+                return await Task.FromResult(true);
+            };
+            
+            if (MediaPlayerState == PlaybackStateCompat.StatePaused)
+            {
+                ManuallyPaused = false;
+                SessionManager.UpdatePlaybackState(PlaybackStateCompat.StatePlaying, Position.Seconds);
+                SessionManager.UpdateMetadata(mediaFile);
+                SessionManager.NotificationManager.StartNotification(mediaFile);
+                CurrentFile = mediaFile ?? CurrentFile;
+                await TogglePlayPause(true);
+                return await Task.FromResult(true);
+            };
+
+            return await Task.FromResult(false);
+        }
+
+        private bool ValidateMediaFile(IMediaFile mediaFile)
+        {
+            if (CurrentFile != null || mediaFile != null) return true;
+            OnMediaFileFailed(new MediaFileFailedEventArgs(new Exception("No mediafile set"), null));
+            return false;
         }
     }
 }

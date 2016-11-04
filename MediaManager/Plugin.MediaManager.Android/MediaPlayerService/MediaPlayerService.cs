@@ -13,6 +13,8 @@ using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager
 {
+    [Service]
+    [IntentFilter(new[] { ActionPlay, ActionPause, ActionStop, ActionTogglePlayback, ActionNext, ActionPrevious })]
     public class MediaPlayerService : MediaServiceBase,
         MediaPlayer.IOnBufferingUpdateListener,
         MediaPlayer.IOnCompletionListener,
@@ -87,6 +89,13 @@ namespace Plugin.MediaManager
             _mediaPlayer.SetOnPreparedListener(this);
         }
 
+        [Obsolete("deprecated")]
+        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
+        {
+            HandleIntent(intent);
+            return base.OnStartCommand(intent, flags, startId);
+        }
+
         #region ****************** MediaPlayer Actions ******************
 
         public override async Task Play(IMediaFile mediaFile = null)
@@ -143,11 +152,12 @@ namespace Plugin.MediaManager
                 }
                 catch (Exception ex)
                 {
+
                     String uri = GetUriFromPath(ApplicationContext, CurrentFile.Url);
                     _mediaPlayer.Reset();
                     try
                     {
-                        await _mediaPlayer.SetDataSourceAsync(uri);
+                        await _mediaPlayer.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(uri), RequestProperties);
                     }
                     catch (Exception)
                     {
@@ -188,9 +198,8 @@ namespace Plugin.MediaManager
 
                 if (!TransientPaused)
                     ManuallyPaused = true;
-
-                SessionManager.UpdatePlaybackState(PlaybackStateCompat.StatePaused, Position.Seconds);
             });
+            await base.Pause();
         }
 
         public override async Task Stop()
@@ -267,8 +276,8 @@ namespace Plugin.MediaManager
         private async Task SetMediaPlayerDataSourcePostHoneyComb()
         {
             _mediaPlayer?.Reset();
-            Android.Net.Uri uri = Android.Net.Uri.Parse(Android.Net.Uri.Encode(CurrentFile.Url));
-            var dataSourceAsync = _mediaPlayer?.SetDataSourceAsync(ApplicationContext, uri);
+            Android.Net.Uri uri = Android.Net.Uri.Parse(CurrentFile.Url);
+            var dataSourceAsync = _mediaPlayer?.SetDataSourceAsync(ApplicationContext, uri, RequestProperties);
             if (dataSourceAsync != null)
                 await dataSourceAsync;
         }

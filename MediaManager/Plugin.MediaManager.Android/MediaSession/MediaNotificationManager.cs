@@ -1,20 +1,23 @@
+using System;
 using System.Runtime.InteropServices;
 using Android;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Graphics;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.ExoPlayer;
 using NotificationCompat = Android.Support.V7.App.NotificationCompat;
 
 namespace Plugin.MediaManager
 {
-    internal class MediaNotificationManager: IMediaNotificationManager
+    internal class MediaNotificationManager : IMediaNotificationManager
     {
-       // private MediaSessionManagerImplementation _sessionHandler;
+        // private MediaSessionManagerImplementation _sessionHandler;
         private Intent _intent;
         private PendingIntent _pendingCancelIntent;
         private PendingIntent _pendingIntent;
@@ -27,7 +30,11 @@ namespace Plugin.MediaManager
         {
             _sessionToken = sessionToken;
             _appliactionContext = appliactionContext;
-            _intent = new Intent(_appliactionContext, typeof(MediaServiceBase));
+            _intent = new Intent(_appliactionContext, typeof(ExoPlayerAudioService));
+            var mainActivity =
+                _appliactionContext.PackageManager.GetLaunchIntentForPackage(_appliactionContext.PackageName);
+            _pendingIntent = PendingIntent.GetActivity(_appliactionContext, 0, mainActivity,
+                PendingIntentFlags.UpdateCurrent);
         }
 
         /// <summary>
@@ -36,19 +43,16 @@ namespace Plugin.MediaManager
         /// <param name="mediaFile">The media file.</param>
         public void StartNotification(IMediaFile mediaFile)
         {
-            StartNotification(mediaFile, true);
+            StartNotification(mediaFile, true, false);
         }
 
         /// <summary>
         /// When we start on the foreground we will present a notification to the user
         /// When they press the notification it will take them to the main page so they can control the music
         /// </summary>
-        public void StartNotification(IMediaFile mediaFile, bool mediaIsPlaying)
+        public void StartNotification(IMediaFile mediaFile, bool mediaIsPlaying, bool canBeRemoved)
         {
-            _intent.SetAction(MediaServiceBase.ActionStop);
-            _pendingCancelIntent = PendingIntent.GetService(_appliactionContext, 1, _intent, PendingIntentFlags.CancelCurrent);
             _notificationStyle.SetMediaSession(_sessionToken);
-            _notificationStyle.SetShowCancelButton(mediaIsPlaying);
             _notificationStyle.SetCancelButtonIntent(_pendingCancelIntent);
             _notificationStyle.SetShowActionsInCompactView(0, 1, 2);
 
@@ -56,17 +60,16 @@ namespace Plugin.MediaManager
             {
                 MStyle = _notificationStyle
             };
-            _builder.SetColor(ContextCompat.GetColor(_appliactionContext, Resource.Color.BackgroundDark));
-            _builder.SetSmallIcon(Resource.Drawable.IcMediaPlay);
+            _builder.SetSmallIcon(_appliactionContext.ApplicationInfo.Icon);
             _builder.SetContentIntent(_pendingIntent);
-            _builder.SetShowWhen(mediaIsPlaying);
-            _builder.SetOngoing(mediaIsPlaying);
+            _builder.SetOngoing(true);
             _builder.SetVisibility(1);
-           
+
             SetMetadata(mediaFile);
             AddActionButtons(mediaIsPlaying);
 
-            NotificationManagerCompat.From(_appliactionContext).Notify(MediaServiceBase.NotificationId, _builder.Build());
+            NotificationManagerCompat.From(_appliactionContext)
+                .Notify(MediaServiceBase.NotificationId, _builder.Build());
         }
 
 
@@ -78,31 +81,40 @@ namespace Plugin.MediaManager
 
         public void UpdateNotifications(IMediaFile mediaFile, MediaPlayerStatus status)
         {
-            var isPlaying = status == MediaPlayerStatus.Playing || status == MediaPlayerStatus.Buffering;
-            var nm = NotificationManagerCompat.From(_appliactionContext);
-            if (nm != null && _builder != null)
+            try
             {
-                SetMetadata(mediaFile);
-                AddActionButtons(isPlaying);
-                nm.Notify(MediaServiceBase.NotificationId, _builder.Build());
+                var isPlaying = status == MediaPlayerStatus.Playing || status == MediaPlayerStatus.Buffering;
+                var nm = NotificationManagerCompat.From(_appliactionContext);
+                if (nm != null && _builder != null)
+                {
+                    SetMetadata(mediaFile);
+                    AddActionButtons(isPlaying);
+                    nm.Notify(MediaServiceBase.NotificationId, _builder.Build());
+                }
+                else
+                {
+                    StartNotification(mediaFile, isPlaying, false);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                StartNotification(mediaFile, isPlaying);
+                Console.WriteLine(ex.Message);
+                StopNotifications();
             }
+           
         }
 
         private void SetMetadata(IMediaFile mediaFile)
         {
-            _builder.SetContentTitle(mediaFile.Metadata.Title);
-            _builder.SetContentText(mediaFile.Metadata.Artist);
-            _builder.SetContentInfo(mediaFile.Metadata.Album);
-            _builder.SetLargeIcon(mediaFile.Metadata.Cover as Bitmap);
+            _builder.SetContentTitle(mediaFile?.Metadata?.Title ?? string.Empty);
+            _builder.SetContentText(mediaFile?.Metadata?.Artist ?? string.Empty);
+            _builder.SetContentInfo(mediaFile?.Metadata?.Album ?? string.Empty);
+            _builder.SetLargeIcon(mediaFile?.Metadata?.Cover as Bitmap);
         }
 
         private Android.Support.V4.App.NotificationCompat.Action GenerateActionCompat(int icon, string title, string intentAction)
         {
-            Intent intent = new Intent(_appliactionContext, typeof(MediaServiceBase));
+            Intent intent = new Intent(_appliactionContext, typeof(ExoPlayerAudioService));
             intent.SetAction(intentAction);
 
             PendingIntentFlags flags = PendingIntentFlags.UpdateCurrent;

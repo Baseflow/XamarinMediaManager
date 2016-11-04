@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.EventArguments;
+using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
@@ -13,6 +14,7 @@ namespace Plugin.MediaManager.Abstractions
     /// The main purpose of this class is to be a controlling unit for all the single MediaItem implementations, who
     /// in themselve can play their media, but need a central controling unit, surrounding them
     /// </summary>
+    /// <seealso cref="Plugin.MediaManager.Abstractions.IPlaybackManager" />
     public interface IMediaManager : IPlaybackManager
     {
         /// <summary>
@@ -33,7 +35,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Manages notifications to the native system
         /// </summary>
-        IMediaNotificationManager  MediaNotificationManager { get; set; }
+        IMediaNotificationManager MediaNotificationManager { get; set; }
 
         /// <summary>
         /// Extracts media information to put it into an IMediaFile
@@ -53,7 +55,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Creates new MediaFile object, adds it to the queue and starts playing
         /// </summary>
-        Task Play(string url, Implementations.MediaFileType fileType);
+        Task Play(string url, MediaFileType fileType);
 
         /// <summary>
         /// Should be the same as calling PlayByPosition(Queue.size()+1)
