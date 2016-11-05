@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Windows.Media.Core;
-using Windows.Media.Playback;
+using Windows.Storage;
+using Windows.Storage.FileProperties;
+using Windows.UI.Xaml.Media.Imaging;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
 
@@ -9,27 +10,45 @@ namespace Plugin.MediaManager
 {
     public class MediaExtractorImplementation : IMediaExtractor
     {
-        public async Task<IMediaFile> GetAudioInfo(IMediaFile mediaFile)
+        private async Task<IMediaFile> GetAudioInfo(IMediaFile mediaFile)
         {
-            var source = MediaSource.CreateFromUri(new Uri(mediaFile.Url));
-            var playbackItem = new MediaPlaybackItem(source);
-            var displayProperties = playbackItem.GetDisplayProperties();
-            var props = displayProperties.MusicProperties;
-            mediaFile.Metadata.Title = props.Title;
-            mediaFile.Metadata.Artist = props.Artist;
-            mediaFile.Metadata.Album = props.AlbumTitle;
-            mediaFile.Metadata.Cover = displayProperties.Thumbnail;
+            if (mediaFile.Type == MediaFileType.AudioFile)
+            {
+                var file = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
+                var musicProperties = await file.Properties.GetMusicPropertiesAsync();
+                mediaFile.Metadata.Title = musicProperties.Title;
+                mediaFile.Metadata.Artist = musicProperties.Artist;
+                mediaFile.Metadata.Album = musicProperties.Album;
+                var thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
+                if (thumbnail != null && thumbnail.Type == ThumbnailType.Image)
+                {
+                    BitmapSource bitmap = new BitmapImage();
+                    await bitmap.SetSourceAsync(thumbnail);
+                    mediaFile.Metadata.Cover = bitmap;
+                }
+                mediaFile.MetadataExtracted = true;
+            }
             return mediaFile;
         }
 
-        public async Task<IMediaFile> GetVideoInfo(IMediaFile mediaFile)
+        private async Task<IMediaFile> GetVideoInfo(IMediaFile mediaFile)
         {
-            var source = MediaSource.CreateFromUri(new Uri(mediaFile.Url));
-            var playbackItem = new MediaPlaybackItem(source);
-            var displayProperties = playbackItem.GetDisplayProperties();
-            var props = displayProperties.VideoProperties;
-            mediaFile.Metadata.Title = props.Title;
-            mediaFile.Metadata.Cover = displayProperties.Thumbnail;
+            if (mediaFile.Type == MediaFileType.VideoFile)
+            {
+                var file = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
+                var musicProperties = await file.Properties.GetVideoPropertiesAsync();
+                mediaFile.Metadata.Title = musicProperties.Title;
+                mediaFile.Metadata.Album = string.Empty;
+                mediaFile.Metadata.Artist = string.Empty;
+                var thumbnail = await file.GetThumbnailAsync(ThumbnailMode.VideosView);
+                if (thumbnail != null && thumbnail.Type == ThumbnailType.Image)
+                {
+                    BitmapSource bitmap = new BitmapImage();
+                    await bitmap.SetSourceAsync(thumbnail);
+                    mediaFile.Metadata.Cover = bitmap;
+                }
+                mediaFile.MetadataExtracted = true;
+            }
             return mediaFile;
         }
 
