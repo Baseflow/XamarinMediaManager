@@ -17,7 +17,7 @@ using Plugin.MediaManager.MediaSession;
 
 namespace Plugin.MediaManager
 {
-    public abstract class MediaServiceBase : Service, AudioManager.IOnAudioFocusChangeListener
+    public abstract class MediaServiceBase : Service, AudioManager.IOnAudioFocusChangeListener, IPlaybackManager
     {
         //Actions
         public const string ActionPlay = "com.xamarin.action.PLAY";
@@ -48,7 +48,7 @@ namespace Plugin.MediaManager
 
         public IMediaFile CurrentFile { get; set; }
 
-        public MediaSessionManagerImplementation SessionManager { get; set; }
+        public MediaSessionManager SessionManager { get; set; }
 
         public int MediaPlayerState => SessionManager.MediaPlayerState;
 
@@ -63,6 +63,14 @@ namespace Plugin.MediaManager
         public abstract TimeSpan Buffered { get; }
 
         public Dictionary<string, string> RequestProperties { get; set; } = new Dictionary<string, string>();
+
+        public MediaPlayerStatus Status
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         /// <summary>
         /// On create simply detect some of our managers
@@ -250,7 +258,7 @@ namespace Plugin.MediaManager
             }
         }
         
-        internal void SetMediaSession(MediaSessionManagerImplementation sessionManager)
+        internal void SetMediaSession(MediaSessionManager sessionManager)
         {
             SessionManager = sessionManager;
             SessionManager.RemoteComponentName = new ComponentName(PackageName, new RemoteControlBroadcastReceiver().ComponentName);

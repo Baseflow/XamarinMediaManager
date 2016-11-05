@@ -2,7 +2,7 @@
 
 namespace Plugin.MediaManager
 {
-    public class MediaServiceBinder: Binder { 
+    public class MediaServiceBinder : Binder { 
         private MediaServiceBase service;
 
         public MediaServiceBinder(MediaServiceBase service)

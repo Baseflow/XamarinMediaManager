@@ -12,7 +12,7 @@ using Plugin.MediaManager.Abstractions;
 
 namespace Plugin.MediaManager.MediaSession
 {
-    public class MediaSessionManagerImplementation
+    public class MediaSessionManager
     {
         private Context applicationContext;
         private MediaControllerCompat mediaControllerCompat;
@@ -33,7 +33,7 @@ namespace Plugin.MediaManager.MediaSession
 
         internal ComponentName RemoteComponentName { get; set; }
       
-        public MediaSessionManagerImplementation(Context appContext)
+        public MediaSessionManager(Context appContext)
         {
             applicationContext = appContext;
         }
@@ -54,7 +54,7 @@ namespace Plugin.MediaManager.MediaSession
                 mediaSessionCompat.Active = true;
                 //mediaSessionCompat.SetCallback(binder.GetMediaPlayerService().AlternateRemoteCallback ?? new MediaSessionCallback(binder));
                 mediaSessionCompat.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons | MediaSessionCompat.FlagHandlesTransportControls);
-                NotificationManager = new MediaNotificationManager(applicationContext, CurrentSession.SessionToken, typeof(MediaPlayerService));
+                NotificationManager = new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, typeof(MediaPlayerService));
                 _packageName = packageName;
                 _binder = binder;
             }

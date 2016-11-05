@@ -14,7 +14,7 @@ using NotificationCompat = Android.Support.V7.App.NotificationCompat;
 
 namespace Plugin.MediaManager
 {
-    internal class MediaNotificationManager : IMediaNotificationManager
+    internal class MediaNotificationManagerImplementation : IMediaNotificationManager
     {
         // private MediaSessionManagerImplementation _sessionHandler;
         private Intent _intent;
@@ -25,7 +25,7 @@ namespace Plugin.MediaManager
         private Context _appliactionContext;
         private NotificationCompat.Builder _builder;
 
-        public MediaNotificationManager(Context appliactionContext, MediaSessionCompat.Token sessionToken, Type serviceType)
+        public MediaNotificationManagerImplementation(Context appliactionContext, MediaSessionCompat.Token sessionToken, Type serviceType)
         {
             _sessionToken = sessionToken;
             _appliactionContext = appliactionContext;

@@ -29,7 +29,7 @@ namespace Plugin.MediaManager
         public Context applicationContext;
         private MediaServiceConnection<TService> mediaPlayerServiceConnection;
         private Intent mediaPlayerServiceIntent;
-        private MediaSessionManagerImplementation _sessionManager;
+        private MediaSessionManager _sessionManager;
         private CancellationTokenSource _onPlayingCancellationSource = new CancellationTokenSource();
 
         private bool isBound;
@@ -73,7 +73,7 @@ namespace Plugin.MediaManager
             }
         }
 
-        public AudioPlayerBase(MediaSessionManagerImplementation sessionManager)
+        public AudioPlayerBase(MediaSessionManager sessionManager)
         {
             _sessionManager = sessionManager;
             applicationContext = Application.Context;

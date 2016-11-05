@@ -246,6 +246,11 @@ namespace Plugin.MediaManager.ExoPlayer
                 , factory
                 , extractorFactory, null, null);
         }
+
+        public override Task Play(IEnumerable<IMediaFile> mediaFiles)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class HttpSourceFactory : Object, IDataSourceFactory

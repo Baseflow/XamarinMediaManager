@@ -9,7 +9,7 @@ namespace Plugin.MediaManager
     /// </summary>
     [BroadcastReceiver]
 	[Android.App.IntentFilter(new []{AudioManager.ActionAudioBecomingNoisy})]
-    public class MusicBroadcastReceiver: BroadcastReceiver
+    public class AudioPlayerBroadcastReceiver: BroadcastReceiver
     {
         public override void OnReceive(Context context, Intent intent)
         {

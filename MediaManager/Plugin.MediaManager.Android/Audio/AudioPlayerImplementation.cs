@@ -4,7 +4,7 @@ namespace Plugin.MediaManager.Audio
 {
     public class AudioPlayerImplementation : AudioPlayerBase<MediaPlayerService>
     {
-        public AudioPlayerImplementation(MediaSessionManagerImplementation sessionManager) : base(sessionManager)
+        public AudioPlayerImplementation(MediaSessionManager sessionManager) : base(sessionManager)
         {
         }
     }

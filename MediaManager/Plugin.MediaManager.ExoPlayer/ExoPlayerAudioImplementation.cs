@@ -10,7 +10,7 @@ namespace Plugin.MediaManager.ExoPlayer
 {
     public class ExoPlayerAudioImplementation : AudioPlayerBase<ExoPlayerAudioService>
     {
-        public ExoPlayerAudioImplementation(MediaSessionManagerImplementation sessionManager) : base(sessionManager)
+        public ExoPlayerAudioImplementation(MediaSessionManager sessionManager) : base(sessionManager)
         {
         }
     }

@@ -38,7 +38,7 @@ namespace Plugin.MediaManager
             set { _mediaExtraxtor = value; }
         }
 
-        public MediaSessionManagerImplementation MediaSessionManager { get; set; } = new MediaSessionManagerImplementation(Application.Context);
+        public MediaSessionManager MediaSessionManager { get; set; } = new MediaSessionManager(Application.Context);
 
         public MediaManagerImplementation()
         {
