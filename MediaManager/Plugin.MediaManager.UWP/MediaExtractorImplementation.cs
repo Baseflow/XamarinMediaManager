@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Playback;
@@ -10,22 +9,17 @@ namespace Plugin.MediaManager
 {
     public class MediaExtractorImplementation : IMediaExtractor
     {
-        public async Task<IAudioInfo> GetAudioInfo(IMediaFile mediaFile)
+        public async Task<IMediaFile> GetAudioInfo(IMediaFile mediaFile)
         {
             var source = MediaSource.CreateFromUri(new Uri(mediaFile.Url));
             var playbackItem = new MediaPlaybackItem(source);
             var displayProperties = playbackItem.GetDisplayProperties();
-            var stream = await displayProperties.Thumbnail.OpenReadAsync();
-
-            AudioInfo info = new AudioInfo();
             var props = displayProperties.MusicProperties;
-            info.AlbumArtist = props.AlbumArtist;
-            info.AlbumTitle = props.AlbumTitle;
-            info.AlbumTrackCount = (int) props.AlbumTrackCount;
-            info.Artist = props.Title;
-            info.Genres = props.Genres;
-            info.TrackNumber = (int) props.TrackNumber;
-            return info;
+            mediaFile.Metadata.Title = props.Title;
+            mediaFile.Metadata.Artist = props.Artist;
+            mediaFile.Metadata.Album = props.AlbumTitle;
+            mediaFile.Metadata.Cover = displayProperties.Thumbnail;
+            return mediaFile;
         }
 
         public async Task<IMediaFile> GetVideoInfo(IMediaFile mediaFile)
@@ -33,6 +27,9 @@ namespace Plugin.MediaManager
             var source = MediaSource.CreateFromUri(new Uri(mediaFile.Url));
             var playbackItem = new MediaPlaybackItem(source);
             var displayProperties = playbackItem.GetDisplayProperties();
+            var props = displayProperties.VideoProperties;
+            mediaFile.Metadata.Title = props.Title;
+            mediaFile.Metadata.Cover = displayProperties.Thumbnail;
             return mediaFile;
         }
 
@@ -54,29 +51,5 @@ namespace Plugin.MediaManager
             }
             return await Task.FromResult(mediaFile);
         }
-    }
-
-    public class AudioInfo : IAudioInfo
-    {
-        
-        public string AlbumArtist { get; set; }
-        public string AlbumTitle { get; set; }
-        public int AlbumTrackCount { get; set; }
-        public string Artist { get; set; }
-        public IList<string> Genres { get; set; }
-        public string Title { get; set; }
-        public int TrackNumber { get; set; }
-        public object Cover { get; set; }
-    }
-
-    public interface IAudioInfo
-    {
-        string AlbumArtist { get; set; }
-        string AlbumTitle { get; set; }
-        int AlbumTrackCount { get; set; }
-        string Artist { get; set; }
-        IList<string> Genres { get; }
-        string Title { get; set; }
-        int TrackNumber { get; set; }
     }
 }
