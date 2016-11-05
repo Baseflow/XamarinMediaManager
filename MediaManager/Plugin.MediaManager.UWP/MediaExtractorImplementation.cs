@@ -26,8 +26,8 @@ namespace Plugin.MediaManager
                     await bitmap.SetSourceAsync(thumbnail);
                     mediaFile.Metadata.Cover = bitmap;
                 }
-                mediaFile.MetadataExtracted = true;
             }
+            mediaFile.MetadataExtracted = true;
             return mediaFile;
         }
 
@@ -47,8 +47,8 @@ namespace Plugin.MediaManager
                     await bitmap.SetSourceAsync(thumbnail);
                     mediaFile.Metadata.Cover = bitmap;
                 }
-                mediaFile.MetadataExtracted = true;
             }
+            mediaFile.MetadataExtracted = true;
             return mediaFile;
         }
 

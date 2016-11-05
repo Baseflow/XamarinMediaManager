@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
@@ -162,7 +163,6 @@ namespace Plugin.MediaManager
                 var mediaSource = await CreateMediaSource(url, fileType);
                 var item = new MediaPlaybackItem(mediaSource);
                 mediaPlaybackList.Items.Add(item);
-                var dp = item.GetDisplayProperties();
                 _player.Source = mediaPlaybackList;
                 _player.Play();
             }
@@ -181,7 +181,14 @@ namespace Plugin.MediaManager
                     return MediaSource.CreateFromUri(new Uri(url));
                 case MediaFileType.AudioFile:
                 case MediaFileType.VideoFile:
-                    return MediaSource.CreateFromStorageFile(await StorageFile.GetFileFromPathAsync(url));
+                    var du = _player.SystemMediaTransportControls.DisplayUpdater;
+                    var storageFile = await StorageFile.GetFileFromPathAsync(url);
+                    var playbackType = fileType == MediaFileType.AudioFile
+                        ? MediaPlaybackType.Music
+                        : MediaPlaybackType.Video;
+                    await du.CopyFromFileAsync(playbackType, storageFile);
+                    du.Update();
+                    return MediaSource.CreateFromStorageFile(storageFile);
                 case MediaFileType.Other:
                     break;
                 default:

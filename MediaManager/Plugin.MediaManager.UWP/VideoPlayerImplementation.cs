@@ -4,6 +4,7 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
@@ -230,7 +231,6 @@ namespace Plugin.MediaManager
             var canvas = (VideoSurface) videoSurface;
             RenderSurface = canvas;
             
-
             var size = new Size(canvas.ActualWidth, canvas.ActualHeight);
             _player.SetSurfaceSize(size);
 
@@ -254,7 +254,6 @@ namespace Plugin.MediaManager
 
         public void SetAspectMode(VideoAspectMode aspectMode)
         {
-            
         }
 
         private async Task<MediaSource> CreateMediaSource(string url, MediaFileType fileType)
@@ -266,7 +265,14 @@ namespace Plugin.MediaManager
                     return MediaSource.CreateFromUri(new Uri(url));
                 case MediaFileType.AudioFile:
                 case MediaFileType.VideoFile:
-                    return MediaSource.CreateFromStorageFile(await StorageFile.GetFileFromPathAsync(url));
+                    var du = _player.SystemMediaTransportControls.DisplayUpdater;
+                    var storageFile = await StorageFile.GetFileFromPathAsync(url);
+                    var playbackType = fileType == MediaFileType.AudioFile
+                        ? MediaPlaybackType.Music
+                        : MediaPlaybackType.Video;
+                    await du.CopyFromFileAsync(playbackType, storageFile);
+                    du.Update();
+                    return MediaSource.CreateFromStorageFile(storageFile);
                 case MediaFileType.Other:
                     break;
                 default:
