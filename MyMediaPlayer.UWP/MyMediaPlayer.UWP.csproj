@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{CF3DB967-2FB7-48D1-9A66-C0E70ABBF527}</ProjectGuid>
+    <ProjectGuid>{F7596E36-F0A0-42AD-9552-5EC2197FF083}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MediaForms.UWP</RootNamespace>
-    <AssemblyName>MediaForms.UWP</AssemblyName>
+    <RootNamespace>MyMediaPlayer.UWP</RootNamespace>
+    <AssemblyName>MyMediaPlayer.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
@@ -16,7 +16,7 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>MediaForms.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>MyMediaPlayer.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -104,7 +104,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="MediaForms.UWP_TemporaryKey.pfx" />
+    <None Include="MyMediaPlayer.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
@@ -127,13 +127,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.UWP\Plugin.MediaManager.Forms.UWP.csproj">
-      <Project>{2230dcd0-118b-4021-b0b2-71ce00111d5e}</Project>
-      <Name>Plugin.MediaManager.Forms.UWP</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MediaForms\MediaForms.csproj">
-      <Project>{7469c2c8-209a-4202-aee9-e2b3f451bdd4}</Project>
-      <Name>MediaForms</Name>
+    <ProjectReference Include="..\Samples\MvvmCross\MyMediaPlayer.Core\MyMediaPlayer.Core.csproj">
+      <Project>{66b081cb-dad5-4fdf-b361-4ba85b440886}</Project>
+      <Name>MyMediaPlayer.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
