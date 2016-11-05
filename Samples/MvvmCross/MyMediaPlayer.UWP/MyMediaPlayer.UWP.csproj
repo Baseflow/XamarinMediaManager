@@ -127,7 +127,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Samples\MvvmCross\MyMediaPlayer.Core\MyMediaPlayer.Core.csproj">
+    <ProjectReference Include="..\MyMediaPlayer.Core\MyMediaPlayer.Core.csproj">
       <Project>{66b081cb-dad5-4fdf-b361-4ba85b440886}</Project>
       <Name>MyMediaPlayer.Core</Name>
     </ProjectReference>

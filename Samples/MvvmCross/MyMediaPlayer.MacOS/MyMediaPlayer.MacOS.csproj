@@ -62,31 +62,31 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Binding, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\MvvmCross.Binding.4.4.0\lib\Xamarin.Mac20\MvvmCross.Binding.dll</HintPath>
+      <HintPath>..\..\..\packages\MvvmCross.Binding.4.4.0\lib\Xamarin.Mac20\MvvmCross.Binding.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MvvmCross.Binding.Mac, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\MvvmCross.Binding.4.4.0\lib\Xamarin.Mac20\MvvmCross.Binding.Mac.dll</HintPath>
+      <HintPath>..\..\..\packages\MvvmCross.Binding.4.4.0\lib\Xamarin.Mac20\MvvmCross.Binding.Mac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MvvmCross.Core, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\MvvmCross.Core.4.4.0\lib\Xamarin.Mac20\MvvmCross.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\MvvmCross.Core.4.4.0\lib\Xamarin.Mac20\MvvmCross.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MvvmCross.Localization, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\MvvmCross.Binding.4.4.0\lib\Xamarin.Mac20\MvvmCross.Localization.dll</HintPath>
+      <HintPath>..\..\..\packages\MvvmCross.Binding.4.4.0\lib\Xamarin.Mac20\MvvmCross.Localization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MvvmCross.Mac, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\MvvmCross.Core.4.4.0\lib\Xamarin.Mac20\MvvmCross.Mac.dll</HintPath>
+      <HintPath>..\..\..\packages\MvvmCross.Core.4.4.0\lib\Xamarin.Mac20\MvvmCross.Mac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MvvmCross.Platform, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\MvvmCross.Platform.4.4.0\lib\Xamarin.Mac20\MvvmCross.Platform.dll</HintPath>
+      <HintPath>..\..\..\packages\MvvmCross.Platform.4.4.0\lib\Xamarin.Mac20\MvvmCross.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MvvmCross.Platform.Mac, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\MvvmCross.Platform.4.4.0\lib\Xamarin.Mac20\MvvmCross.Platform.Mac.dll</HintPath>
+      <HintPath>..\..\..\packages\MvvmCross.Platform.4.4.0\lib\Xamarin.Mac20\MvvmCross.Platform.Mac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -135,7 +135,7 @@
     <Content Include="ToDo-MvvmCross\_ Mac UI.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MyMediaPlayer.Core.csproj">
+    <ProjectReference Include="..\MyMediaPlayer.Core\MyMediaPlayer.Core.csproj">
       <Project>{66B081CB-DAD5-4FDF-B361-4BA85B440886}</Project>
       <Name>MyMediaPlayer.Core</Name>
     </ProjectReference>
