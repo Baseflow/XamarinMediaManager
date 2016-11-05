@@ -22,8 +22,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
                 if (_currentPlaybackManager == null)
                     throw new Exception("No player is set");
-
-                //_currentPlaybackManager.RequestProperties = RequestProperties;
+                
                 return _currentPlaybackManager;
             }
             set { _currentPlaybackManager = value; }
@@ -107,7 +106,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         /// <returns></returns>
         public async Task Play(IMediaFile mediaFile)
         {
-            if (Status == MediaPlayerStatus.Failed)
+            if (_currentPlaybackManager != null && Status == MediaPlayerStatus.Failed)
             {
                 await PlayNext();
                 return;
