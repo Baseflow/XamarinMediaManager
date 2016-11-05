@@ -29,7 +29,6 @@ namespace Plugin.MediaManager.Forms.iOS
             if (Control == null)
             {
                 _videoSurface = new VideoSurface();
-                CrossMediaManager.Current.VideoPlayer.SetAspectMode(VideoAspectMode.AspectFill);
                 SetNativeControl(_videoSurface);
                 CrossMediaManager.Current.VideoPlayer.SetVideoSurface(_videoSurface);
             }

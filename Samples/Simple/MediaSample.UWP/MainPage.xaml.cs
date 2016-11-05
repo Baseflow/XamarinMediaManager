@@ -3,6 +3,7 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Plugin.MediaManager;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
@@ -22,6 +23,32 @@ namespace MediaSample.UWP
             CrossMediaManager.Current.PlayingChanged += OnPlayingChanged;
             CrossMediaManager.Current.StatusChanged += OnStatusChanged;
             CrossMediaManager.Current.VideoPlayer.SetVideoSurface(VideoCanvas);
+            CrossMediaManager.Current.MediaFileChanged += CurrentOnMediaFileChanged;
+        }
+
+        private void CurrentOnMediaFileChanged(object sender, MediaFileChangedEventArgs mediaFileChangedEventArgs)
+        {
+            var mediaFile = mediaFileChangedEventArgs.File;
+            Title.Text = mediaFile.Metadata.Title ?? "";
+            Artist.Text = mediaFile.Metadata.Artist ?? "";
+            Album.Text = mediaFile.Metadata.Album ?? "";
+            switch (mediaFile.Type)
+            {
+                case MediaFileType.AudioUrl:
+                case MediaFileType.AudioFile:
+                    if (mediaFile.Metadata.Cover != null)
+                    {
+                        CoverArt.Source = (ImageSource) mediaFile.Metadata.Cover;
+                    }
+                    break;
+                case MediaFileType.VideoUrl:
+                case MediaFileType.VideoFile:
+                    break;
+                case MediaFileType.Other:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private async void OnStatusChanged(object sender, StatusChangedEventArgs e)
@@ -66,6 +93,8 @@ namespace MediaSample.UWP
         private async void PlayUrl(object sender, RoutedEventArgs e)
         {
             //await CrossMediaManager.Current.Play(@"http://www.montemagno.com/sample.mp3", MediaFileType.AudioUrl);
+            //var file = await KnownFolders.VideosLibrary.GetFileAsync("big_buck_bunny.mp4");
+            //await CrossMediaManager.Current.Play(file.Path, MediaFileType.VideoFile);
             await CrossMediaManager.Current.Play(@"http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", MediaFileType.VideoUrl);
         }
 

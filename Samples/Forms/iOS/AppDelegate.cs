@@ -9,7 +9,6 @@ namespace MediaForms.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            //VideoViewRenderer r = new VideoViewRenderer();
             VideoViewRenderer.Init();
             global::Xamarin.Forms.Forms.Init();
 
