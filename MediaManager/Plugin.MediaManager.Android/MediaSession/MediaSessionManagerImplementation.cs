@@ -8,8 +8,9 @@ using Android.OS;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
+//using Plugin.MediaManager.MediaPlayerService;
 
-namespace Plugin.MediaManager
+namespace Plugin.MediaManager.MediaSession
 {
     public class MediaSessionManagerImplementation
     {
@@ -53,7 +54,7 @@ namespace Plugin.MediaManager
                 mediaSessionCompat.Active = true;
                 //mediaSessionCompat.SetCallback(binder.GetMediaPlayerService().AlternateRemoteCallback ?? new MediaSessionCallback(binder));
                 mediaSessionCompat.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons | MediaSessionCompat.FlagHandlesTransportControls);
-                NotificationManager = new MediaNotificationManager(applicationContext, CurrentSession.SessionToken);
+                NotificationManager = new MediaNotificationManager(applicationContext, CurrentSession.SessionToken, typeof(MediaPlayerService));
                 _packageName = packageName;
                 _binder = binder;
             }
@@ -87,7 +88,7 @@ namespace Plugin.MediaManager
         /// </summary>
         /// <param name="state">The state.</param>
         /// <param name="position"></param>
-        internal void UpdatePlaybackState(int state, int position = 0)
+        public void UpdatePlaybackState(int state, int position = 0)
         {
             if(CurrentSession == null && (_binder?.IsBinderAlive).GetValueOrDefault(false) && !string.IsNullOrWhiteSpace(_packageName))
                 InitMediaSession(_packageName, _binder);

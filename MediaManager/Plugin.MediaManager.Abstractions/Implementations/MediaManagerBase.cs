@@ -23,7 +23,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 if (_currentPlaybackManager == null)
                     throw new Exception("No player is set");
 
-                _currentPlaybackManager.RequestProperties = RequestProperties;
+                //_currentPlaybackManager.RequestProperties = RequestProperties;
                 return _currentPlaybackManager;
             }
             set { _currentPlaybackManager = value; }

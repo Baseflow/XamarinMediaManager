@@ -10,7 +10,6 @@ using Android.Support.V4.Content;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
-using Plugin.MediaManager.ExoPlayer;
 using NotificationCompat = Android.Support.V7.App.NotificationCompat;
 
 namespace Plugin.MediaManager
@@ -26,11 +25,11 @@ namespace Plugin.MediaManager
         private Context _appliactionContext;
         private NotificationCompat.Builder _builder;
 
-        public MediaNotificationManager(Context appliactionContext, MediaSessionCompat.Token sessionToken)
+        public MediaNotificationManager(Context appliactionContext, MediaSessionCompat.Token sessionToken, Type serviceType)
         {
             _sessionToken = sessionToken;
             _appliactionContext = appliactionContext;
-            _intent = new Intent(_appliactionContext, typeof(ExoPlayerAudioService));
+            _intent = new Intent(_appliactionContext, serviceType);
             var mainActivity =
                 _appliactionContext.PackageManager.GetLaunchIntentForPackage(_appliactionContext.PackageName);
             _pendingIntent = PendingIntent.GetActivity(_appliactionContext, 0, mainActivity,
@@ -114,14 +113,13 @@ namespace Plugin.MediaManager
 
         private Android.Support.V4.App.NotificationCompat.Action GenerateActionCompat(int icon, string title, string intentAction)
         {
-            Intent intent = new Intent(_appliactionContext, typeof(ExoPlayerAudioService));
-            intent.SetAction(intentAction);
+            _intent.SetAction(intentAction);
 
             PendingIntentFlags flags = PendingIntentFlags.UpdateCurrent;
             if (intentAction.Equals(MediaServiceBase.ActionStop))
                 flags = PendingIntentFlags.CancelCurrent;
 
-            PendingIntent pendingIntent = PendingIntent.GetService(_appliactionContext, 1, intent, flags);
+            PendingIntent pendingIntent = PendingIntent.GetService(_appliactionContext, 1, _intent, flags);
 
             return new Android.Support.V4.App.NotificationCompat.Action.Builder(icon, title, pendingIntent).Build();
         }

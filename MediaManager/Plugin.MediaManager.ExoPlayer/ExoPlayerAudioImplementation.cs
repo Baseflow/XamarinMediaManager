@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Audio;
+using Plugin.MediaManager.MediaSession;
 
 namespace Plugin.MediaManager.ExoPlayer
 {
-    public class ExoPlayerAudioImplementation : AudioPlayerImplementation<ExoPlayerAudioService>
+    public class ExoPlayerAudioImplementation : AudioPlayerBase<ExoPlayerAudioService>
     {
         public ExoPlayerAudioImplementation(MediaSessionManagerImplementation sessionManager) : base(sessionManager)
         {

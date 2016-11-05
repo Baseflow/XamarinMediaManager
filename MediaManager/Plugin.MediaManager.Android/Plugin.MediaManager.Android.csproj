@@ -37,10 +37,6 @@
     </AndroidSigningKeyAlias>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExoPlayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Xam.Plugins.Android.ExoPlayer.2.0.4.1\lib\MonoAndroid\ExoPlayer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -74,8 +70,6 @@
     <Compile Include="..\Plugin.MediaManager\CrossMediaManager.cs">
       <Link>CrossMediaManager.cs</Link>
     </Compile>
-    <Compile Include="ExoPlayer\ExoPlayerAudioService.cs" />
-    <Compile Include="ExoPlayer\ExoPlayerVideoImplementation.cs" />
     <Compile Include="MediaManagerImplementation.cs" />
     <Compile Include="MediaPlayerService\MediaPlayerService.cs" />
     <Compile Include="MediaSession\MediaNotificationManager.cs" />
@@ -91,6 +85,7 @@
     <Compile Include="Video\VideoPlayerImplementation.cs" />
     <Compile Include="Video\VideoSurface.cs" />
     <Compile Include="MediaExtractorImplementation.cs" />
+    <Compile Include="Audio\AudioPlayerBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

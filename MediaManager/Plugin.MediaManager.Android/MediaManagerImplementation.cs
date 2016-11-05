@@ -2,7 +2,8 @@ using Android.App;
 using Android.Content.Res;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
-using Plugin.MediaManager.ExoPlayer;
+using Plugin.MediaManager.Audio;
+using Plugin.MediaManager.MediaSession;
 
 namespace Plugin.MediaManager
 {
@@ -15,7 +16,7 @@ namespace Plugin.MediaManager
 
         public override IAudioPlayer AudioPlayer
         {
-            get {return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation<ExoPlayerAudioService>(MediaSessionManager));}
+            get {return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(MediaSessionManager));}
             set { _audioPlayer = value; }
         }
 

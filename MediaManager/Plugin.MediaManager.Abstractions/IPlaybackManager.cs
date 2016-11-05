@@ -87,6 +87,6 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Gets or sets the request properties.
         /// </summary>
-        Dictionary<string, string> RequestProperties { get; set; }
+        //Dictionary<string, string> RequestProperties { get; set; }
     }
 }

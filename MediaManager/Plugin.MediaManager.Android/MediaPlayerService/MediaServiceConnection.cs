@@ -1,7 +1,6 @@
 using Android.Content;
 using Android.OS;
 using Plugin.MediaManager.Abstractions;
-using Plugin.MediaManager.ExoPlayer;
 
 namespace Plugin.MediaManager
 {
@@ -16,7 +15,7 @@ namespace Plugin.MediaManager
 
         public void OnServiceConnected(ComponentName name, IBinder service)
         {
-            var instance = player as AudioPlayerImplementation<TService>;
+            var instance = player as AudioPlayerBase<TService>;
             var mediaPlayerServiceBinder = service as MediaServiceBinder;
             if (mediaPlayerServiceBinder != null)
             {
@@ -26,7 +25,7 @@ namespace Plugin.MediaManager
 
         public void OnServiceDisconnected(ComponentName name)
         {
-            var instance = player as AudioPlayerImplementation<TService>;
+            var instance = player as AudioPlayerBase<TService>;
             instance?.OnServiceDisconnected();
         }
     }

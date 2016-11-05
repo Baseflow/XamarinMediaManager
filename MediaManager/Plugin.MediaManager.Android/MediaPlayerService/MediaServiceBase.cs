@@ -13,6 +13,7 @@ using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.MediaSession;
 
 namespace Plugin.MediaManager
 {
@@ -61,7 +62,7 @@ namespace Plugin.MediaManager
 
         public abstract TimeSpan Buffered { get; }
 
-        public Dictionary<string, string> RequestProperties { get; set; }
+        public Dictionary<string, string> RequestProperties { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// On create simply detect some of our managers

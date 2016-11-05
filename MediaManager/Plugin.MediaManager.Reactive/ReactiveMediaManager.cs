@@ -64,28 +64,29 @@ namespace Plugin.MediaManager.Reactive
             MediaFileChanged = Observable.FromEventPattern<MediaFileChangedEventHandler, MediaFileChangedEventArgs>(
                     h => CrossMediaManager.Current.MediaFileChanged += h,
                     h => CrossMediaManager.Current.MediaFileChanged -= h)
-				.Select(e => e.EventArgs.File);
+                .Select(e => e.EventArgs.File);
 
-			QueueEnded = Observable.FromEventPattern<QueueEndedEventHandler, QueueEndedEventArgs>(
-				h => CrossMediaManager.Current.MediaQueue.QueueEnded += h,
-				h => CrossMediaManager.Current.MediaQueue.QueueEnded -= h)
-			.Select(e => true);
+            QueueEnded = Observable.FromEventPattern<QueueEndedEventHandler, QueueEndedEventArgs>(
+                    h => CrossMediaManager.Current.MediaQueue.QueueEnded += h,
+                    h => CrossMediaManager.Current.MediaQueue.QueueEnded -= h)
+                .Select(e => true);
 
-			ActiveItemInQueue = Observable.FromEventPattern<QueueMediaChangedEventHandler, QueueMediaChangedEventArgs>(
-				h => CrossMediaManager.Current.MediaQueue.QueueMediaChanged += h,
-				h => CrossMediaManager.Current.MediaQueue.QueueMediaChanged -= h)
-				.Select(e => e.EventArgs.File);
+            ActiveItemInQueue = Observable.FromEventPattern<QueueMediaChangedEventHandler, QueueMediaChangedEventArgs>(
+                    h => CrossMediaManager.Current.MediaQueue.QueueMediaChanged += h,
+                    h => CrossMediaManager.Current.MediaQueue.QueueMediaChanged -= h)
+                .Select(e => e.EventArgs.File);
 
-			QueueChanged = Observable.FromEventPattern<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
-				h => CrossMediaManager.Current.MediaQueue.CollectionChanged += h,
-				h => CrossMediaManager.Current.MediaQueue.CollectionChanged -= h)
-				.Select(e => e.EventArgs);
+            QueueChanged = Observable
+                .FromEventPattern<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
+                    h => CrossMediaManager.Current.MediaQueue.CollectionChanged += h,
+                    h => CrossMediaManager.Current.MediaQueue.CollectionChanged -= h)
+                .Select(e => e.EventArgs);
         }
 
-		public IObservable<IMediaFile> MediaFileChanged { get; }
-		public IObservable<NotifyCollectionChangedEventArgs> QueueChanged { get; private set; }
-		public IObservable<IMediaFile> ActiveItemInQueue { get; private set; }
-		public IObservable<bool> QueueEnded { get; private set; }
+        public IObservable<IMediaFile> MediaFileChanged { get; }
+        public IObservable<NotifyCollectionChangedEventArgs> QueueChanged { get; private set; }
+        public IObservable<IMediaFile> ActiveItemInQueue { get; private set; }
+        public IObservable<bool> QueueEnded { get; private set; }
         public IObservable<MediaFailedEventArgs> MediaFailed { get; }
         public IObservable<IMediaFile> MediaFinished { get; }
         public IObservable<double> BufferedProgress { get; }
@@ -155,24 +156,24 @@ namespace Plugin.MediaManager.Reactive
             }
         }
 
-		public void AddItemToQueue(IMediaFile mediaFile)
-		{
-			CrossMediaManager.Current.MediaQueue.Add(mediaFile);
-		}
+        public void AddItemToQueue(IMediaFile mediaFile)
+        {
+            CrossMediaManager.Current.MediaQueue.Add(mediaFile);
+        }
 
-		public bool RemoveItemFromQueue(IMediaFile mediaFile)
-		{
-			return CrossMediaManager.Current.MediaQueue.Remove(mediaFile);
-		}
+        public bool RemoveItemFromQueue(IMediaFile mediaFile)
+        {
+            return CrossMediaManager.Current.MediaQueue.Remove(mediaFile);
+        }
 
-		public void AddItemsToQueue(IEnumerable<IMediaFile> items)
-		{
-			CrossMediaManager.Current.MediaQueue.AddRange(items);
-		}
+        public void AddItemsToQueue(IEnumerable<IMediaFile> items)
+        {
+            CrossMediaManager.Current.MediaQueue.AddRange(items);
+        }
 
-		public void RemoveAt(int index)
-		{
-			CrossMediaManager.Current.MediaQueue.RemoveAt(index);
-		}
+        public void RemoveAt(int index)
+        {
+            CrossMediaManager.Current.MediaQueue.RemoveAt(index);
+        }
     }
 }

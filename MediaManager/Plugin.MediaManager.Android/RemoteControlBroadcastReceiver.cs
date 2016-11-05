@@ -32,27 +32,27 @@ namespace Plugin.MediaManager
 			if (key.Action != KeyEventActions.Down)
 				return;
 	
-            var action = MediaPlayerService.ActionPlay;
+            var action = MediaServiceBase.ActionPlay;
 
 			switch (key.KeyCode) {
 				case Keycode.Headsethook:
 				case Keycode.MediaPlayPause:
-                action = MediaPlayerService.ActionTogglePlayback;
+                action = MediaServiceBase.ActionTogglePlayback;
 					break;
 				case Keycode.MediaPlay:
-                action = MediaPlayerService.ActionPlay;
+                action = MediaServiceBase.ActionPlay;
 					break;
 				case Keycode.MediaPause:
-                action = MediaPlayerService.ActionPause;
+                action = MediaServiceBase.ActionPause;
 					break;
 				case Keycode.MediaStop:
-                action = MediaPlayerService.ActionStop;
+                action = MediaServiceBase.ActionStop;
 					break;
 				case Keycode.MediaNext:
-                action = MediaPlayerService.ActionNext;
+                action = MediaServiceBase.ActionNext;
 					break;
 				case Keycode.MediaPrevious:
-                action = MediaPlayerService.ActionPrevious;
+                action = MediaServiceBase.ActionPrevious;
 					break;
 				default:
 					return;
