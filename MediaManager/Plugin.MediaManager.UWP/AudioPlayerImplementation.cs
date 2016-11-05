@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Plugin.MediaManager.Abstractions;
@@ -21,7 +22,6 @@ namespace Plugin.MediaManager
         public AudioPlayerImplementation()
         {
             _player = new MediaPlayer();
-
             _playProgressTimer = new Timer(state =>
             {
                 if (_player.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
@@ -102,7 +102,6 @@ namespace Plugin.MediaManager
         public event PlayingChangedEventHandler PlayingChanged;
         public event BufferingChangedEventHandler BufferingChanged;
         public event MediaFinishedEventHandler MediaFinished;
-        public event MediaFileChangedEventHandler MediaFileChanged;
         public event MediaFailedEventHandler MediaFailed;
 
         public TimeSpan Buffered
