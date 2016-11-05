@@ -12,6 +12,21 @@
         
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <mediaManager:VideoSurface Height="300" Width="600" x:Name="VideoCanvas"></mediaManager:VideoSurface>
+            <StackPanel Orientation="Vertical">
+                <Image x:Name="CoverArt" Height="100" Width="100"></Image>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Title: "></TextBlock>
+                    <TextBlock x:Name="Title"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Artist: "></TextBlock>
+                    <TextBlock x:Name="Artist"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Album: "></TextBlock>
+                    <TextBlock x:Name="Album"></TextBlock>
+                </StackPanel>
+            </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Player state:"></TextBlock>
                 <TextBlock x:Name="PlayerState"></TextBlock>
