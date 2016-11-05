@@ -83,5 +83,10 @@ namespace Plugin.MediaManager.Abstractions
         /// Changes position to the specified number of milliseconds from zero
         /// </summary>
         Task Seek(TimeSpan position);
+
+        /// <summary>
+        /// Gets or sets the request properties.
+        /// </summary>
+        //Dictionary<string, string> RequestProperties { get; set; }
     }
 }

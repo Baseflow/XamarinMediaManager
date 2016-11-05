@@ -23,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;_ANDROID_</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -42,7 +42,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Java.Interop" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
@@ -86,17 +91,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
-      <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
-      <Name>Plugin.MediaManager.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Android\Plugin.MediaManager.Android.csproj">
-      <Project>{56a56f17-7de1-4ca1-9617-bf32e971ac84}</Project>
-      <Name>Plugin.MediaManager.Android</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MediaSample.Core\MediaSample.Core.csproj">
       <Project>{19955052-96FC-4149-84DD-C95A4C846C87}</Project>
       <Name>MediaSample.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
+      <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
+      <Name>Plugin.MediaManager.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Android\Plugin.MediaManager.Android.csproj">
+      <Project>{56A56F17-7DE1-4CA1-9617-BF32E971AC84}</Project>
+      <Name>Plugin.MediaManager.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.ExoPlayer\Plugin.MediaManager.ExoPlayer.csproj">
       <Project>{06EF2F1F-8A8E-47D6-9FC8-BBC521783F13}</Project>

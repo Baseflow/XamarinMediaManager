@@ -8,15 +8,10 @@ using Plugin.MediaManager.MediaSession;
 
 namespace Plugin.MediaManager.ExoPlayer
 {
-    public class ExoPlayerAudioImplementation : AudioPlayerImplementation
+    public class ExoPlayerAudioImplementation : AudioPlayerBase<ExoPlayerAudioService>
     {
-        public ExoPlayerAudioImplementation(MediaSessionManagerImplementation sessionManager) : base(sessionManager)
+        public ExoPlayerAudioImplementation(MediaSessionManager sessionManager) : base(sessionManager)
         {
-        }
-
-        public override Android.Content.Intent GetMediaServiceIntent()
-        {
-            return new Intent(applicationContext, typeof(ExoPlayerAudioService));
         }
     }
 }

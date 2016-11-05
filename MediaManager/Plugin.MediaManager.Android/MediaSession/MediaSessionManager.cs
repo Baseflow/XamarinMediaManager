@@ -1,27 +1,28 @@
 using System;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Graphics;
 using Android.Media;
 using Android.OS;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
-using Plugin.MediaManager.MediaPlayerService;
+//using Plugin.MediaManager.MediaPlayerService;
 
 namespace Plugin.MediaManager.MediaSession
 {
-    public class MediaSessionManagerImplementation
+    public class MediaSessionManager
     {
         private Context applicationContext;
         private MediaControllerCompat mediaControllerCompat;
         private MediaSessionCompat mediaSessionCompat;
-        private MediaPlayerServiceBinder _binder;
+        private MediaServiceBinder _binder;
         private string _packageName;
         
-        public IMediaNotificationManager NotificationManager { get; internal set; }
+        public IMediaNotificationManager NotificationManager { get; set; }
 
-        internal event EventHandler<string> OnNotificationActionFired;
+        public event EventHandler<string> OnNotificationActionFired;
         internal event EventHandler<int> OnStatusChanged;
 
         internal int MediaPlayerState => mediaControllerCompat?.PlaybackState?.State ?? PlaybackStateCompat.StateNone;
@@ -32,12 +33,12 @@ namespace Plugin.MediaManager.MediaSession
 
         internal ComponentName RemoteComponentName { get; set; }
       
-        internal MediaSessionManagerImplementation(Context appContext)
+        public MediaSessionManager(Context appContext)
         {
             applicationContext = appContext;
         }
 
-        internal void InitMediaSession(string packageName, MediaPlayerServiceBinder binder)
+        internal void InitMediaSession(string packageName, MediaServiceBinder binder)
         {
             try
             {
@@ -47,14 +48,13 @@ namespace Plugin.MediaManager.MediaSession
                     PendingIntent pIntent = PendingIntent.GetActivity(applicationContext, 0, nIntent, 0);
 
                     RemoteComponentName = new ComponentName(packageName, new RemoteControlBroadcastReceiver().ComponentName);
-
                     mediaSessionCompat = new MediaSessionCompat(applicationContext, "XamarinStreamingAudio", RemoteComponentName, pIntent);
                     mediaControllerCompat = new MediaControllerCompat(applicationContext, mediaSessionCompat.SessionToken);
                 }
                 mediaSessionCompat.Active = true;
                 //mediaSessionCompat.SetCallback(binder.GetMediaPlayerService().AlternateRemoteCallback ?? new MediaSessionCallback(binder));
                 mediaSessionCompat.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons | MediaSessionCompat.FlagHandlesTransportControls);
-                NotificationManager = new MediaNotificationManager(applicationContext, CurrentSession.SessionToken);
+                NotificationManager = new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, typeof(MediaPlayerService));
                 _packageName = packageName;
                 _binder = binder;
             }
@@ -88,7 +88,7 @@ namespace Plugin.MediaManager.MediaSession
         /// </summary>
         /// <param name="state">The state.</param>
         /// <param name="position"></param>
-        internal void UpdatePlaybackState(int state, int position = 0)
+        public void UpdatePlaybackState(int state, int position = 0)
         {
             if(CurrentSession == null && (_binder?.IsBinderAlive).GetValueOrDefault(false) && !string.IsNullOrWhiteSpace(_packageName))
                 InitMediaSession(_packageName, _binder);

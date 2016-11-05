@@ -12,10 +12,11 @@ namespace Plugin.MediaManager
     {
         private IAudioPlayer _audioPlayer;
         private IVideoPlayer _videPlayer;
+        private IMediaExtractor _mediaExtraxtor;
 
         public override IAudioPlayer AudioPlayer
         {
-            get { return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(MediaSessionManager)); }
+            get {return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(MediaSessionManager));}
             set { _audioPlayer = value; }
         }
 
@@ -31,8 +32,13 @@ namespace Plugin.MediaManager
             set { MediaSessionManager.NotificationManager = value; }
         }
 
-        public override IMediaExtractor MediaExtractor { get; set; } = new MediaExtractorImplementation(Resources.System);
-        public MediaSessionManagerImplementation MediaSessionManager { get; set; } = new MediaSessionManagerImplementation(Application.Context);
+        public override IMediaExtractor MediaExtractor
+        {
+            get { return _mediaExtraxtor ?? (_mediaExtraxtor = new MediaExtractorImplementation(Resources.System, RequestProperties)); }
+            set { _mediaExtraxtor = value; }
+        }
+
+        public MediaSessionManager MediaSessionManager { get; set; } = new MediaSessionManager(Application.Context);
 
         public MediaManagerImplementation()
         {
@@ -41,19 +47,19 @@ namespace Plugin.MediaManager
 
         private async void HandleNotificationActions(object sender, string action)
         {
-            if (action.Equals(MediaPlayerService.MediaPlayerService.ActionPlay) || action.Equals(MediaPlayerService.MediaPlayerService.ActionPause))
+            if (action.Equals(MediaServiceBase.ActionPlay) || action.Equals(MediaServiceBase.ActionPause))
             {
                 await PlayPause();
             }
-            else if (action.Equals(MediaPlayerService.MediaPlayerService.ActionPrevious))
+            else if (action.Equals(MediaServiceBase.ActionPrevious))
             {
                 await PlayPrevious();
             }
-            else if (action.Equals(MediaPlayerService.MediaPlayerService.ActionNext))
+            else if (action.Equals(MediaServiceBase.ActionNext))
             {
                 await PlayNext();
             }
-            else if (action.Equals(MediaPlayerService.MediaPlayerService.ActionStop))
+            else if (action.Equals(MediaServiceBase.ActionStop))
             {
                 await Stop();
             }

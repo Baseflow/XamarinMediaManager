@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content.Res;
@@ -75,6 +76,11 @@ namespace Plugin.MediaManager
             }
         }
 
+        public async Task Play(IEnumerable<IMediaFile> mediaFiles)
+        {
+            await Play(mediaFiles?.ToList().FirstOrDefault());
+        }
+
         public async Task Pause()
         {
             VideoViewCanvas.Pause();
@@ -94,6 +100,8 @@ namespace Plugin.MediaManager
         {
             VideoViewCanvas.SeekTo(Convert.ToInt32(position.TotalMilliseconds));
         }
+
+        public Dictionary<string, string> RequestProperties { get; set; }
 
         public async Task Stop()
         {

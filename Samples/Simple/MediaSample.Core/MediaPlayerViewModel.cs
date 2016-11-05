@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Plugin.MediaManager;
@@ -135,7 +137,7 @@ namespace MediaManager.Sample.Core
         public MediaPlayerViewModel()
         {
             mediaPlayer = CrossMediaManager.Current;
-
+            //mediaPlayer.RequestProperties = new Dictionary<string, string> { { "Test", "1234" } };
             mediaPlayer.StatusChanged -= OnStatusChanged;
             mediaPlayer.StatusChanged += OnStatusChanged;
             mediaPlayer.PlayingChanged -= OnPlaying;
