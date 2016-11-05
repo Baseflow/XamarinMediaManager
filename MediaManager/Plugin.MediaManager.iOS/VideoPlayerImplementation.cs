@@ -11,6 +11,7 @@ using Foundation;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.iOS;
 using UIKit;
 
 namespace Plugin.MediaManager
@@ -300,9 +301,9 @@ namespace Plugin.MediaManager
                 throw new ArgumentException("VideoSurface must be a UIView");
             RenderSurface = videoSurface;
             _videoLayer = AVPlayerLayer.FromPlayer(Player);
+			_videoLayer.Frame = view.Frame;
+			_videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
             view.Layer.AddSublayer(_videoLayer);
-            _videoLayer.Frame = view.Frame;
-            SetAspectMode(VideoAspectMode.AspectFit);
         }
 
         public VideoAspectMode AspectMode { get; private set; }
