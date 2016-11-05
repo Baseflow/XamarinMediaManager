@@ -88,6 +88,8 @@ namespace Plugin.MediaManager
             {
                 if (Player.CurrentItem == null)
                     return TimeSpan.Zero;
+				if (double.IsNaN(Player.CurrentItem.Duration.Seconds))
+					return TimeSpan.Zero;
                 return TimeSpan.FromSeconds(Player.CurrentItem.Duration.Seconds);
             }
         }
@@ -176,9 +178,13 @@ namespace Plugin.MediaManager
 
             Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {
-                var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
-                var totalProgress = Position.TotalMilliseconds /
-                                    totalDuration.TotalMilliseconds;
+				double totalProgress = 0;
+				if (!double.IsNaN(_player.CurrentItem.Duration.Seconds))
+				{
+					var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
+					totalProgress = Position.TotalMilliseconds /
+										totalDuration.TotalMilliseconds;
+				}
                 PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position, Duration));
             });
         }
@@ -296,9 +302,10 @@ namespace Plugin.MediaManager
 
         public void SetVideoSurface(IVideoSurface videoSurface)
         {
-            var view = ((VideoSurface) videoSurface);
-            if (view == null)
-                throw new ArgumentException("VideoSurface must be a UIView");
+			var view = (VideoSurface)videoSurface;
+			if (view == null)
+				throw new ArgumentException("VideoSurface must be a UIView");
+			
             RenderSurface = videoSurface;
             _videoLayer = AVPlayerLayer.FromPlayer(Player);
 			_videoLayer.Frame = view.Frame;
