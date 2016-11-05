@@ -1,4 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:MediaForms" x:Class="MediaForms.MediaFormsPage">
-	<Label Text="Welcome to Xamarin Forms!" VerticalOptions="Center" HorizontalOptions="Center" />
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MediaForms"
+             xmlns:forms="clr-namespace:Plugin.MediaManager.Forms;assembly=Plugin.MediaManager.Forms"
+             x:Class="MediaForms.MediaFormsPage">
+    <forms:VideoView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" AspectMode="AspectFill"/>
 </ContentPage>

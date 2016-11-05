@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Plugin.MediaManager.Forms.Android;
 
 namespace MediaForms.Droid
 {
@@ -21,6 +22,7 @@ namespace MediaForms.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            VideoViewRenderer.Init();
 
             LoadApplication(new App());
         }

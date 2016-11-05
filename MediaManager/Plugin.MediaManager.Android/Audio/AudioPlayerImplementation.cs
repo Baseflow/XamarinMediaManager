@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -7,8 +6,10 @@ using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.MediaPlayerService;
+using Plugin.MediaManager.MediaSession;
 
-namespace Plugin.MediaManager
+namespace Plugin.MediaManager.Audio
 {
     public class AudioPlayerImplementation : IAudioPlayer
     {
@@ -82,7 +83,7 @@ namespace Plugin.MediaManager
 
         public virtual Intent GetMediaServiceIntent()
         {
-            return new Intent(applicationContext, typeof(MediaPlayerService));
+            return new Intent(applicationContext, typeof(MediaPlayerService.MediaPlayerService));
         }
 
         public void UnbindMediaPlayerService()

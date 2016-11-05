@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -19,22 +19,28 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchDebug>true</MtouchDebug>
-    <MtouchFastDev>true</MtouchFastDev>
-    <MtouchProfiling>true</MtouchProfiling>
-    <MtouchUseSGen>true</MtouchUseSGen>
-    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchDebug>True</MtouchDebug>
+    <MtouchFastDev>False</MtouchFastDev>
+    <MtouchProfiling>False</MtouchProfiling>
+    <MtouchUseSGen>True</MtouchUseSGen>
+    <MtouchUseRefCounting>True</MtouchUseRefCounting>
     <MtouchLink>None</MtouchLink>
-    <MtouchArch>i386</MtouchArch>
+    <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
-    <DeviceSpecificBuild>false</DeviceSpecificBuild>
+    <MtouchSdkVersion>10.1</MtouchSdkVersion>
+    <MtouchUseLlvm>False</MtouchUseLlvm>
+    <MtouchUseThumb>False</MtouchUseThumb>
+    <MtouchEnableBitcode>False</MtouchEnableBitcode>
+    <OptimizePNGs>True</OptimizePNGs>
+    <MtouchFloat32>False</MtouchFloat32>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhone\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
@@ -51,7 +57,8 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
@@ -103,8 +110,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -113,7 +124,9 @@
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Info.plist" />
+    <None Include="Info.plist">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -122,6 +135,12 @@
     <Compile Include="AppDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.iOS\Plugin.MediaManager.Forms.iOS.csproj">
+      <Project>{586d5119-52d8-40b1-9bb5-cc7fdb033b86}</Project>
+      <Name>Plugin.MediaManager.Forms.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
+    </ProjectReference>
     <ProjectReference Include="..\MediaForms\MediaForms.csproj">
       <Project>{7469C2C8-209A-4202-AEE9-E2B3F451BDD4}</Project>
       <Name>MediaForms</Name>

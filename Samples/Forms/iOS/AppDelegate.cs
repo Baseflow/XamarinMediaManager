@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Foundation;
+﻿using Foundation;
+using Plugin.MediaManager.Forms.iOS;
 using UIKit;
 
 namespace MediaForms.iOS
@@ -12,10 +9,12 @@ namespace MediaForms.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            //VideoViewRenderer r = new VideoViewRenderer();
+            VideoViewRenderer.Init();
             global::Xamarin.Forms.Forms.Init();
 
             LoadApplication(new App());
-
+            
             return base.FinishedLaunching(app, options);
         }
     }

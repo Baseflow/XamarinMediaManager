@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -104,6 +104,10 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.Android\Plugin.MediaManager.Forms.Android.csproj">
+      <Project>{C8566A9E-FB6B-4459-AC87-5DB16D221D29}</Project>
+      <Name>Plugin.MediaManager.Forms.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MediaForms\MediaForms.csproj">
       <Project>{7469C2C8-209A-4202-AEE9-E2B3F451BDD4}</Project>
       <Name>MediaForms</Name>

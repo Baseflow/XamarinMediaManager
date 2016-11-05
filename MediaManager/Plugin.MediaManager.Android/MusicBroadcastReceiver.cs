@@ -17,7 +17,7 @@ namespace Plugin.MediaManager
                 return;
 
             //signal the service to stop!
-            var stopIntent = new Intent(MediaPlayerService.ActionStop);
+            var stopIntent = new Intent(MediaPlayerService.MediaPlayerService.ActionStop);
             context.StartService(stopIntent);
         }
     }

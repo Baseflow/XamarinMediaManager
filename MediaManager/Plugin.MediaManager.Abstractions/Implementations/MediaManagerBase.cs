@@ -256,8 +256,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _currentPlaybackManager.MediaFinished += OnMediaFinished;
             _currentPlaybackManager.PlayingChanged += OnPlayingChanged;
             _currentPlaybackManager.StatusChanged += OnStatusChanged;
-            MediaFileChanged += OnMediaFileChanged;
-            MediaFileFailed += OnMediaFileFailed;
         }
 
         private void RemoveEventHandlers()
@@ -267,8 +265,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _currentPlaybackManager.MediaFinished -= OnMediaFinished;
             _currentPlaybackManager.PlayingChanged -= OnPlayingChanged;
             _currentPlaybackManager.StatusChanged -= OnStatusChanged;
-            MediaFileChanged -= OnMediaFileChanged;
-            MediaFileFailed -= OnMediaFileFailed;
         }
     }
 }
