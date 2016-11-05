@@ -89,11 +89,6 @@ namespace Plugin.MediaManager.ExoPlayer
             await base.Pause();
         }
 
-        public override Task Play(IEnumerable<IMediaFile> mediaFiles)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Task TogglePlayPause(bool forceToPlay)
         {
             if(_mediaPlayer != null)
