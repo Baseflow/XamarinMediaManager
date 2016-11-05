@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.Storage;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
@@ -15,7 +14,6 @@ namespace Plugin.MediaManager
     {
         private readonly MediaPlayer _player;
         private readonly Timer _playProgressTimer;
-        private TaskCompletionSource<bool> _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
         private MediaPlayerStatus _status;
         private IMediaFile _currentMediaFile;
 
@@ -28,6 +26,8 @@ namespace Plugin.MediaManager
                 {
                     var progress = _player.PlaybackSession.Position.TotalSeconds/
                                    _player.PlaybackSession.NaturalDuration.TotalSeconds;
+                    if (double.IsNaN(progress))
+                        progress = 0;
                     PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(progress, _player.PlaybackSession.Position, _player.PlaybackSession.NaturalDuration));
                 }
             }, null, 0, int.MaxValue);
@@ -85,7 +85,6 @@ namespace Plugin.MediaManager
             };
 
             _player.PlaybackSession.SeekCompleted += (sender, args) => { };
-            _player.MediaOpened += (sender, args) => { _loadMediaTaskCompletionSource.SetResult(true); };
         }
 
         public MediaPlayerStatus Status
@@ -138,7 +137,7 @@ namespace Plugin.MediaManager
         public async Task Play(IMediaFile mediaFile)
         {
             _currentMediaFile = mediaFile;
-            await Play(mediaFile.Url);
+            await Play(mediaFile.Url, mediaFile.Type);
         }
 
         public async Task Seek(TimeSpan position)
@@ -151,27 +150,44 @@ namespace Plugin.MediaManager
         {
             _player.PlaybackSession.PlaybackRate = 0;
             _player.PlaybackSession.Position = TimeSpan.Zero;
+            Status = MediaPlayerStatus.Stopped;
             return Task.CompletedTask;
         }
 
-        private async Task Play(string url)
+        public async Task Play(string url, MediaFileType fileType)
         {
-            _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
             try
             {
-                // Todo: sync this with the playback queue
                 var mediaPlaybackList = new MediaPlaybackList();
-                var mediaSource = MediaSource.CreateFromUri(new Uri(url));
+                var mediaSource = await CreateMediaSource(url, fileType);
                 var item = new MediaPlaybackItem(mediaSource);
                 mediaPlaybackList.Items.Add(item);
+                var dp = item.GetDisplayProperties();
                 _player.Source = mediaPlaybackList;
-                await _loadMediaTaskCompletionSource.Task;
                 _player.Play();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Debug.WriteLine("Unable to open url: " + url);
+                MediaFailed?.Invoke(this, new MediaFailedEventArgs("Unable to start playback", e));
             }
+        }
+
+        private async Task<MediaSource> CreateMediaSource(string url, MediaFileType fileType)
+        {
+            switch (fileType)
+            {
+                case MediaFileType.AudioUrl:
+                case MediaFileType.VideoUrl:
+                    return MediaSource.CreateFromUri(new Uri(url));
+                case MediaFileType.AudioFile:
+                case MediaFileType.VideoFile:
+                    return MediaSource.CreateFromStorageFile(await StorageFile.GetFileFromPathAsync(url));
+                case MediaFileType.Other:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(fileType), fileType, null);
+            }
+            return MediaSource.CreateFromUri(new Uri(url));
         }
 
         private Task Play()
