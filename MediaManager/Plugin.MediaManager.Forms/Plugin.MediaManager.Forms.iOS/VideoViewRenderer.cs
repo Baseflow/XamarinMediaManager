@@ -1,9 +1,10 @@
 ﻿using System;
 using CoreGraphics;
 using Foundation;
-using Plugin.MediaManager.Abstractions.Implementations;
 using Plugin.MediaManager.Forms;
 using Plugin.MediaManager.Forms.iOS;
+using Plugin.MediaManager.iOS;
+using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
@@ -32,12 +33,6 @@ namespace Plugin.MediaManager.Forms.iOS
                 SetNativeControl(_videoSurface);
                 CrossMediaManager.Current.VideoPlayer.SetVideoSurface(_videoSurface);
             }
-        }
-
-        public override void Draw(CGRect rect)
-        {
-            _videoSurface.Frame = rect;
-            base.Draw(rect);
         }
     }
 }
