@@ -103,8 +103,7 @@ namespace Plugin.MediaManager
             }
 
             System.Uri baseUri = new System.Uri(albumFolder);
-            string albumArtPath;
-            albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Folder.jpg");
+            var albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Folder.jpg");
             if (albumArtPath == null)
             {
                 albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Cover.jpg");

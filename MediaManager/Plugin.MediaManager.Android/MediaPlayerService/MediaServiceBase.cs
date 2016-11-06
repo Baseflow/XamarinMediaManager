@@ -159,7 +159,7 @@ namespace Plugin.MediaManager
 
         public void HandleIntent(Intent intent)
         {
-            if (intent == null || intent.Action == null)
+            if (intent?.Action == null)
                 return;
 
             SessionManager.HandleAction(intent.Action);
@@ -328,7 +328,7 @@ namespace Plugin.MediaManager
             {
                 await Seek(TimeSpan.Zero);
                 return await Task.FromResult(true);
-            };
+            }
             
             if (MediaPlayerState == PlaybackStateCompat.StatePaused)
             {
@@ -339,7 +339,7 @@ namespace Plugin.MediaManager
                 CurrentFile = mediaFile ?? CurrentFile;
                 await TogglePlayPause(true);
                 return await Task.FromResult(true);
-            };
+            }
 
             return await Task.FromResult(false);
         }

@@ -29,12 +29,7 @@ namespace Plugin.MediaManager
             throw new NotImplementedException();
         }
 
-        VideoView VideoViewCanvas { 
-            get 
-            { 
-                return (VideoView)RenderSurface;
-            } 
-        }
+        VideoView VideoViewCanvas => (VideoView)RenderSurface;
 
         public event BufferingChangedEventHandler BufferingChanged;
         public event MediaFailedEventHandler MediaFailed;
@@ -44,37 +39,13 @@ namespace Plugin.MediaManager
         public event PlayingChangedEventHandler PlayingChanged;
         public event StatusChangedEventHandler StatusChanged;
 
-        public TimeSpan Buffered
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(VideoViewCanvas.BufferPercentage);
-            }
-        }
+        public TimeSpan Buffered => TimeSpan.FromSeconds(VideoViewCanvas.BufferPercentage);
 
-        public TimeSpan Duration
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(VideoViewCanvas.Duration);
-            }
-        }
+        public TimeSpan Duration => TimeSpan.FromSeconds(VideoViewCanvas.Duration);
 
-        public TimeSpan Position
-        {
-            get
-            {
-                return TimeSpan.FromSeconds(VideoViewCanvas.CurrentPosition);
-            }
-        }
+        public TimeSpan Position => TimeSpan.FromSeconds(VideoViewCanvas.CurrentPosition);
 
-        public MediaPlayerStatus Status
-        {
-            get
-            {
-                return MediaPlayerStatus.Playing;
-            }
-        }
+        public MediaPlayerStatus Status => MediaPlayerStatus.Playing;
 
         public async Task Play(IEnumerable<IMediaFile> mediaFiles)
         {

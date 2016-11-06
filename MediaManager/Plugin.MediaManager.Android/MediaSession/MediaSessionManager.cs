@@ -8,7 +8,6 @@ using Android.OS;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
-//using Plugin.MediaManager.MediaPlayerService;
 
 namespace Plugin.MediaManager.MediaSession
 {

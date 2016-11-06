@@ -28,19 +28,27 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             set { _currentPlaybackManager = value; }
         }
 
-        private IMediaFile _currentMediaFile => MediaQueue.Current;
-
-        public void Dispose()
-        {
-            RemoveEventHandlers();
-        }
-
         public virtual IMediaQueue MediaQueue { get; set; } = new MediaQueue();
         public abstract IAudioPlayer AudioPlayer { get; set; }
         public abstract IVideoPlayer VideoPlayer { get; set; }
         public abstract IMediaNotificationManager MediaNotificationManager { get; set; }
         public abstract IMediaExtractor MediaExtractor { get; set; }
 
+        public MediaPlayerStatus Status => CurrentPlaybackManager.Status;
+        public TimeSpan Position => CurrentPlaybackManager.Position;
+        public TimeSpan Duration => CurrentPlaybackManager.Duration;
+        public TimeSpan Buffered => CurrentPlaybackManager.Buffered;
+        public event StatusChangedEventHandler StatusChanged;
+        public event PlayingChangedEventHandler PlayingChanged;
+        public event BufferingChangedEventHandler BufferingChanged;
+        public event MediaFinishedEventHandler MediaFinished;
+        public event MediaFailedEventHandler MediaFailed;
+        public event MediaFileChangedEventHandler MediaFileChanged;
+        public event MediaFileFailedEventHandler MediaFileFailed;
+
+        private IMediaFile _currentMediaFile => MediaQueue.Current;
+
+        //TODO: Why do we need this here?
         public Dictionary<string, string> RequestProperties { get; set; }
 
         public async Task PlayNext()
@@ -56,11 +64,10 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             else
             {
                 // If you don't have a next song in the queue, stop and show the meta-data of the first song.
+                //TODO: Shouldn't we Pause here instead of stop? Stop should shut down everything
                 await CurrentPlaybackManager.Stop();
-                //var item = MediaQueue[0];
                 MediaQueue.SetIndexAsCurrent(0);
                 OnMediaFileChanged(this, new MediaFileChangedEventArgs(MediaQueue.Current));
-                //Cover = null;
             }
         }
 
@@ -73,6 +80,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
             else
             {
+                //TODO: Maybe pause here instead of stop
                 await CurrentPlaybackManager.Stop();
                 MediaQueue.SetPreviousAsCurrent();
                 await Task.WhenAll(
@@ -86,18 +94,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             var item = MediaQueue[index];
             await CurrentPlaybackManager.Play(item);
         }
-
-        public MediaPlayerStatus Status => CurrentPlaybackManager.Status;
-        public TimeSpan Position => CurrentPlaybackManager.Position;
-        public TimeSpan Duration => CurrentPlaybackManager.Duration;
-        public TimeSpan Buffered => CurrentPlaybackManager.Buffered;
-        public event StatusChangedEventHandler StatusChanged;
-        public event PlayingChangedEventHandler PlayingChanged;
-        public event BufferingChangedEventHandler BufferingChanged;
-        public event MediaFinishedEventHandler MediaFinished;
-        public event MediaFailedEventHandler MediaFailed;
-        public event MediaFileChangedEventHandler MediaFileChanged;
-        public event MediaFileFailedEventHandler MediaFileFailed;
 
         /// <summary>
         /// Adds MediaFile to the Queue and starts playing
@@ -242,7 +238,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         private void OnPlayingChanged(object sender, PlayingChangedEventArgs e)
         {
-            if (sender == CurrentPlaybackManager) { }
+            if (sender == CurrentPlaybackManager)
                 PlayingChanged?.Invoke(sender, e);
         }
 
@@ -301,6 +297,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _currentPlaybackManager.MediaFinished -= OnMediaFinished;
             _currentPlaybackManager.PlayingChanged -= OnPlayingChanged;
             _currentPlaybackManager.StatusChanged -= OnStatusChanged;
+        }
+
+        public void Dispose()
+        {
+            RemoveEventHandlers();
         }
     }
 }

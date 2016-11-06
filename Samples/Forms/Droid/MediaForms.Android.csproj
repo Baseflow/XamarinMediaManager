@@ -112,6 +112,14 @@
       <Project>{C8566A9E-FB6B-4459-AC87-5DB16D221D29}</Project>
       <Name>Plugin.MediaManager.Forms.Android</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.csproj">
+      <Project>{67F9D3A8-F71E-4428-913F-C37AE82CDB24}</Project>
+      <Name>Plugin.MediaManager.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Android\Plugin.MediaManager.Android.csproj">
+      <Project>{56A56F17-7DE1-4CA1-9617-BF32E971AC84}</Project>
+      <Name>Plugin.MediaManager.Android</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />

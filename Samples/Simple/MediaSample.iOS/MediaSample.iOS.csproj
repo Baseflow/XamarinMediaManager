@@ -30,7 +30,7 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <DeviceSpecificBuild>false</DeviceSpecificBuild>
-<MtouchSdkVersion>10.0</MtouchSdkVersion>
+<MtouchSdkVersion></MtouchSdkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <Optimize>true</Optimize>

@@ -179,10 +179,7 @@ namespace Plugin.MediaManager
         {
             await Task.Run(() =>
             {
-                if (_mediaPlayer != null)
-                {
-                    _mediaPlayer.SeekTo(Convert.ToInt32(position.TotalMilliseconds));
-                }
+                _mediaPlayer?.SeekTo(Convert.ToInt32(position.TotalMilliseconds));
             });
         }
 
