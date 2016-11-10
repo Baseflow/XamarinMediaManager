@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Windows.Media.Core;
-using Windows.Media.Playback;
+using Windows.Storage;
+using Windows.Storage.FileProperties;
+using Windows.UI.Xaml.Media.Imaging;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
 
@@ -10,29 +10,45 @@ namespace Plugin.MediaManager
 {
     public class MediaExtractorImplementation : IMediaExtractor
     {
-        public async Task<IAudioInfo> GetAudioInfo(IMediaFile mediaFile)
+        private async Task<IMediaFile> GetAudioInfo(IMediaFile mediaFile)
         {
-            var source = MediaSource.CreateFromUri(new Uri(mediaFile.Url));
-            var playbackItem = new MediaPlaybackItem(source);
-            var displayProperties = playbackItem.GetDisplayProperties();
-            var stream = await displayProperties.Thumbnail.OpenReadAsync();
-
-            AudioInfo info = new AudioInfo();
-            var props = displayProperties.MusicProperties;
-            info.AlbumArtist = props.AlbumArtist;
-            info.AlbumTitle = props.AlbumTitle;
-            info.AlbumTrackCount = (int) props.AlbumTrackCount;
-            info.Artist = props.Title;
-            info.Genres = props.Genres;
-            info.TrackNumber = (int) props.TrackNumber;
-            return info;
+            if (mediaFile.Type == MediaFileType.AudioFile)
+            {
+                var file = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
+                var musicProperties = await file.Properties.GetMusicPropertiesAsync();
+                mediaFile.Metadata.Title = musicProperties.Title;
+                mediaFile.Metadata.Artist = musicProperties.Artist;
+                mediaFile.Metadata.Album = musicProperties.Album;
+                var thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
+                if (thumbnail != null && thumbnail.Type == ThumbnailType.Image)
+                {
+                    BitmapSource bitmap = new BitmapImage();
+                    await bitmap.SetSourceAsync(thumbnail);
+                    mediaFile.Metadata.Cover = bitmap;
+                }
+            }
+            mediaFile.MetadataExtracted = true;
+            return mediaFile;
         }
 
-        public async Task<IMediaFile> GetVideoInfo(IMediaFile mediaFile)
+        private async Task<IMediaFile> GetVideoInfo(IMediaFile mediaFile)
         {
-            var source = MediaSource.CreateFromUri(new Uri(mediaFile.Url));
-            var playbackItem = new MediaPlaybackItem(source);
-            var displayProperties = playbackItem.GetDisplayProperties();
+            if (mediaFile.Type == MediaFileType.VideoFile)
+            {
+                var file = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
+                var musicProperties = await file.Properties.GetVideoPropertiesAsync();
+                mediaFile.Metadata.Title = musicProperties.Title;
+                mediaFile.Metadata.Album = string.Empty;
+                mediaFile.Metadata.Artist = string.Empty;
+                var thumbnail = await file.GetThumbnailAsync(ThumbnailMode.VideosView);
+                if (thumbnail != null && thumbnail.Type == ThumbnailType.Image)
+                {
+                    BitmapSource bitmap = new BitmapImage();
+                    await bitmap.SetSourceAsync(thumbnail);
+                    mediaFile.Metadata.Cover = bitmap;
+                }
+            }
+            mediaFile.MetadataExtracted = true;
             return mediaFile;
         }
 
@@ -54,29 +70,5 @@ namespace Plugin.MediaManager
             }
             return await Task.FromResult(mediaFile);
         }
-    }
-
-    public class AudioInfo : IAudioInfo
-    {
-        
-        public string AlbumArtist { get; set; }
-        public string AlbumTitle { get; set; }
-        public int AlbumTrackCount { get; set; }
-        public string Artist { get; set; }
-        public IList<string> Genres { get; set; }
-        public string Title { get; set; }
-        public int TrackNumber { get; set; }
-        public object Cover { get; set; }
-    }
-
-    public interface IAudioInfo
-    {
-        string AlbumArtist { get; set; }
-        string AlbumTitle { get; set; }
-        int AlbumTrackCount { get; set; }
-        string Artist { get; set; }
-        IList<string> Genres { get; }
-        string Title { get; set; }
-        int TrackNumber { get; set; }
     }
 }

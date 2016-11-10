@@ -46,8 +46,8 @@ namespace Plugin.MediaManager.Tests.Tests
 
                 var tracks = new[]
                     {
-                        new MediaFile() { Id = 1 },
-                        new MediaFile() { Id = 2 },
+                        new MediaFile(),
+                        new MediaFile(),
                     };
 
                 queue.Add(tracks[0]);
@@ -95,8 +95,8 @@ namespace Plugin.MediaManager.Tests.Tests
 
                 var tracks = new[]
                     {
-                        new MediaFile() { Id = 1 },
-                        new MediaFile() { Id = 2 },
+                        new MediaFile(),
+                        new MediaFile(),
                     };
 
                 queue.AddRange(tracks);
@@ -133,8 +133,8 @@ namespace Plugin.MediaManager.Tests.Tests
 
                 var tracks = new[]
                     {
-                        new MediaFile() { Id = 1 },
-                        new MediaFile() { Id = 2 },
+                        new MediaFile(),
+                        new MediaFile(),
                     };
 
                 queue.AddRange(tracks);
@@ -175,9 +175,9 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
-						new MediaFile() { Id = 2 },
-						new MediaFile() { Id = 3 },
+						new MediaFile(),
+						new MediaFile(),
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -189,7 +189,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
 				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
 
-				queue[0] = new MediaFile() { Id = 4 };
+				queue[0] = new MediaFile();
 
 				Assert.AreEqual(3, queue.Count);
 				Assert.AreEqual(tracks[1], queue.Current);
@@ -209,9 +209,9 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
-						new MediaFile() { Id = 2 },
-						new MediaFile() { Id = 3 },
+						new MediaFile(),
+						new MediaFile(),
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -223,7 +223,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
 				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
 
-				var newMediaFile = new MediaFile() { Id = 4 };
+				var newMediaFile = new MediaFile();
 				queue[1] = newMediaFile;
 
 				Assert.AreEqual(3, queue.Count);
@@ -247,9 +247,9 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
-						new MediaFile() { Id = 2 },
-						new MediaFile() { Id = 3 },
+						new MediaFile(),
+						new MediaFile(),
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -263,7 +263,7 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				Assert.Throws<ArgumentOutOfRangeException>(() =>
 				{
-					queue[3] = new MediaFile() { Id = 4 };
+					queue[3] = new MediaFile();
 				});
 
 				Assert.AreEqual(3, queue.Count);
@@ -283,9 +283,9 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
-						new MediaFile() { Id = 2 },
-						new MediaFile() { Id = 3 },
+						new MediaFile(),
+						new MediaFile(),
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -323,9 +323,9 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
-						new MediaFile() { Id = 2 },
-						new MediaFile() { Id = 3 },
+						new MediaFile(),
+						new MediaFile(),
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -360,9 +360,9 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
-						new MediaFile() { Id = 2 },
-						new MediaFile() { Id = 3 },
+						new MediaFile(),
+						new MediaFile(),
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -397,9 +397,9 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
-						new MediaFile() { Id = 2 },
-						new MediaFile() { Id = 3 },
+						new MediaFile(),
+						new MediaFile(),
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -434,9 +434,9 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
-						new MediaFile() { Id = 2 },
-						new MediaFile() { Id = 3 },
+						new MediaFile(),
+						new MediaFile(),
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -471,7 +471,7 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -506,9 +506,9 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
-						new MediaFile() { Id = 2 },
-						new MediaFile() { Id = 3 },
+						new MediaFile(),
+						new MediaFile(),
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -572,7 +572,7 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -584,7 +584,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
 				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
 
-				queue.Insert(1, new MediaFile() { Id = 2 });
+				queue.Insert(1, new MediaFile());
 
 				Assert.AreEqual(2, queue.Count);
 				Assert.AreEqual(tracks[0], queue.Current);
@@ -607,7 +607,7 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -619,7 +619,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
 				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
 
-				queue.Insert(0, new MediaFile() { Id = 2 });
+				queue.Insert(0, new MediaFile());
 
 				Assert.AreEqual(2, queue.Count);
 				Assert.AreEqual(tracks[0], queue.Current);
@@ -646,7 +646,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
 				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
 
-				var newMediaFile = new MediaFile() { Id = 1 };
+				var newMediaFile = new MediaFile();
 				queue.Insert(0, newMediaFile);
 
 				Assert.AreEqual(1, queue.Count);
@@ -674,7 +674,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
 				queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
 
-				var newMediaFile = new MediaFile() { Id = 1 };
+				var newMediaFile = new MediaFile();
 
 				Assert.Throws<ArgumentOutOfRangeException>(() =>
 				{
@@ -698,7 +698,7 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				var tracks = new[]
 					{
-						new MediaFile() { Id = 1 },
+						new MediaFile(),
 					};
 
 				queue.AddRange(tracks);
@@ -712,7 +712,7 @@ namespace Plugin.MediaManager.Tests.Tests
 
 				Assert.Throws<ArgumentOutOfRangeException>(() =>
 				{
-					queue.Insert(2, new MediaFile() { Id = 2 });
+					queue.Insert(2, new MediaFile());
 				});
 
 				Assert.AreEqual(1, queue.Count);
@@ -734,17 +734,17 @@ namespace Plugin.MediaManager.Tests.Tests
             {
                 var arr = new[]
                               {
-                                  new MediaFile() {Id = 1},
-                                  new MediaFile() {Id = 2},
-                                  new MediaFile() {Id = 3},
-                                  new MediaFile() {Id = 4},
-                                  new MediaFile() {Id = 5},
-                                  new MediaFile() {Id = 6},
-                                  new MediaFile() {Id = 7},
-                                  new MediaFile() {Id = 8},
-                                  new MediaFile() {Id = 9},
-                                  new MediaFile() {Id = 10},
-                                  new MediaFile() {Id = 11}
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile()
                               };
 
                 Console.WriteLine("Original: {0}", string.Join(",", arr.Select(x => x.Id)));
@@ -769,17 +769,17 @@ namespace Plugin.MediaManager.Tests.Tests
             {
                 var arr = new[]
                               {
-                                  new MediaFile() {Id = 1},
-                                  new MediaFile() {Id = 2},
-                                  new MediaFile() {Id = 3},
-                                  new MediaFile() {Id = 4},
-                                  new MediaFile() {Id = 5},
-                                  new MediaFile() {Id = 6},
-                                  new MediaFile() {Id = 7},
-                                  new MediaFile() {Id = 8},
-                                  new MediaFile() {Id = 9},
-                                  new MediaFile() {Id = 10},
-                                  new MediaFile() {Id = 11}
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile()
                               };
 
                 Console.WriteLine("Original: {0}", string.Join(",", arr.Select(x => x.Id)));
@@ -807,17 +807,17 @@ namespace Plugin.MediaManager.Tests.Tests
             {
                 var arr = new[]
                               {
-                                  new MediaFile() {Id = 1},
-                                  new MediaFile() {Id = 2},
-                                  new MediaFile() {Id = 3},
-                                  new MediaFile() {Id = 4},
-                                  new MediaFile() {Id = 5},
-                                  new MediaFile() {Id = 6},
-                                  new MediaFile() {Id = 7},
-                                  new MediaFile() {Id = 8},
-                                  new MediaFile() {Id = 9},
-                                  new MediaFile() {Id = 10},
-                                  new MediaFile() {Id = 11}
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile()
                               };
 
                 Console.WriteLine("Original: {0}", string.Join(",", arr.Select(x => x.Id)));
@@ -827,7 +827,7 @@ namespace Plugin.MediaManager.Tests.Tests
                 queue.AddRange(arr);
 
                 queue.ToggleShuffle();
-                queue.Add(new MediaFile() { Id = 99 });
+                queue.Add(new MediaFile());
 
                 Console.WriteLine("Shuffled: {0}", string.Join(",", queue.Cast<MediaFile>().Select(x => x.Id)));
 
@@ -856,17 +856,17 @@ namespace Plugin.MediaManager.Tests.Tests
             {
                 var arr = new[]
                               {
-                                  new MediaFile() {Id = 1},
-                                  new MediaFile() {Id = 2},
-                                  new MediaFile() {Id = 3},
-                                  new MediaFile() {Id = 4},
-                                  new MediaFile() {Id = 5},
-                                  new MediaFile() {Id = 6},
-                                  new MediaFile() {Id = 7},
-                                  new MediaFile() {Id = 8},
-                                  new MediaFile() {Id = 9},
-                                  new MediaFile() {Id = 10},
-                                  new MediaFile() {Id = 11}
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile(),
+                                  new MediaFile()
                               };
 
                 Console.WriteLine("Original: {0}", string.Join(",", arr.Select(x => x.Id)));

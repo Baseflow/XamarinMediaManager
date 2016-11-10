@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Foundation;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.iOS;
 using UIKit;
 
 namespace Plugin.MediaManager
@@ -25,6 +27,8 @@ namespace Plugin.MediaManager
         private AVPlayer _player;
         private MediaPlayerStatus _status;
         private AVPlayerLayer _videoLayer;
+
+        public Dictionary<string, string> RequestProperties { get; set; }
 
         public VideoPlayerImplementation()
         {
@@ -84,6 +88,8 @@ namespace Plugin.MediaManager
             {
                 if (Player.CurrentItem == null)
                     return TimeSpan.Zero;
+				if (double.IsNaN(Player.CurrentItem.Duration.Seconds))
+					return TimeSpan.Zero;
                 return TimeSpan.FromSeconds(Player.CurrentItem.Duration.Seconds);
             }
         }
@@ -172,9 +178,13 @@ namespace Plugin.MediaManager
 
             Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {
-                var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
-                var totalProgress = Position.TotalMilliseconds /
-                                    totalDuration.TotalMilliseconds;
+				double totalProgress = 0;
+				if (!double.IsNaN(_player.CurrentItem.Duration.Seconds))
+				{
+					var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
+					totalProgress = Position.TotalMilliseconds /
+										totalDuration.TotalMilliseconds;
+				}
                 PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position, Duration));
             });
         }
@@ -292,14 +302,15 @@ namespace Plugin.MediaManager
 
         public void SetVideoSurface(IVideoSurface videoSurface)
         {
-            var view = ((VideoSurface) videoSurface);
-            if (view == null)
-                throw new ArgumentException("VideoSurface must be a UIView");
+			var view = (VideoSurface)videoSurface;
+			if (view == null)
+				throw new ArgumentException("VideoSurface must be a UIView");
+			
             RenderSurface = videoSurface;
             _videoLayer = AVPlayerLayer.FromPlayer(Player);
+			_videoLayer.Frame = view.Frame;
+			_videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
             view.Layer.AddSublayer(_videoLayer);
-            _videoLayer.Frame = view.Frame;
-            SetAspectMode(VideoAspectMode.AspectFit);
         }
 
         public VideoAspectMode AspectMode { get; private set; }

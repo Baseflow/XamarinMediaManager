@@ -1,7 +1,8 @@
 using Android.Content;
 using Android.OS;
+using Plugin.MediaManager.Audio;
 
-namespace Plugin.MediaManager
+namespace Plugin.MediaManager.MediaPlayerService
 {
     internal class MediaPlayerServiceConnection : Java.Lang.Object, IServiceConnection
     {

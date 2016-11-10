@@ -2,26 +2,29 @@ using Android.App;
 using Android.Content.Res;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.Audio;
+using Plugin.MediaManager.MediaSession;
 
 namespace Plugin.MediaManager
 {
     [Android.Runtime.Preserve(AllMembers = true)]
     public class MediaManagerImplementation : MediaManagerBase
     {
+        public MediaManagerImplementation()
+        {
+            MediaSessionManager.OnNotificationActionFired += HandleNotificationActions;
+        }
+
         private IAudioPlayer _audioPlayer;
-        private IVideoPlayer _videPlayer;
+        private IMediaExtractor _mediaExtraxtor;
 
         public override IAudioPlayer AudioPlayer
         {
-            get { return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(MediaSessionManager)); }
+            get {return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(MediaSessionManager));}
             set { _audioPlayer = value; }
         }
 
-        public override IVideoPlayer VideoPlayer
-        {
-            get { return _videPlayer ?? (_videPlayer = new VideoPlayerImplementation()); }
-            set { _videPlayer = value; }
-        }
+        public override IVideoPlayer VideoPlayer { get; set; } = new VideoPlayerImplementation();
 
         public override IMediaNotificationManager MediaNotificationManager
         {
@@ -29,29 +32,29 @@ namespace Plugin.MediaManager
             set { MediaSessionManager.NotificationManager = value; }
         }
 
-        public override IMediaExtractor MediaExtractor { get; set; } = new MediaExtractorImplementation(Resources.System);
-        public MediaSessionManagerImplementation MediaSessionManager { get; set; } = new MediaSessionManagerImplementation(Application.Context);
-
-        public MediaManagerImplementation()
+        public override IMediaExtractor MediaExtractor
         {
-            MediaSessionManager.OnNotificationActionFired += HandleNotificationActions;
+            get { return _mediaExtraxtor ?? (_mediaExtraxtor = new MediaExtractorImplementation(Resources.System, RequestProperties)); }
+            set { _mediaExtraxtor = value; }
         }
+
+        public MediaSessionManager MediaSessionManager { get; set; } = new MediaSessionManager(Application.Context);
 
         private async void HandleNotificationActions(object sender, string action)
         {
-            if (action.Equals(MediaPlayerService.ActionPlay) || action.Equals(MediaPlayerService.ActionPause))
+            if (action.Equals(MediaServiceBase.ActionPlay) || action.Equals(MediaServiceBase.ActionPause))
             {
                 await PlayPause();
             }
-            else if (action.Equals(MediaPlayerService.ActionPrevious))
+            else if (action.Equals(MediaServiceBase.ActionPrevious))
             {
                 await PlayPrevious();
             }
-            else if (action.Equals(MediaPlayerService.ActionNext))
+            else if (action.Equals(MediaServiceBase.ActionNext))
             {
                 await PlayNext();
             }
-            else if (action.Equals(MediaPlayerService.ActionStop))
+            else if (action.Equals(MediaServiceBase.ActionStop))
             {
                 await Stop();
             }

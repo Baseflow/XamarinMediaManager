@@ -12,10 +12,13 @@ namespace Plugin.MediaManager
 {
     public class MediaExtractorImplementation : IMediaExtractor
     {
-        private Resources _resources;
-        public MediaExtractorImplementation(Resources resources)
+        private readonly Resources _resources;
+        private readonly Dictionary<string,string> _requestProperties;
+
+        public MediaExtractorImplementation(Resources resources, Dictionary<string, string> requestProperties)
         {
             _resources = resources;
+            _requestProperties = requestProperties;
         }
 
         public async Task<IMediaFile> ExtractMediaInfo(IMediaFile mediaFile)
@@ -23,7 +26,16 @@ namespace Plugin.MediaManager
             if (mediaFile.MetadataExtracted) return mediaFile;
             MediaMetadataRetriever metaRetriever = await GetMetadataRetriever(mediaFile);
             SetMetadata(mediaFile, metaRetriever);
-            byte[] imageByteArray = metaRetriever.GetEmbeddedPicture();
+            byte[] imageByteArray = null;
+            try
+            {
+                imageByteArray = metaRetriever.GetEmbeddedPicture();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
             if (imageByteArray == null)
             {
                 mediaFile.Metadata.Cover = GetTrackCover(mediaFile);
@@ -34,7 +46,7 @@ namespace Plugin.MediaManager
                 {
                     mediaFile.Metadata.Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
                 }
-                catch (Java.Lang.OutOfMemoryError ex)
+                catch (Java.Lang.OutOfMemoryError)
                 {
                     mediaFile.Metadata.Cover = null;
                     throw;
@@ -58,7 +70,7 @@ namespace Plugin.MediaManager
             switch (currentFile.Type)
             {
                 case MediaFileType.AudioUrl:
-                    await metaRetriever.SetDataSourceAsync(currentFile.Url, new Dictionary<string, string>());
+                    await metaRetriever.SetDataSourceAsync(currentFile.Url, _requestProperties);
                     break;
                 case MediaFileType.VideoUrl:
                     break;
@@ -91,8 +103,7 @@ namespace Plugin.MediaManager
             }
 
             System.Uri baseUri = new System.Uri(albumFolder);
-            string albumArtPath;
-            albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Folder.jpg");
+            var albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Folder.jpg");
             if (albumArtPath == null)
             {
                 albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Cover.jpg");

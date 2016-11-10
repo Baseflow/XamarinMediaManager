@@ -4,10 +4,13 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.UI.Composition;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
@@ -23,6 +26,8 @@ namespace Plugin.MediaManager
         private TaskCompletionSource<bool> _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
         private MediaPlayerStatus _status;
         private IMediaFile _currentMediaFile;
+        private SpriteVisual _spriteVisual;
+        private IVideoSurface _renderSurface;
 
         public VideoPlayerImplementation()
         {
@@ -110,7 +115,6 @@ namespace Plugin.MediaManager
         public event PlayingChangedEventHandler PlayingChanged;
         public event BufferingChangedEventHandler BufferingChanged;
         public event MediaFinishedEventHandler MediaFinished;
-        public event MediaFileChangedEventHandler MediaFileChanged;
         public event MediaFailedEventHandler MediaFailed;
 
         public TimeSpan Buffered
@@ -190,7 +194,34 @@ namespace Plugin.MediaManager
             return Task.CompletedTask;
         }
 
-        public IVideoSurface RenderSurface { get; private set; }
+        public IVideoSurface RenderSurface
+        {
+            get { return _renderSurface; }
+            private set
+            {
+                if (_renderSurface != value)
+                {
+                    var canvas = _renderSurface as Canvas;
+                    if (canvas != null)
+                    {
+                        canvas.SizeChanged -= ResizeVideoSurface;
+                    }
+                    _renderSurface = value;
+                    canvas = _renderSurface as Canvas;
+                    if (canvas != null)
+                    {
+                        canvas.SizeChanged += ResizeVideoSurface;
+                    }
+                }
+            }
+        }
+
+        private void ResizeVideoSurface(object sender, SizeChangedEventArgs e)
+        {
+            var newSize = new Size(e.NewSize.Width, e.NewSize.Height);
+            _player.SetSurfaceSize(newSize);
+            _spriteVisual.Size = new Vector2((float)newSize.Width, (float)newSize.Height);
+        }
 
         public void SetVideoSurface(IVideoSurface videoSurface)
         {
@@ -199,20 +230,22 @@ namespace Plugin.MediaManager
 
             var canvas = (VideoSurface) videoSurface;
             RenderSurface = canvas;
-            _player.SetSurfaceSize(new Size(canvas.ActualWidth, canvas.ActualHeight));
+            
+            var size = new Size(canvas.ActualWidth, canvas.ActualHeight);
+            _player.SetSurfaceSize(size);
 
             var compositor = ElementCompositionPreview.GetElementVisual(canvas).Compositor;
             var surface = _player.GetSurface(compositor);
 
-            var spriteVisual = compositor.CreateSpriteVisual();
-            spriteVisual.Size =
+            _spriteVisual = compositor.CreateSpriteVisual();
+            _spriteVisual.Size =
                 new Vector2((float) canvas.ActualWidth, (float) canvas.ActualHeight);
 
             CompositionBrush brush = compositor.CreateSurfaceBrush(surface.CompositionSurface);
-            spriteVisual.Brush = brush;
+            _spriteVisual.Brush = brush;
 
             var container = compositor.CreateContainerVisual();
-            container.Children.InsertAtTop(spriteVisual);
+            container.Children.InsertAtTop(_spriteVisual);
 
             ElementCompositionPreview.SetElementChildVisual(canvas, container);
         }
@@ -221,7 +254,6 @@ namespace Plugin.MediaManager
 
         public void SetAspectMode(VideoAspectMode aspectMode)
         {
-            throw new NotImplementedException();
         }
 
         private async Task<MediaSource> CreateMediaSource(string url, MediaFileType fileType)
@@ -233,7 +265,14 @@ namespace Plugin.MediaManager
                     return MediaSource.CreateFromUri(new Uri(url));
                 case MediaFileType.AudioFile:
                 case MediaFileType.VideoFile:
-                    return MediaSource.CreateFromStorageFile(await StorageFile.GetFileFromPathAsync(url));
+                    var du = _player.SystemMediaTransportControls.DisplayUpdater;
+                    var storageFile = await StorageFile.GetFileFromPathAsync(url);
+                    var playbackType = fileType == MediaFileType.AudioFile
+                        ? MediaPlaybackType.Music
+                        : MediaPlaybackType.Video;
+                    await du.CopyFromFileAsync(playbackType, storageFile);
+                    du.Update();
+                    return MediaSource.CreateFromStorageFile(storageFile);
                 case MediaFileType.Other:
                     break;
                 default:
