@@ -41,7 +41,7 @@ namespace Plugin.MediaManager
 
         public MediaSessionCompat.Callback AlternateRemoteCallback { get; set; }
 
-        public Dictionary<string, string> RequestProperties { get; set; }
+        public Dictionary<string, string> RequestHeaders { get; set; }
 
         private MediaPlayerStatus status;
         public virtual MediaPlayerStatus Status
@@ -211,7 +211,7 @@ namespace Plugin.MediaManager
         private TService GetMediaPlayerService()
         {
             var service = binder.GetMediaPlayerService<TService>();
-            service.RequestProperties = RequestProperties;
+            service.RequestHeaders = RequestHeaders;
             return service;
         }
 

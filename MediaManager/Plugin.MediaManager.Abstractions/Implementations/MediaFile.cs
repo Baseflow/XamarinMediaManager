@@ -26,6 +26,8 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public bool MetadataExtracted { get; set; }
 
+        public event MetadataUpdatedEventHandler MetadataUpdated;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)

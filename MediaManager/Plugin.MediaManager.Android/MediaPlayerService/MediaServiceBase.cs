@@ -62,7 +62,7 @@ namespace Plugin.MediaManager
 
         public abstract TimeSpan Buffered { get; }
 
-        public Dictionary<string, string> RequestProperties { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
         public MediaPlayerStatus Status
         {

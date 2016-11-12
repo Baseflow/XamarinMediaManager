@@ -24,6 +24,8 @@ namespace Plugin.MediaManager
         private AVPlayer _player;
         private MediaPlayerStatus _status;
 
+        public Dictionary<string, string> RequestHeaders { get; set; }
+
         public AudioPlayerImplementation()
         {
             _status = MediaPlayerStatus.Stopped;
