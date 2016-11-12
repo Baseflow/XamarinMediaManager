@@ -22,7 +22,7 @@ namespace Plugin.MediaManager.Abstractions
         MediaFileType Type { get; set; }
 
         /// <summary>
-        /// Gets or sets the URL.
+        /// Gets or sets the URL. Can be on the internet or local storage
         /// </summary>
         /// <value>
         /// The URL.

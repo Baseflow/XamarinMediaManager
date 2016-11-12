@@ -18,12 +18,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public Guid Id { get; set; }
 
-        public object Cover { get; set; }
-
-        public string Artist { get; set; }
-
-        public string Title { get; set; }
-
         public MediaFileType Type { get; set; }
 
         public IMediaFileMetadata Metadata { get; set; }

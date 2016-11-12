@@ -38,17 +38,17 @@ namespace Plugin.MediaManager
             
             if (imageByteArray == null)
             {
-                mediaFile.Metadata.Cover = GetTrackCover(mediaFile);
+                mediaFile.Metadata.AlbumArt = GetTrackCover(mediaFile);
             }
             else
             {
                 try
                 {
-                    mediaFile.Metadata.Cover = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
+                    mediaFile.Metadata.AlbumArt = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
                 }
                 catch (Java.Lang.OutOfMemoryError)
                 {
-                    mediaFile.Metadata.Cover = null;
+                    mediaFile.Metadata.AlbumArt = null;
                     throw;
                 }
             }
