@@ -12,7 +12,7 @@ namespace Plugin.MediaManager.Abstractions
     /// Information about the mediafile
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    public interface IMediaFile : INotifyPropertyChanged
+    public interface IMediaFile
     {
         /// <summary>
         /// A unique identifier for this media file

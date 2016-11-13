@@ -13,12 +13,12 @@ namespace Plugin.MediaManager
     public class MediaExtractorImplementation : IMediaExtractor
     {
         private readonly Resources _resources;
-        private readonly Dictionary<string,string> _requestProperties;
+        private readonly Dictionary<string,string> _requestHeaders;
 
-        public MediaExtractorImplementation(Resources resources, Dictionary<string, string> requestProperties)
+        public MediaExtractorImplementation(Resources resources, Dictionary<string, string> requestHeaders)
         {
             _resources = resources;
-            _requestProperties = requestProperties;
+            _requestHeaders = requestHeaders;
         }
 
         public async Task<IMediaFile> ExtractMediaInfo(IMediaFile mediaFile)
@@ -70,7 +70,7 @@ namespace Plugin.MediaManager
             switch (currentFile.Type)
             {
                 case MediaFileType.AudioUrl:
-                    await metaRetriever.SetDataSourceAsync(currentFile.Url, _requestProperties);
+                    await metaRetriever.SetDataSourceAsync(currentFile.Url, _requestHeaders);
                     break;
                 case MediaFileType.VideoUrl:
                     break;

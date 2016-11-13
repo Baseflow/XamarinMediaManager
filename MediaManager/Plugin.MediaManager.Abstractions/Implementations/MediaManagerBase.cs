@@ -48,7 +48,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         private IMediaFile _currentMediaFile => MediaQueue.Current;
 
-        public Dictionary<string, string> RequestHeaders { get; set; }
+        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
         public async Task PlayNext()
         {
