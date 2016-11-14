@@ -25,10 +25,10 @@
     <MtouchUseSGen>True</MtouchUseSGen>
     <MtouchUseRefCounting>True</MtouchUseRefCounting>
     <MtouchLink>None</MtouchLink>
-    <MtouchArch>x86_64</MtouchArch>
+    <MtouchArch>i386, x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
-    <MtouchSdkVersion></MtouchSdkVersion>
+    <MtouchSdkVersion>10.1</MtouchSdkVersion>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
