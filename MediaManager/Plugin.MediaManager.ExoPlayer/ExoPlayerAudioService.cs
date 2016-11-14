@@ -239,7 +239,7 @@ namespace Plugin.MediaManager.ExoPlayer
         {
             var bandwithMeter = new DefaultBandwidthMeter();
             var httpFactory = new DefaultHttpDataSourceFactory(ExoPlayerUtil.GetUserAgent(this, ApplicationInfo.Name), bandwithMeter);
-            var factory = new HttpSourceFactory(httpFactory, RequestProperties);
+            var factory = new HttpSourceFactory(httpFactory, RequestHeaders);
             var extractorFactory = new DefaultExtractorsFactory();
             var uri = Android.Net.Uri.Parse(url);
             return new ExtractorMediaSource(uri

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,8 @@ namespace Plugin.MediaManager
 
 		private AVPlayer _player;
 		private MediaPlayerStatus _status;
+
+        public Dictionary<string, string> RequestHeaders { get; set; }
 
 		public AudioPlayerImplementation()
 		{

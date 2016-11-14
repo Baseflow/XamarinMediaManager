@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager.Abstractions.Implementations
 {
@@ -380,6 +381,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         {
             var updateProperty = new Action(() =>
                 {
+                    if (_queue?.LastOrDefault() == Current)
+                        QueueEnded?.Invoke(this, new QueueEndedEventArgs());
+                
                     IMediaFile current = null;
                     if (Count - 1 >= Index && Index >= 0)
                     {
@@ -390,6 +394,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                     {
                         _current = current;
                         OnPropertyChanged(nameof(Current));
+                        QueueMediaChanged?.Invoke(this, new QueueMediaChangedEventArgs(Current));
                     }
                 });
 

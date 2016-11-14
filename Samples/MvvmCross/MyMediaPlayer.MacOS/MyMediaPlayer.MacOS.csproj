@@ -8,6 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>MyMediaPlayer.MacOS</RootNamespace>
     <AssemblyName>MyMediaPlayer.MacOS</AssemblyName>
+	<TargetFrameworkVersion>4.5</TargetFrameworkVersion>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
@@ -120,19 +121,11 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Setup.cs" />
-    <Compile Include="ViewController.cs" />
-    <Compile Include="ViewController.designer.cs">
-      <DependentUpon>ViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\FirstView.cs" />
-    <Compile Include="Views\FirstViewController.cs" />
+    <Compile Include="Views\HomeViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="AppDelegate.cs.txt" />
-    <Content Include="ToDo-MvvmCross\_ Mac UI.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyMediaPlayer.Core\MyMediaPlayer.Core.csproj">

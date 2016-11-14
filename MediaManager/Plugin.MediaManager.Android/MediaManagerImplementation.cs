@@ -34,7 +34,7 @@ namespace Plugin.MediaManager
 
         public override IMediaExtractor MediaExtractor
         {
-            get { return _mediaExtraxtor ?? (_mediaExtraxtor = new MediaExtractorImplementation(Resources.System, RequestProperties)); }
+            get { return _mediaExtraxtor ?? (_mediaExtraxtor = new MediaExtractorImplementation(Resources.System, RequestHeaders)); }
             set { _mediaExtraxtor = value; }
         }
 

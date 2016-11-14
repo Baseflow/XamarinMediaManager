@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager.Abstractions.Implementations
 {
@@ -16,13 +17,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             Metadata = new MediaFileMetadata();
         }
 
-        public Guid Id { get; set; }
-
-        public object Cover { get; set; }
-
-        public string Artist { get; set; }
-
-        public string Title { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public MediaFileType Type { get; set; }
 
@@ -30,14 +25,14 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public string Url { get; set; }
 
-        public bool MetadataExtracted { get; set; }
+        private bool _metadataExtracted;
+        public bool MetadataExtracted { get {
+                return _metadataExtracted;
+            } set {
+                _metadataExtracted = value;
+                MetadataUpdated?.Invoke(this, new MetadataChangedEventArgs(Metadata));
+            } }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public event MetadataUpdatedEventHandler MetadataUpdated;
     }
 }
