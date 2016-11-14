@@ -20,17 +20,21 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchDebug>true</MtouchDebug>
-    <MtouchFastDev>true</MtouchFastDev>
-    <MtouchProfiling>true</MtouchProfiling>
-    <MtouchUseSGen>true</MtouchUseSGen>
-    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchDebug>True</MtouchDebug>
+    <MtouchFastDev>True</MtouchFastDev>
+    <MtouchProfiling>False</MtouchProfiling>
+    <MtouchUseSGen>True</MtouchUseSGen>
+    <MtouchUseRefCounting>True</MtouchUseRefCounting>
     <MtouchLink>SdkOnly</MtouchLink>
-    <MtouchArch>i386</MtouchArch>
+    <MtouchArch>i386, x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
-    <DeviceSpecificBuild>false</DeviceSpecificBuild>
-<MtouchSdkVersion></MtouchSdkVersion>
+    <MtouchSdkVersion>10.1</MtouchSdkVersion>
+    <MtouchUseLlvm>False</MtouchUseLlvm>
+    <MtouchUseThumb>False</MtouchUseThumb>
+    <MtouchEnableBitcode>False</MtouchEnableBitcode>
+    <OptimizePNGs>True</OptimizePNGs>
+    <MtouchFloat32>False</MtouchFloat32>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <Optimize>true</Optimize>
