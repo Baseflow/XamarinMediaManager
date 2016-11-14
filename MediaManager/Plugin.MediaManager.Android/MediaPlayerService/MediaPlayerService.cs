@@ -101,7 +101,11 @@ namespace Plugin.MediaManager
         public override async Task Play(IMediaFile mediaFile = null)
         {
             await base.Play(mediaFile);
-            _mediaPlayer.PrepareAsync();
+            try
+            {
+                _mediaPlayer.PrepareAsync();
+            }
+            catch (Exception) { }
         }
 
         public override Task TogglePlayPause(bool forceToPlay)
