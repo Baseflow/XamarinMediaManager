@@ -18,6 +18,7 @@ namespace Plugin.MediaManager
 
             //signal the service to stop!
             var stopIntent = new Intent(MediaServiceBase.ActionStop);
+            stopIntent.SetPackage(context.PackageName);
             context.StartService(stopIntent);
         }
     }
