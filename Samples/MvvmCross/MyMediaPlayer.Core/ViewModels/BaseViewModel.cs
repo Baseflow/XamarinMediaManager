@@ -6,6 +6,8 @@ namespace MyMediaPlayer.Core.ViewModels
 {
     public class BaseViewModel : MvxViewModel
     {
+        public virtual string Title { get; set; } = "";
+
         private bool _isLoading = false;
         public bool IsLoading
         {
