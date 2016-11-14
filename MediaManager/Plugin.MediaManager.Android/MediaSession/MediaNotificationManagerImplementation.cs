@@ -108,7 +108,7 @@ namespace Plugin.MediaManager
             _builder.SetContentTitle(mediaFile?.Metadata?.Title ?? string.Empty);
             _builder.SetContentText(mediaFile?.Metadata?.Artist ?? string.Empty);
             _builder.SetContentInfo(mediaFile?.Metadata?.Album ?? string.Empty);
-            _builder.SetLargeIcon(mediaFile?.Metadata?.Cover as Bitmap);
+            _builder.SetLargeIcon(mediaFile?.Metadata?.AlbumArt as Bitmap);
         }
 
         private Android.Support.V4.App.NotificationCompat.Action GenerateActionCompat(int icon, string title, string intentAction)

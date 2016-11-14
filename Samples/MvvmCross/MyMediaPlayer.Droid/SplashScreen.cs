@@ -8,9 +8,8 @@ namespace MyMediaPlayer.Droid
         Label = "MyMediaPlayer.Droid"
         , MainLauncher = true
         , Icon = "@mipmap/icon"
-        , Theme = "@style/Theme.Splash"
-        , NoHistory = true
-        , ScreenOrientation = ScreenOrientation.Portrait)]
+        , Theme = "@style/AppTheme.Splash"
+        , NoHistory = true)]
     public class SplashScreen : MvxSplashScreenActivity
     {
         public SplashScreen()

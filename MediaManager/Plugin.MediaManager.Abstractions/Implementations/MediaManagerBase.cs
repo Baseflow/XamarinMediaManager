@@ -48,8 +48,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         private IMediaFile _currentMediaFile => MediaQueue.Current;
 
-        //TODO: Why do we need this here?
-        public Dictionary<string, string> RequestProperties { get; set; }
+        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
         public async Task PlayNext()
         {

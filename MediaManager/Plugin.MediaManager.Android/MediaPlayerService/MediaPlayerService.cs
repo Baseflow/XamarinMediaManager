@@ -161,7 +161,7 @@ namespace Plugin.MediaManager
                     _mediaPlayer.Reset();
                     try
                     {
-                        await _mediaPlayer.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(uri), RequestProperties);
+                        await _mediaPlayer.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(uri), RequestHeaders);
                     }
                     catch (Exception)
                     {
@@ -278,7 +278,7 @@ namespace Plugin.MediaManager
         {
             _mediaPlayer?.Reset();
             Android.Net.Uri uri = Android.Net.Uri.Parse(CurrentFile.Url);
-            var dataSourceAsync = _mediaPlayer?.SetDataSourceAsync(ApplicationContext, uri, RequestProperties);
+            var dataSourceAsync = _mediaPlayer?.SetDataSourceAsync(ApplicationContext, uri, RequestHeaders);
             if (dataSourceAsync != null)
                 await dataSourceAsync;
         }

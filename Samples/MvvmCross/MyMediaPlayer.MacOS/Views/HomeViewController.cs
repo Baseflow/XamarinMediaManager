@@ -9,26 +9,26 @@ using MvvmCross.Core.ViewModels;
 
 namespace MyMediaPlayer.MacOS.Views
 {
-    [MvxViewFor(typeof(Core.ViewModels.FirstViewModel))]
-    public partial class FirstViewController : MvxViewController
+    [MvxViewFor(typeof(Core.ViewModels.HomeViewModel))]
+    public partial class HomeViewController : MvxViewController
     {
         #region Constructors
 
         // Called when created from unmanaged code
-        public FirstViewController(IntPtr handle) : base(handle)
+        public HomeViewController(IntPtr handle) : base(handle)
         {
             Initialize();
         }
 
         // Called when created directly from a XIB file
         [Export("initWithCoder:")]
-        public FirstViewController(NSCoder coder) : base(coder)
+        public HomeViewController(NSCoder coder) : base(coder)
         {
             Initialize();
         }
 
         // Call to load from the XIB/NIB file
-        public FirstViewController() : base()
+        public HomeViewController() : base()
         {
             Initialize();
         }
@@ -53,7 +53,7 @@ namespace MyMediaPlayer.MacOS.Views
         {
             base.ViewDidLoad ();
 
-            var set = this.CreateBindingSet<FirstViewController, Core.ViewModels.FirstViewModel>();
+            var set = this.CreateBindingSet<HomeViewController, Core.ViewModels.HomeViewModel>();
             //set.Bind(textFirst).To(vm => vm.Hello);
             set.Apply();
         }
