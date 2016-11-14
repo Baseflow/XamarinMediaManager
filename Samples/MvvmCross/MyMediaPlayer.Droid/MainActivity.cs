@@ -1,11 +1,13 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
+using MyMediaPlayer.Core.ViewModels;
+using MvvmCross.Droid.Support.V7.AppCompat;
 
 namespace MyMediaPlayer.Droid
 {
     [Activity(Label = "MyMediaPlayer.Droid", MainLauncher = true, Icon = "@mipmap/icon")]
-    public class MainActivity : Activity
+    public class MainActivity : MvxCachingFragmentCompatActivity<HomeViewModel>
     {
         int count = 1;
 
