@@ -262,12 +262,6 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
       "MvvmCross.Binding/4.4.0": {
         "dependencies": {
           "MvvmCross.Core": "4.4.0"
@@ -354,11 +348,6 @@
         "runtime": {
           "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
-        }
-      },
-      "MvvmCross.StarterPack/4.4.0": {
-        "dependencies": {
-          "MvvmCross": "4.3.0"
         }
       },
       "Newtonsoft.Json/9.0.1": {
@@ -2096,12 +2085,6 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
       "MvvmCross.Binding/4.4.0": {
         "dependencies": {
           "MvvmCross.Core": "4.4.0"
@@ -2188,11 +2171,6 @@
         "runtime": {
           "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
-        }
-      },
-      "MvvmCross.StarterPack/4.4.0": {
-        "dependencies": {
-          "MvvmCross": "4.3.0"
         }
       },
       "Newtonsoft.Json/9.0.1": {
@@ -3838,12 +3816,6 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
       "MvvmCross.Binding/4.4.0": {
         "dependencies": {
           "MvvmCross.Core": "4.4.0"
@@ -3930,11 +3902,6 @@
         "runtime": {
           "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
-        }
-      },
-      "MvvmCross.StarterPack/4.4.0": {
-        "dependencies": {
-          "MvvmCross": "4.3.0"
         }
       },
       "Newtonsoft.Json/9.0.1": {
@@ -5549,12 +5516,6 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
       "MvvmCross.Binding/4.4.0": {
         "dependencies": {
           "MvvmCross.Core": "4.4.0"
@@ -5641,11 +5602,6 @@
         "runtime": {
           "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
-        }
-      },
-      "MvvmCross.StarterPack/4.4.0": {
-        "dependencies": {
-          "MvvmCross": "4.3.0"
         }
       },
       "Newtonsoft.Json/9.0.1": {
@@ -7294,12 +7250,6 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
       "MvvmCross.Binding/4.4.0": {
         "dependencies": {
           "MvvmCross.Core": "4.4.0"
@@ -7386,11 +7336,6 @@
         "runtime": {
           "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
-        }
-      },
-      "MvvmCross.StarterPack/4.4.0": {
-        "dependencies": {
-          "MvvmCross": "4.3.0"
         }
       },
       "Newtonsoft.Json/9.0.1": {
@@ -9005,12 +8950,6 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
       "MvvmCross.Binding/4.4.0": {
         "dependencies": {
           "MvvmCross.Core": "4.4.0"
@@ -9097,11 +9036,6 @@
         "runtime": {
           "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
-        }
-      },
-      "MvvmCross.StarterPack/4.4.0": {
-        "dependencies": {
-          "MvvmCross": "4.3.0"
         }
       },
       "Newtonsoft.Json/9.0.1": {
@@ -10750,12 +10684,6 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
       "MvvmCross.Binding/4.4.0": {
         "dependencies": {
           "MvvmCross.Core": "4.4.0"
@@ -10842,11 +10770,6 @@
         "runtime": {
           "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
-        }
-      },
-      "MvvmCross.StarterPack/4.4.0": {
-        "dependencies": {
-          "MvvmCross": "4.3.0"
         }
       },
       "Newtonsoft.Json/9.0.1": {
@@ -12846,15 +12769,6 @@
         "ref/xamarinmac20/_._"
       ]
     },
-    "MvvmCross/4.3.0": {
-      "sha512": "22UBSqBq6R3vUwxcgVSFPnCybmrFpzXZRkkUKScPdzl+/pdzQJG1EOzmvaRvfvl+5fG11WINx5BAteFj+Cm+tQ==",
-      "type": "package",
-      "path": "MvvmCross/4.3.0",
-      "files": [
-        "MvvmCross.4.3.0.nupkg.sha512",
-        "MvvmCross.nuspec"
-      ]
-    },
     "MvvmCross.Binding/4.4.0": {
       "sha512": "1hT8Xe+whI2CgSYaV6+wZaOyQXc724ZNhRKF9SNjSzG4OpBEt/KoXRZVWpbqnVMO3Uz3sk2QbSNmJD/KPNixfg==",
       "type": "package",
@@ -13128,62 +13042,6 @@
         "lib/wpa81/MvvmCross.Plugins.Visibility.WindowsCommon.pri",
         "lib/wpa81/MvvmCross.Plugins.Visibility.dll",
         "lib/wpa81/MvvmCross.Plugins.Visibility.dll.mdb"
-      ]
-    },
-    "MvvmCross.StarterPack/4.4.0": {
-      "sha512": "knd0r9hp27p2bNyOwI4VTyL8qJ48GAcrgB0Fxggy+gRypEep0eANF4i7R96Uu2QcBhsezSOMKxjCuk9flAVsag==",
-      "type": "package",
-      "path": "MvvmCross.StarterPack/4.4.0",
-      "files": [
-        "MvvmCross.StarterPack.4.4.0.nupkg.sha512",
-        "MvvmCross.StarterPack.nuspec",
-        "content/MonoAndroid/DebugTrace.cs.pp",
-        "content/MonoAndroid/LinkerPleaseInclude.cs.pp",
-        "content/MonoAndroid/Resources/drawable/splash.png",
-        "content/MonoAndroid/Resources/layout/FirstView.axml",
-        "content/MonoAndroid/Resources/layout/SplashScreen.axml",
-        "content/MonoAndroid/Resources/values/SplashStyle.xml",
-        "content/MonoAndroid/Setup.cs.pp",
-        "content/MonoAndroid/SplashScreen.cs.pp",
-        "content/MonoAndroid/ToDo-MvvmCross/_ Droid UI.txt",
-        "content/MonoAndroid/Views/FirstView.cs.pp",
-        "content/Xamarin.Mac20/AppDelegate.cs.txt.pp",
-        "content/Xamarin.Mac20/DebugTrace.cs.pp",
-        "content/Xamarin.Mac20/Setup.cs.pp",
-        "content/Xamarin.Mac20/ToDo-MvvmCross/_ Mac UI.txt",
-        "content/Xamarin.Mac20/Views/FirstView.cs.pp",
-        "content/Xamarin.Mac20/Views/FirstViewController.cs.pp",
-        "content/Xamarin.iOS10/AppDelegate.cs.txt.pp",
-        "content/Xamarin.iOS10/DebugTrace.cs.pp",
-        "content/Xamarin.iOS10/LinkerPleaseInclude.cs.pp",
-        "content/Xamarin.iOS10/Setup.cs.pp",
-        "content/Xamarin.iOS10/ToDo-MvvmCross/_ iOS UI.txt",
-        "content/Xamarin.iOS10/Views/FirstView.cs.pp",
-        "content/Xamarin.iOS10/Views/FirstView.designer.cs.pp",
-        "content/Xamarin.iOS10/Views/FirstView.xib",
-        "content/net45/App.Xaml.Mvx.cs.pp",
-        "content/net45/DebugTrace.cs.pp",
-        "content/net45/Setup.cs.pp",
-        "content/net45/ToDo-MvvmCross/_ Wpf UI.txt",
-        "content/net45/Views/FirstView.xaml.cs.pp",
-        "content/net45/Views/FirstView.xaml.pp",
-        "content/netcore45/DebugTrace.cs.pp",
-        "content/netcore45/Setup.cs.pp",
-        "content/netcore45/ToDo-MvvmCross/_ Windows Store UI.txt",
-        "content/netcore45/Views/FirstView.xaml.cs.pp",
-        "content/netcore45/Views/FirstView.xaml.pp",
-        "content/portable-net45+win+wpa81+wp80/App.cs.pp",
-        "content/portable-net45+win+wpa81+wp80/ViewModels/FirstViewModel.cs.pp",
-        "content/win81/DebugTrace.cs.pp",
-        "content/win81/Setup.cs.pp",
-        "content/win81/ToDo-MvvmCross/_ Windows Store UI.txt",
-        "content/win81/Views/FirstView.xaml.cs.pp",
-        "content/win81/Views/FirstView.xaml.pp",
-        "content/wpa81/DebugTrace.cs.pp",
-        "content/wpa81/Setup.cs.pp",
-        "content/wpa81/ToDo-MvvmCross/_ Windows Store UI.txt",
-        "content/wpa81/Views/FirstView.xaml.cs.pp",
-        "content/wpa81/Views/FirstView.xaml.pp"
       ]
     },
     "Newtonsoft.Json/9.0.1": {
@@ -15993,8 +15851,7 @@
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.1.0",
       "MvvmCross.Plugin.Json >= 4.4.0",
       "MvvmCross.Plugin.JsonLocalization >= 4.4.0",
-      "MvvmCross.Plugin.Visibility >= 4.4.0",
-      "MvvmCross.StarterPack >= 4.4.0"
+      "MvvmCross.Plugin.Visibility >= 4.4.0"
     ],
     "UAP,Version=v10.0": []
   }
