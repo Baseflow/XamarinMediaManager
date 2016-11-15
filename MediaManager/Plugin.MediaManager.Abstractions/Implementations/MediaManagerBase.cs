@@ -67,7 +67,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 //TODO: Shouldn't we Pause here instead of stop? Stop should shut down everything
                 await CurrentPlaybackManager.Stop();
                 MediaQueue.SetIndexAsCurrent(0);
-                OnMediaFileChanged(this, new MediaFileChangedEventArgs(MediaQueue.Current));
             }
         }
 

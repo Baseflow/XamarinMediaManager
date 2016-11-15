@@ -8,5 +8,33 @@ namespace Plugin.MediaManager
         public VolumeManagerImplementation()
         {
         }
+
+        public int CurrentVolume
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public int MaxVolume
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public event VolumeChangedEventHandler VolumeChanged;
     }
 }
