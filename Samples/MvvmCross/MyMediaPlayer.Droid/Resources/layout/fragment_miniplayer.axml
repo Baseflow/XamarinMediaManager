@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/miniplayer_height">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/miniplayer_height"
+        android:clickable="true"
+        local:MvxBind="Click OpenPlayerCommand"
+        android:id="@+id/miniplayerview">
+        <ImageView
+            android:layout_width="@dimen/miniplayer_height"
+            android:layout_height="@dimen/miniplayer_height"
+            android:id="@+id/image_button_options"
+            local:MvxBind="Bitmap Cover"
+            android:layout_alignParentLeft="true" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/image_view_row_icon"
+            android:layout_toRightOf="@+id/image_button_options"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_view_title"
+                android:singleLine="true"
+                local:MvxBind="Text CurrentTrack.Meta.Title"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_large"
+                android:layout_gravity="center_vertical" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_view_sub_title"
+                android:singleLine="true"
+                local:MvxBind="Text TrackToSubtitle(CurrentTrack)"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_small"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+        <ToggleButton
+            android:textOn=""
+            android:textOff=""
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/image_view_row_icon"
+            local:MvxBind="Checked IsPlaying, Mode=OneWay; Click PlayPauseCommand"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar1"
+        local:MvxBind="Max Duration; Progress Position; SecondaryProgress Downloaded"
+        android:clickable="false"
+        android:layout_below="@+id/miniplayerview" />
+</RelativeLayout>

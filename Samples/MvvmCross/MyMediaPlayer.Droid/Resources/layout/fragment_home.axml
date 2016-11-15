@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include
         layout="@layout/toolbar_layout" />
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/bottomsheetview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        local:behavior_hideable="false"
+        local:behavior_peekHeight="@dimen/miniplayer_height"
+        local:layout_behavior="@string/bottom_sheet_behavior">
+        <include
+            layout="@layout/fragment_miniplayer" />
+    </FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

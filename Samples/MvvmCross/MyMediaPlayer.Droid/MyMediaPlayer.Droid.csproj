@@ -157,6 +157,7 @@
     <Compile Include="Fragments\HomeFragment.cs" />
     <Compile Include="Fragments\BaseFragment.cs" />
     <Compile Include="Fragments\SearchFragment.cs" />
+    <Compile Include="Fragments\AudioPlayerFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -170,6 +171,8 @@
     <AndroidResource Include="Resources\values-v21\styles.xml" />
     <AndroidResource Include="Resources\layout\toolbar_layout.axml" />
     <AndroidResource Include="Resources\layout\fragment_home.axml" />
+    <AndroidResource Include="Resources\layout\fragment_audioplayer.axml" />
+    <AndroidResource Include="Resources\layout\fragment_miniplayer.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_main.axml" />
