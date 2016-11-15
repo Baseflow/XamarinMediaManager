@@ -16,10 +16,10 @@ namespace Plugin.MediaManager
             if (intent.Action != AudioManager.ActionAudioBecomingNoisy)
                 return;
 
-            //signal the service to stop!
-            var stopIntent = new Intent(MediaServiceBase.ActionStop);
-            stopIntent.SetPackage(context.PackageName);
-            context.StartService(stopIntent);
+            //signal the service to pause!
+            var pauseIntent = new Intent(MediaServiceBase.ActionPause);
+            pauseIntent.SetPackage(context.PackageName);
+            context.StartService(pauseIntent);
         }
     }
 }
