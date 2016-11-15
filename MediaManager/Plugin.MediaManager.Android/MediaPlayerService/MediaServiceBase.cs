@@ -94,7 +94,12 @@ namespace Plugin.MediaManager
 
         public virtual async Task Play(IMediaFile mediaFile = null)
         {
-            if(!ValidateMediaFile(mediaFile) || CheckIfFileAlreadyIsPlaying(mediaFile).Result)
+            if(!ValidateMediaFile(mediaFile))
+                return;
+
+            bool alreadyPlaying = await CheckIfFileAlreadyIsPlaying(mediaFile);
+
+            if (alreadyPlaying)
                 return;
 
             CurrentFile = mediaFile;
