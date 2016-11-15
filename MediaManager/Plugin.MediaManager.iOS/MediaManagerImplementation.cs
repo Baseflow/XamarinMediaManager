@@ -12,5 +12,6 @@ namespace Plugin.MediaManager
         public override IVideoPlayer VideoPlayer { get; set; } = new VideoPlayerImplementation();
         public override IMediaNotificationManager MediaNotificationManager { get; set; } = new MediaNotificationManagerImplementation();
         public override IMediaExtractor MediaExtractor { get; set; } = new MediaExtractorImplementation();
+        public override IVolumeManager VolumeManager { get; set; } = new VolumeManagerImplementation();
     }
 }

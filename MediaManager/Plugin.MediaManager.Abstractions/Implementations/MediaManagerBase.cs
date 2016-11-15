@@ -33,6 +33,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public abstract IVideoPlayer VideoPlayer { get; set; }
         public abstract IMediaNotificationManager MediaNotificationManager { get; set; }
         public abstract IMediaExtractor MediaExtractor { get; set; }
+        public abstract IVolumeManager VolumeManager { get; set; }
 
         public MediaPlayerStatus Status => CurrentPlaybackManager.Status;
         public TimeSpan Position => CurrentPlaybackManager.Position;

@@ -86,6 +86,7 @@
     <Compile Include="Audio\AudioPlayerBase.cs" />
     <Compile Include="Audio\RemoteControlBroadcastReceiver.cs" />
     <Compile Include="Audio\AudioPlayerBroadcastReceiver.cs" />
+    <Compile Include="VolumeManagerImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
