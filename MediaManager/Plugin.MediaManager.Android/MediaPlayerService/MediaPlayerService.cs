@@ -105,7 +105,7 @@ namespace Plugin.MediaManager
             {
                 _mediaPlayer.PrepareAsync();
             }
-            catch (Exception) { }
+            catch (Java.Lang.IllegalStateException) { }
         }
 
         public override Task TogglePlayPause(bool forceToPlay)
