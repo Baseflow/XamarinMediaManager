@@ -5,14 +5,48 @@
     android:layout_height="match_parent">
     <include
         layout="@layout/toolbar_layout" />
-    <FrameLayout
-        android:id="@+id/bottomsheetview"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        local:behavior_hideable="false"
-        local:behavior_peekHeight="@dimen/miniplayer_height"
-        local:layout_behavior="@string/bottom_sheet_behavior">
-        <include
-            layout="@layout/fragment_miniplayer" />
-    </FrameLayout>
+        android:layout_height="match_parent">
+        <Button
+            android:text="Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button1" />
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar1" />
+        <CheckedTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkedTextView1" />
+        <ImageView
+            android:src="@android:drawable/ic_menu_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView1" />
+        <Button
+            android:text="Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button2" />
+        <TextView
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView1" />
+        <ImageButton
+            android:src="@android:drawable/ic_menu_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton1" />
+        <CalendarView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/calendarView1" />
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
