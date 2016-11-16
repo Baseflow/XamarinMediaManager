@@ -5,36 +5,12 @@ namespace Plugin.MediaManager
 {
     public class VolumeManagerImplementation : IVolumeManager
     {
-        public VolumeManagerImplementation()
-        {
-        }
+        public int CurrentVolume { get; set; }
 
-        public int CurrentVolume
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public int MaxVolume
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public int MaxVolume { get; set; }
 
         public event VolumeChangedEventHandler VolumeChanged;
+
+        public bool Mute { get; set; }
     }
 }

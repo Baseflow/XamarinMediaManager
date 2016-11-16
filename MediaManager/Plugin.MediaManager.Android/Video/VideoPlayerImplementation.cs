@@ -64,7 +64,7 @@ namespace Plugin.MediaManager
 
         public void Init()
         {
-            var mediaController = new MediaController(Application.Context);
+            var mediaController = new MediaController(((VideoView)RenderSurface).Context);
             mediaController.SetAnchorView(VideoViewCanvas);
             VideoViewCanvas.SetMediaController(mediaController);
 
