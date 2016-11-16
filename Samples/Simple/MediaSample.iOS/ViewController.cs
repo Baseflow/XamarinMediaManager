@@ -2,7 +2,6 @@
 using Plugin.MediaManager;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
-using Plugin.MediaManager.iOS;
 using UIKit;
 
 namespace MediaSample.iOS
