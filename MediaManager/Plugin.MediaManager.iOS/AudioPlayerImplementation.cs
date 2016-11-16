@@ -15,6 +15,8 @@ namespace Plugin.MediaManager
 {
     public class AudioPlayerImplementation : NSObject, IAudioPlayer
     {
+        private readonly IVolumeManager _volumeManager;
+
         public static readonly NSString StatusObservationContext =
             new NSString("AVCustomEditPlayerViewControllerStatusObservationContext");
 
@@ -26,8 +28,9 @@ namespace Plugin.MediaManager
 
         public Dictionary<string, string> RequestHeaders { get; set; }
 
-        public AudioPlayerImplementation()
+        public AudioPlayerImplementation(IVolumeManager volumeManager)
         {
+            _volumeManager = volumeManager;
             _status = MediaPlayerStatus.Stopped;
 
             // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
@@ -38,6 +41,16 @@ namespace Plugin.MediaManager
                     (Status == MediaPlayerStatus.Playing))
                     Player.Play();
             };
+            _volumeManager.Mute = _player.Muted;
+            _volumeManager.CurrentVolume = _player.Volume;
+            _volumeManager.MaxVolume = 1;
+            _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
+        }
+
+        private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
+        {
+            _player.Volume = (float) volumeChangedEventArgs.Volume;
+            _player.Muted = volumeChangedEventArgs.Mute;
         }
 
         private AVPlayer Player
