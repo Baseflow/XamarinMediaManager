@@ -91,7 +91,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
         }
 
-        private RepeatType repeat;
+        private RepeatType repeat = RepeatType.None;
         public RepeatType Repeat
         {
             get

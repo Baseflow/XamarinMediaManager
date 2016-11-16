@@ -17,5 +17,7 @@ namespace Plugin.MediaManager
         {
             VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(volumeProvider));
         }
+
+        public bool Mute { get; set; }
     }
 }

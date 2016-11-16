@@ -15,5 +15,7 @@ namespace Plugin.MediaManager.Abstractions
         int CurrentVolume { get; set; }
 
         int MaxVolume { get; set; }
+
+        bool Mute { get; set; }
     }
 }
