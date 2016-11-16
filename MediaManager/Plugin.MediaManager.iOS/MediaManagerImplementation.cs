@@ -9,15 +9,7 @@ namespace Plugin.MediaManager
     public class MediaManagerImplementation : MediaManagerBase
     {
         private IAudioPlayer _audioPlayer;
-        private IVolumeManager _volumeManager;
         private IVideoPlayer _videoPlayer;
-
-        public MediaManagerImplementation()
-        {
-            _volumeManager = new VolumeManagerImplementation();
-            _audioPlayer = new AudioPlayerImplementation(_volumeManager);
-            _videoPlayer = new VideoPlayerImplementation(_volumeManager);
-        }
 
         public override IAudioPlayer AudioPlayer
         {
@@ -34,10 +26,6 @@ namespace Plugin.MediaManager
         public override IMediaNotificationManager MediaNotificationManager { get; set; } = new MediaNotificationManagerImplementation();
         public override IMediaExtractor MediaExtractor { get; set; } = new MediaExtractorImplementation();
 
-        public override IVolumeManager VolumeManager
-        {
-            get { return _volumeManager ?? (_volumeManager = new VolumeManagerImplementation()); }
-            set { _volumeManager = value; }
-        }
+        public override IVolumeManager VolumeManager { get; set; } = new VolumeManagerImplementation();
     }
 }
