@@ -14,13 +14,15 @@ namespace Plugin.MediaManager
 {
     public class AudioPlayerImplementation : IAudioPlayer
     {
+        private readonly IVolumeManager _volumeManager;
         private readonly MediaPlayer _player;
         private readonly Timer _playProgressTimer;
         private MediaPlayerStatus _status;
         private IMediaFile _currentMediaFile;
 
-        public AudioPlayerImplementation()
+        public AudioPlayerImplementation(IVolumeManager volumeManager)
         {
+            _volumeManager = volumeManager;
             _player = new MediaPlayer();
             _playProgressTimer = new Timer(state =>
             {
@@ -87,6 +89,15 @@ namespace Plugin.MediaManager
             };
 
             _player.PlaybackSession.SeekCompleted += (sender, args) => { };
+            _volumeManager.CurrentVolume = (float) _player.Volume;
+            _volumeManager.Mute = _player.IsMuted;
+            _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
+        }
+
+        private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
+        {
+            _player.Volume = (double) volumeChangedEventArgs.Volume;
+            _player.IsMuted = volumeChangedEventArgs.Mute;
         }
 
         public Dictionary<string, string> RequestHeaders { get; set; }
