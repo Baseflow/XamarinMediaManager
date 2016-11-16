@@ -167,7 +167,7 @@ namespace Plugin.MediaManager
             if (intent?.Action == null)
                 return;
 
-            SessionManager.HandleAction(intent.Action);
+            SessionManager?.HandleAction(intent?.Action);
         }
 
         /// <summary>
