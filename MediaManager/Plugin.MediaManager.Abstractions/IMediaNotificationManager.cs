@@ -3,6 +3,9 @@ using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
+    /// <summary>
+    /// Manages the notifications to the native platform
+    /// </summary>
     public interface IMediaNotificationManager
     {
         /// <summary>

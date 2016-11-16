@@ -11,6 +11,9 @@ namespace Plugin.MediaManager.Abstractions
 
     public delegate void QueueMediaChangedEventHandler(object sender, QueueMediaChangedEventArgs e);
 
+    /// <summary>
+    /// Manages all the items that will be played
+    /// </summary>
     public interface IMediaQueue : IList<IMediaFile>, INotifyCollectionChanged, INotifyPropertyChanged
     {
         /// <summary>
