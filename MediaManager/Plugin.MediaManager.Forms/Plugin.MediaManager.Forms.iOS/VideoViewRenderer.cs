@@ -31,7 +31,7 @@ namespace Plugin.MediaManager.Forms.iOS
             {
                 _videoSurface = new VideoSurface();
                 SetNativeControl(_videoSurface);
-                CrossMediaManager.Current.VideoPlayer.SetVideoSurface(_videoSurface);
+                CrossMediaManager.Current.VideoPlayer.RenderSurface = _videoSurface;
             }
         }
     }

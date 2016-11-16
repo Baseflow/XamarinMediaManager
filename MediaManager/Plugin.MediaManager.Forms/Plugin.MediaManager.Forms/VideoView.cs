@@ -39,7 +39,7 @@ namespace Plugin.MediaManager.Forms
 
         private static void OnAspectModeChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
-            CrossMediaManager.Current.VideoPlayer.SetAspectMode((VideoAspectMode) newvalue);
+            CrossMediaManager.Current.VideoPlayer.AspectMode = ((VideoAspectMode) newvalue);
         }
 
         private static void OnSourceChanged(BindableObject bindable, object oldvalue, object newvalue)

@@ -5,9 +5,7 @@ namespace Plugin.MediaManager.Abstractions
 {
     public interface IVideoPlayer : IPlaybackManager
     {
-        IVideoSurface RenderSurface { get; }
-        void SetVideoSurface(IVideoSurface videoSurface);
-        VideoAspectMode AspectMode { get; }
-        void SetAspectMode(VideoAspectMode aspectMode);
+        IVideoSurface RenderSurface { get; set; }
+        VideoAspectMode AspectMode { get; set; }
     }
 }

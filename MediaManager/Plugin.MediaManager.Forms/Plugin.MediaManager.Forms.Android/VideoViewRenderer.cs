@@ -23,7 +23,7 @@ namespace Plugin.MediaManager.Forms.Android
             {
                 _videoSurface = new VideoSurface(Context);
                 SetNativeControl(_videoSurface);
-                CrossMediaManager.Current.VideoPlayer.SetVideoSurface(_videoSurface);
+                CrossMediaManager.Current.VideoPlayer.RenderSurface = _videoSurface;
             }
         }
 

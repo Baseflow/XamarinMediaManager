@@ -298,40 +298,48 @@ namespace Plugin.MediaManager
             BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
         }
 
-        public IVideoSurface RenderSurface { get; private set; }
-
-        public void SetVideoSurface(IVideoSurface videoSurface)
+        private IVideoSurface _renderSurface;
+        public IVideoSurface RenderSurface
         {
-			var view = (VideoSurface)videoSurface;
-			if (view == null)
-				throw new ArgumentException("VideoSurface must be a UIView");
-			
-            RenderSurface = videoSurface;
-            _videoLayer = AVPlayerLayer.FromPlayer(Player);
-			_videoLayer.Frame = view.Frame;
-			_videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
-            view.Layer.AddSublayer(_videoLayer);
+            get
+            {
+                return _renderSurface;
+            }
+            set
+            {
+                var view = (VideoSurface)value;
+                if (view == null)
+                    throw new ArgumentException("VideoSurface must be a UIView");
+
+                _renderSurface = value;
+                _videoLayer = AVPlayerLayer.FromPlayer(Player);
+                _videoLayer.Frame = view.Frame;
+                _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
+                view.Layer.AddSublayer(_videoLayer);
+            }
         }
 
-        public VideoAspectMode AspectMode { get; private set; }
-
-        public void SetAspectMode(VideoAspectMode aspectMode)
-        {
-            switch (aspectMode)
-            {
-                case VideoAspectMode.None:
-                    _videoLayer.VideoGravity = AVLayerVideoGravity.Resize;
-                    break;
-                case VideoAspectMode.AspectFit:
-                    _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
-                    break;
-                case VideoAspectMode.AspectFill:
-                    _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            AspectMode = aspectMode;
+        private VideoAspectMode _aspectMode;
+        public VideoAspectMode AspectMode { 
+            get {
+                return _aspectMode;
+            } set {
+                switch (value)
+                {
+                    case VideoAspectMode.None:
+                        _videoLayer.VideoGravity = AVLayerVideoGravity.Resize;
+                        break;
+                    case VideoAspectMode.AspectFit:
+                        _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
+                        break;
+                    case VideoAspectMode.AspectFill:
+                        _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                _aspectMode = value;
+            } 
         }
     }
 }

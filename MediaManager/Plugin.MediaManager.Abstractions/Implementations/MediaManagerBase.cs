@@ -123,13 +123,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 //await Task.WhenAll(
                 await CurrentPlaybackManager.Play(mediaFile);
                 await GetMediaInformation(new[] {mediaFile});
-                MediaNotificationManager.StartNotification(mediaFile);
+                MediaNotificationManager?.StartNotification(mediaFile);
             }
             catch (Exception ex)
             {
                 OnMediaFileFailed(this, new MediaFileFailedEventArgs(ex, mediaFile));
             }
-            
         }
 
         /// <summary>
@@ -146,7 +145,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await Task.WhenAll(
                 PlayNext(),
                 GetMediaInformation(enumerable),
-                Task.Run(() => MediaNotificationManager.StartNotification(MediaQueue.Current)));
+                Task.Run(() => MediaNotificationManager?.StartNotification(MediaQueue.Current)));
         }
 
         public async Task Play(string url, MediaFileType fileType)
@@ -178,7 +177,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public async Task Stop()
         {
             await CurrentPlaybackManager.Stop();
-            MediaNotificationManager.StopNotifications();
+            MediaNotificationManager?.StopNotifications();
         }
 
         public async Task Seek(TimeSpan position)
@@ -231,7 +230,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         private void OnStatusChanged(object sender, StatusChangedEventArgs e)
         {
             if (sender != CurrentPlaybackManager) return;
-            MediaNotificationManager.UpdateNotifications(MediaQueue.Current, e.Status);
+            MediaNotificationManager?.UpdateNotifications(MediaQueue.Current, e.Status);
             StatusChanged?.Invoke(sender, e);
         }
 
@@ -266,7 +265,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         private void OnMediaFileChanged(object sender, MediaFileChangedEventArgs e)
         {
             if(_currentMediaFile.Url == e.File.Url)
-                MediaNotificationManager.UpdateNotifications(e.File, Status);
+                MediaNotificationManager?.UpdateNotifications(e.File, Status);
             MediaFileChanged?.Invoke(sender, e);
 
         }
