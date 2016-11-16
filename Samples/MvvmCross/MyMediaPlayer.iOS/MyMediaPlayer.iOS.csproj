@@ -119,6 +119,36 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="MvvmCross.Plugins.Visibility">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.Visibility.4.4.0\lib\Xamarin.iOS10\MvvmCross.Plugins.Visibility.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.Visibility.iOS">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.Visibility.4.4.0\lib\Xamarin.iOS10\MvvmCross.Plugins.Visibility.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.File">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.File.4.4.0\lib\Xamarin.iOS10\MvvmCross.Plugins.File.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.File.iOS">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.File.4.4.0\lib\Xamarin.iOS10\MvvmCross.Plugins.File.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.ResourceLoader">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.ResourceLoader.4.4.0\lib\Xamarin.iOS10\MvvmCross.Plugins.ResourceLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.ResourceLoader.iOS">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.ResourceLoader.4.4.0\lib\Xamarin.iOS10\MvvmCross.Plugins.ResourceLoader.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.Json">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.Json.4.4.0\lib\Xamarin.iOS10\MvvmCross.Plugins.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.JsonLocalization">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.JsonLocalization.4.4.0\lib\Xamarin.iOS10\MvvmCross.Plugins.JsonLocalization.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.iOS.Support">
+      <HintPath>..\..\..\packages\MvvmCross.iOS.Support.4.4.0\lib\Xamarin.iOS10\MvvmCross.iOS.Support.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
@@ -130,16 +160,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
     <InterfaceDefinition Include="Main.storyboard" />
+    <InterfaceDefinition Include="Views\HomeViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
-    <InterfaceDefinition Include="Views\FirstView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DebugTrace.cs" />
@@ -151,12 +182,15 @@
     <Compile Include="ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FirstView.cs" />
-    <Compile Include="Views\FirstView.designer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="AppDelegate.cs.txt" />
-    <Content Include="ToDo-MvvmCross\_ iOS UI.txt" />
+    <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\FilePluginBootstrap.cs" />
+    <Compile Include="Bootstrap\ResourceLoaderPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\JsonLocalizationPluginBootstrap.cs" />
+    <Compile Include="Views\HomeViewController.cs" />
+    <Compile Include="Views\HomeViewController.designer.cs">
+      <DependentUpon>HomeViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyMediaPlayer.Core\MyMediaPlayer.Core.csproj">

@@ -4,13 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content.Res;
+using Android.Media;
 using Android.Widget;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
-    public class VideoPlayerImplementation : IVideoPlayer
+    public class VideoPlayerImplementation : Java.Lang.Object, 
+        IVideoPlayer,
+        MediaPlayer.IOnCompletionListener,
+        MediaPlayer.IOnErrorListener,
+        MediaPlayer.IOnPreparedListener
     {
         public IVideoSurface RenderSurface { get; private set; }
         public void SetVideoSurface(IVideoSurface videoSurface)
@@ -57,13 +62,26 @@ namespace Plugin.MediaManager
             VideoViewCanvas.Pause();
         }
 
-        public async Task Play(IMediaFile mediaFile)
+        public void Init()
         {
-            VideoViewCanvas.SetVideoURI(Android.Net.Uri.Parse(mediaFile.Url));
-
             var mediaController = new MediaController(Application.Context);
             mediaController.SetAnchorView(VideoViewCanvas);
             VideoViewCanvas.SetMediaController(mediaController);
+
+            VideoViewCanvas.SetOnCompletionListener(this);
+            VideoViewCanvas.SetOnErrorListener(this);
+            VideoViewCanvas.SetOnPreparedListener(this);
+        }
+
+        public async Task Play(IMediaFile mediaFile)
+        {
+            if (VideoViewCanvas == null)
+            {
+                await Task.Delay(100);
+                Init();
+            }
+
+            VideoViewCanvas.SetVideoURI(Android.Net.Uri.Parse(mediaFile.Url));
             VideoViewCanvas.Start();
         }
 
@@ -77,6 +95,24 @@ namespace Plugin.MediaManager
         public async Task Stop()
         {
             VideoViewCanvas.StopPlayback();
+        }
+
+        public void OnCompletion(MediaPlayer mp)
+        {
+            //OnMediaFinished(new MediaFinishedEventArgs(CurrentFile));
+        }
+
+        public bool OnError(MediaPlayer mp, MediaError what, int extra)
+        {
+            //SessionManager.UpdatePlaybackState(PlaybackStateCompat.StateError, Position.Seconds);
+            Stop();
+            return true;
+        }
+
+        public void OnPrepared(MediaPlayer mp)
+        {
+            //mp.Start();
+            //SessionManager.UpdatePlaybackState(PlaybackStateCompat.StatePlaying, Position.Seconds);
         }
     }
 }

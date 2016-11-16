@@ -34,6 +34,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public abstract IVideoPlayer VideoPlayer { get; set; }
         public abstract IMediaNotificationManager MediaNotificationManager { get; set; }
         public abstract IMediaExtractor MediaExtractor { get; set; }
+        public abstract IVolumeManager VolumeManager { get; set; }
 
         public MediaPlayerStatus Status => CurrentPlaybackManager.Status;
         public TimeSpan Position => CurrentPlaybackManager.Position;
@@ -49,7 +50,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         private IMediaFile _currentMediaFile => MediaQueue.Current;
 
-        public Dictionary<string, string> RequestHeaders { get; set; }
+        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
         public async Task PlayNext()
         {
@@ -66,6 +67,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             else
             {
                 // If you don't have a next song in the queue, stop and show the meta-data of the first song.
+                //TODO: Shouldn't we Pause here instead of stop? Stop should shut down everything
                 await CurrentPlaybackManager.Stop();
                 MediaQueue.SetIndexAsCurrent(0);
                 OnMediaFileChanged(this, new MediaFileChangedEventArgs(MediaQueue.Current));
@@ -81,6 +83,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
             else
             {
+                //TODO: Maybe pause here instead of stop
                 await CurrentPlaybackManager.Stop();
                 MediaQueue.SetPreviousAsCurrent();
                 var beforePlayTask = _onBeforePlay?.Invoke(_currentMediaFile);
@@ -104,7 +107,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         /// <returns></returns>
         public async Task Play(IMediaFile mediaFile)
         {
-           
             if (_currentPlaybackManager != null && Status == MediaPlayerStatus.Failed)
             {
                 await PlayNext();

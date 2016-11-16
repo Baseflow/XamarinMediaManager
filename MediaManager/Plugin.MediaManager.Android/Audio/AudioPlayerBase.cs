@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Support.V4.Media.Session;
+using Java.Lang;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
@@ -12,6 +14,7 @@ using Plugin.MediaManager.MediaSession;
 
 namespace Plugin.MediaManager
 {
+    public delegate IMediaFile GetNextSong();
     public class AudioPlayerBase<TService> : IAudioPlayer where TService : MediaServiceBase
     {
         public event BufferingChangedEventHandler BufferingChanged;
@@ -38,11 +41,7 @@ namespace Plugin.MediaManager
 
         public MediaSessionCompat.Callback AlternateRemoteCallback { get; set; }
 
-        public Dictionary<string, string> RequestHeaders
-        {
-            get;
-            set;
-        }
+        public Dictionary<string, string> RequestHeaders { get; set; }
 
         private MediaPlayerStatus status;
         public virtual MediaPlayerStatus Status

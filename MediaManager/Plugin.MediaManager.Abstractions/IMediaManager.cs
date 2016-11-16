@@ -45,6 +45,11 @@ namespace Plugin.MediaManager.Abstractions
         IMediaExtractor MediaExtractor { get; set; }
 
         /// <summary>
+        /// Used to manage the volume
+        /// </summary>
+        IVolumeManager VolumeManager { get; set; }
+
+        /// <summary>
         /// Raised when media is finished playing.
         /// </summary>
         event MediaFileChangedEventHandler MediaFileChanged;

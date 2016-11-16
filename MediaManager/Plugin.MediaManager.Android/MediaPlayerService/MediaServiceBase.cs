@@ -62,11 +62,7 @@ namespace Plugin.MediaManager
 
         public abstract TimeSpan Buffered { get; }
 
-        public Dictionary<string, string> RequestHeaders
-        {
-            get;
-            set;
-        } = new Dictionary<string, string>();
+        public Dictionary<string, string> RequestHeaders { get; set; }
 
         public MediaPlayerStatus Status
         {
@@ -98,7 +94,12 @@ namespace Plugin.MediaManager
 
         public virtual async Task Play(IMediaFile mediaFile = null)
         {
-            if(!ValidateMediaFile(mediaFile) || CheckIfFileAlreadyIsPlaying(mediaFile).Result)
+            if(!ValidateMediaFile(mediaFile))
+                return;
+
+            bool alreadyPlaying = await CheckIfFileAlreadyIsPlaying(mediaFile);
+
+            if (alreadyPlaying)
                 return;
 
             CurrentFile = mediaFile;

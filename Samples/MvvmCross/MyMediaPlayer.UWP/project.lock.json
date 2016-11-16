@@ -262,15 +262,9 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
+      "MvvmCross.Binding/4.4.0": {
         "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
-      "MvvmCross.Binding/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Core": "4.3.0"
+          "MvvmCross.Core": "4.4.0"
         },
         "compile": {
           "lib/win81/MvvmCross.Binding.dll": {},
@@ -281,9 +275,9 @@
           "lib/win81/MvvmCross.Localization.dll": {}
         }
       },
-      "MvvmCross.Core/4.3.0": {
+      "MvvmCross.Core/4.4.0": {
         "dependencies": {
-          "MvvmCross.Platform": "4.3.0"
+          "MvvmCross.Platform": "4.4.0"
         },
         "compile": {
           "lib/uap/MvvmCross.Core.dll": {},
@@ -294,7 +288,7 @@
           "lib/uap/MvvmCross.WindowsUWP.dll": {}
         }
       },
-      "MvvmCross.Platform/4.3.0": {
+      "MvvmCross.Platform/4.4.0": {
         "compile": {
           "lib/win81/MvvmCross.Platform.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Platform.dll": {}
@@ -304,9 +298,64 @@
           "lib/win81/MvvmCross.Platform.dll": {}
         }
       },
-      "MvvmCross.StarterPack/4.4.0": {
+      "MvvmCross.Plugin.Json/4.4.0": {
         "dependencies": {
-          "MvvmCross": "4.3.0"
+          "MvvmCross.Platform": "4.4.0",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.JsonLocalization/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Binding": "4.4.0",
+          "MvvmCross.Platform": "4.4.0",
+          "MvvmCross.Plugin.Json": "4.4.0",
+          "MvvmCross.Plugin.ResourceLoader": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.ResourceLoader/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.Visibility/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        }
+      },
+      "Newtonsoft.Json/9.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -2036,15 +2085,9 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
+      "MvvmCross.Binding/4.4.0": {
         "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
-      "MvvmCross.Binding/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Core": "4.3.0"
+          "MvvmCross.Core": "4.4.0"
         },
         "compile": {
           "lib/win81/MvvmCross.Binding.dll": {},
@@ -2055,9 +2098,9 @@
           "lib/win81/MvvmCross.Localization.dll": {}
         }
       },
-      "MvvmCross.Core/4.3.0": {
+      "MvvmCross.Core/4.4.0": {
         "dependencies": {
-          "MvvmCross.Platform": "4.3.0"
+          "MvvmCross.Platform": "4.4.0"
         },
         "compile": {
           "lib/uap/MvvmCross.Core.dll": {},
@@ -2068,7 +2111,7 @@
           "lib/uap/MvvmCross.WindowsUWP.dll": {}
         }
       },
-      "MvvmCross.Platform/4.3.0": {
+      "MvvmCross.Platform/4.4.0": {
         "compile": {
           "lib/win81/MvvmCross.Platform.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Platform.dll": {}
@@ -2078,9 +2121,64 @@
           "lib/win81/MvvmCross.Platform.dll": {}
         }
       },
-      "MvvmCross.StarterPack/4.4.0": {
+      "MvvmCross.Plugin.Json/4.4.0": {
         "dependencies": {
-          "MvvmCross": "4.3.0"
+          "MvvmCross.Platform": "4.4.0",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.JsonLocalization/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Binding": "4.4.0",
+          "MvvmCross.Platform": "4.4.0",
+          "MvvmCross.Plugin.Json": "4.4.0",
+          "MvvmCross.Plugin.ResourceLoader": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.ResourceLoader/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.Visibility/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        }
+      },
+      "Newtonsoft.Json/9.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.any.System.Private.DataContractSerialization/4.1.0": {
@@ -3718,15 +3816,9 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
+      "MvvmCross.Binding/4.4.0": {
         "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
-      "MvvmCross.Binding/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Core": "4.3.0"
+          "MvvmCross.Core": "4.4.0"
         },
         "compile": {
           "lib/win81/MvvmCross.Binding.dll": {},
@@ -3737,9 +3829,9 @@
           "lib/win81/MvvmCross.Localization.dll": {}
         }
       },
-      "MvvmCross.Core/4.3.0": {
+      "MvvmCross.Core/4.4.0": {
         "dependencies": {
-          "MvvmCross.Platform": "4.3.0"
+          "MvvmCross.Platform": "4.4.0"
         },
         "compile": {
           "lib/uap/MvvmCross.Core.dll": {},
@@ -3750,7 +3842,7 @@
           "lib/uap/MvvmCross.WindowsUWP.dll": {}
         }
       },
-      "MvvmCross.Platform/4.3.0": {
+      "MvvmCross.Platform/4.4.0": {
         "compile": {
           "lib/win81/MvvmCross.Platform.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Platform.dll": {}
@@ -3760,9 +3852,64 @@
           "lib/win81/MvvmCross.Platform.dll": {}
         }
       },
-      "MvvmCross.StarterPack/4.4.0": {
+      "MvvmCross.Plugin.Json/4.4.0": {
         "dependencies": {
-          "MvvmCross": "4.3.0"
+          "MvvmCross.Platform": "4.4.0",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.JsonLocalization/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Binding": "4.4.0",
+          "MvvmCross.Platform": "4.4.0",
+          "MvvmCross.Plugin.Json": "4.4.0",
+          "MvvmCross.Plugin.ResourceLoader": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.ResourceLoader/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.Visibility/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        }
+      },
+      "Newtonsoft.Json/9.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.aot.System.Private.DataContractSerialization/4.1.0": {
@@ -5369,15 +5516,9 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
+      "MvvmCross.Binding/4.4.0": {
         "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
-      "MvvmCross.Binding/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Core": "4.3.0"
+          "MvvmCross.Core": "4.4.0"
         },
         "compile": {
           "lib/win81/MvvmCross.Binding.dll": {},
@@ -5388,9 +5529,9 @@
           "lib/win81/MvvmCross.Localization.dll": {}
         }
       },
-      "MvvmCross.Core/4.3.0": {
+      "MvvmCross.Core/4.4.0": {
         "dependencies": {
-          "MvvmCross.Platform": "4.3.0"
+          "MvvmCross.Platform": "4.4.0"
         },
         "compile": {
           "lib/uap/MvvmCross.Core.dll": {},
@@ -5401,7 +5542,7 @@
           "lib/uap/MvvmCross.WindowsUWP.dll": {}
         }
       },
-      "MvvmCross.Platform/4.3.0": {
+      "MvvmCross.Platform/4.4.0": {
         "compile": {
           "lib/win81/MvvmCross.Platform.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Platform.dll": {}
@@ -5411,9 +5552,64 @@
           "lib/win81/MvvmCross.Platform.dll": {}
         }
       },
-      "MvvmCross.StarterPack/4.4.0": {
+      "MvvmCross.Plugin.Json/4.4.0": {
         "dependencies": {
-          "MvvmCross": "4.3.0"
+          "MvvmCross.Platform": "4.4.0",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.JsonLocalization/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Binding": "4.4.0",
+          "MvvmCross.Platform": "4.4.0",
+          "MvvmCross.Plugin.Json": "4.4.0",
+          "MvvmCross.Plugin.ResourceLoader": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.ResourceLoader/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.Visibility/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        }
+      },
+      "Newtonsoft.Json/9.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.any.System.Private.DataContractSerialization/4.1.0": {
@@ -7054,15 +7250,9 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
+      "MvvmCross.Binding/4.4.0": {
         "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
-      "MvvmCross.Binding/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Core": "4.3.0"
+          "MvvmCross.Core": "4.4.0"
         },
         "compile": {
           "lib/win81/MvvmCross.Binding.dll": {},
@@ -7073,9 +7263,9 @@
           "lib/win81/MvvmCross.Localization.dll": {}
         }
       },
-      "MvvmCross.Core/4.3.0": {
+      "MvvmCross.Core/4.4.0": {
         "dependencies": {
-          "MvvmCross.Platform": "4.3.0"
+          "MvvmCross.Platform": "4.4.0"
         },
         "compile": {
           "lib/uap/MvvmCross.Core.dll": {},
@@ -7086,7 +7276,7 @@
           "lib/uap/MvvmCross.WindowsUWP.dll": {}
         }
       },
-      "MvvmCross.Platform/4.3.0": {
+      "MvvmCross.Platform/4.4.0": {
         "compile": {
           "lib/win81/MvvmCross.Platform.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Platform.dll": {}
@@ -7096,9 +7286,64 @@
           "lib/win81/MvvmCross.Platform.dll": {}
         }
       },
-      "MvvmCross.StarterPack/4.4.0": {
+      "MvvmCross.Plugin.Json/4.4.0": {
         "dependencies": {
-          "MvvmCross": "4.3.0"
+          "MvvmCross.Platform": "4.4.0",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.JsonLocalization/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Binding": "4.4.0",
+          "MvvmCross.Platform": "4.4.0",
+          "MvvmCross.Plugin.Json": "4.4.0",
+          "MvvmCross.Plugin.ResourceLoader": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.ResourceLoader/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.Visibility/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        }
+      },
+      "Newtonsoft.Json/9.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.aot.System.Private.DataContractSerialization/4.1.0": {
@@ -8705,15 +8950,9 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
+      "MvvmCross.Binding/4.4.0": {
         "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
-      "MvvmCross.Binding/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Core": "4.3.0"
+          "MvvmCross.Core": "4.4.0"
         },
         "compile": {
           "lib/win81/MvvmCross.Binding.dll": {},
@@ -8724,9 +8963,9 @@
           "lib/win81/MvvmCross.Localization.dll": {}
         }
       },
-      "MvvmCross.Core/4.3.0": {
+      "MvvmCross.Core/4.4.0": {
         "dependencies": {
-          "MvvmCross.Platform": "4.3.0"
+          "MvvmCross.Platform": "4.4.0"
         },
         "compile": {
           "lib/uap/MvvmCross.Core.dll": {},
@@ -8737,7 +8976,7 @@
           "lib/uap/MvvmCross.WindowsUWP.dll": {}
         }
       },
-      "MvvmCross.Platform/4.3.0": {
+      "MvvmCross.Platform/4.4.0": {
         "compile": {
           "lib/win81/MvvmCross.Platform.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Platform.dll": {}
@@ -8747,9 +8986,64 @@
           "lib/win81/MvvmCross.Platform.dll": {}
         }
       },
-      "MvvmCross.StarterPack/4.4.0": {
+      "MvvmCross.Plugin.Json/4.4.0": {
         "dependencies": {
-          "MvvmCross": "4.3.0"
+          "MvvmCross.Platform": "4.4.0",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.JsonLocalization/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Binding": "4.4.0",
+          "MvvmCross.Platform": "4.4.0",
+          "MvvmCross.Plugin.Json": "4.4.0",
+          "MvvmCross.Plugin.ResourceLoader": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.ResourceLoader/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.Visibility/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        }
+      },
+      "Newtonsoft.Json/9.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.any.System.Private.DataContractSerialization/4.1.0": {
@@ -10390,15 +10684,9 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MvvmCross/4.3.0": {
+      "MvvmCross.Binding/4.4.0": {
         "dependencies": {
-          "MvvmCross.Binding": "4.3.0",
-          "MvvmCross.Core": "4.3.0"
-        }
-      },
-      "MvvmCross.Binding/4.3.0": {
-        "dependencies": {
-          "MvvmCross.Core": "4.3.0"
+          "MvvmCross.Core": "4.4.0"
         },
         "compile": {
           "lib/win81/MvvmCross.Binding.dll": {},
@@ -10409,9 +10697,9 @@
           "lib/win81/MvvmCross.Localization.dll": {}
         }
       },
-      "MvvmCross.Core/4.3.0": {
+      "MvvmCross.Core/4.4.0": {
         "dependencies": {
-          "MvvmCross.Platform": "4.3.0"
+          "MvvmCross.Platform": "4.4.0"
         },
         "compile": {
           "lib/uap/MvvmCross.Core.dll": {},
@@ -10422,7 +10710,7 @@
           "lib/uap/MvvmCross.WindowsUWP.dll": {}
         }
       },
-      "MvvmCross.Platform/4.3.0": {
+      "MvvmCross.Platform/4.4.0": {
         "compile": {
           "lib/win81/MvvmCross.Platform.WindowsCommon.dll": {},
           "lib/win81/MvvmCross.Platform.dll": {}
@@ -10432,9 +10720,64 @@
           "lib/win81/MvvmCross.Platform.dll": {}
         }
       },
-      "MvvmCross.StarterPack/4.4.0": {
+      "MvvmCross.Plugin.Json/4.4.0": {
         "dependencies": {
-          "MvvmCross": "4.3.0"
+          "MvvmCross.Platform": "4.4.0",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Json.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.JsonLocalization/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Binding": "4.4.0",
+          "MvvmCross.Platform": "4.4.0",
+          "MvvmCross.Plugin.Json": "4.4.0",
+          "MvvmCross.Plugin.ResourceLoader": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.JsonLocalization.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.ResourceLoader/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.ResourceLoader.dll": {}
+        }
+      },
+      "MvvmCross.Plugin.Visibility/4.4.0": {
+        "dependencies": {
+          "MvvmCross.Platform": "4.4.0"
+        },
+        "compile": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        },
+        "runtime": {
+          "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll": {},
+          "lib/win81/MvvmCross.Plugins.Visibility.dll": {}
+        }
+      },
+      "Newtonsoft.Json/9.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.aot.System.Private.DataContractSerialization/4.1.0": {
@@ -12426,21 +12769,12 @@
         "ref/xamarinmac20/_._"
       ]
     },
-    "MvvmCross/4.3.0": {
-      "sha512": "22UBSqBq6R3vUwxcgVSFPnCybmrFpzXZRkkUKScPdzl+/pdzQJG1EOzmvaRvfvl+5fG11WINx5BAteFj+Cm+tQ==",
+    "MvvmCross.Binding/4.4.0": {
+      "sha512": "1hT8Xe+whI2CgSYaV6+wZaOyQXc724ZNhRKF9SNjSzG4OpBEt/KoXRZVWpbqnVMO3Uz3sk2QbSNmJD/KPNixfg==",
       "type": "package",
-      "path": "MvvmCross/4.3.0",
+      "path": "MvvmCross.Binding/4.4.0",
       "files": [
-        "MvvmCross.4.3.0.nupkg.sha512",
-        "MvvmCross.nuspec"
-      ]
-    },
-    "MvvmCross.Binding/4.3.0": {
-      "sha512": "cybvfGAGVt9q5ZIWMra7FIeNMjUb9h4qYSE2PrGtuEoNRDsLL+BaaC8JhbdodumKioapBDQd95PDnJaC1AqNWg==",
-      "type": "package",
-      "path": "MvvmCross.Binding/4.3.0",
-      "files": [
-        "MvvmCross.Binding.4.3.0.nupkg.sha512",
+        "MvvmCross.Binding.4.4.0.nupkg.sha512",
         "MvvmCross.Binding.nuspec",
         "lib/MonoAndroid/MvvmCross.Binding.Droid.dll",
         "lib/MonoAndroid/MvvmCross.Binding.dll",
@@ -12459,6 +12793,11 @@
         "lib/Xamarin.iOS10/MvvmCross.Binding.iOS.dll.mdb",
         "lib/Xamarin.iOS10/MvvmCross.Localization.dll",
         "lib/Xamarin.iOS10/MvvmCross.Localization.dll.mdb",
+        "lib/Xamarin.tvOS/MvvmCross.Binding.dll",
+        "lib/Xamarin.tvOS/MvvmCross.Binding.dll.mdb",
+        "lib/Xamarin.tvOS/MvvmCross.Binding.tvOS.dll",
+        "lib/Xamarin.tvOS/MvvmCross.Localization.dll",
+        "lib/Xamarin.tvOS/MvvmCross.Localization.dll.mdb",
         "lib/dotnet/MvvmCross.Binding.dll",
         "lib/dotnet/MvvmCross.Binding.dll.mdb",
         "lib/dotnet/MvvmCross.Localization.dll",
@@ -12483,22 +12822,18 @@
         "lib/win81/MvvmCross.Binding.dll.mdb",
         "lib/win81/MvvmCross.Localization.dll",
         "lib/win81/MvvmCross.Localization.dll.mdb",
-        "lib/wp8/MvvmCross.Binding.dll",
-        "lib/wp8/MvvmCross.Binding.dll.mdb",
-        "lib/wp8/MvvmCross.Localization.dll",
-        "lib/wp8/MvvmCross.Localization.dll.mdb",
         "lib/wpa81/MvvmCross.Binding.dll",
         "lib/wpa81/MvvmCross.Binding.dll.mdb",
         "lib/wpa81/MvvmCross.Localization.dll",
         "lib/wpa81/MvvmCross.Localization.dll.mdb"
       ]
     },
-    "MvvmCross.Core/4.3.0": {
-      "sha512": "Th4Hcgvy8j7CkV0AFJaSnEH9Woe0C6FyqiWMrVPYQ9Trkv3NoJKvQ+JmuJ/jiLeXZv/HzWf+B/omhJB2wY4pKw==",
+    "MvvmCross.Core/4.4.0": {
+      "sha512": "oPRhsHkKdqrY9BYn8k6Uyayip7/zIWKMeDM9sG6bDo8BefCeKkHlXQEPLjirTWIQMluHFzUZHhVAB3CEmwJM9A==",
       "type": "package",
-      "path": "MvvmCross.Core/4.3.0",
+      "path": "MvvmCross.Core/4.4.0",
       "files": [
-        "MvvmCross.Core.4.3.0.nupkg.sha512",
+        "MvvmCross.Core.4.4.0.nupkg.sha512",
         "MvvmCross.Core.nuspec",
         "lib/MonoAndroid/MvvmCross.Core.dll",
         "lib/MonoAndroid/MvvmCross.Droid.Shared.dll",
@@ -12509,6 +12844,8 @@
         "lib/Xamarin.iOS10/MvvmCross.Core.dll",
         "lib/Xamarin.iOS10/MvvmCross.iOS.dll",
         "lib/Xamarin.iOS10/MvvmCross.iOS.dll.mdb",
+        "lib/Xamarin.tvOS/MvvmCross.Core.dll",
+        "lib/Xamarin.tvOS/MvvmCross.tvOS.dll",
         "lib/dotnet/MvvmCross.Core.dll",
         "lib/net45/MvvmCross.Core.dll",
         "lib/net45/MvvmCross.Wpf.dll",
@@ -12526,19 +12863,17 @@
         "lib/win81/MvvmCross.Core.dll",
         "lib/win81/MvvmCross.WindowsCommon.dll",
         "lib/win81/MvvmCross.WindowsCommon.pri",
-        "lib/wp8/MvvmCross.Core.dll",
-        "lib/wp8/MvvmCross.WindowsPhone.dll",
         "lib/wpa81/MvvmCross.Core.dll",
         "lib/wpa81/MvvmCross.WindowsCommon.dll",
         "lib/wpa81/MvvmCross.WindowsCommon.pri"
       ]
     },
-    "MvvmCross.Platform/4.3.0": {
-      "sha512": "sXFi2TSj94NSZQTGwaNozVjFIcMQk6h1jQkdgLw1P1nxEPyu7I7tgtiFIoGsvbX17fsAjd/9+ffl9Pj9X/C5Yw==",
+    "MvvmCross.Platform/4.4.0": {
+      "sha512": "6H9qA5Vx9MzKZ9dVv3gw9QEJmN2pXmlwpTcwRouCGTJ0RdKkDZ5AKka3MboXgxn/P+j2S+PfQ4RjkmJnXCyOZA==",
       "type": "package",
-      "path": "MvvmCross.Platform/4.3.0",
+      "path": "MvvmCross.Platform/4.4.0",
       "files": [
-        "MvvmCross.Platform.4.3.0.nupkg.sha512",
+        "MvvmCross.Platform.4.4.0.nupkg.sha512",
         "MvvmCross.Platform.nuspec",
         "lib/MonoAndroid/MvvmCross.Platform.Droid.dll",
         "lib/MonoAndroid/MvvmCross.Platform.dll",
@@ -12551,6 +12886,9 @@
         "lib/Xamarin.iOS10/MvvmCross.Platform.dll.mdb",
         "lib/Xamarin.iOS10/MvvmCross.Platform.iOS.dll",
         "lib/Xamarin.iOS10/MvvmCross.Platform.iOS.dll.mdb",
+        "lib/Xamarin.tvOS/MvvmCross.Platform.dll",
+        "lib/Xamarin.tvOS/MvvmCross.Platform.dll.mdb",
+        "lib/Xamarin.tvOS/MvvmCross.Platform.tvOS.dll",
         "lib/dotnet/MvvmCross.Platform.dll",
         "lib/dotnet/MvvmCross.Platform.dll.mdb",
         "lib/net45/MvvmCross.Platform.Wpf.dll",
@@ -12570,69 +12908,164 @@
         "lib/win81/MvvmCross.Platform.WindowsCommon.pri",
         "lib/win81/MvvmCross.Platform.dll",
         "lib/win81/MvvmCross.Platform.dll.mdb",
-        "lib/wp8/MvvmCross.Platform.WindowsPhone.dll",
-        "lib/wp8/MvvmCross.Platform.dll",
-        "lib/wp8/MvvmCross.Platform.dll.mdb",
         "lib/wpa81/MvvmCross.Platform.WindowsCommon.dll",
         "lib/wpa81/MvvmCross.Platform.WindowsCommon.pri",
         "lib/wpa81/MvvmCross.Platform.dll",
         "lib/wpa81/MvvmCross.Platform.dll.mdb"
       ]
     },
-    "MvvmCross.StarterPack/4.4.0": {
-      "sha512": "knd0r9hp27p2bNyOwI4VTyL8qJ48GAcrgB0Fxggy+gRypEep0eANF4i7R96Uu2QcBhsezSOMKxjCuk9flAVsag==",
+    "MvvmCross.Plugin.Json/4.4.0": {
+      "sha512": "KhBzQohRWt831VSZhysjsR6y+FJlxRXVk7xJf8Igvtra4dNMhAjRF9jgCiO8dhKVji1B2tiZ6fJqR9QjHV9ArA==",
       "type": "package",
-      "path": "MvvmCross.StarterPack/4.4.0",
+      "path": "MvvmCross.Plugin.Json/4.4.0",
       "files": [
-        "MvvmCross.StarterPack.4.4.0.nupkg.sha512",
-        "MvvmCross.StarterPack.nuspec",
-        "content/MonoAndroid/DebugTrace.cs.pp",
-        "content/MonoAndroid/LinkerPleaseInclude.cs.pp",
-        "content/MonoAndroid/Resources/drawable/splash.png",
-        "content/MonoAndroid/Resources/layout/FirstView.axml",
-        "content/MonoAndroid/Resources/layout/SplashScreen.axml",
-        "content/MonoAndroid/Resources/values/SplashStyle.xml",
-        "content/MonoAndroid/Setup.cs.pp",
-        "content/MonoAndroid/SplashScreen.cs.pp",
-        "content/MonoAndroid/ToDo-MvvmCross/_ Droid UI.txt",
-        "content/MonoAndroid/Views/FirstView.cs.pp",
-        "content/Xamarin.Mac20/AppDelegate.cs.txt.pp",
-        "content/Xamarin.Mac20/DebugTrace.cs.pp",
-        "content/Xamarin.Mac20/Setup.cs.pp",
-        "content/Xamarin.Mac20/ToDo-MvvmCross/_ Mac UI.txt",
-        "content/Xamarin.Mac20/Views/FirstView.cs.pp",
-        "content/Xamarin.Mac20/Views/FirstViewController.cs.pp",
-        "content/Xamarin.iOS10/AppDelegate.cs.txt.pp",
-        "content/Xamarin.iOS10/DebugTrace.cs.pp",
-        "content/Xamarin.iOS10/LinkerPleaseInclude.cs.pp",
-        "content/Xamarin.iOS10/Setup.cs.pp",
-        "content/Xamarin.iOS10/ToDo-MvvmCross/_ iOS UI.txt",
-        "content/Xamarin.iOS10/Views/FirstView.cs.pp",
-        "content/Xamarin.iOS10/Views/FirstView.designer.cs.pp",
-        "content/Xamarin.iOS10/Views/FirstView.xib",
-        "content/net45/App.Xaml.Mvx.cs.pp",
-        "content/net45/DebugTrace.cs.pp",
-        "content/net45/Setup.cs.pp",
-        "content/net45/ToDo-MvvmCross/_ Wpf UI.txt",
-        "content/net45/Views/FirstView.xaml.cs.pp",
-        "content/net45/Views/FirstView.xaml.pp",
-        "content/netcore45/DebugTrace.cs.pp",
-        "content/netcore45/Setup.cs.pp",
-        "content/netcore45/ToDo-MvvmCross/_ Windows Store UI.txt",
-        "content/netcore45/Views/FirstView.xaml.cs.pp",
-        "content/netcore45/Views/FirstView.xaml.pp",
-        "content/portable-net45+win+wpa81+wp80/App.cs.pp",
-        "content/portable-net45+win+wpa81+wp80/ViewModels/FirstViewModel.cs.pp",
-        "content/win81/DebugTrace.cs.pp",
-        "content/win81/Setup.cs.pp",
-        "content/win81/ToDo-MvvmCross/_ Windows Store UI.txt",
-        "content/win81/Views/FirstView.xaml.cs.pp",
-        "content/win81/Views/FirstView.xaml.pp",
-        "content/wpa81/DebugTrace.cs.pp",
-        "content/wpa81/Setup.cs.pp",
-        "content/wpa81/ToDo-MvvmCross/_ Windows Store UI.txt",
-        "content/wpa81/Views/FirstView.xaml.cs.pp",
-        "content/wpa81/Views/FirstView.xaml.pp"
+        "MvvmCross.Plugin.Json.4.4.0.nupkg.sha512",
+        "MvvmCross.Plugin.Json.nuspec",
+        "content/MonoAndroid/Bootstrap/JsonPluginBootstrap.cs.pp",
+        "content/Xamarin.iOS10/Bootstrap/JsonPluginBootstrap.cs.pp",
+        "content/net45/Bootstrap/JsonPluginBootstrap.cs.pp",
+        "content/netcore45/Bootstrap/JsonPluginBootstrap.cs.pp",
+        "content/win81/Bootstrap/JsonPluginBootstrap.cs.pp",
+        "content/wpa81/Bootstrap/JsonPluginBootstrap.cs.pp",
+        "lib/MonoAndroid/MvvmCross.Plugins.Json.dll",
+        "lib/Xamarin.Mac20/MvvmCross.Plugins.Json.dll",
+        "lib/Xamarin.iOS10/MvvmCross.Plugins.Json.dll",
+        "lib/dotnet/MvvmCross.Plugins.Json.dll",
+        "lib/net45/MvvmCross.Plugins.Json.dll",
+        "lib/netcore45/MvvmCross.Plugins.Json.dll",
+        "lib/portable-net45+win+wpa81+wp80/MvvmCross.Plugins.Json.dll",
+        "lib/portable-win81+wpa81/MvvmCross.Plugins.Json.dll",
+        "lib/win81/MvvmCross.Plugins.Json.dll",
+        "lib/wpa81/MvvmCross.Plugins.Json.dll"
+      ]
+    },
+    "MvvmCross.Plugin.JsonLocalization/4.4.0": {
+      "sha512": "LE+xMfbajdqk8HgCKL34wmg4RbsOs65OShhigqEDv/1tfmbkUtd3MvhK/N2rSjYnT3eNOa+D+nmGl8wSGJMgYg==",
+      "type": "package",
+      "path": "MvvmCross.Plugin.JsonLocalization/4.4.0",
+      "files": [
+        "MvvmCross.Plugin.JsonLocalization.4.4.0.nupkg.sha512",
+        "MvvmCross.Plugin.JsonLocalization.nuspec",
+        "content/MonoAndroid/Bootstrap/JsonLocalizationPluginBootstrap.cs.pp",
+        "content/Xamarin.iOS10/Bootstrap/JsonLocalizationPluginBootstrap.cs.pp",
+        "content/netcore45/Bootstrap/JsonLocalizationPluginBootstrap.cs.pp",
+        "content/win81/Bootstrap/JsonLocalizationPluginBootstrap.cs.pp",
+        "content/wpa81/Bootstrap/JsonLocalizationPluginBootstrap.cs.pp",
+        "lib/MonoAndroid/MvvmCross.Plugins.JsonLocalization.dll",
+        "lib/Xamarin.Mac20/MvvmCross.Plugins.JsonLocalization.dll",
+        "lib/Xamarin.iOS10/MvvmCross.Plugins.JsonLocalization.dll",
+        "lib/dotnet/MvvmCross.Plugins.JsonLocalization.dll",
+        "lib/netcore45/MvvmCross.Plugins.JsonLocalization.dll",
+        "lib/portable-net45+win+wpa81+wp80/MvvmCross.Plugins.JsonLocalization.dll",
+        "lib/portable-win81+wpa81/MvvmCross.Plugins.JsonLocalization.dll",
+        "lib/win81/MvvmCross.Plugins.JsonLocalization.dll",
+        "lib/wpa81/MvvmCross.Plugins.JsonLocalization.dll"
+      ]
+    },
+    "MvvmCross.Plugin.ResourceLoader/4.4.0": {
+      "sha512": "b/bkJSpS1Eq2yj7rCPa8t9CtK3uEvU6wSq+zTKFzCRDoFQoLBp9+Pth1RI6C25DszKzaXHFtQIdvpmTBAiS2iQ==",
+      "type": "package",
+      "path": "MvvmCross.Plugin.ResourceLoader/4.4.0",
+      "files": [
+        "MvvmCross.Plugin.ResourceLoader.4.4.0.nupkg.sha512",
+        "MvvmCross.Plugin.ResourceLoader.nuspec",
+        "content/MonoAndroid/Bootstrap/ResourceLoaderPluginBootstrap.cs.pp",
+        "content/Xamarin.iOS10/Bootstrap/ResourceLoaderPluginBootstrap.cs.pp",
+        "content/net45/Bootstrap/ResourceLoaderPluginBootstrap.cs.pp",
+        "content/netcore45/Bootstrap/ResourceLoaderPluginBootstrap.cs.pp",
+        "content/win81/Bootstrap/ResourceLoaderPluginBootstrap.cs.pp",
+        "content/wpa81/Bootstrap/ResourceLoaderPluginBootstrap.cs.pp",
+        "lib/MonoAndroid/MvvmCross.Plugins.ResourceLoader.Droid.dll",
+        "lib/MonoAndroid/MvvmCross.Plugins.ResourceLoader.dll",
+        "lib/Xamarin.Mac20/MvvmCross.Plugins.ResourceLoader.dll",
+        "lib/Xamarin.iOS10/MvvmCross.Plugins.ResourceLoader.dll",
+        "lib/Xamarin.iOS10/MvvmCross.Plugins.ResourceLoader.iOS.dll",
+        "lib/dotnet/MvvmCross.Plugins.ResourceLoader.dll",
+        "lib/net45/MvvmCross.Plugins.ResourceLoader.Wpf.dll",
+        "lib/net45/MvvmCross.Plugins.ResourceLoader.dll",
+        "lib/netcore45/MvvmCross.Plugins.ResourceLoader.WindowsStore.dll",
+        "lib/netcore45/MvvmCross.Plugins.ResourceLoader.WindowsStore.pri",
+        "lib/netcore45/MvvmCross.Plugins.ResourceLoader.dll",
+        "lib/portable-win+net45+wp8+win8+wpa81/MvvmCross.Plugins.ResourceLoader.dll",
+        "lib/portable-win81+wpa81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll",
+        "lib/portable-win81+wpa81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.pri",
+        "lib/portable-win81+wpa81/MvvmCross.Plugins.ResourceLoader.dll",
+        "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll",
+        "lib/win81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.pri",
+        "lib/win81/MvvmCross.Plugins.ResourceLoader.dll",
+        "lib/wpa81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.dll",
+        "lib/wpa81/MvvmCross.Plugins.ResourceLoader.WindowsCommon.pri",
+        "lib/wpa81/MvvmCross.Plugins.ResourceLoader.dll"
+      ]
+    },
+    "MvvmCross.Plugin.Visibility/4.4.0": {
+      "sha512": "k5T5V9gb12N0ivUcszbNYkKy+/PWntWn7UrCJBTNj7Mej7GXqszUs7JuBXttSjktg+J/LfRVySphDyaOOWrMAA==",
+      "type": "package",
+      "path": "MvvmCross.Plugin.Visibility/4.4.0",
+      "files": [
+        "MvvmCross.Plugin.Visibility.4.4.0.nupkg.sha512",
+        "MvvmCross.Plugin.Visibility.nuspec",
+        "content/MonoAndroid/Bootstrap/VisibilityPluginBootstrap.cs.pp",
+        "content/Xamarin.iOS10/Bootstrap/VisibilityPluginBootstrap.cs.pp",
+        "content/net45/Bootstrap/VisibilityPluginBootstrap.cs.pp",
+        "content/netcore45/Bootstrap/VisibilityPluginBootstrap.cs.pp",
+        "content/win81/Bootstrap/VisibilityPluginBootstrap.cs.pp",
+        "content/wpa81/Bootstrap/VisibilityPluginBootstrap.cs.pp",
+        "lib/MonoAndroid/MvvmCross.Plugins.Visibility.Droid.dll",
+        "lib/MonoAndroid/MvvmCross.Plugins.Visibility.dll",
+        "lib/MonoAndroid/MvvmCross.Plugins.Visibility.dll.mdb",
+        "lib/Xamarin.Mac20/MvvmCross.Plugins.Visibility.dll",
+        "lib/Xamarin.Mac20/MvvmCross.Plugins.Visibility.dll.mdb",
+        "lib/Xamarin.iOS10/MvvmCross.Plugins.Visibility.dll",
+        "lib/Xamarin.iOS10/MvvmCross.Plugins.Visibility.dll.mdb",
+        "lib/Xamarin.iOS10/MvvmCross.Plugins.Visibility.iOS.dll",
+        "lib/dotnet/MvvmCross.Plugins.Visibility.dll",
+        "lib/dotnet/MvvmCross.Plugins.Visibility.dll.mdb",
+        "lib/net45/MvvmCross.Plugins.Visibility.Wpf.dll",
+        "lib/net45/MvvmCross.Plugins.Visibility.dll",
+        "lib/net45/MvvmCross.Plugins.Visibility.dll.mdb",
+        "lib/netcore45/MvvmCross.Plugins.Visibility.WindowsStore.dll",
+        "lib/netcore45/MvvmCross.Plugins.Visibility.WindowsStore.pri",
+        "lib/netcore45/MvvmCross.Plugins.Visibility.dll",
+        "lib/netcore45/MvvmCross.Plugins.Visibility.dll.mdb",
+        "lib/portable-net45+win+wpa81+wp80/MvvmCross.Plugins.Visibility.dll",
+        "lib/portable-net45+win+wpa81+wp80/MvvmCross.Plugins.Visibility.dll.mdb",
+        "lib/portable-win81+wpa81/MvvmCross.Plugins.Visibility.WindowsCommon.dll",
+        "lib/portable-win81+wpa81/MvvmCross.Plugins.Visibility.WindowsCommon.pri",
+        "lib/portable-win81+wpa81/MvvmCross.Plugins.Visibility.dll",
+        "lib/portable-win81+wpa81/MvvmCross.Plugins.Visibility.dll.mdb",
+        "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.dll",
+        "lib/win81/MvvmCross.Plugins.Visibility.WindowsCommon.pri",
+        "lib/win81/MvvmCross.Plugins.Visibility.dll",
+        "lib/win81/MvvmCross.Plugins.Visibility.dll.mdb",
+        "lib/wpa81/MvvmCross.Plugins.Visibility.WindowsCommon.dll",
+        "lib/wpa81/MvvmCross.Plugins.Visibility.WindowsCommon.pri",
+        "lib/wpa81/MvvmCross.Plugins.Visibility.dll",
+        "lib/wpa81/MvvmCross.Plugins.Visibility.dll.mdb"
+      ]
+    },
+    "Newtonsoft.Json/9.0.1": {
+      "sha512": "U82mHQSKaIk+lpSVCbWYKNavmNH1i5xrExDEquU1i6I5pV6UMOqRnJRSlKO3cMPfcpp0RgDY+8jUXHdQ4IfXvw==",
+      "type": "package",
+      "path": "Newtonsoft.Json/9.0.1",
+      "files": [
+        "Newtonsoft.Json.9.0.1.nupkg.sha512",
+        "Newtonsoft.Json.nuspec",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "tools/install.ps1"
       ]
     },
     "runtime.any.System.Private.DataContractSerialization/4.1.0": {
@@ -15416,7 +15849,9 @@
   "projectFileDependencyGroups": {
     "": [
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.1.0",
-      "MvvmCross.StarterPack >= 4.4.0"
+      "MvvmCross.Plugin.Json >= 4.4.0",
+      "MvvmCross.Plugin.JsonLocalization >= 4.4.0",
+      "MvvmCross.Plugin.Visibility >= 4.4.0"
     ],
     "UAP,Version=v10.0": []
   }

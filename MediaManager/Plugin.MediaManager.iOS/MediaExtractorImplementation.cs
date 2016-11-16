@@ -41,7 +41,7 @@ namespace Plugin.MediaManager
                     else if (avMetadataItem.CommonKey == AVMetadata.CommonKeyArtwork)
                     {
                         var image = UIImage.LoadFromData(avMetadataItem.DataValue);
-                        mediaFile.Metadata.Cover = image;
+                        mediaFile.Metadata.AlbumArt = image;
                     }
                 }
                 mediaFile.MetadataExtracted = true;

@@ -10,6 +10,11 @@ namespace Plugin.MediaManager
     [Android.Runtime.Preserve(AllMembers = true)]
     public class MediaManagerImplementation : MediaManagerBase
     {
+        public MediaManagerImplementation()
+        {
+            MediaSessionManager.OnNotificationActionFired += HandleNotificationActions;
+        }
+
         private IAudioPlayer _audioPlayer;
         private IMediaExtractor _mediaExtraxtor;
         private MediaSessionManager _sessionManager;
@@ -43,6 +48,9 @@ namespace Plugin.MediaManager
                 _sessionManager.OnNotificationActionFired += HandleNotificationActions;
             }
         }
+        public override IVolumeManager VolumeManager { get; set; } = new VolumeManagerImplementation();
+
+        public MediaSessionManager MediaSessionManager { get; set; } = new MediaSessionManager(Application.Context);
 
         private async void HandleNotificationActions(object sender, string action)
         {

@@ -40,7 +40,7 @@ namespace Plugin.MediaManager
 					else if (avMetadataItem.CommonKey == AVMetadata.CommonKeyArtwork)
 					{
 						var image = NSObject.FromObject(avMetadataItem.DataValue);
-						mediaFile.Metadata.Cover = image;
+						mediaFile.Metadata.AlbumArt = image;
 					}
 				}
 				return mediaFile;

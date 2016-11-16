@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<!--Margins-->
+	<dimen name="margin_tiny">4dp</dimen>
+	<dimen name="margin_small">8dp</dimen>
+	<dimen name="margin_medium">16dp</dimen>
+	<dimen name="margin_medium_big">24dp</dimen>
+	<dimen name="margin_large">32dp</dimen>
+	<dimen name="margin_huge">64dp</dimen>
+
+	<!-- Semantic definitions -->
+	<dimen name="row_height">88dp</dimen>    
+	<dimen name="row_settings_header_height">25dp</dimen>
+    <dimen name="row_document_height">70dp</dimen>
+
+    <dimen name="miniplayer_height">55dp</dimen>
+    <dimen name="album_image_height">276dp</dimen>
+	<dimen name="fragment_player_picture_hight">320dp</dimen>
+
+	<!-- font definitions -->
+    <dimen name="text_tinier">11sp</dimen>
+    <dimen name="text_tiny">13sp</dimen>
+    <dimen name="text_small">14sp</dimen>
+    <dimen name="text_medium">15sp</dimen>
+    <dimen name="text_large">16sp</dimen>
+    <dimen name="text_huge">17sp</dimen>
+    <dimen name="text_very_huge">18sp</dimen>
+</resources>

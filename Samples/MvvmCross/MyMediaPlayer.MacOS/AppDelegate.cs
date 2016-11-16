@@ -1,23 +1,29 @@
 ﻿using AppKit;
+using CoreGraphics;
 using Foundation;
+using MvvmCross.Core.ViewModels;
+using MvvmCross.Mac.Platform;
+using MvvmCross.Platform;
 
 namespace MyMediaPlayer.MacOS
 {
     [Register("AppDelegate")]
-    public class AppDelegate : NSApplicationDelegate
+    public partial class AppDelegate : MvxApplicationDelegate
     {
-        public AppDelegate()
-        {
-        }
+        NSWindow _window;
 
         public override void DidFinishLaunching(NSNotification notification)
         {
-            // Insert code here to initialize your application
-        }
+            _window = new NSWindow(new CGRect(200, 200, 400, 700), NSWindowStyle.Closable | NSWindowStyle.Resizable | NSWindowStyle.Titled,
+                                   NSBackingStore.Buffered, false, NSScreen.MainScreen);
 
-        public override void WillTerminate(NSNotification notification)
-        {
-            // Insert code here to tear down your application
+            var setup = new Setup(this, _window);
+            setup.Initialize();
+
+            var startup = Mvx.Resolve<IMvxAppStart>();
+            startup.Start();
+
+            _window.MakeKeyAndOrderFront(this);
         }
     }
 }

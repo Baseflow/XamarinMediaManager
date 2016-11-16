@@ -28,7 +28,7 @@ namespace Plugin.MediaManager
         private MediaPlayerStatus _status;
         private AVPlayerLayer _videoLayer;
 
-        public Dictionary<string, string> RequestProperties { get; set; }
+        public Dictionary<string, string> RequestHeaders { get; set; }
 
         public VideoPlayerImplementation()
         {

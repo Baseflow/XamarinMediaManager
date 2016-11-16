@@ -152,7 +152,7 @@ namespace Plugin.MediaManager.MediaSession
                         CurrentSession?.Controller?.Metadata?.GetString(MediaMetadata.MetadataKeyTitle));
             }
 
-            builder.PutBitmap(MediaMetadata.MetadataKeyAlbumArt, currentTrack?.Metadata.Cover as Bitmap);
+            builder.PutBitmap(MediaMetadata.MetadataKeyAlbumArt, currentTrack?.Metadata.AlbumArt as Bitmap);
             CurrentSession?.SetMetadata(builder.Build());
         }
     }

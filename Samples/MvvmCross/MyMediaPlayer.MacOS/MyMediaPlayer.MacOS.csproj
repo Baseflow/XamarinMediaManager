@@ -8,6 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>MyMediaPlayer.MacOS</RootNamespace>
     <AssemblyName>MyMediaPlayer.MacOS</AssemblyName>
+	<TargetFrameworkVersion>4.5</TargetFrameworkVersion>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
@@ -92,6 +93,25 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MvvmCross.Plugins.File">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.File.4.4.0\lib\Xamarin.Mac20\MvvmCross.Plugins.File.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.ResourceLoader">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.ResourceLoader.4.4.0\lib\Xamarin.Mac20\MvvmCross.Plugins.ResourceLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.9.0.1\lib\netstandard1.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.Json">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.Json.4.4.0\lib\Xamarin.Mac20\MvvmCross.Plugins.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.JsonLocalization">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.JsonLocalization.4.4.0\lib\Xamarin.Mac20\MvvmCross.Plugins.JsonLocalization.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.Visibility">
+      <HintPath>..\..\..\packages\MvvmCross.Plugin.Visibility.4.4.0\lib\Xamarin.Mac20\MvvmCross.Plugins.Visibility.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -120,19 +140,11 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Setup.cs" />
-    <Compile Include="ViewController.cs" />
-    <Compile Include="ViewController.designer.cs">
-      <DependentUpon>ViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\FirstView.cs" />
-    <Compile Include="Views\FirstViewController.cs" />
+    <Compile Include="Views\HomeViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="AppDelegate.cs.txt" />
-    <Content Include="ToDo-MvvmCross\_ Mac UI.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyMediaPlayer.Core\MyMediaPlayer.Core.csproj">

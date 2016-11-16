@@ -71,6 +71,7 @@
     <Compile Include="VideoPlayerImplementation.cs" />
     <Compile Include="VideoSurface.cs" />
     <Compile Include="AudioPlayerImplementation.cs" />
+    <Compile Include="VolumeManagerImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">

@@ -24,7 +24,7 @@ namespace Plugin.MediaManager
         private AVPlayer _player;
         private MediaPlayerStatus _status;
 
-        public Dictionary<string, string> RequestProperties { get; set; }
+        public Dictionary<string, string> RequestHeaders { get; set; }
 
         public AudioPlayerImplementation()
         {

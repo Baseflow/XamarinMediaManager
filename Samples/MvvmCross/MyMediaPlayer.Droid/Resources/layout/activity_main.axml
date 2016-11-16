@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_frame"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+    <FrameLayout
+        android:id="@+id/bottomsheetview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        local:behavior_hideable="false"
+        local:behavior_peekHeight="@dimen/miniplayer_height"
+        local:layout_behavior="@string/bottom_sheet_behavior">
+        <include
+            layout="@layout/fragment_miniplayer" />
+    </FrameLayout>
+</android.support.design.widget.CoordinatorLayout>
