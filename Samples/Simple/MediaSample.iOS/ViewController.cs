@@ -21,7 +21,7 @@ namespace MediaSample.iOS
             base.ViewDidLoad();
 			_videoSurface = new VideoSurface();
 			VideoView.Add(_videoSurface);
-			CrossMediaManager.Current.VideoPlayer.SetVideoSurface(_videoSurface);
+			CrossMediaManager.Current.VideoPlayer.RenderSurface = _videoSurface;
 			CrossMediaManager.Current.PlayingChanged += (sender, e) => ProgressView.Progress = (float)e.Progress;
 
             // Perform any additional setup after loading the view, typically from a nib.

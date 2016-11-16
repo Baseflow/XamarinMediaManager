@@ -7,15 +7,15 @@ namespace Plugin.MediaManager
 {
     public class VolumeManagerImplementation : VolumeProviderCompat.Callback, IVolumeManager
     {
-        public int CurrentVolume { get; set; }
+        public float CurrentVolume { get; set; }
 
-        public int MaxVolume { get; set; }
+        public float MaxVolume { get; set; }
 
         public event VolumeChangedEventHandler VolumeChanged;
 
         public override void OnVolumeChanged(VolumeProviderCompat volumeProvider)
         {
-            VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(volumeProvider));
+            VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(volumeProvider, Mute));
         }
 
         public bool Mute { get; set; }

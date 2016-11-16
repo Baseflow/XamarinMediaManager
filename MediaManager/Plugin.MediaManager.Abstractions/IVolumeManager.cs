@@ -12,9 +12,9 @@ namespace Plugin.MediaManager.Abstractions
         /// </summary>
         event VolumeChangedEventHandler VolumeChanged;
 
-        int CurrentVolume { get; set; }
+        float CurrentVolume { get; set; }
 
-        int MaxVolume { get; set; }
+        float MaxVolume { get; set; }
 
         bool Mute { get; set; }
     }

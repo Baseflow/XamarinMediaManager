@@ -5,9 +5,9 @@ namespace Plugin.MediaManager
 {
     public class VolumeManagerImplementation : IVolumeManager
     {
-        public int CurrentVolume { get; set; }
+        public float CurrentVolume { get; set; }
 
-        public int MaxVolume { get; set; }
+        public float MaxVolume { get; set; }
 
         public event VolumeChangedEventHandler VolumeChanged;
 

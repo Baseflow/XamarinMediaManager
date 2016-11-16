@@ -339,7 +339,7 @@ namespace Plugin.MediaManager
                         throw new ArgumentOutOfRangeException();
                 }
                 _aspectMode = value;
-            } 
+            }
         }
     }
 }
