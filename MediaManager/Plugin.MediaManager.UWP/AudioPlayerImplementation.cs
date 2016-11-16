@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Media;
@@ -87,6 +88,8 @@ namespace Plugin.MediaManager
 
             _player.PlaybackSession.SeekCompleted += (sender, args) => { };
         }
+
+        public Dictionary<string, string> RequestHeaders { get; set; }
 
         public MediaPlayerStatus Status
         {

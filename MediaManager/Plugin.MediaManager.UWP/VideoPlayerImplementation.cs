@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 using System.Threading;
@@ -101,6 +102,8 @@ namespace Plugin.MediaManager
             _player.MediaOpened += (sender, args) => { _loadMediaTaskCompletionSource.SetResult(true); };
         }
 
+        public Dictionary<string, string> RequestHeaders { get; set; }
+
         public MediaPlayerStatus Status
         {
             get { return _status; }
@@ -197,8 +200,15 @@ namespace Plugin.MediaManager
         public IVideoSurface RenderSurface
         {
             get { return _renderSurface; }
-            private set
+            set
             {
+                if (!(value is VideoSurface))
+                    throw new ArgumentException("Not a valid video surface");
+
+                _renderSurface = (VideoSurface)value;
+
+                SetVideoSurface((VideoSurface)_renderSurface);
+
                 if (_renderSurface != value)
                 {
                     var canvas = _renderSurface as Canvas;
@@ -223,14 +233,8 @@ namespace Plugin.MediaManager
             _spriteVisual.Size = new Vector2((float)newSize.Width, (float)newSize.Height);
         }
 
-        public void SetVideoSurface(IVideoSurface videoSurface)
+        private void SetVideoSurface(VideoSurface canvas)
         {
-            if (!(videoSurface is VideoSurface))
-                throw new ArgumentException("Not a valid video surface");
-
-            var canvas = (VideoSurface) videoSurface;
-            RenderSurface = canvas;
-            
             var size = new Size(canvas.ActualWidth, canvas.ActualHeight);
             _player.SetSurfaceSize(size);
 
@@ -250,11 +254,7 @@ namespace Plugin.MediaManager
             ElementCompositionPreview.SetElementChildVisual(canvas, container);
         }
 
-        public VideoAspectMode AspectMode { get; }
-
-        public void SetAspectMode(VideoAspectMode aspectMode)
-        {
-        }
+        public VideoAspectMode AspectMode { get; set; }
 
         private async Task<MediaSource> CreateMediaSource(string url, MediaFileType fileType)
         {
