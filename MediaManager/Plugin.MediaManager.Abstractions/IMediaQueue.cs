@@ -34,7 +34,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Activates or deactivates the Repeat option
         /// </summary>
-        RepeatType Repeat { get; }
+        RepeatType Repeat { get; set; }
 
         /// <summary>
         /// Activates or deactivates the Shuffle option
@@ -74,7 +74,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Turns on or off repeat.
         /// </summary>
-        void ToggleRepeat(RepeatType repeatType);
+        void ToggleRepeat();
     }
 }
 

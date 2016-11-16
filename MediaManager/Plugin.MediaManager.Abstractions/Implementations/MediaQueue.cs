@@ -98,7 +98,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             {
                 return repeat;
             }
-            private set
+            set
             {
                 repeat = value;
                 OnPropertyChanged(nameof(Repeat));
@@ -270,9 +270,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 Index = _queue.IndexOf(item);
         }
 
-        public void ToggleRepeat(RepeatType repeatType)
+        public void ToggleRepeat()
         {
-            switch (repeatType)
+            switch (Repeat)
             {
                 case RepeatType.None:
                     Repeat = RepeatType.RepeatOne;
