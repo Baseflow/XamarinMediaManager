@@ -8,6 +8,7 @@ using CoreFoundation;
 using CoreMedia;
 using Foundation;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 

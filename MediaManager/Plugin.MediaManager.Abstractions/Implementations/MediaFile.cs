@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager.Abstractions.Implementations

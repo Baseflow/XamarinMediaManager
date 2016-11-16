@@ -1,4 +1,5 @@
-﻿using Plugin.MediaManager.Abstractions.Implementations;
+﻿using Plugin.MediaManager.Abstractions.Enums;
+using Plugin.MediaManager.Abstractions.Implementations;
 using Xamarin.Forms;
 
 namespace Plugin.MediaManager.Forms
