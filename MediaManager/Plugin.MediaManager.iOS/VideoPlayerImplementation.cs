@@ -5,14 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using AVFoundation;
 using CoreFoundation;
-using CoreGraphics;
 using CoreMedia;
 using Foundation;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
-using Plugin.MediaManager.iOS;
-using UIKit;
 
 namespace Plugin.MediaManager
 {
@@ -43,8 +40,8 @@ namespace Plugin.MediaManager
                     (Status == MediaPlayerStatus.Playing))
                     Player.Play();
             };
-            _volumeManager.Mute = _player.Muted;
-            _volumeManager.CurrentVolume = _player.Volume;
+            _volumeManager.Mute = Player.Muted;
+            _volumeManager.CurrentVolume = Player.Volume;
             _volumeManager.MaxVolume = 1;
             _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
         }
@@ -177,6 +174,8 @@ namespace Plugin.MediaManager
         {
             _player = new AVPlayer();
             _videoLayer = AVPlayerLayer.FromPlayer(_player);
+
+            #if __IOS__ || __TVOS__
             var avSession = AVAudioSession.SharedInstance();
 
             // By setting the Audio Session category to AVAudioSessionCategorPlayback, audio will continue to play when the silent switch is enabled, or when the screen is locked.
@@ -186,6 +185,7 @@ namespace Plugin.MediaManager
             avSession.SetActive(true, out activationError);
             if (activationError != null)
                 Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
+            #endif
 
             Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {

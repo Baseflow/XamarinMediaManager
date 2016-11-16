@@ -182,15 +182,18 @@ namespace Plugin.MediaManager
         {
             _player = new AVPlayer();
 
+            #if __IOS__ || __TVOS__
             var avSession = AVAudioSession.SharedInstance();
 
             // By setting the Audio Session category to AVAudioSessionCategorPlayback, audio will continue to play when the silent switch is enabled, or when the screen is locked.
             avSession.SetCategory(AVAudioSessionCategory.Playback);
 
+
             NSError activationError = null;
             avSession.SetActive(true, out activationError);
             if (activationError != null)
                 Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
+            #endif
 
             Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {
