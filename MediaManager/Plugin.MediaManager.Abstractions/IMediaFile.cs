@@ -5,17 +5,8 @@ using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
-    /// <summary>
-    /// Information about the mediafile
-    /// </summary>
-    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public interface IMediaFile : INotifyPropertyChanged
     {
-        /// <summary>
-        /// A unique identifier for this media file
-        /// </summary>
-        Guid Id { get; set; }
-
         /// <summary>
         /// Indicator for player which type of file it should play
         /// </summary>

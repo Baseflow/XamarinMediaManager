@@ -10,13 +10,9 @@ namespace Plugin.MediaManager
     [Android.Runtime.Preserve(AllMembers = true)]
     public class MediaManagerImplementation : MediaManagerBase
     {
-        public MediaManagerImplementation()
-        {
-            MediaSessionManager.OnNotificationActionFired += HandleNotificationActions;
-        }
-
         private IAudioPlayer _audioPlayer;
         private IMediaExtractor _mediaExtraxtor;
+        private MediaSessionManager _sessionManager;
 
         public override IAudioPlayer AudioPlayer
         {
@@ -34,11 +30,19 @@ namespace Plugin.MediaManager
 
         public override IMediaExtractor MediaExtractor
         {
-            get { return _mediaExtraxtor ?? (_mediaExtraxtor = new MediaExtractorImplementation(Resources.System, RequestProperties)); }
+            get { return _mediaExtraxtor ?? (_mediaExtraxtor = new MediaExtractorImplementation(Resources.System, RequestHeaders)); }
             set { _mediaExtraxtor = value; }
         }
 
-        public MediaSessionManager MediaSessionManager { get; set; } = new MediaSessionManager(Application.Context);
+        public MediaSessionManager MediaSessionManager
+        {
+            get { return _sessionManager ?? (_sessionManager = new MediaSessionManager(Application.Context, typeof(MediaPlayerService))); }
+            set
+            {
+                _sessionManager = value;
+                _sessionManager.OnNotificationActionFired += HandleNotificationActions;
+            }
+        }
 
         private async void HandleNotificationActions(object sender, string action)
         {

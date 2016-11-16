@@ -62,7 +62,11 @@ namespace Plugin.MediaManager
 
         public abstract TimeSpan Buffered { get; }
 
-        public Dictionary<string, string> RequestProperties { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> RequestHeaders
+        {
+            get;
+            set;
+        } = new Dictionary<string, string>();
 
         public MediaPlayerStatus Status
         {
@@ -159,10 +163,9 @@ namespace Plugin.MediaManager
 
         public void HandleIntent(Intent intent)
         {
-            if (intent?.Action == null)
+            if (intent?.Action == null || SessionManager == null)
                 return;
-
-            SessionManager.HandleAction(intent.Action);
+            SessionManager?.HandleAction(intent.Action);
         }
 
         /// <summary>
@@ -324,13 +327,17 @@ namespace Plugin.MediaManager
         /// <param name="mediaFile">The media file.</param>
         private async Task<bool> CheckIfFileAlreadyIsPlaying(IMediaFile mediaFile)
         {
-            if (CurrentFile != null && !string.IsNullOrEmpty(mediaFile?.Url) && mediaFile?.Url == CurrentFile?.Url && MediaPlayerState != PlaybackStateCompat.StatePaused)
+            if (CurrentFile != null 
+                && !string.IsNullOrEmpty(mediaFile?.Url) 
+                && mediaFile?.Url == CurrentFile?.Url 
+                && MediaPlayerState != PlaybackStateCompat.StatePaused
+                && !ManuallyPaused)
             {
                 await Seek(TimeSpan.Zero);
                 return await Task.FromResult(true);
             }
             
-            if (MediaPlayerState == PlaybackStateCompat.StatePaused)
+            if (MediaPlayerState == PlaybackStateCompat.StatePaused && ManuallyPaused)
             {
                 ManuallyPaused = false;
                 SessionManager.UpdatePlaybackState(PlaybackStateCompat.StatePlaying, Position.Seconds);

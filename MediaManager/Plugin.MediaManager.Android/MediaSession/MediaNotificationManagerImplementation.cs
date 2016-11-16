@@ -61,7 +61,7 @@ namespace Plugin.MediaManager
             };
             _builder.SetSmallIcon(_appliactionContext.ApplicationInfo.Icon);
             _builder.SetContentIntent(_pendingIntent);
-            _builder.SetOngoing(true);
+            _builder.SetOngoing(mediaIsPlaying);
             _builder.SetVisibility(1);
 
             SetMetadata(mediaFile);

@@ -44,7 +44,7 @@ namespace MediaSample.Droid
             }
 
             var exoPlayer = new ExoPlayerAudioImplementation(((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager);
-            exoPlayer.RequestProperties = new Dictionary<string, string> { { "Test", "1234" } };
+            exoPlayer.RequestHeaders = new Dictionary<string, string> { { "Test", "1234" } };
             CrossMediaManager.Current.AudioPlayer = exoPlayer;
             //new AudioPlayerImplementation<ExoPlayerAudioService>(MediaSessionManager));}
 

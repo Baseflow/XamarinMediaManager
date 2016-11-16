@@ -11,7 +11,19 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 {
     public class MediaQueue : IMediaQueue
     {
-        public MediaQueue ()
+        private IMediaFile _current;
+
+        private int _index = -1;
+
+        protected ObservableCollection<IMediaFile> _unshuffledQueue;
+
+        private bool CollectionChangedEventDisabled;
+
+        private RepeatType repeat;
+
+        private CancellationTokenSource shuffleCancellation = new CancellationTokenSource();
+
+        public MediaQueue()
         {
             _queue = new ObservableCollection<IMediaFile>();
 
@@ -27,38 +39,27 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         protected ObservableCollection<IMediaFile> _queue { get; private set; }
 
-        protected ObservableCollection<IMediaFile> _unshuffledQueue;
-
-        private int _count;
-        public int Count
+        private bool IsRepeat
         {
-            get
-            {
-                return _count;
-            }
+            get { return repeat == RepeatType.RepeatAll || repeat == RepeatType.RepeatOne; }
         }
 
-        private IMediaFile _current;
+        public int Count { get; private set; }
+
         public IMediaFile Current
         {
             get
             {
                 if (Count > 0 && Index >= 0)
-                {
                     return _current = _queue[Index];
-                }
 
                 return _current = null;
             }
         }
 
-        private int _index = -1;
         public int Index
         {
-            get
-            {
-                return _index;
-            }
+            get { return _index; }
             private set
             {
                 _index = value;
@@ -68,35 +69,17 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public bool IsReadOnly
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public bool Shuffle
         {
-            get
-            {
-                return _unshuffledQueue != null;
-            }
+            get { return _unshuffledQueue != null; }
         }
 
-        private bool IsRepeat
-        {
-            get
-            {
-                return repeat == RepeatType.RepeatAll || repeat == RepeatType.RepeatOne;
-            }
-        }
-
-        private RepeatType repeat;
         public RepeatType Repeat
         {
-            get
-            {
-                return repeat;
-            }
+            get { return repeat; }
             private set
             {
                 repeat = value;
@@ -106,17 +89,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public IMediaFile this[int index]
         {
-            get
-            {
-                return _queue[index];
-            }
+            get { return _queue[index]; }
 
             set
             {
                 if (value == null)
-                {
                     throw new ArgumentNullException();
-                }
 
                 if (Shuffle)
                 {
@@ -129,24 +107,17 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         }
 
         /// <summary>
-        /// Occurs when the collection changes.
+        ///     Occurs when the collection changes.
         /// </summary>
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        private bool CollectionChangedEventDisabled;
-
         /// <summary>
-        /// Occurs when a property value changes.
+        ///     Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
         public event QueueEndedEventHandler QueueEnded;
         public event QueueMediaChangedEventHandler QueueMediaChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         public void Add(IMediaFile item)
         {
@@ -154,14 +125,10 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
             // If shuffle is enabled, we need to add the item to the backup queue too
             if (Shuffle)
-            {
                 _unshuffledQueue.Add(item);
-            }
 
             if (Index == -1)
-            {
                 Index = 0;
-            }
         }
 
         public void AddRange(IEnumerable<IMediaFile> items)
@@ -170,14 +137,10 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
             // If shuffle is enabled, we need to add the items to the backup queue too
             if (Shuffle)
-            {
                 _unshuffledQueue.AddRange(items);
-            }
 
             if (Index == -1)
-            {
                 Index = 0;
-            }
         }
 
         public void Clear()
@@ -202,9 +165,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _queue.CopyTo(array, arrayIndex);
 
             if (Index == -1)
-            {
                 Index = 0;
-            }
         }
 
         public IEnumerator<IMediaFile> GetEnumerator()
@@ -224,7 +185,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public bool Remove(IMediaFile item)
         {
-            int index = _queue.IndexOf(item);
+            var index = _queue.IndexOf(item);
             if (index >= 0)
             {
                 RemoveAt(index);
@@ -242,25 +203,17 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public void SetPreviousAsCurrent()
         {
             if (Index - 1 >= 0)
-            {
                 Index--;
-            }
             else
-            {
                 Index = _queue.Count - 1;
-            }
         }
 
         public void SetNextAsCurrent()
         {
             if (Index + 1 < _queue.Count)
-            {
                 Index++;
-            }
             else
-            {
                 Index = 0;
-            }
         }
 
         public void SetTrackAsCurrent(IMediaFile item)
@@ -285,8 +238,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
         }
 
-        private CancellationTokenSource shuffleCancellation = new CancellationTokenSource();
-
         public void ToggleShuffle()
         {
             if (!Shuffle)
@@ -304,9 +255,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 // Remove the current item to add it as first item again later
                 var currentItem = Current;
                 if (currentItem != null)
-                {
                     elements.RemoveAt(Index);
-                }
 
                 var random = new Random();
                 for (var i = elements.Count - 1; i > 1; i--)
@@ -321,18 +270,13 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
                 // If the cancellation token canceled in the meantime, exit here
                 if (cts.Token.IsCancellationRequested)
-                {
                     return;
-                }
 
                 // Back up current queue to backup queue so we can get it later when user turns off shuffling
                 _unshuffledQueue = new ObservableCollection<IMediaFile>(_queue);
 
                 if (currentItem != null)
-                {
-                    // Add currentItem to queue as first index
                     elements.Insert(0, currentItem);
-                }
 
                 // Replace queue with randomized collection
                 ReplaceQueueWith(elements);
@@ -350,68 +294,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             OnPropertyChanged(nameof(Shuffle));
         }
 
-        protected void ReplaceQueueWith(IEnumerable<IMediaFile> files)
-        {
-            CollectionChangedEventDisabled = true;
-            _queue.Clear();
-            _queue.AddRange(files);
-            CollectionChangedEventDisabled = false;
-            if (CollectionChanged != null)
-                CollectionChanged(_queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-        }
-
-        private void RegisterCountTriggers()
-        {
-            _queue.CollectionChanged += (sender, e) =>
-            {
-                var count = _queue.Count;
-
-                if (_count != count)
-                {
-                    _count = count;
-                    OnPropertyChanged(nameof(Count));
-                }
-            };
-
-            _count = _queue.Count;
-        }
-
-        private void RegisterCurrentTriggers()
-        {
-            var updateProperty = new Action(() =>
-                {
-                    IMediaFile current = null;
-                    if (Count - 1 >= Index && Index >= 0)
-                    {
-                        current = _queue[Index];
-                    }
-
-                    if (_current != current)
-                    {
-                        _current = current;
-                        OnPropertyChanged(nameof(Current));
-                    }
-                });
-
-            PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == nameof(Index))
-                {
-                    updateProperty();
-                }
-            };
-
-            _queue.CollectionChanged += (sender, e) =>
-            {
-                updateProperty();
-            };
-
-            if (Count - 1 >= Index && Index >= 0)
-            {
-                _current = _queue[Index];
-            }
-        }
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _queue.GetEnumerator();
@@ -425,9 +307,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public void Insert(int index, IMediaFile item)
         {
             if (Shuffle)
-            {
                 _unshuffledQueue.Add(item);
-            }
 
             var changedIndexInternally = false;
             if (index <= Index || Index == -1)
@@ -443,31 +323,23 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             catch (Exception)
             {
                 if (changedIndexInternally)
-                {
                     _index--;
-                }
                 throw;
             }
 
             // Only to fire off the index when also the property Current is updated (by triggering RemoveAt())
             if (changedIndexInternally)
-            {
                 OnPropertyChanged(nameof(Index));
-            }
         }
 
         public void RemoveAt(int index)
         {
             if (index < 0)
-            {
                 throw new ArgumentOutOfRangeException();
-            }
 
             // If shuffle is enabled, we need to remove the item from the backup queue too
             if (Shuffle)
-            {
                 _unshuffledQueue.Remove(_queue[index]);
-            }
 
             var changedIndexInternally = false;
             if (index < Index)
@@ -485,10 +357,64 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
             // Only to fire off the index when also the property Current is updated (by triggering RemoveAt())
             if (changedIndexInternally)
-            {
                 OnPropertyChanged(nameof(Index));
-            }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected void ReplaceQueueWith(IEnumerable<IMediaFile> files)
+        {
+            CollectionChangedEventDisabled = true;
+            _queue.Clear();
+            _queue.AddRange(files);
+            CollectionChangedEventDisabled = false;
+            CollectionChanged?.Invoke(_queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+
+        private void RegisterCountTriggers()
+        {
+            _queue.CollectionChanged += (sender, e) =>
+            {
+                var count = _queue.Count;
+
+                if (Count != count)
+                {
+                    Count = count;
+                    OnPropertyChanged(nameof(Count));
+                }
+            };
+
+            Count = _queue.Count;
+        }
+
+        private void RegisterCurrentTriggers()
+        {
+            var updateProperty = new Action(() =>
+            {
+                IMediaFile current = null;
+                if (Count - 1 >= Index && Index >= 0)
+                    current = _queue[Index];
+
+                if (_current != current)
+                {
+                    _current = current;
+                    OnPropertyChanged(nameof(Current));
+                }
+            });
+
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(Index))
+                    updateProperty();
+            };
+
+            _queue.CollectionChanged += (sender, e) => { updateProperty(); };
+
+            if (Count - 1 >= Index && Index >= 0)
+                _current = _queue[Index];
         }
     }
 }
-

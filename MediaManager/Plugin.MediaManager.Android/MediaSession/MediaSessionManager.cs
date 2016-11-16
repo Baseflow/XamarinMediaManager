@@ -11,6 +11,9 @@ using Plugin.MediaManager.Abstractions;
 
 namespace Plugin.MediaManager.MediaSession
 {
+
+    using Plugin.MediaManager.Abstractions.Implementations;
+
     public class MediaSessionManager
     {
         private Context applicationContext;
@@ -31,10 +34,13 @@ namespace Plugin.MediaManager.MediaSession
         internal Context ApplicationContext => applicationContext;
 
         internal ComponentName RemoteComponentName { get; set; }
+
+        private Type _serviceType;
       
-        public MediaSessionManager(Context appContext)
+        public MediaSessionManager(Context appContext, Type serviceType)
         {
             applicationContext = appContext;
+            _serviceType = serviceType;
         }
 
         internal void InitMediaSession(string packageName, MediaServiceBinder binder)
@@ -53,7 +59,7 @@ namespace Plugin.MediaManager.MediaSession
                 mediaSessionCompat.Active = true;
                 //mediaSessionCompat.SetCallback(binder.GetMediaPlayerService().AlternateRemoteCallback ?? new MediaSessionCallback(binder));
                 mediaSessionCompat.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons | MediaSessionCompat.FlagHandlesTransportControls);
-                NotificationManager = new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, typeof(MediaPlayerService));
+                NotificationManager = new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, _serviceType);
                 _packageName = packageName;
                 _binder = binder;
             }

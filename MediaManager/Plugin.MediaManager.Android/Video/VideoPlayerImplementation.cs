@@ -72,7 +72,7 @@ namespace Plugin.MediaManager
             VideoViewCanvas.SeekTo(Convert.ToInt32(position.TotalMilliseconds));
         }
 
-        public Dictionary<string, string> RequestProperties { get; set; }
+        public Dictionary<string, string> RequestHeaders { get; set; }
 
         public async Task Stop()
         {
