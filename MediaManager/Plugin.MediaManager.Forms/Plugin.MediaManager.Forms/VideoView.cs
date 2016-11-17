@@ -1,4 +1,5 @@
-﻿using Plugin.MediaManager.Abstractions.Implementations;
+﻿using Plugin.MediaManager.Abstractions.Enums;
+using Plugin.MediaManager.Abstractions.Implementations;
 using Xamarin.Forms;
 
 namespace Plugin.MediaManager.Forms
@@ -39,7 +40,7 @@ namespace Plugin.MediaManager.Forms
 
         private static void OnAspectModeChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
-            CrossMediaManager.Current.VideoPlayer.SetAspectMode((VideoAspectMode) newvalue);
+            CrossMediaManager.Current.VideoPlayer.AspectMode = ((VideoAspectMode) newvalue);
         }
 
         private static void OnSourceChanged(BindableObject bindable, object oldvalue, object newvalue)

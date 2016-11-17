@@ -3,7 +3,6 @@ using CoreGraphics;
 using Foundation;
 using Plugin.MediaManager.Forms;
 using Plugin.MediaManager.Forms.iOS;
-using Plugin.MediaManager.iOS;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -31,7 +30,7 @@ namespace Plugin.MediaManager.Forms.iOS
             {
                 _videoSurface = new VideoSurface();
                 SetNativeControl(_videoSurface);
-                CrossMediaManager.Current.VideoPlayer.SetVideoSurface(_videoSurface);
+                CrossMediaManager.Current.VideoPlayer.RenderSurface = _videoSurface;
             }
         }
     }

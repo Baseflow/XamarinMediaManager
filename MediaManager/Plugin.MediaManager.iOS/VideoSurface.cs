@@ -5,7 +5,7 @@ using Foundation;
 using Plugin.MediaManager.Abstractions;
 using UIKit;
 
-namespace Plugin.MediaManager.iOS
+namespace Plugin.MediaManager
 {
     public class VideoSurface : UIView, IVideoSurface
     {

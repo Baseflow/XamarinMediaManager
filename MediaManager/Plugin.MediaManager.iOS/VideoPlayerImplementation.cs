@@ -5,14 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using AVFoundation;
 using CoreFoundation;
-using CoreGraphics;
 using CoreMedia;
 using Foundation;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
-using Plugin.MediaManager.iOS;
-using UIKit;
 
 namespace Plugin.MediaManager
 {
@@ -30,8 +28,9 @@ namespace Plugin.MediaManager
 
         public Dictionary<string, string> RequestHeaders { get; set; }
 
-        public VideoPlayerImplementation()
+        public VideoPlayerImplementation(IVolumeManager volumeManager)
         {
+            _volumeManager = volumeManager;
             _status = MediaPlayerStatus.Stopped;
 
             // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
@@ -42,6 +41,16 @@ namespace Plugin.MediaManager
                     (Status == MediaPlayerStatus.Playing))
                     Player.Play();
             };
+            _volumeManager.Mute = Player.Muted;
+            _volumeManager.CurrentVolume = Player.Volume;
+            _volumeManager.MaxVolume = 1;
+            _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
+        }
+
+        private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs e)
+        {
+            _player.Volume = (float) e.Volume;
+            _player.Muted = e.Mute;
         }
 
         private AVPlayer Player
@@ -166,6 +175,8 @@ namespace Plugin.MediaManager
         {
             _player = new AVPlayer();
             _videoLayer = AVPlayerLayer.FromPlayer(_player);
+
+            #if __IOS__ || __TVOS__
             var avSession = AVAudioSession.SharedInstance();
 
             // By setting the Audio Session category to AVAudioSessionCategorPlayback, audio will continue to play when the silent switch is enabled, or when the screen is locked.
@@ -175,6 +186,7 @@ namespace Plugin.MediaManager
             avSession.SetActive(true, out activationError);
             if (activationError != null)
                 Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
+            #endif
 
             Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {
@@ -298,40 +310,50 @@ namespace Plugin.MediaManager
             BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
         }
 
-        public IVideoSurface RenderSurface { get; private set; }
-
-        public void SetVideoSurface(IVideoSurface videoSurface)
+        private IVideoSurface _renderSurface;
+        public IVideoSurface RenderSurface
         {
-			var view = (VideoSurface)videoSurface;
-			if (view == null)
-				throw new ArgumentException("VideoSurface must be a UIView");
-			
-            RenderSurface = videoSurface;
-            _videoLayer = AVPlayerLayer.FromPlayer(Player);
-			_videoLayer.Frame = view.Frame;
-			_videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
-            view.Layer.AddSublayer(_videoLayer);
+            get
+            {
+                return _renderSurface;
+            }
+            set
+            {
+                var view = (VideoSurface)value;
+                if (view == null)
+                    throw new ArgumentException("VideoSurface must be a UIView");
+
+                _renderSurface = value;
+                _videoLayer = AVPlayerLayer.FromPlayer(Player);
+                _videoLayer.Frame = view.Frame;
+                _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
+                view.Layer.AddSublayer(_videoLayer);
+            }
         }
 
-        public VideoAspectMode AspectMode { get; private set; }
+        private VideoAspectMode _aspectMode;
+        private IVolumeManager _volumeManager;
 
-        public void SetAspectMode(VideoAspectMode aspectMode)
-        {
-            switch (aspectMode)
-            {
-                case VideoAspectMode.None:
-                    _videoLayer.VideoGravity = AVLayerVideoGravity.Resize;
-                    break;
-                case VideoAspectMode.AspectFit:
-                    _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
-                    break;
-                case VideoAspectMode.AspectFill:
-                    _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+        public VideoAspectMode AspectMode { 
+            get {
+                return _aspectMode;
+            } set {
+                switch (value)
+                {
+                    case VideoAspectMode.None:
+                        _videoLayer.VideoGravity = AVLayerVideoGravity.Resize;
+                        break;
+                    case VideoAspectMode.AspectFit:
+                        _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
+                        break;
+                    case VideoAspectMode.AspectFill:
+                        _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                _aspectMode = value;
             }
-            AspectMode = aspectMode;
         }
     }
 }
