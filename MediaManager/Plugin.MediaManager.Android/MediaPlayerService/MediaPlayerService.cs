@@ -234,7 +234,7 @@ namespace Plugin.MediaManager
 
         public bool OnError(MediaPlayer mp, MediaError what, int extra)
         {
-            SessionManager.UpdatePlaybackState(PlaybackStateCompat.StateError, Position.Seconds);
+            SessionManager.UpdatePlaybackState(PlaybackStateCompat.StateError, Position.Seconds, Enum.GetName(typeof(MediaError),what));
             Stop();
             return true;
         }
