@@ -11,9 +11,6 @@ using Plugin.MediaManager.Abstractions;
 
 namespace Plugin.MediaManager.MediaSession
 {
-
-    using Plugin.MediaManager.Abstractions.Implementations;
-
     public class MediaSessionManager
     {
         private Context applicationContext;
@@ -57,7 +54,7 @@ namespace Plugin.MediaManager.MediaSession
                     mediaControllerCompat = new MediaControllerCompat(applicationContext, mediaSessionCompat.SessionToken);
                 }
                 mediaSessionCompat.Active = true;
-                //mediaSessionCompat.SetCallback(binder.GetMediaPlayerService().AlternateRemoteCallback ?? new MediaSessionCallback(binder));
+                mediaSessionCompat.SetCallback(binder.GetMediaPlayerService<MediaServiceBase>().AlternateRemoteCallback ?? new MediaSessionCallback(this));
                 mediaSessionCompat.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons | MediaSessionCompat.FlagHandlesTransportControls);
                 NotificationManager = new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, _serviceType);
                 _packageName = packageName;
@@ -119,7 +116,8 @@ namespace Plugin.MediaManager.MediaSession
 
             RemoteControlFlags flags = RemoteControlFlags.Play
                                        | RemoteControlFlags.Pause
-                                       | RemoteControlFlags.PlayPause;
+                                       | RemoteControlFlags.PlayPause 
+                                       | RemoteControlFlags.FastForward;
 
             remoteControlClient?.SetTransportControlFlags(flags);
             

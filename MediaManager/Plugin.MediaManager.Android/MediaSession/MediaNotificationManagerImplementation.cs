@@ -88,6 +88,7 @@ namespace Plugin.MediaManager
                 {
                     SetMetadata(mediaFile);
                     AddActionButtons(isPlaying);
+                    _builder.SetOngoing(isPlaying);
                     nm.Notify(MediaServiceBase.NotificationId, _builder.Build());
                 }
                 else

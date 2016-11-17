@@ -214,7 +214,7 @@ namespace Plugin.MediaManager.ExoPlayer
                 case MediaPlayerStatus.Failed:
                     return PlaybackStateCompat.StateError;
                 case MediaPlayerStatus.Loading:
-                    return PlaybackStateCompat.StateConnecting;
+                    return PlaybackStateCompat.StateSkippingToQueueItem;
                 case MediaPlayerStatus.Paused:
                     return PlaybackStateCompat.StatePaused;
                 case MediaPlayerStatus.Playing:

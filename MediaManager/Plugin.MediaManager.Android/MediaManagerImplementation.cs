@@ -50,8 +50,6 @@ namespace Plugin.MediaManager
         }
         public override IVolumeManager VolumeManager { get; set; } = new VolumeManagerImplementation();
 
-        public MediaSessionManager MediaSessionManager { get; set; } = new MediaSessionManager(Application.Context);
-
         private async void HandleNotificationActions(object sender, string action)
         {
             if (action.Equals(MediaServiceBase.ActionPlay) || action.Equals(MediaServiceBase.ActionPause))

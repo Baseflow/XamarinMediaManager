@@ -56,7 +56,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         {
             if (MediaQueue.HasNext())
             {
-                await CurrentPlaybackManager.Stop();
+                await CurrentPlaybackManager.Pause();
                 MediaQueue.SetNextAsCurrent();
                 var beforePlayTask = _onBeforePlay?.Invoke(_currentMediaFile);
                 if (beforePlayTask != null) await beforePlayTask;
@@ -66,9 +66,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
             else
             {
-                // If you don't have a next song in the queue, stop and show the meta-data of the first song.
-                //TODO: Shouldn't we Pause here instead of stop? Stop should shut down everything
-                await CurrentPlaybackManager.Stop();
+                await CurrentPlaybackManager.Pause();
                 MediaQueue.SetIndexAsCurrent(0);
                 OnMediaFileChanged(this, new MediaFileChangedEventArgs(MediaQueue.Current));
             }
@@ -83,8 +81,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
             else
             {
-                //TODO: Maybe pause here instead of stop
-                await CurrentPlaybackManager.Stop();
+                await CurrentPlaybackManager.Pause();
                 MediaQueue.SetPreviousAsCurrent();
                 var beforePlayTask = _onBeforePlay?.Invoke(_currentMediaFile);
                 if (beforePlayTask != null) await beforePlayTask;
