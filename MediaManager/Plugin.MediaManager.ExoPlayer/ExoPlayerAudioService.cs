@@ -26,6 +26,8 @@ namespace Plugin.MediaManager.ExoPlayer
 
     using Java.IO;
 
+    using Plugin.MediaManager.Abstractions.Enums;
+
     using Console = System.Console;
 
     [Service]

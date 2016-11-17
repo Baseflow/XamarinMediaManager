@@ -1,6 +1,7 @@
 ﻿namespace Plugin.MediaManager.Abstractions
 {
 
+    using Plugin.MediaManager.Abstractions.Enums;
     using Plugin.MediaManager.Abstractions.Implementations;
 
     /// <summary>
