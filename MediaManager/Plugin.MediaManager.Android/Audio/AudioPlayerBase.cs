@@ -179,7 +179,17 @@ namespace Plugin.MediaManager
 
         private void CancelPlayingHandler()
         {
-            if (_onPlayingCancellationSource.Token.CanBeCanceled)
+            bool canBeCancelled;
+            try
+            {
+                canBeCancelled = _onPlayingCancellationSource.Token.CanBeCanceled;
+            }
+            catch (ObjectDisposedException)
+            {
+                canBeCancelled = false;
+            }
+
+            if (canBeCancelled)
             {
                 _onPlayingCancellationSource.Cancel();
                 _onPlayingCancellationSource.Dispose();
