@@ -52,9 +52,13 @@ namespace Plugin.MediaManager
 
         private async void HandleNotificationActions(object sender, string action)
         {
-            if (action.Equals(MediaServiceBase.ActionPlay) || action.Equals(MediaServiceBase.ActionPause))
+            if (action.Equals(MediaServiceBase.ActionPlay))
             {
                 await PlayPause();
+            }
+            else if (action.Equals(MediaServiceBase.ActionPause))
+            {
+                await Pause();
             }
             else if (action.Equals(MediaServiceBase.ActionPrevious))
             {
