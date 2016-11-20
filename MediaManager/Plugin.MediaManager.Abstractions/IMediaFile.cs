@@ -3,6 +3,9 @@ using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
+
+    using Plugin.MediaManager.Abstractions.Enums;
+
     public delegate void MetadataUpdatedEventHandler(object sender, MetadataChangedEventArgs e);
 
     /// <summary>

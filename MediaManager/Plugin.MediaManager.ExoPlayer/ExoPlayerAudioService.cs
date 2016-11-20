@@ -25,10 +25,13 @@ namespace Plugin.MediaManager.ExoPlayer
     using Android.Webkit;
 
     using Java.IO;
+    using Java.Lang;
+    using Java.Util.Concurrent;
 
     using Plugin.MediaManager.Abstractions.Enums;
 
     using Console = System.Console;
+    using Double = System.Double;
 
     [Service]
     [IntentFilter(new[] { ActionPlay, ActionPause, ActionStop, ActionTogglePlayback, ActionNext, ActionPrevious })]
@@ -38,7 +41,9 @@ namespace Plugin.MediaManager.ExoPlayer
     {
         private SimpleExoPlayer _mediaPlayer;
 
-        private CancellationTokenSource _onBufferingCancellationSource = new CancellationTokenSource();
+        private IScheduledExecutorService _executorService = Executors.NewSingleThreadScheduledExecutor();
+
+        private IScheduledFuture _scheduledFuture;
 
         public override TimeSpan Position
         {
@@ -240,7 +245,7 @@ namespace Plugin.MediaManager.ExoPlayer
             if (args.Status == MediaPlayerStatus.Buffering)
             {
                 CancelBufferingTask();
-                 Task.Run(() => OnBuffering(), _onBufferingCancellationSource.Token);
+                StartBufferingSchedule();
             }
             if (args.Status == MediaPlayerStatus.Stopped || args.Status == MediaPlayerStatus.Failed)
                 CancelBufferingTask();
@@ -248,25 +253,25 @@ namespace Plugin.MediaManager.ExoPlayer
 
         private void CancelBufferingTask()
         {
-            if (!_onBufferingCancellationSource.Token.CanBeCanceled) return;
-            _onBufferingCancellationSource.Cancel();
-            _onBufferingCancellationSource.Dispose();
-            _onBufferingCancellationSource = new CancellationTokenSource();
+            _scheduledFuture?.Cancel(false);
+            OnBufferingChanged(new BufferingChangedEventArgs(0, TimeSpan.Zero));
+        }
+
+        private void StartBufferingSchedule()
+        {
+            var handler = new Handler();
+            var runnable = new Runnable(() => { handler.Post(OnBuffering); });
+            if (!_executorService.IsShutdown) _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
         }
 
         private void OnBuffering()
         {
             if(_mediaPlayer == null) return;
 
-            if (MediaPlayerState != PlaybackStateCompat.StateStopped &&
-                MediaPlayerState != PlaybackStateCompat.StateError && MediaPlayerState != PlaybackStateCompat.StateNone)
-            {
-                OnBufferingChanged(new BufferingChangedEventArgs(_mediaPlayer.BufferedPercentage, TimeSpan.FromMilliseconds(Convert.ToInt64(_mediaPlayer.BufferedPosition))));
-                if (_mediaPlayer.BufferedPercentage < 100)
-                    Task.Delay(1000).ContinueWith(task => OnBuffering(), _onBufferingCancellationSource.Token);
-            }
-            else
-                OnBufferingChanged(new BufferingChangedEventArgs(0, TimeSpan.Zero));
+                OnBufferingChanged(
+                    new BufferingChangedEventArgs(
+                        _mediaPlayer.BufferedPercentage, 
+                        TimeSpan.FromMilliseconds(Convert.ToInt64(_mediaPlayer.BufferedPosition))));
         }
 
         private IMediaSource GetSource(string url)

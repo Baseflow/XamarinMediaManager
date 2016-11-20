@@ -52,6 +52,8 @@ namespace Plugin.MediaManager
         /// </summary>
         public void StartNotification(IMediaFile mediaFile, bool mediaIsPlaying, bool canBeRemoved)
         {
+            var icon = (_appliactionContext.Resources?.GetIdentifier("xam_mediamanager_notify_ic", "drawable", _appliactionContext?.PackageName)).GetValueOrDefault(0);
+           
             _notificationStyle.SetMediaSession(_sessionToken);
             _notificationStyle.SetCancelButtonIntent(_pendingCancelIntent);
             _notificationStyle.SetShowActionsInCompactView(0, 1, 2);
@@ -60,7 +62,7 @@ namespace Plugin.MediaManager
             {
                 MStyle = _notificationStyle
             };
-            _builder.SetSmallIcon(_appliactionContext.ApplicationInfo.Icon);
+            _builder.SetSmallIcon(icon != 0 ? icon : _appliactionContext.ApplicationInfo.Icon);
             _builder.SetContentIntent(_pendingIntent);
             _builder.SetOngoing(mediaIsPlaying);
             _builder.SetVisibility(1);
@@ -110,7 +112,7 @@ namespace Plugin.MediaManager
             _builder.SetContentTitle(mediaFile?.Metadata?.Title ?? string.Empty);
             _builder.SetContentText(mediaFile?.Metadata?.Artist ?? string.Empty);
             _builder.SetContentInfo(mediaFile?.Metadata?.Album ?? string.Empty);
-            _builder.SetLargeIcon(mediaFile?.Metadata?.AlbumArt as Bitmap);
+            _builder.SetLargeIcon(mediaFile?.Metadata?.Art as Bitmap);
         }
 
         private Android.Support.V4.App.NotificationCompat.Action GenerateActionCompat(int icon, string title, string intentAction)

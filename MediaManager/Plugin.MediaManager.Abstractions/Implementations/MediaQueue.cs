@@ -335,11 +335,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                     // Add currentItem to queue as first index
                     elements.Insert(0, currentItem);
                 }
-
+                Index = 0;
                 // Replace queue with randomized collection
                 ReplaceQueueWith(elements);
 
-                Index = 0;
+                
             }
             else
             {
