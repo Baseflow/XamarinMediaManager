@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 
@@ -106,7 +107,7 @@ namespace Plugin.MediaManager.Reactive
 
         public void SetRepeatMode(RepeatType repeatType)
         {
-            CrossMediaManager.Current.MediaQueue.ToggleRepeat(repeatType);
+            CrossMediaManager.Current.MediaQueue.Repeat = repeatType;
             _repeatModeSubject.OnNext(repeatType);
         }
 

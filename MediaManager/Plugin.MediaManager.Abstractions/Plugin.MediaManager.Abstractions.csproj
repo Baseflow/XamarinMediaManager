@@ -38,7 +38,6 @@
     <Compile Include="IMediaFileMetadata.cs" />
     <Compile Include="IMediaManager.cs" />
     <Compile Include="Implementations\MediaFileMetadata.cs" />
-    <Compile Include="Implementations\VideoAspectMode.cs" />
     <Compile Include="IPlaybackManager.cs" />
     <Compile Include="IVideoSurface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -47,9 +46,7 @@
     <Compile Include="EventArguments\BufferingChangedEventArgs.cs" />
     <Compile Include="EventArguments\PlayingChangedEventArgs.cs" />
     <Compile Include="EventArguments\StatusChangedEventArgs.cs" />
-    <Compile Include="Implementations\MediaPlayerStatus.cs" />
     <Compile Include="Implementations\MediaQueue.cs" />
-    <Compile Include="Implementations\MediaFileType.cs" />
     <Compile Include="Implementations\Helpers.cs" />
     <Compile Include="IAudioPlayer.cs" />
     <Compile Include="IVideoPlayer.cs" />
@@ -57,7 +54,6 @@
     <Compile Include="IMediaExtractor.cs" />
     <Compile Include="EventArguments\MediaFinishedEventArgs.cs" />
     <Compile Include="EventArguments\MediaFailedEventArgs.cs" />
-    <Compile Include="Implementations\RepeatType.cs" />
     <Compile Include="EventArguments\QueueMediaChangedEventArgs.cs" />
     <Compile Include="EventArguments\QueueEndedEventArgs.cs" />
     <Compile Include="Implementations\MediaManagerBase.cs" />
@@ -65,6 +61,15 @@
     <Compile Include="EventArguments\MediaFileFailedEventArgs.cs" />
     <Compile Include="Implementations\MediaFile.cs" />
     <Compile Include="EventArguments\MetadataChangedEventArgs.cs" />
+    <Compile Include="IVolumeManager.cs" />
+    <Compile Include="EventArguments\VolumeChangedEventArgs.cs" />
+    <Compile Include="Enums\MediaFileType.cs" />
+    <Compile Include="Enums\RepeatType.cs" />
+    <Compile Include="Enums\VideoAspectMode.cs" />
+    <Compile Include="Enums\MediaPlayerStatus.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Enums\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

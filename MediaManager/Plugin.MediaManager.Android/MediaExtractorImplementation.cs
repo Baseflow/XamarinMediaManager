@@ -6,6 +6,7 @@ using Android.Content.Res;
 using Android.Graphics;
 using Android.Media;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager

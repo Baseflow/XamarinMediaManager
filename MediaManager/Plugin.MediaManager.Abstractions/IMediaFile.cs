@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 
@@ -11,7 +12,6 @@ namespace Plugin.MediaManager.Abstractions
     /// <summary>
     /// Information about the mediafile
     /// </summary>
-    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public interface IMediaFile
     {
         /// <summary>

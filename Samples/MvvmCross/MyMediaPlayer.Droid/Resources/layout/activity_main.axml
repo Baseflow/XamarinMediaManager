@@ -10,4 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true" />
+    <FrameLayout
+        android:id="@+id/bottomsheetview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        local:behavior_hideable="false"
+        local:behavior_peekHeight="@dimen/miniplayer_height"
+        local:layout_behavior="@string/bottom_sheet_behavior">
+        <include
+            layout="@layout/fragment_miniplayer" />
+    </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

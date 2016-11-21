@@ -8,6 +8,7 @@ using Android.Content;
 using Android.Support.V4.Media.Session;
 using Java.Lang;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 using Plugin.MediaManager.MediaSession;

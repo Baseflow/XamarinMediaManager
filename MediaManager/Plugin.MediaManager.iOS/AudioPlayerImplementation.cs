@@ -8,6 +8,7 @@ using CoreFoundation;
 using CoreMedia;
 using Foundation;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 
@@ -15,6 +16,8 @@ namespace Plugin.MediaManager
 {
     public class AudioPlayerImplementation : NSObject, IAudioPlayer
     {
+        private readonly IVolumeManager _volumeManager;
+
         public static readonly NSString StatusObservationContext =
             new NSString("AVCustomEditPlayerViewControllerStatusObservationContext");
 
@@ -26,8 +29,9 @@ namespace Plugin.MediaManager
 
         public Dictionary<string, string> RequestHeaders { get; set; }
 
-        public AudioPlayerImplementation()
+        public AudioPlayerImplementation(IVolumeManager volumeManager)
         {
+            _volumeManager = volumeManager;
             _status = MediaPlayerStatus.Stopped;
 
             // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
@@ -38,6 +42,16 @@ namespace Plugin.MediaManager
                     (Status == MediaPlayerStatus.Playing))
                     Player.Play();
             };
+            _volumeManager.Mute = _player.Muted;
+            _volumeManager.CurrentVolume = _player.Volume;
+            _volumeManager.MaxVolume = 1;
+            _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
+        }
+
+        private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
+        {
+            _player.Volume = (float) volumeChangedEventArgs.Volume;
+            _player.Muted = volumeChangedEventArgs.Mute;
         }
 
         private AVPlayer Player
@@ -169,15 +183,18 @@ namespace Plugin.MediaManager
         {
             _player = new AVPlayer();
 
+            #if __IOS__ || __TVOS__
             var avSession = AVAudioSession.SharedInstance();
 
             // By setting the Audio Session category to AVAudioSessionCategorPlayback, audio will continue to play when the silent switch is enabled, or when the screen is locked.
             avSession.SetCategory(AVAudioSessionCategory.Playback);
 
+
             NSError activationError = null;
             avSession.SetActive(true, out activationError);
             if (activationError != null)
                 Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
+            #endif
 
             Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {

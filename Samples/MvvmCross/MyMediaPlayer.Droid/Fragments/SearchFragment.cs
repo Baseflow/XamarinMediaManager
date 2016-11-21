@@ -1,7 +1,4 @@
-﻿using Android.App;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
+﻿using Android.Runtime;
 using MvvmCross.Droid.Shared.Attributes;
 using MyMediaPlayer.Core.ViewModels;
 

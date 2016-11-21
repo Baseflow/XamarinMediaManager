@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using AVFoundation;
 using Foundation;
 using Plugin.MediaManager.Abstractions;
+#if __IOS__ || __TVOS__
 using UIKit;
+#endif
 
 namespace Plugin.MediaManager
 {
@@ -40,8 +42,10 @@ namespace Plugin.MediaManager
                     }
                     else if (avMetadataItem.CommonKey == AVMetadata.CommonKeyArtwork)
                     {
+                        #if __IOS__ || __TVOS__
                         var image = UIImage.LoadFromData(avMetadataItem.DataValue);
                         mediaFile.Metadata.AlbumArt = image;
+                        #endif
                     }
                 }
                 mediaFile.MetadataExtracted = true;

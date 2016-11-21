@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 using System.Threading;
@@ -20,6 +21,7 @@ namespace Plugin.MediaManager
 {
     public class VideoPlayerImplementation : IVideoPlayer
     {
+        private readonly IVolumeManager _volumeManager;
         private readonly MediaPlayer _player;
         private readonly Timer _playProgressTimer;
         private MediaSource _currentMediaSource;
@@ -29,8 +31,9 @@ namespace Plugin.MediaManager
         private SpriteVisual _spriteVisual;
         private IVideoSurface _renderSurface;
 
-        public VideoPlayerImplementation()
+        public VideoPlayerImplementation(IVolumeManager volumeManager)
         {
+            _volumeManager = volumeManager;
             _player = new MediaPlayer();
 
             _playProgressTimer = new Timer(state =>
@@ -99,7 +102,18 @@ namespace Plugin.MediaManager
 
             _player.PlaybackSession.SeekCompleted += (sender, args) => { };
             _player.MediaOpened += (sender, args) => { _loadMediaTaskCompletionSource.SetResult(true); };
+            _volumeManager.CurrentVolume = (float)_player.Volume;
+            _volumeManager.Mute = _player.IsMuted;
+            _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
         }
+
+        private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
+        {
+            _player.Volume = (double)volumeChangedEventArgs.Volume;
+            _player.IsMuted = volumeChangedEventArgs.Mute;
+        }
+
+        public Dictionary<string, string> RequestHeaders { get; set; }
 
         public MediaPlayerStatus Status
         {
@@ -197,8 +211,15 @@ namespace Plugin.MediaManager
         public IVideoSurface RenderSurface
         {
             get { return _renderSurface; }
-            private set
+            set
             {
+                if (!(value is VideoSurface))
+                    throw new ArgumentException("Not a valid video surface");
+
+                _renderSurface = (VideoSurface)value;
+
+                SetVideoSurface((VideoSurface)_renderSurface);
+
                 if (_renderSurface != value)
                 {
                     var canvas = _renderSurface as Canvas;
@@ -223,14 +244,8 @@ namespace Plugin.MediaManager
             _spriteVisual.Size = new Vector2((float)newSize.Width, (float)newSize.Height);
         }
 
-        public void SetVideoSurface(IVideoSurface videoSurface)
+        private void SetVideoSurface(VideoSurface canvas)
         {
-            if (!(videoSurface is VideoSurface))
-                throw new ArgumentException("Not a valid video surface");
-
-            var canvas = (VideoSurface) videoSurface;
-            RenderSurface = canvas;
-            
             var size = new Size(canvas.ActualWidth, canvas.ActualHeight);
             _player.SetSurfaceSize(size);
 
@@ -250,11 +265,7 @@ namespace Plugin.MediaManager
             ElementCompositionPreview.SetElementChildVisual(canvas, container);
         }
 
-        public VideoAspectMode AspectMode { get; }
-
-        public void SetAspectMode(VideoAspectMode aspectMode)
-        {
-        }
+        public VideoAspectMode AspectMode { get; set; }
 
         private async Task<MediaSource> CreateMediaSource(string url, MediaFileType fileType)
         {

@@ -15,6 +15,7 @@
 
     <dimen name="miniplayer_height">55dp</dimen>
     <dimen name="album_image_height">276dp</dimen>
+	<dimen name="fragment_player_picture_hight">320dp</dimen>
 
 	<!-- font definitions -->
     <dimen name="text_tinier">11sp</dimen>

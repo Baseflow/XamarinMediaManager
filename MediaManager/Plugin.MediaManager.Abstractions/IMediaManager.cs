@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 
@@ -41,6 +42,11 @@ namespace Plugin.MediaManager.Abstractions
         /// Extracts media information to put it into an IMediaFile
         /// </summary>
         IMediaExtractor MediaExtractor { get; set; }
+
+        /// <summary>
+        /// Used to manage the volume
+        /// </summary>
+        IVolumeManager VolumeManager { get; set; }
 
         /// <summary>
         /// Raised when media is finished playing.

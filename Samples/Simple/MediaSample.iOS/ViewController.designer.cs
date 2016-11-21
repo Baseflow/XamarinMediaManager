@@ -5,7 +5,6 @@
 // Manual changes to this file will not be maintained.
 //
 using Foundation;
-using Plugin.MediaManager.iOS;
 using System;
 using System.CodeDom.Compiler;
 using UIKit;

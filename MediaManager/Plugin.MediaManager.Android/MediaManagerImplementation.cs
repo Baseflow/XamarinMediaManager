@@ -38,6 +38,8 @@ namespace Plugin.MediaManager
             set { _mediaExtraxtor = value; }
         }
 
+        public override IVolumeManager VolumeManager { get; set; } = new VolumeManagerImplementation();
+
         public MediaSessionManager MediaSessionManager { get; set; } = new MediaSessionManager(Application.Context);
 
         private async void HandleNotificationActions(object sender, string action)
