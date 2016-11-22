@@ -52,11 +52,11 @@ namespace Plugin.MediaManager.MediaSession
                     RemoteComponentName = new ComponentName(packageName, new RemoteControlBroadcastReceiver().ComponentName);
                     mediaSessionCompat = new MediaSessionCompat(applicationContext, "XamarinStreamingAudio", RemoteComponentName, pIntent);
                     mediaControllerCompat = new MediaControllerCompat(applicationContext, mediaSessionCompat.SessionToken);
+                    NotificationManager = new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, _serviceType);
                 }
                 mediaSessionCompat.Active = true;
                 mediaSessionCompat.SetCallback(binder.GetMediaPlayerService<MediaServiceBase>().AlternateRemoteCallback ?? new MediaSessionCallback(this));
                 mediaSessionCompat.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons | MediaSessionCompat.FlagHandlesTransportControls);
-                NotificationManager = new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, _serviceType);
                 _packageName = packageName;
                 _binder = binder;
             }
