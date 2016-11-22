@@ -26,7 +26,7 @@ namespace Plugin.MediaManager.MediaSession
 
         internal int MediaPlayerState => mediaControllerCompat?.PlaybackState?.State ?? PlaybackStateCompat.StateNone;
 
-        internal MediaSessionCompat CurrentSession => mediaSessionCompat;
+        public MediaSessionCompat CurrentSession => mediaSessionCompat;
 
         internal Context ApplicationContext => applicationContext;
 
