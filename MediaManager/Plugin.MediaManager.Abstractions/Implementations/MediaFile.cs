@@ -16,6 +16,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             Url = url;
             Type = type;
             Metadata = new MediaFileMetadata();
+            Id = Guid.NewGuid();
         }
 
         public Guid Id { get; set; } = Guid.NewGuid();

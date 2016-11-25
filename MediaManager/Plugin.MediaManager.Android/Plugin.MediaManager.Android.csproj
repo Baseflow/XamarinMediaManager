@@ -74,6 +74,7 @@
     <Compile Include="MediaPlayerService\MediaPlayerService.cs" />
     <Compile Include="MediaSession\MediaNotificationManagerImplementation.cs" />
     <Compile Include="MediaPlayerService\MediaServiceConnection.cs" />
+    <Compile Include="MediaSession\MediaSessionCallback.cs" />
     <Compile Include="MediaSession\MediaSessionManager.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

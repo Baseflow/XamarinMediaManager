@@ -1,9 +1,9 @@
-﻿using System;
-using Plugin.MediaManager.Abstractions.Enums;
-using Plugin.MediaManager.Abstractions.Implementations;
-
-namespace Plugin.MediaManager.Abstractions
+﻿namespace Plugin.MediaManager.Abstractions
 {
+
+    using Plugin.MediaManager.Abstractions.Enums;
+    using Plugin.MediaManager.Abstractions.Implementations;
+
     /// <summary>
     /// Manages the notifications to the native platform
     /// </summary>
