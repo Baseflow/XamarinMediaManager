@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         local:behavior_hideable="false"
-        local:behavior_peekHeight="@dimen/miniplayer_height"
+        local:behavior_peekHeight="?attr/actionBarSize"
         local:layout_behavior="@string/bottom_sheet_behavior">
         <include
             layout="@layout/fragment_miniplayer" />
