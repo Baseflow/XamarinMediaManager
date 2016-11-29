@@ -28,5 +28,10 @@ namespace Plugin.MediaManager
 		protected VideoSurface (IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
 		{
 		}
+
+		protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
+		{
+			base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+		}
     }
 }
