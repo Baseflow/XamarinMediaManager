@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Plugin.MediaManager.Reactive</id>
-        <version>0.1.0</version>
+        <version>0.1.1</version>
         <title>Reactive Extensions for MediaManager</title>
         <authors>Martijn van Dijk</authors>
         <owners>Martijn van Dijk</owners>
@@ -14,7 +14,7 @@
         <summary>MediaManager for playing cross platform media in Xamarin</summary>
         <tags>xamarin, monodroid, C#, xamarin.android, android, ios, uwp, Windows, tvOS, Mac, MacOS, mediaplayer, audio, video, streaming, background, media</tags>
         <dependencies>
-			<dependency id="Plugin.MediaManager" version="0.1.0" />
+			<dependency id="Plugin.MediaManager" version="0.1.1" />
 			<dependency id="System.Reactive" version="3.0.0" />
         </dependencies>
     </metadata>
