@@ -30,6 +30,8 @@ namespace Plugin.MediaManager
 			StatusChanged += (sender, args) => OnPlayingHandler(args);
         }
 
+		private bool isPlayerReady = false;
+
 		private IScheduledExecutorService _executorService = Executors.NewSingleThreadScheduledExecutor();
 		private IScheduledFuture _scheduledFuture;
 
@@ -156,7 +158,7 @@ namespace Plugin.MediaManager
         public TimeSpan Position => VideoViewCanvas == null ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.CurrentPosition);
 		private int lastPosition = 0;
 
-        private MediaPlayerStatus _status;
+		private MediaPlayerStatus _status = MediaPlayerStatus.Stopped;
         public MediaPlayerStatus Status
         {
             get { return _status; }
@@ -194,16 +196,28 @@ namespace Plugin.MediaManager
 
         public async Task Play(IMediaFile mediaFile = null)
         {
-            if (VideoViewCanvas == null)
+			if (VideoViewCanvas == null)
+				throw new System.Exception("No canvas set for video to play in");
+
+			if (isPlayerReady == false)
             {
-                await Task.Delay(100);
+                //await Task.Delay(100);
                 Init();
+				isPlayerReady = true;
             }
+
+			if (mediaFile == null || (mediaFile != null && string.IsNullOrEmpty(mediaFile.Url)))
+			{
+				return;
+			}
 
             if (mediaFile != null && CurrentFile != mediaFile)
             {
                 CurrentFile = mediaFile;
                 currentUri = Android.Net.Uri.Parse(mediaFile.Url);
+				VideoViewCanvas.StopPlayback();
+				//VideoViewCanvas.Suspend();
+				Status = MediaPlayerStatus.Stopped;
             }
 
             if (Status == MediaPlayerStatus.Paused)
@@ -211,6 +225,7 @@ namespace Plugin.MediaManager
 				//We are simply paused so just continue
 				VideoViewCanvas.SeekTo(lastPosition);
 				VideoViewCanvas.Start();
+				Status = MediaPlayerStatus.Playing;
                 return;
             }
 
