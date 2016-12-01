@@ -7,6 +7,7 @@ using Plugin.MediaManager.Abstractions;
 
 namespace Plugin.MediaManager
 {
+	[Register("plugin.mediamanager.VideoSurface")]
     public class VideoSurface : VideoView, IVideoSurface
     {
         public VideoSurface(Context context) : base(context)
