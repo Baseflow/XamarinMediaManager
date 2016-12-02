@@ -261,7 +261,8 @@ namespace Plugin.MediaManager.ExoPlayer
         {
             var handler = new Handler();
             var runnable = new Runnable(() => { handler.Post(OnBuffering); });
-            if (!_executorService.IsShutdown) _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
+            if (!_executorService.IsShutdown)
+                _scheduledFuture = _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
         }
 
         private void OnBuffering()
