@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content.Res;
 using Android.Media;
+using Android.OS;
 using Android.Runtime;
 using Android.Widget;
+using Java.Lang;
+using Java.Util.Concurrent;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
@@ -24,7 +27,51 @@ namespace Plugin.MediaManager
         public VideoPlayerImplementation()
         {
             _status = MediaPlayerStatus.Stopped;
+			StatusChanged += (sender, args) => OnPlayingHandler(args);
         }
+
+		private bool isPlayerReady = false;
+
+		private IScheduledExecutorService _executorService = Executors.NewSingleThreadScheduledExecutor();
+		private IScheduledFuture _scheduledFuture;
+
+		private void OnPlayingHandler(StatusChangedEventArgs args)
+		{
+			if (args.Status == MediaPlayerStatus.Playing)
+			{
+				CancelPlayingHandler();
+				StartPlayingHandler();
+			}
+			if (args.Status == MediaPlayerStatus.Stopped || args.Status == MediaPlayerStatus.Failed || args.Status == MediaPlayerStatus.Paused)
+				CancelPlayingHandler();
+		}
+
+		private void CancelPlayingHandler()
+		{
+			_scheduledFuture?.Cancel(false);
+		}
+
+		private void StartPlayingHandler()
+		{
+			var handler = new Handler();
+			var runnable = new Runnable(() => { handler.Post(OnPlaying); });
+			if (!_executorService.IsShutdown)
+			{
+				_scheduledFuture = _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
+			}
+		}
+
+		private void OnPlaying()
+		{
+			var progress = (Position.TotalSeconds / Duration.TotalSeconds) * 100;
+			var position = Position;
+			var duration = Duration;
+
+			PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(
+				progress >= 0 ? progress : 0,
+				position.TotalSeconds >= 0 ? position : TimeSpan.Zero,
+				duration.TotalSeconds >= 0 ? duration : TimeSpan.Zero));
+		}
 
         private IVideoSurface _renderSurface;
         public IVideoSurface RenderSurface { 
@@ -40,12 +87,24 @@ namespace Plugin.MediaManager
             }
         }
 
-        public VideoAspectMode AspectMode { get; set; }
+		private VideoAspectMode _aspectMode;
+		public VideoAspectMode AspectMode { 
+			get
+			{
+				return _aspectMode;
+			}
+			set {
+				//TODO: Wrap videoplayer to respect aspectmode
+				_aspectMode = value;
+			} 
+		}
 
         VideoView VideoViewCanvas => RenderSurface as VideoView;
 
         public IMediaFile CurrentFile { get; set; }
         private Android.Net.Uri currentUri { get; set; }
+
+		public Dictionary<string, string> RequestHeaders { get; set; }
 
         public bool UseNativeControls = false;
 
@@ -57,25 +116,62 @@ namespace Plugin.MediaManager
         public event PlayingChangedEventHandler PlayingChanged;
         public event StatusChangedEventHandler StatusChanged;
 
+		protected virtual void OnStatusChanged(StatusChangedEventArgs e)
+		{
+			StatusChanged?.Invoke(this, e);
+		}
+
+		protected virtual void OnPlayingChanged(PlayingChangedEventArgs e)
+		{
+			PlayingChanged?.Invoke(this, e);
+		}
+
+		protected virtual void OnBufferingChanged(BufferingChangedEventArgs e)
+		{
+			BufferingChanged?.Invoke(this, e);
+		}
+
+		protected virtual void OnMediaFinished(MediaFinishedEventArgs e)
+		{
+			MediaFinished?.Invoke(this, e);
+		}
+
+		protected virtual void OnMediaFailed(MediaFailedEventArgs e)
+		{
+			MediaFailed?.Invoke(this, e);
+		}
+
+		protected virtual void OnMediaFileChanged(MediaFileChangedEventArgs e)
+		{
+			MediaFileChanged?.Invoke(this, e);
+		}
+
+		protected virtual void OnMediaFileFailed(MediaFileFailedEventArgs e)
+		{
+			MediaFileFailed?.Invoke(this, e);
+		}
+
         public TimeSpan Buffered => VideoViewCanvas == null ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.BufferPercentage);
 
         public TimeSpan Duration => VideoViewCanvas == null ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.Duration);
 
         public TimeSpan Position => VideoViewCanvas == null ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.CurrentPosition);
+		private int lastPosition = 0;
 
-        private MediaPlayerStatus _status;
+		private MediaPlayerStatus _status = MediaPlayerStatus.Stopped;
         public MediaPlayerStatus Status
         {
             get { return _status; }
             private set
             {
                 _status = value;
-                StatusChanged?.Invoke(this, new StatusChangedEventArgs(_status));
+				OnStatusChanged(new StatusChangedEventArgs(_status));
             }
         }
 
         public async Task Pause()
         {
+			lastPosition = VideoViewCanvas.CurrentPosition;
             VideoViewCanvas.Pause();
             Status = MediaPlayerStatus.Paused;
             await Task.CompletedTask;
@@ -83,6 +179,8 @@ namespace Plugin.MediaManager
 
         public void Init()
         {
+			Status = MediaPlayerStatus.Loading;
+
             if (UseNativeControls)
             {
                 var mediaController = new MediaController(((VideoView)RenderSurface).Context);
@@ -98,37 +196,47 @@ namespace Plugin.MediaManager
 
         public async Task Play(IMediaFile mediaFile = null)
         {
-            if (VideoViewCanvas == null)
+			if (VideoViewCanvas == null)
+				throw new System.Exception("No canvas set for video to play in");
+
+			if (isPlayerReady == false)
             {
-                await Task.Delay(100);
+                //await Task.Delay(100);
                 Init();
+				isPlayerReady = true;
             }
 
-            if (mediaFile != null)
+			if (mediaFile == null || (mediaFile != null && string.IsNullOrEmpty(mediaFile.Url)))
+			{
+				return;
+			}
+
+            if (mediaFile != null && CurrentFile != mediaFile)
             {
                 CurrentFile = mediaFile;
                 currentUri = Android.Net.Uri.Parse(mediaFile.Url);
+				VideoViewCanvas.StopPlayback();
+				//VideoViewCanvas.Suspend();
+				Status = MediaPlayerStatus.Stopped;
             }
 
             if (Status == MediaPlayerStatus.Paused)
             {
-                Status = MediaPlayerStatus.Playing;
-                //We are simply paused so just continue
-                VideoViewCanvas.Resume();
+				//We are simply paused so just continue
+				VideoViewCanvas.SeekTo(lastPosition);
+				VideoViewCanvas.Start();
+				Status = MediaPlayerStatus.Playing;
                 return;
             }
 
             try
             {
                 Status = MediaPlayerStatus.Buffering;
-
-                VideoViewCanvas.SetVideoURI(currentUri);
-                VideoViewCanvas.Start();
-                Status = MediaPlayerStatus.Playing;
+				VideoViewCanvas.SetVideoURI(currentUri, RequestHeaders);
             }
-            catch(Exception ex)
+            catch(System.Exception ex)
             {
-                MediaFailed?.Invoke(this, new MediaFailedEventArgs(ex.Message, ex));
+				OnMediaFailed(new MediaFailedEventArgs(ex.Message, ex));
                 Status = MediaPlayerStatus.Stopped;
             }
         }
@@ -139,8 +247,6 @@ namespace Plugin.MediaManager
             await Task.CompletedTask;
         }
 
-        public Dictionary<string, string> RequestHeaders { get; set; }
-
         public async Task Stop()
         {
             VideoViewCanvas.StopPlayback();
@@ -150,25 +256,52 @@ namespace Plugin.MediaManager
 
         public void OnCompletion(MediaPlayer mp)
         {
-            MediaFinished?.Invoke(this, new MediaFinishedEventArgs(CurrentFile));
+            OnMediaFinished(new MediaFinishedEventArgs(CurrentFile));
         }
 
         public bool OnError(MediaPlayer mp, MediaError what, int extra)
         {
-            Stop();
+			Stop().Wait();
             Status = MediaPlayerStatus.Failed;
+			OnMediaFailed(new MediaFailedEventArgs(what.ToString(), new System.Exception()));
             return true;
         }
 
         public void OnPrepared(MediaPlayer mp)
         {
+			if(Status == MediaPlayerStatus.Buffering)
+				VideoViewCanvas.Start();
+
             Status = MediaPlayerStatus.Playing;
         }
 
         public bool OnInfo(MediaPlayer mp, [GeneratedEnum] MediaInfo what, int extra)
         {
-            var test = mp.Duration;
-            return true;
+			switch (what)
+			{
+				case MediaInfo.BadInterleaving:
+					break;
+				case MediaInfo.BufferingEnd:
+					break;
+				case MediaInfo.BufferingStart:
+					break;
+				case MediaInfo.MetadataUpdate:
+					break;
+				case MediaInfo.NotSeekable:
+					break;
+				case MediaInfo.SubtitleTimedOut:
+					break;
+				case MediaInfo.Unknown:
+					break;
+				case MediaInfo.UnsupportedSubtitle:
+					break;
+				case MediaInfo.VideoRenderingStart:
+					break;
+				case MediaInfo.VideoTrackLagging:
+					break;
+			}
+
+			return true;
         }
     }
 }

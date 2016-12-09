@@ -15,14 +15,13 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         {
             Url = url;
             Type = type;
-            Metadata = new MediaFileMetadata();
         }
 
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public MediaFileType Type { get; set; }
 
-        public IMediaFileMetadata Metadata { get; set; }
+        public IMediaFileMetadata Metadata { get; set; } = new MediaFileMetadata();
 
         public string Url { get; set; }
 

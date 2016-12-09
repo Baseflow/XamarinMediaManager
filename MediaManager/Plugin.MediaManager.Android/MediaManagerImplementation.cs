@@ -17,6 +17,7 @@ namespace Plugin.MediaManager
 
         private IAudioPlayer _audioPlayer;
         private IMediaExtractor _mediaExtraxtor;
+        private MediaSessionManager _sessionManager;
 
         public override IAudioPlayer AudioPlayer
         {
@@ -38,9 +39,16 @@ namespace Plugin.MediaManager
             set { _mediaExtraxtor = value; }
         }
 
+        public MediaSessionManager MediaSessionManager
+        {
+            get { return _sessionManager ?? (_sessionManager = new MediaSessionManager(Application.Context, typeof(MediaPlayerService))); }
+            set
+            {
+                _sessionManager = value;
+                _sessionManager.OnNotificationActionFired += HandleNotificationActions;
+            }
+        }
         public override IVolumeManager VolumeManager { get; set; } = new VolumeManagerImplementation();
-
-        public MediaSessionManager MediaSessionManager { get; set; } = new MediaSessionManager(Application.Context);
 
         private async void HandleNotificationActions(object sender, string action)
         {

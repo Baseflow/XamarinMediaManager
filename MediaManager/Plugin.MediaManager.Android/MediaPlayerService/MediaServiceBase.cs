@@ -165,7 +165,7 @@ namespace Plugin.MediaManager
 
         public void HandleIntent(Intent intent)
         {
-            if (intent?.Action == null)
+            if (intent?.Action == null || SessionManager == null)
                 return;
 
             SessionManager?.HandleAction(intent?.Action);
@@ -180,7 +180,8 @@ namespace Plugin.MediaManager
             {
                 wifiLock = wifiManager.CreateWifiLock(WifiMode.Full, "xamarin_wifi_lock");
             }
-            wifiLock.Acquire();
+            if(!wifiLock.IsHeld)
+                wifiLock.Acquire();
         }
 
         /// <summary>
@@ -330,13 +331,23 @@ namespace Plugin.MediaManager
         /// <param name="mediaFile">The media file.</param>
         private async Task<bool> CheckIfFileAlreadyIsPlaying(IMediaFile mediaFile)
         {
-            if (CurrentFile != null && !string.IsNullOrEmpty(mediaFile?.Url) && mediaFile?.Url == CurrentFile?.Url && MediaPlayerState != PlaybackStateCompat.StatePaused)
+
+            var isNewFile = CurrentFile == null || string.IsNullOrEmpty(mediaFile?.Url)
+                                   || mediaFile?.Url != CurrentFile?.Url;
+
+            //New File selected
+            if (isNewFile)
+                return await Task.FromResult(false);
+
+            //Same file selected => seek to start
+            if (MediaPlayerState != PlaybackStateCompat.StatePaused && !ManuallyPaused)
             {
                 await Seek(TimeSpan.Zero);
                 return await Task.FromResult(true);
             }
             
-            if (MediaPlayerState == PlaybackStateCompat.StatePaused)
+            //just paused.. restart playback!
+            if (MediaPlayerState == PlaybackStateCompat.StatePaused && ManuallyPaused)
             {
                 ManuallyPaused = false;
                 SessionManager.UpdatePlaybackState(PlaybackStateCompat.StatePlaying, Position.Seconds);
@@ -349,7 +360,7 @@ namespace Plugin.MediaManager
 
             return await Task.FromResult(false);
         }
-
+        
         private bool ValidateMediaFile(IMediaFile mediaFile)
         {
             if (CurrentFile != null || mediaFile != null) return true;

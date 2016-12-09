@@ -6,7 +6,9 @@ using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
-    
+
+    using System;
+
     public delegate void MediaFileChangedEventHandler(object sender, MediaFileChangedEventArgs e);
 
     public delegate void MediaFileFailedEventHandler(object sender, MediaFileFailedEventArgs e);
@@ -57,7 +59,7 @@ namespace Plugin.MediaManager.Abstractions
         /// Raised when mediadata of MediaFile failed to update
         /// </summary>
         event MediaFileFailedEventHandler MediaFileFailed;
-
+        
         /// <summary>
         /// Creates new MediaFile object, adds it to the queue and starts playing
         /// </summary>
@@ -74,7 +76,7 @@ namespace Plugin.MediaManager.Abstractions
         /// Maybe you'll want to keep the last song in memory ...
         /// </summary>
         Task PlayPrevious();
-
+        
         /// <summary>
         /// Start playing a track by its position in the Queue
         /// </summary>
@@ -89,5 +91,12 @@ namespace Plugin.MediaManager.Abstractions
         /// Start playing if nothing is playing, otherwise it pauses the current media
         /// </summary>
         Task PlayPause();
+
+        /// <summary>
+        /// Sets a function which gets called before the track is played
+        /// </summary>
+        /// <param name="beforePlay">The before play.</param>
+        void SetOnBeforePlay(Func<IMediaFile, Task> beforePlay);
+
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Plugin.MediaManager.Abstractions.EventArguments;
+﻿using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager.Abstractions
 {

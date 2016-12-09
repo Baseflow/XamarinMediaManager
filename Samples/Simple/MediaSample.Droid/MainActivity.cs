@@ -15,6 +15,9 @@ using System.Collections.Generic;
 
 namespace MediaSample.Droid
 {
+
+    using Plugin.MediaManager.Abstractions.Enums;
+
     [Activity(Label = "MediaSample.Droid",
          MainLauncher = true,
          Icon = "@drawable/icon_play",

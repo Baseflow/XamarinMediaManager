@@ -41,11 +41,6 @@ namespace MyMediaPlayer.Droid
             {
                 mBottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
             };
-
-            var closeButton = FindViewById<ImageView>(Resource.Id.closebutton);
-            closeButton.Click += (sender, e) => { 
-                mBottomSheetBehavior.State = BottomSheetBehavior.StateCollapsed;
-            };
         }
 
         private class PlayerBehavior : BottomSheetBehavior.BottomSheetCallback

@@ -15,6 +15,11 @@ using Plugin.MediaManager.MediaSession;
 
 namespace Plugin.MediaManager
 {
+
+    using Android.OS;
+
+    using Java.Util.Concurrent;
+
     public delegate IMediaFile GetNextSong();
     public class AudioPlayerBase<TService> : IAudioPlayer where TService : MediaServiceBase
     {
@@ -30,7 +35,9 @@ namespace Plugin.MediaManager
         private MediaServiceConnection<TService> mediaPlayerServiceConnection;
         private Intent mediaPlayerServiceIntent;
         private MediaSessionManager _sessionManager;
-        private CancellationTokenSource _onPlayingCancellationSource = new CancellationTokenSource();
+
+        private IScheduledExecutorService _executorService = Executors.NewSingleThreadScheduledExecutor();
+        private IScheduledFuture _scheduledFuture;
 
         private bool isBound;
 
@@ -171,30 +178,25 @@ namespace Plugin.MediaManager
             if (args.Status == MediaPlayerStatus.Playing)
             {
                 CancelPlayingHandler();
-                Task.Run(() => OnPlaying(), _onPlayingCancellationSource.Token);
+                StartPlayingHandler();
             }
-            if (args.Status == MediaPlayerStatus.Stopped || args.Status == MediaPlayerStatus.Failed)
+            if (args.Status == MediaPlayerStatus.Stopped || args.Status == MediaPlayerStatus.Failed || args.Status == MediaPlayerStatus.Paused)
                 CancelPlayingHandler();
         }
 
         private void CancelPlayingHandler()
         {
-            bool canBeCancelled;
-            try
-            {
-                canBeCancelled = _onPlayingCancellationSource.Token.CanBeCanceled;
-            }
-            catch (ObjectDisposedException)
-            {
-                canBeCancelled = false;
-            }
+            _scheduledFuture?.Cancel(false);
+        }
 
-            if (canBeCancelled)
-            {
-                _onPlayingCancellationSource.Cancel();
-                _onPlayingCancellationSource.Dispose();
-            }
-            _onPlayingCancellationSource = new CancellationTokenSource();
+        private void StartPlayingHandler()
+        {
+            var handler = new Handler();
+            var runnable = new Runnable(() => { handler.Post(OnPlaying); });
+			if (!_executorService.IsShutdown)
+			{
+				_scheduledFuture = _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
+			}
         }
 
         private void OnPlaying()
@@ -202,16 +204,6 @@ namespace Plugin.MediaManager
             var progress = (Position.TotalSeconds/Duration.TotalSeconds) * 100;
             var position = Position;
             var duration = Duration;
-           
-            if (Status == MediaPlayerStatus.Playing || Status == MediaPlayerStatus.Buffering)
-                Task.Delay(500).ContinueWith(task => OnPlaying(), _onPlayingCancellationSource.Token);
-
-            if (Status == MediaPlayerStatus.Stopped || Status == MediaPlayerStatus.Failed)
-            {
-                duration = TimeSpan.Zero;
-                position = TimeSpan.Zero;
-                progress = 0;
-            }
 
             PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(
                 progress >= 0 ? progress : 0, 

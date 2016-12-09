@@ -12,9 +12,9 @@ namespace Plugin.MediaManager
 		/// gets the class name for the component
 		/// </summary>
 		/// <value>The name of the component.</value>
-		public string ComponentName { get { return this.Class.Name; } }
+		public string ComponentName => Class.Name;
 
-		/// <Docs>The Context in which the receiver is running.</Docs>
+	    /// <Docs>The Context in which the receiver is running.</Docs>
 		/// <summary>
 		/// When we receive the action media button intent
 		/// parse the key event and tell our service what to do.
