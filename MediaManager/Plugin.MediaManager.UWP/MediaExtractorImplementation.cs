@@ -4,7 +4,7 @@ using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.UI.Xaml.Media.Imaging;
 using Plugin.MediaManager.Abstractions;
-using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.Abstractions.Enums;
 
 namespace Plugin.MediaManager
 {
