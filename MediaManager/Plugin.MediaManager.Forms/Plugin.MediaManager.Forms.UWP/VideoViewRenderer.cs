@@ -1,4 +1,4 @@
-﻿using Plugin.MediaManager.Abstractions.Implementations;
+﻿using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Forms;
 using Plugin.MediaManager.Forms.UWP;
 using Xamarin.Forms.Platform.UWP;

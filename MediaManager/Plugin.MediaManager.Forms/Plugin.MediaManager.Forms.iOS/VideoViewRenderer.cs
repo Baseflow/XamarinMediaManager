@@ -1,9 +1,7 @@
 ﻿using System;
-using CoreGraphics;
 using Foundation;
 using Plugin.MediaManager.Forms;
 using Plugin.MediaManager.Forms.iOS;
-using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 

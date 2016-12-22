@@ -7,8 +7,8 @@ using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
