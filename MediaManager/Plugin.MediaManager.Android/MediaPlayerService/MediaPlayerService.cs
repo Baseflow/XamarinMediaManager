@@ -101,11 +101,17 @@ namespace Plugin.MediaManager
         public override async Task Play(IMediaFile mediaFile = null)
         {
             await base.Play(mediaFile);
+
             try
             {
                 _mediaPlayer.PrepareAsync();
             }
-            catch (Java.Lang.IllegalStateException) { }
+            catch (Java.Lang.IllegalStateException)
+            {
+                _mediaPlayer.Reset();
+                await SetMediaPlayerDataSource();
+                _mediaPlayer.PrepareAsync();
+            }
         }
 
         public override Task TogglePlayPause(bool forceToPlay)
@@ -234,7 +240,7 @@ namespace Plugin.MediaManager
 
         public bool OnError(MediaPlayer mp, MediaError what, int extra)
         {
-            SessionManager.UpdatePlaybackState(PlaybackStateCompat.StateError, Position.Seconds, Enum.GetName(typeof(MediaError),what));
+            SessionManager.UpdatePlaybackState(PlaybackStateCompat.StateError, Position.Seconds, Enum.GetName(typeof(MediaError), what));
             Stop();
             return true;
         }
