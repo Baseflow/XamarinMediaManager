@@ -5,6 +5,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Plugin.MediaManager;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 
@@ -22,7 +23,7 @@ namespace MediaSample.UWP
             InitializeComponent();
             CrossMediaManager.Current.PlayingChanged += OnPlayingChanged;
             CrossMediaManager.Current.StatusChanged += OnStatusChanged;
-            CrossMediaManager.Current.VideoPlayer.SetVideoSurface(VideoCanvas);
+            CrossMediaManager.Current.VideoPlayer.RenderSurface = VideoCanvas;
             CrossMediaManager.Current.MediaFileChanged += CurrentOnMediaFileChanged;
         }
 
@@ -36,9 +37,9 @@ namespace MediaSample.UWP
             {
                 case MediaFileType.AudioUrl:
                 case MediaFileType.AudioFile:
-                    if (mediaFile.Metadata.Cover != null)
+                    if (mediaFile.Metadata.AlbumArt!= null)
                     {
-                        CoverArt.Source = (ImageSource) mediaFile.Metadata.Cover;
+                        CoverArt.Source = (ImageSource) mediaFile.Metadata.AlbumArt;
                     }
                     break;
                 case MediaFileType.VideoUrl:
@@ -92,10 +93,10 @@ namespace MediaSample.UWP
 
         private async void PlayUrl(object sender, RoutedEventArgs e)
         {
-            //await CrossMediaManager.Current.Play(@"http://www.montemagno.com/sample.mp3", MediaFileType.AudioUrl);
+            await CrossMediaManager.Current.Play(@"http://www.montemagno.com/sample.mp3", MediaFileType.AudioUrl);
             //var file = await KnownFolders.VideosLibrary.GetFileAsync("big_buck_bunny.mp4");
             //await CrossMediaManager.Current.Play(file.Path, MediaFileType.VideoFile);
-            await CrossMediaManager.Current.Play(@"http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", MediaFileType.VideoUrl);
+            //await CrossMediaManager.Current.Play(@"http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", MediaFileType.VideoUrl);
         }
 
         private async void Pause(object sender, RoutedEventArgs e)

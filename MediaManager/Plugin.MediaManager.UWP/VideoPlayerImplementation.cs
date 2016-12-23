@@ -14,8 +14,8 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
