@@ -2,7 +2,7 @@
 using Windows.Media;
 using Windows.Storage;
 using Plugin.MediaManager.Abstractions;
-using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.Abstractions.Enums;
 
 namespace Plugin.MediaManager
 {
