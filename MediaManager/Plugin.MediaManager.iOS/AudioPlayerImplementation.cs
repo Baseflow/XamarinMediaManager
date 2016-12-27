@@ -42,16 +42,16 @@ namespace Plugin.MediaManager
                     (Status == MediaPlayerStatus.Playing))
                     Player.Play();
             };
-            _volumeManager.Mute = _player.Muted;
-            _volumeManager.CurrentVolume = _player.Volume;
+            _volumeManager.Mute = Player.Muted;
+            _volumeManager.CurrentVolume = Player.Volume;
             _volumeManager.MaxVolume = 1;
             _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
         }
 
         private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
         {
-            _player.Volume = (float) volumeChangedEventArgs.Volume;
-            _player.Muted = volumeChangedEventArgs.Mute;
+            Player.Volume = (float) volumeChangedEventArgs.Volume;
+            Player.Muted = volumeChangedEventArgs.Mute;
         }
 
         private AVPlayer Player
@@ -198,7 +198,7 @@ namespace Plugin.MediaManager
 
             Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {
-                var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
+                var totalDuration = TimeSpan.FromSeconds(Player.CurrentItem.Duration.Seconds);
                 var totalProgress = Position.TotalMilliseconds/
                                     totalDuration.TotalMilliseconds;
                 PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position, Duration));
@@ -302,12 +302,12 @@ namespace Plugin.MediaManager
 
         private void ObserveLoadedTimeRanges()
         {
-            var loadedTimeRanges = _player.CurrentItem.LoadedTimeRanges;
+            var loadedTimeRanges = Player.CurrentItem.LoadedTimeRanges;
             if (loadedTimeRanges.Length > 0)
             {
                 var range = loadedTimeRanges[0].CMTimeRangeValue;
                 var duration = TimeSpan.FromSeconds(range.Duration.Seconds);
-                var totalDuration = _player.CurrentItem.Duration;
+                var totalDuration = Player.CurrentItem.Duration;
                 var bufferProgress = duration.TotalSeconds/totalDuration.Seconds;
                 BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(bufferProgress, duration));
             }
