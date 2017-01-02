@@ -96,7 +96,8 @@ namespace Plugin.MediaManager
         {
             get
             {
-                if (Player.CurrentItem == null)
+                if (Player.CurrentItem == null || Player.CurrentItem.Duration.IsIndefinite ||
+                    Player.CurrentItem.Duration.IsInvalid)
                     return TimeSpan.Zero;
                 return TimeSpan.FromSeconds(Player.CurrentItem.Duration.Seconds);
             }
@@ -198,10 +199,17 @@ namespace Plugin.MediaManager
 
             Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {
-                var totalDuration = TimeSpan.FromSeconds(Player.CurrentItem.Duration.Seconds);
-                var totalProgress = Position.TotalMilliseconds/
-                                    totalDuration.TotalMilliseconds;
-                PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position, Duration));
+                if (Player.CurrentItem.Duration.IsInvalid || Player.CurrentItem.Duration.IsIndefinite || double.IsNaN(Player.CurrentItem.Duration.Seconds))
+                {
+                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(0, Position, Duration));
+                }
+                else
+                {
+                    var totalDuration = TimeSpan.FromSeconds(Player.CurrentItem.Duration.Seconds);
+                    var totalProgress = Position.TotalMilliseconds/
+                                        totalDuration.TotalMilliseconds;
+                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position, Duration));
+                }
             });
         }
 
