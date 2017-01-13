@@ -263,9 +263,14 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 try
                 {
                     var index = MediaQueue.IndexOf(mediaFile);
-                    var info = await MediaExtractor.ExtractMediaInfo(mediaFile);
-                    if(index >= 0) { MediaQueue[index] = info;}
-                     OnMediaFileChanged(CurrentPlaybackManager, new MediaFileChangedEventArgs(info));
+                    await MediaExtractor.ExtractMediaInfo(mediaFile);
+
+                    if (index >= 0)
+                    {
+                        MediaQueue[index] = mediaFile;
+                    }
+
+                    OnMediaFileChanged(CurrentPlaybackManager, new MediaFileChangedEventArgs(mediaFile));
                 }
                 catch (Exception e)
                 {
