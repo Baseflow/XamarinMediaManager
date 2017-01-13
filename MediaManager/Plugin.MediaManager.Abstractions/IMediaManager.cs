@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager.Abstractions
 {
-
-    using System;
-
     public delegate void MediaFileChangedEventHandler(object sender, MediaFileChangedEventArgs e);
 
     public delegate void MediaFileFailedEventHandler(object sender, MediaFileFailedEventArgs e);
