@@ -48,7 +48,7 @@ namespace Plugin.MediaManager.Abstractions
         IVolumeManager VolumeManager { get; set; }
 
         /// <summary>
-        /// Raised when media is finished playing.
+        /// Raised when the media information of the track has changed.
         /// </summary>
         event MediaFileChangedEventHandler MediaFileChanged;
 
