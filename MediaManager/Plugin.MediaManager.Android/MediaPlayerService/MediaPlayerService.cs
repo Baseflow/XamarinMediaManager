@@ -108,9 +108,23 @@ namespace Plugin.MediaManager
             }
             catch (Java.Lang.IllegalStateException)
             {
-                _mediaPlayer.Reset();
-                await SetMediaPlayerDataSource();
-                _mediaPlayer.PrepareAsync();
+                int retryCount = 0;
+                do
+                {
+                    await Task.Delay(250);
+                    try
+                    {
+                        _mediaPlayer.Reset();
+                        await SetMediaPlayerDataSource();
+                        _mediaPlayer.PrepareAsync();
+                    }
+                    catch (Java.Lang.IllegalStateException)
+                    {
+                        retryCount++;
+                        continue;
+                    }
+                    return;
+                } while (retryCount < 10);
             }
         }
 
@@ -139,6 +153,9 @@ namespace Plugin.MediaManager
 
         public override async Task<bool> SetMediaPlayerDataSource()
         {
+            if (CurrentFile == null)
+                return false;
+
             try
             {
                 if (Build.VERSION.SdkInt < BuildVersionCodes.Honeycomb)
@@ -162,6 +179,8 @@ namespace Plugin.MediaManager
                 }
                 catch (Exception ex)
                 {
+                    if (_mediaPlayer == null)
+                        return false;
 
                     String uri = GetUriFromPath(ApplicationContext, CurrentFile.Url);
                     _mediaPlayer.Reset();
