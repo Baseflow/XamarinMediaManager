@@ -145,9 +145,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await EmitMediaFileFailedEventOnException(async () =>
             {
                 await PlayCurrent();
-
-                MediaNotificationManager?.StartNotification(mediaFile);
             });
+
+            MediaNotificationManager?.StartNotification(mediaFile);
         }
 
         /// <summary>
