@@ -78,17 +78,13 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public async Task PlayNext()
         {
-            try
+            await EmitMediaFileFailedEventOnException(async () =>
             {
                 if (MediaQueue.HasNext())
                 {
                     MediaQueue.SetNextAsCurrent();
 
-                    await ExecuteOnBeforePlay();
-
-                    await Task.WhenAll(
-                        CurrentPlaybackManager.Play(CurrentMediaFile),
-                        GetMediaInformation(new[] { CurrentMediaFile }));
+                    await PlayCurrent();
                 }
                 else
                 {
@@ -96,17 +92,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                     MediaQueue.SetIndexAsCurrent(0);
                     OnMediaFileChanged(this, new MediaFileChangedEventArgs(CurrentMediaFile));
                 }
-            }
-            catch (Exception ex)
-            {
-                OnMediaFileFailed(CurrentPlaybackManager, new MediaFileFailedEventArgs(ex, CurrentMediaFile));
-                throw;
-            }
+            });
         }
 
         public async Task PlayPrevious()
         {
-            try
+            await EmitMediaFileFailedEventOnException(async () =>
             {
                 if (!MediaQueue.HasPrevious() || (Position > TimeSpan.FromSeconds(3)))
                 {
@@ -116,19 +107,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 {
                     MediaQueue.SetPreviousAsCurrent();
 
-                    await ExecuteOnBeforePlay();
-
-                    await
-                        Task.WhenAll(
-                            CurrentPlaybackManager.Play(CurrentMediaFile),
-                            GetMediaInformation(new[] { CurrentMediaFile }));
+                    await PlayCurrent();
                 }
-            }
-            catch (Exception ex)
-            {
-                OnMediaFileFailed(CurrentPlaybackManager, new MediaFileFailedEventArgs(ex, CurrentMediaFile));
-                throw;
-            }
+            });
         }
 
         public async Task PlayByPosition(int index)
@@ -161,18 +142,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
             MediaQueue.SetTrackAsCurrent(mediaFile);
 
-            try
+            await EmitMediaFileFailedEventOnException(async () =>
             {
-                await ExecuteOnBeforePlay();
+                await PlayCurrent();
 
-                await CurrentPlaybackManager.Play(mediaFile);
-                await GetMediaInformation(new[] { mediaFile });
                 MediaNotificationManager?.StartNotification(mediaFile);
-            }
-            catch (Exception ex)
-            {
-                OnMediaFileFailed(this, new MediaFileFailedEventArgs(ex, mediaFile));
-            }
+            });
         }
 
         /// <summary>
@@ -233,6 +208,28 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public async Task Seek(TimeSpan position)
         {
             await CurrentPlaybackManager.Seek(position);
+        }
+
+        private async Task EmitMediaFileFailedEventOnException(Func<Task> action)
+        {
+            try
+            {
+                await action();
+            }
+            catch (Exception ex)
+            {
+                OnMediaFileFailed(CurrentPlaybackManager, new MediaFileFailedEventArgs(ex, CurrentMediaFile));
+                throw;
+            }
+        }
+
+        private async Task PlayCurrent()
+        {
+            await ExecuteOnBeforePlay();
+
+            await Task.WhenAll(
+                CurrentPlaybackManager.Play(CurrentMediaFile),
+                GetMediaInformation(new[] { CurrentMediaFile }));
         }
 
         private async Task ExecuteOnBeforePlay()
