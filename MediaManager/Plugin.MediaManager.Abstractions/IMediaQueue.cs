@@ -36,7 +36,7 @@ namespace Plugin.MediaManager.Abstractions
         RepeatType Repeat { get; set; }
 
         /// <summary>
-        /// Activates or deactivates the Shuffle option
+        /// Wether the queue is shuffled
         /// </summary>
         bool IsShuffled { get; }
 
