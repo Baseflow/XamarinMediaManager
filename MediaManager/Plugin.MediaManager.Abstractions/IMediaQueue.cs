@@ -16,7 +16,7 @@ namespace Plugin.MediaManager.Abstractions
     public interface IMediaQueue : IList<IMediaFile>, INotifyCollectionChanged, INotifyPropertyChanged
     {
         /// <summary>
-        /// Raised when the queue ends
+        /// Raised when the end of the Queue has been reached
         /// </summary>
         event QueueEndedEventHandler QueueEnded;
 
@@ -31,7 +31,7 @@ namespace Plugin.MediaManager.Abstractions
         IMediaFile Current { get; }
 
         /// <summary>
-        /// Activates or deactivates the Repeat option
+        /// The type of repeat: None, RepeatOne or RepeatAll
         /// </summary>
         RepeatType Repeat { get; set; }
 
@@ -71,7 +71,7 @@ namespace Plugin.MediaManager.Abstractions
         void ToggleShuffle();
 
         /// <summary>
-        /// Turns on or off repeat.
+        /// Toggles between the RepeatTypes: None, RepeatOne and RepeatAll
         /// </summary>
         void ToggleRepeat();
     }
