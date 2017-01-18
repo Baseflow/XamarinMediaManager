@@ -99,7 +99,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         {
             await EmitMediaFileFailedEventOnException(async () =>
             {
-                if (!MediaQueue.HasPrevious() || (Position > TimeSpan.FromSeconds(3)))
+                if (Position > TimeSpan.FromSeconds(3) || !MediaQueue.HasPrevious())
                 {
                     await CurrentPlaybackManager.Seek(TimeSpan.Zero);
                 }
