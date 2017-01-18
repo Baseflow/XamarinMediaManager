@@ -101,7 +101,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             {
                 if (Position > TimeSpan.FromSeconds(3) || !MediaQueue.HasPrevious())
                 {
-                    await CurrentPlaybackManager.Seek(TimeSpan.Zero);
+                    await Seek(TimeSpan.Zero);
                 }
                 else
                 {
