@@ -38,7 +38,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Activates or deactivates the Shuffle option
         /// </summary>
-        bool Shuffle { get; }
+        bool IsShuffled { get; }
 
         /// <summary>
         /// If the Queue has a next track

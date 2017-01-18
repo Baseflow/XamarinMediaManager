@@ -25,7 +25,7 @@ namespace Plugin.MediaManager.Tests.Tests
             Assert.AreEqual(null, queue.Current);
             Assert.AreEqual(-1, queue.Index);
             Assert.AreEqual(RepeatType.None, queue.Repeat);
-            Assert.AreEqual(false, queue.Shuffle);
+            Assert.AreEqual(false, queue.IsShuffled);
         }
 
         [TestFixture]
@@ -57,7 +57,7 @@ namespace Plugin.MediaManager.Tests.Tests
                 Assert.AreEqual(tracks[0], queue.Current);
                 Assert.AreEqual(0, queue.Index);
                 Assert.AreEqual(RepeatType.None, queue.Repeat);
-                Assert.AreEqual(false, queue.Shuffle);
+                Assert.AreEqual(false, queue.IsShuffled);
 
                 Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
                 Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -72,7 +72,7 @@ namespace Plugin.MediaManager.Tests.Tests
                 Assert.AreEqual(tracks[0], queue.Current);
                 Assert.AreEqual(0, queue.Index);
                 Assert.AreEqual(RepeatType.None, queue.Repeat);
-                Assert.AreEqual(false, queue.Shuffle);
+                Assert.AreEqual(false, queue.IsShuffled);
 
                 Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
                 Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -114,7 +114,7 @@ namespace Plugin.MediaManager.Tests.Tests
                 Assert.AreEqual(null, queue.Current);
                 Assert.AreEqual(-1, queue.Index);
                 Assert.AreEqual(RepeatType.None, queue.Repeat);
-                Assert.AreEqual(false, queue.Shuffle);
+                Assert.AreEqual(false, queue.IsShuffled);
 
                 Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
                 Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -154,7 +154,7 @@ namespace Plugin.MediaManager.Tests.Tests
                 Assert.AreEqual(null, queue.Current);
                 Assert.AreEqual(-1, queue.Index);
                 Assert.AreEqual(RepeatType.RepeatOne, queue.Repeat);
-                Assert.AreEqual(false, queue.Shuffle);
+                Assert.AreEqual(false, queue.IsShuffled);
 
                 Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
                 Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -196,7 +196,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(tracks[1], queue.Current);
 				Assert.AreEqual(1, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(0, propertyChangedEvents.Count);
 				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems?.Count == 1 && e.OldItems?.Count == 1).Count());
@@ -231,7 +231,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(newMediaFile, queue.Current);
 				Assert.AreEqual(1, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
 				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -271,7 +271,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(tracks[1], queue.Current);
 				Assert.AreEqual(1, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(0, propertyChangedEvents.Count);
 				Assert.AreEqual(0, collectionChangedEvents.Count);
@@ -307,7 +307,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(tracks[1], queue.Current);
 				Assert.AreEqual(1, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(0, propertyChangedEvents.Count);
 				Assert.AreEqual(0, collectionChangedEvents.Count);
@@ -344,7 +344,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(tracks[1], queue.Current);
 				Assert.AreEqual(1, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
 				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -381,7 +381,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(tracks[1], queue.Current);
 				Assert.AreEqual(0, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
 				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -418,7 +418,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(tracks[2], queue.Current);
 				Assert.AreEqual(1, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
 				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -455,7 +455,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(tracks[1], queue.Current);
 				Assert.AreEqual(1, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
 				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -490,7 +490,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(null, queue.Current);
 				Assert.AreEqual(-1, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
 				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -530,7 +530,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(tracks[1], queue.Current);
 				Assert.AreEqual(1, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(0, propertyChangedEvents.Count);
 				Assert.AreEqual(0, collectionChangedEvents.Count);
@@ -556,7 +556,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(null, queue.Current);
 				Assert.AreEqual(-1, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(0, propertyChangedEvents.Count);
 				Assert.AreEqual(0, collectionChangedEvents.Count);
@@ -591,7 +591,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(tracks[0], queue.Current);
 				Assert.AreEqual(0, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
 				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -626,7 +626,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(tracks[0], queue.Current);
 				Assert.AreEqual(1, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
 				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -654,7 +654,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(newMediaFile, queue.Current);
 				Assert.AreEqual(0, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
 				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
@@ -686,7 +686,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(null, queue.Current);
 				Assert.AreEqual(-1, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(0, propertyChangedEvents.Count);
 				Assert.AreEqual(0, collectionChangedEvents.Count);
@@ -720,7 +720,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(tracks[0], queue.Current);
 				Assert.AreEqual(0, queue.Index);
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
-				Assert.AreEqual(false, queue.Shuffle);
+				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(0, propertyChangedEvents.Count);
 				Assert.AreEqual(0, collectionChangedEvents.Count);
