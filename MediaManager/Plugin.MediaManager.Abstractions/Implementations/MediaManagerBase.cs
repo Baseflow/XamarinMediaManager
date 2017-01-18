@@ -94,7 +94,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 {
                     await CurrentPlaybackManager.Pause();
                     MediaQueue.SetIndexAsCurrent(0);
-                    OnMediaFileChanged(this, new MediaFileChangedEventArgs(MediaQueue.Current));
+                    OnMediaFileChanged(this, new MediaFileChangedEventArgs(CurrentMediaFile));
                 }
             }
             catch (Exception ex)
@@ -134,7 +134,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public async Task PlayByPosition(int index)
         {
             MediaQueue.SetIndexAsCurrent(index);
-            await Play(MediaQueue.Current);
+            await Play(CurrentMediaFile);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await Task.WhenAll(
                 PlayNext(),
                 GetMediaInformation(enumerable),
-                Task.Run(() => MediaNotificationManager?.StartNotification(MediaQueue.Current)));
+                Task.Run(() => MediaNotificationManager?.StartNotification(CurrentMediaFile)));
         }
 
         public async Task Play(string url, MediaFileType fileType)
@@ -284,7 +284,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         private void OnStatusChanged(object sender, StatusChangedEventArgs e)
         {
             if (sender != CurrentPlaybackManager) return;
-            MediaNotificationManager?.UpdateNotifications(MediaQueue.Current, e.Status);
+            MediaNotificationManager?.UpdateNotifications(CurrentMediaFile, e.Status);
             StatusChanged?.Invoke(sender, e);
         }
 
