@@ -188,8 +188,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
             await Task.WhenAll(
                 PlayNext(),
-                GetMediaInformation(enumerable),
-                Task.Run(() => MediaNotificationManager?.StartNotification(CurrentMediaFile)));
+                GetMediaInformation(enumerable));
+
+            MediaNotificationManager?.StartNotification(CurrentMediaFile);
         }
 
         public async Task Play(string url, MediaFileType fileType)
