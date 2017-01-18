@@ -153,9 +153,8 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         /// <returns></returns>
         public async Task Play(IEnumerable<IMediaFile> mediaFiles)
         {
-            var enumerable = mediaFiles as IList<IMediaFile> ?? mediaFiles.ToList();
             MediaQueue.Clear();
-            MediaQueue.AddRange(enumerable);
+            MediaQueue.AddRange(mediaFiles.ToList());
 
             await PlayNext();
 
