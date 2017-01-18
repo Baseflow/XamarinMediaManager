@@ -161,9 +161,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             MediaQueue.Clear();
             MediaQueue.AddRange(enumerable);
 
-            await Task.WhenAll(
-                PlayNext(),
-                GetMediaInformation(enumerable));
+            await PlayNext();
 
             MediaNotificationManager?.StartNotification(CurrentMediaFile);
         }
@@ -229,7 +227,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
             await Task.WhenAll(
                 CurrentPlaybackManager.Play(CurrentMediaFile),
-                GetMediaInformation(new[] { CurrentMediaFile }));
+                ExtractMediaInformation(CurrentMediaFile));
         }
 
         private async Task ExecuteOnBeforePlay()
@@ -262,27 +260,17 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             AddEventHandlers();
         }
 
-        private async Task GetMediaInformation(IEnumerable<IMediaFile> mediaFiles)
+        private async Task ExtractMediaInformation(IMediaFile mediaFile)
         {
-            foreach (var mediaFile in mediaFiles)
+            var index = MediaQueue.IndexOf(mediaFile);
+            await MediaExtractor.ExtractMediaInfo(mediaFile);
+
+            if (index >= 0)
             {
-                try
-                {
-                    var index = MediaQueue.IndexOf(mediaFile);
-                    await MediaExtractor.ExtractMediaInfo(mediaFile);
-
-                    if (index >= 0)
-                    {
-                        MediaQueue[index] = mediaFile;
-                    }
-
-                    OnMediaFileChanged(CurrentPlaybackManager, new MediaFileChangedEventArgs(mediaFile));
-                }
-                catch (Exception e)
-                {
-                    OnMediaFileFailed(this, new MediaFileFailedEventArgs(e, mediaFile));
-                }
+                MediaQueue[index] = mediaFile;
             }
+
+            OnMediaFileChanged(CurrentPlaybackManager, new MediaFileChangedEventArgs(mediaFile));
         }
 
         private void OnStatusChanged(object sender, StatusChangedEventArgs e)
