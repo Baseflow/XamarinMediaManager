@@ -32,10 +32,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
                 return _currentPlaybackManager;
             }
-            set
-            {
-                _currentPlaybackManager = value;
-            }
         }
 
         public virtual IMediaQueue MediaQueue { get; set; } = new MediaQueue();
