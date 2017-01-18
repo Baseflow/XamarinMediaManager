@@ -8,13 +8,11 @@ using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager.Abstractions.Implementations
 {
-
     /// <summary>
     ///     Implementation for MediaManager
     /// </summary>
     public abstract class MediaManagerBase : IMediaManager, IDisposable
     {
-
         private IPlaybackManager _currentPlaybackManager;
 
         private Func<IMediaFile, Task> _onBeforePlay;
