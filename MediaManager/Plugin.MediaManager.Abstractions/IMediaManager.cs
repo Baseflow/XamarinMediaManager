@@ -18,12 +18,12 @@ namespace Plugin.MediaManager.Abstractions
     public interface IMediaManager : IPlaybackManager
     {
         /// <summary>
-        /// Player responseble for audio playback
+        /// Player responsible for audio playback
         /// </summary>
         IAudioPlayer AudioPlayer { get; set; }
 
         /// <summary>
-        /// Player responseble for video playback
+        /// Player responsible for video playback
         /// </summary>
         IVideoPlayer VideoPlayer { get; set; }
 
@@ -63,24 +63,22 @@ namespace Plugin.MediaManager.Abstractions
         Task Play(string url, MediaFileType fileType);
 
         /// <summary>
-        /// Should be the same as calling PlayByPosition(Queue.size()+1)
-        /// Maybe you'll want to preload the next song into memory ...
+        /// Plays the next MediaFile in the Queue
         /// </summary>
         Task PlayNext();
 
         /// <summary>
-        /// Should be the same as calling PlayByPosition(Queue.size()-1).
-        /// Maybe you'll want to keep the last song in memory ...
+        /// Plays the previous MediaFile in the Queue
         /// </summary>
         Task PlayPrevious();
         
         /// <summary>
-        /// Start playing a track by its position in the Queue
+        /// Plays a MediaFile by its position in the Queue
         /// </summary>
         Task PlayByPosition(int index);
 
         /// <summary>
-        /// Adds all MediaFiles to the Queue and starts playing the first item
+        /// Adds all MediaFiles to the Queue and starts playing the first one
         /// </summary>
         Task Play(IEnumerable<IMediaFile> mediaFiles);
 
@@ -90,7 +88,7 @@ namespace Plugin.MediaManager.Abstractions
         Task PlayPause();
 
         /// <summary>
-        /// Sets a function which gets called before the track is played
+        /// Sets a function which gets called before the MediaFile is played
         /// </summary>
         /// <param name="beforePlay">The before play.</param>
         void SetOnBeforePlay(Func<IMediaFile, Task> beforePlay);
