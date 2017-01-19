@@ -5,7 +5,7 @@ var TARGET = Argument ("target", Argument ("t", "Default"));
 var version = EnvironmentVariable ("APPVEYOR_BUILD_VERSION") ?? Argument("version", "0.0.9999");
 
 var libraries = new Dictionary<string, string> {
- 	{ "./src/InAppBilling.sln", "Any" },
+ 	{ "./MediaManager.sln", "Any" },
 };
 
 
