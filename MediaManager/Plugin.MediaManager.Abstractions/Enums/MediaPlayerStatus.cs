@@ -1,5 +1,4 @@
-﻿using System;
-namespace Plugin.MediaManager.Abstractions.Enums
+﻿namespace Plugin.MediaManager.Abstractions.Enums
 {
     public enum MediaPlayerStatus
     {

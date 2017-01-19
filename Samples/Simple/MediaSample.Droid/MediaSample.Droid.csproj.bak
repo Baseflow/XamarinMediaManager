@@ -3,88 +3,59 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{27557174-7B75-47F0-97A6-5924C221A86D}</ProjectGuid>
+    <ProjectGuid>{0C3A25B6-FB80-4915-871A-64773CE3995B}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>MyMediaPlayer.Droid</RootNamespace>
-    <AssemblyName>MyMediaPlayer.Droid</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <RootNamespace>MediaSample.Droid</RootNamespace>
+    <AssemblyName>MyMediaManager</AssemblyName>
+    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
-    <AndroidTlsProvider>
-    </AndroidTlsProvider>
+    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>arm64-v8a;armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <XamarinInspectorDisabled>True</XamarinInspectorDisabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidManagedSymbols>true</AndroidManagedSymbols>
+    <ConsolePause>false</ConsolePause>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.Android.Export" />
-    <Reference Include="MvvmCross.Binding, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Binding.4.4.0\lib\MonoAndroid\MvvmCross.Binding.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MvvmCross.Binding.Droid, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Binding.4.4.0\lib\MonoAndroid\MvvmCross.Binding.Droid.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MvvmCross.Core, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Core.4.4.0\lib\MonoAndroid\MvvmCross.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MvvmCross.Droid, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Core.4.4.0\lib\MonoAndroid\MvvmCross.Droid.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MvvmCross.Localization, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Binding.4.4.0\lib\MonoAndroid\MvvmCross.Localization.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MvvmCross.Platform, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Platform.4.4.0\lib\MonoAndroid\MvvmCross.Platform.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MvvmCross.Platform.Droid, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Platform.4.4.0\lib\MonoAndroid\MvvmCross.Platform.Droid.dll</HintPath>
+    <Reference Include="Java.Interop" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
-    <Reference Include="MvvmCross.Droid.Shared">
-      <HintPath>..\..\..\packages\MvvmCross.Droid.Shared.4.4.0\lib\MonoAndroid\MvvmCross.Droid.Shared.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.Compat">
       <HintPath>..\..\..\packages\Xamarin.Android.Support.Compat.24.2.1\lib\MonoAndroid70\Xamarin.Android.Support.Compat.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Core.UI">
       <HintPath>..\..\..\packages\Xamarin.Android.Support.Core.UI.24.2.1\lib\MonoAndroid70\Xamarin.Android.Support.Core.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Droid.Support.Core.UI">
-      <HintPath>..\..\..\packages\MvvmCross.Droid.Support.Core.UI.4.4.0\lib\MonoAndroid70\MvvmCross.Droid.Support.Core.UI.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Core.Utils">
       <HintPath>..\..\..\packages\Xamarin.Android.Support.Core.Utils.24.2.1\lib\MonoAndroid70\Xamarin.Android.Support.Core.Utils.dll</HintPath>
@@ -95,8 +66,8 @@
     <Reference Include="Xamarin.Android.Support.Fragment">
       <HintPath>..\..\..\packages\Xamarin.Android.Support.Fragment.24.2.1\lib\MonoAndroid70\Xamarin.Android.Support.Fragment.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross.Droid.Support.Fragment">
-      <HintPath>..\..\..\packages\MvvmCross.Droid.Support.Fragment.4.4.0\lib\MonoAndroid70\MvvmCross.Droid.Support.Fragment.dll</HintPath>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\..\..\packages\Xamarin.Android.Support.v4.24.2.1\lib\MonoAndroid70\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Vector.Drawable">
       <HintPath>..\..\..\packages\Xamarin.Android.Support.Vector.Drawable.24.2.1\lib\MonoAndroid70\Xamarin.Android.Support.Vector.Drawable.dll</HintPath>
@@ -107,75 +78,54 @@
     <Reference Include="Xamarin.Android.Support.v7.AppCompat">
       <HintPath>..\..\..\packages\Xamarin.Android.Support.v7.AppCompat.24.2.1\lib\MonoAndroid70\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross.Droid.Support.V7.AppCompat">
-      <HintPath>..\..\..\packages\MvvmCross.Droid.Support.V7.AppCompat.4.4.0\lib\MonoAndroid70\MvvmCross.Droid.Support.V7.AppCompat.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.RecyclerView">
-      <HintPath>..\..\..\packages\Xamarin.Android.Support.v7.RecyclerView.24.2.1\lib\MonoAndroid70\Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Droid.Support.V7.RecyclerView">
-      <HintPath>..\..\..\packages\MvvmCross.Droid.Support.V7.RecyclerView.4.4.0\lib\MonoAndroid70\MvvmCross.Droid.Support.V7.RecyclerView.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Plugins.Json">
-      <HintPath>..\..\..\packages\MvvmCross.Plugin.Json.4.4.0\lib\MonoAndroid\MvvmCross.Plugins.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Android.Support.Design">
-      <HintPath>..\..\..\packages\Xamarin.Android.Support.Design.24.2.1\lib\MonoAndroid70\Xamarin.Android.Support.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Droid.Support.Design">
-      <HintPath>..\..\..\packages\MvvmCross.Droid.Support.Design.4.4.0\lib\MonoAndroid70\MvvmCross.Droid.Support.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Plugins.Visibility">
-      <HintPath>..\..\..\packages\MvvmCross.Plugin.Visibility.4.4.0\lib\MonoAndroid\MvvmCross.Plugins.Visibility.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Plugins.Visibility.Droid">
-      <HintPath>..\..\..\packages\MvvmCross.Plugin.Visibility.4.4.0\lib\MonoAndroid\MvvmCross.Plugins.Visibility.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Plugins.ResourceLoader">
-      <HintPath>..\..\..\packages\MvvmCross.Plugin.ResourceLoader.4.4.0\lib\MonoAndroid\MvvmCross.Plugins.ResourceLoader.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Plugins.ResourceLoader.Droid">
-      <HintPath>..\..\..\packages\MvvmCross.Plugin.ResourceLoader.4.4.0\lib\MonoAndroid\MvvmCross.Plugins.ResourceLoader.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Plugins.JsonLocalization">
-      <HintPath>..\..\..\packages\MvvmCross.Plugin.JsonLocalization.4.4.0\lib\MonoAndroid\MvvmCross.Plugins.JsonLocalization.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DebugTrace.cs" />
-    <Compile Include="LinkerPleaseInclude.cs" />
+    <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Setup.cs" />
-    <Compile Include="SplashScreen.cs" />
-    <Compile Include="Bootstrap\JsonPluginBootstrap.cs" />
-    <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
-    <Compile Include="Bootstrap\ResourceLoaderPluginBootstrap.cs" />
-    <Compile Include="Bootstrap\JsonLocalizationPluginBootstrap.cs" />
-    <Compile Include="Activities\MainActivity.cs" />
-    <Compile Include="Fragments\HomeFragment.cs" />
-    <Compile Include="Fragments\BaseFragment.cs" />
-    <Compile Include="Fragments\SearchFragment.cs" />
-    <Compile Include="Fragments\AudioPlayerFragment.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\layout\SplashScreen.axml" />
-    <AndroidResource Include="Resources\values\colors.xml" />
-    <AndroidResource Include="Resources\values\dimens.xml" />
-    <AndroidResource Include="Resources\values\Styles.xml" />
-    <AndroidResource Include="Resources\values-v21\styles.xml" />
-    <AndroidResource Include="Resources\layout\toolbar_layout.axml" />
-    <AndroidResource Include="Resources\layout\fragment_home.axml" />
-    <AndroidResource Include="Resources\layout\fragment_audioplayer.axml" />
-    <AndroidResource Include="Resources\layout\fragment_miniplayer.axml" />
-    <AndroidResource Include="Resources\layout\TestLayout.axml" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MediaSample.Core\MediaSample.Core.csproj">
+      <Project>{19955052-96FC-4149-84DD-C95A4C846C87}</Project>
+      <Name>MediaSample.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
+      <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
+      <Name>Plugin.MediaManager.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Android\Plugin.MediaManager.Android.csproj">
+      <Project>{56A56F17-7DE1-4CA1-9617-BF32E971AC84}</Project>
+      <Name>Plugin.MediaManager.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.ExoPlayer\Plugin.MediaManager.ExoPlayer.csproj">
+      <Project>{06EF2F1F-8A8E-47D6-9FC8-BBC521783F13}</Project>
+      <Name>Plugin.MediaManager.ExoPlayer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\album_art.jpg" />
+    <AndroidResource Include="Resources\drawable\button_next.xml" />
+    <AndroidResource Include="Resources\drawable\button_option.xml" />
+    <AndroidResource Include="Resources\drawable\button_pause.xml" />
+    <AndroidResource Include="Resources\drawable\button_play.xml" />
+    <AndroidResource Include="Resources\drawable\button_previous.xml" />
+    <AndroidResource Include="Resources\drawable\button_resume.xml" />
+    <AndroidResource Include="Resources\drawable\button_shuffleplay.xml" />
+    <AndroidResource Include="Resources\drawable\seekbar_control.xml" />
+    <AndroidResource Include="Resources\drawable\seekbar_progress.xml" />
+    <AndroidResource Include="Resources\drawable\toggle_repeat.xml" />
+    <AndroidResource Include="Resources\drawable\toggle_repeat_active.xml" />
+    <AndroidResource Include="Resources\drawable\toggle_repeat_static.xml" />
+    <AndroidResource Include="Resources\drawable\toggle_shuffle.xml" />
+    <AndroidResource Include="Resources\drawable\toggle_shuffle_active.xml" />
+    <AndroidResource Include="Resources\drawable\toggle_shuffle_static.xml" />
+    <AndroidResource Include="Resources\drawable\togglebutton_playpause.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\btn_pause_active.png" />
     <AndroidResource Include="Resources\drawable-hdpi\btn_pause_static.png" />
     <AndroidResource Include="Resources\drawable-hdpi\btn_play_active.png" />
@@ -263,52 +213,14 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\seekbar_pressed.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\seekbar_primary.9.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\seekbar_secondary.9.png" />
-    <AndroidResource Include="Resources\drawable\album_art.jpg" />
-    <AndroidResource Include="Resources\drawable\button_next.xml" />
-    <AndroidResource Include="Resources\drawable\button_option.xml" />
-    <AndroidResource Include="Resources\drawable\button_pause.xml" />
-    <AndroidResource Include="Resources\drawable\button_play.xml" />
-    <AndroidResource Include="Resources\drawable\button_previous.xml" />
-    <AndroidResource Include="Resources\drawable\button_resume.xml" />
-    <AndroidResource Include="Resources\drawable\button_shuffleplay.xml" />
-    <AndroidResource Include="Resources\drawable\seekbar_control.xml" />
-    <AndroidResource Include="Resources\drawable\seekbar_progress.xml" />
-    <AndroidResource Include="Resources\drawable\toggle_repeat.xml" />
-    <AndroidResource Include="Resources\drawable\toggle_repeat_active.xml" />
-    <AndroidResource Include="Resources\drawable\toggle_repeat_static.xml" />
-    <AndroidResource Include="Resources\drawable\toggle_shuffle.xml" />
-    <AndroidResource Include="Resources\drawable\toggle_shuffle_active.xml" />
-    <AndroidResource Include="Resources\drawable\toggle_shuffle_static.xml" />
-    <AndroidResource Include="Resources\drawable\togglebutton_playpause.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\activity_main.axml" />
+    <AndroidResource Include="Resources\layout\Main.axml" />
+    <AndroidResource Include="Resources\values\Colors.xml" />
+    <AndroidResource Include="Resources\values\Dimens.xml" />
     <AndroidResource Include="Resources\values\Strings.xml" />
-    <AndroidResource Include="Resources\mipmap-hdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-mdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-xhdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-xxhdpi\Icon.png" />
-    <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\values\Styles.xml" />
+    <AndroidResource Include="Resources\values-v21\Styles.xml" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\splash.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MyMediaPlayer.Core\MyMediaPlayer.Core.csproj">
-      <Project>{66B081CB-DAD5-4FDF-B361-4BA85B440886}</Project>
-      <Name>MyMediaPlayer.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Activities\" />
-    <Folder Include="Fragments\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Resources\drawable-hdpi\" />
-    <Folder Include="Resources\drawable-mdpi\" />
-    <Folder Include="Resources\drawable-xhdpi\" />
-    <Folder Include="Resources\drawable-xxhdpi\" />
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
-  <Import Project="..\..\..\packages\Xamarin.Android.Support.Vector.Drawable.24.2.1\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\..\..\packages\Xamarin.Android.Support.Vector.Drawable.24.2.1\build\Xamarin.Android.Support.Vector.Drawable.targets')" />
+  <Import Project="..\..\..\packages\Xamarin.Android.Support.Vector.Drawable.24.2.1\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\..\packages\Xamarin.Android.Support.Vector.Drawable.24.2.1\build\Xamarin.Android.Support.Vector.Drawable.targets')" />
 </Project>

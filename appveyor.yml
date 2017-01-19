@@ -1,0 +1,16 @@
+version: 0.1.4.{build}-beta
+os: Visual Studio 2017 RC
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+build_script:
+- cmd: >-
+    powershell .\install-android-sdk.ps1
+
+    powershell .\bootstrapper.ps1 -Target Default -Verbosity diagnostic
+artifacts:
+- path: ./Build/nuget/*.nupkg
+  name: NuGet
