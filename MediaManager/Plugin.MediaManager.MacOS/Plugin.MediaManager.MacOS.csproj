@@ -33,6 +33,7 @@
     </LinkMode>
     <XamMacArch>
     </XamMacArch>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
