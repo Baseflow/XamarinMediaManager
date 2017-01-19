@@ -166,14 +166,16 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
         }
 
-        public void AddRange(IEnumerable<IMediaFile> items)
+        public void AddRange(IEnumerable<IMediaFile> mediaFiles)
         {
-            _queue.AddRange(items);
+            mediaFiles = mediaFiles.ToList();
+
+            _queue.AddRange(mediaFiles);
 
             // If shuffle is enabled, we need to add the items to the backup queue too
             if (Shuffle)
             {
-                _unshuffledQueue.AddRange(items);
+                _unshuffledQueue.AddRange(mediaFiles);
             }
 
             if (Index == -1)

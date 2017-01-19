@@ -152,7 +152,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public async Task Play(IEnumerable<IMediaFile> mediaFiles)
         {
             MediaQueue.Clear();
-            MediaQueue.AddRange(mediaFiles.ToList());
+            MediaQueue.AddRange(mediaFiles);
 
             await PlayNext();
 
