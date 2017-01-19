@@ -43,6 +43,7 @@
     </MtouchHttpClientHandler>
     <MtouchTlsProvider>
     </MtouchTlsProvider>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
