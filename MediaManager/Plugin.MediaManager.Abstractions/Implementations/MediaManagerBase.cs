@@ -72,7 +72,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public async Task PlayNext()
         {
-            await EmitMediaFileFailedEventOnException(async () =>
+            await RaiseMediaFileFailedEventOnException(async () =>
             {
                 if (MediaQueue.HasNext())
                 {
@@ -91,7 +91,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public async Task PlayPrevious()
         {
-            await EmitMediaFileFailedEventOnException(async () =>
+            await RaiseMediaFileFailedEventOnException(async () =>
             {
                 if (Position > TimeSpan.FromSeconds(3) || !MediaQueue.HasPrevious())
                 {
@@ -136,7 +136,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
             MediaQueue.SetTrackAsCurrent(mediaFile);
 
-            await EmitMediaFileFailedEventOnException(async () =>
+            await RaiseMediaFileFailedEventOnException(async () =>
             {
                 await PlayCurrent();
             });
@@ -201,7 +201,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await CurrentPlaybackManager.Seek(position);
         }
 
-        private async Task EmitMediaFileFailedEventOnException(Func<Task> action)
+        private async Task RaiseMediaFileFailedEventOnException(Func<Task> action)
         {
             try
             {
