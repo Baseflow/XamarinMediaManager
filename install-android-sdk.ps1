@@ -32,10 +32,10 @@ Function Install-AndroidSDK() {
 }
 
 install:
-  - echo: y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t tools
-  - echo: y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t platform-tools
-  - echo: y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t build-tools-25.0.1
-  - echo: y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t android-24
+  - cmd: echo y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t tools
+  - cmd: echo y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t platform-tools
+  - cmd: echo y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t build-tools-25.0.1
+  - cmd: echo y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t android-24
 
 $sdks = Get-AndroidSDKs |? { $_.name -like 'sdk platform*API 24*' -or $_.name -like 'google apis*api 24' } 
 Install-AndroidSDK -sdks $sdks
