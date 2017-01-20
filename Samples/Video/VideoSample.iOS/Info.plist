@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>MediaSample.iOS</string>
+	<string>VideoSample.iOS</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.media.sample.mediasample-ios</string>
+	<string>com.media.sample.videosample-ios</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -36,10 +36,9 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcons.appiconset</string>
 	<key>NSAppTransportSecurity</key>
-<dict>
-  <!--Include to allow all connections (DANGER)-->
-  <key>NSAllowsArbitraryLoads</key>
-      <true/>
-</dict>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>
