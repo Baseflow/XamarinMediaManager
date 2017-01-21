@@ -1,16 +1,30 @@
 version: 0.1.4.{build}-beta
 os: Visual Studio 2017 RC
+environment:
+  ANDROID_HOME: "C:\\android-sdk-windows"
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
+init:
+- cd \
+- appveyor DownloadFile http://dl.google.com/android/android-sdk_r24.4.1-windows.zip
+- 7z x android-sdk_r24.4.1-windows.zip > nul
+- cd "C:\projects\MvvmCross"
+install: 
+- echo y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t tools
+- echo y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t platform-tools
+- echo y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t build-tools-24.0.2
+- echo y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t android-24
+- echo y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t extra-google-m2repository
+- echo y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t extra-android-m2repository
 build_script:
 - cmd: >-
-    powershell .\install-android-sdk.ps1
-
     powershell .\bootstrapper.ps1 -Target Default -Verbosity diagnostic
 artifacts:
 - path: ./Build/nuget/*.nupkg
   name: NuGet
+  
+  
