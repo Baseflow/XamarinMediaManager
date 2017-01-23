@@ -3,13 +3,13 @@
   branches:
       only:
         - master
-  version: 1.0.{build}
+  version: 0.1.4.{build}
   image: Visual Studio 2017 RC
   environment:
     ANDROID_HOME: "C:\\android-sdk-windows"
     NUGET_SOURCE: https://www.nuget.org/api/v2/package
     NUGET_APIKEY:
-      secure: I7T89cNuXIoOooGTaZm/nKrJ5JwZpt3F82D6Y7bJoxO5yQ6hpDnz0xQhef/KKr0G
+      secure: Kse62H9lWHIwjsqpi2ih1efUnHc5R6VfIzu1Nfr/CXcJSKPkH8EGElCIxvP43/Oh
   init:
   - cd \
   - appveyor DownloadFile http://dl.google.com/android/android-sdk_r24.4.1-windows.zip
@@ -30,13 +30,13 @@
   branches:
       only:
         - develop
-  version: 1.0.{build}
+  version: 0.1.3.{build}
   image: Visual Studio 2017 RC
   environment:
     ANDROID_HOME: "C:\\android-sdk-windows"
     NUGET_SOURCE: https://www.myget.org/F/martijn00/api/v2/package
     NUGET_APIKEY:
-      secure: m3uewWCh6Y5jqTZIfwMDfs8GWdbwTZjfiEl13AWY7T3u3bPspGA/lgwe8jdxjBm9
+      secure: 0PNC9eZWAinI1KkE9usbhPAwF1wudL5GJi6lJn9Ylb67M7SE17LIXBoMHuRKJaLE
   init:
   - cd \
   - appveyor DownloadFile http://dl.google.com/android/android-sdk_r24.4.1-windows.zip

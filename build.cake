@@ -67,8 +67,7 @@ Task("GitLink")
 	GitLink(sln.GetDirectory(), 
 		new GitLinkSettings {
 			RepositoryUrl = "https://github.com/martijn00/XamarinMediaManager",
-			ArgumentCustomization = args => args.Append(
-			"-ignore * mediaforms,mediaforms.ios,mediaforms.android,mediasample.core,mediasample.droid,mediasample.ios,mymediaplayer.core,mymediaplayer.droid,mymediaplayer.ios,mymediaplayer.macos,mymediaplayer.tvos")
+			ArgumentCustomization = args => args.Append("-ignore mediaforms,mediaforms.ios,mediaforms.android,mediasample.core,mediasample.droid,mediasample.ios,mymediaplayer.core,mymediaplayer.droid,mymediaplayer.ios,mymediaplayer.macos,mymediaplayer.tvos")
 		});
 });
 
