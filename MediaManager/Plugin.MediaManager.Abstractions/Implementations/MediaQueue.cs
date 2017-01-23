@@ -76,7 +76,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
         }
 
-        public bool Shuffle
+        public bool IsShuffled
         {
             get
             {
@@ -120,7 +120,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                     throw new ArgumentNullException();
                 }
 
-                if (Shuffle)
+                if (IsShuffled)
                 {
                     var unshuffledIndex = _unshuffledQueue.IndexOf(_queue[index]);
                     _unshuffledQueue[unshuffledIndex] = value;
@@ -155,7 +155,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _queue.Add(item);
 
             // If shuffle is enabled, we need to add the item to the backup queue too
-            if (Shuffle)
+            if (IsShuffled)
             {
                 _unshuffledQueue.Add(item);
             }
@@ -173,7 +173,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _queue.AddRange(mediaFiles);
 
             // If shuffle is enabled, we need to add the items to the backup queue too
-            if (Shuffle)
+            if (IsShuffled)
             {
                 _unshuffledQueue.AddRange(mediaFiles);
             }
@@ -192,7 +192,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             if (_unshuffledQueue != null)
             {
                 _unshuffledQueue = null;
-                OnPropertyChanged(nameof(Shuffle));
+                OnPropertyChanged(nameof(IsShuffled));
             }
         }
 
@@ -293,7 +293,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public void ToggleShuffle()
         {
-            if (!Shuffle)
+            if (!IsShuffled)
             {
                 // Cancel any running tasks
                 shuffleCancellation.Cancel();
@@ -351,7 +351,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 Index = newIndex;
                 _unshuffledQueue = null;
             }
-            OnPropertyChanged(nameof(Shuffle));
+            OnPropertyChanged(nameof(IsShuffled));
         }
 
         protected void ReplaceQueueWith(IEnumerable<IMediaFile> files)
@@ -432,7 +432,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public void Insert(int index, IMediaFile item)
         {
-            if (Shuffle)
+            if (IsShuffled)
             {
                 _unshuffledQueue.Add(item);
             }
@@ -472,7 +472,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
 
             // If shuffle is enabled, we need to remove the item from the backup queue too
-            if (Shuffle)
+            if (IsShuffled)
             {
                 _unshuffledQueue.Remove(_queue[index]);
             }
