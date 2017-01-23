@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProjectGuid>{4D12F766-B279-4F3C-BF0A-105C8BD764F5}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MediaSample.iOS</RootNamespace>
+    <AssemblyName>MediaSample.iOS</AssemblyName>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchFastDev>true</MtouchFastDev>
+    <MtouchUseSGen>true</MtouchUseSGen>
+    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <IOSDebuggerPort>61780</IOSDebuggerPort>
+    <MtouchLink>None</MtouchLink>
+    <MtouchArch>x86_64</MtouchArch>
+    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <MtouchTlsProvider>Default</MtouchTlsProvider>
+    <DeviceSpecificBuild>false</DeviceSpecificBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchUseSGen>true</MtouchUseSGen>
+    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchFloat32>true</MtouchFloat32>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <MtouchTlsProvider>Default</MtouchTlsProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchUseSGen>true</MtouchUseSGen>
+    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchLink>None</MtouchLink>
+    <MtouchArch>x86_64</MtouchArch>
+    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <MtouchTlsProvider>Default</MtouchTlsProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <DeviceSpecificBuild>true</DeviceSpecificBuild>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchFastDev>true</MtouchFastDev>
+    <MtouchUseSGen>true</MtouchUseSGen>
+    <MtouchUseRefCounting>true</MtouchUseRefCounting>
+    <MtouchFloat32>true</MtouchFloat32>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <MtouchTlsProvider>Default</MtouchTlsProvider>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Contents.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="LaunchScreen.storyboard" />
+    <InterfaceDefinition Include="Main.storyboard" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="ViewController.cs" />
+    <Compile Include="ViewController.designer.cs">
+      <DependentUpon>ViewController.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MediaSample.Core\MediaSample.Core.csproj">
+      <Project>{19955052-96FC-4149-84DD-C95A4C846C87}</Project>
+      <Name>MediaSample.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.iOS\Plugin.MediaManager.iOS.csproj">
+      <Project>{2882AEEB-D4CD-4EB9-8A6C-6653B33681F0}</Project>
+      <Name>Plugin.MediaManager.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
+      <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
+      <Name>Plugin.MediaManager.Abstractions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\btn_pause_active.png" />
+    <BundleResource Include="Resources\btn_pause_active%402x.png" />
+    <BundleResource Include="Resources\btn_pause_active%403x.png" />
+    <BundleResource Include="Resources\btn_pause_static.png" />
+    <BundleResource Include="Resources\btn_pause_static%402x.png" />
+    <BundleResource Include="Resources\btn_pause_static%403x.png" />
+    <BundleResource Include="Resources\btn_play_active.png" />
+    <BundleResource Include="Resources\btn_play_active%402x.png" />
+    <BundleResource Include="Resources\btn_play_active%403x.png" />
+    <BundleResource Include="Resources\btn_play_static.png" />
+    <BundleResource Include="Resources\btn_play_static%402x.png" />
+    <BundleResource Include="Resources\btn_play_static%403x.png" />
+    <BundleResource Include="Resources\icon_next_inactive 2.png" />
+    <BundleResource Include="Resources\icon_next_inactive 2%402x.png" />
+    <BundleResource Include="Resources\icon_next_inactive 2%403x.png" />
+    <BundleResource Include="Resources\icon_next_inactive.png" />
+    <BundleResource Include="Resources\icon_next_inactive%402x.png" />
+    <BundleResource Include="Resources\icon_next_inactive%403x.png" />
+    <BundleResource Include="Resources\icon_next_static.png" />
+    <BundleResource Include="Resources\icon_next_static%402x.png" />
+    <BundleResource Include="Resources\icon_next_static%403x.png" />
+    <BundleResource Include="Resources\icon_prev_active.png" />
+    <BundleResource Include="Resources\icon_prev_active%402x.png" />
+    <BundleResource Include="Resources\icon_prev_active%403x.png" />
+    <BundleResource Include="Resources\icon_prev_inactive.png" />
+    <BundleResource Include="Resources\icon_prev_inactive%402x.png" />
+    <BundleResource Include="Resources\icon_prev_inactive%403x.png" />
+    <BundleResource Include="Resources\icon_prev_static.png" />
+    <BundleResource Include="Resources\icon_prev_static%402x.png" />
+    <BundleResource Include="Resources\icon_prev_static%403x.png" />
+    <BundleResource Include="Resources\icon_repeat_active.png" />
+    <BundleResource Include="Resources\icon_repeat_active%402x.png" />
+    <BundleResource Include="Resources\icon_repeat_active%403x.png" />
+    <BundleResource Include="Resources\icon_repeat_one_active.png" />
+    <BundleResource Include="Resources\icon_repeat_one_active%402x.png" />
+    <BundleResource Include="Resources\icon_repeat_one_active%403x.png" />
+    <BundleResource Include="Resources\icon_repeat_static.png" />
+    <BundleResource Include="Resources\icon_repeat_static%402x.png" />
+    <BundleResource Include="Resources\icon_repeat_static%403x.png" />
+    <BundleResource Include="Resources\icon_shuffle_active.png" />
+    <BundleResource Include="Resources\icon_shuffle_active%402x.png" />
+    <BundleResource Include="Resources\icon_shuffle_active%403x.png" />
+    <BundleResource Include="Resources\icon_shuffle_static.png" />
+    <BundleResource Include="Resources\icon_shuffle_static%402x.png" />
+    <BundleResource Include="Resources\icon_shuffle_static%403x.png" />
+    <BundleResource Include="Resources\loading_spinner.png" />
+    <BundleResource Include="Resources\loading_spinner%402x.png" />
+    <BundleResource Include="Resources\loading_spinner%403x.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+</Project>
