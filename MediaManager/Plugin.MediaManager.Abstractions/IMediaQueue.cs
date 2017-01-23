@@ -63,7 +63,7 @@ namespace Plugin.MediaManager.Abstractions
 
         void SetTrackAsCurrent(IMediaFile item);
 
-        void AddRange(IEnumerable<IMediaFile> items);
+        void AddRange(IEnumerable<IMediaFile> mediaFiles);
 
         /// <summary>
         /// Turns on or off shuffling.
