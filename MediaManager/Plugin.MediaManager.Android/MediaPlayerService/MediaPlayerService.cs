@@ -182,11 +182,13 @@ namespace Plugin.MediaManager
                     if (_mediaPlayer == null)
                         return false;
 
+                    if (CurrentFile == null)
+                        return false;
                     String uri = GetUriFromPath(ApplicationContext, CurrentFile.Url);
-                    _mediaPlayer.Reset();
+                    _mediaPlayer?.Reset();
                     try
                     {
-                        await _mediaPlayer.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(uri), RequestHeaders);
+                        await _mediaPlayer?.SetDataSourceAsync(ApplicationContext, Android.Net.Uri.Parse(uri), RequestHeaders);
                     }
                     catch (Exception)
                     {
