@@ -49,8 +49,12 @@ See Sample for more details.
 ### **IMPORTANT**
 **Android:**
 
-You must request `AccessWifiState`, `Internet`, `MediaContentControl` and `WakeLock` permissions
+* You must request `AccessWifiState`, `Internet`, `MediaContentControl` and `WakeLock` permissions
 
+**iOS:**
+
+* In order for the audio to contiunue to play in the background you have to add the Audio and Airplay Background mode to your Info.plist
+* If you are playing audio from a http resource you have to take care of [ATS](https://developer.xamarin.com/guides/ios/platform_features/introduction_to_ios9/ats/).
 
 #### Contributors
 * [martijn00](https://github.com/martijn00)
