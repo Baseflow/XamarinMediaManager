@@ -1,4 +1,5 @@
 ﻿using System;
+using Plugin.MediaManager.Abstractions.Enums;
 using MediaManager.Sample.Core;
 using UIKit;
 
@@ -25,7 +26,7 @@ namespace MediaSample.iOS
 
 		        InvokeOnMainThread(() =>
 		        {
-		            if (hasChanged(nameof(MediaPlayerViewModel.Cover)))
+					if (hasChanged(nameof(MediaPlayerViewModel.CurrentTrack)))
 		            {
 		                QueueLabel.Text = _viewModel.PlayingText;
 		            }
@@ -80,6 +81,51 @@ namespace MediaSample.iOS
 				}
 		    };
 
+			_viewModel.MediaPlayer.MediaQueue.PropertyChanged += (sender, e) => {
+				InvokeOnMainThread(() => {
+
+					var propertyName = e.PropertyName;
+					var allChanged = propertyName == null;
+					
+					Func<string, bool> hasChanged = property => allChanged || propertyName == property;
+
+					if (hasChanged(nameof(_viewModel.MediaPlayer.MediaQueue.IsShuffled))) {
+						ShuffleButton.Selected = _viewModel.MediaPlayer.MediaQueue.IsShuffled;
+					}
+
+					if (hasChanged(nameof(_viewModel.MediaPlayer.MediaQueue.Repeat))) {					    
+						var iconPrefix = "icon_repeat_";
+					    var extension = ".png";
+
+					    string iconState;
+
+					    switch (_viewModel.MediaPlayer.MediaQueue.Repeat)
+					    {
+					        case RepeatType.None:
+					            iconState = "static";
+					            break;
+
+					        case RepeatType.RepeatAll:
+					            iconState = "active";
+					            break;
+
+					        case RepeatType.RepeatOne:
+					            iconState = "one_active";
+					            break;
+
+					        default:
+					            iconState = "static";
+					            break;
+						}
+
+					    var imageUrl = iconPrefix + iconState + extension;
+
+						var image = new UIImage(imageUrl);
+						RepeatButton.SetImage(image, UIControlState.Normal);
+					}
+				});
+			};
+
 		    PlayingProgressSlider.TouchDown += (sender, e) =>
 		    {
 		        _viewModel.IsSeeking = true;
@@ -121,9 +167,12 @@ namespace MediaSample.iOS
 
 		    ShuffleButton.TouchUpInside += (sender, args) =>
 		    {
-				ShuffleButton.Selected = _viewModel.MediaPlayer.MediaQueue.IsShuffled;
                 _viewModel.MediaPlayer.MediaQueue.ToggleShuffle();
 		    };
+
+			RepeatButton.TouchUpInside += (sender, e) => {
+				_viewModel.MediaPlayer.MediaQueue.ToggleRepeat();
+			};
 
 		    _viewModel.Init();
 		}
