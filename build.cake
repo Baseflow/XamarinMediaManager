@@ -1,90 +1,154 @@
-#addin nuget:https://nuget.org/api/v2/?package=Cake.FileHelpers&version=1.0.3.2
-#addin nuget:https://nuget.org/api/v2/?package=Cake.Xamarin&version=1.2.3
+#tool "nuget:?package=GitVersion.CommandLine"
+#tool "nuget:?package=gitlink"
 
-var TARGET = Argument ("target", Argument ("t", "Default"));
-var version = EnvironmentVariable ("APPVEYOR_BUILD_VERSION") ?? Argument("version", "0.0.9999");
+var sln = new FilePath("MediaManager.sln");
+var outputDir = new DirectoryPath("artifacts");
+var nuspecDir = new DirectoryPath("nuspec");
+var target = Argument("target", "Default");
 
-var libraries = new Dictionary<string, string> {
- 	{ "./MediaManagerLibs.sln", "Any" },
-};
+var local = BuildSystem.IsLocalBuild;
+var isDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals("develop", AppVeyor.Environment.Repository.Branch);
+var isReleaseBranch = StringComparer.OrdinalIgnoreCase.Equals("master", AppVeyor.Environment.Repository.Branch);
+var isTagged = AppVeyor.Environment.Repository.Tag.IsTag;
 
+var isRunningOnAppVeyor = AppVeyor.IsRunningOnAppVeyor;
+var isPullRequest = AppVeyor.Environment.PullRequest.IsPullRequest;
+var isRepository = StringComparer.OrdinalIgnoreCase.Equals("martijn00/XamarinMediaManager", AppVeyor.Environment.Repository.Name);
 
-var BuildAction = new Action<Dictionary<string, string>> (solutions =>
+Task("Clean").Does(() =>
 {
+    CleanDirectories("./**/bin");
+    CleanDirectories("./**/obj");
+	CleanDirectories(outputDir.FullPath);
+});
 
-	foreach (var sln in solutions) 
-    {
+GitVersion versionInfo = null;
+Task("Version").Does(() => {
+	GitVersion(new GitVersionSettings {
+		UpdateAssemblyInfo = true,
+		OutputType = GitVersionOutput.BuildServer
+	});
 
-		// If the platform is Any build regardless
-		//  If the platform is Win and we are running on windows build
-		//  If the platform is Mac and we are running on Mac, build
-		if ((sln.Value == "Any")
-				|| (sln.Value == "Win" && IsRunningOnWindows ())
-				|| (sln.Value == "Mac" && IsRunningOnUnix ())) 
-        {
-			
-			// Bit of a hack to use nuget3 to restore packages for project.json
-			if (IsRunningOnWindows ()) 
-            {
-				
-				Information ("RunningOn: {0}", "Windows");
+	versionInfo = GitVersion(new GitVersionSettings{ OutputType = GitVersionOutput.Json });
+	Information("VI:\t{0}", versionInfo.FullSemVer);
+});
 
-				NuGetRestore (sln.Key, new NuGetRestoreSettings
-                {
-					ToolPath = "./tools/nuget3.exe"
-				});
+Task("UpdateAppVeyorBuildNumber")
+	.IsDependentOn("Version")
+    .WithCriteria(() => isRunningOnAppVeyor)
+    .Does(() =>
+{
+    AppVeyor.UpdateBuildVersion(versionInfo.FullBuildMetaData);
+});
 
-				// Windows Phone / Universal projects require not using the amd64 msbuild
-				MSBuild (sln.Key, c => 
-                { 
-					c.Configuration = "Release";
-					c.MSBuildPlatform = Cake.Common.Tools.MSBuild.MSBuildPlatform.x86;
-				});
-			} 
-            else 
-            {
-                // Mac is easy ;)
-				NuGetRestore (sln.Key);
+Task("Restore").Does(() => {
+	NuGetRestore(sln);
+});
 
-				DotNetBuild (sln.Key, c => c.Configuration = "Release");
-			}
-		}
+Task("Build")
+	.IsDependentOn("Clean")
+	.IsDependentOn("UpdateAppVeyorBuildNumber")
+	.IsDependentOn("Restore")
+	.Does(() =>  {
+	
+	DotNetBuild(sln, 
+		settings => settings.SetConfiguration("Release")
+							.WithProperty("DebugSymbols", "true")
+            				.WithProperty("DebugType", "Full")
+							.WithTarget("Build"));
+});
+
+Task("GitLink")
+	.IsDependentOn("Build")
+	//pdbstr.exe and costura are not xplat currently
+	.WithCriteria(() => IsRunningOnWindows())
+	.Does(() => 
+{
+	GitLink(sln.GetDirectory(), 
+		new GitLinkSettings {
+			RepositoryUrl = "https://github.com/martijn00/XamarinMediaManager",
+			ArgumentCustomization = args => args.Append("-ignore mediaforms,mediaforms.ios,mediaforms.android,mediasample.core,mediasample.droid,mediasample.ios,mymediaplayer.core,mymediaplayer.droid,mymediaplayer.ios,mymediaplayer.macos,mymediaplayer.tvos")
+		});
+});
+
+Task("Package")
+	.IsDependentOn("GitLink")
+	.Does(() => 
+{
+	var nugetSettings = new NuGetPackSettings {
+		Authors = new [] { "Martijn00" },
+		Owners = new [] { "Martijn00" },
+		IconUrl = new Uri("https://raw.githubusercontent.com/martijn00/XamarinMediaManager/master/icon_MediaManager.png"),
+		ProjectUrl = new Uri("https://github.com/martijn00/XamarinMediaManager"),
+		LicenseUrl = new Uri("https://github.com/martijn00/XamarinMediaManager/blob/master/LICENSE"),
+		Copyright = "Copyright (c) Martijn00",
+		RequireLicenseAcceptance = false,
+		Version = versionInfo.NuGetVersion,
+		Symbols = false,
+		NoPackageAnalysis = true,
+		OutputDirectory = outputDir,
+		Verbosity = NuGetVerbosity.Detailed,
+		BasePath = "./nuspec"
+	};
+
+	EnsureDirectoryExists(outputDir);
+
+	var nuspecs = new List<string> {
+		"Plugin.MediaManager.ExoPlayer.nuspec",
+		"Plugin.MediaManager.Forms.nuspec",
+		"Plugin.MediaManager.Reactive.nuspec",
+		"Plugin.MediaManager.nuspec"
+	};
+
+	foreach(var nuspec in nuspecs)
+	{
+		NuGetPack(nuspecDir + "/" + nuspec, nugetSettings);
 	}
 });
 
-Task("Libraries").Does(()=>
+Task("PublishPackages")
+    .IsDependentOn("Package")
+    .WithCriteria(() => !local)
+    .WithCriteria(() => !isPullRequest)
+    .WithCriteria(() => isRepository)
+    .WithCriteria(() => isDevelopBranch || isReleaseBranch)
+    .Does (() =>
 {
-    BuildAction(libraries);
+	if (isReleaseBranch && !isTagged)
+    {
+        Information("Packages will not be published as this release has not been tagged.");
+        return;
+    }
+
+	// Resolve the API key.
+    var apiKey = EnvironmentVariable("NUGET_APIKEY");
+    if (string.IsNullOrEmpty(apiKey))
+    {
+        throw new Exception("The NUGET_APIKEY environment variable is not defined.");
+    }
+
+    var source = EnvironmentVariable("NUGET_SOURCE");
+    if (string.IsNullOrEmpty(source))
+    {
+        throw new Exception("The NUGET_SOURCE environment variable is not defined.");
+    }
+
+	var nugetFiles = GetFiles(outputDir + "/*.nupkg");
+
+	foreach(var nugetFile in nugetFiles)
+	{
+    	NuGetPush(nugetFile, new NuGetPushSettings {
+            Source = source,
+            ApiKey = apiKey
+        });
+	}
 });
 
 
-Task ("NuGet")
-	.IsDependentOn ("Libraries")
-	.Does (() =>
-{
-    if(!DirectoryExists("./Build/nuget/"))
-        CreateDirectory("./Build/nuget");
-        
-	NuGetPack ("./nuget/Plugin.nuspec", new NuGetPackSettings { 
-		Version = version,
-		Verbosity = NuGetVerbosity.Detailed,
-		OutputDirectory = "./Build/nuget/",
-		BasePath = "./",
-	});	
-});
+Task("Default")
+	.IsDependentOn("PublishPackages")
+	.Does(() => {
+	
+	});
 
-
-//Build the component, which build samples, nugets, and libraries
-Task ("Default").IsDependentOn("NuGet");
-
-
-Task ("Clean").Does (() => 
-{
-	CleanDirectories ("./Build/");
-
-	CleanDirectories ("./**/bin");
-	CleanDirectories ("./**/obj");
-});
-
-
-RunTarget (TARGET);
+RunTarget(target);
