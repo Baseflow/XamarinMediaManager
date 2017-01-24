@@ -3,7 +3,7 @@
   branches:
       only:
         - master
-  version: 0.1.4.{build}
+  version: 1.0.0.{build}
   image: Visual Studio 2017 RC
   environment:
     ANDROID_HOME: "C:\\android-sdk-windows"
@@ -30,7 +30,7 @@
   branches:
       only:
         - develop
-  version: 0.1.3.{build}
+  version: 1.0.0.{build}
   image: Visual Studio 2017 RC
   environment:
     ANDROID_HOME: "C:\\android-sdk-windows"

@@ -56,7 +56,7 @@ namespace Plugin.MediaManager
         {
             get
             {
-                if(!isBound) return MediaPlayerStatus.Stopped;
+                if (!isBound) return MediaPlayerStatus.Stopped;
                 var state = GetMediaPlayerService().MediaPlayerState;
                 return GetStatusByCompatValue(state);
             }
@@ -120,7 +120,10 @@ namespace Plugin.MediaManager
         public virtual async Task Play(IMediaFile mediaFile)
         {
             await BinderReady();
-            await GetMediaPlayerService().Play(mediaFile);
+            if (Status == MediaPlayerStatus.Paused)
+                await GetMediaPlayerService().TogglePlayPause(true);
+            else
+                await GetMediaPlayerService().Play(mediaFile);
         }
 
         public virtual async Task Seek(TimeSpan position)
@@ -145,13 +148,13 @@ namespace Plugin.MediaManager
                 GetMediaPlayerService().AlternateRemoteCallback = AlternateRemoteCallback;
 
             //serviceGetMediaPlayerService().CoverReloaded += (object sender, EventArgs e) => { instance.CoverReloaded?.Invoke(sender, e); };
-           GetMediaPlayerService().StatusChanged += (object sender, StatusChangedEventArgs e) => { StatusChanged?.Invoke(this, e); };
-           GetMediaPlayerService().PlayingChanged += (sender, args) => { PlayingChanged?.Invoke(this, args); };
-           GetMediaPlayerService().BufferingChanged += (sender, args) => { BufferingChanged?.Invoke(this, args); };
-           GetMediaPlayerService().MediaFinished += (sender, args) => { MediaFinished?.Invoke(this, args); };
-           GetMediaPlayerService().MediaFileFailed += (sender, args) => { MediaFileFailed?.Invoke(this, args); };
-           GetMediaPlayerService().MediaFailed += (sender, args) => { MediaFailed?.Invoke(this, args); };
-           GetMediaPlayerService().SetMediaSession(_sessionManager);
+            GetMediaPlayerService().StatusChanged += (object sender, StatusChangedEventArgs e) => { StatusChanged?.Invoke(this, e); };
+            GetMediaPlayerService().PlayingChanged += (sender, args) => { PlayingChanged?.Invoke(this, args); };
+            GetMediaPlayerService().BufferingChanged += (sender, args) => { BufferingChanged?.Invoke(this, args); };
+            GetMediaPlayerService().MediaFinished += (sender, args) => { MediaFinished?.Invoke(this, args); };
+            GetMediaPlayerService().MediaFileFailed += (sender, args) => { MediaFileFailed?.Invoke(this, args); };
+            GetMediaPlayerService().MediaFailed += (sender, args) => { MediaFailed?.Invoke(this, args); };
+            GetMediaPlayerService().SetMediaSession(_sessionManager);
         }
 
         internal void OnServiceDisconnected()
@@ -193,21 +196,21 @@ namespace Plugin.MediaManager
         {
             var handler = new Handler();
             var runnable = new Runnable(() => { handler.Post(OnPlaying); });
-			if (!_executorService.IsShutdown)
-			{
-				_scheduledFuture = _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
-			}
+            if (!_executorService.IsShutdown)
+            {
+                _scheduledFuture = _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
+            }
         }
 
         private void OnPlaying()
         {
-            var progress = (Position.TotalSeconds/Duration.TotalSeconds) * 100;
+            var progress = (Position.TotalSeconds / Duration.TotalSeconds) * 100;
             var position = Position;
             var duration = Duration;
 
             PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(
-                progress >= 0 ? progress : 0, 
-                position.TotalSeconds >= 0 ? position : TimeSpan.Zero, 
+                progress >= 0 ? progress : 0,
+                position.TotalSeconds >= 0 ? position : TimeSpan.Zero,
                 duration.TotalSeconds >= 0 ? duration : TimeSpan.Zero));
         }
 

@@ -36,9 +36,9 @@ namespace Plugin.MediaManager.Abstractions
         RepeatType Repeat { get; set; }
 
         /// <summary>
-        /// Activates or deactivates the Shuffle option
+        /// Wether the queue is shuffled
         /// </summary>
-        bool Shuffle { get; }
+        bool IsShuffled { get; }
 
         /// <summary>
         /// If the Queue has a next track
@@ -63,7 +63,7 @@ namespace Plugin.MediaManager.Abstractions
 
         void SetTrackAsCurrent(IMediaFile item);
 
-        void AddRange(IEnumerable<IMediaFile> items);
+        void AddRange(IEnumerable<IMediaFile> mediaFiles);
 
         /// <summary>
         /// Turns on or off shuffling.

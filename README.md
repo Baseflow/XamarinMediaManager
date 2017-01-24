@@ -5,10 +5,14 @@
 * Native notifications and remote controls
 
 ### Setup & Usage
-* Available on NuGet: https://www.nuget.org/packages/Plugin.MediaManager/ [![NuGet](https://img.shields.io/nuget/v/Plugin.MediaManager.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.MediaManager/)
+* Available on NuGet: https://www.nuget.org/packages/Plugin.MediaManager/
 * Install into each project that utilizes MediaManager
 
-### Build Status: [![Build status](https://ci.appveyor.com/api/projects/status/c9c6recwcu7k0s15?svg=true)](https://ci.appveyor.com/project/martijn00/xamarinmediamanager)
+### Build Status: 
+[![Build status](https://ci.appveyor.com/api/projects/status/c9c6recwcu7k0s15?svg=true)](https://ci.appveyor.com/project/martijn00/xamarinmediamanager)
+![GitHub tag](https://img.shields.io/github/tag/martijn00/Plugin.MediaManager.svg)
+[![NuGet](https://img.shields.io/nuget/v/Plugin.MediaManager.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.MediaManager/)
+[![MyGet](https://img.shields.io/myget/martijn00/v/Plugin.MediaManager.svg)](https://www.myget.org/F/Plugin.MediaManager/api/v2)
 
 **Platform Support**
 
