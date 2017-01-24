@@ -55,6 +55,7 @@ See Sample for more details.
 
 * In order for the audio to contiunue to play in the background you have to add the Audio and Airplay Background mode to your Info.plist
 * If you are playing audio from a http resource you have to take care of [ATS](https://developer.xamarin.com/guides/ios/platform_features/introduction_to_ios9/ats/).
+* If you want to display a artwork/cover that is embedded into an MP3 file, make sure that you use ID3 v2.3 (not v2.4).
 
 #### Contributors
 * [martijn00](https://github.com/martijn00)

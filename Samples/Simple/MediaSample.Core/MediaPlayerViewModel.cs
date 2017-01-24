@@ -33,7 +33,7 @@ namespace MediaManager.Sample.Core
             var mediaUrls =
             new [] {
                 "https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3",
-				"http://www.montemagno.com/sample.mp3",
+				"https://s3.eu-central-1.amazonaws.com/mp3-test-files/sample.mp3",
                 "http://www.bensound.org/bensound-music/bensound-goinghigher.mp3",
                 "http://www.bensound.org/bensound-music/bensound-tenderness.mp3"
             };
