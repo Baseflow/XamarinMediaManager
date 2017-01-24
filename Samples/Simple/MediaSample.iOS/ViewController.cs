@@ -59,6 +59,7 @@ namespace MediaSample.iOS
 		            if (hasChanged(nameof(MediaPlayerViewModel.Position)))
 		            {
 		                PlayingProgressSlider.Value = _viewModel.Position;
+						TimePlayedLabel.Text = GetTimeString(TimeSpan.FromSeconds(_viewModel.Position));
 		            }
 
 		            if (hasChanged(nameof(MediaPlayerViewModel.Downloaded)))
@@ -70,10 +71,13 @@ namespace MediaSample.iOS
 
 		    _viewModel.MediaPlayer.PlayingChanged += (sender, args) =>
 		    {
-                InvokeOnMainThread(() =>
-                {
-                    TimePlayedLabel.Text = GetTimeString(args.Position);
-                });
+				if (!_viewModel.IsSeeking)
+				{
+					InvokeOnMainThread(() =>
+					{
+						TimePlayedLabel.Text = GetTimeString(args.Position);
+					});
+				}
 		    };
 
 		    PlayingProgressSlider.TouchDown += (sender, e) =>
@@ -90,6 +94,14 @@ namespace MediaSample.iOS
 		    {
 		        _viewModel.IsSeeking = false;
 		    };
+
+			PlayingProgressSlider.ValueChanged += (sender, e) =>
+			{
+				_viewModel.IsSeeking = true;
+				_viewModel.Position = (int) PlayingProgressSlider.Value;
+			};
+
+			PlayingProgressSlider.Continuous = true;
 
 		    PlayPauseButton.TouchUpInside += async (sender, e) =>
 			{
