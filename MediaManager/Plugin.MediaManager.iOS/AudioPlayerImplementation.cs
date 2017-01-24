@@ -108,11 +108,28 @@ namespace Plugin.MediaManager
             get
             {
                 var buffered = TimeSpan.Zero;
-                if (Player.CurrentItem != null)
-                    buffered =
-                        TimeSpan.FromSeconds(
-                            Player.CurrentItem.LoadedTimeRanges.Select(
-                                tr => tr.CMTimeRangeValue.Start.Seconds + tr.CMTimeRangeValue.Duration.Seconds).Max());
+
+				var currentItem = Player.CurrentItem;
+
+				var loadedTimeRanges = currentItem?.LoadedTimeRanges;
+
+				if (currentItem != null && loadedTimeRanges.Any())
+				{
+				    var loadedSegments = loadedTimeRanges
+				        .Select(timeRange =>
+				        {
+				            var timeRangeValue = timeRange.CMTimeRangeValue;
+
+				            var startSeconds = timeRangeValue.Start.Seconds;
+				            var durationSeconds = timeRangeValue.Duration.Seconds;
+
+				            return startSeconds + durationSeconds;
+				        });
+
+				    var loadedSeconds = loadedSegments.Max();
+
+				    buffered = TimeSpan.FromSeconds(loadedSeconds);
+				}
 
                 Console.WriteLine("Buffered size: " + buffered);
 
