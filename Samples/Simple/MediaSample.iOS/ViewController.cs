@@ -109,7 +109,7 @@ namespace MediaSample.iOS
 
 		    ShuffleButton.TouchUpInside += (sender, args) =>
 		    {
-		        ShuffleButton.Selected = _viewModel.MediaPlayer.MediaQueue.Shuffle;
+				ShuffleButton.Selected = _viewModel.MediaPlayer.MediaQueue.IsShuffled;
                 _viewModel.MediaPlayer.MediaQueue.ToggleShuffle();
 		    };
 
