@@ -37,49 +37,25 @@ namespace MediaSample.iOS
 		UIKit.UIButton ShuffleButton { get; set; }
 
 		[Outlet]
+		UIKit.UILabel SubtitleLabel { get; set; }
+
+		[Outlet]
 		UIKit.UILabel TimePlayedLabel { get; set; }
 
 		[Outlet]
-		UIKit.UILabel TimeRemainingLabel { get; set; }
+		UIKit.UILabel TimeTotalLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel TitleLabel { get; set; }
 
 		[Outlet]
 		UIKit.UIImageView TrackCoverImageView { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (QueueLabel != null) {
-				QueueLabel.Dispose ();
-				QueueLabel = null;
-			}
-
-			if (TrackCoverImageView != null) {
-				TrackCoverImageView.Dispose ();
-				TrackCoverImageView = null;
-			}
-
 			if (BufferedProgressSlider != null) {
 				BufferedProgressSlider.Dispose ();
 				BufferedProgressSlider = null;
-			}
-
-			if (PlayingProgressSlider != null) {
-				PlayingProgressSlider.Dispose ();
-				PlayingProgressSlider = null;
-			}
-
-			if (TimePlayedLabel != null) {
-				TimePlayedLabel.Dispose ();
-				TimePlayedLabel = null;
-			}
-
-			if (TimeRemainingLabel != null) {
-				TimeRemainingLabel.Dispose ();
-				TimeRemainingLabel = null;
-			}
-
-			if (PlayPauseButton != null) {
-				PlayPauseButton.Dispose ();
-				PlayPauseButton = null;
 			}
 
 			if (NextButton != null) {
@@ -87,9 +63,29 @@ namespace MediaSample.iOS
 				NextButton = null;
 			}
 
+			if (PlayingProgressSlider != null) {
+				PlayingProgressSlider.Dispose ();
+				PlayingProgressSlider = null;
+			}
+
+			if (PlayPauseButton != null) {
+				PlayPauseButton.Dispose ();
+				PlayPauseButton = null;
+			}
+
 			if (PreviousButton != null) {
 				PreviousButton.Dispose ();
 				PreviousButton = null;
+			}
+
+			if (QueueLabel != null) {
+				QueueLabel.Dispose ();
+				QueueLabel = null;
+			}
+
+			if (RepeatButton != null) {
+				RepeatButton.Dispose ();
+				RepeatButton = null;
 			}
 
 			if (ShuffleButton != null) {
@@ -97,9 +93,29 @@ namespace MediaSample.iOS
 				ShuffleButton = null;
 			}
 
-			if (RepeatButton != null) {
-				RepeatButton.Dispose ();
-				RepeatButton = null;
+			if (SubtitleLabel != null) {
+				SubtitleLabel.Dispose ();
+				SubtitleLabel = null;
+			}
+
+			if (TimePlayedLabel != null) {
+				TimePlayedLabel.Dispose ();
+				TimePlayedLabel = null;
+			}
+
+			if (TimeTotalLabel != null) {
+				TimeTotalLabel.Dispose ();
+				TimeTotalLabel = null;
+			}
+
+			if (TitleLabel != null) {
+				TitleLabel.Dispose ();
+				TitleLabel = null;
+			}
+
+			if (TrackCoverImageView != null) {
+				TrackCoverImageView.Dispose ();
+				TrackCoverImageView = null;
 			}
 		}
 	}

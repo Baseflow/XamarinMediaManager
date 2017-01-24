@@ -28,14 +28,7 @@
                             <view contentMode="scaleToFill" restorationIdentifier="CoverContainer" translatesAutoresizingMaskIntoConstraints="NO" id="saG-Al-XhP" userLabel="CoverView">
                                 <rect key="frame" x="20" y="64" width="335" height="388"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading_spinner.png" translatesAutoresizingMaskIntoConstraints="NO" id="pPi-LK-p7z">
-                                        <rect key="frame" x="155.5" y="182.5" width="23" height="23"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="23" id="Pa5-hh-aPK"/>
-                                            <constraint firstAttribute="width" constant="23" id="eG8-cU-i9i"/>
-                                        </constraints>
-                                    </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zcM-3F-lDj">
+                                    <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zcM-3F-lDj">
                                         <rect key="frame" x="-27" y="0.0" width="388" height="388"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="zcM-3F-lDj" secondAttribute="height" multiplier="1:1" id="QZI-L6-7df"/>
@@ -54,7 +47,6 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="pPi-LK-p7z" secondAttribute="centerX" id="3oN-dq-CGy"/>
                                     <constraint firstItem="7sL-At-QWO" firstAttribute="leading" secondItem="saG-Al-XhP" secondAttribute="leading" id="8Q5-TO-LFy"/>
                                     <constraint firstItem="7sL-At-QWO" firstAttribute="top" secondItem="saG-Al-XhP" secondAttribute="top" id="Lk1-4R-fjU"/>
                                     <constraint firstAttribute="centerX" secondItem="zcM-3F-lDj" secondAttribute="centerX" id="TV0-ra-KdZ"/>
@@ -63,7 +55,6 @@
                                     <constraint firstAttribute="height" secondItem="zcM-3F-lDj" secondAttribute="height" priority="900" id="kLf-IY-5Re"/>
                                     <constraint firstAttribute="centerY" secondItem="zcM-3F-lDj" secondAttribute="centerY" id="oGc-lp-M6y"/>
                                     <constraint firstAttribute="bottom" secondItem="7sL-At-QWO" secondAttribute="bottom" id="t0r-U4-yfV"/>
-                                    <constraint firstAttribute="centerY" secondItem="pPi-LK-p7z" secondAttribute="centerY" id="vB5-tW-THw"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Yg-P7-l3B" userLabel="InfoView">
@@ -115,10 +106,10 @@
                                 <rect key="frame" x="0.0" y="452" width="375" height="70"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Wh-yB-SYe">
-                                        <rect key="frame" x="0.0" y="10.5" width="154" height="48.5"/>
+                                        <rect key="frame" x="0.0" y="10.5" width="113" height="48.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Track Title Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNR-hq-AB1">
-                                                <rect key="frame" x="20" y="6" width="134" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNR-hq-AB1">
+                                                <rect key="frame" x="20" y="6" width="93" height="21"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -126,8 +117,8 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TrackTitleLabel"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Track Subtitle Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fNY-cH-CX1">
-                                                <rect key="frame" x="20" y="27" width="134" height="18"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fNY-cH-CX1">
+                                                <rect key="frame" x="20" y="27" width="93" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
                                                 <color key="textColor" red="0.52647626400000003" green="0.57072240110000005" blue="0.64204221959999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -270,8 +261,10 @@
                         <outlet property="QueueLabel" destination="0kr-CK-oEV" id="UZN-H7-fGQ"/>
                         <outlet property="RepeatButton" destination="b5q-aL-TyH" id="KPt-a2-OXe"/>
                         <outlet property="ShuffleButton" destination="Bfb-Cc-EdN" id="J0L-Pa-N01"/>
+                        <outlet property="SubtitleLabel" destination="fNY-cH-CX1" id="lKe-gc-jd4"/>
                         <outlet property="TimePlayedLabel" destination="XRg-aK-3e8" id="cZw-Uk-Wl8"/>
-                        <outlet property="TimeRemainingLabel" destination="FBP-3A-uBX" id="6cw-my-Gmy"/>
+                        <outlet property="TimeTotalLabel" destination="FBP-3A-uBX" id="ieI-kE-CwW"/>
+                        <outlet property="TitleLabel" destination="gNR-hq-AB1" id="u9t-zz-rr9"/>
                         <outlet property="TrackCoverImageView" destination="zcM-3F-lDj" id="3UB-9Y-wgi"/>
                     </connections>
                 </viewController>
@@ -281,15 +274,14 @@
         </scene>
     </scenes>
     <resources>
-        <image name="btn_pause_static.png" width="16" height="16"/>
-        <image name="btn_play_static.png" width="16" height="16"/>
+        <image name="btn_pause_static.png" width="60" height="60"/>
+        <image name="btn_play_static.png" width="60" height="60"/>
         <image name="icon_next_active.png" width="16" height="16"/>
-        <image name="icon_next_static.png" width="16" height="16"/>
-        <image name="icon_prev_static.png" width="16" height="16"/>
-        <image name="icon_repeat_active.png" width="16" height="16"/>
-        <image name="icon_repeat_static.png" width="16" height="16"/>
-        <image name="icon_shuffle_active.png" width="16" height="16"/>
-        <image name="icon_shuffle_static.png" width="16" height="16"/>
-        <image name="loading_spinner.png" width="16" height="16"/>
+        <image name="icon_next_static.png" width="16" height="14"/>
+        <image name="icon_prev_static.png" width="16" height="14"/>
+        <image name="icon_repeat_active.png" width="20" height="20"/>
+        <image name="icon_repeat_static.png" width="20" height="20"/>
+        <image name="icon_shuffle_active.png" width="21" height="19"/>
+        <image name="icon_shuffle_static.png" width="21" height="19"/>
     </resources>
 </document>
