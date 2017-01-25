@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using NUnit.Framework;
-using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.Implementations;
 
@@ -139,7 +138,7 @@ namespace Plugin.MediaManager.Tests.Tests
                     };
 
                 queue.AddRange(tracks);
-                queue.ToggleShuffle();
+                queue.IsShuffled = true;
                 queue.Repeat = RepeatType.RepeatOne;
 
                 IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
@@ -754,7 +753,7 @@ namespace Plugin.MediaManager.Tests.Tests
                 Console.WriteLine("Current Index: {0}", queue.Index);
                 queue.AddRange(arr);
 
-                queue.ToggleShuffle();
+                queue.IsShuffled = true;
 
                 Console.WriteLine("Result: {0}", string.Join(",", queue.Cast<MediaFile>().Select(x => x.Id)));
 
@@ -789,11 +788,11 @@ namespace Plugin.MediaManager.Tests.Tests
                 Console.WriteLine("Current Index: {0}", queue.Index);
                 queue.AddRange(arr);
 
-                queue.ToggleShuffle();
+                queue.IsShuffled = true;
 
                 Console.WriteLine("Shuffled: {0}", string.Join(",", queue.Cast<MediaFile>().Select(x => x.Id)));
 
-                queue.ToggleShuffle();
+                queue.IsShuffled = false;
 
                 Console.WriteLine("Unshuffled: {0}", string.Join(",", queue.Cast<MediaFile>().Select(x => x.Id)));
 
@@ -827,12 +826,12 @@ namespace Plugin.MediaManager.Tests.Tests
                 Console.WriteLine("Current Index: {0}", queue.Index);
                 queue.AddRange(arr);
 
-                queue.ToggleShuffle();
+                queue.IsShuffled = true;
                 queue.Add(new MediaFile());
 
                 Console.WriteLine("Shuffled: {0}", string.Join(",", queue.Cast<MediaFile>().Select(x => x.Id)));
 
-                queue.ToggleShuffle();
+                queue.IsShuffled = false;
 
                 Console.WriteLine("Unshuffled: {0}", string.Join(",", queue.Cast<MediaFile>().Select(x => x.Id)));
 
@@ -879,8 +878,8 @@ namespace Plugin.MediaManager.Tests.Tests
 
                 // Randomize in quick succession to prove that the result is not the same
                 // Using Random() here would create two equal lists, hence the use of PCLCrypto.
-                queue1.ToggleShuffle();
-                queue2.ToggleShuffle();
+                queue1.IsShuffled = true;
+                queue2.IsShuffled = true;
 
                 Console.WriteLine("Queue1: {0}", string.Join(",", queue1.Cast<MediaFile>().Select(x => x.Id)));
                 Console.WriteLine("Queue2: {0}", string.Join(",", queue2.Cast<MediaFile>().Select(x => x.Id)));
