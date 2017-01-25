@@ -63,20 +63,9 @@ namespace Plugin.MediaManager.Abstractions
         event MediaFileFailedEventHandler MediaFileFailed;
 
         /// <summary>
-        /// Used to play a MediaFile after it has been added to the queue or resumed after it has been paused.
-        /// </summary>
-        Task Play();
-
-        /// <summary>
         /// Creates new MediaFile object, adds it to the queue and starts playing
         /// </summary>
         Task Play(string url, MediaFileType fileType);
-
-        /// <summary>
-        /// Adds the MediaFile to the queue and starts playing it.
-        /// </summary>
-        /// <param name="mediaFile"></param>
-        Task Play(IMediaFile mediaFile);
 
         /// <summary>
         /// Adds all MediaFiles to the Queue and starts playing the first one
