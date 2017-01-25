@@ -67,12 +67,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Adds MediaFile to the Queue and starts playing
         /// </summary>
-        Task Play(IMediaFile mediaFile);
-
-        /// <summary>
-        /// Used to play a MediaFile after it has been added to the queue or resumed after it has been paused.
-        /// </summary>
-        Task Play();
+        Task Play(IMediaFile mediaFile = null);
 
         /// <summary>
         /// Stops playing but retains position

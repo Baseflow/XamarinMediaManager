@@ -110,25 +110,19 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await Play(CurrentMediaFile);
         }
 
-        public async Task Play()
+        public async Task Play(IMediaFile mediaFile = null)
         {
-            if (Status == MediaPlayerStatus.Paused)
+            if (mediaFile == null)
             {
-                await Resume();
-            }
-            else
-            {
-                await Play(CurrentMediaFile);
-            }
-        }
+                if (Status == MediaPlayerStatus.Paused)
+                {
+                    await Resume();
+                    return;
+                }
 
-        /// <summary>
-        /// Adds MediaFile to the Queue and starts playing
-        /// </summary>
-        /// <param name="mediaFile"></param>
-        /// <returns></returns>
-        public async Task Play(IMediaFile mediaFile)
-        {
+                mediaFile = CurrentMediaFile;
+            }
+
             if (_currentPlaybackManager != null && Status == MediaPlayerStatus.Failed)
             {
                 await PlayNext();

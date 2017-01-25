@@ -51,6 +51,12 @@ namespace Plugin.MediaManager.Abstractions
         Task StepBackward();
 
         /// <summary>
+        /// Seeks to the specified amount of seconds
+        /// </summary>
+        /// <param name="seconds"></param>
+        Task SeekTo(double seconds);
+
+        /// <summary>
         /// Toggles between the different repeat: modes None, RepeatOne and RepeatAll
         /// </summary>
         void ToggleRepeat();
