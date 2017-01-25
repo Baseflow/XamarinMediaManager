@@ -176,10 +176,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await Play(new MediaFile(url, fileType));
         }
 
-        public async Task PlayPause()
-        {
-        }
-
         public void SetOnBeforePlay(Func<IMediaFile, Task> beforePlay)
         {
             _onBeforePlay = beforePlay;
