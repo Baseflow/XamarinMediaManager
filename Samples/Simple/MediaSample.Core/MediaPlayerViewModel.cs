@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Plugin.MediaManager;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
+using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace MediaManager.Sample.Core
@@ -13,10 +14,36 @@ namespace MediaManager.Sample.Core
     public class MediaPlayerViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void RaiseAllPropertiesChanged()
+        {
+            OnPropertyChanged(null);
+        }
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void Init()
+        {
+            Queue.Clear();
+
+            var mediaUrls =
+            new[] {
+                "https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3",
+                "https://s3.eu-central-1.amazonaws.com/mp3-test-files/sample.mp3",
+                "http://www.bensound.org/bensound-music/bensound-goinghigher.mp3",
+                "http://www.bensound.org/bensound-music/bensound-tenderness.mp3"
+            };
+
+            foreach (var mediaUrl in mediaUrls)
+            {
+                Queue.Add(new MediaFile { Type = MediaFileType.AudioUrl, Url = mediaUrl });
+            }
+
+            RaiseAllPropertiesChanged();
         }
 
         private readonly IMediaManager mediaPlayer;
@@ -27,7 +54,7 @@ namespace MediaManager.Sample.Core
                 return mediaPlayer;
             }
         }
-        
+
         public IMediaQueue Queue
         {
             get
@@ -145,8 +172,8 @@ namespace MediaManager.Sample.Core
             mediaPlayer.PlayingChanged += OnPlaying;
             mediaPlayer.BufferingChanged -= OnBuffering;
             mediaPlayer.BufferingChanged += OnBuffering;
-            //mediaPlayer.CoverReloaded -= OnCoverReloaded;
-            //mediaPlayer.CoverReloaded += OnCoverReloaded;
+            mediaPlayer.MediaFileChanged -= OnMediaFileChanged;
+            mediaPlayer.MediaFileChanged += OnMediaFileChanged;
 
             mediaPlayer.MediaQueue.PropertyChanged -= OnQueuePropertyChanged;
             mediaPlayer.MediaQueue.PropertyChanged += OnQueuePropertyChanged;
@@ -158,11 +185,12 @@ namespace MediaManager.Sample.Core
             {
                 //RaiseAllPropertiesChanged();
             }
-            else if (e.PropertyName == "Current")
+            else if (e.PropertyName == nameof(MediaQueue.Current))
             {
                 OnPropertyChanged(nameof(CurrentTrack));
+                OnPropertyChanged(nameof(PlayingText));
             }
-            else if (e.PropertyName == "Count")
+            else if (e.PropertyName == nameof(MediaQueue.Count))
             {
                 OnPropertyChanged(nameof(PlayingText));
             }
@@ -191,8 +219,9 @@ namespace MediaManager.Sample.Core
             OnPropertyChanged(nameof(Status));
         }
 
-        private void OnCoverReloaded(object sender, EventArgs e)
+        private void OnMediaFileChanged(object sender, MediaFileChangedEventArgs args)
         {
+            OnPropertyChanged(nameof(CurrentTrack));
             OnPropertyChanged(nameof(Cover));
         }
 
