@@ -20,6 +20,11 @@ namespace Plugin.MediaManager.Abstractions
         Task Pause();
 
         /// <summary>
+        /// Stops playing
+        /// </summary>
+        Task Stop();
+
+        /// <summary>
         /// Plays the previous MediaFile or seeks to start if far enough into the current one.
         /// </summary>
         Task PlayPreviousOrSeekToStart();

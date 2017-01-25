@@ -46,6 +46,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await _mediaManager.Pause();
         }
 
+        public async Task Stop()
+        {
+            await _mediaManager.Stop();
+        }
+
         public async Task PlayPreviousOrSeekToStart()
         {
             if (PositionSeconds > 3)
