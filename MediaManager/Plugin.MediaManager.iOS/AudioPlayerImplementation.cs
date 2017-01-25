@@ -218,7 +218,10 @@ namespace Plugin.MediaManager
             if(mediaFile != null)
                 nsUrl = new NSUrl(mediaFile.Url);
 
-            if (Status == MediaPlayerStatus.Paused)
+            var currentPlayerAsset = (AVUrlAsset) Player.CurrentItem?.Asset;
+            var currentPlayerItemUrl = currentPlayerAsset?.Url?.ToString();
+
+            if (Status == MediaPlayerStatus.Paused && mediaFile.Url == currentPlayerItemUrl)
             {
                 Status = MediaPlayerStatus.Playing;
                 //We are simply paused so just start again
