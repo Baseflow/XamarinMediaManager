@@ -44,6 +44,8 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public abstract IVolumeManager VolumeManager { get; set; }
 
+        public IPlaybackController PlaybackController { get; set; }
+
         public MediaPlayerStatus Status => CurrentPlaybackManager.Status;
 
         public TimeSpan Position => CurrentPlaybackManager.Position;
@@ -70,6 +72,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
+        protected MediaManagerBase()
+        {
+            PlaybackController = new PlaybackController(this);
+        }
+
         public async Task PlayNext()
         {
             await RaiseMediaFileFailedEventOnException(async () =>
@@ -93,16 +100,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         {
             await RaiseMediaFileFailedEventOnException(async () =>
             {
-                if (Position > TimeSpan.FromSeconds(3) || !MediaQueue.HasPrevious())
-                {
-                    await Seek(TimeSpan.Zero);
-                }
-                else
-                {
-                    MediaQueue.SetPreviousAsCurrent();
+                MediaQueue.SetPreviousAsCurrent();
 
-                    await PlayCurrent();
-                }
+                await PlayCurrent();
             });
         }
 
@@ -110,6 +110,18 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         {
             MediaQueue.SetIndexAsCurrent(index);
             await Play(CurrentMediaFile);
+        }
+
+        public async Task Play()
+        {
+            if (Status == MediaPlayerStatus.Paused)
+            {
+                await Resume();
+            }
+            else
+            {
+                await Play(CurrentMediaFile);
+            }
         }
 
         /// <summary>
@@ -166,18 +178,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public async Task PlayPause()
         {
-            switch (Status)
-            {
-                case MediaPlayerStatus.Paused:
-                    await CurrentPlaybackManager.Play(CurrentMediaFile);
-                    break;
-                case MediaPlayerStatus.Stopped:
-                    await Play(CurrentMediaFile);
-                    break;
-                default:
-                    await CurrentPlaybackManager.Pause();
-                    break;
-            }
         }
 
         public void SetOnBeforePlay(Func<IMediaFile, Task> beforePlay)
@@ -199,6 +199,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public async Task Seek(TimeSpan position)
         {
             await CurrentPlaybackManager.Seek(position);
+        }
+
+        private async Task Resume()
+        {
+            await CurrentPlaybackManager.Play(CurrentMediaFile);
         }
 
         private async Task RaiseMediaFileFailedEventOnException(Func<Task> action)
