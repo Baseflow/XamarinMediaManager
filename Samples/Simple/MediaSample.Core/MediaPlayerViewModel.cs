@@ -31,16 +31,16 @@ namespace MediaManager.Sample.Core
             Queue.Clear();
 
             var mediaUrls =
-            new [] {
+            new[] {
                 "https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3",
-				"https://s3.eu-central-1.amazonaws.com/mp3-test-files/sample.mp3",
+                "https://s3.eu-central-1.amazonaws.com/mp3-test-files/sample.mp3",
                 "http://www.bensound.org/bensound-music/bensound-goinghigher.mp3",
                 "http://www.bensound.org/bensound-music/bensound-tenderness.mp3"
             };
 
             foreach (var mediaUrl in mediaUrls)
             {
-                Queue.Add(new MediaFile {Type = MediaFileType.AudioUrl, Url = mediaUrl});
+                Queue.Add(new MediaFile { Type = MediaFileType.AudioUrl, Url = mediaUrl });
             }
 
             RaiseAllPropertiesChanged();
@@ -54,7 +54,7 @@ namespace MediaManager.Sample.Core
                 return mediaPlayer;
             }
         }
-        
+
         public IMediaQueue Queue
         {
             get
@@ -75,7 +75,7 @@ namespace MediaManager.Sample.Core
         {
             get
             {
-				return mediaPlayer.Duration.TotalSeconds > 0 ? Convert.ToInt32(mediaPlayer.Duration.TotalSeconds) : 0;
+                return mediaPlayer.Duration.TotalSeconds > 0 ? Convert.ToInt32(mediaPlayer.Duration.TotalSeconds) : 0;
             }
         }
 

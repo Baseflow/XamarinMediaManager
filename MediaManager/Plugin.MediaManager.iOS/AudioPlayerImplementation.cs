@@ -50,7 +50,7 @@ namespace Plugin.MediaManager
 
         private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
         {
-            Player.Volume = (float) volumeChangedEventArgs.Volume;
+            Player.Volume = (float)volumeChangedEventArgs.Volume;
             Player.Muted = volumeChangedEventArgs.Mute;
         }
 
@@ -109,27 +109,27 @@ namespace Plugin.MediaManager
             {
                 var buffered = TimeSpan.Zero;
 
-				var currentItem = Player.CurrentItem;
+                var currentItem = Player.CurrentItem;
 
-				var loadedTimeRanges = currentItem?.LoadedTimeRanges;
+                var loadedTimeRanges = currentItem?.LoadedTimeRanges;
 
-				if (currentItem != null && loadedTimeRanges.Any())
-				{
-				    var loadedSegments = loadedTimeRanges
-				        .Select(timeRange =>
-				        {
-				            var timeRangeValue = timeRange.CMTimeRangeValue;
+                if (currentItem != null && loadedTimeRanges.Any())
+                {
+                    var loadedSegments = loadedTimeRanges
+                        .Select(timeRange =>
+                        {
+                            var timeRangeValue = timeRange.CMTimeRangeValue;
 
-				            var startSeconds = timeRangeValue.Start.Seconds;
-				            var durationSeconds = timeRangeValue.Duration.Seconds;
+                            var startSeconds = timeRangeValue.Start.Seconds;
+                            var durationSeconds = timeRangeValue.Duration.Seconds;
 
-				            return startSeconds + durationSeconds;
-				        });
+                            return startSeconds + durationSeconds;
+                        });
 
-				    var loadedSeconds = loadedSegments.Max();
+                    var loadedSeconds = loadedSegments.Max();
 
-				    buffered = TimeSpan.FromSeconds(loadedSeconds);
-				}
+                    buffered = TimeSpan.FromSeconds(loadedSeconds);
+                }
 
                 Console.WriteLine("Buffered size: " + buffered);
 
@@ -201,7 +201,7 @@ namespace Plugin.MediaManager
         {
             _player = new AVPlayer();
 
-            #if __IOS__ || __TVOS__
+#if __IOS__ || __TVOS__
             var avSession = AVAudioSession.SharedInstance();
 
             // By setting the Audio Session category to AVAudioSessionCategorPlayback, audio will continue to play when the silent switch is enabled, or when the screen is locked.
@@ -212,7 +212,7 @@ namespace Plugin.MediaManager
             avSession.SetActive(true, out activationError);
             if (activationError != null)
                 Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
-            #endif
+#endif
 
             Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {
@@ -223,7 +223,7 @@ namespace Plugin.MediaManager
                 else
                 {
                     var totalDuration = TimeSpan.FromSeconds(Player.CurrentItem.Duration.Seconds);
-                    var totalProgress = Position.TotalMilliseconds/
+                    var totalProgress = Position.TotalMilliseconds /
                                         totalDuration.TotalMilliseconds;
                     PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position, Duration));
                 }
@@ -232,7 +232,7 @@ namespace Plugin.MediaManager
 
         public async Task Play(IMediaFile mediaFile = null)
         {
-            if(mediaFile != null)
+            if (mediaFile != null)
                 nsUrl = new NSUrl(mediaFile.Url);
 
             if (Status == MediaPlayerStatus.Paused)
@@ -259,7 +259,7 @@ namespace Plugin.MediaManager
                     NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New, Player.Handle);
 
                 Player.CurrentItem.SeekingWaitsForVideoCompositionRendering = true;
-                Player.CurrentItem.AddObserver(this, (NSString) "status", NSKeyValueObservingOptions.New |
+                Player.CurrentItem.AddObserver(this, (NSString)"status", NSKeyValueObservingOptions.New |
                                                                           NSKeyValueObservingOptions.Initial,
                     StatusObservationContext.Handle);
 
@@ -284,7 +284,7 @@ namespace Plugin.MediaManager
         {
             Console.WriteLine("Observer triggered for {0}", keyPath);
 
-            switch ((string) keyPath)
+            switch ((string)keyPath)
             {
                 case "status":
                     ObserveStatus();
@@ -333,7 +333,7 @@ namespace Plugin.MediaManager
                 var range = loadedTimeRanges[0].CMTimeRangeValue;
                 var duration = TimeSpan.FromSeconds(range.Duration.Seconds);
                 var totalDuration = Player.CurrentItem.Duration;
-                var bufferProgress = duration.TotalSeconds/totalDuration.Seconds;
+                var bufferProgress = duration.TotalSeconds / totalDuration.Seconds;
                 BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(bufferProgress, duration));
             }
             BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));

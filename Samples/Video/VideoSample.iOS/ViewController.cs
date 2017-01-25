@@ -1,15 +1,13 @@
 ﻿using System;
 using Plugin.MediaManager;
-using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
-using Plugin.MediaManager.Abstractions.Implementations;
 using UIKit;
 
 namespace MediaSample.iOS
 {
     public partial class ViewController : UIViewController
     {
-		VideoSurface _videoSurface;
+        VideoSurface _videoSurface;
 
         protected ViewController(IntPtr handle) : base(handle)
         {
@@ -19,29 +17,21 @@ namespace MediaSample.iOS
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-			_videoSurface = new VideoSurface();
-			VideoView.Add(_videoSurface);
-			CrossMediaManager.Current.VideoPlayer.RenderSurface = _videoSurface;
-			CrossMediaManager.Current.PlayingChanged += (sender, e) => ProgressView.Progress = (float)e.Progress;
-
-            // Perform any additional setup after loading the view, typically from a nib.
+            _videoSurface = new VideoSurface();
+            VideoView.Add(_videoSurface);
+            CrossMediaManager.Current.VideoPlayer.RenderSurface = _videoSurface;
+            CrossMediaManager.Current.PlayingChanged += (sender, e) => ProgressView.Progress = (float)e.Progress;
         }
 
-		public override void ViewDidLayoutSubviews()
-		{
-			_videoSurface.Frame = VideoView.Frame;
-			base.ViewDidLayoutSubviews();
-		}
-
-		partial void PlayButton_TouchUpInside(UIButton sender)
-		{
-			CrossMediaManager.Current.Play("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", MediaFileType.VideoUrl);
-		}
-
-        public override void DidReceiveMemoryWarning()
+        public override void ViewDidLayoutSubviews()
         {
-            base.DidReceiveMemoryWarning();
-            // Release any cached data, images, etc that aren't in use.
+            _videoSurface.Frame = VideoView.Frame;
+            base.ViewDidLayoutSubviews();
+        }
+
+        partial void PlayButton_TouchUpInside(UIButton sender)
+        {
+            CrossMediaManager.Current.Play("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", MediaFileType.VideoUrl);
         }
     }
 }
