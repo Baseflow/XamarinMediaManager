@@ -798,4 +798,12 @@ Global
 		{4D12F766-B279-4F3C-BF0A-105C8BD764F5} = {FD4A1000-6540-4A1D-BE65-40249DE24BFE}
 		{C2E58BB1-3F2F-40C8-BD3F-38B210E54560} = {A77E4FD3-2812-4330-BC52-B82C885CE0F5}
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.FileWidth = 120
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
+		$1.scope = text/plain
+	EndGlobalSection
 EndGlobal
