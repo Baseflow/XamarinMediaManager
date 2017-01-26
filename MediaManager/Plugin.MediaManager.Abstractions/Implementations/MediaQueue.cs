@@ -82,6 +82,23 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             {
                 return _unshuffledQueue != null;
             }
+            set
+            {
+                var shuffled = value;
+                if (shuffled != IsShuffled)
+                {
+                    if (shuffled)
+                    {
+                        Shuffle();
+                    }
+                    else
+                    {
+                        Unshuffle();
+                    }
+
+                    OnPropertyChanged(nameof(IsShuffled));
+                }
+            }
         }
 
         private bool IsRepeat
@@ -273,86 +290,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 Index = _queue.IndexOf(item);
         }
 
-        public void ToggleRepeat()
-        {
-            switch (Repeat)
-            {
-                case RepeatType.None:
-                    Repeat = RepeatType.RepeatOne;
-                    break;
-                case RepeatType.RepeatOne:
-                    Repeat = RepeatType.RepeatAll;
-                    break;
-                case RepeatType.RepeatAll:
-                    Repeat = RepeatType.None;
-                    break;
-            }
-        }
-
         private CancellationTokenSource shuffleCancellation = new CancellationTokenSource();
-
-        public void ToggleShuffle()
-        {
-            if (!IsShuffled)
-            {
-                // Cancel any running tasks
-                shuffleCancellation.Cancel();
-
-                // Set up new cancellation token so we can run this task
-                var cts = new CancellationTokenSource();
-                shuffleCancellation = cts;
-
-                // Work with a copy of the current queue
-                var elements = _queue.ToList();
-
-                // Remove the current item to add it as first item again later
-                var currentItem = Current;
-                if (currentItem != null)
-                {
-                    elements.RemoveAt(Index);
-                }
-
-                var random = new Random();
-                for (var i = elements.Count - 1; i > 1; i--)
-                {
-                    // Get a random index
-                    var swapIndex = random.Next(0, i + 1);
-
-                    var tmp = elements[i];
-                    elements[i] = elements[swapIndex];
-                    elements[swapIndex] = tmp;
-                }
-
-                // If the cancellation token canceled in the meantime, exit here
-                if (cts.Token.IsCancellationRequested)
-                {
-                    return;
-                }
-
-                // Back up current queue to backup queue so we can get it later when user turns off shuffling
-                _unshuffledQueue = new ObservableCollection<IMediaFile>(_queue);
-
-                if (currentItem != null)
-                {
-                    // Add currentItem to queue as first index
-                    elements.Insert(0, currentItem);
-                }
-                Index = 0;
-                // Replace queue with randomized collection
-                ReplaceQueueWith(elements);
-
-                
-            }
-            else
-            {
-                // Reset queues
-                var newIndex = _unshuffledQueue.IndexOf(Current);
-                ReplaceQueueWith(_unshuffledQueue);
-                Index = newIndex;
-                _unshuffledQueue = null;
-            }
-            OnPropertyChanged(nameof(IsShuffled));
-        }
 
         protected void ReplaceQueueWith(IEnumerable<IMediaFile> files)
         {
@@ -362,6 +300,64 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             CollectionChangedEventDisabled = false;
             if (CollectionChanged != null)
                 CollectionChanged(_queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+
+        private void Shuffle()
+        {
+            // Cancel any running tasks
+            shuffleCancellation.Cancel();
+
+            // Set up new cancellation token so we can run this task
+            var cts = new CancellationTokenSource();
+            shuffleCancellation = cts;
+
+            // Work with a copy of the current queue
+            var elements = _queue.ToList();
+
+            // Remove the current item to add it as first item again later
+            var currentItem = Current;
+            if (currentItem != null)
+            {
+                elements.RemoveAt(Index);
+            }
+
+            var random = new Random();
+            for (var i = elements.Count - 1; i > 1; i--)
+            {
+                // Get a random index
+                var swapIndex = random.Next(0, i + 1);
+
+                var tmp = elements[i];
+                elements[i] = elements[swapIndex];
+                elements[swapIndex] = tmp;
+            }
+
+            // If the cancellation token canceled in the meantime, exit here
+            if (cts.Token.IsCancellationRequested)
+            {
+                return;
+            }
+
+            // Back up current queue to backup queue so we can get it later when user turns off shuffling
+            _unshuffledQueue = new ObservableCollection<IMediaFile>(_queue);
+
+            if (currentItem != null)
+            {
+                // Add currentItem to queue as first index
+                elements.Insert(0, currentItem);
+            }
+            Index = 0;
+            // Replace queue with randomized collection
+            ReplaceQueueWith(elements);
+        }
+
+        private void Unshuffle()
+        {
+            // Reset queues
+            var newIndex = _unshuffledQueue.IndexOf(Current);
+            ReplaceQueueWith(_unshuffledQueue);
+            Index = newIndex;
+            _unshuffledQueue = null;
         }
 
         private void RegisterCountTriggers()
