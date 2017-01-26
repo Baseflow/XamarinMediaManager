@@ -10,13 +10,14 @@ using Foundation;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
     public class AudioPlayerImplementation : NSObject, IAudioPlayer
     {
         private readonly IVolumeManager _volumeManager;
+
+        private IMediaFile _currentMediaFile;
 
         public static readonly NSString StatusObservationContext =
             new NSString("AVCustomEditPlayerViewControllerStatusObservationContext");
@@ -232,15 +233,20 @@ namespace Plugin.MediaManager
 
         public async Task Play(IMediaFile mediaFile = null)
         {
-            if (mediaFile != null)
-                nsUrl = new NSUrl(mediaFile.Url);
+            var sameMediaFile = mediaFile == null || mediaFile.Equals(_currentMediaFile);
 
-            if (Status == MediaPlayerStatus.Paused)
+            if (Status == MediaPlayerStatus.Paused && sameMediaFile)
             {
                 Status = MediaPlayerStatus.Playing;
                 //We are simply paused so just start again
                 Player.Play();
                 return;
+            }
+
+            if (mediaFile != null)
+            {
+                nsUrl = new NSUrl(mediaFile.Url);
+                _currentMediaFile = mediaFile;
             }
 
             try
