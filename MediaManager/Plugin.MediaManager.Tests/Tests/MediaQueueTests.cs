@@ -158,7 +158,7 @@ namespace Plugin.MediaManager.Tests.Tests
                 Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
                 Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
                 Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Shuffle").Count());
+                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "IsShuffled").Count());
                 Assert.AreEqual(4, propertyChangedEvents.Count);
                 Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems == null).Count());
                 Assert.AreEqual(1, collectionChangedEvents.Count);
