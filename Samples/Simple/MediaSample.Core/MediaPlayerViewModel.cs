@@ -127,16 +127,16 @@ namespace MediaManager.Sample.Core
 
         private void OnQueuePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Index")
-            {
-                //RaiseAllPropertiesChanged();
-            }
-            else if (e.PropertyName == nameof(MediaQueue.Current))
+            var currentChanged = e.PropertyName == nameof(MediaQueue.Current);
+            var countChanged = e.PropertyName == nameof(MediaQueue.Count);
+            var indexChanged = e.PropertyName == nameof(MediaQueue.Index);
+
+            if (currentChanged)
             {
                 OnPropertyChanged(nameof(CurrentTrack));
-                OnPropertyChanged(nameof(PlayingText));
             }
-            else if (e.PropertyName == nameof(MediaQueue.Count))
+
+            if (countChanged || indexChanged)
             {
                 OnPropertyChanged(nameof(PlayingText));
             }

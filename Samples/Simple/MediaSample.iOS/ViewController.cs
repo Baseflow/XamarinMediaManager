@@ -32,7 +32,7 @@ namespace MediaSample.iOS
 
                 InvokeOnMainThread(() =>
                 {
-                    if (hasChanged(nameof(MediaPlayerViewModel.CurrentTrack)))
+                    if (hasChanged(nameof(MediaPlayerViewModel.PlayingText)))
                     {
                         QueueLabel.Text = _viewModel.PlayingText;
                     }
