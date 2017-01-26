@@ -849,6 +849,23 @@ namespace Plugin.MediaManager.Tests.Tests
                 Assert.AreEqual(arr[10].Id, queue.Cast<MediaFile>().ElementAt(10).Id);
                 Assert.AreEqual(arr.Length + 1, queue.Count, "The array length is different");
             }
+
+            [Test, Sequential]
+            public void ShuffledUnshuffled_PropertyUnchanged(
+                [Values(nameof(MediaQueue.Count), nameof(MediaQueue.Current))] string propertyName)
+            {
+                var queue = new MediaQueue {new MediaFile(), new MediaFile()};
+
+                var propertyChangedEvents = new List<PropertyChangedEventArgs>();
+
+                queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
+
+                queue.IsShuffled = true;
+
+                queue.IsShuffled = false;
+
+                Assert.Zero(propertyChangedEvents.Count(e => e.PropertyName == propertyName));
+            }
         }
     }
 }
