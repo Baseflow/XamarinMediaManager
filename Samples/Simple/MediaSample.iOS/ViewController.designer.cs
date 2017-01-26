@@ -1,51 +1,122 @@
 // WARNING
 //
-// This file has been generated automatically by Xamarin Studio from the outlets and
-// actions declared in your storyboard file.
-// Manual changes to this file will not be maintained.
+// This file has been generated automatically by Xamarin Studio to store outlets and
+// actions made in the UI designer. If it is removed, they will be lost.
+// Manual changes to this file may not be handled correctly.
 //
 using Foundation;
-using System;
 using System.CodeDom.Compiler;
-using UIKit;
 
 namespace MediaSample.iOS
 {
-    [Register ("ViewController")]
-    partial class ViewController
-    {
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton PlayButton { get; set; }
+	[Register ("ViewController")]
+	partial class ViewController
+	{
+		[Outlet]
+		UIKit.UISlider BufferedProgressSlider { get; set; }
 
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIProgressView ProgressView { get; set; }
+		[Outlet]
+		UIKit.UIButton NextButton { get; set; }
 
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIView VideoView { get; set; }
+		[Outlet]
+		UIKit.UISlider PlayingProgressSlider { get; set; }
 
-        [Action ("PlayButton_TouchUpInside:")]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        partial void PlayButton_TouchUpInside (UIKit.UIButton sender);
+		[Outlet]
+		UIKit.UIButton PlayPauseButton { get; set; }
 
-        void ReleaseDesignerOutlets ()
-        {
-            if (PlayButton != null) {
-                PlayButton.Dispose ();
-                PlayButton = null;
-            }
+		[Outlet]
+		UIKit.UIButton PreviousButton { get; set; }
 
-            if (ProgressView != null) {
-                ProgressView.Dispose ();
-                ProgressView = null;
-            }
+		[Outlet]
+		UIKit.UILabel QueueLabel { get; set; }
 
-            if (VideoView != null) {
-                VideoView.Dispose ();
-                VideoView = null;
-            }
-        }
-    }
+		[Outlet]
+		UIKit.UIButton RepeatButton { get; set; }
+
+		[Outlet]
+		UIKit.UIButton ShuffleButton { get; set; }
+
+		[Outlet]
+		UIKit.UILabel SubtitleLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel TimePlayedLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel TimeTotalLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel TitleLabel { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView TrackCoverImageView { get; set; }
+		
+		void ReleaseDesignerOutlets ()
+		{
+			if (BufferedProgressSlider != null) {
+				BufferedProgressSlider.Dispose ();
+				BufferedProgressSlider = null;
+			}
+
+			if (NextButton != null) {
+				NextButton.Dispose ();
+				NextButton = null;
+			}
+
+			if (PlayingProgressSlider != null) {
+				PlayingProgressSlider.Dispose ();
+				PlayingProgressSlider = null;
+			}
+
+			if (PlayPauseButton != null) {
+				PlayPauseButton.Dispose ();
+				PlayPauseButton = null;
+			}
+
+			if (PreviousButton != null) {
+				PreviousButton.Dispose ();
+				PreviousButton = null;
+			}
+
+			if (QueueLabel != null) {
+				QueueLabel.Dispose ();
+				QueueLabel = null;
+			}
+
+			if (RepeatButton != null) {
+				RepeatButton.Dispose ();
+				RepeatButton = null;
+			}
+
+			if (ShuffleButton != null) {
+				ShuffleButton.Dispose ();
+				ShuffleButton = null;
+			}
+
+			if (SubtitleLabel != null) {
+				SubtitleLabel.Dispose ();
+				SubtitleLabel = null;
+			}
+
+			if (TimePlayedLabel != null) {
+				TimePlayedLabel.Dispose ();
+				TimePlayedLabel = null;
+			}
+
+			if (TimeTotalLabel != null) {
+				TimeTotalLabel.Dispose ();
+				TimeTotalLabel = null;
+			}
+
+			if (TitleLabel != null) {
+				TitleLabel.Dispose ();
+				TitleLabel = null;
+			}
+
+			if (TrackCoverImageView != null) {
+				TrackCoverImageView.Dispose ();
+				TrackCoverImageView = null;
+			}
+		}
+	}
 }
