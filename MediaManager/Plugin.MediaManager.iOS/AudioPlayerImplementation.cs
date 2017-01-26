@@ -233,7 +233,7 @@ namespace Plugin.MediaManager
 
         public async Task Play(IMediaFile mediaFile = null)
         {
-            var sameMediaFile = mediaFile == null || !mediaFile.Equals(_currentMediaFile);
+            var sameMediaFile = mediaFile == null || mediaFile.Equals(_currentMediaFile);
 
             if (Status == MediaPlayerStatus.Paused && sameMediaFile)
             {
