@@ -849,47 +849,6 @@ namespace Plugin.MediaManager.Tests.Tests
                 Assert.AreEqual(arr[10].Id, queue.Cast<MediaFile>().ElementAt(10).Id);
                 Assert.AreEqual(arr.Length + 1, queue.Count, "The array length is different");
             }
-
-            [Test]
-            public void ShuffleTwice_WhenRandomNumberGeneratorWorks_OrderIsDifferent()
-            {
-                var arr = new[]
-                              {
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile()
-                              };
-
-                Console.WriteLine("Original: {0}", string.Join(",", arr.Select(x => x.Id)));
-
-                var queue1 = new MediaQueue();
-                queue1.AddRange(arr);
-
-                var queue2 = new MediaQueue();
-                queue2.AddRange(arr);
-
-                // Randomize in quick succession to prove that the result is not the same
-                // Using Random() here would create two equal lists, hence the use of PCLCrypto.
-                queue1.IsShuffled = true;
-                queue2.IsShuffled = true;
-
-                Console.WriteLine("Queue1: {0}", string.Join(",", queue1.Cast<MediaFile>().Select(x => x.Id)));
-                Console.WriteLine("Queue2: {0}", string.Join(",", queue2.Cast<MediaFile>().Select(x => x.Id)));
-
-                CollectionAssert.AllItemsAreUnique(queue1.Cast<MediaFile>().Select(x => x.Id));
-                CollectionAssert.AllItemsAreUnique(queue2.Cast<MediaFile>().Select(x => x.Id));
-                CollectionAssert.AreNotEqual(queue1.Cast<MediaFile>(), queue2.Cast<MediaFile>());
-                Assert.AreEqual(arr[queue1.Index].Id, queue1.Cast<MediaFile>().ElementAt(queue1.Index).Id, "The current item has been moved");
-                Assert.AreEqual(arr[queue2.Index].Id, queue2.Cast<MediaFile>().ElementAt(queue2.Index).Id, "The current item has been moved");
-            }
         }
     }
 }
