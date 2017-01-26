@@ -47,10 +47,10 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             {
                 if (Count > 0 && Index >= 0)
                 {
-                    return _current = _queue[Index];
+                    return _queue[Index];
                 }
 
-                return _current = null;
+                return null;
             }
         }
 
@@ -362,7 +362,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         private void RegisterCountTriggers()
         {
-            _queue.CollectionChanged += (sender, e) =>
+            CollectionChanged += (sender, e) =>
             {
                 var count = _queue.Count;
 
@@ -405,7 +405,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 }
             };
 
-            _queue.CollectionChanged += (sender, e) =>
+            CollectionChanged += (sender, e) =>
             {
                 updateProperty();
             };
