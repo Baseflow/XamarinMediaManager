@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Plugin.MediaManager.ExoPlayer</id>
-        <version>0.1.2</version>
+        <version>$version$</version>
         <title>ExoPlayer for MediaManager, for Xamarin.Android</title>
         <authors>Martijn van Dijk</authors>
         <owners>Martijn van Dijk</owners>
@@ -14,8 +14,8 @@
         <summary>ExoPlayer support for Cross Platform MediaManager</summary>
         <tags>xamarin, monodroid, C#, xamarin.android, android, ios, uwp, Windows, tvOS, Mac, MacOS, mediaplayer, audio, video, streaming, background, media</tags>
         <dependencies>
-            <group targetFramework="MonoAndroid0.0">
-                <dependency id="Plugin.MediaManager" version="0.1.2" />
+            <group targetFramework="MonoAndroid70">
+                <dependency id="Plugin.MediaManager" version="[$version$]" />
                 <dependency id="Xam.Plugins.Android.ExoPlayer" version="2.0.4.1" />
 				<dependency id="Xamarin.Android.Support.Media.Compat" version="24.2.1" />
             </group>
