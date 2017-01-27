@@ -61,12 +61,6 @@
     <Compile Include="..\Plugin.MediaManager.iOS\MediaExtractorImplementation.cs">
       <Link>MediaExtractorImplementation.cs</Link>
     </Compile>
-    <Compile Include="..\Plugin.MediaManager.iOS\MediaManagerImplementation.cs">
-      <Link>MediaManagerImplementation.cs</Link>
-    </Compile>
-    <Compile Include="..\Plugin.MediaManager.iOS\MediaNotificationManagerImplementation.cs">
-      <Link>MediaNotificationManagerImplementation.cs</Link>
-    </Compile>
     <Compile Include="..\Plugin.MediaManager.iOS\VideoPlayerImplementation.cs">
       <Link>VideoPlayerImplementation.cs</Link>
     </Compile>
@@ -78,6 +72,19 @@
       <Link>CrossMediaManager.cs</Link>
     </Compile>
     <Compile Include="VideoSurface.cs" />
+    <Compile Include="..\Plugin.MediaManager.iOS\IMediaRemoteControl.cs">
+      <Link>IMediaRemoteControl.cs</Link>
+    </Compile>
+    <Compile Include="..\Plugin.MediaManager.iOS\MediaRemoteControl.cs">
+      <Link>MediaRemoteControl.cs</Link>
+    </Compile>
+    <Compile Include="..\Plugin.MediaManager.iOS\RemoteControlNotificationManager.cs">
+      <Link>RemoteControlNotificationManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Plugin.MediaManager.iOS\MediaManagerAppleBase.cs">
+      <Link>MediaManagerAppleBase.cs</Link>
+    </Compile>
+    <Compile Include="MediaManagerImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">

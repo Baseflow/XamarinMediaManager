@@ -187,6 +187,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public async Task Seek(TimeSpan position)
         {
             await CurrentPlaybackManager.Seek(position);
+            MediaNotificationManager?.UpdateNotifications(CurrentMediaFile, Status);
         }
 
         private async Task Resume()
