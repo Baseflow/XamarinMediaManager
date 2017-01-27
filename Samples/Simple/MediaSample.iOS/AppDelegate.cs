@@ -57,4 +57,3 @@ namespace MediaSample.iOS
     }
 }
 
-

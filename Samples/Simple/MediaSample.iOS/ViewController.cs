@@ -1,48 +1,189 @@
 ﻿using System;
-using Plugin.MediaManager;
-using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
-using Plugin.MediaManager.Abstractions.Implementations;
+using MediaManager.Sample.Core;
 using UIKit;
 
 namespace MediaSample.iOS
 {
     public partial class ViewController : UIViewController
     {
-		VideoSurface _videoSurface;
-
-        protected ViewController(IntPtr handle) : base(handle)
+        private readonly MediaPlayerViewModel _viewModel;
+        public ViewController(IntPtr handle) : base(handle)
         {
-            // Note: this .ctor should not contain any initialization logic.
+            _viewModel = new MediaPlayerViewModel();
         }
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-			_videoSurface = new VideoSurface();
-			VideoView.Add(_videoSurface);
-			CrossMediaManager.Current.VideoPlayer.RenderSurface = _videoSurface;
-			CrossMediaManager.Current.PlayingChanged += (sender, e) => ProgressView.Progress = (float)e.Progress;
 
-            // Perform any additional setup after loading the view, typically from a nib.
+            _viewModel.PropertyChanged += (sender, args) =>
+            {
+                var propertyName = args.PropertyName;
+                var allChanged = propertyName == null;
+
+                Func<string, bool> hasChanged = property => allChanged || propertyName == property;
+
+                InvokeOnMainThread(() =>
+                {
+                    if (hasChanged(nameof(MediaPlayerViewModel.CurrentTrack)))
+                    {
+                        QueueLabel.Text = _viewModel.PlayingText;
+                    }
+
+                    if (hasChanged(nameof(MediaPlayerViewModel.Cover)))
+                    {
+                        TrackCoverImageView.Image = (UIImage)_viewModel.Cover;
+                    }
+
+                    if (hasChanged(nameof(MediaPlayerViewModel.CurrentTrack)))
+                    {
+                        TitleLabel.Text = _viewModel.CurrentTrack.Metadata.Title;
+                        SubtitleLabel.Text = _viewModel.CurrentTrack.Metadata.Artist;
+                    }
+
+                    if (hasChanged(nameof(MediaPlayerViewModel.IsPlaying)))
+                    {
+                        PlayPauseButton.Selected = _viewModel.IsPlaying;
+                    }
+
+                    if (hasChanged(nameof(MediaPlayerViewModel.Duration)))
+                    {
+                        PlayingProgressSlider.MaxValue = _viewModel.Duration;
+                        BufferedProgressSlider.MaxValue = _viewModel.Duration;
+
+                        var duration = TimeSpan.FromSeconds(_viewModel.Duration);
+
+                        TimeTotalLabel.Text = GetTimeString(duration);
+                    }
+
+                    if (hasChanged(nameof(MediaPlayerViewModel.Position)))
+                    {
+                        PlayingProgressSlider.Value = _viewModel.Position;
+                        TimePlayedLabel.Text = GetTimeString(TimeSpan.FromSeconds(_viewModel.Position));
+                    }
+
+                    if (hasChanged(nameof(MediaPlayerViewModel.Downloaded)))
+                    {
+                        BufferedProgressSlider.Value = _viewModel.Downloaded;
+                    }
+                });
+            };
+
+            _viewModel.MediaPlayer.PlayingChanged += (sender, args) =>
+            {
+                if (!_viewModel.IsSeeking)
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        TimePlayedLabel.Text = GetTimeString(args.Position);
+                    });
+                }
+            };
+
+            _viewModel.MediaPlayer.MediaQueue.PropertyChanged += (sender, e) =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    var propertyName = e.PropertyName;
+                    var allChanged = propertyName == null;
+
+                    Func<string, bool> hasChanged = property => allChanged || propertyName == property;
+
+                    if (hasChanged(nameof(_viewModel.MediaPlayer.MediaQueue.IsShuffled)))
+                    {
+                        ShuffleButton.Selected = _viewModel.MediaPlayer.MediaQueue.IsShuffled;
+                    }
+
+                    if (hasChanged(nameof(_viewModel.MediaPlayer.MediaQueue.Repeat)))
+                    {
+                        var iconPrefix = "icon_repeat_";
+                        var extension = ".png";
+
+                        string iconState;
+
+                        switch (_viewModel.MediaPlayer.MediaQueue.Repeat)
+                        {
+                            case RepeatType.None:
+                                iconState = "static";
+                                break;
+
+                            case RepeatType.RepeatAll:
+                                iconState = "active";
+                                break;
+
+                            case RepeatType.RepeatOne:
+                                iconState = "one_active";
+                                break;
+
+                            default:
+                                iconState = "static";
+                                break;
+                        }
+
+                        var imageUrl = iconPrefix + iconState + extension;
+
+                        var image = new UIImage(imageUrl);
+                        RepeatButton.SetImage(image, UIControlState.Normal);
+                    }
+                });
+            };
+
+            PlayingProgressSlider.TouchDown += (sender, e) =>
+            {
+                _viewModel.IsSeeking = true;
+            };
+
+            PlayingProgressSlider.TouchUpInside += (sender, e) =>
+            {
+                _viewModel.IsSeeking = false;
+            };
+
+            PlayingProgressSlider.TouchUpOutside += (sender, e) =>
+            {
+                _viewModel.IsSeeking = false;
+            };
+
+            PlayingProgressSlider.ValueChanged += (sender, e) =>
+            {
+                _viewModel.IsSeeking = true;
+                _viewModel.Position = (int)PlayingProgressSlider.Value;
+            };
+
+            PlayingProgressSlider.Continuous = true;
+
+            PlayPauseButton.TouchUpInside += async (sender, e) =>
+            {
+                await _viewModel.MediaPlayer.PlayPause();
+                PlayPauseButton.Selected = _viewModel.IsPlaying;
+            };
+
+            NextButton.TouchUpInside += async (sender, e) =>
+            {
+                await _viewModel.MediaPlayer.PlayNext();
+            };
+
+            PreviousButton.TouchUpInside += async (sender, e) =>
+            {
+                await _viewModel.MediaPlayer.PlayPrevious();
+            };
+
+            ShuffleButton.TouchUpInside += (sender, args) =>
+            {
+                _viewModel.MediaPlayer.MediaQueue.ToggleShuffle();
+            };
+
+            RepeatButton.TouchUpInside += (sender, e) =>
+            {
+                _viewModel.MediaPlayer.MediaQueue.ToggleRepeat();
+            };
+
+            _viewModel.Init();
         }
 
-		public override void ViewDidLayoutSubviews()
-		{
-			_videoSurface.Frame = VideoView.Frame;
-			base.ViewDidLayoutSubviews();
-		}
-
-		partial void PlayButton_TouchUpInside(UIButton sender)
-		{
-			CrossMediaManager.Current.Play("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", MediaFileType.VideoUrl);
-		}
-
-        public override void DidReceiveMemoryWarning()
+        private string GetTimeString(TimeSpan timeSpan)
         {
-            base.DidReceiveMemoryWarning();
-            // Release any cached data, images, etc that aren't in use.
+            return $"{timeSpan.Minutes:00}:{timeSpan.Seconds:00}";
         }
     }
 }
-
