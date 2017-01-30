@@ -61,7 +61,7 @@ namespace Plugin.MediaManager
 
                 case UIEventSubtype.RemoteControlEndSeekingForward:
                 case UIEventSubtype.RemoteControlEndSeekingBackward:
-                    _seeking = false;
+                    EndSeeking();
                     break;
             }
         }
@@ -70,7 +70,7 @@ namespace Plugin.MediaManager
         {
             if(TryStartSeek())
             {
-                Task.Run(() => ExecuteAndWaitLoop(_playbackController.StepForward));
+                Task.Run(() => ExecuteWithIntervalWhileSeeking(_playbackController.StepForward));
             }
         }
 
@@ -78,7 +78,7 @@ namespace Plugin.MediaManager
         {
             if (TryStartSeek())
             {
-                Task.Run(() => ExecuteAndWaitLoop(_playbackController.StepBackward));
+                Task.Run(() => ExecuteWithIntervalWhileSeeking(_playbackController.StepBackward));
             }
         }
 
@@ -92,7 +92,12 @@ namespace Plugin.MediaManager
             return false;
         }
 
-        private async Task ExecuteAndWaitLoop(Func<Task> taskToExecute)
+        private void EndSeeking()
+        {
+            _seeking = false;
+        }
+
+        private async Task ExecuteWithIntervalWhileSeeking(Func<Task> taskToExecute)
         {
             while (_seeking)
             {
