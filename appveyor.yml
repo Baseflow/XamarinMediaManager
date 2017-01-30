@@ -25,7 +25,8 @@
   build_script:
   - ps: .\build.ps1
   test:
-    asemblies: '**/*.Tests.dll'
+    asemblies: 
+      - '**/*.Tests.dll'
 -
   branches:
       only:
