@@ -8,7 +8,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
     {
         private readonly IMediaManager _mediaManager;
 
-        private const int StepSeconds = 10;
+        public virtual int StepSeconds => 10;
+
+        public virtual int SeekToStartTreshold => 3;
 
         private IMediaQueue Queue => _mediaManager.MediaQueue;
 
@@ -53,7 +55,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public async Task PlayPreviousOrSeekToStart()
         {
-            if (PositionSeconds > 3)
+            if (PositionSeconds > SeekToStartTreshold)
             {
                 await SeekToStart();
             }

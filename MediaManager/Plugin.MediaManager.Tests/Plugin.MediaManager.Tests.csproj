@@ -30,9 +30,16 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\..\packages\Moq.4.5.30\lib\net45\Moq.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tests\MediaQueueTests.cs" />
+    <Compile Include="Unit\MediaQueueTests.cs" />
+    <Compile Include="Unit\PlaybackControllerTests.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

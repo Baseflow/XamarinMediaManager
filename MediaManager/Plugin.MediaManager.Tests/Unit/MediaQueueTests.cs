@@ -7,7 +7,7 @@ using NUnit.Framework;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.Implementations;
 
-namespace Plugin.MediaManager.Tests.Tests
+namespace Plugin.MediaManager.Tests.Unit
 {
     [TestFixture]
     public class MediaQueueTests
