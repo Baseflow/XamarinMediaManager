@@ -55,8 +55,19 @@ namespace Plugin.MediaManager.MediaSession
                     NotificationManager = new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, _serviceType);
                 }
                 mediaSessionCompat.Active = true;
-                mediaSessionCompat.SetCallback(binder.GetMediaPlayerService<MediaServiceBase>().AlternateRemoteCallback ?? new MediaSessionCallback(this));
-                mediaSessionCompat.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons | MediaSessionCompat.FlagHandlesTransportControls);
+                MediaServiceBase mediaServiceBase = binder.GetMediaPlayerService<MediaServiceBase>();
+                MediaSessionCompat.Callback remoteCallback = mediaServiceBase.AlternateRemoteCallback;
+                if (remoteCallback == null)
+                    remoteCallback = new MediaSessionCallback(this);
+                try
+                {
+                    mediaSessionCompat.SetCallback(remoteCallback);
+                }
+                catch (Exception ex2)
+                {
+                    Console.WriteLine(ex2);
+                }
+                mediaSessionCompat?.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons | MediaSessionCompat.FlagHandlesTransportControls);
                 _packageName = packageName;
                 _binder = binder;
             }

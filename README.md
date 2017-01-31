@@ -10,7 +10,7 @@
 
 ### Build Status: 
 [![Build status](https://ci.appveyor.com/api/projects/status/c9c6recwcu7k0s15?svg=true)](https://ci.appveyor.com/project/martijn00/xamarinmediamanager)
-![GitHub tag](https://img.shields.io/github/tag/martijn00/Plugin.MediaManager.svg)
+![GitHub tag](https://img.shields.io/github/tag/martijn00/XamarinMediaManager.svg)
 [![NuGet](https://img.shields.io/nuget/v/Plugin.MediaManager.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.MediaManager/)
 [![MyGet](https://img.shields.io/myget/martijn00/v/Plugin.MediaManager.svg)](https://www.myget.org/F/Plugin.MediaManager/api/v2)
 
