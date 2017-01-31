@@ -21,7 +21,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _mediaManager = mediaManager;
         }
 
-        public async Task PlayPause()
+        public virtual async Task PlayPause()
         {
             var status = _mediaManager.Status;
 
@@ -38,22 +38,22 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
         }
 
-        public async Task Play()
+        public virtual async Task Play()
         {
             await _mediaManager.Play();
         }
 
-        public async Task Pause()
+        public virtual async Task Pause()
         {
             await _mediaManager.Pause();
         }
 
-        public async Task Stop()
+        public virtual async Task Stop()
         {
             await _mediaManager.Stop();
         }
 
-        public async Task PlayPreviousOrSeekToStart()
+        public virtual async Task PlayPreviousOrSeekToStart()
         {
             if (PositionSeconds > SeekToStartTreshold)
             {
@@ -65,12 +65,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
         }
 
-        public async Task PlayNext()
+        public virtual async Task PlayNext()
         {
             await _mediaManager.PlayNext();
         }
 
-        public async Task PlayPrevious()
+        public virtual async Task PlayPrevious()
         {
             if (Queue.HasPrevious())
             {
@@ -82,26 +82,26 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
         }
 
-        public async Task SeekToStart()
+        public virtual async Task SeekToStart()
         {
             await SeekTo(0);
         }
 
-        public async Task StepForward()
+        public virtual async Task StepForward()
         {
             var destination = PositionSeconds + StepSeconds;
 
             await SeekTo(destination);
         }
 
-        public async Task StepBackward()
+        public virtual async Task StepBackward()
         {
             var destination = PositionSeconds - StepSeconds;
 
             await SeekTo(destination);
         }
 
-        public async Task SeekTo(double seconds)
+        public virtual async Task SeekTo(double seconds)
         {
             if (_mediaManager.Duration.TotalSeconds < seconds)
             {
@@ -116,7 +116,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await _mediaManager.Seek(position);
         }
 
-        public void ToggleRepeat()
+        public virtual void ToggleRepeat()
         {
             switch (Queue.Repeat)
             {
@@ -132,7 +132,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
         }
 
-        public void ToggleShuffle()
+        public virtual void ToggleShuffle()
         {
             Queue.IsShuffled = !Queue.IsShuffled;
         }

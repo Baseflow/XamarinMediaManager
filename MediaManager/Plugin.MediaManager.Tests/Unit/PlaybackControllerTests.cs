@@ -76,20 +76,18 @@ namespace Plugin.MediaManager.Tests.Unit
         [Test]
         public async Task PlayPrevious_QueueHasNoPrevious_SeeksToStart()
         {
-            _mediaManagerMock
-                .Setup(mediaManager => mediaManager.Seek(It.IsAny<TimeSpan>()))
-                .Returns(Task.FromResult(0));
-
-            Duration = TimeSpan.Zero;
-
             MediaQueue = GetMediaQueue(hasPrevious: false);
 
-            var playbackController = new PlaybackController(MediaManager);
+            var playbackControllerMock = new Mock<PlaybackController>(MediaManager) {CallBase = true};
+
+            SetupSeekToStart(playbackControllerMock);
+
+            var playbackController = playbackControllerMock.Object;
 
             await playbackController.PlayPrevious();
 
-            _mediaManagerMock
-                .Verify(mediaManager => mediaManager.Seek(TimeSpan.Zero), Times.Once);
+            playbackControllerMock
+                .Verify(controller => controller.SeekToStart(), Times.Once);
         }
 
         [Test, Sequential]
@@ -100,13 +98,7 @@ namespace Plugin.MediaManager.Tests.Unit
         {
             Duration = TimeSpan.FromSeconds(10);
 
-            if (afterTreshold)
-            {
-                _mediaManagerMock
-                    .Setup(mediaManager => mediaManager.Seek(It.IsAny<TimeSpan>()))
-                    .Returns(Task.FromResult(0));
-            }
-            else
+            if (!afterTreshold)
             {
                 _mediaManagerMock
                     .Setup(mediaManager => mediaManager.PlayPrevious())
@@ -117,20 +109,88 @@ namespace Plugin.MediaManager.Tests.Unit
 
             Position = TimeSpan.FromSeconds(positionSeconds);
 
-            var playbackController = new PlaybackController(MediaManager);
+            var playbackControllerMock = new Mock<PlaybackController>(MediaManager) {CallBase = true};
+
+            SetupSeekToStart(playbackControllerMock);
+
+            var playbackController = playbackControllerMock.Object;
 
             await playbackController.PlayPreviousOrSeekToStart();
 
             if (afterTreshold)
             {
-                _mediaManagerMock
-                    .Verify(mediaManager => mediaManager.Seek(TimeSpan.Zero), Times.Once);
+                playbackControllerMock
+                    .Verify(controller => controller.SeekToStart(), Times.Once);
             }
             else
             {
                 _mediaManagerMock
                     .Verify(mediaManager => mediaManager.PlayPrevious(), Times.Once);
             }
+        }
+
+        [Test]
+        public async Task SeekTo_PositionBetweenStartAndEnd_SeeksToPosition()
+        {
+            var secondsToSeekTo = 5;
+            var positionToSeekTo = TimeSpan.FromSeconds(secondsToSeekTo);
+
+            SetupSeek(positionToSeekTo);
+
+            Duration = TimeSpan.FromSeconds(10);
+
+            var playbackController = new PlaybackController(MediaManager);
+
+            await playbackController.SeekTo(secondsToSeekTo);
+
+            _mediaManagerMock
+                .Verify(mediaManager => mediaManager.Seek(positionToSeekTo), Times.Once);
+        }
+
+        [Test]
+        public async Task SeekTo_NegativePosition_SeeksToZero()
+        {
+            SetupSeek(TimeSpan.Zero);
+
+            Duration = TimeSpan.Zero;
+
+            var playbackController = new PlaybackController(MediaManager);
+
+            await playbackController.SeekTo(-1f);
+
+            _mediaManagerMock
+                .Verify(mediaManager => mediaManager.Seek(TimeSpan.Zero), Times.Once);
+        }
+
+        [Test]
+        public async Task SeekTo_PositionGreaterThanDuration_SeeksToEnd()
+        {
+            var duration = TimeSpan.FromSeconds(5);
+
+            SetupSeek(duration);
+
+            Duration = duration;
+
+            var playbackController = new PlaybackController(MediaManager);
+
+            await playbackController.SeekTo(10);
+
+            _mediaManagerMock
+                .Verify(mediaManager => mediaManager.Seek(duration));
+        }
+
+        private void SetupSeekToStart(Mock<PlaybackController> playbackControllerMock)
+        {
+            playbackControllerMock
+                .Setup(playbackController => playbackController.SeekToStart())
+                .Returns(Task.FromResult(0));
+        }
+
+        private void SetupSeek(TimeSpan timespan)
+        {
+            _mediaManagerMock
+                .Setup(mediaManager => mediaManager.Seek(timespan))
+                .Returns(Task.FromResult(0));
         }
 
         private IMediaQueue GetMediaQueue(bool hasPrevious)
