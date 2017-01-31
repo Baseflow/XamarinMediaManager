@@ -183,6 +183,60 @@ namespace Plugin.MediaManager.Tests.Unit
                 .Verify(mediaManager => mediaManager.Seek(duration));
         }
 
+        [Test]
+        public async Task StepForward()
+        {
+            Position = TimeSpan.FromSeconds(10);
+
+            var expectedDestinationSeconds = 20;
+
+            var playbackControllerMock = SetupPlaybackControllerMock(expectedDestinationSeconds);
+
+            var playbackController = playbackControllerMock.Object;
+
+            await playbackController.StepForward();
+
+            VerifySeekToEquals(playbackControllerMock, expectedDestinationSeconds);
+        }
+
+        [Test]
+        public async Task StepBackward()
+        {
+            Position = TimeSpan.FromSeconds(15);
+
+            var expectedDestinationSeconds = 5;
+
+            var playbackControllerMock = SetupPlaybackControllerMock(expectedDestinationSeconds);
+
+            var playbackController = playbackControllerMock.Object;
+
+            await playbackController.StepBackward();
+
+            VerifySeekToEquals(playbackControllerMock, expectedDestinationSeconds);
+        }
+
+        private Mock<PlaybackController> SetupPlaybackControllerMock(double destinationSeconds)
+        {
+            const double stepSeconds = 10;
+            var playbackControllerMock = new Mock<PlaybackController>(MediaManager){CallBase = true};
+
+            playbackControllerMock
+                .Setup(controller => controller.SeekTo(destinationSeconds))
+                .Returns(Task.FromResult(0));
+
+            playbackControllerMock
+                .SetupGet(controller => controller.StepSeconds)
+                .Returns(stepSeconds);
+
+            return playbackControllerMock;
+        }
+
+        private void VerifySeekToEquals(Mock<PlaybackController> playbackControllerMock, double seconds)
+        {
+            playbackControllerMock
+                .Verify(controller => controller.SeekTo(seconds), Times.Once);
+        }
+
         private void SetupSeekToStart(Mock<PlaybackController> playbackControllerMock)
         {
             playbackControllerMock
