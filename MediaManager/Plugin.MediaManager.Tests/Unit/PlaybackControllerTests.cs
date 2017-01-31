@@ -111,6 +111,10 @@ namespace Plugin.MediaManager.Tests.Unit
 
             var playbackControllerMock = new Mock<PlaybackController>(MediaManager) {CallBase = true};
 
+            playbackControllerMock
+                .SetupGet(controller => controller.SeekToStartTreshold)
+                .Returns(3);
+
             SetupSeekToStart(playbackControllerMock);
 
             var playbackController = playbackControllerMock.Object;
