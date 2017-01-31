@@ -1,10 +1,13 @@
 ﻿using Plugin.MediaManager;
+using Plugin.MediaManager.Abstractions;
 using Xamarin.Forms;
 
 namespace MediaForms
 {
     public partial class MediaFormsPage : ContentPage
     {
+        private IPlaybackController PlaybackController => CrossMediaManager.Current.PlaybackController;
+
         public MediaFormsPage()
         {
             InitializeComponent();
@@ -17,17 +20,17 @@ namespace MediaForms
 
 		void PlayClicked(object sender, System.EventArgs e)
 		{
-			CrossMediaManager.Current.PlayPause();
+            PlaybackController.Play();
 		}
 
 		void PauseClicked(object sender, System.EventArgs e)
 		{
-			CrossMediaManager.Current.Pause();
+            PlaybackController.Pause();
 		}
 
 		void StopClicked(object sender, System.EventArgs e)
 		{
-			CrossMediaManager.Current.Stop();
+            PlaybackController.Stop();
 		}
     }
 }

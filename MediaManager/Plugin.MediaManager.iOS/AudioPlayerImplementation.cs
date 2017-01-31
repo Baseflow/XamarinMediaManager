@@ -189,15 +189,6 @@ namespace Plugin.MediaManager
             await Task.Run(() => { Player.CurrentItem?.Seek(CMTime.FromSeconds(position.TotalSeconds, 1)); });
         }
 
-
-        public async Task PlayPause()
-        {
-            if ((Status == MediaPlayerStatus.Paused) || (Status == MediaPlayerStatus.Stopped))
-                await Play();
-            else
-                await Pause();
-        }
-
         private void InitializePlayer()
         {
             _player = new AVPlayer();

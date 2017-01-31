@@ -4,11 +4,10 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using NUnit.Framework;
-using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.Implementations;
 
-namespace Plugin.MediaManager.Tests.Tests
+namespace Plugin.MediaManager.Tests.Unit
 {
     [TestFixture]
     public class MediaQueueTests
@@ -59,11 +58,11 @@ namespace Plugin.MediaManager.Tests.Tests
                 Assert.AreEqual(RepeatType.None, queue.Repeat);
                 Assert.AreEqual(false, queue.IsShuffled);
 
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+                Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+                Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+                Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
                 Assert.AreEqual(3, propertyChangedEvents.Count);
-                Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems.Count == 1 && e.OldItems == null).Count());
+                Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems.Count == 1 && e.OldItems == null));
                 Assert.AreEqual(1, collectionChangedEvents.Count);
 
                 queue.Add(tracks[1]);
@@ -74,11 +73,11 @@ namespace Plugin.MediaManager.Tests.Tests
                 Assert.AreEqual(RepeatType.None, queue.Repeat);
                 Assert.AreEqual(false, queue.IsShuffled);
 
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-                Assert.AreEqual(2, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+                Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+                Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+                Assert.AreEqual(2, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
                 Assert.AreEqual(4, propertyChangedEvents.Count);
-                Assert.AreEqual(2, collectionChangedEvents.Where(e => e.NewItems.Count == 1 && e.OldItems == null).Count());
+                Assert.AreEqual(2, collectionChangedEvents.Count(e => e.NewItems.Count == 1 && e.OldItems == null));
                 Assert.AreEqual(2, collectionChangedEvents.Count);
             }
         }
@@ -116,11 +115,11 @@ namespace Plugin.MediaManager.Tests.Tests
                 Assert.AreEqual(RepeatType.None, queue.Repeat);
                 Assert.AreEqual(false, queue.IsShuffled);
 
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+                Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+                Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+                Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
                 Assert.AreEqual(3, propertyChangedEvents.Count);
-                Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems == null).Count());
+                Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems == null && e.OldItems == null));
                 Assert.AreEqual(1, collectionChangedEvents.Count);
             }
 
@@ -139,7 +138,7 @@ namespace Plugin.MediaManager.Tests.Tests
                     };
 
                 queue.AddRange(tracks);
-                queue.ToggleShuffle();
+                queue.IsShuffled = true;
                 queue.Repeat = RepeatType.RepeatOne;
 
                 IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
@@ -156,12 +155,12 @@ namespace Plugin.MediaManager.Tests.Tests
                 Assert.AreEqual(RepeatType.RepeatOne, queue.Repeat);
                 Assert.AreEqual(false, queue.IsShuffled);
 
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
-                Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Shuffle").Count());
+                Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+                Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+                Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
+                Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.IsShuffled)));
                 Assert.AreEqual(4, propertyChangedEvents.Count);
-                Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems == null).Count());
+                Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems == null && e.OldItems == null));
                 Assert.AreEqual(1, collectionChangedEvents.Count);
             }
         }
@@ -199,7 +198,7 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(false, queue.IsShuffled);
 
 				Assert.AreEqual(0, propertyChangedEvents.Count);
-				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems?.Count == 1 && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems?.Count == 1 && e.OldItems?.Count == 1));
 				Assert.AreEqual(1, collectionChangedEvents.Count);
 			}
 
@@ -233,11 +232,11 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
 				Assert.AreEqual(false, queue.IsShuffled);
 
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+				Assert.AreEqual(0, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+				Assert.AreEqual(0, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
 				Assert.AreEqual(1, propertyChangedEvents.Count);
-				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems?.Count == 1 && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems?.Count == 1 && e.OldItems?.Count == 1));
 				Assert.AreEqual(1, collectionChangedEvents.Count);
 			}
 		
@@ -346,11 +345,11 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
 				Assert.AreEqual(false, queue.IsShuffled);
 
-				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(0, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+				Assert.AreEqual(0, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
 				Assert.AreEqual(1, propertyChangedEvents.Count);
-				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems == null && e.OldItems?.Count == 1));
 				Assert.AreEqual(1, collectionChangedEvents.Count);
 			}
 
@@ -383,11 +382,11 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
 				Assert.AreEqual(false, queue.IsShuffled);
 
-				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(0, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
 				Assert.AreEqual(2, propertyChangedEvents.Count);
-				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems == null && e.OldItems?.Count == 1));
 				Assert.AreEqual(1, collectionChangedEvents.Count);
 			}
 
@@ -420,11 +419,11 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
 				Assert.AreEqual(false, queue.IsShuffled);
 
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+				Assert.AreEqual(0, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
 				Assert.AreEqual(2, propertyChangedEvents.Count);
-				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems == null && e.OldItems?.Count == 1));
 				Assert.AreEqual(1, collectionChangedEvents.Count);
 			}
 
@@ -457,11 +456,11 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
 				Assert.AreEqual(false, queue.IsShuffled);
 
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
 				Assert.AreEqual(3, propertyChangedEvents.Count);
-				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems == null && e.OldItems?.Count == 1));
 				Assert.AreEqual(1, collectionChangedEvents.Count);
 			}
 
@@ -492,11 +491,11 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
 				Assert.AreEqual(false, queue.IsShuffled);
 
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
 				Assert.AreEqual(3, propertyChangedEvents.Count);
-				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems == null && e.OldItems?.Count == 1).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems == null && e.OldItems?.Count == 1));
 				Assert.AreEqual(1, collectionChangedEvents.Count);
 			}
 
@@ -593,11 +592,11 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
 				Assert.AreEqual(false, queue.IsShuffled);
 
-				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(0, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+				Assert.AreEqual(0, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
 				Assert.AreEqual(1, propertyChangedEvents.Count);
-				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems?.Count == 1 && e.OldItems == null).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems?.Count == 1 && e.OldItems == null));
 				Assert.AreEqual(1, collectionChangedEvents.Count);
 			}
 
@@ -628,11 +627,11 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
 				Assert.AreEqual(false, queue.IsShuffled);
 
-				Assert.AreEqual(0, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(0, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
 				Assert.AreEqual(2, propertyChangedEvents.Count);
-				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems?.Count == 1 && e.OldItems == null).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems?.Count == 1 && e.OldItems == null));
 				Assert.AreEqual(1, collectionChangedEvents.Count);
 			}
 
@@ -656,11 +655,11 @@ namespace Plugin.MediaManager.Tests.Tests
 				Assert.AreEqual(RepeatType.None, queue.Repeat);
 				Assert.AreEqual(false, queue.IsShuffled);
 
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Current").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Index").Count());
-				Assert.AreEqual(1, propertyChangedEvents.Where(e => e.PropertyName == "Count").Count());
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Current)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Index)));
+				Assert.AreEqual(1, propertyChangedEvents.Count(e => e.PropertyName == nameof(queue.Count)));
 				Assert.AreEqual(3, propertyChangedEvents.Count);
-				Assert.AreEqual(1, collectionChangedEvents.Where(e => e.NewItems?.Count == 1 && e.OldItems == null).Count());
+				Assert.AreEqual(1, collectionChangedEvents.Count(e => e.NewItems?.Count == 1 && e.OldItems == null));
 				Assert.AreEqual(1, collectionChangedEvents.Count);
 			}
 
@@ -754,7 +753,7 @@ namespace Plugin.MediaManager.Tests.Tests
                 Console.WriteLine("Current Index: {0}", queue.Index);
                 queue.AddRange(arr);
 
-                queue.ToggleShuffle();
+                queue.IsShuffled = true;
 
                 Console.WriteLine("Result: {0}", string.Join(",", queue.Cast<MediaFile>().Select(x => x.Id)));
 
@@ -789,11 +788,11 @@ namespace Plugin.MediaManager.Tests.Tests
                 Console.WriteLine("Current Index: {0}", queue.Index);
                 queue.AddRange(arr);
 
-                queue.ToggleShuffle();
+                queue.IsShuffled = true;
 
                 Console.WriteLine("Shuffled: {0}", string.Join(",", queue.Cast<MediaFile>().Select(x => x.Id)));
 
-                queue.ToggleShuffle();
+                queue.IsShuffled = false;
 
                 Console.WriteLine("Unshuffled: {0}", string.Join(",", queue.Cast<MediaFile>().Select(x => x.Id)));
 
@@ -827,12 +826,12 @@ namespace Plugin.MediaManager.Tests.Tests
                 Console.WriteLine("Current Index: {0}", queue.Index);
                 queue.AddRange(arr);
 
-                queue.ToggleShuffle();
+                queue.IsShuffled = true;
                 queue.Add(new MediaFile());
 
                 Console.WriteLine("Shuffled: {0}", string.Join(",", queue.Cast<MediaFile>().Select(x => x.Id)));
 
-                queue.ToggleShuffle();
+                queue.IsShuffled = false;
 
                 Console.WriteLine("Unshuffled: {0}", string.Join(",", queue.Cast<MediaFile>().Select(x => x.Id)));
 
@@ -851,45 +850,21 @@ namespace Plugin.MediaManager.Tests.Tests
                 Assert.AreEqual(arr.Length + 1, queue.Count, "The array length is different");
             }
 
-            [Test]
-            public void ShuffleTwice_WhenRandomNumberGeneratorWorks_OrderIsDifferent()
+            [Test, Sequential]
+            public void ShuffledUnshuffled_PropertyUnchanged(
+                [Values(nameof(MediaQueue.Count), nameof(MediaQueue.Current))] string propertyName)
             {
-                var arr = new[]
-                              {
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile(),
-                                  new MediaFile()
-                              };
+                var queue = new MediaQueue {new MediaFile(), new MediaFile()};
 
-                Console.WriteLine("Original: {0}", string.Join(",", arr.Select(x => x.Id)));
+                var propertyChangedEvents = new List<PropertyChangedEventArgs>();
 
-                var queue1 = new MediaQueue();
-                queue1.AddRange(arr);
+                queue.PropertyChanged += (sender, e) => propertyChangedEvents.Add(e);
 
-                var queue2 = new MediaQueue();
-                queue2.AddRange(arr);
+                queue.IsShuffled = true;
 
-                // Randomize in quick succession to prove that the result is not the same
-                // Using Random() here would create two equal lists, hence the use of PCLCrypto.
-                queue1.ToggleShuffle();
-                queue2.ToggleShuffle();
+                queue.IsShuffled = false;
 
-                Console.WriteLine("Queue1: {0}", string.Join(",", queue1.Cast<MediaFile>().Select(x => x.Id)));
-                Console.WriteLine("Queue2: {0}", string.Join(",", queue2.Cast<MediaFile>().Select(x => x.Id)));
-
-                CollectionAssert.AllItemsAreUnique(queue1.Cast<MediaFile>().Select(x => x.Id));
-                CollectionAssert.AllItemsAreUnique(queue2.Cast<MediaFile>().Select(x => x.Id));
-                CollectionAssert.AreNotEqual(queue1.Cast<MediaFile>(), queue2.Cast<MediaFile>());
-                Assert.AreEqual(arr[queue1.Index].Id, queue1.Cast<MediaFile>().ElementAt(queue1.Index).Id, "The current item has been moved");
-                Assert.AreEqual(arr[queue2.Index].Id, queue2.Cast<MediaFile>().ElementAt(queue2.Index).Id, "The current item has been moved");
+                Assert.Zero(propertyChangedEvents.Count(e => e.PropertyName == propertyName));
             }
         }
     }

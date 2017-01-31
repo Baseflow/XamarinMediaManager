@@ -48,6 +48,10 @@
     <Compile Include="VideoPlayerImplementation.cs" />
     <Compile Include="VideoSurface.cs" />
     <Compile Include="VolumeManagerImplementation.cs" />
+    <Compile Include="IMediaRemoteControl.cs" />
+    <Compile Include="MediaManagerAppleBase.cs" />
+    <Compile Include="MediaRemoteControl.cs" />
+    <Compile Include="RemoteControlNotificationManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">

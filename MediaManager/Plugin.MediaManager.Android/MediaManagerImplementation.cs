@@ -54,19 +54,19 @@ namespace Plugin.MediaManager
         {
             if (action.Equals(MediaServiceBase.ActionPlay))
             {
-                await PlayPause();
+                await PlaybackController.Play();
             }
             else if (action.Equals(MediaServiceBase.ActionPause))
             {
-                await Pause();
+                await PlaybackController.Pause();
             }
             else if (action.Equals(MediaServiceBase.ActionPrevious))
             {
-                await PlayPrevious();
+                await PlaybackController.PlayPrevious();
             }
             else if (action.Equals(MediaServiceBase.ActionNext))
             {
-                await PlayNext();
+                await PlaybackController.PlayNext();
             }
             else if (action.Equals(MediaServiceBase.ActionStop))
             {
