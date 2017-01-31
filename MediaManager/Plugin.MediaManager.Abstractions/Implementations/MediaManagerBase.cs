@@ -175,7 +175,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public async Task Pause()
         {
-            await CurrentPlaybackManager.Pause();
+            IPlaybackManager currentPlaybackManager = CurrentPlaybackManager;
+            if (currentPlaybackManager != null)
+                await currentPlaybackManager.Pause();
         }
 
         public async Task Stop()
