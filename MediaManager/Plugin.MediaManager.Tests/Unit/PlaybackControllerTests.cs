@@ -19,12 +19,16 @@ namespace Plugin.MediaManager.Tests.Unit
         [SetUp]
         public void Init()
         {
-            _mediaManagerMock = new Mock<IMediaManager>();
+            _mediaManagerMock = new Mock<IMediaManager>(MockBehavior.Strict);
         }
 
         [Test]
         public async Task PlayPause_Playing_Pauses()
         {
+            _mediaManagerMock
+                .Setup(mediaManager => mediaManager.Pause())
+                .Returns(Task.FromResult(0));
+
             MediaManagerStatus = MediaPlayerStatus.Playing;
 
             var playbackController = new PlaybackController(MediaManager);
@@ -38,6 +42,10 @@ namespace Plugin.MediaManager.Tests.Unit
         [Test, TestCaseSource(nameof(NotPlayingStatuses))]
         public async Task PlayPause_NotPlaying_Pauses(MediaPlayerStatus notPlayingStatus)
         {
+            _mediaManagerMock
+                .Setup(mediaManager => mediaManager.Play((IMediaFile) null))
+                .Returns(Task.FromResult(0));
+
             MediaManagerStatus = notPlayingStatus;
 
             var playbackController = new PlaybackController(MediaManager);
@@ -51,6 +59,10 @@ namespace Plugin.MediaManager.Tests.Unit
         [Test]
         public async Task PlayPrevious_QueueHasPrevious_PlaysPrevious()
         {
+            _mediaManagerMock
+                .Setup(mediaManager => mediaManager.PlayPrevious())
+                .Returns(Task.FromResult(0));
+
             MediaQueue = GetMediaQueue(hasPrevious: true);
 
             var playbackController = new PlaybackController(MediaManager);
@@ -64,6 +76,12 @@ namespace Plugin.MediaManager.Tests.Unit
         [Test]
         public async Task PlayPrevious_QueueHasNoPrevious_SeeksToStart()
         {
+            _mediaManagerMock
+                .Setup(mediaManager => mediaManager.Seek(It.IsAny<TimeSpan>()))
+                .Returns(Task.FromResult(0));
+
+            Duration = TimeSpan.Zero;
+
             MediaQueue = GetMediaQueue(hasPrevious: false);
 
             var playbackController = new PlaybackController(MediaManager);
@@ -80,6 +98,21 @@ namespace Plugin.MediaManager.Tests.Unit
             [Values(false, true)] bool afterTreshold
         )
         {
+            Duration = TimeSpan.FromSeconds(10);
+
+            if (afterTreshold)
+            {
+                _mediaManagerMock
+                    .Setup(mediaManager => mediaManager.Seek(It.IsAny<TimeSpan>()))
+                    .Returns(Task.FromResult(0));
+            }
+            else
+            {
+                _mediaManagerMock
+                    .Setup(mediaManager => mediaManager.PlayPrevious())
+                    .Returns(Task.FromResult(0));
+            }
+
             MediaQueue = GetMediaQueue(hasPrevious: true);
 
             Position = TimeSpan.FromSeconds(positionSeconds);
@@ -110,6 +143,18 @@ namespace Plugin.MediaManager.Tests.Unit
             var mediaQueue = mediaQueueMock.Object;
 
             return mediaQueue;
+        }
+
+        private TimeSpan Duration
+        {
+            set
+            {
+                var duration = value;
+
+                _mediaManagerMock
+                    .SetupGet(mediaManager => mediaManager.Duration)
+                    .Returns(duration);
+            }
         }
 
         private TimeSpan Position
