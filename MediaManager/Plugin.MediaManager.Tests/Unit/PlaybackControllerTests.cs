@@ -74,6 +74,32 @@ namespace Plugin.MediaManager.Tests.Unit
                 .Verify(mediaManager => mediaManager.Seek(TimeSpan.Zero), Times.Once);
         }
 
+        [Test, Sequential]
+        public async Task PlayPreviousOrSeekToStart(
+            [Values(2,4)] int positionSeconds,
+            [Values(false, true)] bool afterTreshold
+        )
+        {
+            MediaQueue = GetMediaQueue(hasPrevious: true);
+
+            Position = TimeSpan.FromSeconds(positionSeconds);
+
+            var playbackController = new PlaybackController(MediaManager);
+
+            await playbackController.PlayPreviousOrSeekToStart();
+
+            if (afterTreshold)
+            {
+                _mediaManagerMock
+                    .Verify(mediaManager => mediaManager.Seek(TimeSpan.Zero), Times.Once);
+            }
+            else
+            {
+                _mediaManagerMock
+                    .Verify(mediaManager => mediaManager.PlayPrevious(), Times.Once);
+            }
+        }
+
         private IMediaQueue GetMediaQueue(bool hasPrevious)
         {
             var mediaQueueMock = new Mock<IMediaQueue>();
@@ -84,6 +110,18 @@ namespace Plugin.MediaManager.Tests.Unit
             var mediaQueue = mediaQueueMock.Object;
 
             return mediaQueue;
+        }
+
+        private TimeSpan Position
+        {
+            set
+            {
+                var position = value;
+
+                _mediaManagerMock
+                    .SetupGet(mediaManager => mediaManager.Position)
+                    .Returns(position);
+            }
         }
 
         private IMediaQueue MediaQueue
