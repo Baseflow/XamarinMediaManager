@@ -8,9 +8,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
     {
         private readonly IMediaManager _mediaManager;
 
-        public virtual int StepSeconds => 10;
+        public virtual double StepSeconds => 10;
 
-        public virtual int SeekToStartTreshold => 3;
+        public virtual double SeekToStartTreshold => 3;
 
         private IMediaQueue Queue => _mediaManager.MediaQueue;
 
