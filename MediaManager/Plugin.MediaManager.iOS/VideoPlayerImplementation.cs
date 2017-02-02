@@ -307,7 +307,10 @@ namespace Plugin.MediaManager
                 var bufferProgress = duration.TotalSeconds / totalDuration.Seconds;
                 BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(bufferProgress, duration));
             }
-            BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
+            else
+            {
+                BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
+            }
         }
 
         private IVideoSurface _renderSurface;
