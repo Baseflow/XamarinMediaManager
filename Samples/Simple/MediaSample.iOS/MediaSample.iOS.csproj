@@ -182,6 +182,9 @@
     <BundleResource Include="Resources\loading_spinner.png" />
     <BundleResource Include="Resources\loading_spinner%402x.png" />
     <BundleResource Include="Resources\loading_spinner%403x.png" />
+    <BundleResource Include="..\MediaSample.Core\Media\local-sample.mp3">
+      <Link>Resources\local-sample.mp3</Link>
+    </BundleResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
