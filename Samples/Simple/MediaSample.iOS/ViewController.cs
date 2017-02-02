@@ -3,6 +3,8 @@ using Plugin.MediaManager.Abstractions.Enums;
 using MediaManager.Sample.Core;
 using Plugin.MediaManager.Abstractions;
 using UIKit;
+using Plugin.MediaManager.Abstractions.Implementations;
+using Foundation;
 
 namespace MediaSample.iOS
 {
@@ -185,6 +187,10 @@ namespace MediaSample.iOS
             };
 
             _viewModel.Init();
+
+            var sampleFilePath = NSBundle.MainBundle.PathForResource("local-sample", "mp3");
+
+            _viewModel.Queue.Add(new MediaFile { Type = MediaFileType.AudioFile, Url = sampleFilePath });
         }
 
         private string GetTimeString(TimeSpan timeSpan)
