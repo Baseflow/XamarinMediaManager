@@ -236,7 +236,7 @@ namespace Plugin.MediaManager
 
             if (mediaFile != null)
             {
-                nsUrl = new NSUrl(mediaFile.Url);
+                nsUrl = MediaFileUrlHelper.GetUrlFor(mediaFile);
                 _currentMediaFile = mediaFile;
             }
 
