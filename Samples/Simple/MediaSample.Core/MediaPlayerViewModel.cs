@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using Plugin.MediaManager;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
@@ -22,8 +19,8 @@ namespace MediaManager.Sample.Core
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void Init()
@@ -47,37 +44,13 @@ namespace MediaManager.Sample.Core
         }
 
         private readonly IMediaManager mediaPlayer;
-        public IMediaManager MediaPlayer
-        {
-            get
-            {
-                return mediaPlayer;
-            }
-        }
+        public IMediaManager MediaPlayer => mediaPlayer;
 
-        public IMediaQueue Queue
-        {
-            get
-            {
-                return mediaPlayer.MediaQueue;
-            }
-        }
+        public IMediaQueue Queue => mediaPlayer.MediaQueue;
 
-        public IMediaFile CurrentTrack
-        {
-            get
-            {
-                return Queue.Current;
-            }
-        }
+        public IMediaFile CurrentTrack => Queue.Current;
 
-        public int Duration
-        {
-            get
-            {
-                return mediaPlayer.Duration.TotalSeconds > 0 ? Convert.ToInt32(mediaPlayer.Duration.TotalSeconds) : 0;
-            }
-        }
+        public int Duration => mediaPlayer.Duration.TotalSeconds > 0 ? Convert.ToInt32(mediaPlayer.Duration.TotalSeconds) : 0;
 
         private bool _isSeeking = false;
 
@@ -118,49 +91,22 @@ namespace MediaManager.Sample.Core
             set
             {
                 _position = value;
+
                 OnPropertyChanged(nameof(Position));
             }
         }
 
-        public int Downloaded
-        {
-            get
-            {
-                return Convert.ToInt32(mediaPlayer.Buffered.TotalSeconds);
-            }
-        }
+        public int Downloaded => Convert.ToInt32(mediaPlayer.Buffered.TotalSeconds);
 
-        public Boolean IsPlaying
-        {
-            get
-            {
-                return mediaPlayer.Status == MediaPlayerStatus.Playing || mediaPlayer.Status == MediaPlayerStatus.Buffering;
-            }
-        }
+        public bool IsPlaying => mediaPlayer.Status == MediaPlayerStatus.Playing || mediaPlayer.Status == MediaPlayerStatus.Buffering;
 
-        public MediaPlayerStatus Status
-        {
-            get
-            {
-                return mediaPlayer.Status;
-            }
-        }
+        public MediaPlayerStatus Status => mediaPlayer.Status;
 
-        public object Cover
-        {
-            get
-            {
-                return mediaPlayer.MediaQueue.Current.Metadata.AlbumArt;
-            }
-        }
+        public object Cover => mediaPlayer.MediaQueue.Current.Metadata.AlbumArt;
 
-        public string PlayingText
-        {
-            get
-            {
-                return string.Format("Playing: {0} of {1}", (Queue.Index + 1).ToString(), Queue.Count.ToString());
-            }
-        }
+        public string PlayingText => $"Playing: {(Queue.Index + 1)} of {Queue.Count}";
+
+        private IPlaybackController PlaybackController => MediaPlayer.PlaybackController;
 
         public MediaPlayerViewModel()
         {
@@ -181,16 +127,16 @@ namespace MediaManager.Sample.Core
 
         private void OnQueuePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Index")
-            {
-                //RaiseAllPropertiesChanged();
-            }
-            else if (e.PropertyName == nameof(MediaQueue.Current))
+            var currentChanged = e.PropertyName == nameof(MediaQueue.Current);
+            var countChanged = e.PropertyName == nameof(MediaQueue.Count);
+            var indexChanged = e.PropertyName == nameof(MediaQueue.Index);
+
+            if (currentChanged)
             {
                 OnPropertyChanged(nameof(CurrentTrack));
-                OnPropertyChanged(nameof(PlayingText));
             }
-            else if (e.PropertyName == nameof(MediaQueue.Count))
+
+            if (countChanged || indexChanged)
             {
                 OnPropertyChanged(nameof(PlayingText));
             }

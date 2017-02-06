@@ -189,15 +189,6 @@ namespace Plugin.MediaManager
             await Task.Run(() => { Player.CurrentItem?.Seek(CMTime.FromSeconds(position.TotalSeconds, 1)); });
         }
 
-
-        public async Task PlayPause()
-        {
-            if ((Status == MediaPlayerStatus.Paused) || (Status == MediaPlayerStatus.Stopped))
-                await Play();
-            else
-                await Pause();
-        }
-
         private void InitializePlayer()
         {
             _player = new AVPlayer();
@@ -245,7 +236,7 @@ namespace Plugin.MediaManager
 
             if (mediaFile != null)
             {
-                nsUrl = new NSUrl(mediaFile.Url);
+                nsUrl = MediaFileUrlHelper.GetUrlFor(mediaFile);
                 _currentMediaFile = mediaFile;
             }
 
@@ -254,14 +245,13 @@ namespace Plugin.MediaManager
                 // Start off with the status LOADING.
                 Status = MediaPlayerStatus.Buffering;
 
-                var nsAsset = AVAsset.FromUrl(nsUrl);
-                var streamingItem = AVPlayerItem.FromAsset(nsAsset);
+                var playerItem = GetPlayerItem(nsUrl);
 
                 Player.CurrentItem?.RemoveObserver(this, new NSString("status"));
 
-                Player.ReplaceCurrentItemWithPlayerItem(streamingItem);
-                streamingItem.AddObserver(this, new NSString("status"), NSKeyValueObservingOptions.New, Player.Handle);
-                streamingItem.AddObserver(this, new NSString("loadedTimeRanges"),
+                Player.ReplaceCurrentItemWithPlayerItem(playerItem);
+                playerItem.AddObserver(this, new NSString("status"), NSKeyValueObservingOptions.New, Player.Handle);
+                playerItem.AddObserver(this, new NSString("loadedTimeRanges"),
                     NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New, Player.Handle);
 
                 Player.CurrentItem.SeekingWaitsForVideoCompositionRendering = true;
@@ -284,6 +274,45 @@ namespace Plugin.MediaManager
             }
 
             await Task.CompletedTask;
+        }
+
+        private AVPlayerItem GetPlayerItem(NSUrl url) {
+
+            AVAsset asset;
+
+            if (RequestHeaders != null && RequestHeaders.Any())
+            {
+                var options = GetOptionsWithHeaders(RequestHeaders);
+
+                asset = AVUrlAsset.Create(url, options);
+            }
+            else
+            {
+                asset = AVAsset.FromUrl(url);
+            }
+
+            var playerItem = AVPlayerItem.FromAsset(asset);
+
+            return playerItem;
+        }
+
+        private AVUrlAssetOptions GetOptionsWithHeaders(IDictionary<string, string> headers)
+        {
+            var nativeHeaders = new NSMutableDictionary();
+
+            foreach (var header in headers)
+            {
+                nativeHeaders.Add((NSString)header.Key, (NSString)header.Value);
+            }
+
+            var nativeHeadersKey = (NSString) "AVURLAssetHTTPHeaderFieldsKey";
+
+            var options = new AVUrlAssetOptions(NSDictionary.FromObjectAndKey(
+                nativeHeaders,
+                nativeHeadersKey
+            ));
+
+            return options;
         }
 
         public override void ObserveValue(NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr context)
@@ -342,7 +371,10 @@ namespace Plugin.MediaManager
                 var bufferProgress = duration.TotalSeconds / totalDuration.Seconds;
                 BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(bufferProgress, duration));
             }
-            BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
+            else
+            {
+                BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
+            }
         }
     }
 }

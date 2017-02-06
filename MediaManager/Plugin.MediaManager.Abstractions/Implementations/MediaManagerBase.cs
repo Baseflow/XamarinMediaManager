@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 
@@ -44,6 +42,8 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public abstract IVolumeManager VolumeManager { get; set; }
 
+        public IPlaybackController PlaybackController { get; set; }
+
         public MediaPlayerStatus Status => CurrentPlaybackManager.Status;
 
         public TimeSpan Position => CurrentPlaybackManager.Position;
@@ -70,6 +70,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
+        protected MediaManagerBase()
+        {
+            PlaybackController = new PlaybackController(this);
+        }
+
         public async Task PlayNext()
         {
             await RaiseMediaFileFailedEventOnException(async () =>
@@ -93,16 +98,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         {
             await RaiseMediaFileFailedEventOnException(async () =>
             {
-                if (Position > TimeSpan.FromSeconds(3) || !MediaQueue.HasPrevious())
-                {
-                    await Seek(TimeSpan.Zero);
-                }
-                else
-                {
-                    MediaQueue.SetPreviousAsCurrent();
+                MediaQueue.SetPreviousAsCurrent();
 
-                    await PlayCurrent();
-                }
+                await PlayCurrent();
             });
         }
 
@@ -112,13 +110,19 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await Play(CurrentMediaFile);
         }
 
-        /// <summary>
-        /// Adds MediaFile to the Queue and starts playing
-        /// </summary>
-        /// <param name="mediaFile"></param>
-        /// <returns></returns>
-        public async Task Play(IMediaFile mediaFile)
+        public async Task Play(IMediaFile mediaFile = null)
         {
+            if (mediaFile == null)
+            {
+                if (Status == MediaPlayerStatus.Paused)
+                {
+                    await Resume();
+                    return;
+                }
+
+                mediaFile = CurrentMediaFile;
+            }
+
             if (_currentPlaybackManager != null && Status == MediaPlayerStatus.Failed)
             {
                 await PlayNext();
@@ -164,22 +168,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await Play(new MediaFile(url, fileType));
         }
 
-        public async Task PlayPause()
-        {
-            switch (Status)
-            {
-                case MediaPlayerStatus.Paused:
-                    await CurrentPlaybackManager.Play(CurrentMediaFile);
-                    break;
-                case MediaPlayerStatus.Stopped:
-                    await Play(CurrentMediaFile);
-                    break;
-                default:
-                    await CurrentPlaybackManager.Pause();
-                    break;
-            }
-        }
-
         public void SetOnBeforePlay(Func<IMediaFile, Task> beforePlay)
         {
             _onBeforePlay = beforePlay;
@@ -201,6 +189,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public async Task Seek(TimeSpan position)
         {
             await CurrentPlaybackManager.Seek(position);
+            MediaNotificationManager?.UpdateNotifications(CurrentMediaFile, Status);
+        }
+
+        private async Task Resume()
+        {
+            await CurrentPlaybackManager.Play(CurrentMediaFile);
         }
 
         private async Task RaiseMediaFileFailedEventOnException(Func<Task> action)
@@ -284,9 +278,18 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         private async void OnMediaFinished(object sender, MediaFinishedEventArgs e)
         {
             if (sender != CurrentPlaybackManager) return;
+
             MediaFinished?.Invoke(sender, e);
-            if (MediaQueue.Repeat == RepeatType.RepeatOne) await Seek(TimeSpan.Zero);
-            else await PlayNext();
+
+            if (MediaQueue.Repeat == RepeatType.RepeatOne)
+            {
+                await Seek(TimeSpan.Zero);
+                await Resume();
+            }
+            else
+            {
+                await PlayNext();
+            }
         }
 
         private void OnMediaFailed(object sender, MediaFailedEventArgs e)

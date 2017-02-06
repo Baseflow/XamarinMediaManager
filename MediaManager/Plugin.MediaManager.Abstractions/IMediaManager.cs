@@ -48,6 +48,11 @@ namespace Plugin.MediaManager.Abstractions
         IVolumeManager VolumeManager { get; set; }
 
         /// <summary>
+        /// Used in various views to control the playback
+        /// </summary>
+        IPlaybackController PlaybackController { get; set; }
+
+        /// <summary>
         /// Raised when the media information of the track has changed.
         /// </summary>
         event MediaFileChangedEventHandler MediaFileChanged;
@@ -56,11 +61,16 @@ namespace Plugin.MediaManager.Abstractions
         /// Raised when mediadata of MediaFile failed to update
         /// </summary>
         event MediaFileFailedEventHandler MediaFileFailed;
-        
+
         /// <summary>
         /// Creates new MediaFile object, adds it to the queue and starts playing
         /// </summary>
         Task Play(string url, MediaFileType fileType);
+
+        /// <summary>
+        /// Adds all MediaFiles to the Queue and starts playing the first one
+        /// </summary>
+        Task Play(IEnumerable<IMediaFile> mediaFiles);
 
         /// <summary>
         /// Plays the next MediaFile in the Queue
@@ -76,16 +86,6 @@ namespace Plugin.MediaManager.Abstractions
         /// Plays a MediaFile by its position in the Queue
         /// </summary>
         Task PlayByPosition(int index);
-
-        /// <summary>
-        /// Adds all MediaFiles to the Queue and starts playing the first one
-        /// </summary>
-        Task Play(IEnumerable<IMediaFile> mediaFiles);
-
-        /// <summary>
-        /// Start playing if nothing is playing, otherwise it pauses the current media
-        /// </summary>
-        Task PlayPause();
 
         /// <summary>
         /// Sets a function which gets called before the MediaFile is played

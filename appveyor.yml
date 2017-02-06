@@ -24,8 +24,9 @@
   - echo y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t extra-android-m2repository
   build_script:
   - ps: .\build.ps1
-  test: off
-  # configuration for "master" branch
+  test:
+    assemblies: 
+      - '**/*.Tests.dll'
 -
   branches:
       only:
@@ -51,4 +52,6 @@
   - echo y | "%ANDROID_HOME%\tools\android.bat" update sdk -u -a -t extra-android-m2repository
   build_script:
   - ps: .\build.ps1
-  test: off
+  test:
+    assemblies: 
+      - '**/*.Tests.dll'

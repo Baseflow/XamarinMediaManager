@@ -12,6 +12,7 @@ using Plugin.MediaManager.Abstractions.Implementations;
 using Plugin.MediaManager.ExoPlayer;
 using Plugin.MediaManager;
 using System.Collections.Generic;
+using Plugin.MediaManager.Abstractions;
 
 namespace MediaSample.Droid
 {
@@ -27,6 +28,10 @@ namespace MediaSample.Droid
     public class MainActivity : AppCompatActivity
     {
         private MediaPlayerViewModel ViewModel { get; set; }
+
+        private IMediaManager MediaManager => ViewModel.MediaPlayer;
+
+        private IPlaybackController PlaybackController => MediaManager.PlaybackController;
 
         private Android.Support.V7.Widget.Toolbar toolbar;
 
@@ -54,19 +59,19 @@ namespace MediaSample.Droid
             var previous = FindViewById<ImageButton>(Resource.Id.btnPrevious);
             previous.Click += async (sender, args) =>
             {
-                await ViewModel.MediaPlayer.PlayPrevious();
+                await PlaybackController.PlayPreviousOrSeekToStart();
             };
 
             var playpause = FindViewById<ToggleButton>(Resource.Id.btnPlayPause);
             playpause.Click += async (sender, args) =>
             {
-                await ViewModel.MediaPlayer.PlayPause();
+                await PlaybackController.PlayPause();
             };
 
             var next = FindViewById<ImageButton>(Resource.Id.btnNext);
             next.Click += async (sender, args) =>
             {
-                await ViewModel.MediaPlayer.PlayNext();
+                await PlaybackController.PlayNext();
             };
 
             var position = FindViewById<TextView>(Resource.Id.textview_position);
@@ -77,7 +82,7 @@ namespace MediaSample.Droid
             {
                 if (args.FromUser)
                 {
-                    ViewModel.MediaPlayer.Seek(TimeSpan.FromSeconds(args.Progress));
+                    PlaybackController.SeekTo(args.Progress);
                 }
             };
 
