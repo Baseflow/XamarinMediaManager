@@ -23,14 +23,14 @@ namespace Plugin.MediaManager
 
         public override void StartNotification(IMediaFile mediaFile)
         {
-            NowPlaying = CreateNowPlayingInfo(mediaFile);
+            TrySetNowPlayingInfo(mediaFile);
 
             base.StartNotification(mediaFile);
         }
 
         public override void UpdateNotifications(IMediaFile mediaFile, MediaPlayerStatus status)
         {
-            NowPlaying = CreateNowPlayingInfo(mediaFile);
+            TrySetNowPlayingInfo(mediaFile);
 
             base.UpdateNotifications(mediaFile, status);
         }
@@ -42,9 +42,23 @@ namespace Plugin.MediaManager
             base.StopNotifications();
         }
 
+        private void TrySetNowPlayingInfo(IMediaFile mediaFile)
+        {
+            if (mediaFile == null) return;
+
+            var nowPlaying = CreateNowPlayingInfo(mediaFile);
+
+            if (nowPlaying != null)
+            {
+                NowPlaying = nowPlaying;
+            }
+        }
+
         private MPNowPlayingInfo CreateNowPlayingInfo(IMediaFile mediaFile)
         {
             var metadata = mediaFile.Metadata;
+
+            if (metadata == null) return null;
 
             var nowPlayingInfo = new MPNowPlayingInfo
             {
