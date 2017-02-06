@@ -62,7 +62,7 @@ namespace Plugin.MediaManager
             }
             else if (action.Equals(MediaServiceBase.ActionPrevious))
             {
-                await PlaybackController.PlayPrevious();
+                await PlaybackController.PlayPreviousOrSeekToStart();
             }
             else if (action.Equals(MediaServiceBase.ActionNext))
             {
