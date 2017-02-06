@@ -15,12 +15,12 @@
         <tags>xamarin, monodroid, C#, xamarin.android, android, ios, uwp, Windows, tvOS, Mac, MacOS, mediaplayer, audio, video, streaming, background, media, Forms</tags>
         <dependencies>
             <dependency id="Plugin.MediaManager" version="[$version$]" />
-            <dependency id="Xamarin.Forms" version="2.3.3.175" />
+            <dependency id="Xamarin.Forms" version="2.3.4.192-pre2" />
         </dependencies>
     </metadata>
     <files>
-        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.Android\bin\Release\Plugin.MediaManager.Forms.Android.dll" target="lib\MonoAndroid\Plugin.MediaManager.Forms.Android.dll" />
-        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.Android\bin\Release\Plugin.MediaManager.Forms.dll" target="lib\MonoAndroid\Plugin.MediaManager.Forms.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.Android\bin\Release\Plugin.MediaManager.Forms.Android.dll" target="lib\MonoAndroid70\Plugin.MediaManager.Forms.Android.dll" />
+        <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.Android\bin\Release\Plugin.MediaManager.Forms.dll" target="lib\MonoAndroid70\Plugin.MediaManager.Forms.dll" />
         <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms\bin\Release\Plugin.MediaManager.Forms.dll" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Plugin.MediaManager.Forms.dll" />
         <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.UWP\bin\Release\Plugin.MediaManager.Forms.dll" target="lib\uap10.0\Plugin.MediaManager.Forms.dll" />
         <file src="..\MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.UWP\bin\Release\Plugin.MediaManager.Forms.pdb" target="lib\uap10.0\Plugin.MediaManager.Forms.pdb" />
