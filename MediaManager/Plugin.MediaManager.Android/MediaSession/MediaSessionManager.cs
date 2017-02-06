@@ -117,7 +117,16 @@ namespace Plugin.MediaManager.MediaSession
             stateBuilder.SetState(state, position, 0, SystemClock.ElapsedRealtime());
             if (state == PlaybackStateCompat.StateError)
                 stateBuilder.SetErrorMessage(errorMessage);
-            CurrentSession?.SetPlaybackState(stateBuilder.Build());
+            PlaybackStateCompat playbackStateCompat = stateBuilder.Build();
+            try
+            {
+                CurrentSession?.SetPlaybackState(playbackStateCompat);
+            }
+            catch (ArgumentException)
+            {
+                if (state != PlaybackStateCompat.StateError)
+                    throw;
+            }
             OnStatusChanged?.Invoke(CurrentSession, state);
 
             //Used for backwards compatibility

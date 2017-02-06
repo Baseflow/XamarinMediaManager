@@ -53,10 +53,9 @@ namespace Plugin.MediaManager
         public void StartNotification(IMediaFile mediaFile, bool mediaIsPlaying, bool canBeRemoved)
         {
             var icon = (_appliactionContext.Resources?.GetIdentifier("xam_mediamanager_notify_ic", "drawable", _appliactionContext?.PackageName)).GetValueOrDefault(0);
-           
+
             _notificationStyle.SetMediaSession(_sessionToken);
             _notificationStyle.SetCancelButtonIntent(_pendingCancelIntent);
-            _notificationStyle.SetShowActionsInCompactView(0, 1, 2);
 
             _builder = new NotificationCompat.Builder(_appliactionContext)
             {
@@ -69,6 +68,8 @@ namespace Plugin.MediaManager
 
             SetMetadata(mediaFile);
             AddActionButtons(mediaIsPlaying);
+            if (_builder.MActions.Count >= 3)
+                ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0, 1, 2);
 
             NotificationManagerCompat.From(_appliactionContext)
                 .Notify(MediaServiceBase.NotificationId, _builder.Build());
@@ -104,7 +105,7 @@ namespace Plugin.MediaManager
                 Console.WriteLine(ex.Message);
                 StopNotifications();
             }
-           
+
         }
 
         private void SetMetadata(IMediaFile mediaFile)
