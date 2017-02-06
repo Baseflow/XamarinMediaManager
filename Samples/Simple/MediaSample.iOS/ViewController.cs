@@ -1,13 +1,21 @@
 ﻿using System;
 using Plugin.MediaManager.Abstractions.Enums;
 using MediaManager.Sample.Core;
+using Plugin.MediaManager.Abstractions;
 using UIKit;
+using Plugin.MediaManager.Abstractions.Implementations;
+using Foundation;
 
 namespace MediaSample.iOS
 {
     public partial class ViewController : UIViewController
     {
         private readonly MediaPlayerViewModel _viewModel;
+
+        private IMediaManager MediaPlayer => _viewModel.MediaPlayer;
+
+        private IPlaybackController PlaybackController => MediaPlayer.PlaybackController;
+
         public ViewController(IntPtr handle) : base(handle)
         {
             _viewModel = new MediaPlayerViewModel();
@@ -26,7 +34,7 @@ namespace MediaSample.iOS
 
                 InvokeOnMainThread(() =>
                 {
-                    if (hasChanged(nameof(MediaPlayerViewModel.CurrentTrack)))
+                    if (hasChanged(nameof(MediaPlayerViewModel.PlayingText)))
                     {
                         QueueLabel.Text = _viewModel.PlayingText;
                     }
@@ -70,7 +78,7 @@ namespace MediaSample.iOS
                 });
             };
 
-            _viewModel.MediaPlayer.PlayingChanged += (sender, args) =>
+            MediaPlayer.PlayingChanged += (sender, args) =>
             {
                 if (!_viewModel.IsSeeking)
                 {
@@ -81,7 +89,7 @@ namespace MediaSample.iOS
                 }
             };
 
-            _viewModel.MediaPlayer.MediaQueue.PropertyChanged += (sender, e) =>
+            MediaPlayer.MediaQueue.PropertyChanged += (sender, e) =>
             {
                 InvokeOnMainThread(() =>
                 {
@@ -90,19 +98,19 @@ namespace MediaSample.iOS
 
                     Func<string, bool> hasChanged = property => allChanged || propertyName == property;
 
-                    if (hasChanged(nameof(_viewModel.MediaPlayer.MediaQueue.IsShuffled)))
+                    if (hasChanged(nameof(MediaPlayer.MediaQueue.IsShuffled)))
                     {
-                        ShuffleButton.Selected = _viewModel.MediaPlayer.MediaQueue.IsShuffled;
+                        ShuffleButton.Selected = MediaPlayer.MediaQueue.IsShuffled;
                     }
 
-                    if (hasChanged(nameof(_viewModel.MediaPlayer.MediaQueue.Repeat)))
+                    if (hasChanged(nameof(MediaPlayer.MediaQueue.Repeat)))
                     {
                         var iconPrefix = "icon_repeat_";
                         var extension = ".png";
 
                         string iconState;
 
-                        switch (_viewModel.MediaPlayer.MediaQueue.Repeat)
+                        switch (MediaPlayer.MediaQueue.Repeat)
                         {
                             case RepeatType.None:
                                 iconState = "static";
@@ -154,31 +162,35 @@ namespace MediaSample.iOS
 
             PlayPauseButton.TouchUpInside += async (sender, e) =>
             {
-                await _viewModel.MediaPlayer.PlayPause();
+                await PlaybackController.PlayPause();
                 PlayPauseButton.Selected = _viewModel.IsPlaying;
             };
 
             NextButton.TouchUpInside += async (sender, e) =>
             {
-                await _viewModel.MediaPlayer.PlayNext();
+                await PlaybackController.PlayNext();
             };
 
             PreviousButton.TouchUpInside += async (sender, e) =>
             {
-                await _viewModel.MediaPlayer.PlayPrevious();
+                await PlaybackController.PlayPrevious();
             };
 
             ShuffleButton.TouchUpInside += (sender, args) =>
             {
-                _viewModel.MediaPlayer.MediaQueue.ToggleShuffle();
+                PlaybackController.ToggleShuffle();
             };
 
             RepeatButton.TouchUpInside += (sender, e) =>
             {
-                _viewModel.MediaPlayer.MediaQueue.ToggleRepeat();
+                PlaybackController.ToggleRepeat();
             };
 
             _viewModel.Init();
+
+            var sampleFilePath = NSBundle.MainBundle.PathForResource("local-sample", "mp3");
+
+            _viewModel.Queue.Add(new MediaFile { Type = MediaFileType.AudioFile, Url = sampleFilePath });
         }
 
         private string GetTimeString(TimeSpan timeSpan)

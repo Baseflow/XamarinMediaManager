@@ -1,31 +1,20 @@
-using Plugin.MediaManager.Abstractions;
-using Plugin.MediaManager.Abstractions.Implementations;
+﻿using Plugin.MediaManager.Abstractions;
 
 namespace Plugin.MediaManager
 {
-    /// <summary>
-    ///     Implementation for MediaManager
-    /// </summary>
-    public class MediaManagerImplementation : MediaManagerBase
+    public class MediaManagerImplementation: MediaManagerAppleBase
     {
-        private IAudioPlayer _audioPlayer;
-        private IVideoPlayer _videoPlayer;
-
-        public override IAudioPlayer AudioPlayer
+        public MediaManagerImplementation()
         {
-            get { return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(VolumeManager)); }
-            set { _audioPlayer = value; }
+            MediaRemoteControl = new MediaRemoteControl(PlaybackController);
+            MediaNotificationManager = new MediaNotificationManagerImplementation(this);
         }
 
-        public override IVideoPlayer VideoPlayer
-        {
-            get { return _videoPlayer ?? (_videoPlayer = new VideoPlayerImplementation(VolumeManager)); }
-            set { _videoPlayer = value; }
-        }
+        /// <summary>
+        /// Default implementation for IMediaRemoteControl that uses the default PlaybackController.
+        /// </summary>
+        public IMediaRemoteControl MediaRemoteControl { get; set; }
 
-        public override IMediaNotificationManager MediaNotificationManager { get; set; } = new MediaNotificationManagerImplementation();
-        public override IMediaExtractor MediaExtractor { get; set; } = new MediaExtractorImplementation();
-
-        public override IVolumeManager VolumeManager { get; set; } = new VolumeManagerImplementation();
+        public sealed override IMediaNotificationManager MediaNotificationManager { get; set; }
     }
 }

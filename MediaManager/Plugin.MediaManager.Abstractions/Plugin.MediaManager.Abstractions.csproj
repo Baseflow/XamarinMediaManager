@@ -69,6 +69,8 @@
     <Compile Include="Enums\RepeatType.cs" />
     <Compile Include="Enums\VideoAspectMode.cs" />
     <Compile Include="Enums\MediaPlayerStatus.cs" />
+    <Compile Include="IPlaybackController.cs" />
+    <Compile Include="Implementations\PlaybackController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Enums\" />

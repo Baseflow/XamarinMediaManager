@@ -67,7 +67,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Adds MediaFile to the Queue and starts playing
         /// </summary>
-        Task Play(IMediaFile mediaFile);
+        Task Play(IMediaFile mediaFile = null);
 
         /// <summary>
         /// Stops playing but retains position

@@ -22,12 +22,13 @@ namespace Plugin.MediaManager
                     AVMetadata.CommonKeyTitle,
                     AVMetadata.CommonKeyArtwork
                 };
-                var nsUrl = new NSUrl(mediaFile.Url);
+
+                var url = MediaFileUrlHelper.GetUrlFor(mediaFile);
             
                 // Default title to filename
-                mediaFile.Metadata.Title = nsUrl.LastPathComponent;
+                mediaFile.Metadata.Title = url.LastPathComponent;
             
-                var asset = AVAsset.FromUrl(nsUrl);
+                var asset = AVAsset.FromUrl(url);
                 await asset.LoadValuesTaskAsync(assetsToLoad.ToArray());
 
                 foreach (var avMetadataItem in asset.CommonMetadata)
