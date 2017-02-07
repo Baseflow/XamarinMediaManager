@@ -70,6 +70,8 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
+        private bool _startedPlaying;
+
         protected MediaManagerBase()
         {
             PlaybackController = new PlaybackController(this);
@@ -265,6 +267,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         private void OnStatusChanged(object sender, StatusChangedEventArgs e)
         {
             if (sender != CurrentPlaybackManager) return;
+
+            if (Status == MediaPlayerStatus.Playing)
+            {
+                _startedPlaying = false;
+            }
+
             MediaNotificationManager?.UpdateNotifications(CurrentMediaFile, e.Status);
             StatusChanged?.Invoke(sender, e);
         }
@@ -272,7 +280,15 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         private void OnPlayingChanged(object sender, PlayingChangedEventArgs e)
         {
             if (sender == CurrentPlaybackManager)
+            {
+                if (!_startedPlaying && Duration != TimeSpan.Zero)
+                {
+                    MediaNotificationManager?.UpdateNotifications(MediaQueue.Current, Status);
+                    _startedPlaying = true;
+                }
+
                 PlayingChanged?.Invoke(sender, e);
+            }
         }
 
         private async void OnMediaFinished(object sender, MediaFinishedEventArgs e)
