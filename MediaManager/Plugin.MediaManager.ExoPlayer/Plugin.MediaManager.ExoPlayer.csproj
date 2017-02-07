@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Plugin.MediaManager.ExoPlayer</RootNamespace>
     <AssemblyName>Plugin.MediaManager.ExoPlayer</AssemblyName>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
