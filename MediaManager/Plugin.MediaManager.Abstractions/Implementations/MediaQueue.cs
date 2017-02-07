@@ -96,6 +96,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                         Unshuffle();
                     }
 
+                    if (CollectionChanged != null)
+                        CollectionChanged(_queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+
                     OnPropertyChanged(nameof(IsShuffled));
                 }
             }
@@ -298,8 +301,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _queue.Clear();
             _queue.AddRange(files);
             CollectionChangedEventDisabled = false;
-            if (CollectionChanged != null)
-                CollectionChanged(_queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         private void Shuffle()
