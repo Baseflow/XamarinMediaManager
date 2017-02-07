@@ -120,10 +120,7 @@ namespace Plugin.MediaManager
         public virtual async Task Play(IMediaFile mediaFile)
         {
             await BinderReady();
-            if (Status == MediaPlayerStatus.Paused)
-                await GetMediaPlayerService().TogglePlayPause(true);
-            else
-                await GetMediaPlayerService().Play(mediaFile);
+            await GetMediaPlayerService().Play(mediaFile);
         }
 
         public virtual async Task Seek(TimeSpan position)
