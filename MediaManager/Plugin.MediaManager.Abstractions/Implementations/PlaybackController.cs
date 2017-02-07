@@ -121,12 +121,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             switch (Queue.Repeat)
             {
                 case RepeatType.None:
-                    Queue.Repeat = RepeatType.RepeatOne;
-                    break;
-                case RepeatType.RepeatOne:
                     Queue.Repeat = RepeatType.RepeatAll;
                     break;
                 case RepeatType.RepeatAll:
+                    Queue.Repeat = RepeatType.RepeatOne;
+                    break;
+                case RepeatType.RepeatOne:
                     Queue.Repeat = RepeatType.None;
                     break;
             }
