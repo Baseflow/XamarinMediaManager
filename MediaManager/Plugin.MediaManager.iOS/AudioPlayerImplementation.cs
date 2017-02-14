@@ -372,7 +372,10 @@ namespace Plugin.MediaManager
         private void ObserveLoadedTimeRanges()
         {
             var loadedTimeRanges = CurrentItem.LoadedTimeRanges;
-            if (loadedTimeRanges.Length > 0)
+
+            var hasLoadedAnyTimeRanges = loadedTimeRanges != null && loadedTimeRanges.Length > 0;
+
+            if (hasLoadedAnyTimeRanges)
             {
                 var range = loadedTimeRanges[0].CMTimeRangeValue;
                 var duration = TimeSpan.FromSeconds(range.Duration.Seconds);
