@@ -193,6 +193,11 @@ namespace Plugin.MediaManager
         {
             _player = new AVPlayer();
 
+            if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
+            {
+                _player.AutomaticallyWaitsToMinimizeStalling = false;
+            }
+
 #if __IOS__ || __TVOS__
             var avSession = AVAudioSession.SharedInstance();
 
