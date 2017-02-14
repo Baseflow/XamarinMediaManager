@@ -17,6 +17,8 @@ namespace Plugin.MediaManager
     {
         private readonly IVolumeManager _volumeManager;
 
+        private readonly IVersionHelper _versionHelper;
+
         private IMediaFile _currentMediaFile;
 
         public static readonly NSString StatusObservationContext =
@@ -33,6 +35,8 @@ namespace Plugin.MediaManager
         public AudioPlayerImplementation(IVolumeManager volumeManager)
         {
             _volumeManager = volumeManager;
+            _versionHelper = new VersionHelper();
+
             _status = MediaPlayerStatus.Stopped;
 
             // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
@@ -200,7 +204,9 @@ namespace Plugin.MediaManager
 
             _player = new AVPlayer();
 
-            _player.AutomaticallyWaitsToMinimizeStalling = false;
+            if (_versionHelper.SupportsAutomaticWaitPlayerProperty) {
+                _player.AutomaticallyWaitsToMinimizeStalling = false;
+            }
 
 #if __IOS__ || __TVOS__
             var avSession = AVAudioSession.SharedInstance();
