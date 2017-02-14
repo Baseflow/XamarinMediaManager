@@ -13,6 +13,6 @@ namespace Plugin.MediaManager
             _version = processInfo.OperatingSystemVersion;
         }
 
-        public bool SupportsAotomaticWaitPlayerProperty => _version.Major >= 10 && _version.Minor >= 12;
+        public bool SupportsAutomaticWaitPlayerProperty => _version.Major >= 10 && _version.Minor >= 12;
     }
 }
