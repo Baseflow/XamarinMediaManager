@@ -10,7 +10,6 @@ using Foundation;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using UIKit;
 
 namespace Plugin.MediaManager
 {
@@ -194,10 +193,7 @@ namespace Plugin.MediaManager
         {
             _player = new AVPlayer();
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
-            {
-                _player.AutomaticallyWaitsToMinimizeStalling = false;
-            }
+            _player.AutomaticallyWaitsToMinimizeStalling = false;
 
 #if __IOS__ || __TVOS__
             var avSession = AVAudioSession.SharedInstance();
