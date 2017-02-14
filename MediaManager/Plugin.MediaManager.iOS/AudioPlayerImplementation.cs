@@ -10,6 +10,7 @@ using Foundation;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
+using UIKit;
 
 namespace Plugin.MediaManager
 {
