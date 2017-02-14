@@ -88,6 +88,12 @@
     <Compile Include="..\Plugin.MediaManager.iOS\MediaFileUrlHelper.cs">
       <Link>MediaFileUrlHelper.cs</Link>
     </Compile>
+    <Compile Include="..\Plugin.MediaManager.iOS\IVersionHelper.cs">
+      <Link>IVersionHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Plugin.MediaManager.iOS\VersionHelper.cs">
+      <Link>VersionHelper.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
