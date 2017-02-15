@@ -35,6 +35,8 @@ namespace MediaSample.Droid
 
         private Android.Support.V7.Widget.Toolbar toolbar;
 
+        private const bool ShouldUseExoPlayer = true;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -51,10 +53,13 @@ namespace MediaSample.Droid
                 SupportActionBar.SetHomeButtonEnabled(true);
             }
 
-            var exoPlayer = new ExoPlayerAudioImplementation(((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager);
-            exoPlayer.RequestHeaders = new Dictionary<string, string> { { "Test", "1234" } };
-            CrossMediaManager.Current.AudioPlayer = exoPlayer;
-            //new AudioPlayerImplementation<ExoPlayerAudioService>(MediaSessionManager));}
+            if (ShouldUseExoPlayer)
+            {
+                var exoPlayer = new ExoPlayerAudioImplementation(((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager);
+                CrossMediaManager.Current.AudioPlayer = exoPlayer;
+            }
+
+            CrossMediaManager.Current.AudioPlayer.RequestHeaders = new Dictionary<string, string> { { "Test", "1234" } };
 
             var previous = FindViewById<ImageButton>(Resource.Id.btnPrevious);
             previous.Click += async (sender, args) =>

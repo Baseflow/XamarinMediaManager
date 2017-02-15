@@ -53,6 +53,8 @@
     <Compile Include="MediaRemoteControl.cs" />
     <Compile Include="RemoteControlNotificationManager.cs" />
     <Compile Include="MediaFileUrlHelper.cs" />
+    <Compile Include="IVersionHelper.cs" />
+    <Compile Include="VersionHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">

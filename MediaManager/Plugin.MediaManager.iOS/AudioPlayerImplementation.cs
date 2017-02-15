@@ -17,6 +17,8 @@ namespace Plugin.MediaManager
     {
         private readonly IVolumeManager _volumeManager;
 
+        private readonly IVersionHelper _versionHelper;
+
         private IMediaFile _currentMediaFile;
 
         public static readonly NSString StatusObservationContext =
@@ -33,14 +35,16 @@ namespace Plugin.MediaManager
         public AudioPlayerImplementation(IVolumeManager volumeManager)
         {
             _volumeManager = volumeManager;
+            _versionHelper = new VersionHelper();
+
             _status = MediaPlayerStatus.Stopped;
 
             // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
             BufferingChanged += (sender, e) =>
             {
                 // If the player is ready to play, it's paused and the status is still on PLAYING, go on!
-                if ((Player.Status == AVPlayerStatus.ReadyToPlay) && (Rate == 0.0f) &&
-                    (Status == MediaPlayerStatus.Playing))
+                var isPlaying = Status == MediaPlayerStatus.Playing;
+                if (CurrentItem.Status == AVPlayerItemStatus.ReadyToPlay && Rate == 0.0f && isPlaying)
                     Player.Play();
             };
             _volumeManager.Mute = Player.Muted;
@@ -66,6 +70,8 @@ namespace Plugin.MediaManager
             }
         }
 
+        private AVPlayerItem CurrentItem => Player.CurrentItem;
+
         private NSUrl nsUrl { get; set; }
 
         public float Rate
@@ -87,9 +93,9 @@ namespace Plugin.MediaManager
         {
             get
             {
-                if (Player.CurrentItem == null)
+                if (CurrentItem == null)
                     return TimeSpan.Zero;
-                return TimeSpan.FromSeconds(Player.CurrentItem.CurrentTime.Seconds);
+                return TimeSpan.FromSeconds(CurrentItem.CurrentTime.Seconds);
             }
         }
 
@@ -97,10 +103,10 @@ namespace Plugin.MediaManager
         {
             get
             {
-                if (Player.CurrentItem == null || Player.CurrentItem.Duration.IsIndefinite ||
-                    Player.CurrentItem.Duration.IsInvalid)
+                if (CurrentItem == null || CurrentItem.Duration.IsIndefinite ||
+                    CurrentItem.Duration.IsInvalid)
                     return TimeSpan.Zero;
-                return TimeSpan.FromSeconds(Player.CurrentItem.Duration.Seconds);
+                return TimeSpan.FromSeconds(CurrentItem.Duration.Seconds);
             }
         }
 
@@ -110,7 +116,7 @@ namespace Plugin.MediaManager
             {
                 var buffered = TimeSpan.Zero;
 
-                var currentItem = Player.CurrentItem;
+                var currentItem = CurrentItem;
 
                 var loadedTimeRanges = currentItem?.LoadedTimeRanges;
 
@@ -142,13 +148,13 @@ namespace Plugin.MediaManager
         {
             await Task.Run(() =>
             {
-                if (Player.CurrentItem == null)
+                if (CurrentItem == null)
                     return;
 
                 if (Player.Rate != 0.0)
                     Player.Pause();
 
-                Player.CurrentItem.Seek(CMTime.FromSeconds(0d, 1));
+                CurrentItem.Seek(CMTime.FromSeconds(0d, 1));
 
                 Status = MediaPlayerStatus.Stopped;
             });
@@ -160,7 +166,7 @@ namespace Plugin.MediaManager
             {
                 Status = MediaPlayerStatus.Paused;
 
-                if (Player.CurrentItem == null)
+                if (CurrentItem == null)
                     return;
 
                 if (Player.Rate != 0.0)
@@ -186,12 +192,21 @@ namespace Plugin.MediaManager
 
         public async Task Seek(TimeSpan position)
         {
-            await Task.Run(() => { Player.CurrentItem?.Seek(CMTime.FromSeconds(position.TotalSeconds, 1)); });
+            await Task.Run(() => { CurrentItem?.Seek(CMTime.FromSeconds(position.TotalSeconds, 1)); });
         }
 
         private void InitializePlayer()
         {
+            if (_player != null)
+            {
+                _player.Dispose();
+            }
+
             _player = new AVPlayer();
+
+            if (_versionHelper.SupportsAutomaticWaitPlayerProperty) {
+                _player.AutomaticallyWaitsToMinimizeStalling = false;
+            }
 
 #if __IOS__ || __TVOS__
             var avSession = AVAudioSession.SharedInstance();
@@ -208,13 +223,13 @@ namespace Plugin.MediaManager
 
             Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {
-                if (Player.CurrentItem.Duration.IsInvalid || Player.CurrentItem.Duration.IsIndefinite || double.IsNaN(Player.CurrentItem.Duration.Seconds))
+                if (CurrentItem.Duration.IsInvalid || CurrentItem.Duration.IsIndefinite || double.IsNaN(CurrentItem.Duration.Seconds))
                 {
                     PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(0, Position, Duration));
                 }
                 else
                 {
-                    var totalDuration = TimeSpan.FromSeconds(Player.CurrentItem.Duration.Seconds);
+                    var totalDuration = TimeSpan.FromSeconds(CurrentItem.Duration.Seconds);
                     var totalProgress = Position.TotalMilliseconds /
                                         totalDuration.TotalMilliseconds;
                     PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position, Duration));
@@ -242,25 +257,25 @@ namespace Plugin.MediaManager
 
             try
             {
-                // Start off with the status LOADING.
+                InitializePlayer();
+
                 Status = MediaPlayerStatus.Buffering;
 
                 var playerItem = GetPlayerItem(nsUrl);
 
-                Player.CurrentItem?.RemoveObserver(this, new NSString("status"));
+                CurrentItem?.RemoveObserver(this, new NSString("status"));
 
                 Player.ReplaceCurrentItemWithPlayerItem(playerItem);
-                playerItem.AddObserver(this, new NSString("status"), NSKeyValueObservingOptions.New, Player.Handle);
                 playerItem.AddObserver(this, new NSString("loadedTimeRanges"),
                     NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New, Player.Handle);
 
-                Player.CurrentItem.SeekingWaitsForVideoCompositionRendering = true;
-                Player.CurrentItem.AddObserver(this, (NSString)"status", NSKeyValueObservingOptions.New |
+                CurrentItem.SeekingWaitsForVideoCompositionRendering = true;
+                CurrentItem.AddObserver(this, (NSString)"status", NSKeyValueObservingOptions.New |
                                                                           NSKeyValueObservingOptions.Initial,
                     StatusObservationContext.Handle);
 
                 NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification,
-                                                               notification => MediaFinished?.Invoke(this, new MediaFinishedEventArgs(mediaFile)), Player.CurrentItem);
+                                                               notification => MediaFinished?.Invoke(this, new MediaFinishedEventArgs(mediaFile)), CurrentItem);
 
                 Player.Play();
             }
@@ -319,7 +334,7 @@ namespace Plugin.MediaManager
         {
             Console.WriteLine("Observer triggered for {0}", keyPath);
 
-            switch ((string)keyPath)
+            switch (keyPath)
             {
                 case "status":
                     ObserveStatus();
@@ -337,13 +352,16 @@ namespace Plugin.MediaManager
 
         private void ObserveStatus()
         {
-            Console.WriteLine("Status Observed Method {0}", Player.Status);
-            if ((Player.Status == AVPlayerStatus.ReadyToPlay) && (Status == MediaPlayerStatus.Buffering))
+            Console.WriteLine("Status Observed Method {0}", CurrentItem.Status);
+
+            var isBuffering = Status == MediaPlayerStatus.Buffering;
+
+            if (CurrentItem.Status == AVPlayerItemStatus.ReadyToPlay && isBuffering)
             {
                 Status = MediaPlayerStatus.Playing;
                 Player.Play();
             }
-            else if (Player.Status == AVPlayerStatus.Failed)
+            else if (CurrentItem.Status == AVPlayerItemStatus.Failed)
             {
                 OnMediaFailed();
                 Status = MediaPlayerStatus.Stopped;
@@ -352,22 +370,22 @@ namespace Plugin.MediaManager
 
         private void OnMediaFailed()
         {
-            StringBuilder builder = new StringBuilder();
-            builder.AppendLine($"Description: {Player.Error.LocalizedDescription}");
-            builder.AppendLine($"Reason: {Player.Error.LocalizedFailureReason}");
-            builder.AppendLine($"Recovery Options: {Player.Error.LocalizedRecoveryOptions}");
-            builder.AppendLine($"Recovery Suggestion: {Player.Error.LocalizedRecoverySuggestion}");
-            MediaFailed?.Invoke(this, new MediaFailedEventArgs(builder.ToString(), new NSErrorException(Player.Error)));
+            var error = CurrentItem.Error;
+
+            MediaFailed?.Invoke(this, new MediaFailedEventArgs(error.LocalizedDescription, new NSErrorException(error)));
         }
 
         private void ObserveLoadedTimeRanges()
         {
-            var loadedTimeRanges = Player.CurrentItem.LoadedTimeRanges;
-            if (loadedTimeRanges.Length > 0)
+            var loadedTimeRanges = CurrentItem.LoadedTimeRanges;
+
+            var hasLoadedAnyTimeRanges = loadedTimeRanges != null && loadedTimeRanges.Length > 0;
+
+            if (hasLoadedAnyTimeRanges)
             {
                 var range = loadedTimeRanges[0].CMTimeRangeValue;
                 var duration = TimeSpan.FromSeconds(range.Duration.Seconds);
-                var totalDuration = Player.CurrentItem.Duration;
+                var totalDuration = CurrentItem.Duration;
                 var bufferProgress = duration.TotalSeconds / totalDuration.Seconds;
                 BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(bufferProgress, duration));
             }
