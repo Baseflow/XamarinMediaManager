@@ -245,6 +245,5 @@ namespace Plugin.MediaManager
                     return MediaPlayerStatus.Stopped;
             }
         }
-
     }
 }

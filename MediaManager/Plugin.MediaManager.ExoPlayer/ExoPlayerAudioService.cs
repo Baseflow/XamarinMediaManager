@@ -127,14 +127,6 @@ namespace Plugin.MediaManager.ExoPlayer
             await base.Pause();
         }
 
-        public override Task TogglePlayPause(bool forceToPlay)
-        {
-            if (_mediaPlayer == null) return Task.CompletedTask;
-            _mediaPlayer.PlayWhenReady = !_mediaPlayer.PlayWhenReady || forceToPlay;
-            ManuallyPaused = !_mediaPlayer.PlayWhenReady;
-            return Task.CompletedTask;
-        }
-
         public override void SetVolume(float leftVolume, float rightVolume)
         {
             _mediaPlayer.Volume = leftVolume;
@@ -145,6 +137,10 @@ namespace Plugin.MediaManager.ExoPlayer
             var source = GetSource(CurrentFile.Url);
             _mediaPlayer.Prepare(source);
             return await Task.FromResult(true);
+        }
+
+        protected override void Resume()
+        {
         }
 
         #region ************ ExoPlayer Events *****************

@@ -96,54 +96,38 @@ namespace Plugin.MediaManager
             return base.OnStartCommand(intent, flags, startId);
         }
 
-        #region ****************** MediaPlayer Actions ******************
-
         public override async Task Play(IMediaFile mediaFile = null)
         {
+            var sameMediaFile = mediaFile == null || mediaFile == CurrentFile;
+
             await base.Play(mediaFile);
 
-            try
-            {
-                _mediaPlayer.PrepareAsync();
-            }
-            catch (Java.Lang.IllegalStateException)
-            {
-                int retryCount = 0;
-                do
+            if (!sameMediaFile) {
+                try
                 {
-                    await Task.Delay(250);
-                    try
-                    {
-                        _mediaPlayer.Reset();
-                        await SetMediaPlayerDataSource();
-                        _mediaPlayer.PrepareAsync();
-                    }
-                    catch (Java.Lang.IllegalStateException)
-                    {
-                        retryCount++;
-                        continue;
-                    }
-                    return;
-                } while (retryCount < 10);
-            }
-        }
-
-        public override Task TogglePlayPause(bool forceToPlay)
-        {
-            return Task.Run(() =>
-            {
-                if (_mediaPlayer != null)
-                {
-                    if (_mediaPlayer.IsPlaying && !forceToPlay)
-                    {
-                        _mediaPlayer.Pause();
-                    }
-                    else
-                    {
-                        _mediaPlayer.Start();
-                    }
+                    _mediaPlayer.PrepareAsync();
                 }
-            });
+                catch (Java.Lang.IllegalStateException)
+                {
+                    int retryCount = 0;
+                    do
+                    {
+                        await Task.Delay(250);
+                        try
+                        {
+                            _mediaPlayer.Reset();
+                            await SetMediaPlayerDataSource();
+                            _mediaPlayer.PrepareAsync();
+                        }
+                        catch (Java.Lang.IllegalStateException)
+                        {
+                            retryCount++;
+                            continue;
+                        }
+                        return;
+                    } while (retryCount < 10);
+                }   
+            }
         }
 
         public override void SetVolume(float leftVolume, float rightVolume)
@@ -250,10 +234,6 @@ namespace Plugin.MediaManager
             await base.Stop();
         }
 
-        #endregion
-
-        #region ****************** MediaPlayer Listener ******************
-
         public void OnCompletion(MediaPlayer mp)
         {
             OnMediaFinished(new MediaFinishedEventArgs(CurrentFile));
@@ -291,9 +271,10 @@ namespace Plugin.MediaManager
             }
         }
 
-        #endregion
-
-        #region ********************* Private Methods *******************
+        protected override void Resume()
+        {
+            _mediaPlayer.Start();
+        }
 
         private async Task SetMediaPlayerDataSourcePreHoneyComb()
         {
@@ -320,8 +301,6 @@ namespace Plugin.MediaManager
                 await dataSourceAsync;
             inputStream.Close();
         }
-
-        #endregion
 
         public override void OnDestroy()
         {

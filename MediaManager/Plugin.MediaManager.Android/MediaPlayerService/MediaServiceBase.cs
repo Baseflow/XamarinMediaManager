@@ -157,8 +157,6 @@ namespace Plugin.MediaManager
 
         public abstract Task Play(IEnumerable<IMediaFile> mediaFiles);
 
-        public abstract Task TogglePlayPause(bool forceToPlay);
-
         public abstract void SetVolume(float leftVolume, float rightVolume);
 
         public abstract Task<bool> SetMediaPlayerDataSource();
@@ -325,13 +323,14 @@ namespace Plugin.MediaManager
             MediaFileFailed?.Invoke(this, e);
         }
 
+        protected abstract void Resume();
+
         /// <summary>
         /// Checks if player just paused.
         /// </summary>
         /// <param name="mediaFile">The media file.</param>
         private async Task<bool> CheckIfFileAlreadyIsPlaying(IMediaFile mediaFile)
         {
-
             var isNewFile = CurrentFile == null || string.IsNullOrEmpty(mediaFile?.Url)
                                    || mediaFile?.Url != CurrentFile?.Url;
 
@@ -353,8 +352,8 @@ namespace Plugin.MediaManager
                 SessionManager.UpdatePlaybackState(PlaybackStateCompat.StatePlaying, Position.Seconds);
                 SessionManager.UpdateMetadata(mediaFile);
                 SessionManager.NotificationManager.StartNotification(mediaFile);
-                CurrentFile = mediaFile ?? CurrentFile;
-                await TogglePlayPause(true);
+                CurrentFile = mediaFile;
+                Resume();
                 return await Task.FromResult(true);
             }
 
