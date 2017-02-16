@@ -2,11 +2,8 @@
 {
     public enum MediaFileType
     {
-        AudioUrl,
-        VideoUrl,
-        AudioFile,
-        VideoFile,
-        Other
+        Audio,
+        Video
     }
 }
 

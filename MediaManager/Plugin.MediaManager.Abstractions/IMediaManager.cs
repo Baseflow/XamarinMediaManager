@@ -63,11 +63,6 @@ namespace Plugin.MediaManager.Abstractions
         event MediaFileFailedEventHandler MediaFileFailed;
 
         /// <summary>
-        /// Creates new MediaFile object, adds it to the queue and starts playing
-        /// </summary>
-        Task Play(string url, MediaFileType fileType);
-
-        /// <summary>
         /// Adds all MediaFiles to the Queue and starts playing the first one
         /// </summary>
         Task Play(IEnumerable<IMediaFile> mediaFiles);

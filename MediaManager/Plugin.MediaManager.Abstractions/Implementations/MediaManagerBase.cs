@@ -165,11 +165,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             MediaNotificationManager?.StartNotification(CurrentMediaFile);
         }
 
-        public async Task Play(string url, MediaFileType fileType)
-        {
-            await Play(new MediaFile(url, fileType));
-        }
-
         public void SetOnBeforePlay(Func<IMediaFile, Task> beforePlay)
         {
             _onBeforePlay = beforePlay;
@@ -235,15 +230,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
             switch (fileType)
             {
-                case MediaFileType.AudioUrl:
-                case MediaFileType.AudioFile:
+                case MediaFileType.Audio:
                     _currentPlaybackManager = AudioPlayer;
                     break;
-                case MediaFileType.VideoUrl:
-                case MediaFileType.VideoFile:
+                case MediaFileType.Video:
                     _currentPlaybackManager = VideoPlayer;
-                    break;
-                case MediaFileType.Other:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

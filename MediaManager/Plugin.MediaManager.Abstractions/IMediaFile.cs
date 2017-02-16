@@ -16,6 +16,11 @@ namespace Plugin.MediaManager.Abstractions
         MediaFileType Type { get; set; }
 
         /// <summary>
+        /// Indicates wether the resource is locally or remotely available
+        /// </summary>
+        ResourceAvailability Availability { get; set; }
+
+        /// <summary>
         /// Gets or sets the metadata.
         /// </summary>
         /// <value>
