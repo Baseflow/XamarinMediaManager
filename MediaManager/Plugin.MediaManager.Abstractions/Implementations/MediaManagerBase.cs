@@ -208,7 +208,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             catch (Exception ex)
             {
                 OnMediaFileFailed(CurrentPlaybackManager, new MediaFileFailedEventArgs(ex, CurrentMediaFile));
-                throw;
             }
         }
 
