@@ -10,9 +10,28 @@ namespace Plugin.MediaManager
 {
     public class MediaExtractorImplementation : IMediaExtractor
     {
-        private async Task<IMediaFile> GetAudioInfo(IMediaFile mediaFile)
+        public async Task<IMediaFile> ExtractMediaInfo(IMediaFile mediaFile)
         {
-            if (mediaFile.Type == MediaFileType.AudioFile)
+            if (mediaFile.Availability == ResourceAvailability.Local)
+            {
+                switch (mediaFile.Type)
+                {
+                    case MediaFileType.Audio:
+                        await GetAudioInfo(mediaFile);
+                        break;
+
+                    case MediaFileType.Video:
+                        await GetVideoInfo(mediaFile);
+                        break;
+                }
+            }
+
+            return mediaFile;
+        }
+
+        private async Task GetAudioInfo(IMediaFile mediaFile)
+        {
+            if (mediaFile.Type == MediaFileType.Audio && mediaFile.Availability == ResourceAvailability.Local)
             {
                 var file = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
                 var musicProperties = await file.Properties.GetMusicPropertiesAsync();
@@ -28,12 +47,11 @@ namespace Plugin.MediaManager
                 }
             }
             mediaFile.MetadataExtracted = true;
-            return mediaFile;
         }
 
-        private async Task<IMediaFile> GetVideoInfo(IMediaFile mediaFile)
+        private async Task GetVideoInfo(IMediaFile mediaFile)
         {
-            if (mediaFile.Type == MediaFileType.VideoFile)
+            if (mediaFile.Type == MediaFileType.Video && mediaFile.Availability == ResourceAvailability.Local)
             {
                 var file = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
                 var musicProperties = await file.Properties.GetVideoPropertiesAsync();
@@ -49,26 +67,6 @@ namespace Plugin.MediaManager
                 }
             }
             mediaFile.MetadataExtracted = true;
-            return mediaFile;
-        }
-
-        public async Task<IMediaFile> ExtractMediaInfo(IMediaFile mediaFile)
-        {
-            switch (mediaFile.Type)
-            {
-                case MediaFileType.AudioUrl:
-                case MediaFileType.AudioFile:
-                    await GetAudioInfo(mediaFile);
-                    return mediaFile;
-                case MediaFileType.VideoUrl:
-                case MediaFileType.VideoFile:
-                    return await GetVideoInfo(mediaFile);
-                case MediaFileType.Other:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            return await Task.FromResult(mediaFile);
         }
     }
 }
