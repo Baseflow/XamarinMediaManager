@@ -112,6 +112,24 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await Play(CurrentMediaFile);
         }
 
+        public Task Play(string url)
+        {
+            var mediaFile = new MediaFile(url);
+            return Play(mediaFile);
+        }
+
+        public Task Play(string url, MediaFileType fileType)
+        {
+            var mediaFile = new MediaFile(url, fileType);
+            return Play(mediaFile);
+        }
+
+        public Task Play(string url, MediaFileType fileType, ResourceAvailability availability)
+        {
+            var mediaFile = new MediaFile(url, fileType, availability);
+            return Play(mediaFile);
+        }
+
         public async Task Play(IMediaFile mediaFile = null)
         {
             if (mediaFile == null)
