@@ -44,7 +44,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public IPlaybackController PlaybackController { get; set; }
 
-        public MediaPlayerStatus Status => CurrentPlaybackManager.Status;
+        public MediaPlayerStatus Status => CurrentPlaybackManager?.Status ?? MediaPlayerStatus.Stopped;
 
         public TimeSpan Position => CurrentPlaybackManager.Position;
 
@@ -216,9 +216,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         {
             await ExecuteOnBeforePlay();
 
-            await Task.WhenAll(
-                CurrentPlaybackManager.Play(CurrentMediaFile),
-                ExtractMediaInformation(CurrentMediaFile));
+            var currentPlaybackManager = CurrentPlaybackManager;
+            if (currentPlaybackManager != null)
+                await Task.WhenAll(
+                    currentPlaybackManager.Play(CurrentMediaFile),
+                    ExtractMediaInformation(CurrentMediaFile));
         }
 
         private async Task ExecuteOnBeforePlay()
