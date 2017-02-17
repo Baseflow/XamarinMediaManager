@@ -14,59 +14,53 @@ namespace Plugin.MediaManager
         {
             if (mediaFile.Availability == ResourceAvailability.Local)
             {
+                var file = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
+
                 switch (mediaFile.Type)
                 {
                     case MediaFileType.Audio:
-                        await GetAudioInfo(mediaFile);
+                        await SetAudioInfo(file, mediaFile);
                         break;
 
                     case MediaFileType.Video:
-                        await GetVideoInfo(mediaFile);
+                        await SetVideoInfo(file, mediaFile);
                         break;
                 }
+
+                await SetAlbumArt(file, mediaFile);
             }
+
+            mediaFile.MetadataExtracted = true;
 
             return mediaFile;
         }
 
-        private async Task GetAudioInfo(IMediaFile mediaFile)
-        {
-            if (mediaFile.Type == MediaFileType.Audio && mediaFile.Availability == ResourceAvailability.Local)
-            {
-                var file = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
-                var musicProperties = await file.Properties.GetMusicPropertiesAsync();
-                mediaFile.Metadata.Title = musicProperties.Title;
-                mediaFile.Metadata.Artist = musicProperties.Artist;
-                mediaFile.Metadata.Album = musicProperties.Album;
-                var thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
-                if (thumbnail != null && thumbnail.Type == ThumbnailType.Image)
-                {
-                    BitmapSource bitmap = new BitmapImage();
-                    await bitmap.SetSourceAsync(thumbnail);
-                    mediaFile.Metadata.AlbumArt = bitmap;
-                }
-            }
-            mediaFile.MetadataExtracted = true;
+        private async Task SetAudioInfo(IStorageItemProperties file, IMediaFile mediaFile)
+        {;
+            var musicProperties = await file.Properties.GetMusicPropertiesAsync();
+            mediaFile.Metadata.Title = musicProperties.Title;
+            mediaFile.Metadata.Artist = musicProperties.Artist;
+            mediaFile.Metadata.Album = musicProperties.Album;
         }
 
-        private async Task GetVideoInfo(IMediaFile mediaFile)
+        private async Task SetVideoInfo(IStorageItemProperties file, IMediaFile mediaFile)
         {
-            if (mediaFile.Type == MediaFileType.Video && mediaFile.Availability == ResourceAvailability.Local)
+            var musicProperties = await file.Properties.GetVideoPropertiesAsync();
+            mediaFile.Metadata.Title = musicProperties.Title;
+        }
+
+        private async Task SetAlbumArt(IStorageItemProperties file, IMediaFile mediaFile)
+        {
+            var isAudio = mediaFile.Type == MediaFileType.Audio;
+            var thumbnailMode = isAudio ? ThumbnailMode.MusicView : ThumbnailMode.VideosView;
+
+            var thumbnail = await file.GetThumbnailAsync(thumbnailMode);
+            if (thumbnail != null && thumbnail.Type == ThumbnailType.Image)
             {
-                var file = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
-                var musicProperties = await file.Properties.GetVideoPropertiesAsync();
-                mediaFile.Metadata.Title = musicProperties.Title;
-                mediaFile.Metadata.Album = string.Empty;
-                mediaFile.Metadata.Artist = string.Empty;
-                var thumbnail = await file.GetThumbnailAsync(ThumbnailMode.VideosView);
-                if (thumbnail != null && thumbnail.Type == ThumbnailType.Image)
-                {
-                    BitmapSource bitmap = new BitmapImage();
-                    await bitmap.SetSourceAsync(thumbnail);
-                    mediaFile.Metadata.AlbumArt = bitmap;
-                }
+                BitmapSource bitmap = new BitmapImage();
+                await bitmap.SetSourceAsync(thumbnail);
+                mediaFile.Metadata.AlbumArt = bitmap;
             }
-            mediaFile.MetadataExtracted = true;
         }
     }
 }
