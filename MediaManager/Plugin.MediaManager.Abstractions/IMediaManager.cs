@@ -65,7 +65,17 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Creates new MediaFile object, adds it to the queue and starts playing
         /// </summary>
+        Task Play(string url);
+
+        /// <summary>
+        /// Creates new MediaFile object, adds it to the queue and starts playing
+        /// </summary>
         Task Play(string url, MediaFileType fileType);
+
+        /// <summary>
+        /// Creates new MediaFile object, adds it to the queue and starts playing
+        /// </summary>
+        Task Play(string url, MediaFileType fileType, ResourceAvailability availability);
 
         /// <summary>
         /// Adds all MediaFiles to the Queue and starts playing the first one

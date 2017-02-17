@@ -37,7 +37,7 @@ namespace MediaManager.Sample.Core
 
             foreach (var mediaUrl in mediaUrls)
             {
-                Queue.Add(new MediaFile { Type = MediaFileType.AudioUrl, Url = mediaUrl });
+                Queue.Add(new MediaFile { Type = MediaFileType.Audio, Url = mediaUrl });
             }
 
             RaiseAllPropertiesChanged();

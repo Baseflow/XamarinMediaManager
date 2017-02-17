@@ -33,26 +33,19 @@ namespace Plugin.MediaManager
         private async void UpdateInfoFromMediaFile(IMediaFile mediaFile)
         {
             var updater = _systemMediaTransportControls.DisplayUpdater;
-            switch (mediaFile.Type)
+            if (mediaFile.Availability == ResourceAvailability.Local)
             {
-                case MediaFileType.AudioUrl:
-                    break;
-                case MediaFileType.AudioFile:
-                    await
-                        updater.CopyFromFileAsync(MediaPlaybackType.Music,
-                            await StorageFile.GetFileFromPathAsync(mediaFile.Url));
-                    break;
-                case MediaFileType.VideoUrl:
-                    break;
-                case MediaFileType.VideoFile:
-                    await
-                        updater.CopyFromFileAsync(MediaPlaybackType.Video,
-                            await StorageFile.GetFileFromPathAsync(mediaFile.Url));
-                    break;
-                case MediaFileType.Other:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                switch (mediaFile.Type)
+                {
+                    case MediaFileType.Audio:
+                        await updater.CopyFromFileAsync(MediaPlaybackType.Music,
+                                await StorageFile.GetFileFromPathAsync(mediaFile.Url));
+                        break;
+                    case MediaFileType.Video:
+                        await updater.CopyFromFileAsync(MediaPlaybackType.Video,
+                                await StorageFile.GetFileFromPathAsync(mediaFile.Url));
+                        break;
+                }
             }
 
             updater.Update();
