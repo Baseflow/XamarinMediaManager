@@ -80,6 +80,34 @@ namespace Plugin.MediaManager.Tests.Unit
                 Assert.AreEqual(2, collectionChangedEvents.Count(e => e.NewItems.Count == 1 && e.OldItems == null));
                 Assert.AreEqual(2, collectionChangedEvents.Count);
             }
+
+            /// <summary>
+            /// Verify that adding a range not calls more than one trigger
+            /// </summary>
+            [Test]
+            public void AddRange_OnlyOneCollectionChangedEvent()
+            {
+                var queue = new MediaQueue();
+
+                IList<NotifyCollectionChangedEventArgs> collectionChangedEvents = new List<NotifyCollectionChangedEventArgs>();
+
+                queue.CollectionChanged += (sender, e) => collectionChangedEvents.Add(e);
+
+                var tracks = new[]
+                {
+                    new MediaFile(),
+                    new MediaFile(),
+                };
+
+                queue.AddRange(tracks);
+
+                Assert.AreEqual(1, collectionChangedEvents.Count);
+
+                var onlyAddEvents = collectionChangedEvents
+                    .All(changedEvent => changedEvent.Action == NotifyCollectionChangedAction.Add);
+
+                Assert.True(onlyAddEvents);
+            }
         }
 
         [TestFixture]
