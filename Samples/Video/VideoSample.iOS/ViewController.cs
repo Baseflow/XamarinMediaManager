@@ -1,6 +1,7 @@
 ﻿using System;
 using Plugin.MediaManager;
 using Plugin.MediaManager.Abstractions.Enums;
+using Plugin.MediaManager.Abstractions.Implementations;
 using UIKit;
 
 namespace MediaSample.iOS
@@ -31,7 +32,11 @@ namespace MediaSample.iOS
 
         partial void PlayButton_TouchUpInside(UIButton sender)
         {
-            CrossMediaManager.Current.Play("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", MediaFileType.VideoUrl);
+            var video = new MediaFile() {
+                Url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
+                Type = MediaFileType.Video
+            };
+            CrossMediaManager.Current.Play(video);
         }
     }
 }

@@ -66,28 +66,21 @@ namespace Plugin.MediaManager
 
         private async Task<MediaMetadataRetriever> GetMetadataRetriever(IMediaFile currentFile)
         {
-            MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
+            var metaRetriever = new MediaMetadataRetriever();
 
-            switch (currentFile.Type)
+            if (currentFile.Type == MediaFileType.Audio)
             {
-                case MediaFileType.AudioUrl:
+                if (currentFile.Availability == ResourceAvailability.Remote)
+                {
                     await metaRetriever.SetDataSourceAsync(currentFile.Url, _requestHeaders);
-                    break;
-                case MediaFileType.VideoUrl:
-                    break;
-                case MediaFileType.AudioFile:
-                    Java.IO.File file = new Java.IO.File(currentFile.Url);
-                    Java.IO.FileInputStream inputStream = new Java.IO.FileInputStream(file);
+                }
+                else
+                {
+                    var file = new Java.IO.File(currentFile.Url);
+                    var inputStream = new Java.IO.FileInputStream(file);
                     await metaRetriever.SetDataSourceAsync(inputStream.FD);
-                    break;
-                case MediaFileType.VideoFile:
-                    break;
-                case MediaFileType.Other:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                }
             }
-
 
             return metaRetriever;
         }

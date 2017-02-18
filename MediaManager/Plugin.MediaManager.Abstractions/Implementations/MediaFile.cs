@@ -6,19 +6,30 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 {
     public class MediaFile : IMediaFile
     {
-        public MediaFile() : this(String.Empty, MediaFileType.Other)
+        public MediaFile() : this(String.Empty, default(MediaFileType))
         {
         }
 
-        public MediaFile(string url, MediaFileType type)
+        public MediaFile(string url) : this(url, default(MediaFileType))
+        {
+        }
+
+        public MediaFile(string url, MediaFileType type) : this(url, type, default(ResourceAvailability))
+        { 
+        }
+
+        public MediaFile(string url, MediaFileType type, ResourceAvailability availability)
         {
             Url = url;
             Type = type;
+            Availability = availability;
         }
 
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public MediaFileType Type { get; set; }
+
+        public ResourceAvailability Availability { get; set; }
 
         public IMediaFileMetadata Metadata { get; set; } = new MediaFileMetadata();
 

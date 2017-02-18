@@ -45,7 +45,13 @@ namespace Plugin.MediaManager.Forms
 
         private static void OnSourceChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
-            CrossMediaManager.Current.Play((string) newvalue, MediaFileType.VideoUrl);
+            var video = new MediaFile
+            {
+                Url = (string)newvalue,
+                Type = MediaFileType.Video
+            };
+
+            CrossMediaManager.Current.Play(video);
         }
     }
 }

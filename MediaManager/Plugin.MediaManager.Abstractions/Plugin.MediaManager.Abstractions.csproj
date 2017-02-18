@@ -71,6 +71,7 @@
     <Compile Include="Enums\MediaPlayerStatus.cs" />
     <Compile Include="IPlaybackController.cs" />
     <Compile Include="Implementations\PlaybackController.cs" />
+    <Compile Include="Enums\ResourceAvailability.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Enums\" />

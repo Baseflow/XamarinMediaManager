@@ -7,18 +7,9 @@ namespace Plugin.MediaManager
     public static class MediaFileUrlHelper
     {
         public static NSUrl GetUrlFor(IMediaFile mediaFile) {
-            var isFile = mediaFile.Type == MediaFileType.AudioFile || mediaFile.Type == MediaFileType.VideoFile;
+            var isLocallyAvailable = mediaFile.Availability == ResourceAvailability.Local;
 
-            NSUrl url;
-
-            if (isFile)
-            {
-                url = new NSUrl(mediaFile.Url, false);
-            }
-            else
-            {
-                url = new NSUrl(mediaFile.Url);
-            }
+            var url = isLocallyAvailable ? new NSUrl(mediaFile.Url, false) : new NSUrl(mediaFile.Url);
 
             return url;
         }

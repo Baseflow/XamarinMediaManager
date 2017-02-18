@@ -111,11 +111,11 @@ namespace Plugin.MediaManager.Reactive
             _repeatModeSubject.OnNext(repeatType);
         }
 
-        public async Task Play(string filePath, MediaFileType mediaFileType, string title = null)
+        public async Task Play(IMediaFile mediaFile, string title = null)
         {
             try
             {
-                _filePath = filePath;
+                _filePath = mediaFile.Url;
                 if (_playbackStateSubject.Latest().First() == MediaPlayerStatus.Paused)
                 {
                     await Pause();
@@ -123,7 +123,7 @@ namespace Plugin.MediaManager.Reactive
                 }
 
                 _canPlaySubject.OnNext(true);
-                await CrossMediaManager.Current.Play(filePath, mediaFileType);
+                await CrossMediaManager.Current.Play(mediaFile);
                 _titleSubject.OnNext(title);
             }
             catch (Exception e)

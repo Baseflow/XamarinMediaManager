@@ -190,7 +190,12 @@ namespace MediaSample.iOS
 
             var sampleFilePath = NSBundle.MainBundle.PathForResource("local-sample", "mp3");
 
-            _viewModel.Queue.Add(new MediaFile { Type = MediaFileType.AudioFile, Url = sampleFilePath });
+            _viewModel.Queue.Add(new MediaFile
+            {
+                Type = MediaFileType.Audio,
+                Url = sampleFilePath,
+                Availability = ResourceAvailability.Local
+            });
         }
 
         private string GetTimeString(TimeSpan timeSpan)
