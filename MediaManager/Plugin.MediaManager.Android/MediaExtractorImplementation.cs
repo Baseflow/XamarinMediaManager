@@ -50,7 +50,6 @@ namespace Plugin.MediaManager
                 catch (Java.Lang.OutOfMemoryError)
                 {
                     mediaFile.Metadata.AlbumArt = null;
-                    throw;
                 }
             }
             mediaFile.MetadataExtracted = true;
