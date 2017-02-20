@@ -272,7 +272,8 @@ namespace Plugin.MediaManager
         public static string GetUriFromPath(Context context, string path)
         {
             Android.Net.Uri uri = MediaStore.Audio.Media.GetContentUriForPath(path);
-            ICursor cursor = context.ContentResolver.Query(uri, null, MediaStore.Audio.Media.InterfaceConsts.Data + "='" + path + "'", null, null);
+            string[] selection = { path };
+            ICursor cursor = context.ContentResolver.Query(uri, null, MediaStore.Audio.Media.InterfaceConsts.Data + "=?",selection, null);
             bool firstSuccess = cursor.MoveToFirst();
             if (!firstSuccess)
                 return path;

@@ -197,18 +197,24 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public async Task Stop()
         {
+            if (CurrentPlaybackManager == null)
+                return;
             await CurrentPlaybackManager.Stop();
             MediaNotificationManager?.StopNotifications();
         }
 
         public async Task Seek(TimeSpan position)
         {
+            if (CurrentPlaybackManager == null)
+                return;
             await CurrentPlaybackManager.Seek(position);
             MediaNotificationManager?.UpdateNotifications(CurrentMediaFile, Status);
         }
 
         private async Task Resume()
         {
+            if (CurrentPlaybackManager == null)
+                return;
             await CurrentPlaybackManager.Play(CurrentMediaFile);
         }
 
