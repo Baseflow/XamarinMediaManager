@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Hosting;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
+using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
@@ -164,12 +165,6 @@ namespace Plugin.MediaManager
 
         public async Task Play(IMediaFile mediaFile)
         {
-            _currentMediaFile = mediaFile;
-            await Play(mediaFile.Url, mediaFile.Type);
-        }
-
-        public async Task Play(string url, MediaFileType fileType)
-        {
             _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
             try
             {
@@ -180,7 +175,7 @@ namespace Plugin.MediaManager
                 }
                 // Todo: sync this with the playback queue
                 var mediaPlaybackList = new MediaPlaybackList();
-                _currentMediaSource = await CreateMediaSource(url, fileType);
+                _currentMediaSource = await CreateMediaSource(mediaFile);
                 _currentMediaSource.StateChanged += MediaSourceOnStateChanged;
                 _currentMediaSource.OpenOperationCompleted += MediaSourceOnOpenOperationCompleted;
                 var item = new MediaPlaybackItem(_currentMediaSource);
@@ -190,7 +185,7 @@ namespace Plugin.MediaManager
             }
             catch (Exception)
             {
-                Debug.WriteLine("Unable to open url: " + url);
+                Debug.WriteLine("Unable to open url: " + mediaFile.Url);
             }
         }
 
@@ -267,29 +262,23 @@ namespace Plugin.MediaManager
 
         public VideoAspectMode AspectMode { get; set; }
 
-        private async Task<MediaSource> CreateMediaSource(string url, MediaFileType fileType)
+        private async Task<MediaSource> CreateMediaSource(IMediaFile mediaFile)
         {
-            switch (fileType)
+            switch (mediaFile.Availability)
             {
-                case MediaFileType.AudioUrl:
-                case MediaFileType.VideoUrl:
-                    return MediaSource.CreateFromUri(new Uri(url));
-                case MediaFileType.AudioFile:
-                case MediaFileType.VideoFile:
+                case ResourceAvailability.Remote:
+                    return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
+                case ResourceAvailability.Local:
                     var du = _player.SystemMediaTransportControls.DisplayUpdater;
-                    var storageFile = await StorageFile.GetFileFromPathAsync(url);
-                    var playbackType = fileType == MediaFileType.AudioFile
+                    var storageFile = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
+                    var playbackType = mediaFile.Type == MediaFileType.Audio
                         ? MediaPlaybackType.Music
                         : MediaPlaybackType.Video;
                     await du.CopyFromFileAsync(playbackType, storageFile);
                     du.Update();
                     return MediaSource.CreateFromStorageFile(storageFile);
-                case MediaFileType.Other:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(fileType), fileType, null);
             }
-            return MediaSource.CreateFromUri(new Uri(url));
+            return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
         }
 
         private void MediaSourceOnOpenOperationCompleted(MediaSource sender,

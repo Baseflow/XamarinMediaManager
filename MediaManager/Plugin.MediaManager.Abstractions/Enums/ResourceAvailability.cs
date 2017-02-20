@@ -1,8 +1,8 @@
 ﻿namespace Plugin.MediaManager.Abstractions.Enums
 {
-    public enum MediaFileType
+    public enum ResourceAvailability
     {
-        Audio,
-        Video
+        Remote,
+        Local
     }
 }
