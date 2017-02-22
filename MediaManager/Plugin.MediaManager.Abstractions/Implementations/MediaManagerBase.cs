@@ -89,8 +89,15 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 }
                 else
                 {
-                    await CurrentPlaybackManager.Pause();
                     MediaQueue.SetIndexAsCurrent(0);
+
+                    await PrepareCurrentAndThen(async () =>
+                    {
+                        await CurrentPlaybackManager.Play();
+                        await CurrentPlaybackManager.Pause();
+                        await Seek(TimeSpan.Zero);
+                    });
+
                     OnMediaFileChanged(this, new MediaFileChangedEventArgs(CurrentMediaFile));
                 }
             });
@@ -230,14 +237,18 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
         }
 
-        private async Task PlayCurrent()
+        private Task PlayCurrent()
+        {
+            return PrepareCurrentAndThen(() => CurrentPlaybackManager.Play(CurrentMediaFile));
+        }
+
+        private async Task PrepareCurrentAndThen(Func<Task> action = null)
         {
             await ExecuteOnBeforePlay();
 
-            var currentPlaybackManager = CurrentPlaybackManager;
-            if (currentPlaybackManager != null)
+            if(CurrentPlaybackManager != null)
                 await Task.WhenAll(
-                    currentPlaybackManager.Play(CurrentMediaFile),
+                    action?.Invoke(),
                     ExtractMediaInformation(CurrentMediaFile));
         }
 
