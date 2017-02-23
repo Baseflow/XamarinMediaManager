@@ -24,8 +24,8 @@ namespace Plugin.MediaManager
         public static readonly NSString StatusObservationContext =
             new NSString("AVCustomEditPlayerViewControllerStatusObservationContext");
 
-        public static NSString RateObservationContext =
-            new NSString("AVCustomEditPlayerViewControllerRateObservationContext");
+        public static NSString LoadedTimeRangesObservationContext =
+            new NSString("AVCustomEditPlayerViewControllerLoadedTimeRangesObservationContext");
 
         private AVPlayer _player;
         private MediaPlayerStatus _status;
@@ -69,6 +69,8 @@ namespace Plugin.MediaManager
                 return _player;
             }
         }
+
+        private NSObject PeriodicTimeObserverObject;
 
         private AVPlayerItem CurrentItem => Player.CurrentItem;
 
@@ -199,6 +201,8 @@ namespace Plugin.MediaManager
         {
             if (_player != null)
             {
+                _player.RemoveTimeObserver(PeriodicTimeObserverObject);
+
                 _player.Dispose();
             }
 
@@ -221,7 +225,7 @@ namespace Plugin.MediaManager
                 Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
 #endif
 
-            Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
+            PeriodicTimeObserverObject = Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {
                 if (CurrentItem.Duration.IsInvalid || CurrentItem.Duration.IsIndefinite || double.IsNaN(CurrentItem.Duration.Seconds))
                 {
@@ -266,8 +270,9 @@ namespace Plugin.MediaManager
                 CurrentItem?.RemoveObserver(this, new NSString("status"));
 
                 Player.ReplaceCurrentItemWithPlayerItem(playerItem);
-                playerItem.AddObserver(this, new NSString("loadedTimeRanges"),
-                    NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New, Player.Handle);
+                CurrentItem.AddObserver(this, new NSString("loadedTimeRanges"),
+                    NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New,
+                    LoadedTimeRangesObservationContext.Handle);
 
                 CurrentItem.SeekingWaitsForVideoCompositionRendering = true;
                 CurrentItem.AddObserver(this, (NSString)"status", NSKeyValueObservingOptions.New |
