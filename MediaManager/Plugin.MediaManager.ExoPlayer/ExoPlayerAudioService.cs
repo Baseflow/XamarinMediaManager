@@ -127,6 +127,12 @@ namespace Plugin.MediaManager.ExoPlayer
             await base.Pause();
         }
 
+        public override async Task Stop()
+        {
+            _mediaPlayer.Stop();
+            await base.Stop();
+        }
+
         public override void SetVolume(float leftVolume, float rightVolume)
         {
             _mediaPlayer.Volume = leftVolume;
