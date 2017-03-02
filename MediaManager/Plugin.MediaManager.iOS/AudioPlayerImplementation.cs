@@ -389,7 +389,7 @@ namespace Plugin.MediaManager
             if (hasLoadedAnyTimeRanges)
             {
                 var range = loadedTimeRanges[0].CMTimeRangeValue;
-                var duration = TimeSpan.FromSeconds(range.Duration.Seconds);
+                var duration = double.IsNaN(range.Duration.Seconds) ? TimeSpan.Zero : TimeSpan.FromSeconds(range.Duration.Seconds);
                 var totalDuration = CurrentItem.Duration;
                 var bufferProgress = duration.TotalSeconds / totalDuration.Seconds;
                 BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(bufferProgress, duration));
