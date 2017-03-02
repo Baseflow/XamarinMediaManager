@@ -206,7 +206,7 @@ namespace Plugin.MediaManager
             var duration = Duration;
 
             PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(
-                progress >= 0 ? progress : 0,
+                !double.IsInfinity(progress) ? progress : 0,
                 position.TotalSeconds >= 0 ? position : TimeSpan.Zero,
                 duration.TotalSeconds >= 0 ? duration : TimeSpan.Zero));
         }
