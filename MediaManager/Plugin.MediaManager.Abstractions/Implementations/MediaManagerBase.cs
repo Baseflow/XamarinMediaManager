@@ -46,11 +46,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public MediaPlayerStatus Status => CurrentPlaybackManager?.Status ?? MediaPlayerStatus.Stopped;
 
-        public TimeSpan Position => CurrentPlaybackManager.Position;
+        public TimeSpan Position => CurrentPlaybackManager?.Position ?? TimeSpan.Zero;
 
-        public TimeSpan Duration => CurrentPlaybackManager.Duration;
+        public TimeSpan Duration => CurrentPlaybackManager?.Duration ?? TimeSpan.Zero;
 
-        public TimeSpan Buffered => CurrentPlaybackManager.Buffered;
+        public TimeSpan Buffered => CurrentPlaybackManager?.Buffered ?? TimeSpan.Zero;
 
         public event StatusChangedEventHandler StatusChanged;
 
