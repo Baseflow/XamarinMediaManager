@@ -103,5 +103,11 @@ namespace Plugin.MediaManager.Abstractions
         /// <param name="beforePlay">The before play.</param>
         void SetOnBeforePlay(Func<IMediaFile, Task> beforePlay);
 
+        /// <summary>
+        /// Used to specifiy whether or not to automatically play the next MediaFile when the current one ends.
+        /// </summary>
+        /// <param name="autoPlayNext">Whether or not to auto play next MediaFile</param>
+        void SetAutoPlayNext(bool autoPlayNext);
+
     }
 }
