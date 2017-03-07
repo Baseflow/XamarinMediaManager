@@ -18,6 +18,7 @@ namespace MediaSample.Droid
 {
 
     using Plugin.MediaManager.Abstractions.Enums;
+    using Plugin.MediaManager.MediaSession;
 
     [Activity(Label = "MediaSample.Droid",
          MainLauncher = true,
@@ -55,6 +56,7 @@ namespace MediaSample.Droid
 
             if (ShouldUseExoPlayer)
             {
+                ((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager = new MediaSessionManager(Application.Context, typeof(ExoPlayerAudioService));
                 var exoPlayer = new ExoPlayerAudioImplementation(((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager);
                 CrossMediaManager.Current.AudioPlayer = exoPlayer;
             }
