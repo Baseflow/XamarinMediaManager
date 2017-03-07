@@ -14,6 +14,7 @@ using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.Audio;
 using Plugin.MediaManager.MediaSession;
 
 namespace Plugin.MediaManager
@@ -32,6 +33,8 @@ namespace Plugin.MediaManager
 
         private WifiManager wifiManager;
         private WifiManager.WifiLock wifiLock;
+        private IntentFilter _intentFilter;
+        private AudioPlayerBroadcastReceiver _noisyAudioStreamReceiver;
 
         public event StatusChangedEventHandler StatusChanged;
         public event PlayingChangedEventHandler PlayingChanged;
@@ -110,6 +113,9 @@ namespace Plugin.MediaManager
             {
                 InitializePlayer();
                 SessionManager.InitMediaSession(PackageName, Binder as MediaServiceBinder);
+                _noisyAudioStreamReceiver = new AudioPlayerBroadcastReceiver(SessionManager);
+                _intentFilter = new IntentFilter(AudioManager.ActionAudioBecomingNoisy);
+                SessionManager.ApplicationContext.RegisterReceiver(_noisyAudioStreamReceiver, _intentFilter);
                 dataSourceSet = await SetMediaPlayerDataSource();
             }
             catch (Exception ex)
@@ -210,6 +216,8 @@ namespace Plugin.MediaManager
         public override bool OnUnbind(Intent intent)
         {
             SessionManager.NotificationManager.StopNotifications();
+            if (_noisyAudioStreamReceiver != null)
+                SessionManager.ApplicationContext.UnregisterReceiver(_noisyAudioStreamReceiver);
             return base.OnUnbind(intent);
         }
 
