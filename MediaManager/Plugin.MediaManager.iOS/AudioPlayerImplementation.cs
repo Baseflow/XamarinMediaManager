@@ -21,11 +21,11 @@ namespace Plugin.MediaManager
 
         private IMediaFile _currentMediaFile;
 
-        public static readonly NSString StatusObservationContext =
-            new NSString("AVCustomEditPlayerViewControllerStatusObservationContext");
+        public static readonly NSString StatusObservationContext = new NSString("Status");
 
-        public static NSString LoadedTimeRangesObservationContext =
-            new NSString("AVCustomEditPlayerViewControllerLoadedTimeRangesObservationContext");
+        public static readonly NSString RateObservationContext = new NSString("Rate");
+
+        public static readonly NSString LoadedTimeRangesObservationContext = new NSString("TimeRanges");
 
         private AVPlayer _player;
         private MediaPlayerStatus _status;
@@ -283,6 +283,10 @@ namespace Plugin.MediaManager
                                                                           NSKeyValueObservingOptions.Initial,
                     StatusObservationContext.Handle);
 
+                Player.AddObserver(this, (NSString)"rate", NSKeyValueObservingOptions.New |
+                                                          NSKeyValueObservingOptions.Initial,
+                                   RateObservationContext.Handle);
+
                 NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification,
                                                                notification => MediaFinished?.Invoke(this, new MediaFinishedEventArgs(mediaFile)), CurrentItem);
 
@@ -353,6 +357,10 @@ namespace Plugin.MediaManager
                     ObserveLoadedTimeRanges();
                     return;
 
+                case "rate":
+                    ObserveRate();
+                    return;
+
                 default:
                     Console.WriteLine("Observer triggered for {0} not resolved ...", keyPath);
                     return;
@@ -374,6 +382,17 @@ namespace Plugin.MediaManager
             {
                 OnMediaFailed();
                 Status = MediaPlayerStatus.Stopped;
+            }
+        }
+
+        private void ObserveRate()
+        {
+            var stoppedPlaying = _player.Rate < 0.1 && _player.Rate > -0.1;
+
+            if (stoppedPlaying && Status == MediaPlayerStatus.Playing)
+            {
+                //Update the status becuase the system changed the rate.
+                Status = MediaPlayerStatus.Paused;
             }
         }
 
