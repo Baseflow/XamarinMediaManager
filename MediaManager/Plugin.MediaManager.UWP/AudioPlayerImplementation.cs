@@ -30,7 +30,7 @@ namespace Plugin.MediaManager
                 {
                     var progress = _player.PlaybackSession.Position.TotalSeconds/
                                    _player.PlaybackSession.NaturalDuration.TotalSeconds;
-                    if (double.IsNaN(progress))
+                    if (double.IsInfinity(progress))
                         progress = 0;
                     PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(progress, _player.PlaybackSession.Position, _player.PlaybackSession.NaturalDuration));
                 }

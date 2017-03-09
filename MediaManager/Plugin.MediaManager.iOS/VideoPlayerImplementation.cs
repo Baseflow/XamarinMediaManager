@@ -197,7 +197,10 @@ namespace Plugin.MediaManager
 					totalProgress = Position.TotalMilliseconds /
 										totalDuration.TotalMilliseconds;
 				}
-                PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(totalProgress, Position, Duration));
+                PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(
+                    !double.IsInfinity(totalProgress) ? totalProgress : 0,
+                    Position,
+                    Duration));
             });
         }
 
@@ -302,10 +305,13 @@ namespace Plugin.MediaManager
             if (loadedTimeRanges.Length > 0)
             {
                 var range = loadedTimeRanges[0].CMTimeRangeValue;
-                var duration = TimeSpan.FromSeconds(range.Duration.Seconds);
+                var duration = double.IsNaN(range.Duration.Seconds) ? TimeSpan.Zero : TimeSpan.FromSeconds(range.Duration.Seconds);
                 var totalDuration = _player.CurrentItem.Duration;
                 var bufferProgress = duration.TotalSeconds / totalDuration.Seconds;
-                BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(bufferProgress, duration));
+                BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(
+                    !double.IsInfinity(bufferProgress) ? bufferProgress : 0,
+                    duration
+                ));
             }
             else
             {
