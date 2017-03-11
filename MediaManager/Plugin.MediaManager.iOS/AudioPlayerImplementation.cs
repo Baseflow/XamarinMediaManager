@@ -202,6 +202,7 @@ namespace Plugin.MediaManager
             if (_player != null)
             {
                 _player.RemoveTimeObserver(PeriodicTimeObserverObject);
+                _player.RemoveObserver(this, (NSString)"rate", RateObservationContext.Handle);
 
                 _player.Dispose();
             }
@@ -224,6 +225,9 @@ namespace Plugin.MediaManager
             if (activationError != null)
                 Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
 #endif
+            Player.AddObserver(this, (NSString)"rate", NSKeyValueObservingOptions.New |
+                                                          NSKeyValueObservingOptions.Initial,
+                                   RateObservationContext.Handle);
 
             PeriodicTimeObserverObject = Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {
@@ -283,9 +287,6 @@ namespace Plugin.MediaManager
                                                                           NSKeyValueObservingOptions.Initial,
                     StatusObservationContext.Handle);
 
-                Player.AddObserver(this, (NSString)"rate", NSKeyValueObservingOptions.New |
-                                                          NSKeyValueObservingOptions.Initial,
-                                   RateObservationContext.Handle);
 
                 NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification,
                                                                notification => MediaFinished?.Invoke(this, new MediaFinishedEventArgs(mediaFile)), CurrentItem);
@@ -387,7 +388,7 @@ namespace Plugin.MediaManager
 
         private void ObserveRate()
         {
-            var stoppedPlaying = _player.Rate < 0.1 && _player.Rate > -0.1;
+            var stoppedPlaying = Rate == 0.0;
 
             if (stoppedPlaying && Status == MediaPlayerStatus.Playing)
             {
