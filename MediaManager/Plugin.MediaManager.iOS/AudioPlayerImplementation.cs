@@ -21,11 +21,11 @@ namespace Plugin.MediaManager
 
         private IMediaFile _currentMediaFile;
 
-        public static readonly NSString StatusObservationContext =
-            new NSString("AVCustomEditPlayerViewControllerStatusObservationContext");
+        public static readonly NSString StatusObservationContext = new NSString("Status");
 
-        public static NSString LoadedTimeRangesObservationContext =
-            new NSString("AVCustomEditPlayerViewControllerLoadedTimeRangesObservationContext");
+        public static readonly NSString RateObservationContext = new NSString("Rate");
+
+        public static readonly NSString LoadedTimeRangesObservationContext = new NSString("TimeRanges");
 
         private AVPlayer _player;
         private MediaPlayerStatus _status;
@@ -202,6 +202,7 @@ namespace Plugin.MediaManager
             if (_player != null)
             {
                 _player.RemoveTimeObserver(PeriodicTimeObserverObject);
+                _player.RemoveObserver(this, (NSString)"rate", RateObservationContext.Handle);
 
                 _player.Dispose();
             }
@@ -224,6 +225,9 @@ namespace Plugin.MediaManager
             if (activationError != null)
                 Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
 #endif
+            Player.AddObserver(this, (NSString)"rate", NSKeyValueObservingOptions.New |
+                                                          NSKeyValueObservingOptions.Initial,
+                                   RateObservationContext.Handle);
 
             PeriodicTimeObserverObject = Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {
@@ -282,6 +286,7 @@ namespace Plugin.MediaManager
                 CurrentItem.AddObserver(this, (NSString)"status", NSKeyValueObservingOptions.New |
                                                                           NSKeyValueObservingOptions.Initial,
                     StatusObservationContext.Handle);
+
 
                 NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification,
                                                                notification => MediaFinished?.Invoke(this, new MediaFinishedEventArgs(mediaFile)), CurrentItem);
@@ -353,6 +358,10 @@ namespace Plugin.MediaManager
                     ObserveLoadedTimeRanges();
                     return;
 
+                case "rate":
+                    ObserveRate();
+                    return;
+
                 default:
                     Console.WriteLine("Observer triggered for {0} not resolved ...", keyPath);
                     return;
@@ -374,6 +383,17 @@ namespace Plugin.MediaManager
             {
                 OnMediaFailed();
                 Status = MediaPlayerStatus.Stopped;
+            }
+        }
+
+        private void ObserveRate()
+        {
+            var stoppedPlaying = Rate == 0.0;
+
+            if (stoppedPlaying && Status == MediaPlayerStatus.Playing)
+            {
+                //Update the status becuase the system changed the rate.
+                Status = MediaPlayerStatus.Paused;
             }
         }
 
