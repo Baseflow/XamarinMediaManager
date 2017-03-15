@@ -95,7 +95,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
                     await PrepareCurrentAndThen(async () =>
                     {
-                        await CurrentPlaybackManager.Play();
+                        await CurrentPlaybackManager.Play();        
                         await CurrentPlaybackManager.Pause();
                         await Seek(TimeSpan.Zero);
                     });
