@@ -22,6 +22,6 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\MediaManager\Plugin.MediaManager.ExoPlayer\bin\Release\Plugin.MediaManager.ExoPlayer.dll" target="lib\MonoAndroid\Plugin.MediaManager.ExoPlayer.dll" />
+        <file src="..\MediaManager.ExoPlayer\bin\Release\Plugin.MediaManager.ExoPlayer.dll" target="lib\MonoAndroid\Plugin.MediaManager.ExoPlayer.dll" />
     </files>
 </package>
