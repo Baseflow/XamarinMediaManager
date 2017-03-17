@@ -37,7 +37,7 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Plugin.MediaManager\CrossMediaManager.cs">
+    <Compile Include="..\MediaManager\CrossMediaManager.cs">
       <Link>CrossMediaManager.cs</Link>
     </Compile>
     <Compile Include="AudioPlayerImplementation.cs" />
@@ -57,7 +57,7 @@
     <Compile Include="VersionHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
+    <ProjectReference Include="..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
       <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>

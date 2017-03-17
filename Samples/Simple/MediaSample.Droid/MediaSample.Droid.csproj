@@ -80,6 +80,9 @@
     <Reference Include="Xamarin.Android.Support.v7.AppCompat">
       <HintPath>..\..\..\packages\Xamarin.Android.Support.v7.AppCompat.25.1.1\lib\MonoAndroid70\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
     </Reference>
+    <Reference Include="ExoPlayer">
+      <HintPath>..\..\..\packages\Xam.Plugins.Android.ExoPlayer.2.0.4.1\lib\MonoAndroid\ExoPlayer.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -97,17 +100,17 @@
       <Project>{19955052-96FC-4149-84DD-C95A4C846C87}</Project>
       <Name>MediaSample.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
+    <ProjectReference Include="..\..\..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
       <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.Android\Plugin.MediaManager.Android.csproj">
-      <Project>{56A56F17-7DE1-4CA1-9617-BF32E971AC84}</Project>
-      <Name>Plugin.MediaManager.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.ExoPlayer\Plugin.MediaManager.ExoPlayer.csproj">
+    <ProjectReference Include="..\..\..\MediaManager.ExoPlayer\Plugin.MediaManager.ExoPlayer.csproj">
       <Project>{06EF2F1F-8A8E-47D6-9FC8-BBC521783F13}</Project>
       <Name>Plugin.MediaManager.ExoPlayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\MediaManager.Android\Plugin.MediaManager.Android.csproj">
+      <Project>{56A56F17-7DE1-4CA1-9617-BF32E971AC84}</Project>
+      <Name>Plugin.MediaManager.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

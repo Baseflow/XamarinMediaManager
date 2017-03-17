@@ -55,48 +55,48 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Plugin.MediaManager.iOS\AudioPlayerImplementation.cs">
+    <Compile Include="..\MediaManager.iOS\AudioPlayerImplementation.cs">
       <Link>AudioPlayerImplementation.cs</Link>
     </Compile>
-    <Compile Include="..\Plugin.MediaManager.iOS\MediaExtractorImplementation.cs">
+    <Compile Include="..\MediaManager.iOS\MediaExtractorImplementation.cs">
       <Link>MediaExtractorImplementation.cs</Link>
     </Compile>
-    <Compile Include="..\Plugin.MediaManager.iOS\VideoPlayerImplementation.cs">
+    <Compile Include="..\MediaManager.iOS\VideoPlayerImplementation.cs">
       <Link>VideoPlayerImplementation.cs</Link>
     </Compile>
-    <Compile Include="..\Plugin.MediaManager.iOS\VolumeManagerImplementation.cs">
+    <Compile Include="..\MediaManager.iOS\VolumeManagerImplementation.cs">
       <Link>VolumeManagerImplementation.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="..\Plugin.MediaManager\CrossMediaManager.cs">
+    <Compile Include="..\MediaManager\CrossMediaManager.cs">
       <Link>CrossMediaManager.cs</Link>
     </Compile>
     <Compile Include="VideoSurface.cs" />
-    <Compile Include="..\Plugin.MediaManager.iOS\IMediaRemoteControl.cs">
+    <Compile Include="..\MediaManager.iOS\IMediaRemoteControl.cs">
       <Link>IMediaRemoteControl.cs</Link>
     </Compile>
-    <Compile Include="..\Plugin.MediaManager.iOS\MediaRemoteControl.cs">
+    <Compile Include="..\MediaManager.iOS\MediaRemoteControl.cs">
       <Link>MediaRemoteControl.cs</Link>
     </Compile>
-    <Compile Include="..\Plugin.MediaManager.iOS\RemoteControlNotificationManager.cs">
+    <Compile Include="..\MediaManager.iOS\RemoteControlNotificationManager.cs">
       <Link>RemoteControlNotificationManager.cs</Link>
     </Compile>
-    <Compile Include="..\Plugin.MediaManager.iOS\MediaManagerAppleBase.cs">
+    <Compile Include="..\MediaManager.iOS\MediaManagerAppleBase.cs">
       <Link>MediaManagerAppleBase.cs</Link>
     </Compile>
     <Compile Include="MediaManagerImplementation.cs" />
-    <Compile Include="..\Plugin.MediaManager.iOS\MediaFileUrlHelper.cs">
+    <Compile Include="..\MediaManager.iOS\MediaFileUrlHelper.cs">
       <Link>MediaFileUrlHelper.cs</Link>
     </Compile>
-    <Compile Include="..\Plugin.MediaManager.iOS\IVersionHelper.cs">
+    <Compile Include="..\MediaManager.iOS\IVersionHelper.cs">
       <Link>IVersionHelper.cs</Link>
     </Compile>
-    <Compile Include="..\Plugin.MediaManager.iOS\VersionHelper.cs">
+    <Compile Include="..\MediaManager.iOS\VersionHelper.cs">
       <Link>VersionHelper.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
+    <ProjectReference Include="..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
       <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
