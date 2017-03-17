@@ -30,7 +30,8 @@
     <MtouchArch>i386, x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
-    <MtouchSdkVersion></MtouchSdkVersion>
+    <MtouchSdkVersion>
+    </MtouchSdkVersion>
     <MtouchUseLlvm>False</MtouchUseLlvm>
     <MtouchUseThumb>False</MtouchUseThumb>
     <MtouchEnableBitcode>False</MtouchEnableBitcode>
@@ -141,11 +142,11 @@
       <Project>{7469C2C8-209A-4202-AEE9-E2B3F451BDD4}</Project>
       <Name>MediaForms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\MediaManager.Forms\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.csproj">
+    <ProjectReference Include="..\..\..\MediaManager.Forms\MediaManager.Forms\Plugin.MediaManager.Forms.csproj">
       <Project>{67F9D3A8-F71E-4428-913F-C37AE82CDB24}</Project>
       <Name>Plugin.MediaManager.Forms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\MediaManager.Forms\Plugin.MediaManager.Forms.iOS\Plugin.MediaManager.Forms.iOS.csproj">
+    <ProjectReference Include="..\..\..\MediaManager.Forms\MediaManager.Forms.iOS\Plugin.MediaManager.Forms.iOS.csproj">
       <Project>{586D5119-52D8-40B1-9BB5-CC7FDB033B86}</Project>
       <Name>Plugin.MediaManager.Forms.iOS</Name>
     </ProjectReference>

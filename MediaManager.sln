@@ -21,13 +21,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Reactiv
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Forms", "Forms", "{4D6DBE82-C4E6-4FFB-9D1F-4AE23CF42435}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms", "MediaManager.Forms\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms", "MediaManager.Forms\MediaManager.Forms\Plugin.MediaManager.Forms.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms.Android", "MediaManager.Forms\Plugin.MediaManager.Forms.Android\Plugin.MediaManager.Forms.Android.csproj", "{C8566A9E-FB6B-4459-AC87-5DB16D221D29}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms.Android", "MediaManager.Forms\MediaManager.Forms.Android\Plugin.MediaManager.Forms.Android.csproj", "{C8566A9E-FB6B-4459-AC87-5DB16D221D29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms.iOS", "MediaManager.Forms\Plugin.MediaManager.Forms.iOS\Plugin.MediaManager.Forms.iOS.csproj", "{586D5119-52D8-40B1-9BB5-CC7FDB033B86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms.iOS", "MediaManager.Forms\MediaManager.Forms.iOS\Plugin.MediaManager.Forms.iOS.csproj", "{586D5119-52D8-40B1-9BB5-CC7FDB033B86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms.UWP", "MediaManager.Forms\Plugin.MediaManager.Forms.UWP\Plugin.MediaManager.Forms.UWP.csproj", "{2230DCD0-118B-4021-B0B2-71CE00111D5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms.UWP", "MediaManager.Forms\MediaManager.Forms.UWP\Plugin.MediaManager.Forms.UWP.csproj", "{2230DCD0-118B-4021-B0B2-71CE00111D5E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extentions", "Extentions", "{D603F379-90E7-46B0-9827-306B51D82F9D}"
 EndProject

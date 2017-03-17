@@ -127,7 +127,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MediaManager.Forms\Plugin.MediaManager.Forms.UWP\Plugin.MediaManager.Forms.UWP.csproj">
+    <ProjectReference Include="..\..\..\MediaManager.Forms\MediaManager.Forms.UWP\Plugin.MediaManager.Forms.UWP.csproj">
       <Project>{2230dcd0-118b-4021-b0b2-71ce00111d5e}</Project>
       <Name>Plugin.MediaManager.Forms.UWP</Name>
     </ProjectReference>

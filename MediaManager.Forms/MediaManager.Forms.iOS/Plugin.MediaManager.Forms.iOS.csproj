@@ -66,7 +66,7 @@
       <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.csproj">
+    <ProjectReference Include="..\MediaManager.Forms\Plugin.MediaManager.Forms.csproj">
       <Project>{67F9D3A8-F71E-4428-913F-C37AE82CDB24}</Project>
       <Name>Plugin.MediaManager.Forms</Name>
     </ProjectReference>
