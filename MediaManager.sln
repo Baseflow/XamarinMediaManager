@@ -3,37 +3,37 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26020.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager", "MediaManager\Plugin.MediaManager\Plugin.MediaManager.csproj", "{A6FCEF44-D2BA-42C7-B3CB-13667BCD7B54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager", "MediaManager\Plugin.MediaManager.csproj", "{A6FCEF44-D2BA-42C7-B3CB-13667BCD7B54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Abstractions", "MediaManager\Plugin.MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj", "{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Abstractions", "MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj", "{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.iOS", "MediaManager\Plugin.MediaManager.iOS\Plugin.MediaManager.iOS.csproj", "{2882AEEB-D4CD-4EB9-8A6C-6653B33681F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.iOS", "MediaManager.iOS\Plugin.MediaManager.iOS.csproj", "{2882AEEB-D4CD-4EB9-8A6C-6653B33681F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Android", "MediaManager\Plugin.MediaManager.Android\Plugin.MediaManager.Android.csproj", "{56A56F17-7DE1-4CA1-9617-BF32E971AC84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Android", "MediaManager.Android\Plugin.MediaManager.Android.csproj", "{56A56F17-7DE1-4CA1-9617-BF32E971AC84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.UWP", "MediaManager\Plugin.MediaManager.UWP\Plugin.MediaManager.UWP.csproj", "{E34B516D-C0D8-450F-9DB0-BB6A5B04AEF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.UWP", "MediaManager.UWP\Plugin.MediaManager.UWP.csproj", "{E34B516D-C0D8-450F-9DB0-BB6A5B04AEF1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{E30B6663-E909-40F4-AE0B-6A8D08BCA39F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.ExoPlayer", "MediaManager\Plugin.MediaManager.ExoPlayer\Plugin.MediaManager.ExoPlayer.csproj", "{06EF2F1F-8A8E-47D6-9FC8-BBC521783F13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.ExoPlayer", "MediaManager.ExoPlayer\Plugin.MediaManager.ExoPlayer.csproj", "{06EF2F1F-8A8E-47D6-9FC8-BBC521783F13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Reactive", "MediaManager\Plugin.MediaManager.Reactive\Plugin.MediaManager.Reactive.csproj", "{DB2BAFBA-2A85-4E9B-8E9D-0A607A661E84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Reactive", "MediaManager.Reactive\Plugin.MediaManager.Reactive.csproj", "{DB2BAFBA-2A85-4E9B-8E9D-0A607A661E84}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Forms", "Forms", "{4D6DBE82-C4E6-4FFB-9D1F-4AE23CF42435}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms", "MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms", "MediaManager.Forms\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms.Android", "MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.Android\Plugin.MediaManager.Forms.Android.csproj", "{C8566A9E-FB6B-4459-AC87-5DB16D221D29}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms.Android", "MediaManager.Forms\Plugin.MediaManager.Forms.Android\Plugin.MediaManager.Forms.Android.csproj", "{C8566A9E-FB6B-4459-AC87-5DB16D221D29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms.iOS", "MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.iOS\Plugin.MediaManager.Forms.iOS.csproj", "{586D5119-52D8-40B1-9BB5-CC7FDB033B86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms.iOS", "MediaManager.Forms\Plugin.MediaManager.Forms.iOS\Plugin.MediaManager.Forms.iOS.csproj", "{586D5119-52D8-40B1-9BB5-CC7FDB033B86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms.UWP", "MediaManager\Plugin.MediaManager.Forms\Plugin.MediaManager.Forms.UWP\Plugin.MediaManager.Forms.UWP.csproj", "{2230DCD0-118B-4021-B0B2-71CE00111D5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Forms.UWP", "MediaManager.Forms\Plugin.MediaManager.Forms.UWP\Plugin.MediaManager.Forms.UWP.csproj", "{2230DCD0-118B-4021-B0B2-71CE00111D5E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extentions", "Extentions", "{D603F379-90E7-46B0-9827-306B51D82F9D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Forms", "Forms", "{86F4D7EF-0D08-4967-AD8D-75E476E87EB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Tests", "MediaManager\Plugin.MediaManager.Tests\Plugin.MediaManager.Tests.csproj", "{0E7E2F98-F621-44FE-91C3-D554749F4628}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Tests", "MediaManager.Tests\Plugin.MediaManager.Tests.csproj", "{0E7E2F98-F621-44FE-91C3-D554749F4628}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaForms", "Samples\Forms\MediaForms\MediaForms.csproj", "{7469C2C8-209A-4202-AEE9-E2B3F451BDD4}"
 EndProject
@@ -55,9 +55,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaForms.UWP", "Samples\F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMediaPlayer.Core", "Samples\MvvmCross\MyMediaPlayer.Core\MyMediaPlayer.Core.csproj", "{66B081CB-DAD5-4FDF-B361-4BA85B440886}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.tvOS", "MediaManager\Plugin.MediaManager.tvOS\Plugin.MediaManager.tvOS.csproj", "{E8573584-8377-45DC-89C6-C34678DEB264}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.tvOS", "MediaManager.tvOS\Plugin.MediaManager.tvOS.csproj", "{E8573584-8377-45DC-89C6-C34678DEB264}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.MacOS", "MediaManager\Plugin.MediaManager.MacOS\Plugin.MediaManager.MacOS.csproj", "{7ED0F28D-8838-4E24-9FA9-E3FA0B5649BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.MacOS", "MediaManager.MacOS\Plugin.MediaManager.MacOS.csproj", "{7ED0F28D-8838-4E24-9FA9-E3FA0B5649BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMediaPlayer.Droid", "Samples\MvvmCross\MyMediaPlayer.Droid\MyMediaPlayer.Droid.csproj", "{27557174-7B75-47F0-97A6-5924C221A86D}"
 EndProject
