@@ -1,8 +1,10 @@
 ## MediaManager - Cross platform media plugin for Xamarin and Windows
 * Designed to be simple and easy to use
 * Stand alone for easy integration with existing projects and frameworks
-* Native plackback of media file
-* Native notifications and remote controls
+* Native playback of media files from remote and local sources
+* Native media notifications and remote controls
+* Playback status (Playing, Buffering, Loading, Paused, Progress)
+
 
 ### Setup & Usage
 * Available on NuGet: https://www.nuget.org/packages/Plugin.MediaManager/
@@ -20,9 +22,6 @@
 | ------------------- | :-----------: | :------------------: |
 |Xamarin.iOS|Yes|iOS 7+|
 |Xamarin.Android|Yes|API 9+|
-|Windows Phone Silverlight|No||
-|Windows Phone RT|No||
-|Windows Store RT|No||
 |Windows 10 UWP|Yes|10+|
 |Windows WPF|No|
 |.Net Framework|Yes|4.5|
@@ -63,3 +62,5 @@ See Sample for more details.
 * [modplug](https://github.com/modplug)
 * [jmartine2](https://github.com/jmartine2)
 * [SimonSimCity](https://github.com/SimonSimCity)
+* [fela98](https://github.com/fela98)
+* [bubavanhalen](https://github.com/bubavanhalen)
