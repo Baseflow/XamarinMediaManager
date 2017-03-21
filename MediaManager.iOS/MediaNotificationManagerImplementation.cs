@@ -85,9 +85,9 @@ namespace Plugin.MediaManager
                 nowPlayingInfo.PlaybackRate = 0f;
             }
 
-            if (metadata.AlbumArt != null)
+            var cover = metadata.AlbumArt as UIImage;
+            if (cover != null)
             {
-                var cover = (UIImage) metadata.AlbumArt;
                 nowPlayingInfo.Artwork = new MPMediaItemArtwork(cover);
             }
 
