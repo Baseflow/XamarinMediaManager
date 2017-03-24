@@ -9,6 +9,7 @@
 ### Setup & Usage
 * Available on NuGet: https://www.nuget.org/packages/Plugin.MediaManager/
 * Install into each project that utilizes MediaManager
+* More information on the [Xamarin Blog](https://blog.xamarin.com/play-audio-and-video-with-the-mediamanager-plugin-for-xamarin/ )
 
 ### Build Status: 
 [![Build status](https://ci.appveyor.com/api/projects/status/c9c6recwcu7k0s15?svg=true)](https://ci.appveyor.com/project/martijn00/xamarinmediamanager)
