@@ -63,7 +63,7 @@ namespace Plugin.MediaManager
 
 		private void OnPlaying()
 		{
-			var progress = (Position.TotalSeconds / Duration.TotalSeconds) * 100;
+			var progress = (Position.TotalSeconds / Duration.TotalSeconds);
 			var position = Position;
 			var duration = Duration;
 
