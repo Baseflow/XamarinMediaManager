@@ -347,13 +347,6 @@ namespace Plugin.MediaManager
             if (isNewFile)
                 return await Task.FromResult(false);
 
-            //Same file selected => seek to start
-            if (MediaPlayerState != PlaybackStateCompat.StatePaused && !ManuallyPaused)
-            {
-                await Seek(TimeSpan.Zero);
-                return await Task.FromResult(true);
-            }
-            
             //just paused.. restart playback!
             if (MediaPlayerState == PlaybackStateCompat.StatePaused && ManuallyPaused)
             {
