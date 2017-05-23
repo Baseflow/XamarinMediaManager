@@ -18,8 +18,18 @@ namespace Plugin.MediaManager.MediaSession
         private MediaSessionCompat mediaSessionCompat;
         private MediaServiceBinder _binder;
         private string _packageName;
-        
-        public IMediaNotificationManager NotificationManager { get; set; }
+        private IMediaNotificationManager _notificationManager;
+        private static IMediaNotificationManager _overrideNotificationManager;
+
+        public IMediaNotificationManager NotificationManager
+        {
+            get => _overrideNotificationManager ?? _notificationManager;
+            set
+            {
+                _overrideNotificationManager = value;
+                _notificationManager = value;
+            }
+        }
 
         public event EventHandler<string> OnNotificationActionFired;
         internal event EventHandler<int> OnStatusChanged;
@@ -33,7 +43,7 @@ namespace Plugin.MediaManager.MediaSession
         internal ComponentName RemoteComponentName { get; set; }
 
         private Type _serviceType;
-      
+
         public MediaSessionManager(Context appContext, Type serviceType)
         {
             applicationContext = appContext;
@@ -52,7 +62,7 @@ namespace Plugin.MediaManager.MediaSession
                     RemoteComponentName = new ComponentName(packageName, new RemoteControlBroadcastReceiver().ComponentName);
                     mediaSessionCompat = new MediaSessionCompat(applicationContext, "XamarinStreamingAudio", RemoteComponentName, pIntent);
                     mediaControllerCompat = new MediaControllerCompat(applicationContext, mediaSessionCompat.SessionToken);
-                    NotificationManager = new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, _serviceType);
+                    _notificationManager = _overrideNotificationManager ?? new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, _serviceType);
                 }
                 mediaSessionCompat.Active = true;
                 MediaServiceBase mediaServiceBase = binder.GetMediaPlayerService<MediaServiceBase>();
@@ -138,11 +148,11 @@ namespace Plugin.MediaManager.MediaSession
 
             RemoteControlFlags flags = RemoteControlFlags.Play
                                        | RemoteControlFlags.Pause
-                                       | RemoteControlFlags.PlayPause 
+                                       | RemoteControlFlags.PlayPause
                                        | RemoteControlFlags.FastForward;
 
             remoteControlClient?.SetTransportControlFlags(flags);
-            
+
         }
 
         /// <summary>
