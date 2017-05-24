@@ -269,7 +269,7 @@ namespace Plugin.MediaManager.ExoPlayer
 
         private void OnBuffering()
         {
-            if(_mediaPlayer == null) return;
+            if(_mediaPlayer == null || _mediaPlayer.BufferedPosition > TimeSpan.MaxValue.TotalMilliseconds - 100) return;
 
                 OnBufferingChanged(
                     new BufferingChangedEventArgs(
