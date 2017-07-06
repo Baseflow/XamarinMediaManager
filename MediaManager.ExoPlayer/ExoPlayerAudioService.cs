@@ -281,7 +281,7 @@ namespace Plugin.MediaManager.ExoPlayer
         {
             var uri = Android.Net.Uri.Parse(url);
             var factory = URLUtil.IsHttpUrl(url) || URLUtil.IsHttpsUrl(url) ? GetHttpFactory() : new FileDataSourceFactory();
-			var extractorFactory = new DefaultExtractorsFactory();
+            var extractorFactory = new DefaultExtractorsFactory();
             return new ExtractorMediaSource(uri
                 , factory
                 , extractorFactory, null, this);
