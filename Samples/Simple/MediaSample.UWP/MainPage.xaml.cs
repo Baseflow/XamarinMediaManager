@@ -85,9 +85,13 @@ namespace MediaSample.UWP
                     });
         }
 
+        private MediaFile mediaFile;
         private async void PlayUrl(object sender, RoutedEventArgs e)
         {
-            var mediaFile = new MediaFile("http://www.montemagno.com/sample.mp3", MediaFileType.Audio);
+            if (mediaFile == null)
+            {
+                mediaFile = new MediaFile("http://www.montemagno.com/sample.mp3", MediaFileType.Audio);
+            }
             await CrossMediaManager.Current.Play(mediaFile);
             //var file = await KnownFolders.VideosLibrary.GetFileAsync("big_buck_bunny.mp4");
             //await CrossMediaManager.Current.Play(file.Path, MediaFileType.VideoFile);
