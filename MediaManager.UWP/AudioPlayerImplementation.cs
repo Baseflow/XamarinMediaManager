@@ -212,12 +212,5 @@ namespace Plugin.MediaManager
 
             return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
         }
-
-        //private Task Play()
-        //{
-        //    _player.PlaybackSession.PlaybackRate = 1;
-        //    _player.Play();
-        //    return Task.CompletedTask;
-        //}
     }
 }
