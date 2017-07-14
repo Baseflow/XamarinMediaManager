@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -22,9 +23,17 @@ namespace MediaSample.UWP
         {
             InitializeComponent();
             CrossMediaManager.Current.PlayingChanged += OnPlayingChanged;
+            CrossMediaManager.Current.BufferingChanged += OnBufferingChanged;
             CrossMediaManager.Current.StatusChanged += OnStatusChanged;
             CrossMediaManager.Current.VideoPlayer.RenderSurface = VideoCanvas;
             CrossMediaManager.Current.MediaFileChanged += CurrentOnMediaFileChanged;
+        }
+
+        private void OnBufferingChanged(object sender, BufferingChangedEventArgs bufferingChangedEventArgs)
+        {
+            var bufferingProgress = bufferingChangedEventArgs?.BufferProgress ?? 0;
+            var bufferingTime = bufferingChangedEventArgs?.BufferedTime;
+            Debug.WriteLine($"buffering progress: {bufferingProgress}, buffering time: {bufferingTime}");
         }
 
         private void CurrentOnMediaFileChanged(object sender, MediaFileChangedEventArgs mediaFileChangedEventArgs)

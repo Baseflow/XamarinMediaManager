@@ -79,8 +79,19 @@ namespace Plugin.MediaManager
             };
 
             _player.MediaEnded += (sender, args) => { MediaFinished?.Invoke(this, new MediaFinishedEventArgs(_currentMediaFile)); };
+
+            _player.PlaybackSession.BufferingStarted += (sender, args) =>
+            {
+                var bufferedTime =
+                    TimeSpan.FromSeconds(sender.BufferingProgress *
+                                         sender.NaturalDuration.TotalSeconds);
+                BufferingChanged?.Invoke(this,
+                    new BufferingChangedEventArgs(sender.BufferingProgress, bufferedTime));
+            };
+
             _player.PlaybackSession.BufferingProgressChanged += (sender, args) =>
             {
+                //This seems not to be fired at all
                 var bufferedTime =
                     TimeSpan.FromSeconds(_player.PlaybackSession.BufferingProgress*
                                          _player.PlaybackSession.NaturalDuration.TotalSeconds);
