@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -22,9 +23,17 @@ namespace MediaSample.UWP
         {
             InitializeComponent();
             CrossMediaManager.Current.PlayingChanged += OnPlayingChanged;
+            CrossMediaManager.Current.BufferingChanged += OnBufferingChanged;
             CrossMediaManager.Current.StatusChanged += OnStatusChanged;
             CrossMediaManager.Current.VideoPlayer.RenderSurface = VideoCanvas;
             CrossMediaManager.Current.MediaFileChanged += CurrentOnMediaFileChanged;
+        }
+
+        private void OnBufferingChanged(object sender, BufferingChangedEventArgs bufferingChangedEventArgs)
+        {
+            var bufferingProgress = bufferingChangedEventArgs?.BufferProgress ?? 0;
+            var bufferingTime = bufferingChangedEventArgs?.BufferedTime;
+            Debug.WriteLine($"buffering progress: {bufferingProgress}, buffering time: {bufferingTime}");
         }
 
         private void CurrentOnMediaFileChanged(object sender, MediaFileChangedEventArgs mediaFileChangedEventArgs)
@@ -85,9 +94,13 @@ namespace MediaSample.UWP
                     });
         }
 
+        private MediaFile mediaFile;
         private async void PlayUrl(object sender, RoutedEventArgs e)
         {
-            var mediaFile = new MediaFile("http://www.montemagno.com/sample.mp3", MediaFileType.Audio);
+            if (mediaFile == null)
+            {
+                mediaFile = new MediaFile("http://www.montemagno.com/sample.mp3", MediaFileType.Audio);
+            }
             await CrossMediaManager.Current.Play(mediaFile);
             //var file = await KnownFolders.VideosLibrary.GetFileAsync("big_buck_bunny.mp4");
             //await CrossMediaManager.Current.Play(file.Path, MediaFileType.VideoFile);

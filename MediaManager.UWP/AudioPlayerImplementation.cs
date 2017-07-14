@@ -79,8 +79,19 @@ namespace Plugin.MediaManager
             };
 
             _player.MediaEnded += (sender, args) => { MediaFinished?.Invoke(this, new MediaFinishedEventArgs(_currentMediaFile)); };
+
+            _player.PlaybackSession.BufferingStarted += (sender, args) =>
+            {
+                var bufferedTime =
+                    TimeSpan.FromSeconds(sender.BufferingProgress *
+                                         sender.NaturalDuration.TotalSeconds);
+                BufferingChanged?.Invoke(this,
+                    new BufferingChangedEventArgs(sender.BufferingProgress, bufferedTime));
+            };
+
             _player.PlaybackSession.BufferingProgressChanged += (sender, args) =>
             {
+                //This seems not to be fired at all
                 var bufferedTime =
                     TimeSpan.FromSeconds(_player.PlaybackSession.BufferingProgress*
                                          _player.PlaybackSession.NaturalDuration.TotalSeconds);
@@ -149,20 +160,33 @@ namespace Plugin.MediaManager
                 await Pause();
         }
 
-        public async Task Play(IMediaFile mediaFile)
+        public async Task Play(IMediaFile mediaFile = null)
         {
             try
             {
-                var mediaPlaybackList = new MediaPlaybackList();
-                var mediaSource = await CreateMediaSource(mediaFile);
-                var item = new MediaPlaybackItem(mediaSource);
-                mediaPlaybackList.Items.Add(item);
-                _player.Source = mediaPlaybackList;
-                _player.Play();
+                var sameMediaFile = mediaFile == null || mediaFile.Equals(_currentMediaFile);
+                if (Status == MediaPlayerStatus.Paused && sameMediaFile)
+                {
+                    _player.PlaybackSession.PlaybackRate = 1;
+                    _player.Play();
+                    return;
+                }
+
+                if (mediaFile != null)
+                {
+                    _currentMediaFile = mediaFile;
+                    var mediaPlaybackList = new MediaPlaybackList();
+                    var mediaSource = await CreateMediaSource(mediaFile);
+                    var item = new MediaPlaybackItem(mediaSource);
+                    mediaPlaybackList.Items.Add(item);
+                    _player.Source = mediaPlaybackList;
+                    _player.Play();
+                }
             }
             catch (Exception e)
             {
                 MediaFailed?.Invoke(this, new MediaFailedEventArgs("Unable to start playback", e));
+                Status = MediaPlayerStatus.Stopped;
             }
         }
 
@@ -198,13 +222,6 @@ namespace Plugin.MediaManager
             }
 
             return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
-        }
-
-        private Task Play()
-        {
-            _player.PlaybackSession.PlaybackRate = 1;
-            _player.Play();
-            return Task.CompletedTask;
         }
     }
 }
