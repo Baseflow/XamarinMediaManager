@@ -29,8 +29,6 @@
         <file src="..\MediaManager.Forms\MediaManager.Forms.UWP\bin\Release\Plugin.MediaManager.Forms.UWP.pri" target="lib\uap10.0\Plugin.MediaManager.Forms.UWP.pri" />
         <file src="..\MediaManager.Forms\MediaManager.Forms.UWP\Properties\Plugin.MediaManager.XamarinForms.UWP.rd.xml" target="lib\uap10.0\Plugin.MediaManager.XamarinForms.UWP.rd.xml" />
         <file src="..\MediaManager.Forms\MediaManager.Forms.iOS\bin\Release\Plugin.MediaManager.Forms.dll" target="lib\xamarinios\Plugin.MediaManager.Forms.dll" />
-        <file src="..\MediaManager.Forms\MediaManager.Forms.iOS\bin\Release\Plugin.MediaManager.Forms.dll.mdb" target="lib\xamarinios\Plugin.MediaManager.Forms.dll.mdb" />
         <file src="..\MediaManager.Forms\MediaManager.Forms.iOS\bin\Release\Plugin.MediaManager.Forms.iOS.dll" target="lib\xamarinios\Plugin.MediaManager.Forms.iOS.dll" />
-        <file src="..\MediaManager.Forms\MediaManager.Forms.iOS\bin\Release\Plugin.MediaManager.Forms.iOS.dll.mdb" target="lib\xamarinios\Plugin.MediaManager.Forms.iOS.dll.mdb" />
     </files>
 </package>
