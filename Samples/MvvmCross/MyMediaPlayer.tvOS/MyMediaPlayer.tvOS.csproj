@@ -89,33 +89,26 @@
     <MtouchTlsProvider>Default</MtouchTlsProvider>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MvvmCross.Binding, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Binding.4.4.0\lib\Xamarin.tvOS\MvvmCross.Binding.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MvvmCross.Binding, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MvvmCross.Binding.5.1.0\lib\Xamarin.tvOS\MvvmCross.Binding.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross.Binding.tvOS, Version=1.0.6149.41287, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Binding.4.4.0\lib\Xamarin.tvOS\MvvmCross.Binding.tvOS.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MvvmCross.Binding.tvOS, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MvvmCross.Binding.5.1.0\lib\Xamarin.tvOS\MvvmCross.Binding.tvOS.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross.Core, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Core.4.4.0\lib\Xamarin.tvOS\MvvmCross.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MvvmCross.Core, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MvvmCross.Core.5.1.0\lib\Xamarin.tvOS\MvvmCross.Core.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross.Localization, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Binding.4.4.0\lib\Xamarin.tvOS\MvvmCross.Localization.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MvvmCross.Localization, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MvvmCross.Binding.5.1.0\lib\Xamarin.tvOS\MvvmCross.Localization.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross.Platform, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Platform.4.4.0\lib\Xamarin.tvOS\MvvmCross.Platform.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MvvmCross.Platform, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MvvmCross.Platform.5.1.0\lib\Xamarin.tvOS\MvvmCross.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross.Platform.tvOS, Version=1.0.6149.41285, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Platform.4.4.0\lib\Xamarin.tvOS\MvvmCross.Platform.tvOS.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MvvmCross.Platform.tvOS, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MvvmCross.Platform.5.1.0\lib\Xamarin.tvOS\MvvmCross.Platform.tvOS.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross.tvOS, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MvvmCross.Core.4.4.0\lib\Xamarin.tvOS\MvvmCross.tvOS.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MvvmCross.tvOS, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MvvmCross.Core.5.1.0\lib\Xamarin.tvOS\MvvmCross.tvOS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />

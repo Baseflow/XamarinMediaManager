@@ -127,14 +127,24 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MediaManager.Forms\MediaManager.Forms.UWP\Plugin.MediaManager.Forms.UWP.csproj">
-      <Project>{2230dcd0-118b-4021-b0b2-71ce00111d5e}</Project>
-      <Name>Plugin.MediaManager.Forms.UWP</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MediaForms\MediaForms.csproj">
       <Project>{7469c2c8-209a-4202-aee9-e2b3f451bdd4}</Project>
       <Name>MediaForms</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Plugin.MediaManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MediaManager.UWP\bin\Debug\Plugin.MediaManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.MediaManager.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MediaManager.UWP\bin\Debug\Plugin.MediaManager.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.MediaManager.Forms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\MediaManager.Forms\MediaManager.Forms.UWP\bin\Debug\Plugin.MediaManager.Forms.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
