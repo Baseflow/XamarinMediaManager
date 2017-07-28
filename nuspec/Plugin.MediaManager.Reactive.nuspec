@@ -15,7 +15,7 @@
         <tags>xamarin, monodroid, C#, xamarin.android, android, ios, uwp, Windows, tvOS, Mac, MacOS, mediaplayer, audio, video, streaming, background, media</tags>
         <dependencies>
 			<dependency id="Plugin.MediaManager" version="[$version$]" />
-			<dependency id="System.Reactive" version="3.0.0" />
+			<dependency id="System.Reactive" version="3.1.1" />
         </dependencies>
     </metadata>
     <files>

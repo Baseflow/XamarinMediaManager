@@ -15,7 +15,7 @@
         <tags>xamarin, monodroid, C#, xamarin.android, android, ios, uwp, Windows, tvOS, Mac, MacOS, mediaplayer, audio, video, streaming, background, media, Forms</tags>
         <dependencies>
             <dependency id="Plugin.MediaManager" version="[$version$]" />
-            <dependency id="Xamarin.Forms" version="2.3.3.175" />
+            <dependency id="Xamarin.Forms" version="2.3.4.247" />
         </dependencies>
     </metadata>
     <files>
