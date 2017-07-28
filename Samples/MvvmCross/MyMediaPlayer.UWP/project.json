@@ -1,9 +1,9 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
-    "MvvmCross.Plugin.Json": "4.4.0",
-    "MvvmCross.Plugin.JsonLocalization": "4.4.0",
-    "MvvmCross.Plugin.Visibility": "4.4.0"
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.3.3",
+    "MvvmCross.Plugin.Json": "5.1.0",
+    "MvvmCross.Plugin.JsonLocalization": "5.1.0",
+    "MvvmCross.Plugin.Visibility": "5.1.0"
   },
   "frameworks": {
     "uap10.0": {}
