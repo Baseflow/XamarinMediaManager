@@ -11,26 +11,29 @@ namespace MediaForms
         public MediaFormsPage()
         {
             InitializeComponent();
-			CrossMediaManager.Current.PlayingChanged += (sender, e) =>
-			{
-				ProgressBar.Progress = e.Progress;
-				Duration.Text = "" + e.Duration.TotalSeconds.ToString() + " seconds";
-			};
+            CrossMediaManager.Current.PlayingChanged += (sender, e) =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    ProgressBar.Progress = e.Progress;
+                    Duration.Text = "" + e.Duration.TotalSeconds + " seconds";
+                });
+            };
         }
 
-		void PlayClicked(object sender, System.EventArgs e)
-		{
+        void PlayClicked(object sender, System.EventArgs e)
+        {
             PlaybackController.Play();
-		}
+        }
 
-		void PauseClicked(object sender, System.EventArgs e)
-		{
+        void PauseClicked(object sender, System.EventArgs e)
+        {
             PlaybackController.Pause();
-		}
+        }
 
-		void StopClicked(object sender, System.EventArgs e)
-		{
+        void StopClicked(object sender, System.EventArgs e)
+        {
             PlaybackController.Stop();
-		}
+        }
     }
 }
