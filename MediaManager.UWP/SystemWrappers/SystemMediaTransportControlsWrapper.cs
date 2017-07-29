@@ -51,6 +51,12 @@ namespace Plugin.MediaManager.SystemWrappers
             set => _controls.IsPlayEnabled = value;
         }
 
+        public bool IsStopEnabled
+        {
+            get => _controls.IsStopEnabled;
+            set => _controls.IsStopEnabled = value;
+        }
+
         public event TypedEventHandler<SystemMediaTransportControls, ISystemMediaTransportControlsButtonPressedEventArgsWrapper> ButtonPressed;
     }
 }

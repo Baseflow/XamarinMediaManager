@@ -4,12 +4,12 @@ using Plugin.MediaManager.SystemWrappers;
 
 namespace Plugin.MediaManager
 {
-    public class RemoteControlNotificationHandler
+    public class MediaButtonPlaybackController
     {
         private readonly ISystemMediaTransportControlsWrapper _systemMediaTransportControlsWrapper;
         private readonly IPlaybackController _playbackController;
 
-        public RemoteControlNotificationHandler(ISystemMediaTransportControlsWrapper systemMediaTransportControlsWrapper, IPlaybackController playbackController)
+        public MediaButtonPlaybackController(ISystemMediaTransportControlsWrapper systemMediaTransportControlsWrapper, IPlaybackController playbackController)
         {
             _systemMediaTransportControlsWrapper = systemMediaTransportControlsWrapper;
             _playbackController = playbackController;
@@ -17,6 +17,8 @@ namespace Plugin.MediaManager
             _systemMediaTransportControlsWrapper.IsNextEnabled = true;
             _systemMediaTransportControlsWrapper.IsPreviousEnabled = true;
             _systemMediaTransportControlsWrapper.IsPlayEnabled = true;
+            _systemMediaTransportControlsWrapper.IsPauseEnabled = true;
+            _systemMediaTransportControlsWrapper.IsStopEnabled = true;
         }
 
         public void SubscribeToNotifications()
@@ -39,10 +41,16 @@ namespace Plugin.MediaManager
                     await _playbackController.PlayNext();
                     break;
                 case SystemMediaTransportControlsButton.Previous:
-                    await _playbackController.PlayPrevious();
+                    await _playbackController.PlayPreviousOrSeekToStart();
                     break;
                 case SystemMediaTransportControlsButton.Play:
-                    await _playbackController.PlayPause();
+                    await _playbackController.Play();
+                    break;
+                case SystemMediaTransportControlsButton.Pause:
+                    await _playbackController.Pause();
+                    break;
+                case SystemMediaTransportControlsButton.Stop:
+                    await _playbackController.Stop();
                     break;
             }
         }

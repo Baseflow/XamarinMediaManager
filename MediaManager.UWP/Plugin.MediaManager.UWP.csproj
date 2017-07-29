@@ -120,7 +120,7 @@
     <Compile Include="MediaManagerImplementation.cs" />
     <Compile Include="MediaNotificationManagerImplementation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoteControlNotificationHandler.cs" />
+    <Compile Include="MediaButtonPlaybackController.cs" />
     <Compile Include="SystemWrappers\SystemMediaTransportControlsButtonPressedEventArgsWrapper.cs" />
     <Compile Include="SystemWrappers\SystemMediaTransportControlsWrapper.cs" />
     <Compile Include="VideoPlayerImplementation.cs" />

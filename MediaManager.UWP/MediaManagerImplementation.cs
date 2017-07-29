@@ -12,13 +12,13 @@ namespace Plugin.MediaManager
     {
         private IAudioPlayer _audioPlayer;
         private IVideoPlayer _videoPlayer;
-        private readonly RemoteControlNotificationHandler _remoteControlNotificationHandler;
+        private readonly MediaButtonPlaybackController _mediaButtonPlaybackController;
 
         public MediaManagerImplementation()
         {
             var systemMediaTransportControlsWrapper = new SystemMediaTransportControlsWrapper(SystemMediaTransportControls.GetForCurrentView());
-            _remoteControlNotificationHandler = new RemoteControlNotificationHandler(systemMediaTransportControlsWrapper, PlaybackController);
-            _remoteControlNotificationHandler.SubscribeToNotifications();
+            _mediaButtonPlaybackController = new MediaButtonPlaybackController(systemMediaTransportControlsWrapper, PlaybackController);
+            _mediaButtonPlaybackController.SubscribeToNotifications();
         }
 
         public override IAudioPlayer AudioPlayer
@@ -42,7 +42,7 @@ namespace Plugin.MediaManager
         public override void Dispose()
         {
             base.Dispose();
-            _remoteControlNotificationHandler.UnsubscribeFromNotifications();
+            _mediaButtonPlaybackController.UnsubscribeFromNotifications();
         }
     }
 }

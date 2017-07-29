@@ -18,6 +18,8 @@ namespace Plugin.MediaManager.SystemWrappers
 
         bool IsPlayEnabled { get; set; }
 
+        bool IsStopEnabled { get; set; }
+
         event TypedEventHandler<SystemMediaTransportControls, ISystemMediaTransportControlsButtonPressedEventArgsWrapper> ButtonPressed;
     }
 }
