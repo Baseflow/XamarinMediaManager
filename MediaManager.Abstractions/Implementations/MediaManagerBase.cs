@@ -385,7 +385,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _currentPlaybackManager.StatusChanged -= OnStatusChanged;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             RemoveEventHandlers();
         }
