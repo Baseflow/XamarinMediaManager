@@ -82,8 +82,7 @@ Task("UnitTest")
 	.Does(() =>
 {
 	var testPaths = new List<string> {
-		new FilePath("./MediaManager.Tests/bin/Release/Plugin.MediaManager.Tests.dll").FullPath,
-        new FilePath("./MediaManager.UWP.Tests/bin/Release/Plugin.MediaManager.UWP.Tests.dll").FullPath
+		new FilePath("./MediaManager.Tests/bin/Release/Plugin.MediaManager.Tests.dll").FullPath
 	};
 
 	NUnit3(testPaths, new NUnit3Settings {
@@ -118,6 +117,7 @@ Task("GitLink")
         "MediaForms.Android",
         "MediaForms.iOS",
         "MediaForms",
+        "Plugin.MediaManager.UWP"
 	};
 
 	GitLink("./", 
