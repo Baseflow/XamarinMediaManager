@@ -4,7 +4,7 @@ using Plugin.MediaManager.SystemWrappers;
 
 namespace Plugin.MediaManager
 {
-    public class MediaButtonPlaybackController
+    internal class MediaButtonPlaybackController
     {
         private readonly ISystemMediaTransportControlsWrapper _systemMediaTransportControlsWrapper;
         private readonly IPlaybackController _playbackController;

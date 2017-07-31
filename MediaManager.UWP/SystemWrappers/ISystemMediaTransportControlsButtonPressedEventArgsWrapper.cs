@@ -2,7 +2,7 @@
 
 namespace Plugin.MediaManager.SystemWrappers
 {
-    public interface ISystemMediaTransportControlsButtonPressedEventArgsWrapper
+    internal interface ISystemMediaTransportControlsButtonPressedEventArgsWrapper
     {
         SystemMediaTransportControlsButton Button { get; }
     }
