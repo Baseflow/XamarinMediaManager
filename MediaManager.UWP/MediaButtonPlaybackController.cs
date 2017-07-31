@@ -7,12 +7,12 @@ namespace Plugin.MediaManager
     internal class MediaButtonPlaybackController
     {
         private readonly ISystemMediaTransportControlsWrapper _systemMediaTransportControlsWrapper;
-        private readonly IPlaybackController _playbackController;
+        private readonly IPlaybackControllerProvider _playbackControllerProvider;
 
-        public MediaButtonPlaybackController(ISystemMediaTransportControlsWrapper systemMediaTransportControlsWrapper, IPlaybackController playbackController)
+        public MediaButtonPlaybackController(ISystemMediaTransportControlsWrapper systemMediaTransportControlsWrapper, IPlaybackControllerProvider playbackControllerProvider)
         {
             _systemMediaTransportControlsWrapper = systemMediaTransportControlsWrapper;
-            _playbackController = playbackController;
+            _playbackControllerProvider = playbackControllerProvider;
 
             _systemMediaTransportControlsWrapper.IsNextEnabled = true;
             _systemMediaTransportControlsWrapper.IsPreviousEnabled = true;
@@ -38,19 +38,19 @@ namespace Plugin.MediaManager
             switch (args.Button)
             {
                 case SystemMediaTransportControlsButton.Next:
-                    await _playbackController.PlayNext();
+                    await _playbackControllerProvider.PlaybackController.PlayNext();
                     break;
                 case SystemMediaTransportControlsButton.Previous:
-                    await _playbackController.PlayPreviousOrSeekToStart();
+                    await _playbackControllerProvider.PlaybackController.PlayPreviousOrSeekToStart();
                     break;
                 case SystemMediaTransportControlsButton.Play:
-                    await _playbackController.Play();
+                    await _playbackControllerProvider.PlaybackController.Play();
                     break;
                 case SystemMediaTransportControlsButton.Pause:
-                    await _playbackController.Pause();
+                    await _playbackControllerProvider.PlaybackController.Pause();
                     break;
                 case SystemMediaTransportControlsButton.Stop:
-                    await _playbackController.Stop();
+                    await _playbackControllerProvider.PlaybackController.Stop();
                     break;
             }
         }

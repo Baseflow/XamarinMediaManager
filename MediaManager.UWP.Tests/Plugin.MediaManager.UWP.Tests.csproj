@@ -100,6 +100,7 @@
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </Compile>
     <Compile Include="Unit\MediaButtonPlaybackControllerTest.cs" />
+    <Compile Include="Unit\PlaybackControllerProviderMock.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml">

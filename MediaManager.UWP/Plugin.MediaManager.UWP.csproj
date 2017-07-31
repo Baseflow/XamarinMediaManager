@@ -113,6 +113,7 @@
       <Link>CrossMediaManager.cs</Link>
     </Compile>
     <Compile Include="AudioPlayerImplementation.cs" />
+    <Compile Include="IPlaybackControllerProvider.cs" />
     <Compile Include="SystemWrappers\ISystemMediaTransportControlsWrapper.cs" />
     <Compile Include="SystemWrappers\ISystemMediaTransportControlsButtonPressedEventArgsWrapper.cs" />
     <Compile Include="MediaExtractorImplementation.cs" />

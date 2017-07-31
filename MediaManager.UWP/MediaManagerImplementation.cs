@@ -8,7 +8,7 @@ namespace Plugin.MediaManager
     /// <summary>
     ///     Implementation for Feature
     /// </summary>
-    public class MediaManagerImplementation : MediaManagerBase
+    public class MediaManagerImplementation : MediaManagerBase, IPlaybackControllerProvider
     {
         private IAudioPlayer _audioPlayer;
         private IVideoPlayer _videoPlayer;
@@ -17,7 +17,7 @@ namespace Plugin.MediaManager
         public MediaManagerImplementation()
         {
             var systemMediaTransportControlsWrapper = new SystemMediaTransportControlsWrapper(SystemMediaTransportControls.GetForCurrentView());
-            _mediaButtonPlaybackController = new MediaButtonPlaybackController(systemMediaTransportControlsWrapper, PlaybackController);
+            _mediaButtonPlaybackController = new MediaButtonPlaybackController(systemMediaTransportControlsWrapper, this);
             _mediaButtonPlaybackController.SubscribeToNotifications();
         }
 
