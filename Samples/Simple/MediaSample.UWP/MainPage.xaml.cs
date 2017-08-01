@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -84,6 +85,7 @@ namespace MediaSample.UWP
                     });
         }
 
+        private double CurrentStreamingPosition = 0;
         private async void OnPlayingChanged(object sender, PlayingChangedEventArgs e)
         {
             await
@@ -91,6 +93,7 @@ namespace MediaSample.UWP
                     () =>
                     {
                         Progress.Value = e.Progress;
+                        CurrentStreamingPosition = e.Position.TotalSeconds;
                     });
         }
 
@@ -115,6 +118,30 @@ namespace MediaSample.UWP
         private async void Stop(object sender, RoutedEventArgs e)
         {
             await CrossMediaManager.Current.Stop();
+        }
+
+        private async void Skip10Seconds(object sender, RoutedEventArgs e)
+        {
+            if (CurrentStreamingPosition > 0)
+            {
+                Debug.WriteLine($"Before Skipping 10 seconds, Current Position: {CurrentStreamingPosition}");
+                CurrentStreamingPosition += 10;
+                await CrossMediaManager.Current.PlaybackController.SeekTo(CurrentStreamingPosition);
+                await CrossMediaManager.Current.PlaybackController.Play();
+                Debug.WriteLine($"After Skipping 10 seconds, Current Position: {CurrentStreamingPosition}");
+            }
+        }
+
+        private async void Skip30Seconds(object sender, RoutedEventArgs e)
+        {
+            if (CurrentStreamingPosition > 0)
+            {
+                Debug.WriteLine($"Before Skipping 30 seconds, Current Position: {CurrentStreamingPosition}");
+                CurrentStreamingPosition += 30;
+                await CrossMediaManager.Current.PlaybackController.SeekTo(CurrentStreamingPosition);
+                await CrossMediaManager.Current.PlaybackController.Play();
+                Debug.WriteLine($"After Skipping 30 seconds, Current Position: {CurrentStreamingPosition}");
+            }
         }
     }
 }

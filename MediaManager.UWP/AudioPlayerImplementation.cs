@@ -165,9 +165,14 @@ namespace Plugin.MediaManager
             try
             {
                 var sameMediaFile = mediaFile == null || mediaFile.Equals(_currentMediaFile);
-                if (Status == MediaPlayerStatus.Paused && sameMediaFile)
+                var currentMediaPosition = _player.PlaybackSession?.Position;
+                // This variable will determine whether you will resume your playback or not
+                var resumeMediaFile = Status == MediaPlayerStatus.Paused && sameMediaFile ||
+                                      currentMediaPosition?.TotalSeconds > 0 && sameMediaFile;
+                if(resumeMediaFile)
                 {
-                    _player.PlaybackSession.PlaybackRate = 1;
+                    // TODO: PlaybackRate needs to be configurable rather than hard-coded here
+                    //_player.PlaybackSession.PlaybackRate = 1;
                     _player.Play();
                     return;
                 }
