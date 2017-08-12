@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Plugin.MediaManager.Forms;
 using Plugin.MediaManager.Forms.Android;
 using Xamarin.Forms;
@@ -11,7 +11,7 @@ namespace Plugin.MediaManager.Forms.Android
     {
         private VideoSurface _videoSurface;
 
-        public static async void Init()
+        public static void Init()
         {
             var temp = DateTime.Now;
         }
@@ -24,7 +24,7 @@ namespace Plugin.MediaManager.Forms.Android
                 _videoSurface = new VideoSurface(Context);
                 SetNativeControl(_videoSurface);
                 CrossMediaManager.Current.VideoPlayer.RenderSurface = _videoSurface;
-            }
+            }                       
         }
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)

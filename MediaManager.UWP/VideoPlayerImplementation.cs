@@ -203,6 +203,11 @@ namespace Plugin.MediaManager
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// True when RenderSurface has been initialized and ready for rendering
+        /// </summary>
+        public bool IsReadyRendering => RenderSurface != null && !RenderSurface.IsDisposed;        
+
         public IVideoSurface RenderSurface
         {
             get { return _renderSurface; }

@@ -11,6 +11,7 @@ namespace MediaForms
         public MediaFormsPage()
         {
             InitializeComponent();
+
             CrossMediaManager.Current.PlayingChanged += (sender, e) =>
             {
                 Device.BeginInvokeOnMainThread(() =>
@@ -18,11 +19,16 @@ namespace MediaForms
                     ProgressBar.Progress = e.Progress;
                     Duration.Text = "" + e.Duration.TotalSeconds + " seconds";
                 });
-            };
+            };            
+        }
+
+        protected override void OnAppearing()
+        {
+            videoView.Source = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
         }
 
         void PlayClicked(object sender, System.EventArgs e)
-        {
+        {            
             PlaybackController.Play();
         }
 

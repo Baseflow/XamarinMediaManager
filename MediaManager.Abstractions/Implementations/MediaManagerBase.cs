@@ -165,7 +165,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             if (!MediaQueue.Contains(mediaFile))
                 MediaQueue.Add(mediaFile);
 
-            MediaQueue.SetTrackAsCurrent(mediaFile);
+            MediaQueue.SetTrackAsCurrent(mediaFile);            
 
             await RaiseMediaFileFailedEventOnException(async () =>
             {
@@ -385,9 +385,38 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _currentPlaybackManager.StatusChanged -= OnStatusChanged;
         }
 
-        public virtual void Dispose()
+        #region IDisposable        
+        // Flag: Has Dispose already been called?
+        bool disposed = false;
+
+        // Public implementation of Dispose pattern callable by consumers.
+        public void Dispose()
         {
-            RemoveEventHandlers();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        // Protected implementation of Dispose pattern.
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                // Free any other managed objects here.
+                RemoveEventHandlers();
+            }
+
+            // Free any unmanaged objects here.
+            //
+            disposed = true;
+        }
+
+        ~MediaManagerBase()
+        {
+            Dispose(false);
+        }
+        #endregion
     }
 }

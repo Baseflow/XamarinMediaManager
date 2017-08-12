@@ -1,7 +1,4 @@
-﻿using System;
-using AVFoundation;
-using CoreGraphics;
-using Foundation;
+﻿using AVFoundation;
 using Plugin.MediaManager.Abstractions;
 using UIKit;
 
@@ -22,5 +19,16 @@ namespace Plugin.MediaManager
 					avPlayerLayer.Frame = Bounds;
 			}
 		}
+
+        #region IDisposable
+        public bool IsDisposed { get; private set; }
+
+        protected override void Dispose(bool disposing)
+        {
+            IsDisposed = true;
+
+            base.Dispose(disposing);
+        }
+        #endregion
     }
 }
