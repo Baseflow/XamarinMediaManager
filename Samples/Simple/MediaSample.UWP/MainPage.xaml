@@ -36,6 +36,8 @@
                 <Button Click="PlayUrl" VerticalAlignment="Center" Width="100" Height="50" HorizontalAlignment="Center" Content="Play"></Button>
                 <Button Click="Pause" VerticalAlignment="Center" Width="100" Height="50" HorizontalAlignment="Center" Content="Pause"></Button>
                 <Button Click="Stop" VerticalAlignment="Center" Width="100" Height="50" HorizontalAlignment="Center" Content="Stop"></Button>
+                <Button Click="Skip10Seconds" VerticalAlignment="Center" Width="100" Height="50" HorizontalAlignment="Center" Content="Skip +10"></Button>
+                <Button Click="Skip30Seconds" VerticalAlignment="Center" Width="100" Height="50" HorizontalAlignment="Center" Content="Skip +30"></Button>
             </StackPanel>
         </StackPanel>
     </Grid>
