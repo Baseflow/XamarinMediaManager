@@ -3,7 +3,7 @@ using Windows.Media;
 
 namespace Plugin.MediaManager.SystemWrappers
 {
-    class SystemMediaTransportControlsWrapper : ISystemMediaTransportControlsWrapper
+    internal class SystemMediaTransportControlsWrapper : ISystemMediaTransportControlsWrapper
     {
         private readonly SystemMediaTransportControls _controls;
 

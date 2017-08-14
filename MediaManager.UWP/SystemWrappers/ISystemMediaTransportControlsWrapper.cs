@@ -1,10 +1,9 @@
-﻿using System;
-using Windows.Foundation;
+﻿using Windows.Foundation;
 using Windows.Media;
 
 namespace Plugin.MediaManager.SystemWrappers
 {
-    public interface ISystemMediaTransportControlsWrapper
+    internal interface ISystemMediaTransportControlsWrapper
     {
         void SubscribeToMediaButtonEvents();
 

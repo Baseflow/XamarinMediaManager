@@ -14,7 +14,7 @@ namespace Plugin.MediaManager.UWP.Tests.Unit
         {
             var controlsMock = new Mock<ISystemMediaTransportControlsWrapper>();
 
-            new MediaButtonPlaybackController(controlsMock.Object, new Mock<IPlaybackController>().Object);
+            new MediaButtonPlaybackController(controlsMock.Object, new PlaybackControllerProviderMock().Object);
 
             controlsMock.VerifySet(m => m.IsNextEnabled = true);
             controlsMock.VerifySet(m => m.IsPreviousEnabled = true);
@@ -28,7 +28,7 @@ namespace Plugin.MediaManager.UWP.Tests.Unit
         {
             var controlsMock = new Mock<ISystemMediaTransportControlsWrapper>();
 
-            var controller = new MediaButtonPlaybackController(controlsMock.Object, new Mock<IPlaybackController>().Object);
+            var controller = new MediaButtonPlaybackController(controlsMock.Object, new PlaybackControllerProviderMock().Object);
             controller.SubscribeToNotifications();
 
             controlsMock.Verify(m => m.SubscribeToMediaButtonEvents());
@@ -39,7 +39,7 @@ namespace Plugin.MediaManager.UWP.Tests.Unit
         {
             var controlsMock = new Mock<ISystemMediaTransportControlsWrapper>();
 
-            var controller = new MediaButtonPlaybackController(controlsMock.Object, new Mock<IPlaybackController>().Object);
+            var controller = new MediaButtonPlaybackController(controlsMock.Object, new PlaybackControllerProviderMock().Object);
             controller.UnsubscribeFromNotifications();
 
             controlsMock.Verify(m => m.UnsubscribeFromMediaButtonEvents());
@@ -50,8 +50,9 @@ namespace Plugin.MediaManager.UWP.Tests.Unit
         {
             var controlsMock = new Mock<ISystemMediaTransportControlsWrapper>();
             var playbackControllerMock = new Mock<IPlaybackController>();
+            var playbackControllerProviderMock = new PlaybackControllerProviderMock().SetupGetPlayBackController(playbackControllerMock.Object);
 
-            var controller = new MediaButtonPlaybackController(controlsMock.Object, playbackControllerMock.Object);
+            var controller = new MediaButtonPlaybackController(controlsMock.Object, playbackControllerProviderMock.Object);
             controller.SubscribeToNotifications();
 
             var args = new Mock<ISystemMediaTransportControlsButtonPressedEventArgsWrapper>();
@@ -66,8 +67,9 @@ namespace Plugin.MediaManager.UWP.Tests.Unit
         {
             var controlsMock = new Mock<ISystemMediaTransportControlsWrapper>();
             var playbackControllerMock = new Mock<IPlaybackController>();
+            var playbackControllerProviderMock = new PlaybackControllerProviderMock().SetupGetPlayBackController(playbackControllerMock.Object);
 
-            var controller = new MediaButtonPlaybackController(controlsMock.Object, playbackControllerMock.Object);
+            var controller = new MediaButtonPlaybackController(controlsMock.Object, playbackControllerProviderMock.Object);
             controller.SubscribeToNotifications();
 
             var args = new Mock<ISystemMediaTransportControlsButtonPressedEventArgsWrapper>();
@@ -82,8 +84,9 @@ namespace Plugin.MediaManager.UWP.Tests.Unit
         {
             var controlsMock = new Mock<ISystemMediaTransportControlsWrapper>();
             var playbackControllerMock = new Mock<IPlaybackController>();
+            var playbackControllerProviderMock = new PlaybackControllerProviderMock().SetupGetPlayBackController(playbackControllerMock.Object);
 
-            var controller = new MediaButtonPlaybackController(controlsMock.Object, playbackControllerMock.Object);
+            var controller = new MediaButtonPlaybackController(controlsMock.Object, playbackControllerProviderMock.Object);
             controller.SubscribeToNotifications();
 
             var args = new Mock<ISystemMediaTransportControlsButtonPressedEventArgsWrapper>();
@@ -98,8 +101,9 @@ namespace Plugin.MediaManager.UWP.Tests.Unit
         {
             var controlsMock = new Mock<ISystemMediaTransportControlsWrapper>();
             var playbackControllerMock = new Mock<IPlaybackController>();
+            var playbackControllerProviderMock = new PlaybackControllerProviderMock().SetupGetPlayBackController(playbackControllerMock.Object);
 
-            var controller = new MediaButtonPlaybackController(controlsMock.Object, playbackControllerMock.Object);
+            var controller = new MediaButtonPlaybackController(controlsMock.Object, playbackControllerProviderMock.Object);
             controller.SubscribeToNotifications();
 
             var args = new Mock<ISystemMediaTransportControlsButtonPressedEventArgsWrapper>();
@@ -114,8 +118,9 @@ namespace Plugin.MediaManager.UWP.Tests.Unit
         {
             var controlsMock = new Mock<ISystemMediaTransportControlsWrapper>();
             var playbackControllerMock = new Mock<IPlaybackController>();
+            var playbackControllerProviderMock = new PlaybackControllerProviderMock().SetupGetPlayBackController(playbackControllerMock.Object);
 
-            var controller = new MediaButtonPlaybackController(controlsMock.Object, playbackControllerMock.Object);
+            var controller = new MediaButtonPlaybackController(controlsMock.Object, playbackControllerProviderMock.Object);
             controller.SubscribeToNotifications();
 
             var args = new Mock<ISystemMediaTransportControlsButtonPressedEventArgsWrapper>();

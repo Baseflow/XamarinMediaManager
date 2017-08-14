@@ -1,8 +1,8 @@
-using Windows.Media;
+﻿using Windows.Media;
 
 namespace Plugin.MediaManager.SystemWrappers
 {
-    class SystemMediaTransportControlsButtonPressedEventArgsWrapper : ISystemMediaTransportControlsButtonPressedEventArgsWrapper
+    internal class SystemMediaTransportControlsButtonPressedEventArgsWrapper : ISystemMediaTransportControlsButtonPressedEventArgsWrapper
     {
         public SystemMediaTransportControlsButton Button { get; }
 

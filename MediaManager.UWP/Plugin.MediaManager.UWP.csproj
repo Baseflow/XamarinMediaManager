@@ -113,6 +113,7 @@
       <Link>CrossMediaManager.cs</Link>
     </Compile>
     <Compile Include="AudioPlayerImplementation.cs" />
+    <Compile Include="IPlaybackControllerProvider.cs" />
     <Compile Include="SystemWrappers\ISystemMediaTransportControlsWrapper.cs" />
     <Compile Include="SystemWrappers\ISystemMediaTransportControlsButtonPressedEventArgsWrapper.cs" />
     <Compile Include="MediaExtractorImplementation.cs" />
@@ -137,6 +138,9 @@
       <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="project.json" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
