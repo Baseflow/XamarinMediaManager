@@ -72,6 +72,8 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         private bool _startedPlaying;
 
+        private bool _autoPlayNext = true;
+
         protected MediaManagerBase()
         {
             PlaybackController = new PlaybackController(this);
@@ -324,14 +326,17 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
             MediaFinished?.Invoke(sender, e);
 
-            if (MediaQueue.Repeat == RepeatType.RepeatOne)
+            if (_autoPlayNext)
             {
-                await Seek(TimeSpan.Zero);
-                await Resume();
-            }
-            else
-            {
-                await PlayNext();
+                if (MediaQueue.Repeat == RepeatType.RepeatOne)
+                {
+                    await Seek(TimeSpan.Zero);
+                    await Resume();
+                }
+                else
+                {
+                    await PlayNext();
+                }
             }
         }
 
@@ -388,6 +393,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public virtual void Dispose()
         {
             RemoveEventHandlers();
+        }
+
+        public void SetAutoPlayNext(bool autoPlayNext)
+        {
+            _autoPlayNext = autoPlayNext;
         }
     }
 }
