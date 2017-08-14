@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Android.App;
-using Android.Content.Res;
 using Android.Media;
 using Android.OS;
 using Android.Runtime;
@@ -13,7 +10,6 @@ using Java.Util.Concurrent;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
@@ -30,9 +26,9 @@ namespace Plugin.MediaManager
 			StatusChanged += (sender, args) => OnPlayingHandler(args);
         }
 
-		private bool isPlayerReady = false;
+		private bool isPlayerReady = false;        
 
-		private IScheduledExecutorService _executorService = Executors.NewSingleThreadScheduledExecutor();
+        private IScheduledExecutorService _executorService = Executors.NewSingleThreadScheduledExecutor();
 		private IScheduledFuture _scheduledFuture;
 
 		private void OnPlayingHandler(StatusChangedEventArgs args)
@@ -45,7 +41,7 @@ namespace Plugin.MediaManager
 			if (args.Status == MediaPlayerStatus.Stopped || args.Status == MediaPlayerStatus.Failed || args.Status == MediaPlayerStatus.Paused)
 				CancelPlayingHandler();
 		}
-
+        
 		private void CancelPlayingHandler()
 		{
 			_scheduledFuture?.Cancel(false);
@@ -56,14 +52,17 @@ namespace Plugin.MediaManager
 			var handler = new Handler();
 			var runnable = new Runnable(() => { handler.Post(OnPlaying); });
 			if (!_executorService.IsShutdown)
-			{
-				_scheduledFuture = _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
+			{                
+                _scheduledFuture = _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
 			}
 		}
 
 		private void OnPlaying()
 		{
-			var progress = (Position.TotalSeconds / Duration.TotalSeconds);
+		    if (!IsReadyRendering)
+		        CancelPlayingHandler(); //RenderSurface is no longer valid => Cancel the periodic firing
+
+            var progress = (Position.TotalSeconds / Duration.TotalSeconds);
 			var position = Position;
 			var duration = Duration;
 
@@ -72,6 +71,13 @@ namespace Plugin.MediaManager
 				position.TotalSeconds >= 0 ? position : TimeSpan.Zero,
 				duration.TotalSeconds >= 0 ? duration : TimeSpan.Zero));
 		}
+
+        /// <summary>
+        /// True when RenderSurface has been initialized and ready for rendering
+        /// </summary>
+        public bool IsReadyRendering => RenderSurface != null && !RenderSurface.IsDisposed;
+
+        VideoView VideoViewCanvas => RenderSurface as VideoView;
 
         private IVideoSurface _renderSurface;
         public IVideoSurface RenderSurface { 
@@ -82,8 +88,14 @@ namespace Plugin.MediaManager
                 if (!(value is VideoSurface))
                     throw new ArgumentException("Not a valid video surface");
 
-                var canvas = (VideoSurface)value;
+                if (_renderSurface == value)
+                    return;
+
+                var canvas = (VideoSurface)value;                
                 _renderSurface = canvas;
+                
+                //New canvas object => need initialization
+                isPlayerReady = false;
             }
         }
 
@@ -97,9 +109,7 @@ namespace Plugin.MediaManager
 				//TODO: Wrap videoplayer to respect aspectmode
 				_aspectMode = value;
 			} 
-		}
-
-        VideoView VideoViewCanvas => RenderSurface as VideoView;
+		}        
 
         public IMediaFile CurrentFile { get; set; }
         private Android.Net.Uri currentUri { get; set; }
@@ -150,13 +160,14 @@ namespace Plugin.MediaManager
 		{
 			MediaFileFailed?.Invoke(this, e);
 		}
+        
+        public TimeSpan Buffered => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.BufferPercentage);
 
-        public TimeSpan Buffered => VideoViewCanvas == null ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.BufferPercentage);
+        public TimeSpan Duration => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.Duration);
+        
+        public TimeSpan Position => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.CurrentPosition);
 
-        public TimeSpan Duration => VideoViewCanvas == null ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.Duration);
-
-        public TimeSpan Position => VideoViewCanvas == null ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.CurrentPosition);
-		private int lastPosition = 0;
+        private int lastPosition = 0;
 
 		private MediaPlayerStatus _status = MediaPlayerStatus.Stopped;
         public MediaPlayerStatus Status
@@ -187,17 +198,18 @@ namespace Plugin.MediaManager
                 mediaController.SetAnchorView(VideoViewCanvas);
                 VideoViewCanvas.SetMediaController(mediaController);
             }
-
+            
             VideoViewCanvas.SetOnCompletionListener(this);
             VideoViewCanvas.SetOnErrorListener(this);
             VideoViewCanvas.SetOnPreparedListener(this);
             VideoViewCanvas.SetOnInfoListener(this);
         }
-
+        
         public async Task Play(IMediaFile mediaFile = null)
-        {
-			if (VideoViewCanvas == null)
-				throw new System.Exception("No canvas set for video to play in");
+        {            
+            if (!IsReadyRendering)
+                //Android ViewRenderer might not initialize Control yet
+                return;
 
 			if (isPlayerReady == false)
             {
@@ -256,12 +268,16 @@ namespace Plugin.MediaManager
 
         public void OnCompletion(MediaPlayer mp)
         {
+            Console.WriteLine($"OnCompletion");
+
             OnMediaFinished(new MediaFinishedEventArgs(CurrentFile));
         }
 
         public bool OnError(MediaPlayer mp, MediaError what, int extra)
         {
-			Stop().Wait();
+            Console.WriteLine($"OnError: {what}");
+
+            Stop().Wait();
             Status = MediaPlayerStatus.Failed;
 			OnMediaFailed(new MediaFailedEventArgs(what.ToString(), new System.Exception()));
             return true;
@@ -269,7 +285,9 @@ namespace Plugin.MediaManager
 
         public void OnPrepared(MediaPlayer mp)
         {
-			if(Status == MediaPlayerStatus.Buffering)
+            Console.WriteLine($"OnPrepared: {Status}");
+
+            if (Status == MediaPlayerStatus.Buffering)
 				VideoViewCanvas.Start();
 
             Status = MediaPlayerStatus.Playing;
@@ -277,7 +295,9 @@ namespace Plugin.MediaManager
 
         public bool OnInfo(MediaPlayer mp, [GeneratedEnum] MediaInfo what, int extra)
         {
-			switch (what)
+            Console.WriteLine($"OnInfo: {what}");
+
+            switch (what)
 			{
 				case MediaInfo.BadInterleaving:
 					break;
@@ -302,6 +322,6 @@ namespace Plugin.MediaManager
 			}
 
 			return true;
-        }
+        }        
     }
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:MediaForms"
              xmlns:forms="clr-namespace:Plugin.MediaManager.Forms;assembly=Plugin.MediaManager.Forms"
@@ -8,9 +8,15 @@
 			<RowDefinition Height="4*"/>
 			<RowDefinition Height="1*"/>
 		</Grid.RowDefinitions>
-		<forms:VideoView Grid.Row="0" Grid.RowSpan="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                     Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" AspectMode="AspectFill"/>
-		<Grid HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.RowSpan="1" Margin="20">
+		
+        <!--<forms:VideoView Grid.Row="0" Grid.RowSpan="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" AspectMode="AspectFill"/>-->
+
+        <forms:VideoView x:Name="videoView"
+            Grid.Row="0" Grid.RowSpan="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                         AspectMode="AspectFill"/>
+
+        <Grid HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.RowSpan="1" Margin="20">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="1*"/>
 				<RowDefinition Height="6*"/>

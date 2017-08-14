@@ -13,6 +13,11 @@ namespace Plugin.MediaManager.Abstractions
         IVideoSurface RenderSurface { get; set; }
 
         /// <summary>
+        /// True when RenderSurface has been initialized and ready for rendering
+        /// </summary>
+        bool IsReadyRendering { get; }
+
+        /// <summary>
         /// The aspect mode of the video
         /// </summary>
         VideoAspectMode AspectMode { get; set; }

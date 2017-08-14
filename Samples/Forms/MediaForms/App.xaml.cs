@@ -10,7 +10,9 @@ namespace MediaForms
             // Make sure it doesn't get stripped away by the linker
             var workaround = typeof(VideoView);
             InitializeComponent();
-            MainPage = new MediaFormsPage();
+            //MainPage = new MediaFormsPage();
+
+            MainPage = new NavigationPage(new HomePage());
         }
 
         protected override void OnStart()

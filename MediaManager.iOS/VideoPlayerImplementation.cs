@@ -10,7 +10,6 @@ using Foundation;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
@@ -318,6 +317,11 @@ namespace Plugin.MediaManager
                 BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
             }
         }
+
+        /// <summary>
+        /// True when RenderSurface has been initialized and ready for rendering
+        /// </summary>
+        public bool IsReadyRendering => RenderSurface != null && !RenderSurface.IsDisposed;
 
         private IVideoSurface _renderSurface;
         public IVideoSurface RenderSurface

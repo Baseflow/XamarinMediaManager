@@ -39,10 +39,25 @@ namespace Plugin.MediaManager
 
         public override IVolumeManager VolumeManager { get; set; } = new VolumeManagerImplementation();
 
-        public override void Dispose()
+        #region IDisposable 
+        bool disposed = false;
+        protected override void Dispose(bool disposing)
         {
-            base.Dispose();
-            _mediaButtonPlaybackController.UnsubscribeFromNotifications();
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                // Free any other managed objects here.
+                _mediaButtonPlaybackController.UnsubscribeFromNotifications();
+            }
+
+            base.Dispose(disposing);
+
+            // Free any unmanaged objects here.
+            //
+            disposed = true;                  
         }
+        #endregion
     }
 }

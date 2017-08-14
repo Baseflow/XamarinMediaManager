@@ -5,5 +5,6 @@
     /// </summary>
     public interface IVideoSurface
     {
+        bool IsDisposed { get; }
     }
 }
