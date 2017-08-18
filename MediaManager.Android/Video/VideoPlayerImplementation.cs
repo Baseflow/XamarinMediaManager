@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Media;
@@ -234,10 +234,11 @@ namespace Plugin.MediaManager
 
             if (Status == MediaPlayerStatus.Paused)
             {
-				//We are simply paused so just continue
-				VideoViewCanvas.SeekTo(lastPosition);
-				VideoViewCanvas.Start();
-				Status = MediaPlayerStatus.Playing;
+                //We are simply paused so just continue
+                VideoViewCanvas.SeekTo(lastPosition);
+                VideoViewCanvas.Start();
+
+                Status = MediaPlayerStatus.Playing;
                 return;
             }
 
@@ -255,7 +256,10 @@ namespace Plugin.MediaManager
 
         public async Task Seek(TimeSpan position)
         {
-            VideoViewCanvas.SeekTo(Convert.ToInt32(position.TotalMilliseconds));
+            int msec = Convert.ToInt32(position.TotalMilliseconds);
+            VideoViewCanvas.SeekTo(msec);
+            lastPosition = VideoViewCanvas.CurrentPosition;
+
             await Task.CompletedTask;
         }
 
