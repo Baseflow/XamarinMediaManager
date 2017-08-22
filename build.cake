@@ -1,5 +1,5 @@
 #tool nuget:?package=GitVersion.CommandLine
-#tool nuget:?package=gitlink
+#tool nuget:?package=gitlink&version=2.4.0
 #tool nuget:?package=vswhere
 #tool nuget:?package=NUnit.ConsoleRunner
 #addin nuget:?package=Cake.Incubator
@@ -53,7 +53,8 @@ Task("Restore")
 	.IsDependentOn("ResolveBuildTools")
 	.Does(() => {
 	NuGetRestore(sln, new NuGetRestoreSettings {
-		ToolPath = "tools/nuget.exe"
+		ToolPath = "tools/nuget.exe",
+		Verbosity = NuGetVerbosity.Quiet
 	});
 	// MSBuild(sln, settings => settings.WithTarget("Restore"));
 });
@@ -68,7 +69,8 @@ Task("Build")
 	var settings = new MSBuildSettings 
 	{
 		Configuration = "Release",
-		ToolPath = msBuildPath
+		ToolPath = msBuildPath,
+		Verbosity = Verbosity.Minimal
 	};
 
 	settings.Properties.Add("DebugSymbols", new List<string> { "True" });
@@ -85,11 +87,18 @@ Task("UnitTest")
 		new FilePath("./MediaManager.Tests/bin/Release/Plugin.MediaManager.Tests.dll").FullPath
 	};
 
+    var testResultsPath = new FilePath(outputDir + "/NUnitTestResult.xml");
+
 	NUnit3(testPaths, new NUnit3Settings {
 		Timeout = 30000,
 		OutputFile = new FilePath(outputDir + "/NUnitOutput.txt"),
-		Results = new FilePath(outputDir + "/NUnitTestResult.xml")
+		Results = testResultsPath
 	});
+
+    if (isRunningOnAppVeyor)
+    {
+        AppVeyor.UploadTestResults(testResultsPath, AppVeyorTestResultsType.NUnit3);
+    }
 });
 
 Task("GitLink")
