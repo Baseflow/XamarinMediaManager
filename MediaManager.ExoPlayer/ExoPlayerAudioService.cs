@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -264,7 +264,11 @@ namespace Plugin.MediaManager.ExoPlayer
             var handler = new Handler();
             var runnable = new Runnable(() => { handler.Post(OnBuffering); });
             if (!_executorService.IsShutdown)
-                _scheduledFuture = _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
+                _scheduledFuture = _executorService.ScheduleAtFixedRate
+                    (runnable
+                    , 100
+                    , Event_Firing_MiliSec
+                    , TimeUnit.Milliseconds);
         }
 
         private void OnBuffering()
