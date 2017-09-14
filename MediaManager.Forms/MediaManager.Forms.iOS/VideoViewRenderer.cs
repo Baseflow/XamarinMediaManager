@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using Foundation;
 using Plugin.MediaManager.Forms;
 using Plugin.MediaManager.Forms.iOS;
+using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
@@ -25,11 +26,63 @@ namespace Plugin.MediaManager.Forms.iOS
         {
             base.OnElementChanged(e);
             if (Control == null)
-            {
+            {                
                 _videoSurface = new VideoSurface();
                 SetNativeControl(_videoSurface);
                 CrossMediaManager.Current.VideoPlayer.RenderSurface = _videoSurface;
             }
+
+            //ltang: Walk-around for https://github.com/martijn00/XamarinMediaManager/issues/250
+            if (e.OldElement != null)
+            {
+                // Unsubscribe from event handlers and cleanup any resources
+                RemoveGestureTap();
+            }
+
+            if (e.NewElement != null)
+            {
+                // Configure the control and subscribe to event handlers
+                AttachGestureTap(e.NewElement);
+            }
         }
+
+        #region Walk-around for https://github.com/martijn00/XamarinMediaManager/issues/250
+        private UITapGestureRecognizer _tapGesture = null;
+        private void AttachGestureTap(VideoView view)
+        {
+            if (_videoSurface == null || _tapGesture != null)
+                return;
+
+            TapGestureRecognizer tapGestureToTransfer = null;
+            foreach (var gesture in view.GestureRecognizers)
+            {
+                if (gesture is TapGestureRecognizer)
+                {
+                    tapGestureToTransfer = gesture as TapGestureRecognizer;
+                    break;
+                }
+            }
+
+            if (tapGestureToTransfer?.Command != null)
+            {
+                _tapGesture = new UITapGestureRecognizer(() =>
+                {
+                    tapGestureToTransfer.Command.Execute(tapGestureToTransfer.CommandParameter);
+                });
+                _tapGesture.NumberOfTapsRequired = (nuint)tapGestureToTransfer.NumberOfTapsRequired;
+
+                _videoSurface.AddGestureRecognizer(_tapGesture);
+            }
+        }
+
+        private void RemoveGestureTap()
+        {
+            if (_videoSurface == null || _tapGesture == null)
+                return;
+
+            _videoSurface.RemoveGestureRecognizer(_tapGesture);
+            _tapGesture = null;
+        }
+        #endregion
     }
 }
