@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
@@ -266,6 +266,20 @@ namespace Plugin.MediaManager
         }
 
         public VideoAspectMode AspectMode { get; set; }
+
+        public int TrackCount => throw new NotImplementedException();
+
+        public int GetSelectedTrack(Abstractions.Enums.MediaTrackType trackType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SetTrack(int trackIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IReadOnlyCollection<IMediaTrackInfo> TrackInfoList => throw new NotImplementedException();
 
         private async Task<MediaSource> CreateMediaSource(IMediaFile mediaFile)
         {

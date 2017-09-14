@@ -1,20 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Android.Media;
 using Android.OS;
 using Android.Runtime;
+using Android.Text.Format;
 using Android.Widget;
 using Java.Lang;
 using Java.Util.Concurrent;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
+using Plugin.MediaManager.Abstractions.Implementations;
+
 
 namespace Plugin.MediaManager
 {
     public class VideoPlayerImplementation : Java.Lang.Object, 
-        IVideoPlayer,
+        IVideoPlayer,        
         MediaPlayer.IOnCompletionListener,
         MediaPlayer.IOnErrorListener,
         MediaPlayer.IOnPreparedListener,
@@ -53,17 +59,21 @@ namespace Plugin.MediaManager
 			var runnable = new Runnable(() => { handler.Post(OnPlaying); });
 			if (!_executorService.IsShutdown)
 			{                
-                _scheduledFuture = _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
+                _scheduledFuture = _executorService.ScheduleAtFixedRate
+                    (runnable
+                    , 100
+                    , MediaServiceBase.Event_Firing_MiliSec
+                    , TimeUnit.Milliseconds);
 			}
 		}
 
 		private void OnPlaying()
 		{
 		    if (!IsReadyRendering)
-		        CancelPlayingHandler(); //RenderSurface is no longer valid => Cancel the periodic firing
+		        CancelPlayingHandler(); //RenderSurface is no longer valid => Cancel the periodic firing		    
 
-            var progress = (Position.TotalSeconds / Duration.TotalSeconds);
-			var position = Position;
+            TimeSpan position = this.Position;
+            var progress = (position.TotalSeconds / Duration.TotalSeconds);			
 			var duration = Duration;
 
 			PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(
@@ -72,6 +82,7 @@ namespace Plugin.MediaManager
 				duration.TotalSeconds >= 0 ? duration : TimeSpan.Zero));
 		}
 
+        #region IVideoPlayer
         /// <summary>
         /// True when RenderSurface has been initialized and ready for rendering
         /// </summary>
@@ -109,7 +120,60 @@ namespace Plugin.MediaManager
 				//TODO: Wrap videoplayer to respect aspectmode
 				_aspectMode = value;
 			} 
-		}        
+		}
+
+        private ReadOnlyCollection<IMediaTrackInfo> _TrackInfoList;
+        public IReadOnlyCollection<IMediaTrackInfo> TrackInfoList => _TrackInfoList;
+
+        public int TrackCount => _TrackInfoList?.Count ?? -1;
+
+        public int GetSelectedTrack(Abstractions.Enums.MediaTrackType trackType)
+        {
+            if (trackType != Abstractions.Enums.MediaTrackType.Audio)
+                throw new NotSupportedException($"{trackType}");
+
+            if (_mediaPlayer == null)
+                return -1;
+
+            int trackIndex = _mediaPlayer.GetSelectedTrack(ToMediaTrackTypeAndroid(trackType));
+            return trackIndex;
+        }
+
+        private int? _lastSelectedTrackIndex = null;
+        /// <summary>
+        /// Do NOT call this in UI thread otherwise it will freeze the video rendering
+        /// </summary>
+        /// <param name="trackIndex"></param>
+        /// <returns></returns>
+        public bool SetTrack(int trackIndex)
+        {
+            if (_lastSelectedTrackIndex != null && _lastSelectedTrackIndex == trackIndex)
+                return true;
+
+            if (_mediaPlayer == null)
+                return false;
+
+            try
+            {
+                int count = TrackCount;
+                if (count <= 0 || trackIndex >= count)
+                    //throw new ArgumentOutOfRangeException($"Track index {trackIndex} is out of range [0, {count})");
+                    return false;
+
+                _mediaPlayer.SelectTrack(trackIndex);
+
+                _lastSelectedTrackIndex = trackIndex;
+
+                return true;
+            }
+            catch
+            {
+                throw;
+            }            
+        }
+        #endregion
+
+        private MediaPlayer _mediaPlayer;
 
         public IMediaFile CurrentFile { get; set; }
         private Android.Net.Uri currentUri { get; set; }
@@ -143,7 +207,10 @@ namespace Plugin.MediaManager
 
 		protected virtual void OnMediaFinished(MediaFinishedEventArgs e)
 		{
-			MediaFinished?.Invoke(this, e);
+            //Final update on completion
+            OnPlaying();
+
+            MediaFinished?.Invoke(this, e);
 		}
 
 		protected virtual void OnMediaFailed(MediaFailedEventArgs e)
@@ -152,20 +219,22 @@ namespace Plugin.MediaManager
 		}
 
 		protected virtual void OnMediaFileChanged(MediaFileChangedEventArgs e)
-		{
-			MediaFileChanged?.Invoke(this, e);
+		{		    
+            MediaFileChanged?.Invoke(this, e);
 		}
 
 		protected virtual void OnMediaFileFailed(MediaFileFailedEventArgs e)
 		{
 			MediaFileFailed?.Invoke(this, e);
 		}
-        
-        public TimeSpan Buffered => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.BufferPercentage);
 
-        public TimeSpan Duration => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.Duration);
+        //ltang: https://developer.android.com/reference/android/media/MediaPlayer.OnBufferingUpdateListener.html
+        //According the doc above, this seems wrong
+        public TimeSpan Buffered => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromMilliseconds(VideoViewCanvas.BufferPercentage);
+
+        public TimeSpan Duration => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromMilliseconds(VideoViewCanvas.Duration);
         
-        public TimeSpan Position => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.CurrentPosition);
+        public TimeSpan Position => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromMilliseconds(VideoViewCanvas.CurrentPosition);
 
         private int lastPosition = 0;
 
@@ -181,16 +250,19 @@ namespace Plugin.MediaManager
         }
 
         public async Task Pause()
-        {
-			lastPosition = VideoViewCanvas.CurrentPosition;
+        {			
             VideoViewCanvas.Pause();
             Status = MediaPlayerStatus.Paused;
-            await Task.CompletedTask;
+            lastPosition = VideoViewCanvas.CurrentPosition;
+            await Task.CompletedTask;            
         }
 
         public void Init()
         {
-			Status = MediaPlayerStatus.Loading;
+            _mediaPlayer = null;
+            _lastSelectedTrackIndex = null;
+
+            Status = MediaPlayerStatus.Loading;
 
             if (UseNativeControls)
             {
@@ -234,7 +306,8 @@ namespace Plugin.MediaManager
 
             if (Status == MediaPlayerStatus.Paused)
             {
-                //We are simply paused so just continue
+                //We are simply paused so just continue                
+                Console.WriteLine($"Seekto: {lastPosition}");
                 VideoViewCanvas.SeekTo(lastPosition);
                 VideoViewCanvas.Start();
 
@@ -256,15 +329,18 @@ namespace Plugin.MediaManager
 
         public async Task Seek(TimeSpan position)
         {
-            int msec = Convert.ToInt32(position.TotalMilliseconds);
+            int msec = Convert.ToInt32(position.TotalMilliseconds);            
             VideoViewCanvas.SeekTo(msec);
-            lastPosition = VideoViewCanvas.CurrentPosition;
 
-            await Task.CompletedTask;
+            lastPosition = VideoViewCanvas.CurrentPosition;
+            Console.WriteLine($"Seekto: {lastPosition}");
+
+            await Task.CompletedTask;            
         }
 
         public async Task Stop()
-        {
+        {            
+            lastPosition = 0;
             VideoViewCanvas.StopPlayback();
             Status = MediaPlayerStatus.Stopped;
             await Task.CompletedTask;
@@ -290,16 +366,31 @@ namespace Plugin.MediaManager
         public void OnPrepared(MediaPlayer mp)
         {
             Console.WriteLine($"OnPrepared: {Status}");
+            
+            if (_mediaPlayer == null)
+            {
+                _mediaPlayer = mp;
+                List<IMediaTrackInfo> temp = ExtractTrackInfo(_mediaPlayer);
+                _TrackInfoList = temp == null ? null : new ReadOnlyCollection<IMediaTrackInfo>(temp);
+            }
 
             if (Status == MediaPlayerStatus.Buffering)
-				VideoViewCanvas.Start();
+            {
+                if (lastPosition > 0)
+                {                    
+                    Console.WriteLine($"Seekto: {lastPosition}");
+                    VideoViewCanvas.SeekTo(lastPosition);
+                }
+
+                VideoViewCanvas.Start();
+            }
 
             Status = MediaPlayerStatus.Playing;
-        }
+        }        
 
         public bool OnInfo(MediaPlayer mp, [GeneratedEnum] MediaInfo what, int extra)
         {
-            Console.WriteLine($"OnInfo: {what}");
+            Console.WriteLine($"OnInfo: {what}");            
 
             switch (what)
 			{
@@ -319,13 +410,110 @@ namespace Plugin.MediaManager
 					break;
 				case MediaInfo.UnsupportedSubtitle:
 					break;
-				case MediaInfo.VideoRenderingStart:
-					break;
+				case MediaInfo.VideoRenderingStart:				    
+                    break;
 				case MediaInfo.VideoTrackLagging:
 					break;
 			}
 
 			return true;
         }        
+
+        #region Helpers
+        private static List<IMediaTrackInfo> ExtractTrackInfo(MediaPlayer mp)
+        {            
+            if (mp == null)
+                return null;
+
+            List<IMediaTrackInfo> result = null;
+
+            //https://stackoverflow.com/questions/8789529/android-multiple-audio-tracks-in-a-videoview
+            MediaPlayer.TrackInfo[] tracks = mp.GetTrackInfo();            
+            if (tracks != null && tracks.Any())
+            {
+                result = new List<IMediaTrackInfo>();
+
+                for (int i = 0; i < tracks.Length; i++)
+                {
+                    MediaPlayer.TrackInfo track = tracks[i];
+
+                    
+                    var audioTrack = new MediaTrackInfo()
+                    {
+                        Tag = track,
+                        DisplayName = track.Language,
+                        TrackIndex = i,
+                        TrackId = track.ToString(),
+                        LanguageCode = track.Language,
+                        TrackType = ToMediaTrackTypeAsbtract(track.TrackType)
+                    };
+                    result.Add(audioTrack);
+                }
+            }
+            return result;
+        }
+
+        private static Abstractions.Enums.MediaTrackType ToMediaTrackTypeAsbtract(Android.Media.MediaTrackType typeInt)
+        {
+            Abstractions.Enums.MediaTrackType typeOut = Abstractions.Enums.MediaTrackType.Unknown;
+            switch (typeInt)
+            {
+                case (Android.Media.MediaTrackType.Unknown):
+                    typeOut = Abstractions.Enums.MediaTrackType.Unknown;
+                    break;
+                case (Android.Media.MediaTrackType.Video):
+                    typeOut = Abstractions.Enums.MediaTrackType.Video;
+                    break;
+                case (Android.Media.MediaTrackType.Audio):
+                    typeOut = Abstractions.Enums.MediaTrackType.Audio;
+                    break;
+                case (Android.Media.MediaTrackType.Timedtext):
+                    typeOut = Abstractions.Enums.MediaTrackType.Timedtext;
+                    break;
+                case (Android.Media.MediaTrackType.Subtitle):
+                    typeOut = Abstractions.Enums.MediaTrackType.Subtitle;
+                    break;
+                case (Android.Media.MediaTrackType.Metadata):
+                    typeOut = Abstractions.Enums.MediaTrackType.Metadata;
+                    break;
+                default:
+                    throw new NotImplementedException($"ToMediaTrackTypeAsbtract conversion not found for {typeInt}");
+            }
+            
+            return typeOut;
+        }
+
+        private static Android.Media.MediaTrackType ToMediaTrackTypeAndroid(Abstractions.Enums.MediaTrackType typeInt)
+        {
+            Android.Media.MediaTrackType typeOut = Android.Media.MediaTrackType.Unknown;
+            switch (typeInt)
+            {
+                case (Abstractions.Enums.MediaTrackType.Unknown):
+                    typeOut = Android.Media.MediaTrackType.Unknown;
+                    break;
+                case (Abstractions.Enums.MediaTrackType.Video):
+                    typeOut = Android.Media.MediaTrackType.Video;
+                    break;
+                case (Abstractions.Enums.MediaTrackType.Audio):
+                    typeOut = Android.Media.MediaTrackType.Audio;
+                    break;
+                case (Abstractions.Enums.MediaTrackType.Timedtext):
+                    typeOut = Android.Media.MediaTrackType.Timedtext;
+                    break;
+                case (Abstractions.Enums.MediaTrackType.Subtitle):
+                    typeOut = Android.Media.MediaTrackType.Subtitle;
+                    break;
+                case (Abstractions.Enums.MediaTrackType.Metadata):
+                    typeOut = Android.Media.MediaTrackType.Metadata;
+                    break;
+                default:
+                    throw new NotImplementedException($"ToMediaTrackTypeAndroid conversion not found for {typeInt}");
+            }
+
+            return typeOut;
+        }
+
+        
+        #endregion
     }
 }

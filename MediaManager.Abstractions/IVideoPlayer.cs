@@ -1,4 +1,5 @@
-﻿using Plugin.MediaManager.Abstractions.Enums;
+using Plugin.MediaManager.Abstractions.Enums;
+using System.Collections.Generic;
 
 namespace Plugin.MediaManager.Abstractions
 {
@@ -21,5 +22,13 @@ namespace Plugin.MediaManager.Abstractions
         /// The aspect mode of the video
         /// </summary>
         VideoAspectMode AspectMode { get; set; }
+        
+        int TrackCount { get; }
+
+        int GetSelectedTrack(Abstractions.Enums.MediaTrackType trackType);
+
+        bool SetTrack(int trackIndex);
+
+        IReadOnlyCollection<IMediaTrackInfo> TrackInfoList { get; }
     }
 }

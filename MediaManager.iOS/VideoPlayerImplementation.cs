@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +12,7 @@ using Foundation;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
+using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
@@ -178,7 +181,8 @@ namespace Plugin.MediaManager
             #if __IOS__ || __TVOS__
             var avSession = AVAudioSession.SharedInstance();
 
-            // By setting the Audio Session category to AVAudioSessionCategorPlayback, audio will continue to play when the silent switch is enabled, or when the screen is locked.
+            // By setting the Audio Session category to AVAudioSessionCategorPlayback,
+            //audio will continue to play when the silent switch is enabled, or when the screen is locked.
             avSession.SetCategory(AVAudioSessionCategory.Playback);
 
             NSError activationError = null;
@@ -200,7 +204,7 @@ namespace Plugin.MediaManager
                     !double.IsInfinity(totalProgress) ? totalProgress : 0,
                     Position,
                     Duration));
-            });
+            });            
         }
 
         public async Task Play(IMediaFile mediaFile = null)
@@ -238,6 +242,12 @@ namespace Plugin.MediaManager
 
                 NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification,
                                                                notification => MediaFinished?.Invoke(this, new MediaFinishedEventArgs(mediaFile)), Player.CurrentItem);
+                
+                _TrackInfoList = null;
+                _lastSelectedTrackIndex = null;
+
+                List<IMediaTrackInfo> temp = ExtractTrackInfo(nsAsset);
+                _TrackInfoList = temp == null ? null : new ReadOnlyCollection<IMediaTrackInfo>(temp);
 
                 Player.Play();
             }
@@ -276,8 +286,9 @@ namespace Plugin.MediaManager
         private void ObserveStatus()
         {
             Console.WriteLine("Status Observed Method {0}", Player.Status);
+            
             if ((Player.Status == AVPlayerStatus.ReadyToPlay) && (Status == MediaPlayerStatus.Buffering))
-            {
+            {                
                 Status = MediaPlayerStatus.Playing;
                 Player.Play();
             }
@@ -334,39 +345,181 @@ namespace Plugin.MediaManager
             {
                 var view = (VideoSurface)value;
                 if (view == null)
-                    throw new ArgumentException("VideoSurface must be a UIView");
+                    throw new ArgumentException("VideoSurface must be a UIView");               
 
                 _renderSurface = value;
                 _videoLayer = AVPlayerLayer.FromPlayer(Player);
                 _videoLayer.Frame = view.Frame;
-                _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
+
+                //_videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
+                _videoLayer.VideoGravity = ToAVLayerVideoGravity(_aspectMode);
+
                 view.Layer.AddSublayer(_videoLayer);
+            }
+        }                
+
+        public int TrackCount => _TrackInfoList?.Count ?? -1;
+
+        public int GetSelectedTrack(Abstractions.Enums.MediaTrackType trackType)
+        {
+            if (trackType != Abstractions.Enums.MediaTrackType.Audio)
+                throw new NotSupportedException($"{trackType}");
+
+            int result = -1;
+            try
+            {                
+                AVPlayerItem item = Player.CurrentItem;
+                AVAsset asset = item.Asset;
+                AVMediaSelection selection = item.CurrentMediaSelection;
+                AVMediaSelectionGroup group = asset.MediaSelectionGroupForMediaCharacteristic(AVMediaCharacteristic.Audible);
+                AVMediaSelectionOption option = selection.GetSelectedMediaOption(group);
+                
+                foreach (var track in _TrackInfoList)
+                {
+                    if (track.TrackIndex != null && track.Tag == option)
+                    {
+                        result = track.TrackIndex.Value;
+                        break;
+                    }
+                }
+                return result;
+            }
+            catch (Exception e)
+            {                
+                throw;
             }
         }
 
-        private VideoAspectMode _aspectMode;
+        private int? _lastSelectedTrackIndex = null;
+        /// <summary>
+        /// Do NOT call this in UI thread otherwise it will freeze the video rendering
+        /// </summary>
+        /// <param name="trackIndex"></param>
+        /// <returns></returns>
+        public bool SetTrack(int trackIndex)
+        {
+            if (_lastSelectedTrackIndex != null && _lastSelectedTrackIndex == trackIndex)
+                return true;
+            
+            try
+            {
+                int count = TrackCount;
+                if (count <= 0 || trackIndex >= count)
+                    //throw new ArgumentOutOfRangeException($"Track index {trackIndex} is out of range [0, {count})");
+                    return false;
+
+                AVPlayerItem item = Player.CurrentItem;
+                AVAsset asset = item.Asset;
+
+                AVMediaSelectionGroup group = asset.MediaSelectionGroupForMediaCharacteristic(AVMediaCharacteristic.Audible);
+
+                AVMediaSelectionOption option = (AVMediaSelectionOption) _TrackInfoList[trackIndex].Tag;
+
+                item.SelectMediaOption(option, group);
+                
+                _lastSelectedTrackIndex = trackIndex;
+
+                return true;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private ReadOnlyCollection<IMediaTrackInfo> _TrackInfoList;
+        public IReadOnlyCollection<IMediaTrackInfo> TrackInfoList => _TrackInfoList;
+
         private IVolumeManager _volumeManager;
 
-        public VideoAspectMode AspectMode { 
-            get {
-                return _aspectMode;
-            } set {
-                switch (value)
-                {
-                    case VideoAspectMode.None:
-                        _videoLayer.VideoGravity = AVLayerVideoGravity.Resize;
-                        break;
-                    case VideoAspectMode.AspectFit:
-                        _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
-                        break;
-                    case VideoAspectMode.AspectFill:
-                        _videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+        private VideoAspectMode _aspectMode = VideoAspectMode.None;
+        public VideoAspectMode AspectMode
+        { 
+            get { return _aspectMode; }
+            set
+            {                
+                _videoLayer.VideoGravity = ToAVLayerVideoGravity(value);
                 _aspectMode = value;
             }
         }
+
+        #region Helpers
+        private static AVLayerVideoGravity ToAVLayerVideoGravity(VideoAspectMode input)
+        {
+            AVLayerVideoGravity output = AVLayerVideoGravity.Resize;
+            switch (input)
+            {
+                case VideoAspectMode.None:
+                    output = AVLayerVideoGravity.Resize;
+                    break;
+                case VideoAspectMode.AspectFit:
+                    output = AVLayerVideoGravity.ResizeAspect;
+                    break;
+                case VideoAspectMode.AspectFill:
+                    output = AVLayerVideoGravity.ResizeAspectFill;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            return output;
+        }
+
+        private static List<IMediaTrackInfo> ExtractTrackInfo(AVAsset asset)
+        {
+            AVMediaSelectionGroup group = asset?.MediaSelectionGroupForMediaCharacteristic(AVMediaCharacteristic.Audible);
+            if (group == null)
+                return null;
+
+            AVMediaSelectionOption[] options = group.Options;
+
+            List<IMediaTrackInfo> result = null;
+            if (options != null && options.Any())
+            {
+                result = new List<IMediaTrackInfo>();
+
+                for (int i = 0; i < options.Length; i++)
+                {
+                    AVMediaSelectionOption option = options[i];
+                    
+                    var audioTrack = new MediaTrackInfo()
+                    {
+                        Tag = option,
+                        DisplayName=option.DisplayName,
+                        TrackIndex = i,
+                        TrackId = i.ToString(),
+                        //LanguageCode = 
+                        LanguageTag = option.ExtendedLanguageTag,
+                        TrackType = ToMediaTrackTypeAsbtract(option.MediaType)
+                    };
+                    result.Add(audioTrack);
+                }
+            }           
+            return result;
+        }
+
+        private static Abstractions.Enums.MediaTrackType ToMediaTrackTypeAsbtract(string avMediaType)
+        {
+            MediaTrackType typeOut = MediaTrackType.Unknown;
+            if (string.IsNullOrWhiteSpace(avMediaType))
+                return typeOut;
+            
+            avMediaType = avMediaType.ToLower();            
+            if (string.CompareOrdinal(avMediaType, AVMediaType.Video.ToLower(NSLocale.SystemLocale)) == 0)
+                typeOut = MediaTrackType.Video;
+            else if (string.CompareOrdinal(avMediaType, AVMediaType.Audio.ToLower(NSLocale.SystemLocale)) == 0)
+                typeOut = MediaTrackType.Audio;
+            else if (string.CompareOrdinal(avMediaType, AVMediaType.Timecode.ToLower(NSLocale.SystemLocale)) == 0)
+                typeOut = MediaTrackType.Timedtext;
+            else if (string.CompareOrdinal(avMediaType, AVMediaType.Subtitle.ToLower(NSLocale.SystemLocale)) == 0)
+                typeOut = MediaTrackType.Subtitle;
+            else if (string.CompareOrdinal(avMediaType, AVMediaType.Metadata.ToLower(NSLocale.SystemLocale)) == 0)
+                typeOut = MediaTrackType.Metadata;
+            else
+            {
+                throw new NotImplementedException($"ToMediaTrackTypeAsbtract conversion not found for {avMediaType}");
+            }
+            return typeOut;
+        }
+        #endregion
     }
 }

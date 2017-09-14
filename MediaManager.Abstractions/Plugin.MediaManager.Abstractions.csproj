@@ -36,9 +36,23 @@
     <DocumentationFile>bin\Release\Plugin.MediaManager.Abstractions.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ad-Hoc|AnyCPU'">
+    <OutputPath>bin\Ad-Hoc\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Plugin.MediaManager.Abstractions.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>1591</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enums\MediaTrackType.cs" />
+    <Compile Include="IMediaTrackInfo.cs" />
     <Compile Include="IMediaFileMetadata.cs" />
     <Compile Include="IMediaManager.cs" />
+    <Compile Include="Implementations\MediaTrackInfo.cs" />
     <Compile Include="Implementations\MediaFileMetadata.cs" />
     <Compile Include="IPlaybackManager.cs" />
     <Compile Include="IVideoSurface.cs" />
@@ -73,9 +87,7 @@
     <Compile Include="Implementations\PlaybackController.cs" />
     <Compile Include="Enums\ResourceAvailability.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -25,6 +25,11 @@ namespace Plugin.MediaManager
         private MediaPlayer _mediaPlayer;
         private TimeSpan _buffered = TimeSpan.Zero;
 
+        public MediaPlayerService()
+        {
+            
+        }
+
         public override TimeSpan Position
         {
             get
