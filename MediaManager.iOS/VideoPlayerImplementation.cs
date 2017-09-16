@@ -354,7 +354,7 @@ namespace Plugin.MediaManager
                 //_videoLayer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
                 _videoLayer.VideoGravity = ToAVLayerVideoGravity(_aspectMode);
 
-                view.Layer.AddSublayer(_videoLayer);
+                view.Layer.AddSublayer(_videoLayer);                
             }
         }                
 
@@ -389,42 +389,43 @@ namespace Plugin.MediaManager
                 throw;
             }
         }
-
+        
         private int? _lastSelectedTrackIndex = null;
         /// <summary>
         /// Do NOT call this in UI thread otherwise it will freeze the video rendering
         /// </summary>
         /// <param name="trackIndex"></param>
         /// <returns></returns>
-        public bool SetTrack(int trackIndex)
+        public Task<bool> SetTrack(int trackIndex)
         {
-            if (_lastSelectedTrackIndex != null && _lastSelectedTrackIndex == trackIndex)
-                return true;
-            
-            try
+            return Task.Run<bool>(() =>
             {
-                int count = TrackCount;
-                if (count <= 0 || trackIndex >= count)
-                    //throw new ArgumentOutOfRangeException($"Track index {trackIndex} is out of range [0, {count})");
-                    return false;
+                if (_lastSelectedTrackIndex != null && _lastSelectedTrackIndex == trackIndex)
+                    return true;
+                try
+                {
+                    int count = TrackCount;
+                    if (count <= 0 || trackIndex >= count)
+                        return false;
 
-                AVPlayerItem item = Player.CurrentItem;
-                AVAsset asset = item.Asset;
+                    AVPlayerItem item = Player.CurrentItem;
+                    AVAsset asset = item.Asset;
 
-                AVMediaSelectionGroup group = asset.MediaSelectionGroupForMediaCharacteristic(AVMediaCharacteristic.Audible);
+                    AVMediaSelectionGroup group = asset.MediaSelectionGroupForMediaCharacteristic(AVMediaCharacteristic.Audible);
 
-                AVMediaSelectionOption option = (AVMediaSelectionOption) _TrackInfoList[trackIndex].Tag;
+                    AVMediaSelectionOption option = (AVMediaSelectionOption)_TrackInfoList[trackIndex].Tag;
 
-                item.SelectMediaOption(option, group);
-                
-                _lastSelectedTrackIndex = trackIndex;
+                    item.SelectMediaOption(option, group);
 
-                return true;
-            }
-            catch
-            {
-                throw;
-            }
+                    _lastSelectedTrackIndex = trackIndex;
+
+                    return true;
+                }
+                catch
+                {
+                    throw;
+                }
+            });
         }
 
         private ReadOnlyCollection<IMediaTrackInfo> _TrackInfoList;

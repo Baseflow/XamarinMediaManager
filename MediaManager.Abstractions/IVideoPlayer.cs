@@ -1,5 +1,6 @@
 using Plugin.MediaManager.Abstractions.Enums;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Plugin.MediaManager.Abstractions
 {
@@ -27,7 +28,12 @@ namespace Plugin.MediaManager.Abstractions
 
         int GetSelectedTrack(Abstractions.Enums.MediaTrackType trackType);
 
-        bool SetTrack(int trackIndex);
+        /// <summary>
+        /// Select audio track
+        /// </summary>
+        /// <param name="trackIndex"></param>
+        /// <returns></returns>
+        Task<bool> SetTrack(int trackIndex);
 
         IReadOnlyCollection<IMediaTrackInfo> TrackInfoList { get; }
     }

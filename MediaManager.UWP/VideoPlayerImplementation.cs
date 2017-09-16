@@ -274,7 +274,7 @@ namespace Plugin.MediaManager
             throw new NotImplementedException();
         }
 
-        public bool SetTrack(int trackIndex)
+        public Task<bool> SetTrack(int trackIndex)
         {
             throw new NotImplementedException();
         }

@@ -138,38 +138,40 @@ namespace Plugin.MediaManager
             int trackIndex = _mediaPlayer.GetSelectedTrack(ToMediaTrackTypeAndroid(trackType));
             return trackIndex;
         }
-
+        
         private int? _lastSelectedTrackIndex = null;
         /// <summary>
         /// Do NOT call this in UI thread otherwise it will freeze the video rendering
         /// </summary>
         /// <param name="trackIndex"></param>
         /// <returns></returns>
-        public bool SetTrack(int trackIndex)
+        public Task<bool> SetTrack(int trackIndex)
         {
-            if (_lastSelectedTrackIndex != null && _lastSelectedTrackIndex == trackIndex)
-                return true;
-
-            if (_mediaPlayer == null)
-                return false;
-
-            try
+            return Task.Run<bool>(() =>
             {
-                int count = TrackCount;
-                if (count <= 0 || trackIndex >= count)
-                    //throw new ArgumentOutOfRangeException($"Track index {trackIndex} is out of range [0, {count})");
+                if (_lastSelectedTrackIndex != null && _lastSelectedTrackIndex == trackIndex)
+                    return true;
+                if (_mediaPlayer == null)
                     return false;
+                try
+                {
+                    int count = TrackCount;
+                    if (count <= 0 || trackIndex >= count)
+                        return false;
 
-                _mediaPlayer.SelectTrack(trackIndex);
+                    _mediaPlayer.SelectTrack(trackIndex);
 
-                _lastSelectedTrackIndex = trackIndex;
+                    //Console.WriteLine($"SelectTrack to {trackIndex}");
 
-                return true;
-            }
-            catch
-            {
-                throw;
-            }            
+                    _lastSelectedTrackIndex = trackIndex;
+
+                    return true;
+                }
+                catch
+                {
+                    throw;
+                }
+            });
         }
         #endregion
 
@@ -274,7 +276,7 @@ namespace Plugin.MediaManager
             VideoViewCanvas.SetOnCompletionListener(this);
             VideoViewCanvas.SetOnErrorListener(this);
             VideoViewCanvas.SetOnPreparedListener(this);
-            VideoViewCanvas.SetOnInfoListener(this);
+            VideoViewCanvas.SetOnInfoListener(this);            
         }
         
         public async Task Play(IMediaFile mediaFile = null)
