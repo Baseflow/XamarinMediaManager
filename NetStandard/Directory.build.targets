@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>$(DefineConstants);PORTABLE</DefineConstants>
+    <DefineConstants>$(DefineConstants);PORTABLE;NETSTANDARD_20</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'net46'">
     <DefineConstants>$(DefineConstants);NET_46;XAML</DefineConstants>

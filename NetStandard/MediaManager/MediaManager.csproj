@@ -4,7 +4,12 @@
     <AssemblyName>MediaManager</AssemblyName>
     <RootNamespace>MediaManager</RootNamespace>
     <Description></Description>
-    <PackageId>MediaManager</PackageId>
+    <PackageId>Plugin.MediaManager</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseUrl>https://github.com/martijn00/XamarinMediaManager/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/martijn00/XamarinMediaManager</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/martijn00/XamarinMediaManager/master/icon_MediaManager.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/martijn00/XamarinMediaManager</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
