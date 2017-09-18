@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net46;uap10.0;Xamarin.iOS10;Xamarin.Mac20;MonoAndroid70</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;uap10.0;Xamarin.iOS10;Xamarin.Mac20;MonoAndroid70</TargetFrameworks>
     <AssemblyName>MediaManager</AssemblyName>
     <RootNamespace>MediaManager</RootNamespace>
     <Description></Description>
@@ -29,7 +29,7 @@
     <Compile Include="Platforms\net46\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'!='netstandard1.1'">
+  <ItemGroup Condition="'$(TargetFramework)'!='netstandard2.0'">
     <Compile Include="Platforms\shared\**\*.cs" />    
   </ItemGroup>
 
@@ -56,7 +56,7 @@
     <Compile Include="Platforms\xamarin-common\**\*.cs" />
     <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="25.4.0.2" />
     <PackageReference Include="Xamarin.Android.Support.V7.AppCompat" Version="25.4.0.2" />
-  </ItemGroup>  
+  </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
@@ -64,6 +64,10 @@
 
   <ItemGroup>
     <PackageReference Update="SourceLink.Create.CommandLine" Version="2.2.1" />
+  </ItemGroup>  
+
+  <ItemGroup>
+    <Folder Include="Platforms\netstandard2.0\" />
   </ItemGroup>
   
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
