@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net46;uap10.0;Xamarin.iOS10;Xamarin.Mac20;MonoAndroid70</TargetFrameworks>
+    <AssemblyName>MediaManager</AssemblyName>
+    <RootNamespace>MediaManager</RootNamespace>
+    <Description></Description>
+    <PackageId>MediaManager</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Platforms\**\*.cs" />
+    <None Include="Platforms\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <Compile Include="Platforms\netstandard2.0\**\*.cs" />
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+    <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
+    <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+    <Compile Include="Platforms\net46\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'!='netstandard1.1'">
+    <Compile Include="Platforms\shared\**\*.cs" />    
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0' ">
+    <Compile Include="Platforms\windows-common\**\*.cs" />
+    <Compile Include="Platforms\uap10.0\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
+    <Compile Include="Platforms\apple-common\**\*.cs" />
+    <Compile Include="Platforms\ios\**\*.cs" />
+    <Compile Include="Platforms\xamarin-common\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.Mac20' ">
+    <Compile Include="Platforms\apple-common\**\*.cs" />
+    <Compile Include="Platforms\mac\**\*.cs" />
+    <Compile Include="Platforms\xamarin-common\**\*.cs" />
+    <Reference Include="System.Runtime.Serialization" />    
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid70' ">
+    <Compile Include="Platforms\android\**\*.cs" />
+    <Compile Include="Platforms\xamarin-common\**\*.cs" />
+    <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="25.4.0.2" />
+    <PackageReference Include="Xamarin.Android.Support.V7.AppCompat" Version="25.4.0.2" />
+  </ItemGroup>  
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>  
+
+  <ItemGroup>
+    <PackageReference Update="SourceLink.Create.CommandLine" Version="2.2.1" />
+  </ItemGroup>
+  
+  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+</Project>
