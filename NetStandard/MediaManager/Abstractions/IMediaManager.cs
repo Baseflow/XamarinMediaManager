@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
@@ -66,6 +67,10 @@ namespace Plugin.MediaManager.Abstractions
         /// Creates new MediaFile object, adds it to the queue and starts playing
         /// </summary>
         Task Play(string url);
+
+        //Task Play(System.IO.FileInfo file);
+
+        //Task Play(System.IO.Stream stream);
 
         /// <summary>
         /// Creates new MediaFile object, adds it to the queue and starts playing
