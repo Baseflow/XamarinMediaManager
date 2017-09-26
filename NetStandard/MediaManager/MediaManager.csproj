@@ -10,6 +10,7 @@
     <PackageProjectUrl>https://github.com/martijn00/XamarinMediaManager</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/martijn00/XamarinMediaManager/master/icon_MediaManager.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/martijn00/XamarinMediaManager</RepositoryUrl>
+    <Version>1.0.0-beta1</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <Compile Include="Platforms\netstandard2.0\**\*.cs" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
     <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
@@ -59,12 +59,12 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid70' ">
-    <Compile Include="Platforms\android\**\*.cs" />
+    <Compile Include="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\xamarin-common\**\*.cs" />
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.5.3" />
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.5.3" />
-    <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="25.4.0.2" />
-    <PackageReference Include="Xamarin.Android.Support.V7.AppCompat" Version="25.4.0.2" />
+    <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="26.0.2-beta1" />
+    <PackageReference Include="Xamarin.Android.Support.V7.AppCompat" Version="26.0.2-beta1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -73,10 +73,6 @@
 
   <ItemGroup>
     <PackageReference Update="SourceLink.Create.CommandLine" Version="2.2.1" />
-  </ItemGroup>  
-
-  <ItemGroup>
-    <Folder Include="Platforms\netstandard2.0\" />
   </ItemGroup>
   
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />

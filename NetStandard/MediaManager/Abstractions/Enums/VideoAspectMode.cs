@@ -1,4 +1,4 @@
-﻿namespace Plugin.MediaManager.Abstractions.Enums
+﻿namespace MediaManager.Abstractions.Enums
 {
     public enum VideoAspectMode
     {

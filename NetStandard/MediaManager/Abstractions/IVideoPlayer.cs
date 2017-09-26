@@ -1,6 +1,6 @@
-﻿using Plugin.MediaManager.Abstractions.Enums;
+﻿using MediaManager.Abstractions.Enums;
 
-namespace Plugin.MediaManager.Abstractions
+namespace MediaManager.Abstractions
 {
     /// <summary>
     /// Plays the video

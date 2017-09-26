@@ -1,4 +1,4 @@
-﻿using Plugin.MediaManager.Abstractions;
+﻿using MediaManager.Abstractions;
 using System;
 using System.Diagnostics;
 

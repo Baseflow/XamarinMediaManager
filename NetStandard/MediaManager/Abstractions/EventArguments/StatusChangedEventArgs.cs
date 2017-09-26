@@ -1,14 +1,14 @@
 ﻿using System;
-using Plugin.MediaManager.Abstractions.Enums;
+using MediaManager.Abstractions.Enums;
 
-namespace Plugin.MediaManager.Abstractions.EventArguments
+namespace MediaManager.Abstractions.EventArguments
 {
     public class StatusChangedEventArgs : EventArgs
     {
-        public StatusChangedEventArgs(MediaPlayerStatus status)
+        public StatusChangedEventArgs(PlaybackState status)
         {
             Status = status;
         }
-        public MediaPlayerStatus Status { get; }
+        public PlaybackState Status { get; }
     }
 }

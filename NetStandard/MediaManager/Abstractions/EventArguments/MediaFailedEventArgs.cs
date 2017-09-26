@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Plugin.MediaManager.Abstractions.EventArguments
+namespace MediaManager.Abstractions.EventArguments
 {
     public class MediaFailedEventArgs : EventArgs
     {

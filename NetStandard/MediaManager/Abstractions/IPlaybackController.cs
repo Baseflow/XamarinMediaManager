@@ -1,14 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using MediaManager.Abstractions.Enums;
+using MediaManager.Abstractions.Enums;
 
-namespace Plugin.MediaManager.Abstractions
+namespace MediaManager.Abstractions
 {
     public interface IPlaybackController
     {
-        /// <summary>
-        /// Plays or pauses the currentl MediaFile
-        /// </summary>
-        Task PlayPause();
-
         /// <summary>
         /// Plays the current MediaFile
         /// </summary>
@@ -18,6 +16,11 @@ namespace Plugin.MediaManager.Abstractions
         /// Pauses the current MediaFile
         /// </summary>
         Task Pause();
+
+        /// <summary>
+        /// Plays or pauses the current MediaFile
+        /// </summary>
+        Task PlayPause();
 
         /// <summary>
         /// Stops playing
@@ -40,6 +43,10 @@ namespace Plugin.MediaManager.Abstractions
         /// <returns></returns>
         Task PlayNext();
 
+        Task PlayFromQueueByIndex(int index);
+
+        Task PlayFromQueueByMediaFile(IMediaItem file);
+
         /// <summary>
         /// Seeks to the start of the current MediaFile
         /// </summary>
@@ -48,27 +55,30 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Seeks forward a fixed amount of seconds of the current MediaFile
         /// </summary>
-        Task StepForward();
+        Task SeekForward(TimeSpan? time = null);
 
         /// <summary>
         /// Seeks backward a fixed amount of seconds of the current MediaFile
         /// </summary>
-        Task StepBackward();
+        Task SeekBackward(TimeSpan? time = null);
 
         /// <summary>
         /// Seeks to the specified amount of seconds
         /// </summary>
         /// <param name="seconds"></param>
-        Task SeekTo(double seconds);
+        Task SeekTo(TimeSpan position);
 
         /// <summary>
         /// Toggles between the different repeat: modes None, RepeatOne and RepeatAll
         /// </summary>
-        void ToggleRepeat();
+        void SetRepeatMode(RepeatMode type);
 
         /// <summary>
         /// Enables or disables shuffling
         /// </summary>
-        void ToggleShuffle();
+        void SetShuffleMode(ShuffleMode type);
+
+        //TODO: add rating implementation
+        void SetRating();
     }
 }

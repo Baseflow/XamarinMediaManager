@@ -1,4 +1,4 @@
-﻿namespace Plugin.MediaManager.Abstractions
+﻿namespace MediaManager.Abstractions
 {
     public interface IAudioPlayer : IPlaybackManager
     {

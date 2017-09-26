@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Plugin.MediaManager.Abstractions
+namespace MediaManager.Abstractions
 {
     public interface IMediaExtractor
     {
@@ -8,6 +8,6 @@ namespace Plugin.MediaManager.Abstractions
         /// Returns the same file with the extracted media information
         /// </summary>
         /// <param name="mediaFile">The media file</param>
-        Task<IMediaFile> ExtractMediaInfo(IMediaFile mediaFile);
+        Task<IMediaItem> ExtractMediaInfo(IMediaItem mediaFile);
     }
 }

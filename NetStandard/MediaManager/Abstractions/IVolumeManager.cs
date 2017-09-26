@@ -1,6 +1,6 @@
-﻿using Plugin.MediaManager.Abstractions.EventArguments;
+﻿using MediaManager.Abstractions.EventArguments;
 
-namespace Plugin.MediaManager.Abstractions
+namespace MediaManager.Abstractions
 {
     public delegate void VolumeChangedEventHandler(object sender, VolumeChangedEventArgs e);
 

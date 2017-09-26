@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
-using Plugin.MediaManager.Abstractions.Enums;
-using Plugin.MediaManager.Abstractions.EventArguments;
+using MediaManager.Abstractions.Enums;
+using MediaManager.Abstractions.EventArguments;
 
-namespace Plugin.MediaManager.Abstractions
+namespace MediaManager.Abstractions
 {
     public delegate void StatusChangedEventHandler(object sender, StatusChangedEventArgs e);
 
@@ -19,9 +20,34 @@ namespace Plugin.MediaManager.Abstractions
     public interface IPlaybackManager
     {
         /// <summary>
-        /// Reading the current status of the player
+        /// Raised when the status changes
         /// </summary>
-        MediaPlayerStatus Status { get; }
+        event StatusChangedEventHandler Status;
+
+        /// <summary>
+        /// Raised at least every second when the player is playing.
+        /// </summary>
+        event PlayingChangedEventHandler Playing;
+
+        /// <summary>
+        /// Raised each time the buffering is updated by the player.
+        /// </summary>
+        event BufferingChangedEventHandler Buffering;
+
+        /// <summary>
+        /// Raised when media is finished playing.
+        /// </summary>
+        event MediaFinishedEventHandler Finished;
+
+        /// <summary>
+        /// Raised when media is failed playing.
+        /// </summary>
+        event MediaFailedEventHandler Failed;
+
+        /// <summary>
+        /// Reading the current state of the player
+        /// </summary>
+        PlaybackState State { get; }
 
         /// <summary>
         /// Gets the players position
@@ -40,34 +66,18 @@ namespace Plugin.MediaManager.Abstractions
         TimeSpan Buffered { get; }
 
         /// <summary>
-        /// Raised when the status changes
+        /// Creates new MediaFile object, adds it to the queue and starts playing
         /// </summary>
-        event StatusChangedEventHandler StatusChanged;
+        Task Play(string url);
+
+        Task Play(FileInfo file);
+
+        Task Play(Stream stream);
 
         /// <summary>
-        /// Raised at least every second when the player is playing.
+        /// Plays the media item
         /// </summary>
-        event PlayingChangedEventHandler PlayingChanged;
-
-        /// <summary>
-        /// Raised each time the buffering is updated by the player.
-        /// </summary>
-        event BufferingChangedEventHandler BufferingChanged;
-
-        /// <summary>
-        /// Raised when media is finished playing.
-        /// </summary>
-        event MediaFinishedEventHandler MediaFinished;
-
-        /// <summary>
-        /// Raised when media is failed playing.
-        /// </summary>
-        event MediaFailedEventHandler MediaFailed;
-
-        /// <summary>
-        /// Adds MediaFile to the Queue and starts playing
-        /// </summary>
-        Task Play(IMediaFile mediaFile = null);
+        Task Play(IMediaItem item);
 
         /// <summary>
         /// Stops playing but retains position

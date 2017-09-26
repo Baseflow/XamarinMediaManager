@@ -1,4 +1,4 @@
-﻿namespace Plugin.MediaManager.Abstractions
+﻿namespace MediaManager.Abstractions
 {
     /// <summary>
     /// Used to pass through the native view

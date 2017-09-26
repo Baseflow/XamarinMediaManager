@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace Plugin.MediaManager.Abstractions.EventArguments
+namespace MediaManager.Abstractions.EventArguments
 {
     public class MediaFileChangedEventArgs : EventArgs
     {
-        public MediaFileChangedEventArgs(IMediaFile file)
+        public MediaFileChangedEventArgs(IMediaItem file)
         {
             File = file;
         }
 
-        public IMediaFile File { get; set; }
+        public IMediaItem File { get; set; }
     }
 }
