@@ -221,7 +221,9 @@ namespace Plugin.MediaManager
                 // Start off with the status LOADING.
                 Status = MediaPlayerStatus.Buffering;
 
-                var nsAsset = AVAsset.FromUrl(nsUrl);
+                var options = MediaFileUrlHelper.GetOptionsWithHeaders(RequestHeaders);
+
+                var nsAsset = AVUrlAsset.Create(nsUrl, options);
                 var streamingItem = AVPlayerItem.FromAsset(nsAsset);
 
                 Player.CurrentItem?.RemoveObserver(this, new NSString("status"));
