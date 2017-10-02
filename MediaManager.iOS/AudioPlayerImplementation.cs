@@ -311,7 +311,7 @@ namespace Plugin.MediaManager
 
             if (RequestHeaders != null && RequestHeaders.Any())
             {
-                var options = GetOptionsWithHeaders(RequestHeaders);
+                var options = MediaFileUrlHelper.GetOptionsWithHeaders(RequestHeaders);
 
                 asset = AVUrlAsset.Create(url, options);
             }
@@ -323,25 +323,6 @@ namespace Plugin.MediaManager
             var playerItem = AVPlayerItem.FromAsset(asset);
 
             return playerItem;
-        }
-
-        private AVUrlAssetOptions GetOptionsWithHeaders(IDictionary<string, string> headers)
-        {
-            var nativeHeaders = new NSMutableDictionary();
-
-            foreach (var header in headers)
-            {
-                nativeHeaders.Add((NSString)header.Key, (NSString)header.Value);
-            }
-
-            var nativeHeadersKey = (NSString) "AVURLAssetHTTPHeaderFieldsKey";
-
-            var options = new AVUrlAssetOptions(NSDictionary.FromObjectAndKey(
-                nativeHeaders,
-                nativeHeadersKey
-            ));
-
-            return options;
         }
 
         public override void ObserveValue(NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr context)

@@ -221,7 +221,7 @@ namespace Plugin.MediaManager
                 // Start off with the status LOADING.
                 Status = MediaPlayerStatus.Buffering;
 
-                var options = GetOptionsWithHeaders(RequestHeaders);
+                var options = MediaFileUrlHelper.GetOptionsWithHeaders(RequestHeaders);
 
                 var nsAsset = AVUrlAsset.Create(nsUrl, options);
                 var streamingItem = AVPlayerItem.FromAsset(nsAsset);
@@ -319,25 +319,6 @@ namespace Plugin.MediaManager
                 BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
             }
         }
-
-		private AVUrlAssetOptions GetOptionsWithHeaders(IDictionary<string, string> headers)
-		{
-			var nativeHeaders = new NSMutableDictionary();
-
-			foreach (var header in headers)
-			{
-				nativeHeaders.Add((NSString)header.Key, (NSString)header.Value);
-			}
-
-			var nativeHeadersKey = (NSString)"AVURLAssetHTTPHeaderFieldsKey";
-
-			var options = new AVUrlAssetOptions(NSDictionary.FromObjectAndKey(
-				nativeHeaders,
-				nativeHeadersKey
-			));
-
-			return options;
-		}
 
         /// <summary>
         /// True when RenderSurface has been initialized and ready for rendering
