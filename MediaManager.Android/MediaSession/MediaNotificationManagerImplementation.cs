@@ -1,16 +1,12 @@
-using System;
-using System.Runtime.InteropServices;
 using Android;
 using Android.App;
 using Android.Content;
-using Android.Content.PM;
 using Android.Graphics;
 using Android.Support.V4.App;
-using Android.Support.V4.Content;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
-using Plugin.MediaManager.Abstractions.Implementations;
+using System;
 using NotificationCompat = Android.Support.V7.App.NotificationCompat;
 
 namespace Plugin.MediaManager
@@ -18,7 +14,10 @@ namespace Plugin.MediaManager
     internal class MediaNotificationManagerImplementation : IMediaNotificationManager
     {
         // private MediaSessionManagerImplementation _sessionHandler;
+        private readonly IMediaQueue mediaQueue;
+
         private Intent _intent;
+
         private PendingIntent _pendingCancelIntent;
         private PendingIntent _pendingIntent;
         private NotificationCompat.MediaStyle _notificationStyle = new NotificationCompat.MediaStyle();
@@ -26,7 +25,7 @@ namespace Plugin.MediaManager
         private Context _appliactionContext;
         private NotificationCompat.Builder _builder;
 
-        public MediaNotificationManagerImplementation(Context appliactionContext, MediaSessionCompat.Token sessionToken, Type serviceType)
+        public MediaNotificationManagerImplementation(Context appliactionContext, MediaSessionCompat.Token sessionToken, Type serviceType, IMediaQueue mediaQueue)
         {
             _sessionToken = sessionToken;
             _appliactionContext = appliactionContext;
@@ -35,6 +34,7 @@ namespace Plugin.MediaManager
                 _appliactionContext.PackageManager.GetLaunchIntentForPackage(_appliactionContext.PackageName);
             _pendingIntent = PendingIntent.GetActivity(_appliactionContext, 0, mainActivity,
                 PendingIntentFlags.UpdateCurrent);
+            this.mediaQueue = mediaQueue;
         }
 
         /// <summary>
@@ -75,7 +75,6 @@ namespace Plugin.MediaManager
                 .Notify(MediaServiceBase.NotificationId, _builder.Build());
         }
 
-
         public void StopNotifications()
         {
             NotificationManagerCompat nm = NotificationManagerCompat.From(_appliactionContext);
@@ -105,7 +104,6 @@ namespace Plugin.MediaManager
                 Console.WriteLine(ex.Message);
                 StopNotifications();
             }
-
         }
 
         private void SetMetadata(IMediaFile mediaFile)
@@ -131,12 +129,24 @@ namespace Plugin.MediaManager
 
         private void AddActionButtons(bool mediaIsPlaying)
         {
+            // Add previous/next button based on media queue
+            var canGoPrevious = mediaQueue?.HasPrevious() ?? false;
+            var canGoNext = mediaQueue?.HasNext() ?? false;
+
             _builder.MActions.Clear();
-            _builder.AddAction(GenerateActionCompat(Resource.Drawable.IcMediaPrevious, "Previous", MediaServiceBase.ActionPrevious));
+            if (canGoPrevious)
+            {
+                _builder.AddAction(GenerateActionCompat(Resource.Drawable.IcMediaPrevious, "Previous",
+                    MediaServiceBase.ActionPrevious));
+            }
             _builder.AddAction(mediaIsPlaying
                 ? GenerateActionCompat(Resource.Drawable.IcMediaPause, "Pause", MediaServiceBase.ActionPause)
                 : GenerateActionCompat(Resource.Drawable.IcMediaPlay, "Play", MediaServiceBase.ActionPlay));
-            _builder.AddAction(GenerateActionCompat(Resource.Drawable.IcMediaNext, "Next", MediaServiceBase.ActionNext));
+            if (canGoNext)
+            {
+                _builder.AddAction(GenerateActionCompat(Resource.Drawable.IcMediaNext, "Next",
+                    MediaServiceBase.ActionNext));
+            }
         }
     }
 }
