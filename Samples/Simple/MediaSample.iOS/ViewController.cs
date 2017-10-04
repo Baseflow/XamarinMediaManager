@@ -112,15 +112,15 @@ namespace MediaSample.iOS
 
                         switch (MediaPlayer.MediaQueue.Repeat)
                         {
-                            case RepeatType.None:
+                            case RepeatMode.None:
                                 iconState = "static";
                                 break;
 
-                            case RepeatType.RepeatAll:
+                            case RepeatMode.RepeatAll:
                                 iconState = "active";
                                 break;
 
-                            case RepeatType.RepeatOne:
+                            case RepeatMode.RepeatOne:
                                 iconState = "one_active";
                                 break;
 
@@ -190,9 +190,9 @@ namespace MediaSample.iOS
 
             var sampleFilePath = NSBundle.MainBundle.PathForResource("local-sample", "mp3");
 
-            _viewModel.Queue.Add(new MediaFile
+            _viewModel.Queue.Add(new MediaItem
             {
-                Type = MediaFileType.Audio,
+                Type = MediaItemType.Audio,
                 Url = sampleFilePath,
                 Availability = ResourceAvailability.Local
             });

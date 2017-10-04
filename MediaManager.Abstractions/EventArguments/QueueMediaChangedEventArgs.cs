@@ -4,11 +4,11 @@ namespace Plugin.MediaManager.Abstractions.EventArguments
 {
     public class QueueMediaChangedEventArgs : EventArgs
     {
-        public QueueMediaChangedEventArgs(IMediaFile file)
+        public QueueMediaChangedEventArgs(IMediaItem item)
         {
-            File = file;
+            Item = item;
         }
 
-        public IMediaFile File { get; set; }
+        public IMediaItem Item { get; set; }
     }
 }

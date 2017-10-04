@@ -37,14 +37,14 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="IMediaFileMetadata.cs" />
+    <Compile Include="IMediaItemMetadata.cs" />
     <Compile Include="IMediaManager.cs" />
-    <Compile Include="Implementations\MediaFileMetadata.cs" />
+    <Compile Include="Implementations\MediaItemMetadata.cs" />
     <Compile Include="IPlaybackManager.cs" />
     <Compile Include="IVideoSurface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IMediaQueue.cs" />
-    <Compile Include="IMediaFile.cs" />
+    <Compile Include="IMediaItem.cs" />
     <Compile Include="EventArguments\BufferingChangedEventArgs.cs" />
     <Compile Include="EventArguments\PlayingChangedEventArgs.cs" />
     <Compile Include="EventArguments\StatusChangedEventArgs.cs" />
@@ -52,7 +52,7 @@
     <Compile Include="Implementations\Helpers.cs" />
     <Compile Include="IAudioPlayer.cs" />
     <Compile Include="IVideoPlayer.cs" />
-    <Compile Include="IMediaNotificationManager.cs" />
+    <Compile Include="INotificationManager.cs" />
     <Compile Include="IMediaExtractor.cs" />
     <Compile Include="EventArguments\MediaFinishedEventArgs.cs" />
     <Compile Include="EventArguments\MediaFailedEventArgs.cs" />
@@ -61,17 +61,17 @@
     <Compile Include="Implementations\MediaManagerBase.cs" />
     <Compile Include="EventArguments\MediaFileChangedEventArgs.cs" />
     <Compile Include="EventArguments\MediaFileFailedEventArgs.cs" />
-    <Compile Include="Implementations\MediaFile.cs" />
+    <Compile Include="Implementations\MediaItem.cs" />
     <Compile Include="EventArguments\MetadataChangedEventArgs.cs" />
     <Compile Include="IVolumeManager.cs" />
     <Compile Include="EventArguments\VolumeChangedEventArgs.cs" />
-    <Compile Include="Enums\MediaFileType.cs" />
-    <Compile Include="Enums\RepeatType.cs" />
+    <Compile Include="Enums\MediaItemType.cs" />
+    <Compile Include="Enums\RepeatMode.cs" />
     <Compile Include="Enums\VideoAspectMode.cs" />
-    <Compile Include="Enums\MediaPlayerStatus.cs" />
+    <Compile Include="Enums\PlaybackState.cs" />
     <Compile Include="IPlaybackController.cs" />
     <Compile Include="Implementations\PlaybackController.cs" />
-    <Compile Include="Enums\ResourceAvailability.cs" />
+    <Compile Include="Enums\ShuffleMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Enums\" />

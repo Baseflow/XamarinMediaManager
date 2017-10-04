@@ -15,7 +15,7 @@ namespace Plugin.MediaManager
             _systemMediaTransportControls = SystemMediaTransportControls.GetForCurrentView();
         }
 
-        public void StartNotification(IMediaFile mediaFile)
+        public void StartNotification(IMediaItem mediaFile)
         {
             UpdateInfoFromMediaFile(mediaFile);
         }
@@ -25,23 +25,23 @@ namespace Plugin.MediaManager
             _systemMediaTransportControls.DisplayUpdater.ClearAll();
         }
 
-        public void UpdateNotifications(IMediaFile mediaFile, MediaPlayerStatus status)
+        public void UpdateNotifications(IMediaItem mediaFile, MediaPlayerStatus status)
         {
             UpdateInfoFromMediaFile(mediaFile);
         }
 
-        private async void UpdateInfoFromMediaFile(IMediaFile mediaFile)
+        private async void UpdateInfoFromMediaFile(IMediaItem mediaFile)
         {
             var updater = _systemMediaTransportControls.DisplayUpdater;
             if (mediaFile.Availability == ResourceAvailability.Local)
             {
                 switch (mediaFile.Type)
                 {
-                    case MediaFileType.Audio:
+                    case MediaItemType.Audio:
                         await updater.CopyFromFileAsync(MediaPlaybackType.Music,
                                 await StorageFile.GetFileFromPathAsync(mediaFile.Url));
                         break;
-                    case MediaFileType.Video:
+                    case MediaItemType.Video:
                         await updater.CopyFromFileAsync(MediaPlaybackType.Video,
                                 await StorageFile.GetFileFromPathAsync(mediaFile.Url));
                         break;

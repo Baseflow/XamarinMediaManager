@@ -1,4 +1,4 @@
-using Android.App;
+﻿using Android.App;
 using Android.OS;
 using MediaManager.Sample.Core;
 using Android.Support.V7.App;
@@ -9,17 +9,12 @@ using System.Text.RegularExpressions;
 using Android.Graphics;
 using Newtonsoft.Json.Serialization;
 using Plugin.MediaManager.Abstractions.Implementations;
-using Plugin.MediaManager.ExoPlayer;
 using Plugin.MediaManager;
 using System.Collections.Generic;
 using Plugin.MediaManager.Abstractions;
 
 namespace MediaSample.Droid
 {
-
-    using Plugin.MediaManager.Abstractions.Enums;
-    using Plugin.MediaManager.MediaSession;
-
     [Activity(Label = "MediaSample.Droid",
          MainLauncher = true,
          Icon = "@drawable/icon_play",
@@ -30,13 +25,13 @@ namespace MediaSample.Droid
     {
         private MediaPlayerViewModel ViewModel { get; set; }
 
-        private IMediaManager MediaManager => ViewModel.MediaPlayer;
+        //private IMediaManager MediaManager => ViewModel.MediaPlayer;
 
-        private IPlaybackController PlaybackController => MediaManager.PlaybackController;
+        //private IPlaybackController PlaybackController => MediaManager.PlaybackController;
 
         private Android.Support.V7.Widget.Toolbar toolbar;
 
-        private const bool ShouldUseExoPlayer = true;
+        //private const bool ShouldUseExoPlayer = true;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -54,31 +49,33 @@ namespace MediaSample.Droid
                 SupportActionBar.SetHomeButtonEnabled(true);
             }
 
-            if (ShouldUseExoPlayer)
-            {
-                ((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager = new MediaSessionManager(Application.Context, typeof(ExoPlayerAudioService), MediaManager);
-                var exoPlayer = new ExoPlayerAudioImplementation(((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager);
-                CrossMediaManager.Current.AudioPlayer = exoPlayer;
-            }
+            //if (ShouldUseExoPlayer)
+            //{
+                //((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager = new MediaSessionManager(Application.Context, typeof(ExoPlayerAudioService));
+                //var exoPlayer = new ExoPlayerAudioImplementation(((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager);
+                //CrossMediaManager.Current.AudioPlayer = exoPlayer;
+            //}
 
-            CrossMediaManager.Current.AudioPlayer.RequestHeaders = new Dictionary<string, string> { { "Test", "1234" } };
+            //CrossMediaManager.Current.AudioPlayer.RequestHeaders = new Dictionary<string, string> { { "Test", "1234" } };
 
             var previous = FindViewById<ImageButton>(Resource.Id.btnPrevious);
             previous.Click += async (sender, args) =>
             {
-                await PlaybackController.PlayPreviousOrSeekToStart();
+                //await PlaybackController.PlayPreviousOrSeekToStart();
             };
 
             var playpause = FindViewById<ToggleButton>(Resource.Id.btnPlayPause);
             playpause.Click += async (sender, args) =>
             {
-                await PlaybackController.PlayPause();
+                await CrossMediaManager.Current.Play("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3", Plugin.MediaManager.Abstractions.Enums.MediaItemType.Audio);
+
+                //await PlaybackController.PlayPause();
             };
 
             var next = FindViewById<ImageButton>(Resource.Id.btnNext);
             next.Click += async (sender, args) =>
             {
-                await PlaybackController.PlayNext();
+                //await PlaybackController.PlayNext();
             };
 
             var position = FindViewById<TextView>(Resource.Id.textview_position);
@@ -89,11 +86,11 @@ namespace MediaSample.Droid
             {
                 if (args.FromUser)
                 {
-                    PlaybackController.SeekTo(args.Progress);
+                    //PlaybackController.SeekTo(args.Progress);
                 }
             };
 
-            ViewModel.MediaPlayer.PlayingChanged += (sender, e) =>
+            /*ViewModel.MediaPlayer.PlayingChanged += (sender, e) =>
 
             {
                 RunOnUiThread(() =>
@@ -138,9 +135,9 @@ namespace MediaSample.Droid
                 {
                     try
                     {
-                        playpause.Checked = e.Status == MediaPlayerStatus.Playing || e.Status == MediaPlayerStatus.Loading ||
-                        e.Status == MediaPlayerStatus.Buffering;
-                        if (e.Status == MediaPlayerStatus.Stopped || e.Status == MediaPlayerStatus.Failed || e.Status == MediaPlayerStatus.Loading)
+                        playpause.Checked = e.Status == PlaybackState.Playing || e.Status == PlaybackState.Loading ||
+                        e.Status == PlaybackState.Buffering;
+                        if (e.Status == PlaybackState.Stopped || e.Status == PlaybackState.Failed || e.Status == PlaybackState.Loading)
                         {
                             seekbar.Progress = 0;
                             seekbar.SecondaryProgress = 0;
@@ -213,7 +210,7 @@ namespace MediaSample.Droid
                 });
             };
 
-            ViewModel.Init();
+            ViewModel.Init();*/
         }
 
     }

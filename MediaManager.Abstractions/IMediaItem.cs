@@ -13,12 +13,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Indicator for player which type of file it should play
         /// </summary>
-        MediaFileType Type { get; set; }
-
-        /// <summary>
-        /// Indicates wether the resource is locally or remotely available
-        /// </summary>
-        ResourceAvailability Availability { get; set; }
+        MediaItemType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the metadata.
@@ -26,7 +21,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <value>
         /// The metadata.
         /// </value>
-        IMediaFileMetadata Metadata { get; set; }
+        IMediaItemMetadata Metadata { get; set; }
 
         /// <summary>
         /// Raised when mediadata of MediaFile failed to update

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
@@ -28,7 +28,7 @@ namespace Plugin.MediaManager
         private MediaSource _currentMediaSource;
         private TaskCompletionSource<bool> _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
         private MediaPlayerStatus _status;
-        private IMediaFile _currentMediaFile;
+        private IMediaItem _currentMediaFile;
         private SpriteVisual _spriteVisual;
         private IVideoSurface _renderSurface;
 
@@ -103,16 +103,15 @@ namespace Plugin.MediaManager
 
             _player.PlaybackSession.SeekCompleted += (sender, args) => { };
             _player.MediaOpened += (sender, args) => { _loadMediaTaskCompletionSource.SetResult(true); };
-            int.TryParse((_player.Volume * 100).ToString(), out var vol);
-            _volumeManager.CurrentVolume = vol;
-            _volumeManager.Muted = _player.IsMuted;
+            _volumeManager.CurrentVolume = (float)_player.Volume;
+            _volumeManager.Mute = _player.IsMuted;
             _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
         }
 
         private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
         {
-            _player.Volume = (double)volumeChangedEventArgs.NewVolume;
-            _player.IsMuted = volumeChangedEventArgs.Muted;
+            _player.Volume = (double)volumeChangedEventArgs.Volume;
+            _player.IsMuted = volumeChangedEventArgs.Mute;
         }
 
         public Dictionary<string, string> RequestHeaders { get; set; }
@@ -164,7 +163,7 @@ namespace Plugin.MediaManager
                 await Pause();
         }
 
-        public async Task Play(IMediaFile mediaFile)
+        public async Task Play(IMediaItem mediaFile)
         {
             _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
             try
@@ -221,16 +220,19 @@ namespace Plugin.MediaManager
 
                 SetVideoSurface((VideoSurface)_renderSurface);
 
-                var canvas = _renderSurface as Canvas;
-                if (canvas != null)
+                if (_renderSurface != value)
                 {
-                    canvas.SizeChanged -= ResizeVideoSurface;
-                }
-                _renderSurface = value;
-                canvas = _renderSurface as Canvas;
-                if (canvas != null)
-                {
-                    canvas.SizeChanged += ResizeVideoSurface;
+                    var canvas = _renderSurface as Canvas;
+                    if (canvas != null)
+                    {
+                        canvas.SizeChanged -= ResizeVideoSurface;
+                    }
+                    _renderSurface = value;
+                    canvas = _renderSurface as Canvas;
+                    if (canvas != null)
+                    {
+                        canvas.SizeChanged += ResizeVideoSurface;
+                    }
                 }
             }
         }
@@ -265,18 +267,7 @@ namespace Plugin.MediaManager
 
         public VideoAspectMode AspectMode { get; set; }
 
-        public bool IsMuted
-        {
-            get;
-            set;
-        }
-
-        public void SetVolume(float leftVolume, float rightVolume)
-        {
-            throw new NotImplementedException();
-        }
-
-        private async Task<MediaSource> CreateMediaSource(IMediaFile mediaFile)
+        private async Task<MediaSource> CreateMediaSource(IMediaItem mediaFile)
         {
             switch (mediaFile.Availability)
             {
@@ -285,7 +276,7 @@ namespace Plugin.MediaManager
                 case ResourceAvailability.Local:
                     var du = _player.SystemMediaTransportControls.DisplayUpdater;
                     var storageFile = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
-                    var playbackType = mediaFile.Type == MediaFileType.Audio
+                    var playbackType = mediaFile.Type == MediaItemType.Audio
                         ? MediaPlaybackType.Music
                         : MediaPlaybackType.Video;
                     await du.CopyFromFileAsync(playbackType, storageFile);

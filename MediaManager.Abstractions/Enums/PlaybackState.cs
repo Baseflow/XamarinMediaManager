@@ -1,6 +1,6 @@
 ﻿namespace Plugin.MediaManager.Abstractions.Enums
 {
-    public enum MediaPlayerState
+    public enum PlaybackState
     {
         Stopped,
         Paused,

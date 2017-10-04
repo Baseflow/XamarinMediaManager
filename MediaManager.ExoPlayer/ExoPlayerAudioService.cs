@@ -105,7 +105,7 @@ namespace Plugin.MediaManager.ExoPlayer
         {
         }
 
-        public override async Task Play(IMediaFile mediaFile = null)
+        public override async Task Play(IMediaItem mediaFile = null)
         {
             await base.Play(mediaFile);
             _mediaPlayer.PlayWhenReady = true;
@@ -199,36 +199,36 @@ namespace Plugin.MediaManager.ExoPlayer
         //}
         #endregion
 
-        private MediaPlayerStatus GetStatusByIntValue(int state)
+        private PlaybackState GetStatusByIntValue(int state)
         {
             switch (state)
             {
                 case Com.Google.Android.Exoplayer2.ExoPlayer.StateBuffering:
-                    return MediaPlayerStatus.Buffering;
+                    return Abstractions.Enums.PlaybackState.Buffering;
                 case Com.Google.Android.Exoplayer2.ExoPlayer.StateReady:
-                    return !ManuallyPaused && !TransientPaused ? MediaPlayerStatus.Playing : MediaPlayerStatus.Paused;
+                    return !ManuallyPaused && !TransientPaused ? Abstractions.Enums.PlaybackState.Playing : Abstractions.Enums.PlaybackState.Paused;
                 case Com.Google.Android.Exoplayer2.ExoPlayer.StateIdle:
-                    return MediaPlayerStatus.Loading;
+                    return Abstractions.Enums.PlaybackState.Loading;
                 default:
-                    return MediaPlayerStatus.Failed;
+                    return Abstractions.Enums.PlaybackState.Failed;
             }
         }
 
-        private int GetCompatValueByStatus(MediaPlayerStatus state)
+        private int GetCompatValueByStatus(PlaybackState state)
         {
             switch (state)
             {
-                case MediaPlayerStatus.Buffering:
+                case Abstractions.Enums.PlaybackState.Buffering:
                     return PlaybackStateCompat.StateBuffering;
-                case MediaPlayerStatus.Failed:
+                case Abstractions.Enums.PlaybackState.Failed:
                     return PlaybackStateCompat.StateError;
-                case MediaPlayerStatus.Loading:
+                case Abstractions.Enums.PlaybackState.Loading:
                     return PlaybackStateCompat.StateSkippingToQueueItem;
-                case MediaPlayerStatus.Paused:
+                case Abstractions.Enums.PlaybackState.Paused:
                     return PlaybackStateCompat.StatePaused;
-                case MediaPlayerStatus.Playing:
+                case Abstractions.Enums.PlaybackState.Playing:
                     return PlaybackStateCompat.StatePlaying;
-                case MediaPlayerStatus.Stopped:
+                case Abstractions.Enums.PlaybackState.Stopped:
                     return PlaybackStateCompat.StateStopped;
                 default:
                     return PlaybackStateCompat.StateNone;
@@ -244,12 +244,12 @@ namespace Plugin.MediaManager.ExoPlayer
 
         private void OnStatusChangedHandler(StatusChangedEventArgs args)
         {
-            if (args.Status == MediaPlayerStatus.Buffering)
+            if (args.Status == Abstractions.Enums.PlaybackState.Buffering)
             {
                 CancelBufferingTask();
                 StartBufferingSchedule();
             }
-            if (args.Status == MediaPlayerStatus.Stopped || args.Status == MediaPlayerStatus.Failed)
+            if (args.Status == Abstractions.Enums.PlaybackState.Stopped || args.Status == Abstractions.Enums.PlaybackState.Failed)
                 CancelBufferingTask();
         }
 
@@ -295,7 +295,7 @@ namespace Plugin.MediaManager.ExoPlayer
             return new HttpSourceFactory(httpFactory, RequestHeaders);
         }
 
-        public override Task Play(IEnumerable<IMediaFile> mediaFiles)
+        public override Task Play(IEnumerable<IMediaItem> mediaFiles)
         {
             throw new NotImplementedException();
         }

@@ -12,7 +12,7 @@ namespace Plugin.MediaManager
 {
     public class MediaExtractorImplementation : IMediaExtractor
     {
-        public async Task<IMediaFile> ExtractMediaInfo(IMediaFile mediaFile)
+        public async Task<IMediaItem> ExtractMediaInfo(IMediaItem mediaFile)
         {
             try
             {

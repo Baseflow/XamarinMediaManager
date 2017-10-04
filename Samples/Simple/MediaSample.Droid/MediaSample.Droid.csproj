@@ -111,10 +111,6 @@
       <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\MediaManager.ExoPlayer\Plugin.MediaManager.ExoPlayer.csproj">
-      <Project>{06EF2F1F-8A8E-47D6-9FC8-BBC521783F13}</Project>
-      <Name>Plugin.MediaManager.ExoPlayer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\MediaManager.Android\Plugin.MediaManager.Android.csproj">
       <Project>{56A56F17-7DE1-4CA1-9617-BF32E971AC84}</Project>
       <Name>Plugin.MediaManager.Android</Name>

@@ -15,6 +15,6 @@ namespace Plugin.MediaManager
         /// </summary>
         public IMediaRemoteControl MediaRemoteControl { get; set; }
 
-        public sealed override IMediaNotificationManager MediaNotificationManager { get; set; }
+        public sealed override INotificationManager MediaNotificationManager { get; set; }
     }
 }

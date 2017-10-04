@@ -45,10 +45,10 @@ namespace Plugin.MediaManager.Forms
         
         private static void OnSourceChanged(BindableObject bindable, object oldvalue, object newvalue)
         {            
-            var video = new MediaFile
+            var video = new MediaItem
             {
                 Url = (string)newvalue,
-                Type = MediaFileType.Video
+                Type = MediaItemType.Video
             };
             
             //Auto play by adding video to the queue and then play

@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace Plugin.MediaManager.Abstractions.Implementations
 {
-    public class MediaFileMetadata : IMediaFileMetadata
+    public class MediaItemMetadata : IMediaItemMetadata
     {
         public string Album { get; set; }
 

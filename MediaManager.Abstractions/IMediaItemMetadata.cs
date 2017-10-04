@@ -7,7 +7,7 @@ namespace Plugin.MediaManager.Abstractions
     /// Mediafile Metadata. 
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
-    public interface IMediaFileMetadata : INotifyPropertyChanged
+    public interface IMediaItemMetadata : INotifyPropertyChanged
     {
         /// <summary>
         /// The album title for the media.

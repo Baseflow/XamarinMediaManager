@@ -5,13 +5,13 @@ namespace Plugin.MediaManager.Abstractions
     /// <summary>
     /// Manages the notifications to the native platform
     /// </summary>
-    public interface IMediaNotificationManager
+    public interface INotificationManager
     {
         /// <summary>
         /// Starts the notification.
         /// </summary>
-        /// <param name="mediaFile">The media file.</param>
-        void StartNotification(IMediaFile mediaFile);
+        /// <param name="item">The media file.</param>
+        void StartNotification(IMediaItem item);
 
         /// <summary>
         /// Stops the notifications.
@@ -21,8 +21,8 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Updates the notifications.
         /// </summary>
-        /// <param name="mediaFile">The media file.</param>
-        /// <param name="status">The status.</param>
-        void UpdateNotifications(IMediaFile mediaFile, MediaPlayerStatus status);
+        /// <param name="item">The media file.</param>
+        /// <param name="state">The status.</param>
+        void UpdateNotifications(IMediaItem item, PlaybackState state);
     }
 }

@@ -13,27 +13,27 @@ namespace Plugin.MediaManager.Abstractions
     /// <summary>
     /// Manages all the items that will be played
     /// </summary>
-    public interface IMediaQueue : IList<IMediaFile>, INotifyCollectionChanged, INotifyPropertyChanged
+    public interface IMediaQueue : IList<IMediaItem>, INotifyCollectionChanged, INotifyPropertyChanged
     {
         /// <summary>
         /// Raised when the end of the Queue has been reached
         /// </summary>
-        event QueueEndedEventHandler QueueEnded;
+        event QueueEndedEventHandler Ended;
 
         /// <summary>
         /// Raised when the current Queue item changes
         /// </summary>
-        event QueueMediaChangedEventHandler QueueMediaChanged;
+        event QueueMediaChangedEventHandler MediaItemChanged;
 
         /// <summary>
         /// Get the current track from the Queue
         /// </summary>
-        IMediaFile Current { get; }
+        IMediaItem Current { get; }
 
         /// <summary>
         /// The type of repeat: None, RepeatOne or RepeatAll
         /// </summary>
-        RepeatType Repeat { get; set; }
+        RepeatMode Repeat { get; set; }
 
         /// <summary>
         /// Wether the queue is shuffled
@@ -61,9 +61,9 @@ namespace Plugin.MediaManager.Abstractions
 
         void SetIndexAsCurrent(int index);
 
-        void SetTrackAsCurrent(IMediaFile item);
+        void SetTrackAsCurrent(IMediaItem item);
 
-        void AddRange(IEnumerable<IMediaFile> mediaFiles);
+        void AddRange(IEnumerable<IMediaItem> mediaFiles);
     }
 }
 

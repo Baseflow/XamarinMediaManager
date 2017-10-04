@@ -4,11 +4,11 @@ namespace Plugin.MediaManager.Abstractions.EventArguments
 {
     public class MetadataChangedEventArgs : EventArgs
     {
-        public MetadataChangedEventArgs(IMediaFileMetadata metaData)
+        public MetadataChangedEventArgs(IMediaItemMetadata metaData)
         {
             MetaData = metaData;
         }
 
-        public IMediaFileMetadata MetaData { get; set; }
+        public IMediaItemMetadata MetaData { get; set; }
     }
 }

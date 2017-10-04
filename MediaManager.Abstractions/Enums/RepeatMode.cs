@@ -1,6 +1,6 @@
 ﻿namespace Plugin.MediaManager.Abstractions.Enums
 {
-    public enum RepeatType
+    public enum RepeatMode
     {
         None,
         RepeatOne,

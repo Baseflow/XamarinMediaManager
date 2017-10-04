@@ -27,11 +27,17 @@
     <MtouchLink>None</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <IntermediateOutputPath>obj\iPhoneSimulator\Debug</IntermediateOutputPath>
+    <DeviceSpecificBuild>false</DeviceSpecificBuild>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhone\Release</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
@@ -40,11 +46,16 @@
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <IntermediateOutputPath>obj\iPhone\Release</IntermediateOutputPath>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
@@ -52,6 +63,9 @@
     <MtouchLink>None</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <IntermediateOutputPath>obj\iPhoneSimulator\Release</IntermediateOutputPath>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,6 +87,9 @@
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <IntermediateOutputPath>obj\iPhone\Debug</IntermediateOutputPath>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -81,8 +98,12 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -102,6 +123,12 @@
     <Compile Include="ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MediaManager\MediaManager.csproj">
+      <Project>{464CB812-F99F-401B-BE4C-E8F0515CD19D}</Project>
+      <Name>MediaManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

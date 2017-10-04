@@ -3,5 +3,8 @@ namespace Plugin.MediaManager.Abstractions.Enums
 {
     public enum ShuffleMode
     {
+        None,
+        All,
+        Group
     }
 }

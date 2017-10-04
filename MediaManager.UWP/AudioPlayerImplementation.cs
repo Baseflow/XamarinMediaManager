@@ -18,7 +18,7 @@ namespace Plugin.MediaManager
         private readonly MediaPlayer _player;
         private readonly Timer _playProgressTimer;
         private MediaPlayerStatus _status;
-        private IMediaFile _currentMediaFile;
+        private IMediaItem _currentMediaFile;
 
         public AudioPlayerImplementation(IVolumeManager volumeManager)
         {
@@ -161,7 +161,7 @@ namespace Plugin.MediaManager
                 await Pause();
         }
 
-        public async Task Play(IMediaFile mediaFile = null)
+        public async Task Play(IMediaItem mediaFile = null)
         {
             try
             {
@@ -210,7 +210,7 @@ namespace Plugin.MediaManager
             return Task.CompletedTask;
         }
 
-        private async Task<MediaSource> CreateMediaSource(IMediaFile mediaFile)
+        private async Task<MediaSource> CreateMediaSource(IMediaItem mediaFile)
         {
             switch (mediaFile.Availability)
             {
@@ -219,7 +219,7 @@ namespace Plugin.MediaManager
                 case ResourceAvailability.Local:
                     var du = _player.SystemMediaTransportControls.DisplayUpdater;
                     var storageFile = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
-                    var playbackType = mediaFile.Type == MediaFileType.Audio
+                    var playbackType = mediaFile.Type == MediaItemType.Audio
                         ? MediaPlaybackType.Music
                         : MediaPlaybackType.Video;
                     await du.CopyFromFileAsync(playbackType, storageFile);

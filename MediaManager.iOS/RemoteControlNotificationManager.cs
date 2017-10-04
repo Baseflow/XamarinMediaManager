@@ -5,9 +5,9 @@ using UIKit;
 
 namespace Plugin.MediaManager
 {
-    public class RemoteControlNotificationManager: NSObject, IMediaNotificationManager
+    public class RemoteControlNotificationManager: NSObject, INotificationManager
     {
-        public virtual void StartNotification(IMediaFile mediaFile)
+        public virtual void StartNotification(IMediaItem mediaFile)
         {
             InvokeOnMainThread(() => {
                 UIApplication.SharedApplication.BeginReceivingRemoteControlEvents();
@@ -22,7 +22,7 @@ namespace Plugin.MediaManager
             });
         }
 
-        public virtual void UpdateNotifications(IMediaFile mediaFile, MediaPlayerStatus status)
+        public virtual void UpdateNotifications(IMediaItem mediaFile, PlaybackState status)
         {
         }
     }

@@ -45,13 +45,13 @@ namespace MediaSample.UWP
             Album.Text = mediaFile.Metadata.Album ?? "";
             switch (mediaFile.Type)
             {
-                case MediaFileType.Audio:
+                case MediaItemType.Audio:
                     if (mediaFile.Metadata.AlbumArt!= null)
                     {
                         CoverArt.Source = (ImageSource) mediaFile.Metadata.AlbumArt;
                     }
                     break;
-                case MediaFileType.Video:
+                case MediaItemType.Video:
                     break;
             }
         }
@@ -102,12 +102,12 @@ namespace MediaSample.UWP
         {
             if (mediaFile == null)
             {
-                mediaFile = new MediaFile("http://www.montemagno.com/sample.mp3", MediaFileType.Audio);
+                mediaFile = new MediaFile("http://www.montemagno.com/sample.mp3", MediaItemType.Audio);
             }
             await CrossMediaManager.Current.Play(mediaFile);
             //var file = await KnownFolders.VideosLibrary.GetFileAsync("big_buck_bunny.mp4");
-            //await CrossMediaManager.Current.Play(file.Path, MediaFileType.VideoFile);
-            //await CrossMediaManager.Current.Play(@"http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", MediaFileType.VideoUrl);
+            //await CrossMediaManager.Current.Play(file.Path, MediaItemType.VideoFile);
+            //await CrossMediaManager.Current.Play(@"http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", MediaItemType.VideoUrl);
         }
 
         private async void Pause(object sender, RoutedEventArgs e)

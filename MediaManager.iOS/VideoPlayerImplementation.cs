@@ -22,7 +22,7 @@ namespace Plugin.MediaManager
             new NSString("AVCustomEditPlayerViewControllerRateObservationContext");
 
         private AVPlayer _player;
-        private MediaPlayerStatus _status;
+        private PlaybackState _status;
         private AVPlayerLayer _videoLayer;
 
         public Dictionary<string, string> RequestHeaders { get; set; }
@@ -30,14 +30,14 @@ namespace Plugin.MediaManager
         public VideoPlayerImplementation(IVolumeManager volumeManager)
         {
             _volumeManager = volumeManager;
-            _status = MediaPlayerStatus.Stopped;
+            _status = PlaybackState.Stopped;
 
             // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
             BufferingChanged += (sender, e) =>
             {
                 // If the player is ready to play, it's paused and the status is still on PLAYING, go on!
                 if ((Player.Status == AVPlayerStatus.ReadyToPlay) && (Rate == 0.0f) &&
-                    (Status == MediaPlayerStatus.Playing))
+                    (Status == PlaybackState.Playing))
                     Player.Play();
             };
             _volumeManager.Muted = Player.Muted;
@@ -131,7 +131,7 @@ namespace Plugin.MediaManager
 
                 Player.CurrentItem.Seek(CMTime.FromSeconds(0d, 1));
 
-                Status = MediaPlayerStatus.Stopped;
+                Status = PlaybackState.Stopped;
             });
         }
 
@@ -139,7 +139,7 @@ namespace Plugin.MediaManager
         {
             await Task.Run(() =>
             {
-                Status = MediaPlayerStatus.Paused;
+                Status = PlaybackState.Paused;
 
                 if (Player.CurrentItem == null)
                     return;
@@ -149,7 +149,7 @@ namespace Plugin.MediaManager
             });
         }
 
-        public MediaPlayerStatus Status
+        public PlaybackState Status
         {
             get { return _status; }
             private set
@@ -203,14 +203,14 @@ namespace Plugin.MediaManager
             });
         }
 
-        public async Task Play(IMediaFile mediaFile = null)
+        public async Task Play(IMediaItem mediaFile = null)
         {
             if (mediaFile != null)
                 nsUrl = new NSUrl(mediaFile.Url);
 
-            if (Status == MediaPlayerStatus.Paused)
+            if (Status == PlaybackState.Paused)
             {
-                Status = MediaPlayerStatus.Playing;
+                Status = PlaybackState.Playing;
                 //We are simply paused so just start again
                 Player.Play();
                 return;
@@ -219,7 +219,7 @@ namespace Plugin.MediaManager
             try
             {
                 // Start off with the status LOADING.
-                Status = MediaPlayerStatus.Buffering;
+                Status = PlaybackState.Buffering;
 
                 var options = MediaFileUrlHelper.GetOptionsWithHeaders(RequestHeaders);
 
@@ -246,7 +246,7 @@ namespace Plugin.MediaManager
             catch (Exception ex)
             {
                 OnMediaFailed();
-                Status = MediaPlayerStatus.Stopped;
+                Status = PlaybackState.Stopped;
 
                 //unable to start playback log error
                 Console.WriteLine("Unable to start playback: " + ex);
@@ -291,15 +291,15 @@ namespace Plugin.MediaManager
         private void ObserveStatus()
         {
             Console.WriteLine("Status Observed Method {0}", Player.Status);
-            if ((Player.Status == AVPlayerStatus.ReadyToPlay) && (Status == MediaPlayerStatus.Buffering))
+            if ((Player.Status == AVPlayerStatus.ReadyToPlay) && (Status == PlaybackState.Buffering))
             {
-                Status = MediaPlayerStatus.Playing;
+                Status = PlaybackState.Playing;
                 Player.Play();
             }
             else if (Player.Status == AVPlayerStatus.Failed)
             {
                 OnMediaFailed();
-                Status = MediaPlayerStatus.Stopped;
+                Status = PlaybackState.Stopped;
             }
         }
 

@@ -4,34 +4,27 @@ using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager.Abstractions.Implementations
 {
-    public class MediaFile : IMediaFile
+    public class MediaItem : IMediaItem
     {
-        public MediaFile() : this(String.Empty, default(MediaFileType))
+        public MediaItem() : this(String.Empty, default(MediaItemType))
         {
         }
 
-        public MediaFile(string url) : this(url, default(MediaFileType))
+        public MediaItem(string url) : this(url, default(MediaItemType))
         {
         }
 
-        public MediaFile(string url, MediaFileType type) : this(url, type, default(ResourceAvailability))
-        { 
-        }
-
-        public MediaFile(string url, MediaFileType type, ResourceAvailability availability)
+        public MediaItem(string url, MediaItemType type)
         {
             Url = url;
             Type = type;
-            Availability = availability;
         }
 
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public MediaFileType Type { get; set; }
+        public MediaItemType Type { get; set; }
 
-        public ResourceAvailability Availability { get; set; }
-
-        public IMediaFileMetadata Metadata { get; set; } = new MediaItemMetadata();
+        public IMediaItemMetadata Metadata { get; set; } = new MediaItemMetadata();
 
         public string Url { get; set; }
 

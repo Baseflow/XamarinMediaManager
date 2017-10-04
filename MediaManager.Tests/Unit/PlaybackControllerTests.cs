@@ -29,7 +29,7 @@ namespace Plugin.MediaManager.Tests.Unit
                 .Setup(mediaManager => mediaManager.Pause())
                 .Returns(Task.FromResult(0));
 
-            MediaManagerStatus = MediaPlayerStatus.Playing;
+            MediaManagerStatus = PlaybackState.Playing;
 
             var playbackController = new PlaybackController(MediaManager);
 
@@ -40,10 +40,10 @@ namespace Plugin.MediaManager.Tests.Unit
         }
 
         [Test, TestCaseSource(nameof(NotPlayingStatuses))]
-        public async Task PlayPause_NotPlaying_Pauses(MediaPlayerStatus notPlayingStatus)
+        public async Task PlayPause_NotPlaying_Pauses(PlaybackState notPlayingStatus)
         {
             _mediaManagerMock
-                .Setup(mediaManager => mediaManager.Play((IMediaFile) null))
+                .Setup(mediaManager => mediaManager.Play((IMediaItem) null))
                 .Returns(Task.FromResult(0));
 
             MediaManagerStatus = notPlayingStatus;
@@ -53,7 +53,7 @@ namespace Plugin.MediaManager.Tests.Unit
             await playbackController.PlayPause();
 
             _mediaManagerMock
-                .Verify(mediaManager => mediaManager.Play((IMediaFile) null), Times.Once);
+                .Verify(mediaManager => mediaManager.Play((IMediaItem) null), Times.Once);
         }
 
         [Test]
@@ -299,7 +299,7 @@ namespace Plugin.MediaManager.Tests.Unit
             }
         }
 
-        private MediaPlayerStatus MediaManagerStatus
+        private PlaybackState MediaManagerStatus
         {
             set
             {
@@ -315,10 +315,10 @@ namespace Plugin.MediaManager.Tests.Unit
         {
             get
             {
-                var notPlayingStatuses = new List<MediaPlayerStatus>
+                var notPlayingStatuses = new List<PlaybackState>
                 {
-                    MediaPlayerStatus.Paused,
-                    MediaPlayerStatus.Stopped
+                    PlaybackState.Paused,
+                    PlaybackState.Stopped
                 };
 
                 foreach (var status in notPlayingStatuses)

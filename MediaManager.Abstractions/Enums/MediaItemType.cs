@@ -1,6 +1,6 @@
 ﻿namespace Plugin.MediaManager.Abstractions.Enums
 {
-    public enum MediaFileType
+    public enum MediaItemType
     {
         Audio,
         Video

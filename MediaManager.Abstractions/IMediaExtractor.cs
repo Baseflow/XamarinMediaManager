@@ -7,7 +7,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Returns the same file with the extracted media information
         /// </summary>
-        /// <param name="mediaFile">The media file</param>
-        Task<IMediaFile> ExtractMediaInfo(IMediaFile mediaFile);
+        /// <param name="item">The media file</param>
+        Task<IMediaItem> ExtractMediaInfo(IMediaItem item);
     }
 }

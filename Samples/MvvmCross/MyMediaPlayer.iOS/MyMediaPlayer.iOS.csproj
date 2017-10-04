@@ -22,8 +22,6 @@
     <MtouchDebug>true</MtouchDebug>
     <MtouchFastDev>true</MtouchFastDev>
     <MtouchProfiling>true</MtouchProfiling>
-    <MtouchUseSGen>true</MtouchUseSGen>
-    <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchLink>None</MtouchLink>
     <MtouchArch>i386</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
@@ -39,8 +37,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchUseSGen>true</MtouchUseSGen>
-    <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
@@ -57,8 +53,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
-    <MtouchUseSGen>true</MtouchUseSGen>
-    <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchLink>None</MtouchLink>
     <MtouchArch>i386</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
@@ -77,8 +71,6 @@
     <MtouchDebug>true</MtouchDebug>
     <MtouchFastDev>true</MtouchFastDev>
     <MtouchProfiling>true</MtouchProfiling>
-    <MtouchUseSGen>true</MtouchUseSGen>
-    <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>

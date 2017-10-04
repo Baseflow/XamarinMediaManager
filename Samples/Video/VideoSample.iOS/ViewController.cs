@@ -32,9 +32,9 @@ namespace MediaSample.iOS
 
         partial void PlayButton_TouchUpInside(UIButton sender)
         {
-            var video = new MediaFile() {
+            var video = new MediaItem() {
                 Url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
-                Type = MediaFileType.Video
+                Type = MediaItemType.Video
             };
             CrossMediaManager.Current.Play(video);
         }

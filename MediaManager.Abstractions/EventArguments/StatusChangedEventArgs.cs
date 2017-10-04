@@ -5,10 +5,10 @@ namespace Plugin.MediaManager.Abstractions.EventArguments
 {
     public class StatusChangedEventArgs : EventArgs
     {
-        public StatusChangedEventArgs(MediaPlayerStatus status)
+        public StatusChangedEventArgs(PlaybackState state)
         {
-            Status = status;
+            State = state;
         }
-        public MediaPlayerStatus Status { get; }
+        public PlaybackState State { get; }
     }
 }

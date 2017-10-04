@@ -4,11 +4,11 @@ namespace Plugin.MediaManager.Abstractions.EventArguments
 {
     public class MediaFinishedEventArgs : EventArgs
     {
-        public MediaFinishedEventArgs(IMediaFile file)
+        public MediaFinishedEventArgs(IMediaItem item)
         {
-            File = file;
+            Item = item;
         }
 
-        public IMediaFile File { get; set; }
+        public IMediaItem Item { get; set; }
     }
 }

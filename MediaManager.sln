@@ -827,9 +827,7 @@ Global
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
 		$0.TextStylePolicy = $1
-		$1.FileWidth = 120
-		$1.inheritsSet = VisualStudio
-		$1.inheritsScope = text/plain
 		$1.scope = text/plain
+		$1.TabsToSpaces = True
 	EndGlobalSection
 EndGlobal

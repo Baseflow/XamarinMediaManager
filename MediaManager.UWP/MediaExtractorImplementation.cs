@@ -10,7 +10,7 @@ namespace Plugin.MediaManager
 {
     public class MediaExtractorImplementation : IMediaExtractor
     {
-        public async Task<IMediaFile> ExtractMediaInfo(IMediaFile mediaFile)
+        public async Task<IMediaItem> ExtractMediaInfo(IMediaItem mediaFile)
         {
             if (mediaFile.Availability == ResourceAvailability.Local)
             {
@@ -18,11 +18,11 @@ namespace Plugin.MediaManager
 
                 switch (mediaFile.Type)
                 {
-                    case MediaFileType.Audio:
+                    case MediaItemType.Audio:
                         await SetAudioInfo(file, mediaFile);
                         break;
 
-                    case MediaFileType.Video:
+                    case MediaItemType.Video:
                         await SetVideoInfo(file, mediaFile);
                         break;
                 }
@@ -35,7 +35,7 @@ namespace Plugin.MediaManager
             return mediaFile;
         }
 
-        private async Task SetAudioInfo(IStorageItemProperties file, IMediaFile mediaFile)
+        private async Task SetAudioInfo(IStorageItemProperties file, IMediaItem mediaFile)
         {;
             var musicProperties = await file.Properties.GetMusicPropertiesAsync();
             mediaFile.Metadata.Title = musicProperties.Title;
@@ -43,15 +43,15 @@ namespace Plugin.MediaManager
             mediaFile.Metadata.Album = musicProperties.Album;
         }
 
-        private async Task SetVideoInfo(IStorageItemProperties file, IMediaFile mediaFile)
+        private async Task SetVideoInfo(IStorageItemProperties file, IMediaItem mediaFile)
         {
             var musicProperties = await file.Properties.GetVideoPropertiesAsync();
             mediaFile.Metadata.Title = musicProperties.Title;
         }
 
-        private async Task SetAlbumArt(IStorageItemProperties file, IMediaFile mediaFile)
+        private async Task SetAlbumArt(IStorageItemProperties file, IMediaItem mediaFile)
         {
-            var isAudio = mediaFile.Type == MediaFileType.Audio;
+            var isAudio = mediaFile.Type == MediaItemType.Audio;
             var thumbnailMode = isAudio ? ThumbnailMode.MusicView : ThumbnailMode.VideosView;
 
             var thumbnail = await file.GetThumbnailAsync(thumbnailMode);

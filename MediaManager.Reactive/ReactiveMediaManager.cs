@@ -19,11 +19,11 @@ namespace Plugin.MediaManager.Reactive
         private readonly BehaviorSubject<bool> _canPlaySubject = new BehaviorSubject<bool>(false);
         private readonly CompositeDisposable _cd = new CompositeDisposable();
 
-        private readonly BehaviorSubject<MediaPlayerStatus> _playbackStateSubject =
-            new BehaviorSubject<MediaPlayerStatus>(MediaPlayerStatus.Stopped);
+        private readonly BehaviorSubject<PlaybackState> _playbackStateSubject =
+            new BehaviorSubject<PlaybackState>(PlaybackState.Stopped);
 
-        private readonly BehaviorSubject<RepeatType> _repeatModeSubject =
-            new BehaviorSubject<RepeatType>(RepeatType.None);
+        private readonly BehaviorSubject<RepeatMode> _repeatModeSubject =
+            new BehaviorSubject<RepeatMode>(Abstractions.Enums.RepeatMode.None);
 
         private readonly BehaviorSubject<string> _titleSubject = new BehaviorSubject<string>(string.Empty);
         private string _filePath;
@@ -51,7 +51,7 @@ namespace Plugin.MediaManager.Reactive
             PlaybackPosition = playingObservable.Select(e => e.Position);
             PlaybackProgress = playingObservable.Select(e => e.Progress);
 
-            IsPlaying = PlaybackState.Select(status => status == MediaPlayerStatus.Playing);
+            IsPlaying = PlaybackState.Select(status => status == PlaybackState.Playing);
 
             MediaFinished = Observable.FromEventPattern<MediaFinishedEventHandler, MediaFinishedEventArgs>(
                     h => CrossMediaManager.Current.MediaFinished += h, h => CrossMediaManager.Current.MediaFinished -= h)
@@ -84,19 +84,19 @@ namespace Plugin.MediaManager.Reactive
                 .Select(e => e.EventArgs);
         }
 
-        public IObservable<IMediaFile> MediaFileChanged { get; }
+        public IObservable<IMediaItem> MediaFileChanged { get; }
         public IObservable<NotifyCollectionChangedEventArgs> QueueChanged { get; private set; }
-        public IObservable<IMediaFile> ActiveItemInQueue { get; private set; }
+        public IObservable<IMediaItem> ActiveItemInQueue { get; private set; }
         public IObservable<bool> QueueEnded { get; private set; }
         public IObservable<MediaFailedEventArgs> MediaFailed { get; }
-        public IObservable<IMediaFile> MediaFinished { get; }
+        public IObservable<IMediaItem> MediaFinished { get; }
         public IObservable<double> BufferedProgress { get; }
         public IObservable<TimeSpan> PlaybackPosition { get; }
         public IObservable<double> PlaybackProgress { get; }
         public IObservable<TimeSpan> BufferedTime { get; }
-        public IObservable<MediaPlayerStatus> PlaybackState { get; }
+        public IObservable<PlaybackState> PlaybackState { get; }
         public IObservable<bool> IsPlaying { get; }
-        public IObservable<RepeatType> RepeatMode => _repeatModeSubject;
+        public IObservable<RepeatMode> RepeatMode => _repeatModeSubject;
         public IObservable<TimeSpan> PlaybackDuration { get; }
         public IObservable<string> Title => _titleSubject;
 
@@ -105,18 +105,18 @@ namespace Plugin.MediaManager.Reactive
             _cd.Dispose();
         }
 
-        public void SetRepeatMode(RepeatType repeatType)
+        public void SetRepeatMode(RepeatMode repeatType)
         {
             CrossMediaManager.Current.MediaQueue.Repeat = repeatType;
             _repeatModeSubject.OnNext(repeatType);
         }
 
-        public async Task Play(IMediaFile mediaFile, string title = null)
+        public async Task Play(IMediaItem mediaFile, string title = null)
         {
             try
             {
                 _filePath = mediaFile.Url;
-                if (_playbackStateSubject.Latest().First() == MediaPlayerStatus.Paused)
+                if (_playbackStateSubject.Latest().First() == PlaybackState.Paused)
                 {
                     await Pause();
                     return;
@@ -157,17 +157,17 @@ namespace Plugin.MediaManager.Reactive
             }
         }
 
-        public void AddItemToQueue(IMediaFile mediaFile)
+        public void AddItemToQueue(IMediaItem mediaFile)
         {
             CrossMediaManager.Current.MediaQueue.Add(mediaFile);
         }
 
-        public bool RemoveItemFromQueue(IMediaFile mediaFile)
+        public bool RemoveItemFromQueue(IMediaItem mediaFile)
         {
             return CrossMediaManager.Current.MediaQueue.Remove(mediaFile);
         }
 
-        public void AddItemsToQueue(IEnumerable<IMediaFile> items)
+        public void AddItemsToQueue(IEnumerable<IMediaItem> items)
         {
             CrossMediaManager.Current.MediaQueue.AddRange(items);
         }

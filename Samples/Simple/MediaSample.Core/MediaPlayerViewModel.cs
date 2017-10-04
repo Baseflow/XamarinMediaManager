@@ -37,7 +37,7 @@ namespace MediaManager.Sample.Core
 
             foreach (var mediaUrl in mediaUrls)
             {
-                Queue.Add(new MediaFile { Type = MediaFileType.Audio, Url = mediaUrl });
+                Queue.Add(new MediaItem { Type = MediaItemType.Audio, Url = mediaUrl });
             }
 
             RaiseAllPropertiesChanged();
@@ -48,11 +48,11 @@ namespace MediaManager.Sample.Core
 
         public IMediaQueue Queue => mediaPlayer.MediaQueue;
 
-        public IMediaFile CurrentTrack => Queue.Current;
+        public IMediaItem CurrentTrack => Queue.Current;
 
-        public int Duration => mediaPlayer.Duration.TotalSeconds > 0 ? Convert.ToInt32(mediaPlayer.Duration.TotalSeconds) : 0;
+        //public int Duration => mediaPlayer.Duration.TotalSeconds > 0 ? Convert.ToInt32(mediaPlayer.Duration.TotalSeconds) : 0;
 
-        private bool _isSeeking = false;
+        /*private bool _isSeeking = false;
 
         public bool IsSeeking
         {
@@ -68,7 +68,7 @@ namespace MediaManager.Sample.Core
                         // When disable user-seeking, update the position with the position-value
                         if (value == false)
                         {
-                            await mediaPlayer.Seek(TimeSpan.FromSeconds(Position));
+                            //await mediaPlayer.Seek(TimeSpan.FromSeconds(Position));
                         }
 
                         _isSeeking = value;
@@ -98,19 +98,19 @@ namespace MediaManager.Sample.Core
 
         public int Downloaded => Convert.ToInt32(mediaPlayer.Buffered.TotalSeconds);
 
-        public bool IsPlaying => mediaPlayer.Status == MediaPlayerStatus.Playing || mediaPlayer.Status == MediaPlayerStatus.Buffering;
+        public bool IsPlaying => mediaPlayer.Status == PlaybackState.Playing || mediaPlayer.Status == PlaybackState.Buffering;
 
-        public MediaPlayerStatus Status => mediaPlayer.Status;
+        public PlaybackState Status => mediaPlayer.Status;
 
         public object Cover => mediaPlayer.MediaQueue.Current.Metadata.AlbumArt;
 
         public string PlayingText => $"Playing: {(Queue.Index + 1)} of {Queue.Count}";
 
-        private IPlaybackController PlaybackController => MediaPlayer.PlaybackController;
+        private IPlaybackController PlaybackController => MediaPlayer.PlaybackController;*/
 
         public MediaPlayerViewModel()
         {
-            mediaPlayer = CrossMediaManager.Current;
+            /*mediaPlayer = CrossMediaManager.Current;
             //mediaPlayer.RequestProperties = new Dictionary<string, string> { { "Test", "1234" } };
             mediaPlayer.StatusChanged -= OnStatusChanged;
             mediaPlayer.StatusChanged += OnStatusChanged;
@@ -122,10 +122,10 @@ namespace MediaManager.Sample.Core
             mediaPlayer.MediaFileChanged += OnMediaFileChanged;
 
             mediaPlayer.MediaQueue.PropertyChanged -= OnQueuePropertyChanged;
-            mediaPlayer.MediaQueue.PropertyChanged += OnQueuePropertyChanged;
+            mediaPlayer.MediaQueue.PropertyChanged += OnQueuePropertyChanged;*/
         }
 
-        private void OnQueuePropertyChanged(object sender, PropertyChangedEventArgs e)
+        /*private void OnQueuePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var currentChanged = e.PropertyName == nameof(MediaQueue.Current);
             var countChanged = e.PropertyName == nameof(MediaQueue.Count);
@@ -182,6 +182,6 @@ namespace MediaManager.Sample.Core
             {
                 return string.Format("{0}:{1:00}", (int)span.Minutes, span.Seconds);
             }
-        }
+        }*/
     }
 }

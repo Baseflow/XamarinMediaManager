@@ -21,14 +21,14 @@ namespace Plugin.MediaManager
             _mediaManager = mediaManager;
         }
 
-        public override void StartNotification(IMediaFile mediaFile)
+        public override void StartNotification(IMediaItem mediaFile)
         {
             TrySetNowPlayingInfo(mediaFile);
 
             base.StartNotification(mediaFile);
         }
 
-        public override void UpdateNotifications(IMediaFile mediaFile, MediaPlayerStatus status)
+        public override void UpdateNotifications(IMediaItem mediaFile, PlaybackState status)
         {
             TrySetNowPlayingInfo(mediaFile);
 
@@ -42,7 +42,7 @@ namespace Plugin.MediaManager
             base.StopNotifications();
         }
 
-        private void TrySetNowPlayingInfo(IMediaFile mediaFile)
+        private void TrySetNowPlayingInfo(IMediaItem mediaFile)
         {
             if (mediaFile == null) return;
 
@@ -54,7 +54,7 @@ namespace Plugin.MediaManager
             }
         }
 
-        private MPNowPlayingInfo CreateNowPlayingInfo(IMediaFile mediaFile)
+        private MPNowPlayingInfo CreateNowPlayingInfo(IMediaItem mediaFile)
         {
             var metadata = mediaFile.Metadata;
 
@@ -76,7 +76,7 @@ namespace Plugin.MediaManager
                 PlaybackQueueCount = Queue.Count
             };
 
-            if (_mediaManager.Status == MediaPlayerStatus.Playing)
+            if (_mediaManager.Status == PlaybackState.Playing)
             {
                 nowPlayingInfo.PlaybackRate = 1f;
             }
