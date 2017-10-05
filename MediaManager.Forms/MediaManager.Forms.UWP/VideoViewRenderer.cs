@@ -1,4 +1,4 @@
-﻿using Plugin.MediaManager.Abstractions.Enums;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Forms;
 using Plugin.MediaManager.Forms.UWP;
 using Xamarin.Forms.Platform.UWP;
@@ -17,7 +17,7 @@ namespace Plugin.MediaManager.Forms.UWP
             if (Control == null)
             {
                 _videoSurface = new VideoSurface();
-                CrossMediaManager.Current.VideoPlayer.AspectMode = (VideoAspectMode.AspectFill);
+                CrossMediaManager.Current.VideoPlayer.AspectMode = Element.AspectMode;
                 SetNativeControl(_videoSurface);
                 CrossMediaManager.Current.VideoPlayer.RenderSurface = _videoSurface;
             }
@@ -25,9 +25,10 @@ namespace Plugin.MediaManager.Forms.UWP
 
         protected override Size MeasureOverride(Size availableSize)
         {
+            availableSize = base.MeasureOverride(availableSize);
             _videoSurface.Height = availableSize.Height;
             _videoSurface.Width = availableSize.Width;
-            return base.MeasureOverride(availableSize);
+            return availableSize;
         }
     }
 }
