@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
@@ -220,19 +220,16 @@ namespace Plugin.MediaManager
 
                 SetVideoSurface((VideoSurface)_renderSurface);
 
-                if (_renderSurface != value)
+                var canvas = _renderSurface as Canvas;
+                if (canvas != null)
                 {
-                    var canvas = _renderSurface as Canvas;
-                    if (canvas != null)
-                    {
-                        canvas.SizeChanged -= ResizeVideoSurface;
-                    }
-                    _renderSurface = value;
-                    canvas = _renderSurface as Canvas;
-                    if (canvas != null)
-                    {
-                        canvas.SizeChanged += ResizeVideoSurface;
-                    }
+                    canvas.SizeChanged -= ResizeVideoSurface;
+                }
+                _renderSurface = value;
+                canvas = _renderSurface as Canvas;
+                if (canvas != null)
+                {
+                    canvas.SizeChanged += ResizeVideoSurface;
                 }
             }
         }
