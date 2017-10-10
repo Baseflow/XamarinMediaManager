@@ -70,6 +70,10 @@ namespace Plugin.MediaManager
             AddActionButtons(mediaIsPlaying);
             if (_builder.MActions.Count >= 3)
                 ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0, 1, 2);
+            if (_builder.MActions.Count == 2)
+                ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0, 1);
+            if (_builder.MActions.Count == 1)
+                ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0);
 
             NotificationManagerCompat.From(_appliactionContext)
                 .Notify(MediaServiceBase.NotificationId, _builder.Build());
