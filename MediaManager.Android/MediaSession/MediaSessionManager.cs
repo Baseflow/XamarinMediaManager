@@ -1,13 +1,12 @@
-using System;
 using Android.App;
 using Android.Content;
-using Android.Content.PM;
 using Android.Graphics;
 using Android.Media;
 using Android.OS;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
+using System;
 
 namespace Plugin.MediaManager.MediaSession
 {
@@ -32,6 +31,7 @@ namespace Plugin.MediaManager.MediaSession
         }
 
         public event EventHandler<string> OnNotificationActionFired;
+
         internal event EventHandler<int> OnStatusChanged;
 
         internal int MediaPlayerState => mediaControllerCompat?.PlaybackState?.State ?? PlaybackStateCompat.StateNone;
@@ -44,10 +44,14 @@ namespace Plugin.MediaManager.MediaSession
 
         private Type _serviceType;
 
-        public MediaSessionManager(Context appContext, Type serviceType)
+        private readonly IMediaManager mediaManager;
+        private IMediaQueue mediaQueue => mediaManager.MediaQueue;
+
+        public MediaSessionManager(Context appContext, Type serviceType, IMediaManager mediaManager)
         {
             applicationContext = appContext;
             _serviceType = serviceType;
+            this.mediaManager = mediaManager;
         }
 
         internal void InitMediaSession(string packageName, MediaServiceBinder binder)
@@ -62,7 +66,7 @@ namespace Plugin.MediaManager.MediaSession
                     RemoteComponentName = new ComponentName(packageName, new RemoteControlBroadcastReceiver().ComponentName);
                     mediaSessionCompat = new MediaSessionCompat(applicationContext, "XamarinStreamingAudio", RemoteComponentName, pIntent);
                     mediaControllerCompat = new MediaControllerCompat(applicationContext, mediaSessionCompat.SessionToken);
-                    _notificationManager = _overrideNotificationManager ?? new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, _serviceType);
+                    _notificationManager = _overrideNotificationManager ?? new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, _serviceType, mediaQueue);
                 }
                 mediaSessionCompat.Active = true;
                 MediaServiceBase mediaServiceBase = binder.GetMediaPlayerService<MediaServiceBase>();
@@ -113,7 +117,7 @@ namespace Plugin.MediaManager.MediaSession
         /// <param name="position"></param>
         public void UpdatePlaybackState(int state, int position = 0, string errorMessage = "")
         {
-            if(CurrentSession == null && (_binder?.IsBinderAlive).GetValueOrDefault(false) && !string.IsNullOrWhiteSpace(_packageName))
+            if (CurrentSession == null && (_binder?.IsBinderAlive).GetValueOrDefault(false) && !string.IsNullOrWhiteSpace(_packageName))
                 InitMediaSession(_packageName, _binder);
 
             PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
@@ -142,7 +146,7 @@ namespace Plugin.MediaManager.MediaSession
             //Used for backwards compatibility
             if ((Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
                 && (CurrentSession?.RemoteControlClient == null
-                || (bool) !CurrentSession?.RemoteControlClient.Equals(typeof(RemoteControlClient)))) return;
+                || (bool)!CurrentSession?.RemoteControlClient.Equals(typeof(RemoteControlClient)))) return;
 
             RemoteControlClient remoteControlClient = (RemoteControlClient)CurrentSession?.RemoteControlClient;
 
@@ -152,7 +156,6 @@ namespace Plugin.MediaManager.MediaSession
                                        | RemoteControlFlags.FastForward;
 
             remoteControlClient?.SetTransportControlFlags(flags);
-
         }
 
         /// <summary>
@@ -161,7 +164,6 @@ namespace Plugin.MediaManager.MediaSession
         /// <param name="currentTrack"></param>
         internal void UpdateMetadata(IMediaFile currentTrack)
         {
-
             MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
 
             if (currentTrack != null)

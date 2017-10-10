@@ -1,12 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MediaForms.HomePage">
     <ContentPage.Content>
         <StackLayout>
             <Button x:Name="mainBtn"
-                    Text="Click here"
-                    Clicked="MainBtn_OnClicked"/>
+                    Text="Click here to view a video"
+                    Clicked="MainBtn_OnClicked" />
+            <Button Text="Play A Audio"
+                    Clicked="PlayAudio_OnClicked" />
+            <Button Text="Play Audio List"
+                    Clicked="PlaylistButton_OnClicked" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

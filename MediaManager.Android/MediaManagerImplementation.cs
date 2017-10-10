@@ -21,7 +21,7 @@ namespace Plugin.MediaManager
 
         public override IAudioPlayer AudioPlayer
         {
-            get {return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(MediaSessionManager));}
+            get { return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(MediaSessionManager)); }
             set { _audioPlayer = value; }
         }
 
@@ -41,13 +41,14 @@ namespace Plugin.MediaManager
 
         public MediaSessionManager MediaSessionManager
         {
-            get { return _sessionManager ?? (_sessionManager = new MediaSessionManager(Application.Context, typeof(MediaPlayerService))); }
+            get { return _sessionManager ?? (_sessionManager = new MediaSessionManager(Application.Context, typeof(MediaPlayerService), this)); }
             set
             {
                 _sessionManager = value;
                 _sessionManager.OnNotificationActionFired += HandleNotificationActions;
             }
         }
+
         public override IVolumeManager VolumeManager { get; set; } = new VolumeManagerImplementation();
 
         private async void HandleNotificationActions(object sender, string action)
