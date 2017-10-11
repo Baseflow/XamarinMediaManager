@@ -82,7 +82,7 @@ namespace Plugin.MediaManager
         public void StopNotifications()
         {
             NotificationManagerCompat nm = NotificationManagerCompat.From(_appliactionContext);
-            nm.CancelAll();
+            nm.Cancel(MediaServiceBase.NotificationId);
         }
 
         public void UpdateNotifications(IMediaFile mediaFile, MediaPlayerStatus status)
