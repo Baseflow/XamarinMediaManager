@@ -90,12 +90,13 @@ namespace Plugin.MediaManager
             try
             {
                 var isPlaying = status == MediaPlayerStatus.Playing || status == MediaPlayerStatus.Buffering;
+                var isPersistent = status == MediaPlayerStatus.Playing || status == MediaPlayerStatus.Buffering || status == MediaPlayerStatus.Paused;
                 var nm = NotificationManagerCompat.From(_appliactionContext);
                 if (nm != null && _builder != null)
                 {
                     SetMetadata(mediaFile);
                     AddActionButtons(isPlaying);
-                    _builder.SetOngoing(isPlaying);
+                    _builder.SetOngoing(isPersistent);
                     nm.Notify(MediaServiceBase.NotificationId, _builder.Build());
                 }
                 else
