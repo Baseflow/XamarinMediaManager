@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -37,7 +37,8 @@ namespace Plugin.MediaManager.ExoPlayer
     [IntentFilter(new[] { ActionPlay, ActionPause, ActionStop, ActionTogglePlayback, ActionNext, ActionPrevious })]
     public class ExoPlayerAudioService : MediaServiceBase,
         IExoPlayerEventListener,
-        TrackSelector.IEventListener, ExtractorMediaSource.IEventListener
+        //TrackSelector.IEventListener,
+        ExtractorMediaSource.IEventListener
     {
         private SimpleExoPlayer _mediaPlayer;
 
@@ -83,9 +84,12 @@ namespace Plugin.MediaManager.ExoPlayer
 
         public override void InitializePlayer()
         {
-            var mainHandler = new Handler();
-            var trackSelector = new DefaultTrackSelector(mainHandler);
-            trackSelector.AddListener(this);
+            //var mainHandler = new Handler();
+            //var trackSelector = new DefaultTrackSelector(mainHandler);
+            //trackSelector.AddListener(this);
+
+            var trackSelector = new DefaultTrackSelector();
+
             var loadControl = new DefaultLoadControl();
             if (_mediaPlayer == null)
             {
@@ -156,6 +160,11 @@ namespace Plugin.MediaManager.ExoPlayer
             Console.WriteLine("Loading changed");
         }
 
+        public void OnPlaybackParametersChanged(PlaybackParameters p0)
+        {
+            throw new NotImplementedException();
+        }
+
         public void OnPlayerError(ExoPlaybackException ex)
         {
             OnMediaFileFailed(new MediaFileFailedEventArgs(ex, CurrentFile));
@@ -181,15 +190,25 @@ namespace Plugin.MediaManager.ExoPlayer
             Console.WriteLine("OnPositionDiscontinuity");
         }
 
+        public void OnRepeatModeChanged(int p0)
+        {
+            throw new NotImplementedException();
+        }
+
         public void OnTimelineChanged(Timeline timeline, Object manifest)
         {
             Console.WriteLine("OnTimelineChanged");
         }
 
-        public void OnTrackSelectionsChanged(TrackSelections p0)
+        public void OnTracksChanged(TrackGroupArray p0, TrackSelectionArray p1)
         {
-            Console.WriteLine("TrackSelectionChanged");
+            throw new NotImplementedException();
         }
+
+        //public void OnTrackSelectionsChanged(TrackSelections p0)
+        //{
+        //    Console.WriteLine("TrackSelectionChanged");
+        //}
 
         /* TODO: Implement IOutput Interface => https://github.com/martijn00/ExoPlayerXamarin/issues/38
          */
@@ -264,7 +283,11 @@ namespace Plugin.MediaManager.ExoPlayer
             var handler = new Handler();
             var runnable = new Runnable(() => { handler.Post(OnBuffering); });
             if (!_executorService.IsShutdown)
-                _scheduledFuture = _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
+                _scheduledFuture = _executorService.ScheduleAtFixedRate
+                    (runnable
+                    , 100
+                    , Event_Firing_MiliSec
+                    , TimeUnit.Milliseconds);
         }
 
         private void OnBuffering()
@@ -291,7 +314,7 @@ namespace Plugin.MediaManager.ExoPlayer
         private IDataSourceFactory GetHttpFactory()
         {
             var bandwithMeter = new DefaultBandwidthMeter();
-            var httpFactory = new DefaultHttpDataSourceFactory(ExoPlayerUtil.GetUserAgent(this, ApplicationInfo.Name), bandwithMeter);
+            var httpFactory = new DefaultHttpDataSourceFactory(Util.GetUserAgent(this, ApplicationInfo.Name), bandwithMeter);
             return new HttpSourceFactory(httpFactory, RequestHeaders);
         }
 

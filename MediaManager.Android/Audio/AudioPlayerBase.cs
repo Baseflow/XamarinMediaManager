@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -194,7 +194,10 @@ namespace Plugin.MediaManager
             var runnable = new Runnable(() => { handler.Post(OnPlaying); });
             if (!_executorService.IsShutdown)
             {
-                _scheduledFuture = _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
+                _scheduledFuture = _executorService.ScheduleAtFixedRate(runnable
+                    , 100
+                    , MediaServiceBase.Event_Firing_MiliSec
+                    , TimeUnit.Milliseconds);
             }
         }
 

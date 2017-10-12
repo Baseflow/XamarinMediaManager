@@ -264,6 +264,20 @@ namespace Plugin.MediaManager
 
         public VideoAspectMode AspectMode { get; set; }
 
+        public int TrackCount => throw new NotImplementedException();
+
+        public int GetSelectedTrack(Abstractions.Enums.MediaTrackType trackType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> SetTrack(int trackIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IReadOnlyCollection<IMediaTrackInfo> TrackInfoList => throw new NotImplementedException();
+
         private async Task<MediaSource> CreateMediaSource(IMediaFile mediaFile)
         {
             switch (mediaFile.Availability)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.App;
@@ -30,6 +30,8 @@ namespace Plugin.MediaManager
         public const string ActionPrevious = "com.xamarin.action.PREVIOUS";
 
         internal const int NotificationId = 1;
+
+        public const int Event_Firing_MiliSec = 750;
 
         private WifiManager wifiManager;
         private WifiManager.WifiLock wifiLock;
