@@ -70,6 +70,10 @@ namespace Plugin.MediaManager
             AddActionButtons(mediaIsPlaying);
             if (_builder.MActions.Count >= 3)
                 ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0, 1, 2);
+            if (_builder.MActions.Count == 2)
+                ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0, 1);
+            if (_builder.MActions.Count == 1)
+                ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0);
 
             NotificationManagerCompat.From(_appliactionContext)
                 .Notify(MediaServiceBase.NotificationId, _builder.Build());
@@ -78,7 +82,7 @@ namespace Plugin.MediaManager
         public void StopNotifications()
         {
             NotificationManagerCompat nm = NotificationManagerCompat.From(_appliactionContext);
-            nm.CancelAll();
+            nm.Cancel(MediaServiceBase.NotificationId);
         }
 
         public void UpdateNotifications(IMediaFile mediaFile, MediaPlayerStatus status)
@@ -86,12 +90,13 @@ namespace Plugin.MediaManager
             try
             {
                 var isPlaying = status == MediaPlayerStatus.Playing || status == MediaPlayerStatus.Buffering;
+                var isPersistent = status == MediaPlayerStatus.Playing || status == MediaPlayerStatus.Buffering || status == MediaPlayerStatus.Paused;
                 var nm = NotificationManagerCompat.From(_appliactionContext);
                 if (nm != null && _builder != null)
                 {
                     SetMetadata(mediaFile);
                     AddActionButtons(isPlaying);
-                    _builder.SetOngoing(isPlaying);
+                    _builder.SetOngoing(isPersistent);
                     nm.Notify(MediaServiceBase.NotificationId, _builder.Build());
                 }
                 else
