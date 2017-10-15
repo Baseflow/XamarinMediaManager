@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,16 +48,18 @@ namespace Plugin.MediaManager
                 if (CurrentItem.Status == AVPlayerItemStatus.ReadyToPlay && Rate == 0.0f && isPlaying)
                     Player.Play();
             };
-            _volumeManager.Mute = Player.Muted;
-            _volumeManager.CurrentVolume = Player.Volume;
-            _volumeManager.MaxVolume = 1;
+            _volumeManager.Muted = Player.Muted;
+            int.TryParse((Player.Volume * 100).ToString(), out var vol);
+            _volumeManager.CurrentVolume = vol;
+            _volumeManager.MaxVolume = 100;
             _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
         }
 
         private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
         {
-            Player.Volume = (float)volumeChangedEventArgs.Volume;
-            Player.Muted = volumeChangedEventArgs.Mute;
+            
+            Player.Volume = (float)volumeChangedEventArgs.NewVolume / 100;
+            Player.Muted = volumeChangedEventArgs.Muted;
         }
 
         private AVPlayer Player
@@ -65,7 +68,7 @@ namespace Plugin.MediaManager
             {
                 if (_player == null)
                     InitializePlayer();
-
+                
                 return _player;
             }
         }

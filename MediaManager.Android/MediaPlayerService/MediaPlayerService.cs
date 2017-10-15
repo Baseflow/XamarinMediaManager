@@ -93,7 +93,7 @@ namespace Plugin.MediaManager
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
             HandleIntent(intent);
-            return base.OnStartCommand(intent, flags, startId);
+            return StartCommandResult.NotSticky;// base.OnStartCommand(intent, flags, startId);
         }
 
         public override async Task Play(IMediaFile mediaFile = null)

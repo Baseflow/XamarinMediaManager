@@ -9,9 +9,15 @@ namespace Plugin.MediaManager
     /// </summary>
     public class MediaManagerAppleBase : MediaManagerBase
     {
+        public MediaManagerAppleBase()
+        {
+            _audioPlayer = new AudioPlayerImplementation(VolumeManager);
+
+        }
+
         private IAudioPlayer _audioPlayer;
         private IVideoPlayer _videoPlayer;
-
+        
         public override IAudioPlayer AudioPlayer
         {
             get { return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(VolumeManager)); }
