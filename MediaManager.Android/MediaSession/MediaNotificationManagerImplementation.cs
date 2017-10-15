@@ -11,30 +11,29 @@ using NotificationCompat = Android.Support.V7.App.NotificationCompat;
 
 namespace Plugin.MediaManager
 {
-    internal class MediaNotificationManagerImplementation : IMediaNotificationManager
+    internal class MediaNotificationManagerImplementation : IAndroidMediaNotificationManager
     {
         // private MediaSessionManagerImplementation _sessionHandler;
-        private readonly IMediaQueue mediaQueue;
+        public IMediaQueue MediaQueue { get; set; }
+        public MediaSessionCompat.Token SessionToken { get; set; }
+        internal const int _notificationId = 1;
 
         private Intent _intent;
 
         private PendingIntent _pendingCancelIntent;
         private PendingIntent _pendingIntent;
         private NotificationCompat.MediaStyle _notificationStyle = new NotificationCompat.MediaStyle();
-        private MediaSessionCompat.Token _sessionToken;
-        private Context _appliactionContext;
+        private Context _applicationContext;
         private NotificationCompat.Builder _builder;
 
-        public MediaNotificationManagerImplementation(Context appliactionContext, MediaSessionCompat.Token sessionToken, Type serviceType, IMediaQueue mediaQueue)
+        public MediaNotificationManagerImplementation(Context applicationContext, Type serviceType)
         {
-            _sessionToken = sessionToken;
-            _appliactionContext = appliactionContext;
-            _intent = new Intent(_appliactionContext, serviceType);
+            _applicationContext = applicationContext;
+            _intent = new Intent(_applicationContext, serviceType);
             var mainActivity =
-                _appliactionContext.PackageManager.GetLaunchIntentForPackage(_appliactionContext.PackageName);
-            _pendingIntent = PendingIntent.GetActivity(_appliactionContext, 0, mainActivity,
+                _applicationContext.PackageManager.GetLaunchIntentForPackage(_applicationContext.PackageName);
+            _pendingIntent = PendingIntent.GetActivity(_applicationContext, 0, mainActivity,
                 PendingIntentFlags.UpdateCurrent);
-            this.mediaQueue = mediaQueue;
         }
 
         /// <summary>
@@ -52,16 +51,16 @@ namespace Plugin.MediaManager
         /// </summary>
         public void StartNotification(IMediaFile mediaFile, bool mediaIsPlaying, bool canBeRemoved)
         {
-            var icon = (_appliactionContext.Resources?.GetIdentifier("xam_mediamanager_notify_ic", "drawable", _appliactionContext?.PackageName)).GetValueOrDefault(0);
+            var icon = (_applicationContext.Resources?.GetIdentifier("xam_mediamanager_notify_ic", "drawable", _applicationContext?.PackageName)).GetValueOrDefault(0);
 
-            _notificationStyle.SetMediaSession(_sessionToken);
+            _notificationStyle.SetMediaSession(SessionToken);
             _notificationStyle.SetCancelButtonIntent(_pendingCancelIntent);
 
-            _builder = new NotificationCompat.Builder(_appliactionContext)
+            _builder = new NotificationCompat.Builder(_applicationContext)
             {
                 MStyle = _notificationStyle
             };
-            _builder.SetSmallIcon(icon != 0 ? icon : _appliactionContext.ApplicationInfo.Icon);
+            _builder.SetSmallIcon(icon != 0 ? icon : _applicationContext.ApplicationInfo.Icon);
             _builder.SetContentIntent(_pendingIntent);
             _builder.SetOngoing(mediaIsPlaying);
             _builder.SetVisibility(1);
@@ -75,14 +74,14 @@ namespace Plugin.MediaManager
             if (_builder.MActions.Count == 1)
                 ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0);
 
-            NotificationManagerCompat.From(_appliactionContext)
-                .Notify(MediaServiceBase.NotificationId, _builder.Build());
+            NotificationManagerCompat.From(_applicationContext)
+                .Notify(_notificationId, _builder.Build());
         }
 
         public void StopNotifications()
         {
-            NotificationManagerCompat nm = NotificationManagerCompat.From(_appliactionContext);
-            nm.Cancel(MediaServiceBase.NotificationId);
+            NotificationManagerCompat nm = NotificationManagerCompat.From(_applicationContext);
+            nm.Cancel(_notificationId);
         }
 
         public void UpdateNotifications(IMediaFile mediaFile, MediaPlayerStatus status)
@@ -91,13 +90,13 @@ namespace Plugin.MediaManager
             {
                 var isPlaying = status == MediaPlayerStatus.Playing || status == MediaPlayerStatus.Buffering;
                 var isPersistent = status == MediaPlayerStatus.Playing || status == MediaPlayerStatus.Buffering || status == MediaPlayerStatus.Paused;
-                var nm = NotificationManagerCompat.From(_appliactionContext);
+                var nm = NotificationManagerCompat.From(_applicationContext);
                 if (nm != null && _builder != null)
                 {
                     SetMetadata(mediaFile);
                     AddActionButtons(isPlaying);
                     _builder.SetOngoing(isPersistent);
-                    nm.Notify(MediaServiceBase.NotificationId, _builder.Build());
+                    nm.Notify(_notificationId, _builder.Build());
                 }
                 else
                 {
@@ -127,7 +126,7 @@ namespace Plugin.MediaManager
             if (intentAction.Equals(MediaServiceBase.ActionStop))
                 flags = PendingIntentFlags.CancelCurrent;
 
-            PendingIntent pendingIntent = PendingIntent.GetService(_appliactionContext, 1, _intent, flags);
+            PendingIntent pendingIntent = PendingIntent.GetService(_applicationContext, 1, _intent, flags);
 
             return new Android.Support.V4.App.NotificationCompat.Action.Builder(icon, title, pendingIntent).Build();
         }
@@ -135,8 +134,8 @@ namespace Plugin.MediaManager
         private void AddActionButtons(bool mediaIsPlaying)
         {
             // Add previous/next button based on media queue
-            var canGoPrevious = mediaQueue?.HasPrevious() ?? false;
-            var canGoNext = mediaQueue?.HasNext() ?? false;
+            var canGoPrevious = MediaQueue?.HasPrevious() ?? false;
+            var canGoNext = MediaQueue?.HasNext() ?? false;
 
             _builder.MActions.Clear();
             if (canGoPrevious)

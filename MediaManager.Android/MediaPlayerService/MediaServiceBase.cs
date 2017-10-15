@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.App;
@@ -29,7 +29,7 @@ namespace Plugin.MediaManager
         public const string ActionNext = "com.xamarin.action.NEXT";
         public const string ActionPrevious = "com.xamarin.action.PREVIOUS";
 
-        internal const int NotificationId = 1;
+        //internal const int NotificationId = 1;
 
         private WifiManager wifiManager;
         private WifiManager.WifiLock wifiLock;
@@ -83,8 +83,8 @@ namespace Plugin.MediaManager
         {
             base.OnCreate();
             //Find our audio and notificaton managers
-            AudioManager = (AudioManager) GetSystemService(AudioService);
-            wifiManager = (WifiManager) GetSystemService(WifiService);
+            AudioManager = (AudioManager)GetSystemService(AudioService);
+            wifiManager = (WifiManager)GetSystemService(WifiService);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Plugin.MediaManager
 
         public virtual async Task Play(IMediaFile mediaFile = null)
         {
-            if(!ValidateMediaFile(mediaFile))
+            if (!ValidateMediaFile(mediaFile))
                 return;
 
             bool alreadyPlaying = await CheckIfFileAlreadyIsPlaying(mediaFile);
@@ -128,7 +128,7 @@ namespace Plugin.MediaManager
             {
                 try
                 {
-                    var focusResult = AudioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.Gain);
+                    var focusResult = AudioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.LossTransientCanDuck);
                     if (focusResult != AudioFocusRequest.Granted)
                         Console.WriteLine("Could not get audio focus");
 
@@ -185,7 +185,7 @@ namespace Plugin.MediaManager
             {
                 wifiLock = wifiManager.CreateWifiLock(WifiMode.Full, "xamarin_wifi_lock");
             }
-            if(!wifiLock.IsHeld)
+            if (!wifiLock.IsHeld)
                 wifiLock.Acquire();
         }
 
@@ -212,7 +212,7 @@ namespace Plugin.MediaManager
         {
             Binder = new MediaServiceBinder(this);
             return Binder;
-        } 
+        }
 
         public override bool OnUnbind(Intent intent)
         {
@@ -246,7 +246,7 @@ namespace Plugin.MediaManager
             switch (focusChange)
             {
                 case AudioFocus.Gain:
-                   if (TransientPaused && !ManuallyPaused)
+                    if (TransientPaused && !ManuallyPaused)
                     {
                         await Play();
                     }
@@ -271,7 +271,7 @@ namespace Plugin.MediaManager
 
             }
         }
-        
+
         internal void SetMediaSession(MediaSessionManager sessionManager)
         {
             SessionManager = sessionManager;
@@ -282,7 +282,7 @@ namespace Plugin.MediaManager
         {
             Android.Net.Uri uri = MediaStore.Audio.Media.GetContentUriForPath(path);
             string[] selection = { path };
-            ICursor cursor = context.ContentResolver.Query(uri, null, MediaStore.Audio.Media.InterfaceConsts.Data + "=?",selection, null);
+            ICursor cursor = context.ContentResolver.Query(uri, null, MediaStore.Audio.Media.InterfaceConsts.Data + "=?", selection, null);
             bool firstSuccess = cursor.MoveToFirst();
             if (!firstSuccess)
                 return path;
@@ -362,7 +362,7 @@ namespace Plugin.MediaManager
 
             return await Task.FromResult(false);
         }
-        
+
         private bool ValidateMediaFile(IMediaFile mediaFile)
         {
             if (CurrentFile != null || mediaFile != null) return true;
