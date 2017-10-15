@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -100,15 +100,16 @@ namespace Plugin.MediaManager
             };
 
             _player.PlaybackSession.SeekCompleted += (sender, args) => { };
-            _volumeManager.CurrentVolume = (float) _player.Volume;
-            _volumeManager.Mute = _player.IsMuted;
+            int.TryParse((_player.Volume * 100).ToString(), out var vol);
+            _volumeManager.CurrentVolume = vol;
+            _volumeManager.Muted = _player.IsMuted;
             _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
         }
 
         private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
         {
-            _player.Volume = (double) volumeChangedEventArgs.Volume;
-            _player.IsMuted = volumeChangedEventArgs.Mute;
+            _player.Volume = (double) volumeChangedEventArgs.NewVolume;
+            _player.IsMuted = volumeChangedEventArgs.Muted;
         }
 
         public Dictionary<string, string> RequestHeaders { get; set; }

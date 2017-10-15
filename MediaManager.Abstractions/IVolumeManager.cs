@@ -1,4 +1,4 @@
-﻿using Plugin.MediaManager.Abstractions.EventArguments;
+using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager.Abstractions
 {
@@ -15,18 +15,19 @@ namespace Plugin.MediaManager.Abstractions
         event VolumeChangedEventHandler VolumeChanged;
 
         /// <summary>
-        /// The volume for the current MediaPlayer
+        /// The volume for the current MediaPlayer 
+        /// Valid values are 0 - MaxVolume
         /// </summary>
-        float CurrentVolume { get; set; }
+        int CurrentVolume { get; set; }
 
         /// <summary>
         /// The Maximum volume that can be used
         /// </summary>
-        float MaxVolume { get; set; }
+        int MaxVolume { get; set; }
 
         /// <summary>
         /// True if the sound is Muted
         /// </summary>
-        bool Mute { get; set; }
+        bool Muted { get; set; }
     }
 }
