@@ -14,6 +14,11 @@ namespace MediaForms
         public HomePage()
         {
             InitializeComponent();
+            this.volumeLabel.Text = "Volume (0-" + CrossMediaManager.Current.VolumeManager.MaxVolume + ")";
+            //Initialize Volume settings to match interface
+            int.TryParse(this.volumeEntry.Text, out var vol);
+            CrossMediaManager.Current.VolumeManager.CurrentVolume = vol;
+            CrossMediaManager.Current.VolumeManager.Muted = false;
         }
 
         private void MainBtn_OnClicked(object sender, EventArgs e)
@@ -27,7 +32,7 @@ namespace MediaForms
             {
                 Type = MediaFileType.Audio,
                 Availability = ResourceAvailability.Remote,
-                Url = "https://audioboom.com/posts/5766044-follow-up-305.mp3?source=rss&amp;stitched=1"
+                Url = "https://audioboom.com/posts/5766044-follow-up-305.mp3"
             };
             await CrossMediaManager.Current.Play(mediaFile);
         }
@@ -78,6 +83,26 @@ namespace MediaForms
             // Ep. 306: A Theory of Evolution
             // Ep. 304: The 4th Dimension
             await CrossMediaManager.Current.Play(list);
+        }
+
+        private void SetVolumeBtn_OnClicked(object sender, EventArgs e)
+        {
+            int.TryParse(this.volumeEntry.Text, out var vol);
+            CrossMediaManager.Current.VolumeManager.CurrentVolume = vol;
+        }
+
+        private void MutedBtn_OnClicked(object sender, EventArgs e)
+        {
+            if (CrossMediaManager.Current.VolumeManager.Muted)
+            {
+                CrossMediaManager.Current.VolumeManager.Muted = false;
+                mutedBtn.Text = "Mute";
+            }
+            else
+            {
+                CrossMediaManager.Current.VolumeManager.Muted = true;
+                mutedBtn.Text = "Unmute";
+            }
         }
     }
 }
