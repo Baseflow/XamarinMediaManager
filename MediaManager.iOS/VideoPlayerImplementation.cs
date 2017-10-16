@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,16 +40,16 @@ namespace Plugin.MediaManager
                     (Status == MediaPlayerStatus.Playing))
                     Player.Play();
             };
-            _volumeManager.Mute = Player.Muted;
-            _volumeManager.CurrentVolume = Player.Volume;
-            _volumeManager.MaxVolume = 1;
+            _volumeManager.Muted = Player.Muted;
+            int.TryParse((Player.Volume * 100).ToString(), out var vol);
+            _volumeManager.CurrentVolume = vol;
             _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
         }
 
         private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs e)
         {
-            _player.Volume = (float) e.Volume;
-            _player.Muted = e.Mute;
+            _player.Volume = (float)e.NewVolume;
+            _player.Muted = e.Muted;
         }
 
         private AVPlayer Player
@@ -96,8 +96,8 @@ namespace Plugin.MediaManager
             {
                 if (Player.CurrentItem == null)
                     return TimeSpan.Zero;
-				if (double.IsNaN(Player.CurrentItem.Duration.Seconds))
-					return TimeSpan.Zero;
+                if (double.IsNaN(Player.CurrentItem.Duration.Seconds))
+                    return TimeSpan.Zero;
                 return TimeSpan.FromSeconds(Player.CurrentItem.Duration.Seconds);
             }
         }
@@ -175,7 +175,7 @@ namespace Plugin.MediaManager
             _player = new AVPlayer();
             _videoLayer = AVPlayerLayer.FromPlayer(_player);
 
-            #if __IOS__ || __TVOS__
+#if __IOS__ || __TVOS__
             var avSession = AVAudioSession.SharedInstance();
 
             // By setting the Audio Session category to AVAudioSessionCategorPlayback, audio will continue to play when the silent switch is enabled, or when the screen is locked.
@@ -185,17 +185,17 @@ namespace Plugin.MediaManager
             avSession.SetActive(true, out activationError);
             if (activationError != null)
                 Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
-            #endif
+#endif
 
             Player.AddPeriodicTimeObserver(new CMTime(1, 4), DispatchQueue.MainQueue, delegate
             {
-				double totalProgress = 0;
-				if (!double.IsNaN(_player.CurrentItem.Duration.Seconds))
-				{
-					var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
-					totalProgress = Position.TotalMilliseconds /
-										totalDuration.TotalMilliseconds;
-				}
+                double totalProgress = 0;
+                if (!double.IsNaN(_player.CurrentItem.Duration.Seconds))
+                {
+                    var totalDuration = TimeSpan.FromSeconds(_player.CurrentItem.Duration.Seconds);
+                    totalProgress = Position.TotalMilliseconds /
+                                        totalDuration.TotalMilliseconds;
+                }
                 PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(
                     !double.IsInfinity(totalProgress) ? totalProgress : 0,
                     Position,
@@ -253,6 +253,19 @@ namespace Plugin.MediaManager
             }
 
             await Task.CompletedTask;
+        }
+
+
+        public bool IsMuted
+        {
+            get { return _player.Muted; }
+            set { _player.Muted = value; }
+        }
+
+        public void SetVolume(float leftVolume, float rightVolume)
+        {
+            float volume = Math.Max(leftVolume, rightVolume);
+            _player.Volume = volume;
         }
 
         public override void ObserveValue(NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr context)
@@ -349,10 +362,14 @@ namespace Plugin.MediaManager
         private VideoAspectMode _aspectMode;
         private IVolumeManager _volumeManager;
 
-        public VideoAspectMode AspectMode { 
-            get {
+        public VideoAspectMode AspectMode
+        {
+            get
+            {
                 return _aspectMode;
-            } set {
+            }
+            set
+            {
                 switch (value)
                 {
                     case VideoAspectMode.None:

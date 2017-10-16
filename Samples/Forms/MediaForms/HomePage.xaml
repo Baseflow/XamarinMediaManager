@@ -3,14 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MediaForms.HomePage">
     <ContentPage.Content>
-        <StackLayout>
-            <Button x:Name="mainBtn"
+        <StackLayout Orientation="Vertical">
+            <StackLayout VerticalOptions="Start">
+                <Button x:Name="mainBtn"
                     Text="Click here to view a video"
                     Clicked="MainBtn_OnClicked" />
-            <Button Text="Play A Audio"
+                <Button Text="Play A Audio"
                     Clicked="PlayAudio_OnClicked" />
-            <Button Text="Play Audio List"
+                <Button Text="Play Audio List"
                     Clicked="PlaylistButton_OnClicked" />
+            </StackLayout>
+	        <StackLayout Orientation="Horizontal" VerticalOptions="End" Grid.Row="2">
+		        <Label x:Name="volumeLabel" Text="Volume (0-100):" HorizontalOptions="Start"></Label>
+		        <Entry x:Name="volumeEntry" Text="50" Keyboard="Numeric"  HorizontalOptions="StartAndExpand" WidthRequest="100"></Entry>
+		        <Button x:Name="setVolumeBtn" Text="Set Volume" HorizontalOptions="Start" Clicked="SetVolumeBtn_OnClicked"></Button>
+		        <Button x:Name="mutedBtn" Text="Mute" HorizontalOptions="End" Clicked="MutedBtn_OnClicked"></Button>
+	        </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

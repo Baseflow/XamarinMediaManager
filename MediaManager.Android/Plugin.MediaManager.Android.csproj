@@ -83,6 +83,7 @@
     <Compile Include="..\MediaManager\CrossMediaManager.cs">
       <Link>CrossMediaManager.cs</Link>
     </Compile>
+    <Compile Include="IAndroidMediaNotificationManager.cs" />
     <Compile Include="MediaManagerImplementation.cs" />
     <Compile Include="MediaPlayerService\MediaPlayerService.cs" />
     <Compile Include="MediaSession\MediaNotificationManagerImplementation.cs" />

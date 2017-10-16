@@ -1,16 +1,16 @@
-﻿using System;
+using System;
 
 namespace Plugin.MediaManager.Abstractions.EventArguments
 {
     public class VolumeChangedEventArgs : EventArgs
     {
-        public VolumeChangedEventArgs(object volumeArguments, bool mute)
+        public VolumeChangedEventArgs(int newVolume, bool muted)
         {
-            Volume = volumeArguments;
-            Mute = mute;
+            NewVolume = newVolume;
+            Muted = muted;
         }
 
-        public object Volume { get; }
-        public bool Mute { get; }
+        public int NewVolume { get; }
+        public bool Muted { get; }
     }
 }
