@@ -7,6 +7,7 @@ using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
 using System;
+using Android.Support.V4.App;
 
 namespace Plugin.MediaManager.MediaSession
 {
@@ -27,6 +28,22 @@ namespace Plugin.MediaManager.MediaSession
             {
                 _overrideNotificationManager = value;
                 _notificationManager = value;
+                UpdateAndroidNotificationManagerSettings();
+            }
+        }
+
+        private void UpdateAndroidNotificationManagerSettings()
+        {
+            if (_notificationManager != null)
+            {
+                ((IAndroidMediaNotificationManager)_notificationManager).SessionToken = CurrentSession?.SessionToken;
+                ((IAndroidMediaNotificationManager)_notificationManager).MediaQueue = mediaQueue;
+            }
+
+            if (_overrideNotificationManager != null)
+            {
+                ((IAndroidMediaNotificationManager)_overrideNotificationManager).SessionToken = CurrentSession?.SessionToken;
+                ((IAndroidMediaNotificationManager)_overrideNotificationManager).MediaQueue = mediaQueue;
             }
         }
 
@@ -42,16 +59,14 @@ namespace Plugin.MediaManager.MediaSession
 
         internal ComponentName RemoteComponentName { get; set; }
 
-        private Type _serviceType;
-
         private readonly IMediaManager mediaManager;
         private IMediaQueue mediaQueue => mediaManager.MediaQueue;
 
-        public MediaSessionManager(Context appContext, Type serviceType, IMediaManager mediaManager)
+        public MediaSessionManager(Context appContext, IMediaManager mediaManager)
         {
             applicationContext = appContext;
-            _serviceType = serviceType;
             this.mediaManager = mediaManager;
+            UpdateAndroidNotificationManagerSettings();
         }
 
         internal void InitMediaSession(string packageName, MediaServiceBinder binder)
@@ -65,8 +80,10 @@ namespace Plugin.MediaManager.MediaSession
 
                     RemoteComponentName = new ComponentName(packageName, new RemoteControlBroadcastReceiver().ComponentName);
                     mediaSessionCompat = new MediaSessionCompat(applicationContext, "XamarinStreamingAudio", RemoteComponentName, pIntent);
+                    UpdateAndroidNotificationManagerSettings();
+
                     mediaControllerCompat = new MediaControllerCompat(applicationContext, mediaSessionCompat.SessionToken);
-                    _notificationManager = _overrideNotificationManager ?? new MediaNotificationManagerImplementation(applicationContext, CurrentSession.SessionToken, _serviceType, mediaQueue);
+                    _notificationManager = _overrideNotificationManager ?? new MediaNotificationManagerImplementation(applicationContext, typeof(MediaPlayerService));
                 }
                 mediaSessionCompat.Active = true;
                 MediaServiceBase mediaServiceBase = binder.GetMediaPlayerService<MediaServiceBase>();
@@ -95,8 +112,8 @@ namespace Plugin.MediaManager.MediaSession
         {
             try
             {
-                mediaSessionCompat.Release();
-                mediaSessionCompat.Dispose();
+                mediaSessionCompat?.Release();
+                mediaSessionCompat?.Dispose();
                 mediaSessionCompat = null;
             }
             catch (Exception ex)

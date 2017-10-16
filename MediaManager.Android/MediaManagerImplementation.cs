@@ -41,7 +41,7 @@ namespace Plugin.MediaManager
 
         public MediaSessionManager MediaSessionManager
         {
-            get { return _sessionManager ?? (_sessionManager = new MediaSessionManager(Application.Context, typeof(MediaPlayerService), this)); }
+            get { return _sessionManager ?? (_sessionManager = new MediaSessionManager(Application.Context, this)); }
             set
             {
                 _sessionManager = value;
