@@ -7,17 +7,17 @@ namespace Plugin.MediaManager.Abstractions
     public interface IPlaybackController
     {
         /// <summary>
-        /// Plays the current MediaFile
+        /// Plays the current MediaItem
         /// </summary>
         Task Play();
 
         /// <summary>
-        /// Pauses the current MediaFile
+        /// Pauses the current MediaItem
         /// </summary>
         Task Pause();
 
         /// <summary>
-        /// Plays or pauses the current MediaFile
+        /// Plays or pauses the current MediaItem
         /// </summary>
         Task PlayPause();
 
@@ -27,37 +27,37 @@ namespace Plugin.MediaManager.Abstractions
         Task Stop();
 
         /// <summary>
-        /// Plays the previous MediaFile or seeks to start if far enough into the current one.
+        /// Plays the previous MediaItem or seeks to start if far enough into the current one.
         /// </summary>
         Task PlayPreviousOrSeekToStart();
 
         /// <summary>
-        /// Plays the previous MediaFile
+        /// Plays the previous MediaItem
         /// </summary>
         Task PlayPrevious();
 
         /// <summary>
-        /// Plays the next MediaFile
+        /// Plays the next MediaItem
         /// </summary>
         /// <returns></returns>
         Task PlayNext();
 
         Task PlayFromQueueByIndex(int index);
 
-        Task PlayFromQueueByMediaFile(IMediaItem file);
+        Task PlayFromQueueByMediaItem(IMediaItem file);
 
         /// <summary>
-        /// Seeks to the start of the current MediaFile
+        /// Seeks to the start of the current MediaItem
         /// </summary>
         Task SeekToStart();
 
         /// <summary>
-        /// Seeks forward a fixed amount of seconds of the current MediaFile
+        /// Seeks forward a fixed amount of seconds of the current MediaItem
         /// </summary>
         Task SeekForward(TimeSpan? time = null);
 
         /// <summary>
-        /// Seeks backward a fixed amount of seconds of the current MediaFile
+        /// Seeks backward a fixed amount of seconds of the current MediaItem
         /// </summary>
         Task SeekBackward(TimeSpan? time = null);
 

@@ -65,7 +65,7 @@ namespace Plugin.MediaManager.Abstractions
         TimeSpan Buffered { get; }
 
         /// <summary>
-        /// Creates new MediaFile object, adds it to the queue and starts playing
+        /// Creates new MediaItem object, adds it to the queue and starts playing
         /// </summary>
         Task Play(string url);
 

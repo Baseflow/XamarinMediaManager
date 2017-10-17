@@ -63,7 +63,7 @@ namespace Plugin.MediaManager.Abstractions
 
         void SetTrackAsCurrent(IMediaItem item);
 
-        void AddRange(IEnumerable<IMediaItem> mediaFiles);
+        void AddRange(IEnumerable<IMediaItem> MediaItems);
     }
 }
 

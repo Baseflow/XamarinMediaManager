@@ -18,7 +18,7 @@ namespace MediaForms
             CrossMediaManager.Current.VolumeManager.CurrentVolume = vol;
             CrossMediaManager.Current.VolumeManager.Muted = false;
 
-            CrossMediaManager.Current.PlayingChanged += (sender, e) =>
+            CrossMediaManager.Current.CurrentPlaybackManager.Playing += (sender, e) =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {

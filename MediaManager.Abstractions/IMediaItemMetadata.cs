@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace Plugin.MediaManager.Abstractions
 {
     /// <summary>
-    /// Mediafile Metadata. 
+    /// MediaItem Metadata. 
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public interface IMediaItemMetadata : INotifyPropertyChanged

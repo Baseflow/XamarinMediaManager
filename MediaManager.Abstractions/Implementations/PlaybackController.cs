@@ -28,7 +28,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             throw new NotImplementedException();
         }
 
-        public Task PlayFromQueueByMediaFile(IMediaItem file)
+        public Task PlayFromQueueByMediaItem(IMediaItem file)
         {
             throw new NotImplementedException();
         }

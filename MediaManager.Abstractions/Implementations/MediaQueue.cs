@@ -186,15 +186,15 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
         }
 
-        public void AddRange(IEnumerable<IMediaItem> mediaFiles)
+        public void AddRange(IEnumerable<IMediaItem> MediaItems)
         {
-            mediaFiles = mediaFiles.ToList();
+            MediaItems = MediaItems.ToList();
 
-            ExecuteWithoutCollectionChangedEvents(() => _queue.AddRange(mediaFiles));
+            ExecuteWithoutCollectionChangedEvents(() => _queue.AddRange(MediaItems));
 
             if (CollectionChanged != null)
             {
-                var eventArgs = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, mediaFiles);
+                var eventArgs = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, MediaItems);
 
                 CollectionChanged(_queue, eventArgs);
             }
@@ -202,7 +202,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             // If shuffle is enabled, we need to add the items to the backup queue too
             if (IsShuffled)
             {
-                _unshuffledQueue.AddRange(mediaFiles);
+                _unshuffledQueue.AddRange(MediaItems);
             }
 
             if (Index == -1)

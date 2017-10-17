@@ -118,8 +118,8 @@ namespace MediaManager.Sample.Core
             mediaPlayer.PlayingChanged += OnPlaying;
             mediaPlayer.BufferingChanged -= OnBuffering;
             mediaPlayer.BufferingChanged += OnBuffering;
-            mediaPlayer.MediaFileChanged -= OnMediaFileChanged;
-            mediaPlayer.MediaFileChanged += OnMediaFileChanged;
+            mediaPlayer.MediaItemChanged -= OnMediaItemChanged;
+            mediaPlayer.MediaItemChanged += OnMediaItemChanged;
 
             mediaPlayer.MediaQueue.PropertyChanged -= OnQueuePropertyChanged;
             mediaPlayer.MediaQueue.PropertyChanged += OnQueuePropertyChanged;*/
@@ -165,7 +165,7 @@ namespace MediaManager.Sample.Core
             OnPropertyChanged(nameof(Status));
         }
 
-        private void OnMediaFileChanged(object sender, MediaFileChangedEventArgs args)
+        private void OnMediaItemChanged(object sender, MediaItemChangedEventArgs args)
         {
             OnPropertyChanged(nameof(CurrentTrack));
             OnPropertyChanged(nameof(Cover));

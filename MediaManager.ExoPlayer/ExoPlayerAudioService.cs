@@ -105,9 +105,9 @@ namespace Plugin.MediaManager.ExoPlayer
         {
         }
 
-        public override async Task Play(IMediaItem mediaFile = null)
+        public override async Task Play(IMediaItem MediaItem = null)
         {
-            await base.Play(mediaFile);
+            await base.Play(MediaItem);
             _mediaPlayer.PlayWhenReady = true;
             ManuallyPaused = false;
         }
@@ -158,7 +158,7 @@ namespace Plugin.MediaManager.ExoPlayer
 
         public void OnPlayerError(ExoPlaybackException ex)
         {
-            OnMediaFileFailed(new MediaFileFailedEventArgs(ex, CurrentFile));
+            OnMediaItemFailed(new MediaItemFailedEventArgs(ex, CurrentFile));
         }
 
         public void OnPlayerStateChanged(bool playWhenReady, int state)
@@ -295,14 +295,14 @@ namespace Plugin.MediaManager.ExoPlayer
             return new HttpSourceFactory(httpFactory, RequestHeaders);
         }
 
-        public override Task Play(IEnumerable<IMediaItem> mediaFiles)
+        public override Task Play(IEnumerable<IMediaItem> MediaItems)
         {
             throw new NotImplementedException();
         }
         
         public void OnLoadError(IOException ex)
         {
-            OnMediaFileFailed(new MediaFileFailedEventArgs(ex, CurrentFile));
+            OnMediaItemFailed(new MediaItemFailedEventArgs(ex, CurrentFile));
         }
     }
 

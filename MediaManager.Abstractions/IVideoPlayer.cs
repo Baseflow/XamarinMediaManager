@@ -28,8 +28,7 @@ namespace Plugin.MediaManager.Abstractions
         /// <summary>
         /// Volume of the video player
         /// </summary>
-        /// <param name="leftVolume"></param>
-        /// <param name="rightVolume"></param>
-        void SetVolume(float leftVolume, float rightVolume);
+        /// <param name="newVolume"></param>
+        void SetVolume(int newVolume);
     }
 }

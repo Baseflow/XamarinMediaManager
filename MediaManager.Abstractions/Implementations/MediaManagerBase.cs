@@ -99,7 +99,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         {
             get
             {
-                if (_currentPlaybackManager == null && CurrentMediaFile != null) SetCurrentPlayer(CurrentMediaFile.Type);
+                if (_currentPlaybackManager == null && CurrentMediaItem != null) SetCurrentPlayer(CurrentMediaItem.Type);
 
                 if (_currentPlaybackManager != null)
                 {
@@ -142,11 +142,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public event MediaFailedEventHandler MediaFailed;
 
-        public event MediaFileChangedEventHandler MediaFileChanged;
+        public event MediaItemChangedEventHandler MediaItemChanged;
 
-        public event MediaFileFailedEventHandler MediaFileFailed;
+        public event MediaItemFailedEventHandler MediaItemFailed;
 
-        private IMediaItem CurrentMediaFile => MediaQueue.Current;
+        private IMediaItem CurrentMediaItem => MediaQueue.Current;
 
         public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
@@ -159,7 +159,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public async Task PlayNext()
         {
-            await RaiseMediaFileFailedEventOnException(async () =>
+            await RaiseMediaItemFailedEventOnException(async () =>
             {
                 if (MediaQueue.HasNext())
                 {
@@ -178,14 +178,14 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                         await Seek(TimeSpan.Zero);
                     });
 
-                    OnMediaFileChanged(this, new MediaFileChangedEventArgs(CurrentMediaFile));
+                    OnMediaItemChanged(this, new MediaItemChangedEventArgs(CurrentMediaItem));
                 }
             });
         }
 
         public async Task PlayPrevious()
         {
-            await RaiseMediaFileFailedEventOnException(async () =>
+            await RaiseMediaItemFailedEventOnException(async () =>
             {
                 MediaQueue.SetPreviousAsCurrent();
 
@@ -196,30 +196,30 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public async Task PlayByPosition(int index)
         {
             MediaQueue.SetIndexAsCurrent(index);
-            await Play(CurrentMediaFile);
+            await Play(CurrentMediaItem);
         }
 
         public Task Play(string url)
         {
-            var mediaFile = new MediaItem(url);
-            return Play(mediaFile);
+            var MediaItem = new MediaItem(url);
+            return Play(MediaItem);
         }
 
         public Task Play(string url, MediaItemType fileType)
         {
-            var mediaFile = new MediaItem(url, fileType);
-            return Play(mediaFile);
+            var MediaItem = new MediaItem(url, fileType);
+            return Play(MediaItem);
         }
 
         public Task Play(string url, MediaItemType fileType, ResourceAvailability availability)
         {
-            var mediaFile = new MediaItem(url, fileType, availability);
-            return Play(mediaFile);
+            var MediaItem = new MediaItem(url, fileType, availability);
+            return Play(MediaItem);
         }
 
-        public async Task Play(IMediaItem mediaFile = null)
+        public async Task Play(IMediaItem MediaItem = null)
         {
-            if (mediaFile == null)
+            if (MediaItem == null)
             {
                 if (Status == PlaybackState.Paused)
                 {
@@ -227,7 +227,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                     return;
                 }
 
-                mediaFile = CurrentMediaFile;
+                MediaItem = CurrentMediaItem;
             }
 
             if (_currentPlaybackManager != null && Status == PlaybackState.Failed)
@@ -236,38 +236,38 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 return;
             }
 
-            if (mediaFile == null)
+            if (MediaItem == null)
             {
                 await Play(MediaQueue);
                 return;
             }
 
-            if (!MediaQueue.Contains(mediaFile))
-                MediaQueue.Add(mediaFile);
+            if (!MediaQueue.Contains(MediaItem))
+                MediaQueue.Add(MediaItem);
 
-            MediaQueue.SetTrackAsCurrent(mediaFile);            
+            MediaQueue.SetTrackAsCurrent(MediaItem);            
 
-            await RaiseMediaFileFailedEventOnException(async () =>
+            await RaiseMediaItemFailedEventOnException(async () =>
             {
                 await PlayCurrent();
             });
 
-            MediaNotificationManager?.StartNotification(mediaFile);
+            MediaNotificationManager?.StartNotification(MediaItem);
         }
 
         /// <summary>
-        /// Adds all MediaFiles to the Queue and starts playing the first item
+        /// Adds all MediaItems to the Queue and starts playing the first item
         /// </summary>
-        /// <param name="mediaFiles"></param>
+        /// <param name="MediaItems"></param>
         /// <returns></returns>
-        public async Task Play(IEnumerable<IMediaItem> mediaFiles)
+        public async Task Play(IEnumerable<IMediaItem> MediaItems)
         {
             MediaQueue.Clear();
-            MediaQueue.AddRange(mediaFiles);
+            MediaQueue.AddRange(MediaItems);
 
             await PlayNext();
 
-            MediaNotificationManager?.StartNotification(CurrentMediaFile);
+            MediaNotificationManager?.StartNotification(CurrentMediaItem);
         }
 
         public void SetOnBeforePlay(Func<IMediaItem, Task> beforePlay)
@@ -295,17 +295,17 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             if (CurrentPlaybackManager == null)
                 return;
             await CurrentPlaybackManager.Seek(position);
-            MediaNotificationManager?.UpdateNotifications(CurrentMediaFile, Status);
+            MediaNotificationManager?.UpdateNotifications(CurrentMediaItem, Status);
         }
 
         private async Task Resume()
         {
             if (CurrentPlaybackManager == null)
                 return;
-            await CurrentPlaybackManager.Play(CurrentMediaFile);
+            await CurrentPlaybackManager.Play(CurrentMediaItem);
         }
 
-        private async Task RaiseMediaFileFailedEventOnException(Func<Task> action)
+        private async Task RaiseMediaItemFailedEventOnException(Func<Task> action)
         {
             try
             {
@@ -313,13 +313,13 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             }
             catch (Exception ex)
             {
-                OnMediaFileFailed(CurrentPlaybackManager, new MediaFileFailedEventArgs(ex, CurrentMediaFile));
+                OnMediaItemFailed(CurrentPlaybackManager, new MediaItemFailedEventArgs(ex, CurrentMediaItem));
             }
         }
 
         private Task PlayCurrent()
         {
-            return PrepareCurrentAndThen(() => CurrentPlaybackManager.Play(CurrentMediaFile));
+            return PrepareCurrentAndThen(() => CurrentPlaybackManager.Play(CurrentMediaItem));
         }
 
         private async Task PrepareCurrentAndThen(Func<Task> action = null)
@@ -329,12 +329,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             if(CurrentPlaybackManager != null)
                 await Task.WhenAll(
                     action?.Invoke(),
-                    ExtractMediaInformation(CurrentMediaFile));
+                    ExtractMediaInformation(CurrentMediaItem));
         }
 
         private async Task ExecuteOnBeforePlay()
         {
-            var beforePlayTask = _onBeforePlay?.Invoke(CurrentMediaFile);
+            var beforePlayTask = _onBeforePlay?.Invoke(CurrentMediaItem);
             if (beforePlayTask != null) await beforePlayTask;
         }
 
@@ -358,17 +358,17 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             AddEventHandlers();
         }
 
-        private async Task ExtractMediaInformation(IMediaItem mediaFile)
+        private async Task ExtractMediaInformation(IMediaItem MediaItem)
         {
-            var index = MediaQueue.IndexOf(mediaFile);
-            await MediaExtractor.ExtractMediaInfo(mediaFile);
+            var index = MediaQueue.IndexOf(MediaItem);
+            await MediaExtractor.ExtractMediaInfo(MediaItem);
 
             if (index >= 0)
             {
-                MediaQueue[index] = mediaFile;
+                MediaQueue[index] = MediaItem;
             }
 
-            OnMediaFileChanged(CurrentPlaybackManager, new MediaFileChangedEventArgs(mediaFile));
+            OnMediaItemChanged(CurrentPlaybackManager, new MediaItemChangedEventArgs(MediaItem));
         }
 
         private void OnStatusChanged(object sender, StatusChangedEventArgs e)
@@ -380,7 +380,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 _startedPlaying = false;
             }
 
-            MediaNotificationManager?.UpdateNotifications(CurrentMediaFile, e.Status);
+            MediaNotificationManager?.UpdateNotifications(CurrentMediaItem, e.Status);
             StatusChanged?.Invoke(sender, e);
         }
 
@@ -430,20 +430,20 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 BufferingChanged?.Invoke(sender, e);
         }
 
-        private void OnMediaFileChanged(object sender, MediaFileChangedEventArgs e)
+        private void OnMediaItemChanged(object sender, MediaItemChangedEventArgs e)
         {
-            if (CurrentMediaFile?.Url == e?.File?.Url)
+            if (CurrentMediaItem?.Url == e?.File?.Url)
                 MediaNotificationManager?.UpdateNotifications(e?.File, Status);
-            MediaFileChanged?.Invoke(sender, e);
+            MediaItemChanged?.Invoke(sender, e);
 
         }
 
-        private void OnMediaFileFailed(object sender, MediaFileFailedEventArgs e)
+        private void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e)
         {
             if (sender == CurrentPlaybackManager)
             {
                 OnStatusChanged(sender, new StatusChangedEventArgs(PlaybackState.Failed));
-                MediaFileFailed?.Invoke(sender, e);
+                MediaItemFailed?.Invoke(sender, e);
             }
         }
 

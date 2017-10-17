@@ -2,9 +2,9 @@
 
 namespace Plugin.MediaManager.Abstractions.EventArguments
 {
-    public class MediaFileFailedEventArgs : EventArgs
+    public class MediaItemFailedEventArgs : EventArgs
     {
-        public MediaFileFailedEventArgs(Exception ex, IMediaItem item)
+        public MediaItemFailedEventArgs(Exception ex, IMediaItem item)
         {
             this.MediaExeption = ex;
             Item = item;

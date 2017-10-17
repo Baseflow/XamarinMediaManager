@@ -6,7 +6,7 @@ namespace Plugin.MediaManager.Abstractions
     public delegate void MetadataUpdatedEventHandler(object sender, MetadataChangedEventArgs e);
 
     /// <summary>
-    /// Information about the mediafile
+    /// Information about the MediaItem
     /// </summary>
     public interface IMediaItem
     {
@@ -24,7 +24,7 @@ namespace Plugin.MediaManager.Abstractions
         IMediaItemMetadata Metadata { get; set; }
 
         /// <summary>
-        /// Raised when mediadata of MediaFile failed to update
+        /// Raised when mediadata of MediaItem failed to update
         /// </summary>
         event MetadataUpdatedEventHandler MetadataUpdated;
 

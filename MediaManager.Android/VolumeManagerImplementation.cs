@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Android.Support.V4.Media;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
@@ -14,17 +14,17 @@ namespace Plugin.MediaManager
             this.mediaManagerImplementation = mediaManagerImplementation;
         }
 
-        public float CurrentVolume { get; set; }
+        public int  CurrentVolume { get; set; }
 
-        public float MaxVolume { get; set; }
+        public int MaxVolume { get; set; }
 
         public event VolumeChangedEventHandler VolumeChanged;
 
         public override void OnVolumeChanged(VolumeProviderCompat volumeProvider)
         {
-            VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(volumeProvider, Mute));
+            VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(volumeProvider.CurrentVolume, Muted));
         }
 
-        public bool Mute { get; set; }
+        public bool Muted { get; set; }
     }
 }

@@ -166,7 +166,7 @@ namespace MediaSample.Droid
                 }
             };
 
-            ViewModel.MediaPlayer.MediaFileFailed += (sender, e) =>
+            ViewModel.MediaPlayer.MediaItemFailed += (sender, e) =>
             {
                 try
                 {
@@ -174,13 +174,13 @@ namespace MediaSample.Droid
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Exception : MediaFileFailed: {ex.Message}");
+                    Console.WriteLine($"Exception : MediaItemFailed: {ex.Message}");
                 }
             };
 
             var title = FindViewById<TextView>(Resource.Id.textview_title);
             var subtitle = FindViewById<TextView>(Resource.Id.textview_subtitle);
-            ViewModel.MediaPlayer.MediaFileChanged += (sender, args) =>
+            ViewModel.MediaPlayer.MediaItemChanged += (sender, args) =>
             {
                 try
                 {
@@ -188,7 +188,7 @@ namespace MediaSample.Droid
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Exception : MediaFileChanged: {ex.Message}");
+                    Console.WriteLine($"Exception : MediaItemChanged: {ex.Message}");
                 }
 
                 RunOnUiThread(() =>
@@ -205,7 +205,7 @@ namespace MediaSample.Droid
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Exception : MediaFileChangedUI: {ex.Message}");
+                        Console.WriteLine($"Exception : MediaItemChangedUI: {ex.Message}");
                     }
                 });
             };

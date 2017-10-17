@@ -2,9 +2,9 @@
 
 namespace Plugin.MediaManager.Abstractions.EventArguments
 {
-    public class MediaFileChangedEventArgs : EventArgs
+    public class MediaItemChangedEventArgs : EventArgs
     {
-        public MediaFileChangedEventArgs(IMediaItem item)
+        public MediaItemChangedEventArgs(IMediaItem item)
         {
             Item = item;
         }

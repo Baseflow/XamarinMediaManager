@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Media;
@@ -28,6 +28,49 @@ namespace Plugin.MediaManager
         public bool IsReadyRendering => throw new NotImplementedException();
 
         public VideoAspectMode AspectMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        private bool _IsMuted = false;
+        public bool IsMuted
+        {
+            get { return _IsMuted; }
+            set
+            {
+                if (_IsMuted == value)
+                    return;
+
+                int volumeValue = 0;
+                if (!value)
+                {
+                    //https://developer.xamarin.com/api/member/Android.Media.AudioManager.GetStreamVolume/p/Android.Media.Stream/
+                    //https://stackoverflow.com/questions/17898382/audiomanager-getstreamvolumeaudiomanager-stream-music-returns-0
+                    Stream streamType = Stream.Music;
+                    int volumeMax = mediaManagerImplementation.VolumeManager.MaxVolume;
+                    int volume = mediaManagerImplementation.VolumeManager.CurrentVolume;
+
+                    //ltang: Unmute with the current volume
+                    volumeValue = volume / volumeMax;
+                }
+
+                SetVolume(volumeValue);
+                _IsMuted = value;
+            }
+        }
+
+        public void SetVolume(int newVolume)
+        {
+            try
+            {
+                mediaManagerImplementation.VolumeManager.CurrentVolume = newVolume;
+            }
+            catch (Java.Lang.IllegalStateException e)
+            {
+                //ltang: Wrong state to set volume
+                throw;
+            }
+            catch (System.Exception e)
+            {
+                throw;
+            }
+        }
 
         public PlaybackState State => throw new NotImplementedException();
 

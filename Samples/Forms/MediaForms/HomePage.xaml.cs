@@ -28,52 +28,54 @@ namespace MediaForms
 
         private async void PlayAudio_OnClicked(object sender, EventArgs e)
         {
-            var mediaFile = new MediaFile
+            var mediaItem = new MediaItem
             {
-                Type = MediaFileType.Audio,
-                Availability = ResourceAvailability.Remote,
-                Url = "https://audioboom.com/posts/5766044-follow-up-305.mp3"
+                Type = MediaItemType.Audio,
+                //Availability = ResourceAvailability.Remote,
+                Url = "https://audioboom.com/posts/5766044-follow-up-305.mp3",
+                Id = new Guid(), Metadata = new MediaItemMetadata() { Title = "Test"}, MetadataExtracted = false
             };
-            await CrossMediaManager.Current.Play(mediaFile);
+            //await CrossMediaManager.Current.Play(MediaItem);
+            await CrossMediaManager.Current.CurrentPlaybackManager.Play(mediaItem);
         }
 
         private async void PlaylistButton_OnClicked(object sender, EventArgs e)
         {
-            var list = new List<MediaFile>
+            var list = new List<MediaItem>
             {
-                new MediaFile
+                new MediaItem
                 {
                     Url = "https://audioboom.com/posts/5766044-follow-up-305.mp3?source=rss&amp;stitched=1",
-                    Type = MediaFileType.Audio,
-                    Metadata = new MediaFileMetadata
+                    Type = MediaItemType.Audio,
+                    Metadata = new MediaItemMetadata
                     {
                         Title = "Test1"
                     }
                 },
-                new MediaFile
+                new MediaItem
                 {
                     Url = "https://media.acast.com/mydadwroteaporno/s3e1-london-thursday15.55localtime/media.mp3",
-                    Type = MediaFileType.Audio,
-                    Metadata = new MediaFileMetadata
+                    Type = MediaItemType.Audio,
+                    Metadata = new MediaItemMetadata
                     {
                         Title = "Test2"
                     }
                 },
-                new MediaFile
+                new MediaItem
                 {
                     Url =
                         "https://audioboom.com/posts/5770261-ep-306-a-theory-of-evolution.mp3?source=rss&amp;stitched=1",
-                    Type = MediaFileType.Audio,
-                    Metadata = new MediaFileMetadata
+                    Type = MediaItemType.Audio,
+                    Metadata = new MediaItemMetadata
                     {
                         Title = "Test3"
                     }
                 },
-                new MediaFile
+                new MediaItem
                 {
                     Url = "https://audioboom.com/posts/5723344-ep-304-the-4th-dimension.mp3?source=rss&amp;stitched=1",
-                    Type = MediaFileType.Audio,
-                    Metadata = new MediaFileMetadata
+                    Type = MediaItemType.Audio,
+                    Metadata = new MediaItemMetadata
                     {
                         Title = "Test4"
                     }

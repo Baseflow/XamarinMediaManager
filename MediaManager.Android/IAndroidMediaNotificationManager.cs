@@ -15,7 +15,7 @@ using Plugin.MediaManager.Abstractions.Enums;
 
 namespace Plugin.MediaManager
 {
-    public interface IAndroidMediaNotificationManager : IMediaNotificationManager
+    public interface IAndroidMediaNotificationManager : INotificationManager
     {
         IMediaQueue MediaQueue { get; set; }
         MediaSessionCompat.Token SessionToken { get; set; }
