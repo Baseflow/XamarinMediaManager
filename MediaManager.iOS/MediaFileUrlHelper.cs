@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 using Foundation;
 using AVFoundation;
@@ -10,15 +10,9 @@ namespace Plugin.MediaManager
 {
     public static class MediaFileUrlHelper
     {
-        public static NSUrl GetUrlFor(IMediaItem mediaFile) {
-            var isLocallyAvailable = mediaFile.Availability == ResourceAvailability.Local;
+        public static NSUrl GetUrlFor(IMediaItem mediaItem) => new NSUrl(mediaItem.Url, false);
 
-            var url = isLocallyAvailable ? new NSUrl(mediaFile.Url, false) : new NSUrl(mediaFile.Url);
-
-            return url;
-        }
-
-		public static AVUrlAssetOptions GetOptionsWithHeaders(IDictionary<string, string> headers)
+        public static AVUrlAssetOptions GetOptionsWithHeaders(IDictionary<string, string> headers)
 		{
 			var nativeHeaders = new NSMutableDictionary();
 

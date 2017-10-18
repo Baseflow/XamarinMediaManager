@@ -1,4 +1,4 @@
-﻿using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions;
 
 namespace Plugin.MediaManager
 {
@@ -7,7 +7,7 @@ namespace Plugin.MediaManager
         public MediaManagerImplementation()
         {
             MediaRemoteControl = new MediaRemoteControl(PlaybackController);
-            MediaNotificationManager = new MediaNotificationManagerImplementation(this);
+            NotificationManager = new MediaNotificationManagerImplementation(this);
         }
 
         /// <summary>
@@ -15,6 +15,6 @@ namespace Plugin.MediaManager
         /// </summary>
         public IMediaRemoteControl MediaRemoteControl { get; set; }
 
-        public sealed override INotificationManager MediaNotificationManager { get; set; }
+        public sealed override INotificationManager NotificationManager { get; set; }
     }
 }

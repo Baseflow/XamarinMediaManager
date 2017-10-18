@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
@@ -27,7 +27,7 @@ namespace Plugin.MediaManager
         private readonly Timer _playProgressTimer;
         private MediaSource _currentMediaSource;
         private TaskCompletionSource<bool> _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
-        private MediaPlayerStatus _status;
+        private PlaybackState _state;
         private IMediaItem _currentMediaFile;
         private SpriteVisual _spriteVisual;
         private IVideoSurface _renderSurface;
@@ -45,15 +45,15 @@ namespace Plugin.MediaManager
                                    _player.PlaybackSession.NaturalDuration.TotalSeconds;
                     if (double.IsInfinity(progress))
                         progress = 0;
-                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(progress, _player.PlaybackSession.Position, _player.PlaybackSession.NaturalDuration));
+                    Playing?.Invoke(this, new PlayingChangedEventArgs(progress, _player.PlaybackSession.Position, _player.PlaybackSession.NaturalDuration));
                 }
             }, null, 0, int.MaxValue);
 
             _player.MediaFailed += (sender, args) =>
             {
-                _status = MediaPlayerStatus.Failed;
+                _state = PlaybackState.Failed; 
                 _playProgressTimer.Change(0, int.MaxValue);
-                MediaFailed?.Invoke(this, new MediaFailedEventArgs(args.ErrorMessage, args.ExtendedErrorCode));
+                Media?.Invoke(this, new MediaFailedEventArgs(args.ErrorMessage, args.ExtendedErrorCode));
             };
 
             _player.PlaybackSession.PlaybackStateChanged += (sender, args) =>
@@ -64,26 +64,26 @@ namespace Plugin.MediaManager
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
                     case MediaPlaybackState.Opening:
-                        Status = MediaPlayerStatus.Loading;
+                        State = PlaybackState.Loading;
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
                     case MediaPlaybackState.Buffering:
-                        Status = MediaPlayerStatus.Buffering;
+                        State = PlaybackState.Buffering;
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
                     case MediaPlaybackState.Playing:
                         if ((sender.PlaybackRate <= 0) && (sender.Position == TimeSpan.Zero))
                         {
-                            Status = MediaPlayerStatus.Stopped;
+                            State = PlaybackState.Stopped;
                         }
                         else
                         {
-                            Status = MediaPlayerStatus.Playing;
+                            State = PlaybackState.Playing;
                             _playProgressTimer.Change(0, 50);
                         }
                         break;
                     case MediaPlaybackState.Paused:
-                        Status = MediaPlayerStatus.Paused;
+                        State = PlaybackState.Paused;
                         _playProgressTimer.Change(0, int.MaxValue);
                         break;
                     default:
@@ -91,13 +91,13 @@ namespace Plugin.MediaManager
                 }
             };
 
-            _player.MediaEnded += (sender, args) => { MediaFinished?.Invoke(this, new MediaFinishedEventArgs(_currentMediaFile)); };
+            _player.MediaEnded += (sender, args) => { Finished?.Invoke(this, new MediaFinishedEventArgs(_currentMediaFile)); };
             _player.PlaybackSession.BufferingProgressChanged += (sender, args) =>
             {
                 var bufferedTime =
                     TimeSpan.FromSeconds(_player.PlaybackSession.BufferingProgress*
                                          _player.PlaybackSession.NaturalDuration.TotalSeconds);
-                BufferingChanged?.Invoke(this,
+                Buffering?.Invoke(this,
                     new BufferingChangedEventArgs(_player.PlaybackSession.BufferingProgress, bufferedTime));
             };
 
@@ -116,21 +116,21 @@ namespace Plugin.MediaManager
 
         public Dictionary<string, string> RequestHeaders { get; set; }
 
-        public MediaPlayerStatus Status
+        public PlaybackState State
         {
-            get { return _status; }
+            get { return _state; }
             private set
             {
-                _status = value;
-                StatusChanged?.Invoke(this, new StatusChangedEventArgs(_status));
+                _state = value;
+                Status?.Invoke(this, new StatusChangedEventArgs(_state));
             }
         }
 
-        public event StatusChangedEventHandler StatusChanged;
-        public event PlayingChangedEventHandler PlayingChanged;
-        public event BufferingChangedEventHandler BufferingChanged;
-        public event MediaFinishedEventHandler MediaFinished;
-        public event MediaFailedEventHandler MediaFailed;
+        public event StatusChangedEventHandler Status;
+        public event PlayingChangedEventHandler Playing;
+        public event BufferingChangedEventHandler Buffering;
+        public event MediaFinishedEventHandler Finished;
+        public event MediaFailedEventHandler Failed;
 
         public TimeSpan Buffered
         {
@@ -157,7 +157,7 @@ namespace Plugin.MediaManager
 
         public async Task PlayPause()
         {
-            if ((_status == MediaPlayerStatus.Paused) || (_status == MediaPlayerStatus.Stopped))
+            if ((_state == PlaybackState.Paused) || (_state == PlaybackState.Stopped))
                 await Play();
             else
                 await Pause();
@@ -199,7 +199,7 @@ namespace Plugin.MediaManager
         {
             _player.PlaybackSession.PlaybackRate = 0;
             _player.PlaybackSession.Position = TimeSpan.Zero;
-            Status = MediaPlayerStatus.Stopped;
+            State = PlaybackState.Stopped;
             return Task.CompletedTask;
         }
 
@@ -269,20 +269,20 @@ namespace Plugin.MediaManager
 
         private async Task<MediaSource> CreateMediaSource(IMediaItem mediaFile)
         {
-            switch (mediaFile.Availability)
-            {
-                case ResourceAvailability.Remote:
-                    return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
-                case ResourceAvailability.Local:
-                    var du = _player.SystemMediaTransportControls.DisplayUpdater;
-                    var storageFile = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
-                    var playbackType = mediaFile.Type == MediaItemType.Audio
-                        ? MediaPlaybackType.Music
-                        : MediaPlaybackType.Video;
-                    await du.CopyFromFileAsync(playbackType, storageFile);
-                    du.Update();
-                    return MediaSource.CreateFromStorageFile(storageFile);
-            }
+            //switch (mediaFile.Availability)
+            //{
+            //    case ResourceAvailability.Remote:
+            //        return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
+            //    case ResourceAvailability.Local:
+            //        var du = _player.SystemMediaTransportControls.DisplayUpdater;
+            //        var storageFile = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
+            //        var playbackType = mediaFile.Type == MediaItemType.Audio
+            //            ? MediaPlaybackType.Music
+            //            : MediaPlaybackType.Video;
+            //        await du.CopyFromFileAsync(playbackType, storageFile);
+            //        du.Update();
+            //        return MediaSource.CreateFromStorageFile(storageFile);
+            //}
             return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
         }
 
@@ -298,16 +298,16 @@ namespace Plugin.MediaManager
             switch (args.NewState)
             {
                 case MediaSourceState.Initial:
-                    Status = MediaPlayerStatus.Loading;
+                    State = PlaybackState.Loading;
                     break;
                 case MediaSourceState.Opening:
-                    Status = MediaPlayerStatus.Loading;
+                    State = PlaybackState.Loading;
                     break;
                 case MediaSourceState.Failed:
-                    Status = MediaPlayerStatus.Failed;
+                    State = PlaybackState.Failed;
                     break;
                 case MediaSourceState.Closed:
-                    Status = MediaPlayerStatus.Stopped;
+                    State = PlaybackState.Stopped;
                     break;
                 case MediaSourceState.Opened:
                     break;

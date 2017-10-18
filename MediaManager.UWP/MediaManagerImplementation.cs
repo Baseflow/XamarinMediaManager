@@ -1,4 +1,4 @@
-﻿using Windows.Media;
+using Windows.Media;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
 using Plugin.MediaManager.SystemWrappers;
@@ -33,7 +33,7 @@ namespace Plugin.MediaManager
             get { return _videoPlayer ?? (_videoPlayer = new VideoPlayerImplementation(VolumeManager)); }
             set { _videoPlayer = value; }
         }
-        public override IMediaNotificationManager MediaNotificationManager { get; set; } = new MediaNotificationManagerImplementation();
+        public override INotificationManager NotificationManager { get; set; } = new MediaNotificationManagerImplementation();
 
         public override IMediaExtractor MediaExtractor { get; set; } = new MediaExtractorImplementation();
 

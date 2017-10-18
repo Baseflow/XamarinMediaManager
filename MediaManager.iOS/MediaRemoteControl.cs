@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions;
 using UIKit;
@@ -70,7 +70,7 @@ namespace Plugin.MediaManager
         {
             if(TryStartSeek())
             {
-                Task.Run(() => ExecuteWithIntervalWhileSeeking(_playbackController.StepForward));
+                Task.Run(() => ExecuteWithIntervalWhileSeeking(()=> _playbackController.SeekForward()));
             }
         }
 
@@ -78,7 +78,7 @@ namespace Plugin.MediaManager
         {
             if (TryStartSeek())
             {
-                Task.Run(() => ExecuteWithIntervalWhileSeeking(_playbackController.StepBackward));
+                Task.Run(() => ExecuteWithIntervalWhileSeeking(() => _playbackController.SeekBackward()));
             }
         }
 
