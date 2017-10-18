@@ -1,4 +1,4 @@
-﻿using Plugin.MediaManager.Abstractions.Enums;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager.Abstractions
@@ -48,6 +48,13 @@ namespace Plugin.MediaManager.Abstractions
         ///   <c>true</c> if [metadata extracted]; otherwise, <c>false</c>.
         /// </value>
         bool MetadataExtracted { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether meta data should be extracted and overwrite user meta data.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if overwrite user meta data; otherwise, <c>false</c>.
+        /// </value>
+        bool ExtractMetadata { get; set; }
     }
 }
 

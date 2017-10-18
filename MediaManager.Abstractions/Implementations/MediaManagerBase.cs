@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.Enums;
@@ -93,7 +93,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
                     await PrepareCurrentAndThen(async () =>
                     {
-                        await CurrentPlaybackManager.Play();        
+                        await CurrentPlaybackManager.Play();
                         await CurrentPlaybackManager.Pause();
                         await Seek(TimeSpan.Zero);
                     });
@@ -165,7 +165,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             if (!MediaQueue.Contains(mediaFile))
                 MediaQueue.Add(mediaFile);
 
-            MediaQueue.SetTrackAsCurrent(mediaFile);            
+            MediaQueue.SetTrackAsCurrent(mediaFile);
 
             await RaiseMediaFileFailedEventOnException(async () =>
             {
@@ -246,7 +246,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         {
             await ExecuteOnBeforePlay();
 
-            if(CurrentPlaybackManager != null)
+            if (CurrentPlaybackManager != null)
                 await Task.WhenAll(
                     action?.Invoke(),
                     ExtractMediaInformation(CurrentMediaFile));
@@ -280,15 +280,18 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         private async Task ExtractMediaInformation(IMediaFile mediaFile)
         {
-            var index = MediaQueue.IndexOf(mediaFile);
-            await MediaExtractor.ExtractMediaInfo(mediaFile);
-
-            if (index >= 0)
+            if (mediaFile.ExtractMetadata)
             {
-                MediaQueue[index] = mediaFile;
-            }
+                var index = MediaQueue.IndexOf(mediaFile);
+                await MediaExtractor.ExtractMediaInfo(mediaFile);
 
-            OnMediaFileChanged(CurrentPlaybackManager, new MediaFileChangedEventArgs(mediaFile));
+                if (index >= 0)
+                {
+                    MediaQueue[index] = mediaFile;
+                }
+
+                OnMediaFileChanged(CurrentPlaybackManager, new MediaFileChangedEventArgs(mediaFile));
+            }
         }
 
         private void OnStatusChanged(object sender, StatusChangedEventArgs e)

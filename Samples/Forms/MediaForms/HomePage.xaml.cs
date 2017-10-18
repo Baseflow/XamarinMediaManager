@@ -32,7 +32,9 @@ namespace MediaForms
             {
                 Type = MediaFileType.Audio,
                 Availability = ResourceAvailability.Remote,
-                Url = "https://audioboom.com/posts/5766044-follow-up-305.mp3"
+                Url = "https://audioboom.com/posts/5766044-follow-up-305.mp3",
+                Metadata = new MediaFileMetadata() {Title = "My Title", Artist = "My Artist", Album = "My Album"},
+                ExtractMetadata = false
             };
             await CrossMediaManager.Current.Play(mediaFile);
         }
