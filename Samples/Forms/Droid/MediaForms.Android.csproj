@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MediaForms.Droid</RootNamespace>
     <AssemblyName>MediaForms.Droid</AssemblyName>
-    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
