@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 
@@ -15,7 +15,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         }
 
         public MediaFile(string url, MediaFileType type) : this(url, type, default(ResourceAvailability))
-        { 
+        {
         }
 
         public MediaFile(string url, MediaFileType type, ResourceAvailability availability)
@@ -36,12 +36,20 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public string Url { get; set; }
 
         private bool _metadataExtracted;
-        public bool MetadataExtracted { get {
+        public bool MetadataExtracted
+        {
+            get
+            {
                 return _metadataExtracted;
-            } set {
+            }
+            set
+            {
                 _metadataExtracted = value;
                 MetadataUpdated?.Invoke(this, new MetadataChangedEventArgs(Metadata));
-            } }
+            }
+        }
+
+        public bool ExtractMetadata { get; set; } = true;
 
         public event MetadataUpdatedEventHandler MetadataUpdated;
     }
