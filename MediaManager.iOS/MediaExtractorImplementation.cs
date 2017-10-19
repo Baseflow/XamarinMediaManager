@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AVFoundation;
@@ -16,40 +16,43 @@ namespace Plugin.MediaManager
         {
             try
             {
-                var assetsToLoad = new List<string>
+                if (mediaFile.ExtractMetadata)
                 {
-                    AVMetadata.CommonKeyArtist,
-                    AVMetadata.CommonKeyTitle,
-                    AVMetadata.CommonKeyArtwork
-                };
+                    var assetsToLoad = new List<string>
+                    {
+                        AVMetadata.CommonKeyArtist,
+                        AVMetadata.CommonKeyTitle,
+                        AVMetadata.CommonKeyArtwork
+                    };
 
-                var url = MediaFileUrlHelper.GetUrlFor(mediaFile);
-            
-                // Default title to filename
-                mediaFile.Metadata.Title = url.LastPathComponent;
-            
-                var asset = AVAsset.FromUrl(url);
-                await asset.LoadValuesTaskAsync(assetsToLoad.ToArray());
+                    var url = MediaFileUrlHelper.GetUrlFor(mediaFile);
 
-                foreach (var avMetadataItem in asset.CommonMetadata)
-                {
-                    if (avMetadataItem.CommonKey == AVMetadata.CommonKeyArtist)
+                    // Default title to filename
+                    mediaFile.Metadata.Title = url.LastPathComponent;
+
+                    var asset = AVAsset.FromUrl(url);
+                    await asset.LoadValuesTaskAsync(assetsToLoad.ToArray());
+
+                    foreach (var avMetadataItem in asset.CommonMetadata)
                     {
-                        mediaFile.Metadata.Artist = ((NSString) avMetadataItem.Value).ToString();
+                        if (avMetadataItem.CommonKey == AVMetadata.CommonKeyArtist)
+                        {
+                            mediaFile.Metadata.Artist = ((NSString) avMetadataItem.Value).ToString();
+                        }
+                        else if (avMetadataItem.CommonKey == AVMetadata.CommonKeyTitle)
+                        {
+                            mediaFile.Metadata.Title = ((NSString) avMetadataItem.Value).ToString();
+                        }
+                        else if (avMetadataItem.CommonKey == AVMetadata.CommonKeyArtwork)
+                        {
+#if __IOS__ || __TVOS__
+                            var image = UIImage.LoadFromData(avMetadataItem.DataValue);
+                            mediaFile.Metadata.AlbumArt = image;
+#endif
+                        }
                     }
-                    else if (avMetadataItem.CommonKey == AVMetadata.CommonKeyTitle)
-                    {
-                        mediaFile.Metadata.Title = ((NSString) avMetadataItem.Value).ToString();
-                    }
-                    else if (avMetadataItem.CommonKey == AVMetadata.CommonKeyArtwork)
-                    {
-                        #if __IOS__ || __TVOS__
-                        var image = UIImage.LoadFromData(avMetadataItem.DataValue);
-                        mediaFile.Metadata.AlbumArt = image;
-                        #endif
-                    }
+                    mediaFile.MetadataExtracted = true;
                 }
-                mediaFile.MetadataExtracted = true;
                 return mediaFile;
             }
             catch (Exception)

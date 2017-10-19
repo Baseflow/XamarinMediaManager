@@ -26,6 +26,11 @@ namespace MediaForms
             Navigation.PushAsync(new MediaFormsPage());
         }
 
+        private async void StopButton_OnClicked(object sender, EventArgs e)
+        {
+            await CrossMediaManager.Current.Stop();
+        }
+        
         private async void PlayAudio_OnClicked(object sender, EventArgs e)
         {
             var mediaFile = new MediaFile
@@ -33,12 +38,23 @@ namespace MediaForms
                 Type = MediaFileType.Audio,
                 Availability = ResourceAvailability.Remote,
                 Url = "https://audioboom.com/posts/5766044-follow-up-305.mp3",
-                Metadata = new MediaFileMetadata() {Title = "My Title", Artist = "My Artist", Album = "My Album"},
-                ExtractMetadata = false
+                ExtractMetadata = true
             };
             await CrossMediaManager.Current.Play(mediaFile);
         }
 
+        private async void PlayAudioMyTrack_OnClicked(object sender, EventArgs e)
+        {
+            var mediaFile = new MediaFile
+            {
+                Type = MediaFileType.Audio,
+                Availability = ResourceAvailability.Remote,
+                Url = "https://audioboom.com/posts/5766044-follow-up-305.mp3",
+                Metadata = new MediaFileMetadata() { Title = "My Title", Artist = "My Artist", Album = "My Album" },
+                ExtractMetadata = false
+            };
+            await CrossMediaManager.Current.Play(mediaFile);
+        }
         private async void PlaylistButton_OnClicked(object sender, EventArgs e)
         {
             var list = new List<MediaFile>
