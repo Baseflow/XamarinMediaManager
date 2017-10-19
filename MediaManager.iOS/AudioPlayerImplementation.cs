@@ -11,6 +11,7 @@ using Foundation;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
+using Plugin.MediaManager.Abstractions.Implementations;
 
 namespace Plugin.MediaManager
 {
@@ -22,14 +23,14 @@ namespace Plugin.MediaManager
 
         private IMediaItem _currentMediaFile;
 
-        public static readonly NSString StatusObservationContext = new NSString("Status");
+        public static readonly NSString StatusObservationContext = new NSString("State");
 
         public static readonly NSString RateObservationContext = new NSString("Rate");
 
         public static readonly NSString LoadedTimeRangesObservationContext = new NSString("TimeRanges");
 
         private AVPlayer _player;
-        private PlaybackState _status;
+        private PlaybackState _state;
 
         public Dictionary<string, string> RequestHeaders { get; set; }
 
@@ -38,13 +39,13 @@ namespace Plugin.MediaManager
             _volumeManager = volumeManager;
             _versionHelper = new VersionHelper();
 
-            _status = PlaybackState.Stopped;
+            _state = PlaybackState.Stopped;
 
             // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
-            BufferingChanged += (sender, e) =>
+            Buffering += (sender, e) =>
             {
                 // If the player is ready to play, it's paused and the status is still on PLAYING, go on!
-                var isPlaying = Status == PlaybackState.Playing;
+                var isPlaying = State == PlaybackState.Playing;
                 if (CurrentItem.Status == AVPlayerItemStatus.ReadyToPlay && Rate == 0.0f && isPlaying)
                     Player.Play();
             };
@@ -57,7 +58,7 @@ namespace Plugin.MediaManager
 
         private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
         {
-            
+
             Player.Volume = (float)volumeChangedEventArgs.NewVolume / 100;
             Player.Muted = volumeChangedEventArgs.Muted;
         }
@@ -68,7 +69,7 @@ namespace Plugin.MediaManager
             {
                 if (_player == null)
                     InitializePlayer();
-                
+
                 return _player;
             }
         }
@@ -161,7 +162,7 @@ namespace Plugin.MediaManager
 
                 CurrentItem.Seek(CMTime.FromSeconds(0d, 1));
 
-                Status = PlaybackState.Stopped;
+                State = PlaybackState.Stopped;
             });
         }
 
@@ -169,7 +170,7 @@ namespace Plugin.MediaManager
         {
             await Task.Run(() =>
             {
-                Status = PlaybackState.Paused;
+                State = PlaybackState.Paused;
 
                 if (CurrentItem == null)
                     return;
@@ -179,21 +180,21 @@ namespace Plugin.MediaManager
             });
         }
 
-        public PlaybackState Status
+        public PlaybackState State
         {
-            get { return _status; }
+            get { return _state; }
             private set
             {
-                _status = value;
-                StatusChanged?.Invoke(this, new StatusChangedEventArgs(_status));
+                _state = value;
+                Status?.Invoke(this, new StatusChangedEventArgs(_state));
             }
         }
 
-        public event StatusChangedEventHandler StatusChanged;
-        public event PlayingChangedEventHandler PlayingChanged;
-        public event BufferingChangedEventHandler BufferingChanged;
-        public event MediaFinishedEventHandler MediaFinished;
-        public event MediaFailedEventHandler MediaFailed;
+        public event StatusChangedEventHandler Status;
+        public event PlayingChangedEventHandler Playing;
+        public event BufferingChangedEventHandler Buffering;
+        public event MediaFinishedEventHandler Finished;
+        public event MediaFailedEventHandler Failed;
 
         public async Task Seek(TimeSpan position)
         {
@@ -212,7 +213,8 @@ namespace Plugin.MediaManager
 
             _player = new AVPlayer();
 
-            if (_versionHelper.SupportsAutomaticWaitPlayerProperty) {
+            if (_versionHelper.SupportsAutomaticWaitPlayerProperty)
+            {
                 _player.AutomaticallyWaitsToMinimizeStalling = false;
             }
 
@@ -236,14 +238,14 @@ namespace Plugin.MediaManager
             {
                 if (CurrentItem.Duration.IsInvalid || CurrentItem.Duration.IsIndefinite || double.IsNaN(CurrentItem.Duration.Seconds))
                 {
-                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(0, Position, Duration));
+                    Playing?.Invoke(this, new PlayingChangedEventArgs(0, Position, Duration));
                 }
                 else
                 {
                     var totalDuration = TimeSpan.FromSeconds(CurrentItem.Duration.Seconds);
                     var totalProgress = Position.TotalMilliseconds /
                                         totalDuration.TotalMilliseconds;
-                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(
+                    Playing?.Invoke(this, new PlayingChangedEventArgs(
                         !double.IsInfinity(totalProgress) ? totalProgress : 0,
                         Position,
                         Duration
@@ -252,13 +254,18 @@ namespace Plugin.MediaManager
             });
         }
 
+        public async Task Play(string url)
+        {
+           await Play(new MediaItem(url, MediaItemType.Audio));
+        }
+
         public async Task Play(IMediaItem mediaFile = null)
         {
             var sameMediaFile = mediaFile == null || mediaFile.Equals(_currentMediaFile);
 
-            if (Status == PlaybackState.Paused && sameMediaFile)
+            if (State == PlaybackState.Paused && sameMediaFile)
             {
-                Status = PlaybackState.Playing;
+                State = PlaybackState.Playing;
                 //We are simply paused so just start again
                 Player.Play();
                 return;
@@ -274,32 +281,32 @@ namespace Plugin.MediaManager
             {
                 InitializePlayer();
 
-                Status = PlaybackState.Buffering;
+                State = PlaybackState.Buffering;
 
                 var playerItem = GetPlayerItem(nsUrl);
 
                 CurrentItem?.RemoveObserver(this, new NSString("status"));
 
                 Player.ReplaceCurrentItemWithPlayerItem(playerItem);
-                CurrentItem.AddObserver(this, new NSString("loadedTimeRanges"),
+                CurrentItem?.AddObserver(this, new NSString("loadedTimeRanges"),
                     NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New,
                     LoadedTimeRangesObservationContext.Handle);
 
-                CurrentItem.SeekingWaitsForVideoCompositionRendering = true;
-                CurrentItem.AddObserver(this, (NSString)"status", NSKeyValueObservingOptions.New |
+                if (CurrentItem != null) CurrentItem.SeekingWaitsForVideoCompositionRendering = true;
+                CurrentItem?.AddObserver(this, (NSString)"status", NSKeyValueObservingOptions.New |
                                                                           NSKeyValueObservingOptions.Initial,
                     StatusObservationContext.Handle);
 
 
                 NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification,
-                                                               notification => MediaFinished?.Invoke(this, new MediaFinishedEventArgs(mediaFile)), CurrentItem);
+                                                               notification => Finished?.Invoke(this, new MediaFinishedEventArgs(mediaFile)), CurrentItem);
 
                 Player.Play();
             }
             catch (Exception ex)
             {
                 OnMediaFailed();
-                Status = PlaybackState.Stopped;
+                State = PlaybackState.Stopped;
 
                 //unable to start playback log error
                 Console.WriteLine("Unable to start playback: " + ex);
@@ -308,7 +315,8 @@ namespace Plugin.MediaManager
             await Task.CompletedTask;
         }
 
-        private AVPlayerItem GetPlayerItem(NSUrl url) {
+        private AVPlayerItem GetPlayerItem(NSUrl url)
+        {
 
             AVAsset asset;
 
@@ -332,10 +340,10 @@ namespace Plugin.MediaManager
         {
             Console.WriteLine("Observer triggered for {0}", keyPath);
 
-            switch (keyPath)
+            switch (keyPath.ToLower(NSLocale.CurrentLocale))
             {
-                case "status":
-                    ObserveStatus();
+                case "state":
+                    ObserveState();
                     return;
 
                 case "loadedTimeRanges":
@@ -352,21 +360,21 @@ namespace Plugin.MediaManager
             }
         }
 
-        private void ObserveStatus()
+        private void ObserveState()
         {
-            Console.WriteLine("Status Observed Method {0}", CurrentItem.Status);
+            Console.WriteLine("State Observed Method {0}", CurrentItem.Status);
 
-            var isBuffering = Status == PlaybackState.Buffering;
+            var isBuffering = State == PlaybackState.Buffering;
 
             if (CurrentItem.Status == AVPlayerItemStatus.ReadyToPlay && isBuffering)
             {
-                Status = PlaybackState.Playing;
+                State = PlaybackState.Playing;
                 Player.Play();
             }
             else if (CurrentItem.Status == AVPlayerItemStatus.Failed)
             {
                 OnMediaFailed();
-                Status = PlaybackState.Stopped;
+                State = PlaybackState.Stopped;
             }
         }
 
@@ -374,10 +382,10 @@ namespace Plugin.MediaManager
         {
             var stoppedPlaying = Rate == 0.0;
 
-            if (stoppedPlaying && Status == PlaybackState.Playing)
+            if (stoppedPlaying && State == PlaybackState.Playing)
             {
                 //Update the status becuase the system changed the rate.
-                Status = PlaybackState.Paused;
+                State = PlaybackState.Paused;
             }
         }
 
@@ -385,7 +393,7 @@ namespace Plugin.MediaManager
         {
             var error = CurrentItem.Error;
 
-            MediaFailed?.Invoke(this, new MediaFailedEventArgs(error.LocalizedDescription, new NSErrorException(error)));
+            Failed?.Invoke(this, new MediaFailedEventArgs(error.LocalizedDescription, new NSErrorException(error)));
         }
 
         private void ObserveLoadedTimeRanges()
@@ -400,14 +408,14 @@ namespace Plugin.MediaManager
                 var duration = double.IsNaN(range.Duration.Seconds) ? TimeSpan.Zero : TimeSpan.FromSeconds(range.Duration.Seconds);
                 var totalDuration = CurrentItem.Duration;
                 var bufferProgress = duration.TotalSeconds / totalDuration.Seconds;
-                BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(
+                Buffering?.Invoke(this, new BufferingChangedEventArgs(
                     !double.IsInfinity(bufferProgress) ? bufferProgress : 0,
                     duration
                 ));
             }
             else
             {
-                BufferingChanged?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
+                Buffering?.Invoke(this, new BufferingChangedEventArgs(0, TimeSpan.Zero));
             }
         }
     }

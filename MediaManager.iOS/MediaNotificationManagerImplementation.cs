@@ -1,4 +1,4 @@
-﻿using MediaPlayer;
+using MediaPlayer;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using UIKit;
@@ -70,13 +70,13 @@ namespace Plugin.MediaManager
                 Composer = metadata.Composer,
                 DiscNumber = metadata.DiscNumber,
                 Genre = metadata.Genre,
-                ElapsedPlaybackTime = _mediaManager.Position.TotalSeconds,
-                PlaybackDuration = _mediaManager.Duration.TotalSeconds,
+                ElapsedPlaybackTime = _mediaManager.AudioPlayer.Position.TotalSeconds,
+                PlaybackDuration = _mediaManager.AudioPlayer.Duration.TotalSeconds,
                 PlaybackQueueIndex = Queue.Index,
                 PlaybackQueueCount = Queue.Count
             };
 
-            if (_mediaManager.Status == PlaybackState.Playing)
+            if (_mediaManager.AudioPlayer.State == PlaybackState.Playing)
             {
                 nowPlayingInfo.PlaybackRate = 1f;
             }

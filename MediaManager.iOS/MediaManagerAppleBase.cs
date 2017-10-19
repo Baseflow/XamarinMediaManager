@@ -34,6 +34,6 @@ namespace Plugin.MediaManager
 
         public override IVolumeManager VolumeManager { get; set; } = new VolumeManagerImplementation();
 
-        public override INotificationManager MediaNotificationManager { get; set; }
+        public override INotificationManager NotificationManager { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.Enums;
 
@@ -52,19 +52,21 @@ namespace Plugin.MediaManager.Abstractions
         Task SeekToStart();
 
         /// <summary>
-        /// Seeks forward a fixed amount of seconds of the current MediaItem
+        /// Seeks forward a fixed amount of time of the current MediaItem
         /// </summary>
+        /// <param name="time"></param>
         Task SeekForward(TimeSpan? time = null);
 
         /// <summary>
-        /// Seeks backward a fixed amount of seconds of the current MediaItem
+        /// Seeks backward a fixed amount of time of the current MediaItem
         /// </summary>
+        /// <param name="time"></param>
         Task SeekBackward(TimeSpan? time = null);
 
         /// <summary>
-        /// Seeks to the specified amount of seconds
+        /// Seeks to the specified amount of time
         /// </summary>
-        /// <param name="seconds"></param>
+        /// <param name="position"></param>
         Task SeekTo(TimeSpan position);
 
         /// <summary>
