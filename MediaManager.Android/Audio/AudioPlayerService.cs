@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Diagnostics;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -9,20 +10,22 @@ using Android.Support.V4.Media.Session;
 namespace Plugin.MediaManager.Audio
 {
     [Service(Exported = true)]
-    [IntentFilter(new[] { MediaBrowserServiceCompat.ServiceInterface })]
+    [IntentFilter(new[] { ServiceInterface })]
     public class AudioPlayerService : MediaBrowserServiceCompat
     {
         public AudioPlayerService()
         {
+            Debugger.Break();
         }
 
         protected AudioPlayerService(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
+            Debugger.Break();
         }
 
         protected MediaSessionCompat _mediaSession;
-        public MediaSessionCallback mediaSessionCallback { get; private set; }
-        public AudioPlayback audioPlayback { get; set; }
+        public MediaSessionCallback MediaSessionCallback { get; private set; }
+        public AudioPlayback AudioPlayback { get; set; }
 
         public override void OnCreate()
         {
@@ -41,7 +44,7 @@ namespace Plugin.MediaManager.Audio
 
         public void InitMediaPlayer()
         {
-            audioPlayback = new AudioPlayback();
+            AudioPlayback = new AudioPlayback();
         }
 
         public void InitMediaSession()
@@ -49,8 +52,8 @@ namespace Plugin.MediaManager.Audio
             // Start a new MediaSession.
             _mediaSession = new MediaSessionCompat(this, this.GetType().Name);
             SessionToken = _mediaSession.SessionToken;
-            mediaSessionCallback = new MediaSessionCallback(this);
-            _mediaSession.SetCallback(mediaSessionCallback);
+            MediaSessionCallback = new MediaSessionCallback(this);
+            _mediaSession.SetCallback(MediaSessionCallback);
             _mediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
                                    MediaSessionCompat.FlagHandlesTransportControls);
         }

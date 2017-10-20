@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.Enums;
@@ -15,6 +15,11 @@ namespace Plugin.MediaManager.Abstractions
     public delegate void MediaFinishedEventHandler(object sender, MediaFinishedEventArgs e);
 
     public delegate void MediaFailedEventHandler(object sender, MediaFailedEventArgs e);
+
+    public delegate void MediaItemChangedEventHandler(object sender, MediaItemChangedEventArgs e);
+
+    public delegate void MediaItemFailedEventHandler(object sender, MediaItemFailedEventArgs e);
+
 
     public interface IPlaybackManager
     {

@@ -1,7 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Android.Content;
+using Android.Graphics;
+using Android.OS;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
@@ -31,7 +34,8 @@ namespace Plugin.MediaManager.Audio
             TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
             mediaBrowserConnectionCallback = new MediaBrowserConnectionCallback(_mediaManagerImplementation);
-            mediaBrowserConnectionCallback.OnConnectedImpl = () => {
+            mediaBrowserConnectionCallback.OnConnectedImpl = () =>
+            {
                 mediaController = new MediaControllerCompat(_mediaManagerImplementation.Context, mediaBrowser.SessionToken);
                 mediaControllerCallback = new MediaControllerCallback(_mediaManagerImplementation);
                 mediaController.RegisterCallback(mediaControllerCallback);
@@ -41,18 +45,22 @@ namespace Plugin.MediaManager.Audio
             mediaBrowser = new MediaBrowserCompat(_mediaManagerImplementation.Context, new ComponentName(_mediaManagerImplementation.Context, Java.Lang.Class.FromType(typeof(AudioPlayerService))), mediaBrowserConnectionCallback, null);
             mediaBrowser.Connect();
 
+            //return true;
             return await tcs.Task;
         }
 
-        public PlaybackState State => throw new NotImplementedException();
+        public PlaybackState State => _mediaManagerImplementation.State;
 
-        public TimeSpan Position => throw new NotImplementedException();
+        public TimeSpan Position => _mediaManagerImplementation.Position;
 
-        public TimeSpan Duration => throw new NotImplementedException();
+        public TimeSpan Duration => _mediaManagerImplementation.Duration;
 
-        public TimeSpan Buffered => throw new NotImplementedException();
+        public TimeSpan Buffered => _mediaManagerImplementation.Buffered;
 
-        public Dictionary<string, string> RequestHeaders { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Dictionary<string, string> RequestHeaders
+        {
+            get => _mediaManagerImplementation.RequestHeaders; set => _mediaManagerImplementation.RequestHeaders = value;
+        }
 
         public event StatusChangedEventHandler Status;
         public event PlayingChangedEventHandler Playing;
@@ -73,11 +81,24 @@ namespace Plugin.MediaManager.Audio
 
         public async Task Play(IMediaItem item)
         {
-            await ConnectService();
+            var FLAG_BROWSABLE = 1;
+            var FLAG_PLAYABLE = 2;
 
-            var test = new Android.OS.Bundle();
-            //test.
-            mediaController.GetTransportControls().PlayFromMediaId("test", test);
+            if (await ConnectService())
+            {
+                var _builder = new MediaDescriptionCompat.Builder();
+
+                var description = _builder.SetMediaId(new Guid().ToString())
+                    .SetTitle(item.Metadata.DisplayTitle)
+                    .SetDescription(item.Metadata.DisplayDescription)
+                    .SetSubtitle(item.Metadata.DisplaySubtitle)
+                    .SetIconUri(Android.Net.Uri.Parse(item.Metadata.DisplayIconUri))
+                    .SetIconBitmap(item.Metadata.DisplayIcon as Bitmap)
+                    .Build();
+
+                //var test = new Android.OS.Bundle();
+                mediaController.GetTransportControls().PlayFromMediaId(description.MediaId, Bundle.Empty);
+            }
         }
 
         public async Task Seek(TimeSpan position)

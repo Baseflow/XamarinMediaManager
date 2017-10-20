@@ -59,8 +59,8 @@
     <Compile Include="EventArguments\QueueMediaChangedEventArgs.cs" />
     <Compile Include="EventArguments\QueueEndedEventArgs.cs" />
     <Compile Include="Implementations\MediaManagerBase.cs" />
-    <Compile Include="EventArguments\MediaFileChangedEventArgs.cs" />
-    <Compile Include="EventArguments\MediaFileFailedEventArgs.cs" />
+    <Compile Include="EventArguments\MediaItemChangedEventArgs.cs" />
+    <Compile Include="EventArguments\MediaItemFailedEventArgs.cs" />
     <Compile Include="Implementations\MediaItem.cs" />
     <Compile Include="EventArguments\MetadataChangedEventArgs.cs" />
     <Compile Include="IVolumeManager.cs" />
@@ -73,9 +73,7 @@
     <Compile Include="Implementations\PlaybackController.cs" />
     <Compile Include="Enums\ShuffleMode.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

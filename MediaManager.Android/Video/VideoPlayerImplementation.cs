@@ -16,11 +16,11 @@ namespace Plugin.MediaManager
     public class VideoPlayerImplementation : Java.Lang.Object,
         IVideoPlayer
     {
-        private MediaManagerImplementation mediaManagerImplementation;
+        private MediaManagerImplementation _mediaManagerImplementation;
 
         public VideoPlayerImplementation(MediaManagerImplementation mediaManagerImplementation)
         {
-            this.mediaManagerImplementation = mediaManagerImplementation;
+            this._mediaManagerImplementation = mediaManagerImplementation;
         }
 
         public IVideoSurface RenderSurface { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -43,8 +43,8 @@ namespace Plugin.MediaManager
                     //https://developer.xamarin.com/api/member/Android.Media.AudioManager.GetStreamVolume/p/Android.Media.Stream/
                     //https://stackoverflow.com/questions/17898382/audiomanager-getstreamvolumeaudiomanager-stream-music-returns-0
                     Stream streamType = Stream.Music;
-                    int volumeMax = mediaManagerImplementation.VolumeManager.MaxVolume;
-                    int volume = mediaManagerImplementation.VolumeManager.CurrentVolume;
+                    int volumeMax = _mediaManagerImplementation.VolumeManager.MaxVolume;
+                    int volume = _mediaManagerImplementation.VolumeManager.CurrentVolume;
 
                     //ltang: Unmute with the current volume
                     volumeValue = volume / volumeMax;
@@ -59,7 +59,7 @@ namespace Plugin.MediaManager
         {
             try
             {
-                mediaManagerImplementation.VolumeManager.CurrentVolume = newVolume;
+                _mediaManagerImplementation.VolumeManager.CurrentVolume = newVolume;
             }
             catch (Java.Lang.IllegalStateException e)
             {
@@ -72,15 +72,15 @@ namespace Plugin.MediaManager
             }
         }
 
-        public PlaybackState State => throw new NotImplementedException();
+        public PlaybackState State => _mediaManagerImplementation.State;
 
-        public TimeSpan Position => throw new NotImplementedException();
+        public TimeSpan Position => _mediaManagerImplementation.Position;
 
-        public TimeSpan Duration => throw new NotImplementedException();
+        public TimeSpan Duration => _mediaManagerImplementation.Duration;
 
-        public TimeSpan Buffered => throw new NotImplementedException();
+        public TimeSpan Buffered => _mediaManagerImplementation.Buffered;
 
-        public Dictionary<string, string> RequestHeaders { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Dictionary<string, string> RequestHeaders { get => _mediaManagerImplementation.RequestHeaders; set => _mediaManagerImplementation.RequestHeaders = value; }
 
         public event StatusChangedEventHandler Status;
         public event PlayingChangedEventHandler Playing;
@@ -90,27 +90,27 @@ namespace Plugin.MediaManager
 
         public Task Pause()
         {
-            throw new NotImplementedException();
+            return _mediaManagerImplementation?.Pause();
         }
 
         public Task Play(string url)
         {
-            throw new NotImplementedException();
+            return _mediaManagerImplementation?.Play(url);
         }
 
         public Task Play(IMediaItem item)
         {
-            throw new NotImplementedException();
+            return _mediaManagerImplementation?.Play(item);
         }
 
         public Task Seek(TimeSpan position)
         {
-            throw new NotImplementedException();
+            return _mediaManagerImplementation?.Seek(position);
         }
 
         public Task Stop()
         {
-            throw new NotImplementedException();
+            return _mediaManagerImplementation?.Stop();
         }
     }
 }

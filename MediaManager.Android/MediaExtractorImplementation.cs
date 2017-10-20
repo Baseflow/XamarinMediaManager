@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android;
@@ -13,16 +13,16 @@ namespace Plugin.MediaManager
 {
     public class MediaExtractorImplementation : IMediaExtractor
     {
-        private MediaManagerImplementation mediaManagerImplementation;
+        private MediaManagerImplementation _mediaManagerImplementation;
 
         public MediaExtractorImplementation(MediaManagerImplementation mediaManagerImplementation)
         {
-            this.mediaManagerImplementation = mediaManagerImplementation;
+            this._mediaManagerImplementation = mediaManagerImplementation;
         }
 
         public Task<IMediaItem> ExtractMediaInfo(IMediaItem item)
         {
-            throw new NotImplementedException();
+           return _mediaManagerImplementation?.MediaExtractor.ExtractMediaInfo(item);
         }
     }
 }
