@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.Enums;
@@ -10,7 +10,7 @@ namespace Plugin.MediaManager.Abstractions
     /// The main purpose of this class is to be a controlling unit for all the single MediaItem implementations, who
     /// in themselve can play their media, but need a central controling unit, surrounding them
     /// </summary>
-    public interface IMediaManager
+    public interface IMediaManager : IPlaybackManager
     {
         /// <summary>
         /// Player responsible for audio playback
@@ -49,8 +49,8 @@ namespace Plugin.MediaManager.Abstractions
         /// </summary>
         IPlaybackController PlaybackController { get; set; }
 
+        Task Play();
         Task Play(string url, MediaItemType type);
-
         Task Play(IMediaItem item);
 
         Task Play(IEnumerable<IMediaItem> items);
@@ -58,5 +58,27 @@ namespace Plugin.MediaManager.Abstractions
         //TODO: NetStandard
         //Task Play(Stream stream, MediaItemType type);
         //Task Play(FileInfo file, MediaItemType type);
+
+        /// <summary>
+        /// Plays the next MediaFile in the Queue
+        /// </summary>
+        Task PlayNext();
+
+        /// <summary>
+        /// Plays the previous MediaFile in the Queue
+        /// </summary>
+        Task PlayPrevious();
+
+        /// <summary>
+        /// Plays a MediaFile by its position in the Queue
+        /// </summary>
+        Task PlayByPosition(int index);
+
+        /// <summary>
+        /// Sets a function which gets called before the MediaFile is played
+        /// </summary>
+        /// <param name="beforePlay">The before play.</param>
+        void SetOnBeforePlay(Func<IMediaItem, Task> beforePlay);
+
     }
 }

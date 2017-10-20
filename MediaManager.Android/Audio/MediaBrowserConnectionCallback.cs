@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Android.Content;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
@@ -7,7 +7,7 @@ namespace Plugin.MediaManager.Audio
 {
     public class MediaBrowserConnectionCallback : MediaBrowserCompat.ConnectionCallback
     {
-        private MediaManagerImplementation mediaManagerImplementation;
+        private MediaManagerImplementation _mediaManagerImplementation;
 
         public Action OnConnectedImpl { get; set; }
 
@@ -17,7 +17,7 @@ namespace Plugin.MediaManager.Audio
 
         public MediaBrowserConnectionCallback(MediaManagerImplementation mediaManagerImplementation)
         {
-            this.mediaManagerImplementation = mediaManagerImplementation;
+            _mediaManagerImplementation = mediaManagerImplementation;
         }
 
         public override void OnConnected()

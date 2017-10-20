@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Plugin.MediaManager.Abstractions.Enums;
@@ -11,9 +12,10 @@ using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager.Abstractions.Implementations
 {
+    [DebuggerStepThrough]
     public class MediaQueue : IMediaQueue
     {
-        public MediaQueue ()
+        public MediaQueue()
         {
             _queue = new ObservableCollection<IMediaItem>();
 
@@ -403,13 +405,14 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _count = _queue.Count;
         }
 
+        [DebuggerStepThrough]
         private void RegisterCurrentTriggers()
         {
             var updateProperty = new Action(() =>
                 {
                     if (_queue?.LastOrDefault() == Current)
                         Ended?.Invoke(this, new QueueEndedEventArgs());
-                
+
                     IMediaItem current = null;
                     if (Count - 1 >= Index && Index >= 0)
                     {
@@ -425,12 +428,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                 });
 
             PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == nameof(Index))
-                {
-                    updateProperty();
-                }
-            };
+           {
+               if (e.PropertyName == nameof(Index))
+               {
+                   updateProperty();
+               }
+           };
 
             CollectionChanged += (sender, e) =>
             {
