@@ -15,7 +15,6 @@ namespace Plugin.MediaManager.Audio
     public class AudioPlayerImplementation : Java.Lang.Object, IAudioPlayer
     {
         private MediaManagerImplementation _mediaManagerImplementation;
-
         public MediaBrowserCompat mediaBrowser { get; private set; }
         public MediaControllerCompat mediaController { get; private set; }
         public MediaBrowserConnectionCallback mediaBrowserConnectionCallback { get; private set; }
@@ -59,7 +58,8 @@ namespace Plugin.MediaManager.Audio
 
         public Dictionary<string, string> RequestHeaders
         {
-            get => _mediaManagerImplementation.RequestHeaders; set => _mediaManagerImplementation.RequestHeaders = value;
+            get => _mediaManagerImplementation.RequestHeaders;
+            set => _mediaManagerImplementation.RequestHeaders = value;
         }
 
         public event StatusChangedEventHandler Status;
@@ -70,13 +70,13 @@ namespace Plugin.MediaManager.Audio
 
         public Task Pause()
         {
+            mediaController.GetTransportControls().Pause();
             return Task.CompletedTask;
         }
 
         public async Task Play(string url)
         {
-            await ConnectService();
-            mediaController.GetTransportControls().PlayFromUri(Android.Net.Uri.Parse(url), null);
+            if (await ConnectService()) mediaController.GetTransportControls().PlayFromUri(Android.Net.Uri.Parse(url), null);
         }
 
         public async Task Play(IMediaItem item)
@@ -103,12 +103,13 @@ namespace Plugin.MediaManager.Audio
 
         public async Task Seek(TimeSpan position)
         {
-            await ConnectService();
+            if (await ConnectService()) if (long.TryParse(position.TotalSeconds.ToString(), out var pos)) mediaController.GetTransportControls().SeekTo(pos);
+
         }
 
         public async Task Stop()
         {
-            await ConnectService();
+            if (await ConnectService()) mediaController.GetTransportControls().Stop();
         }
     }
 }

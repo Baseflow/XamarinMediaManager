@@ -51,7 +51,6 @@ namespace Plugin.MediaManager.Abstractions
 
         Task Play();
         Task Play(string url, MediaItemType type);
-        Task Play(IMediaItem item);
 
         Task Play(IEnumerable<IMediaItem> items);
 
