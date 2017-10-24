@@ -88,23 +88,21 @@ namespace Plugin.MediaManager.Audio
             {
                 var _builder = new MediaDescriptionCompat.Builder();
 
-                var description = _builder.SetMediaId(new Guid().ToString())
+                _builder.SetMediaId(new Guid().ToString())
                     .SetTitle(item.Metadata.DisplayTitle)
                     .SetDescription(item.Metadata.DisplayDescription)
                     .SetSubtitle(item.Metadata.DisplaySubtitle)
-                    .SetIconUri(Android.Net.Uri.Parse(item.Metadata.DisplayIconUri))
-                    .SetIconBitmap(item.Metadata.DisplayIcon as Bitmap)
-                    .Build();
+                    .SetIconBitmap(item.Metadata.DisplayIcon as Bitmap);
+                if (item.Metadata.DisplayIconUri != string.Empty) _builder.SetIconUri(Android.Net.Uri.Parse(item.Metadata.DisplayIconUri));
 
                 //var test = new Android.OS.Bundle();
-                mediaController.GetTransportControls().PlayFromMediaId(description.MediaId, Bundle.Empty);
+                mediaController.GetTransportControls().PlayFromMediaId(_builder.Build().MediaId, Bundle.Empty);
             }
         }
 
         public async Task Seek(TimeSpan position)
         {
             if (await ConnectService()) if (long.TryParse(position.TotalSeconds.ToString(), out var pos)) mediaController.GetTransportControls().SeekTo(pos);
-
         }
 
         public async Task Stop()

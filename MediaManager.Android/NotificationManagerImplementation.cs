@@ -6,11 +6,11 @@ namespace Plugin.MediaManager
 {
     public class NotificationManagerImplementation : INotificationManager
     {
-        private MediaManagerImplementation mediaManagerImplementation;
+        private MediaManagerImplementation _mediaManagerImplementation;
 
         public NotificationManagerImplementation(MediaManagerImplementation mediaManagerImplementation)
         {
-            this.mediaManagerImplementation = mediaManagerImplementation;
+            _mediaManagerImplementation = mediaManagerImplementation;
         }
 
         public void StartNotification(IMediaItem item)

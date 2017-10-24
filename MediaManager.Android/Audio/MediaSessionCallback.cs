@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Android.OS;
 using Android.Support.V4.Media.Session;
 
@@ -6,11 +6,11 @@ namespace Plugin.MediaManager.Audio
 {
     public class MediaSessionCallback : MediaSessionCompat.Callback
     {
-        private AudioPlayerService audioPlayerService;
+        private AudioPlayerService _audioPlayerService;
 
         public MediaSessionCallback(AudioPlayerService audioPlayerService)
         {
-            this.audioPlayerService = audioPlayerService;
+            _audioPlayerService = audioPlayerService;
         }
 
         public Action OnPlayImpl { get; set; }
@@ -40,7 +40,7 @@ namespace Plugin.MediaManager.Audio
 
         public override void OnSkipToQueueItem(long id)
         {
-            OnSkipToQueueItemImpl?.Invoke(id);
+            OnSkipToQueueItemImpl(id);
         }
 
         public override void OnSeekTo(long pos)
