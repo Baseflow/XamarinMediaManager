@@ -47,10 +47,10 @@ namespace Plugin.MediaManager.Audio
             return await tcs.Task;
         }
 
-        public PlaybackState State => _mediaManagerImplementation.State;
-        public TimeSpan Position => _mediaManagerImplementation.Position;
-        public TimeSpan Duration => _mediaManagerImplementation.Duration;
-        public TimeSpan Buffered => _mediaManagerImplementation.Buffered;
+        public PlaybackState State => PlaybackState.Loading;
+        public TimeSpan Position => new TimeSpan();
+        public TimeSpan Duration => new TimeSpan();
+        public TimeSpan Buffered => new TimeSpan();
         public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
         public event StatusChangedEventHandler Status;
@@ -61,13 +61,14 @@ namespace Plugin.MediaManager.Audio
 
         public Task Pause()
         {
-            mediaController.GetTransportControls().Pause();
+            mediaController?.GetTransportControls().Pause();
             return Task.CompletedTask;
         }
 
         public async Task Play(string url)
         {
-            if (await ConnectService()) mediaController.GetTransportControls().PlayFromUri(Android.Net.Uri.Parse(url), null);
+            if (await ConnectService())
+                mediaController?.GetTransportControls().PlayFromUri(Android.Net.Uri.Parse(url), null);
         }
 
         public async Task Play(IMediaItem item)
@@ -87,19 +88,21 @@ namespace Plugin.MediaManager.Audio
                 if (!string.IsNullOrEmpty(item.Metadata.DisplayIconUri))
                     _builder.SetIconUri(Android.Net.Uri.Parse(item.Metadata.DisplayIconUri));
 
-                //var test = new Android.OS.Bundle();
-                mediaController.GetTransportControls().PlayFromMediaId(_builder.Build().MediaId, Bundle.Empty);
+                mediaController?.GetTransportControls().PlayFromMediaId(_builder.Build().MediaId, Bundle.Empty);
             }
         }
 
         public async Task Seek(TimeSpan position)
         {
-            if (await ConnectService()) if (long.TryParse(position.TotalSeconds.ToString(), out var pos)) mediaController.GetTransportControls().SeekTo(pos);
+            if (await ConnectService())
+                if (long.TryParse(position.TotalSeconds.ToString(), out var pos))
+                    mediaController?.GetTransportControls().SeekTo(pos);
         }
 
         public async Task Stop()
         {
-            if (await ConnectService()) mediaController.GetTransportControls().Stop();
+            if (await ConnectService())
+                mediaController?.GetTransportControls().Stop();
         }
     }
 }

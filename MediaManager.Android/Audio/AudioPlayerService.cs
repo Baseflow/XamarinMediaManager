@@ -15,12 +15,10 @@ namespace Plugin.MediaManager.Audio
     {
         public AudioPlayerService()
         {
-            Debugger.Break();
         }
 
         protected AudioPlayerService(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
-            Debugger.Break();
         }
 
         protected MediaSessionCompat _mediaSession;
