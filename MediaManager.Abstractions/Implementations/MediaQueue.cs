@@ -12,7 +12,6 @@ using Plugin.MediaManager.Abstractions.EventArguments;
 
 namespace Plugin.MediaManager.Abstractions.Implementations
 {
-    [DebuggerStepThrough]
     public class MediaQueue : IMediaQueue
     {
         public MediaQueue()
@@ -405,7 +404,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _count = _queue.Count;
         }
 
-        [DebuggerStepThrough]
         private void RegisterCurrentTriggers()
         {
             var updateProperty = new Action(() =>

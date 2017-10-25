@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.Enums;
 
@@ -6,94 +7,7 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 {
     public class PlaybackController : IPlaybackController
     {
-        private MediaManagerBase mediaManagerBase;
-
-        public PlaybackController(MediaManagerBase mediaManagerBase)
-        {
-            this.mediaManagerBase = mediaManagerBase;
-        }
-
-        public Task Pause()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Play()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task PlayFromQueueByIndex(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task PlayFromQueueByMediaItem(IMediaItem file)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task PlayNext()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task PlayPause()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task PlayPrevious()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task PlayPreviousOrSeekToStart()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SeekBackward(TimeSpan? time = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SeekForward(TimeSpan? time = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SeekTo(TimeSpan position)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SeekToStart()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetRating()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetRepeatMode(RepeatMode type)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetShuffleMode(ShuffleMode type)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Stop()
-        {
-            throw new NotImplementedException();
-        }
-
-        /*private readonly IMediaManager _mediaManager;
+        private readonly IMediaManager _mediaManager;
 
         public virtual double StepSeconds => 10;
 
@@ -110,10 +24,10 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
         public virtual async Task PlayPause()
         {
-            var status = _mediaManager.Status;
+            var state = _mediaManager.State;
 
-            var isPaused = status == PlaybackState.Paused;
-            var isStopped = status == PlaybackState.Stopped;
+            var isPaused = state == PlaybackState.Paused;
+            var isStopped = state == PlaybackState.Stopped;
 
             if (isPaused || isStopped)
             {
@@ -157,6 +71,16 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await _mediaManager.PlayNext();
         }
 
+        public async Task PlayFromQueueByIndex(int index)
+        {
+            //TODO: PlayFromQueueByIndex
+        }
+
+        public async Task PlayFromQueueByMediaItem(IMediaItem file)
+        {
+            //TODO: PlayFromQueueByMediaItem
+        }
+
         public virtual async Task PlayPrevious()
         {
             if (Queue.HasPrevious())
@@ -174,16 +98,46 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await SeekTo(0);
         }
 
-        public virtual async Task StepForward()
+        public async Task SeekForward(TimeSpan? time = null)
         {
-            var destination = PositionSeconds + StepSeconds;
+            if (time != null) await StepForward(time.Value.TotalSeconds);
+        }
+
+        public async Task SeekBackward(TimeSpan? time = null)
+        {
+            if (time != null) await StepBackward(time.Value.TotalSeconds);
+        }
+
+        public async Task SeekTo(TimeSpan position)
+        {
+            await SeekTo(position.TotalSeconds);
+        }
+
+        public void SetRepeatMode(RepeatMode type)
+        {
+            ToggleRepeat();
+        }
+
+        public void SetShuffleMode(ShuffleMode type)
+        {
+            ToggleShuffle();
+        }
+
+        public void SetRating()
+        {
+            //TODO: SetRating
+        }
+
+        public virtual async Task StepForward(double stepSeconds)
+        {
+            var destination = PositionSeconds + stepSeconds;
 
             await SeekTo(destination);
         }
 
-        public virtual async Task StepBackward()
+        public virtual async Task StepBackward(double stepSeconds)
         {
-            var destination = PositionSeconds - StepSeconds;
+            var destination = PositionSeconds - stepSeconds;
 
             await SeekTo(destination);
         }
@@ -193,7 +147,8 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             if (_mediaManager.Duration.TotalSeconds < seconds)
             {
                 seconds = _mediaManager.Duration.TotalSeconds;
-            } else if (seconds < 0)
+            }
+            else if (seconds < 0)
             {
                 seconds = 0;
             }
@@ -222,6 +177,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         public virtual void ToggleShuffle()
         {
             Queue.IsShuffled = !Queue.IsShuffled;
-        }*/
+        }
     }
 }

@@ -15,17 +15,17 @@ namespace Plugin.MediaManager
 
         public void StartNotification(IMediaItem item)
         {
-            ////throw new NotImplementedException();
+            //TODO: StartNotification
         }
 
         public void StopNotifications()
         {
-            ////throw new NotImplementedException();
+            //TODO: StopNotification
         }
 
         public void UpdateNotifications(IMediaItem item, PlaybackState state)
         {
-            ////throw new NotImplementedException();
+            //TODO: UpdateNotification
         }
     }
 }

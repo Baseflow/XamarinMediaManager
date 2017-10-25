@@ -206,10 +206,11 @@ namespace Plugin.MediaManager.Abstractions.Implementations
 
             MediaQueue.SetTrackAsCurrent(MediaItem);
 
-            await RaiseMediaItemFailedEventOnException(async () =>
-            {
-                await PlayCurrent();
-            });
+            //await RaiseMediaItemFailedEventOnException(async () =>
+            //{
+            //    await PlayCurrent();
+            //});
+            await AudioPlayer.Play(MediaItem);
 
             NotificationManager?.StartNotification(MediaItem);
         }
@@ -264,7 +265,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             await CurrentPlaybackManager.Play(CurrentMediaItem);
         }
 
-        [DebuggerStepThrough]
         private async Task RaiseMediaItemFailedEventOnException(Func<Task> action)
         {
             try
@@ -282,7 +282,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             return PrepareCurrentAndThen(() => CurrentPlaybackManager.Play(CurrentMediaItem));
         }
 
-        [DebuggerStepThrough]
         private async Task PrepareCurrentAndThen(Func<Task> action = null)
         {
             await ExecuteOnBeforePlay();
@@ -293,14 +292,12 @@ namespace Plugin.MediaManager.Abstractions.Implementations
                     ExtractMediaInformation(CurrentMediaItem));
         }
 
-        [DebuggerStepThrough]
         private async Task ExecuteOnBeforePlay()
         {
             var beforePlayTask = _onBeforePlay?.Invoke(CurrentMediaItem);
             if (beforePlayTask != null) await beforePlayTask;
         }
 
-        [DebuggerStepThrough]
         private void SetCurrentPlayer(MediaItemType fileType)
         {
             if (_currentPlaybackManager != null)
@@ -321,7 +318,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             AddEventHandlers();
         }
 
-        [DebuggerStepThrough]
         private async Task ExtractMediaInformation(IMediaItem MediaItem)
         {
             var index = MediaQueue.IndexOf(MediaItem);

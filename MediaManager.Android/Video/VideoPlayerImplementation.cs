@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Android.App;
 using Android.Media;
 using Android.OS;
 using Android.Runtime;
@@ -23,11 +24,11 @@ namespace Plugin.MediaManager
             this._mediaManagerImplementation = mediaManagerImplementation;
         }
 
-        public IVideoSurface RenderSurface { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IVideoSurface RenderSurface { get; set; } 
 
-        public bool IsReadyRendering => throw new NotImplementedException();
+        public bool IsReadyRendering { get; private set; }
 
-        public VideoAspectMode AspectMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public VideoAspectMode AspectMode { get; set; } = VideoAspectMode.None;
         private bool _IsMuted = false;
         public bool IsMuted
         {

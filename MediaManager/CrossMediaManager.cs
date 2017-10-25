@@ -28,11 +28,12 @@ namespace Plugin.MediaManager
             }
         }
 
+        [DebuggerStepThrough]
         static IMediaManager CreateMediaManager()
         {
 #if PORTABLE
-        Debug.WriteLine("PORTABLE Reached");
-        return null;
+            Debug.WriteLine("PORTABLE Reached");
+            return null;
 #else
             Debug.WriteLine("Other reached");
             return new MediaManagerImplementation();

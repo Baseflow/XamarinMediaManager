@@ -44,23 +44,14 @@ namespace Plugin.MediaManager.Audio
             mediaBrowser = new MediaBrowserCompat(_mediaManagerImplementation.Context, new ComponentName(_mediaManagerImplementation.Context, Java.Lang.Class.FromType(typeof(AudioPlayerService))), mediaBrowserConnectionCallback, null);
             mediaBrowser.Connect();
 
-            //return true;
             return await tcs.Task;
         }
 
         public PlaybackState State => _mediaManagerImplementation.State;
-
         public TimeSpan Position => _mediaManagerImplementation.Position;
-
         public TimeSpan Duration => _mediaManagerImplementation.Duration;
-
         public TimeSpan Buffered => _mediaManagerImplementation.Buffered;
-
-        public Dictionary<string, string> RequestHeaders
-        {
-            get => _mediaManagerImplementation.RequestHeaders;
-            set => _mediaManagerImplementation.RequestHeaders = value;
-        }
+        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
         public event StatusChangedEventHandler Status;
         public event PlayingChangedEventHandler Playing;
@@ -93,7 +84,8 @@ namespace Plugin.MediaManager.Audio
                     .SetDescription(item.Metadata.DisplayDescription)
                     .SetSubtitle(item.Metadata.DisplaySubtitle)
                     .SetIconBitmap(item.Metadata.DisplayIcon as Bitmap);
-                if (item.Metadata.DisplayIconUri != string.Empty) _builder.SetIconUri(Android.Net.Uri.Parse(item.Metadata.DisplayIconUri));
+                if (!string.IsNullOrEmpty(item.Metadata.DisplayIconUri))
+                    _builder.SetIconUri(Android.Net.Uri.Parse(item.Metadata.DisplayIconUri));
 
                 //var test = new Android.OS.Bundle();
                 mediaController.GetTransportControls().PlayFromMediaId(_builder.Build().MediaId, Bundle.Empty);
