@@ -185,7 +185,9 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             MediaQueue.Clear();
             MediaQueue.AddRange(mediaFiles);
 
-            await PlayNext();
+            // Play from index 0
+            MediaQueue.SetIndexAsCurrent(0);
+            await PlayCurrent();
 
             MediaNotificationManager?.StartNotification(CurrentMediaFile);
         }
