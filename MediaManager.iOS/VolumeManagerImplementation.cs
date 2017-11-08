@@ -28,7 +28,7 @@ namespace Plugin.MediaManager
                     value = MaxVolume;
 
                 float vol = value;
-                if (value > 0) float.TryParse((value / 100).ToString(), out vol);
+                if (value > 0) float.TryParse((value / 100.0).ToString(), out vol);
                 player.Volume = vol;
 
                 VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(value, Muted));
