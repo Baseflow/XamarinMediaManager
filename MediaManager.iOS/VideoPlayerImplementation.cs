@@ -40,16 +40,6 @@ namespace Plugin.MediaManager
                     (Status == MediaPlayerStatus.Playing))
                     Player.Play();
             };
-            _volumeManager.Muted = Player.Muted;
-            int.TryParse((Player.Volume * 100).ToString(), out var vol);
-            _volumeManager.CurrentVolume = vol;
-            _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
-        }
-
-        private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs e)
-        {
-            _player.Volume = (float)e.NewVolume;
-            _player.Muted = e.Muted;
         }
 
         private AVPlayer Player
@@ -173,6 +163,7 @@ namespace Plugin.MediaManager
         private void InitializePlayer()
         {
             _player = new AVPlayer();
+            ((VolumeManagerImplementation)_volumeManager).player = _player;
             _videoLayer = AVPlayerLayer.FromPlayer(_player);
 
 #if __IOS__ || __TVOS__

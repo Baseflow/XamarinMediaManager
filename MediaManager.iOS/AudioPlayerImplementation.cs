@@ -48,18 +48,6 @@ namespace Plugin.MediaManager
                 if (CurrentItem.Status == AVPlayerItemStatus.ReadyToPlay && Rate == 0.0f && isPlaying)
                     Player.Play();
             };
-            _volumeManager.Muted = Player.Muted;
-            int.TryParse((Player.Volume * 100).ToString(), out var vol);
-            _volumeManager.CurrentVolume = vol;
-            _volumeManager.MaxVolume = 100;
-            _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
-        }
-
-        private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
-        {
-            
-            Player.Volume = (float)volumeChangedEventArgs.NewVolume / 100;
-            Player.Muted = volumeChangedEventArgs.Muted;
         }
 
         private AVPlayer Player
@@ -211,6 +199,7 @@ namespace Plugin.MediaManager
             }
 
             _player = new AVPlayer();
+            ((VolumeManagerImplementation)_volumeManager).player = _player;
 
             if (_versionHelper.SupportsAutomaticWaitPlayerProperty) {
                 _player.AutomaticallyWaitsToMinimizeStalling = false;
@@ -218,7 +207,6 @@ namespace Plugin.MediaManager
 
 #if __IOS__ || __TVOS__
             var avSession = AVAudioSession.SharedInstance();
-
             // By setting the Audio Session category to AVAudioSessionCategorPlayback, audio will continue to play when the silent switch is enabled, or when the screen is locked.
             avSession.SetCategory(AVAudioSessionCategory.Playback);
 
