@@ -36,7 +36,7 @@ namespace MediaSample.Droid
 
         private Android.Support.V7.Widget.Toolbar toolbar;
 
-        private const bool ShouldUseExoPlayer = true;
+        private const bool ShouldUseExoPlayer = false;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -56,7 +56,7 @@ namespace MediaSample.Droid
 
             if (ShouldUseExoPlayer)
             {
-                ((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager = new MediaSessionManager(Application.Context, typeof(ExoPlayerAudioService), MediaManager);
+                ((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager = new MediaSessionManager(Application.Context, MediaManager);
                 var exoPlayer = new ExoPlayerAudioImplementation(((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager);
                 CrossMediaManager.Current.AudioPlayer = exoPlayer;
             }
