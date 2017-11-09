@@ -112,6 +112,10 @@ namespace Plugin.MediaManager
             try
             {
                 InitializePlayer();
+
+                // Buffering states similar to how iOS has been implemented
+                SessionManager.UpdatePlaybackState(PlaybackStateCompat.StateBuffering);
+
                 SessionManager.InitMediaSession(PackageName, Binder as MediaServiceBinder);
                 _noisyAudioStreamReceiver = new AudioPlayerBroadcastReceiver(SessionManager);
                 _intentFilter = new IntentFilter(AudioManager.ActionAudioBecomingNoisy);
