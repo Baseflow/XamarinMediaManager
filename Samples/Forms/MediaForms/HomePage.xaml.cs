@@ -1,8 +1,10 @@
 using Plugin.MediaManager;
 using Plugin.MediaManager.Abstractions.Enums;
+using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -26,11 +28,28 @@ namespace MediaForms
             Navigation.PushAsync(new MediaFormsPage());
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            CrossMediaManager.Current.StatusChanged += CurrentOnStatusChanged;
+        }
+
+        protected override void OnDisappearing()
+        {
+            CrossMediaManager.Current.StatusChanged -= CurrentOnStatusChanged;
+            base.OnDisappearing();
+        }
+
+        private void CurrentOnStatusChanged(object sender, StatusChangedEventArgs e)
+        {
+            Debug.WriteLine($"MediaManager Status: {e.Status}");
+        }
+
         private async void StopButton_OnClicked(object sender, EventArgs e)
         {
             await CrossMediaManager.Current.Stop();
         }
-        
+
         private async void PlayAudio_OnClicked(object sender, EventArgs e)
         {
             var mediaFile = new MediaFile
@@ -55,6 +74,7 @@ namespace MediaForms
             };
             await CrossMediaManager.Current.Play(mediaFile);
         }
+
         private async void PlaylistButton_OnClicked(object sender, EventArgs e)
         {
             var list = new List<MediaFile>
