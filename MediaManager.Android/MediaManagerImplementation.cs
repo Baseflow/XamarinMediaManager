@@ -1,6 +1,7 @@
 using Android.App;
 using Android.Content.Res;
 using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.Implementations;
 using Plugin.MediaManager.Audio;
 using Plugin.MediaManager.MediaSession;
@@ -72,6 +73,22 @@ namespace Plugin.MediaManager
             else if (action.Equals(MediaServiceBase.ActionStop))
             {
                 await Stop();
+            }
+            else if (action.Equals(MediaServiceBase.ActionStepForward))
+            {
+                await PlaybackController.StepForward();
+                if (AudioPlayer.Status == MediaPlayerStatus.Paused)
+                {
+                    await PlaybackController.Play();
+                }
+            }
+            else if (action.Equals(MediaServiceBase.ActionStepBackward))
+            {
+                await PlaybackController.StepBackward();
+                if (AudioPlayer.Status == MediaPlayerStatus.Paused)
+                {
+                    await PlaybackController.Play();
+                }
             }
         }
     }

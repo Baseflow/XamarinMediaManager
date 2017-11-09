@@ -28,6 +28,8 @@ namespace Plugin.MediaManager
         public const string ActionTogglePlayback = "com.xamarin.action.TOGGLEPLAYBACK";
         public const string ActionNext = "com.xamarin.action.NEXT";
         public const string ActionPrevious = "com.xamarin.action.PREVIOUS";
+        public const string ActionStepForward = "com.xamarin.action.STEPFORWARD";
+        public const string ActionStepBackward = "com.xamarin.action.STEPBACKWARD";
 
         //internal const int NotificationId = 1;
 

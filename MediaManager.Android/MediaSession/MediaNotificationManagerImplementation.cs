@@ -143,9 +143,13 @@ namespace Plugin.MediaManager
                 _builder.AddAction(GenerateActionCompat(Resource.Drawable.IcMediaPrevious, "Previous",
                     MediaServiceBase.ActionPrevious));
             }
+            // TODO Change this icon to an appropriate one. It's not a correct one (it's the rewind icon) but there's no other option when it comes to android 'baked in' icons
+            _builder.AddAction(GenerateActionCompat(Resource.Drawable.IcMediaRew, "StepBackward", MediaServiceBase.ActionStepBackward));
             _builder.AddAction(mediaIsPlaying
                 ? GenerateActionCompat(Resource.Drawable.IcMediaPause, "Pause", MediaServiceBase.ActionPause)
                 : GenerateActionCompat(Resource.Drawable.IcMediaPlay, "Play", MediaServiceBase.ActionPlay));
+            // TODO Change this icon to an appropriate one. It's not a correct one (it's the fast forward icon) but there's no other option when it comes to android 'baked in' icons
+            _builder.AddAction(GenerateActionCompat(Resource.Drawable.IcMediaFf, "StepForward", MediaServiceBase.ActionStepForward));
             if (canGoNext)
             {
                 _builder.AddAction(GenerateActionCompat(Resource.Drawable.IcMediaNext, "Next",
