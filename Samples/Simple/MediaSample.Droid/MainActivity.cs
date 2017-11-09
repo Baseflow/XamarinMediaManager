@@ -56,7 +56,7 @@ namespace MediaSample.Droid
 
             if (ShouldUseExoPlayer)
             {
-                ((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager = new MediaSessionManager(Application.Context, typeof(ExoPlayerAudioService), MediaManager);
+                ((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager = new MediaSessionManager(Application.Context, MediaManager);
                 var exoPlayer = new ExoPlayerAudioImplementation(((MediaManagerImplementation)CrossMediaManager.Current).MediaSessionManager);
                 CrossMediaManager.Current.AudioPlayer = exoPlayer;
             }
