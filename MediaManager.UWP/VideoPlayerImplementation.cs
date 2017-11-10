@@ -17,10 +17,11 @@ using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.Interfaces;
 
 namespace Plugin.MediaManager
 {
-    public class VideoPlayerImplementation : IVideoPlayer
+    public class VideoPlayerImplementation : BasePlayerImplementation, IVideoPlayer
     {
         private readonly IVolumeManager _volumeManager;
         private readonly MediaPlayer _player;
@@ -32,7 +33,8 @@ namespace Plugin.MediaManager
         private SpriteVisual _spriteVisual;
         private IVideoSurface _renderSurface;
 
-        public VideoPlayerImplementation(IVolumeManager volumeManager)
+        public VideoPlayerImplementation(IMediaPlyerPlaybackController mediaPlyerPlaybackController, IVolumeManager volumeManager)
+            : base(mediaPlyerPlaybackController)
         {
             _volumeManager = volumeManager;
             _player = new MediaPlayer();
@@ -41,7 +43,7 @@ namespace Plugin.MediaManager
             {
                 if (_player.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
                 {
-                    var progress = _player.PlaybackSession.Position.TotalSeconds/
+                    var progress = _player.PlaybackSession.Position.TotalSeconds /
                                    _player.PlaybackSession.NaturalDuration.TotalSeconds;
                     if (double.IsInfinity(progress))
                         progress = 0;
@@ -95,7 +97,7 @@ namespace Plugin.MediaManager
             _player.PlaybackSession.BufferingProgressChanged += (sender, args) =>
             {
                 var bufferedTime =
-                    TimeSpan.FromSeconds(_player.PlaybackSession.BufferingProgress*
+                    TimeSpan.FromSeconds(_player.PlaybackSession.BufferingProgress *
                                          _player.PlaybackSession.NaturalDuration.TotalSeconds);
                 BufferingChanged?.Invoke(this,
                     new BufferingChangedEventArgs(_player.PlaybackSession.BufferingProgress, bufferedTime));
@@ -139,7 +141,7 @@ namespace Plugin.MediaManager
             {
                 if (_player == null) return TimeSpan.Zero;
                 return
-                    TimeSpan.FromMilliseconds(_player.PlaybackSession.BufferingProgress*
+                    TimeSpan.FromMilliseconds(_player.PlaybackSession.BufferingProgress *
                                               _player.PlaybackSession.NaturalDuration.TotalMilliseconds);
             }
         }
@@ -207,7 +209,7 @@ namespace Plugin.MediaManager
         /// <summary>
         /// True when RenderSurface has been initialized and ready for rendering
         /// </summary>
-        public bool IsReadyRendering => RenderSurface != null && !RenderSurface.IsDisposed;        
+        public bool IsReadyRendering => RenderSurface != null && !RenderSurface.IsDisposed;
 
         public IVideoSurface RenderSurface
         {
@@ -252,7 +254,7 @@ namespace Plugin.MediaManager
 
             _spriteVisual = compositor.CreateSpriteVisual();
             _spriteVisual.Size =
-                new Vector2((float) canvas.ActualWidth, (float) canvas.ActualHeight);
+                new Vector2((float)canvas.ActualWidth, (float)canvas.ActualHeight);
 
             CompositionBrush brush = compositor.CreateSurfaceBrush(surface.CompositionSurface);
             _spriteVisual.Brush = brush;

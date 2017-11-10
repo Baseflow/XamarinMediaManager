@@ -1,4 +1,4 @@
-﻿using Windows.Media;
+using Windows.Media;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.SystemWrappers;
 

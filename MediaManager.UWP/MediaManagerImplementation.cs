@@ -1,6 +1,9 @@
-﻿using Windows.Media;
+using Windows.Media;
+using Windows.Media.Playback;
+using Windows.UI.Xaml.Controls;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
+using Plugin.MediaManager.Interfaces;
 using Plugin.MediaManager.SystemWrappers;
 
 namespace Plugin.MediaManager
@@ -12,28 +15,36 @@ namespace Plugin.MediaManager
     {
         private IAudioPlayer _audioPlayer;
         private IVideoPlayer _videoPlayer;
-        private readonly MediaButtonPlaybackController _mediaButtonPlaybackController;
 
-        public MediaManagerImplementation()
-        {
-            var systemMediaTransportControlsWrapper = new SystemMediaTransportControlsWrapper(SystemMediaTransportControls.GetForCurrentView());
-            _mediaButtonPlaybackController = new MediaButtonPlaybackController(systemMediaTransportControlsWrapper, this);
-            _mediaButtonPlaybackController.SubscribeToNotifications();
-        }
+        private IMediaNotificationManager _mediaNotificationManager;
+
+        private IMediaPlyerPlaybackController _mediaPlyerPlaybackController;
+        private IMediaPlyerPlaybackController MediaPlyerPlaybackController => _mediaPlyerPlaybackController ?? (_mediaPlyerPlaybackController = new MediaPlayerPlaybackController(this));
+
+        //public MediaManagerImplementation()
+        //{
+        //var systemMediaTransportControlsWrapper = new SystemMediaTransportControlsWrapper(SystemMediaTransportControls.GetForCurrentView());
+        //_mediaButtonPlaybackController = new MediaButtonPlaybackController(systemMediaTransportControlsWrapper, this);
+        //_mediaButtonPlaybackController.SubscribeToNotifications();            
+        //}
 
         public override IAudioPlayer AudioPlayer
         {
-            get { return _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(VolumeManager)); }
-
-            set { _audioPlayer = value; }
+            get => _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(MediaPlyerPlaybackController, VolumeManager));
+            set => _audioPlayer = value;
         }
 
         public override IVideoPlayer VideoPlayer
         {
-            get { return _videoPlayer ?? (_videoPlayer = new VideoPlayerImplementation(VolumeManager)); }
-            set { _videoPlayer = value; }
+            get => _videoPlayer ?? (_videoPlayer = new VideoPlayerImplementation(MediaPlyerPlaybackController, VolumeManager));
+            set => _videoPlayer = value;
         }
-        public override IMediaNotificationManager MediaNotificationManager { get; set; } = new MediaNotificationManagerImplementation();
+
+        public override IMediaNotificationManager MediaNotificationManager
+        {
+            get => _mediaNotificationManager ?? (_mediaNotificationManager = new MediaNotificationManagerImplementation(MediaPlyerPlaybackController));
+            set => _mediaNotificationManager = value;
+        }
 
         public override IMediaExtractor MediaExtractor { get; set; } = new MediaExtractorImplementation();
 
@@ -49,15 +60,16 @@ namespace Plugin.MediaManager
             if (disposing)
             {
                 // Free any other managed objects here.
-                _mediaButtonPlaybackController.UnsubscribeFromNotifications();
+                (AudioPlayer as BasePlayerImplementation)?.Dispose();
+                (VideoPlayer as BasePlayerImplementation)?.Dispose();
             }
 
             base.Dispose(disposing);
 
             // Free any unmanaged objects here.
             //
-            disposed = true;                  
+            disposed = true;
         }
-        #endregion
+        #endregion        
     }
 }

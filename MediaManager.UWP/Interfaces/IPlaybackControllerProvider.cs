@@ -1,8 +1,8 @@
-﻿using Plugin.MediaManager.Abstractions;
+using Plugin.MediaManager.Abstractions;
 
 namespace Plugin.MediaManager
 {
-    internal interface IPlaybackControllerProvider
+    public interface IPlaybackControllerProvider
     {
         IPlaybackController PlaybackController { get; }
     }
