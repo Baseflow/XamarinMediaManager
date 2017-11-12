@@ -99,7 +99,6 @@ namespace Plugin.MediaManager
                     new BufferingChangedEventArgs(Player.PlaybackSession.BufferingProgress, bufferedTime));
             };
 
-            Player.PlaybackSession.SeekCompleted += (sender, args) => { };
             int.TryParse((Player.Volume * 100).ToString(), out var vol);
             _volumeManager.CurrentVolume = vol;
             _volumeManager.Muted = Player.IsMuted;
@@ -116,7 +115,7 @@ namespace Plugin.MediaManager
 
         public MediaPlayerStatus Status
         {
-            get { return _status; }
+            get => _status;
             private set
             {
                 _status = value;
@@ -201,6 +200,7 @@ namespace Plugin.MediaManager
 
         public Task Stop()
         {
+            Player.Pause();
             Player.PlaybackSession.PlaybackRate = 0;
             Player.PlaybackSession.Position = TimeSpan.Zero;
             Status = MediaPlayerStatus.Stopped;

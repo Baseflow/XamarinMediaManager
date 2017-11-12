@@ -44,18 +44,6 @@ namespace Plugin.MediaManager
                 return;
             }
 
-            switch (status)
-            {
-                case MediaPlayerStatus.Stopped:
-                case MediaPlayerStatus.Paused:
-                    _mediaPlyerPlaybackController.Player.Pause();
-                    break;
-                case MediaPlayerStatus.Playing:
-                    _mediaPlyerPlaybackController.Player.Play();
-                    break;
-            }
-
-
             UpdateInfoFromMediaFile(mediaFile);
         }
 
@@ -73,7 +61,7 @@ namespace Plugin.MediaManager
                 {
                     case MediaFileType.Audio:
                         await updater.CopyFromFileAsync(MediaPlaybackType.Music,
-                                await StorageFile.GetFileFromPathAsync(mediaFile.Url));
+                            await StorageFile.GetFileFromPathAsync(mediaFile.Url));
                         break;
                     case MediaFileType.Video:
                         await updater.CopyFromFileAsync(MediaPlaybackType.Video,
