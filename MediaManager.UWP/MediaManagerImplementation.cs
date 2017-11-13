@@ -1,10 +1,6 @@
-using Windows.Media;
-using Windows.Media.Playback;
-using Windows.UI.Xaml.Controls;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Implementations;
 using Plugin.MediaManager.Interfaces;
-using Plugin.MediaManager.SystemWrappers;
 
 namespace Plugin.MediaManager
 {
