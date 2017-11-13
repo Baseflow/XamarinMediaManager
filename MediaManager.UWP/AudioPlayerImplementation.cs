@@ -17,15 +17,13 @@ namespace Plugin.MediaManager
 {
     public class AudioPlayerImplementation : BasePlayerImplementation, IAudioPlayer
     {
-        private readonly IVolumeManager _volumeManager;
         private readonly Timer _playProgressTimer;
         private MediaPlayerStatus _status;
         private IMediaFile _currentMediaFile;
 
         public AudioPlayerImplementation(IMediaQueue mediaQueue, IMediaPlyerPlaybackController mediaPlyerPlaybackController, IVolumeManager volumeManager)
-            : base(mediaQueue, mediaPlyerPlaybackController)
+            : base(mediaQueue, mediaPlyerPlaybackController, volumeManager)
         {
-            _volumeManager = volumeManager;
             _playProgressTimer = new Timer(state =>
             {
                 if (Player.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
@@ -101,18 +99,7 @@ namespace Plugin.MediaManager
                     new BufferingChangedEventArgs(Player.PlaybackSession.BufferingProgress, bufferedTime));
             };
 
-            int.TryParse((Player.Volume * 100).ToString(), out var vol);
-            _volumeManager.CurrentVolume = vol;
-            _volumeManager.Muted = Player.IsMuted;
-            _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
-
             Player.Source = PlaybackList;
-        }
-
-        private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
-        {
-            Player.Volume = (double)volumeChangedEventArgs.NewVolume;
-            Player.IsMuted = volumeChangedEventArgs.Muted;
         }
 
         public Dictionary<string, string> RequestHeaders { get; set; }
@@ -185,7 +172,6 @@ namespace Plugin.MediaManager
                     PlaybackList.Items.Clear();
                     var mediaPlaybackItem = await CreateMediaPlaybackItem(mediaFile);
                     PlaybackList.Items.Add(mediaPlaybackItem);
-
                 }
                 else
                 {

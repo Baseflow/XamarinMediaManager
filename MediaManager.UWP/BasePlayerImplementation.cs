@@ -8,6 +8,7 @@ using Windows.Media.Playback;
 using Windows.Storage;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
+using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 using Plugin.MediaManager.Interfaces;
 
@@ -15,25 +16,33 @@ namespace Plugin.MediaManager
 {
     public class BasePlayerImplementation : IDisposable
     {
-        private readonly IMediaPlyerPlaybackController _mediaPlyerPlaybackController;
         private readonly IMediaQueue _mediaQueue;
+        private readonly IMediaPlyerPlaybackController _mediaPlyerPlaybackController;
+        private readonly IVolumeManager _volumeManager;
 
         protected readonly MediaPlayer Player;
 
         protected readonly MediaPlaybackList PlaybackList = new MediaPlaybackList();
 
-        public BasePlayerImplementation(IMediaQueue mediaQueue, IMediaPlyerPlaybackController mediaPlyerPlaybackController)
+        public BasePlayerImplementation(IMediaQueue mediaQueue, IMediaPlyerPlaybackController mediaPlyerPlaybackController, IVolumeManager volumeManager)
         {
             _mediaPlyerPlaybackController = mediaPlyerPlaybackController;
             _mediaQueue = mediaQueue;
+            _volumeManager = volumeManager;
+
+            Player = _mediaPlyerPlaybackController.Player;
+
             _mediaQueue.CollectionChanged += MediaQueueCollectionChanged;
 
-            Player = mediaPlyerPlaybackController.Player;
+            _volumeManager.CurrentVolume = (int)Player.Volume * 100;
+            _volumeManager.Muted = Player.IsMuted;
+            _volumeManager.VolumeChanged += VolumeChanged;
         }
 
         public void Dispose()
         {
             _mediaQueue.CollectionChanged -= MediaQueueCollectionChanged;
+            _volumeManager.VolumeChanged -= VolumeChanged;
             _mediaPlyerPlaybackController?.Dispose();
         }
 
@@ -95,6 +104,12 @@ namespace Plugin.MediaManager
                     PlaybackList.Items.Clear();
                     break;
             }
+        }
+
+        private void VolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
+        {
+            Player.Volume = (double)volumeChangedEventArgs.NewVolume;
+            Player.IsMuted = volumeChangedEventArgs.Muted;
         }
 
         private async Task HandleMediaQueueAddAction(NotifyCollectionChangedEventArgs e)

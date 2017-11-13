@@ -43,6 +43,12 @@ namespace MediaForms
         private void CurrentOnStatusChanged(object sender, StatusChangedEventArgs e)
         {
             Debug.WriteLine($"MediaManager Status: {e.Status}");
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                PlayerStatus.Text = e.Status.ToString();
+                IsBufferingIndicator.IsVisible = e.Status == MediaPlayerStatus.Buffering || e.Status == MediaPlayerStatus.Loading;
+            });
         }
 
         private async void StopButton_OnClicked(object sender, EventArgs e)

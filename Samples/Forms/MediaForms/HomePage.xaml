@@ -6,23 +6,48 @@
         <StackLayout Orientation="Vertical">
             <StackLayout VerticalOptions="Start">
                 <Button x:Name="mainBtn"
-                    Text="Click here to view a video"
-                    Clicked="MainBtn_OnClicked" />
+                        Text="Click here to view a video"
+                        Clicked="MainBtn_OnClicked" />
                 <Button Text="Play Audio (Show ID3 Metadata)"
                         Clicked="PlayAudio_OnClicked" />
                 <Button Text="Play Audio (Show User Metadata)"
                         Clicked="PlayAudioMyTrack_OnClicked" />
                 <Button Text="Play Audio List"
-                    Clicked="PlaylistButton_OnClicked" />
+                        Clicked="PlaylistButton_OnClicked" />
                 <Button Text="Stop Audio"
-                    Clicked="StopButton_OnClicked" />
+                        Clicked="StopButton_OnClicked" />
             </StackLayout>
-	        <StackLayout Orientation="Horizontal" VerticalOptions="End" Grid.Row="2">
-		        <Label x:Name="volumeLabel" Text="Volume (0-100):" HorizontalOptions="Start"></Label>
-		        <Entry x:Name="volumeEntry" Text="50" Keyboard="Numeric"  HorizontalOptions="StartAndExpand" WidthRequest="100"></Entry>
-		        <Button x:Name="setVolumeBtn" Text="Set Volume" HorizontalOptions="Start" Clicked="SetVolumeBtn_OnClicked"></Button>
-		        <Button x:Name="mutedBtn" Text="Mute" HorizontalOptions="End" Clicked="MutedBtn_OnClicked"></Button>
-	        </StackLayout>
+            <StackLayout VerticalOptions="End">
+                <StackLayout Orientation="Horizontal">
+                    <Label x:Name="volumeLabel"
+                           Text="Volume (0-100):"
+                           HorizontalOptions="Start"></Label>
+                    <Entry x:Name="volumeEntry"
+                           Text="50"
+                           Keyboard="Numeric"
+                           HorizontalOptions="StartAndExpand"
+                           WidthRequest="100"></Entry>
+                    <Button x:Name="setVolumeBtn"
+                            Text="Set Volume"
+                            HorizontalOptions="Start"
+                            Clicked="SetVolumeBtn_OnClicked"></Button>
+                    <Button x:Name="mutedBtn"
+                            Text="Mute"
+                            HorizontalOptions="End"
+                            Clicked="MutedBtn_OnClicked"></Button>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <StackLayout Orientation="Vertical">
+                        <Label Text="Status" />
+                        <Label x:Name="PlayerStatus" Text="Unknown" />
+                    </StackLayout>
+                    <ActivityIndicator x:Name="IsBufferingIndicator"
+                                       Color="Red"
+                                       HorizontalOptions="FillAndExpand"
+                                       IsRunning="True"
+                                       IsVisible="False" />
+                </StackLayout>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
