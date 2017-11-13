@@ -110,6 +110,7 @@ namespace Plugin.MediaManager
                     await HandleMediaQueueAddAction(e);
                     break;
                 case NotifyCollectionChangedAction.Move:
+                    // The reality is that this scenario is never going to happen. Even when we re-order or shuffle the list is being regenerated (Reset)
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     HandleMediaQueueRemoveAction(e);
