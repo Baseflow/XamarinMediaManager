@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,36 +17,14 @@ namespace Plugin.MediaManager
 {
     public class AudioPlayerImplementation : BasePlayerImplementation, IAudioPlayer
     {
-        private readonly IMediaQueue _mediaQueue;
         private readonly IVolumeManager _volumeManager;
         private readonly Timer _playProgressTimer;
         private MediaPlayerStatus _status;
         private IMediaFile _currentMediaFile;
 
         public AudioPlayerImplementation(IMediaQueue mediaQueue, IMediaPlyerPlaybackController mediaPlyerPlaybackController, IVolumeManager volumeManager)
-            : base(mediaPlyerPlaybackController)
+            : base(mediaQueue, mediaPlyerPlaybackController)
         {
-            _mediaQueue = mediaQueue;
-            _mediaQueue.CollectionChanged += async (sender, args) =>
-            {
-                if (args?.NewItems == null)
-                {
-                    return;
-                }
-
-                await Pause();
-                // TODO this should be handled in a better way (i.e. don't re-create entire playlist everytime)
-                PlaybackList.Items.Clear();
-                foreach (var mediaFile in (sender as ICollection<IMediaFile>))
-                {
-                    if (mediaFile == null)
-                    {
-                        continue;
-                    }
-
-                    PlaybackList.Items.Add(await CreateMediaPlaybackItem(mediaFile));
-                }
-            };
             _volumeManager = volumeManager;
             _playProgressTimer = new Timer(state =>
             {
@@ -186,34 +165,38 @@ namespace Plugin.MediaManager
         {
             try
             {
-                //var sameMediaFile = mediaFile == null || mediaFile.Equals(_currentMediaFile);
-                //var currentMediaPosition = Player.PlaybackSession?.Position;
-                //// This variable will determine whether you will resume your playback or not
-                //var resumeMediaFile = Status == MediaPlayerStatus.Paused && sameMediaFile ||
-                //                      currentMediaPosition?.TotalSeconds > 0 && sameMediaFile;
-                //if (resumeMediaFile)
-                //{
-                //    // TODO: PlaybackRate needs to be configurable rather than hard-coded here
-                //    //Player.PlaybackSession.PlaybackRate = 1;
-                //    Player.Play();
-                //    return;
-                //}
+                var sameMediaFile = mediaFile == null || mediaFile.Equals(_currentMediaFile);
+                var currentMediaPosition = Player.PlaybackSession?.Position;
+                // This variable will determine whether you will resume your playback or not
+                var resumeMediaFile = Status == MediaPlayerStatus.Paused && sameMediaFile ||
+                                      currentMediaPosition?.TotalSeconds > 0 && sameMediaFile;
+                if (resumeMediaFile)
+                {
+                    // TODO: PlaybackRate needs to be configurable rather than hard-coded here
+                    //Player.PlaybackSession.PlaybackRate = 1;
+                    Player.Play();
+                    return;
+                }
 
-                //var mediaToPlay = PlaybackList.Items.FirstOrDefault(i => i?.Source?.Uri?.AbsolutePath == mediaFile?.Url);
-                //if (mediaToPlay == null)
-                //{
-                //    _currentMediaFile = mediaFile;
-                //    PlaybackList.Items.Clear();
-                //    var mediaPlaybackItem = await CreateMediaPlaybackItem(mediaFile);
-                //    PlaybackList.Items.Add(mediaPlaybackItem);
+                var mediaToPlay = PlaybackList.Items.FirstOrDefault(i => i?.Source?.Uri?.AbsoluteUri == mediaFile?.Url);
+                if (mediaToPlay == null)
+                {
+                    _currentMediaFile = mediaFile;
+                    PlaybackList.Items.Clear();
+                    var mediaPlaybackItem = await CreateMediaPlaybackItem(mediaFile);
+                    PlaybackList.Items.Add(mediaPlaybackItem);
 
-                //    Player.Play();
-                //}
-                //else
-                //{
-                //    var mediaToPlayIndex = PlaybackList.Items.IndexOf(mediaToPlay);
-                //    PlaybackList.MoveTo((uint)mediaToPlayIndex);
-                //}
+                }
+                else
+                {
+                    var mediaToPlayIndex = PlaybackList.Items.IndexOf(mediaToPlay);
+                    if (mediaToPlayIndex != PlaybackList.CurrentItemIndex)
+                    {
+                        PlaybackList.MoveTo((uint)mediaToPlayIndex);
+                    }
+                }
+
+                Player.Play();
             }
             catch (Exception e)
             {

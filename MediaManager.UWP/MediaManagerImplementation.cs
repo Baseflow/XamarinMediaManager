@@ -29,7 +29,7 @@ namespace Plugin.MediaManager
 
         public override IVideoPlayer VideoPlayer
         {
-            get => _videoPlayer ?? (_videoPlayer = new VideoPlayerImplementation(MediaPlyerPlaybackController, VolumeManager));
+            get => _videoPlayer ?? (_videoPlayer = new VideoPlayerImplementation(MediaQueue, MediaPlyerPlaybackController, VolumeManager));
             set => _videoPlayer = value;
         }
 

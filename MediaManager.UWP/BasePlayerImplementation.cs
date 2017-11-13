@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Threading.Tasks;
 using Windows.Media;
 using Windows.Media.Core;
@@ -6,28 +8,33 @@ using Windows.Media.Playback;
 using Windows.Storage;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
+using Plugin.MediaManager.Abstractions.Implementations;
 using Plugin.MediaManager.Interfaces;
 
 namespace Plugin.MediaManager
 {
     public class BasePlayerImplementation : IDisposable
     {
-        private readonly IMediaPlyerPlaybackController mediaPlyerPlaybackController;
+        private readonly IMediaPlyerPlaybackController _mediaPlyerPlaybackController;
+        private readonly IMediaQueue _mediaQueue;
 
         protected readonly MediaPlayer Player;
 
         protected readonly MediaPlaybackList PlaybackList = new MediaPlaybackList();
 
-        public BasePlayerImplementation(IMediaPlyerPlaybackController mediaPlyerPlaybackController)
+        public BasePlayerImplementation(IMediaQueue mediaQueue, IMediaPlyerPlaybackController mediaPlyerPlaybackController)
         {
-            this.mediaPlyerPlaybackController = mediaPlyerPlaybackController;
+            _mediaPlyerPlaybackController = mediaPlyerPlaybackController;
+            _mediaQueue = mediaQueue;
+            _mediaQueue.CollectionChanged += MediaQueueCollectionChanged;
 
             Player = mediaPlyerPlaybackController.Player;
         }
 
         public void Dispose()
         {
-            mediaPlyerPlaybackController?.Dispose();
+            _mediaQueue.CollectionChanged -= MediaQueueCollectionChanged;
+            _mediaPlyerPlaybackController?.Dispose();
         }
 
         protected async Task<MediaPlaybackItem> CreateMediaPlaybackItem(IMediaFile mediaFile)
@@ -64,6 +71,56 @@ namespace Plugin.MediaManager
             }
 
             return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
+        }
+
+        private async void MediaQueueCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e == null)
+            {
+                return;
+            }
+
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    await HandleMediaQueueAddAction(e);
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    PlaybackList.Items.Clear();
+                    break;
+            }
+        }
+
+        private async Task HandleMediaQueueAddAction(NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems == null)
+            {
+                return;
+            }
+
+            var newMediaFiles = new List<IMediaFile>();
+            foreach (var newItem in e.NewItems)
+            {
+                if (newItem is IMediaFile mediaFile)
+                {
+                    newMediaFiles.Add(mediaFile);
+                }
+                if (newItem is IEnumerable<IMediaFile> mediaFiles)
+                {
+                    newMediaFiles.AddRange(mediaFiles);
+                }
+
+                foreach (var newMediaFile in newMediaFiles)
+                {
+                    PlaybackList.Items.Add(await CreateMediaPlaybackItem(newMediaFile));
+                }
+            }
         }
     }
 }

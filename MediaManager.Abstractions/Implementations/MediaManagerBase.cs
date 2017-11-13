@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
@@ -182,8 +183,16 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         /// <returns></returns>
         public async Task Play(IEnumerable<IMediaFile> mediaFiles)
         {
+            var mediaFilesArray = mediaFiles?.ToArray();
+            if (!(mediaFilesArray?.Any() ?? false))
+            {
+                return;
+            }
+
+            EnsureMediaPlayerInstantiated(mediaFilesArray.Select(m => m.Type).FirstOrDefault());
+
             MediaQueue.Clear();
-            MediaQueue.AddRange(mediaFiles);
+            MediaQueue.AddRange(mediaFilesArray);
 
             // Play from index 0
             MediaQueue.SetIndexAsCurrent(0);
@@ -388,6 +397,24 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             _currentPlaybackManager.MediaFinished -= OnMediaFinished;
             _currentPlaybackManager.PlayingChanged -= OnPlayingChanged;
             _currentPlaybackManager.StatusChanged -= OnStatusChanged;
+        }
+
+        /// <summary>
+        /// Instantiates players
+        /// NOTE: This is necessary to have a player instance before we deal with the MedieQueue to subscribe and receive all of the MedieQueue events
+        /// </summary>
+        /// <param name="mediaFileType"></param>
+        private void EnsureMediaPlayerInstantiated(MediaFileType mediaFileType)
+        {
+            switch (mediaFileType)
+            {
+                case MediaFileType.Audio:
+                    var audioPlayer = AudioPlayer;
+                    break;
+                case MediaFileType.Video:
+                    var videoPlayer = VideoPlayer;
+                    break;
+            }
         }
 
         #region IDisposable        

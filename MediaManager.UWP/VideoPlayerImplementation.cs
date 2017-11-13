@@ -31,8 +31,8 @@ namespace Plugin.MediaManager
         private SpriteVisual _spriteVisual;
         private IVideoSurface _renderSurface;
 
-        public VideoPlayerImplementation(IMediaPlyerPlaybackController mediaPlyerPlaybackController, IVolumeManager volumeManager)
-            : base(mediaPlyerPlaybackController)
+        public VideoPlayerImplementation(IMediaQueue mediaQueue, IMediaPlyerPlaybackController mediaPlyerPlaybackController, IVolumeManager volumeManager)
+            : base(mediaQueue, mediaPlyerPlaybackController)
         {
             _volumeManager = volumeManager;
             _playProgressTimer = new Timer(state =>
