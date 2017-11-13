@@ -165,7 +165,7 @@ namespace Plugin.MediaManager
                     return;
                 }
 
-                var mediaToPlay = PlaybackList.Items.FirstOrDefault(i => i?.Source?.Uri?.AbsoluteUri == mediaFile?.Url);
+                var mediaToPlay = RetrievePlaylistItem(mediaFile);
                 if (mediaToPlay == null)
                 {
                     _currentMediaFile = mediaFile;

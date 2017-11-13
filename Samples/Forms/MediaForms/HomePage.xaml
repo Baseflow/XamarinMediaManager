@@ -12,8 +12,20 @@
                         Clicked="PlayAudio_OnClicked" />
                 <Button Text="Play Audio (Show User Metadata)"
                         Clicked="PlayAudioMyTrack_OnClicked" />
-                <Button Text="Play Audio List"
-                        Clicked="PlaylistButton_OnClicked" />
+                <StackLayout Orientation="Vertical">
+                    <Label Text="Playlist"></Label>
+                    <Button Text="Play Audio List"
+                            Clicked="PlaylistButton_OnClicked" />
+                </StackLayout>
+                <StackLayout Orientation="Vertical">
+                    <Label Text="Playlist Actions"></Label>
+                    <StackLayout Orientation="Horizontal">
+                        <Button Text="Add"
+                                Clicked="AddToPlaylistClicked" />
+                        <Button Text="Remove"
+                                Clicked="RemoveLastFromPlaylistClicked" />
+                    </StackLayout>
+                </StackLayout>
                 <Button Text="Stop Audio"
                         Clicked="StopButton_OnClicked" />
             </StackLayout>
@@ -39,7 +51,8 @@
                 <StackLayout Orientation="Horizontal">
                     <StackLayout Orientation="Vertical">
                         <Label Text="Status" />
-                        <Label x:Name="PlayerStatus" Text="Unknown" />
+                        <Label x:Name="PlayerStatus"
+                               Text="Unknown" />
                     </StackLayout>
                     <ActivityIndicator x:Name="IsBufferingIndicator"
                                        Color="Red"

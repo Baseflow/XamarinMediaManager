@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
@@ -59,7 +62,9 @@ namespace Plugin.MediaManager
                 return null;
             }
 
-            return new MediaPlaybackItem(mediaSource);
+            var playbackItem = new MediaPlaybackItem(mediaSource);
+            UpdatePlaybackItemDisplayProperties(mediaFile, playbackItem);
+            return playbackItem;
         }
 
         protected async Task<MediaSource> CreateMediaSource(IMediaFile mediaFile)
@@ -82,6 +87,16 @@ namespace Plugin.MediaManager
             return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
         }
 
+        protected MediaPlaybackItem RetrievePlaylistItem(IMediaFile mediaFile)
+        {
+            if (string.IsNullOrWhiteSpace(mediaFile?.Url))
+            {
+                return null;
+            }
+
+            return PlaybackList.Items.FirstOrDefault(i => i.Source?.Uri?.AbsoluteUri == mediaFile.Url);
+        }
+
         private async void MediaQueueCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e == null)
@@ -97,8 +112,10 @@ namespace Plugin.MediaManager
                 case NotifyCollectionChangedAction.Move:
                     break;
                 case NotifyCollectionChangedAction.Remove:
+                    HandleMediaQueueRemoveAction(e);
                     break;
                 case NotifyCollectionChangedAction.Replace:
+                    await HandleMediaQueueReplaceAction(e);
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     PlaybackList.Items.Clear();
@@ -126,7 +143,7 @@ namespace Plugin.MediaManager
                 {
                     newMediaFiles.Add(mediaFile);
                 }
-                if (newItem is IEnumerable<IMediaFile> mediaFiles)
+                else if (newItem is IEnumerable<IMediaFile> mediaFiles)
                 {
                     newMediaFiles.AddRange(mediaFiles);
                 }
@@ -136,6 +153,125 @@ namespace Plugin.MediaManager
                     PlaybackList.Items.Add(await CreateMediaPlaybackItem(newMediaFile));
                 }
             }
+        }
+
+        private async Task HandleMediaQueueReplaceAction(NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems == null || e.OldItems == null)
+            {
+                return;
+            }
+
+            try
+            {
+                var newMediaFile = e.NewItems[0] as IMediaFile;
+                var oldMediaFile = e.OldItems[0] as IMediaFile;
+
+                if (newMediaFile == null || oldMediaFile == null)
+                {
+                    return;
+                }
+
+                var mediaFileInPlaylist = RetrievePlaylistItem(oldMediaFile);
+                if (mediaFileInPlaylist == null)
+                {
+                    return;
+                }
+
+                if (newMediaFile == oldMediaFile || newMediaFile.Url == oldMediaFile.Url)
+                {
+                    // Update same media file
+                }
+                else
+                {
+                    // Replace playlist media file with new one
+                    var mediaFileInPlaylistIndex = PlaybackList.Items.IndexOf(mediaFileInPlaylist);
+                    if (mediaFileInPlaylistIndex == PlaybackList.CurrentItemIndex)
+                    {
+                        Player.Pause();
+                    }
+
+                    PlaybackList.Items.RemoveAt(mediaFileInPlaylistIndex);
+
+                    var newPlaybackItem = await CreateMediaPlaybackItem(newMediaFile);
+                    PlaybackList.Items.Insert(mediaFileInPlaylistIndex, newPlaybackItem);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void HandleMediaQueueRemoveAction(NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.OldItems == null)
+            {
+                return;
+            }
+
+            foreach (var oldItem in e.OldItems)
+            {
+                if (oldItem is IMediaFile mediaFile)
+                {
+                    var mediaFileInPlaylist = RetrievePlaylistItem(mediaFile);
+                    if (mediaFileInPlaylist == null)
+                    {
+                        continue;
+                    }
+
+                    var mediaFileInPlaylistIndex = PlaybackList.Items.IndexOf(mediaFileInPlaylist);
+                    var isMediaFileInPlaylistIndexCurrentlyPlaying = mediaFileInPlaylistIndex == PlaybackList.CurrentItemIndex;
+                    if (isMediaFileInPlaylistIndexCurrentlyPlaying)
+                    {
+                        Player.Pause();
+                    }
+
+                    PlaybackList.Items.RemoveAt(mediaFileInPlaylistIndex);
+                    if (PlaybackList.Items.Any() && isMediaFileInPlaylistIndexCurrentlyPlaying)
+                    {
+                        if (mediaFileInPlaylistIndex == 0)
+                        {
+                            PlaybackList.MoveNext();
+                        }
+                        else
+                        {
+                            PlaybackList.MovePrevious();
+                        }
+                    }
+                }
+            }
+        }
+
+        private void UpdatePlaybackItemDisplayProperties(IMediaFile mediaFile, MediaPlaybackItem playbackItem)
+        {
+            if (mediaFile?.Metadata == null || playbackItem == null)
+            {
+                return;
+            }
+
+            var playbaItemDisplayProperties = playbackItem.GetDisplayProperties();
+            playbaItemDisplayProperties.Type = mediaFile.Type == MediaFileType.Audio ? MediaPlaybackType.Music : MediaPlaybackType.Video;
+            switch (playbaItemDisplayProperties.Type)
+            {
+                case MediaPlaybackType.Music:
+                    if (!string.IsNullOrWhiteSpace(mediaFile.Metadata.Title))
+                    {
+                        playbaItemDisplayProperties.MusicProperties.Title = mediaFile.Metadata.Title;
+                    }
+                    break;
+                case MediaPlaybackType.Video:
+                    if (!string.IsNullOrWhiteSpace(mediaFile.Metadata.Title))
+                    {
+                        playbaItemDisplayProperties.VideoProperties.Title = mediaFile.Metadata.Title;
+                    }
+                    break;
+            }
+            if (!string.IsNullOrWhiteSpace(mediaFile.Metadata?.DisplayIconUri))
+            {
+                playbaItemDisplayProperties.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(mediaFile.Metadata.DisplayIconUri));
+            }
+            playbackItem.ApplyDisplayProperties(playbaItemDisplayProperties);
         }
     }
 }

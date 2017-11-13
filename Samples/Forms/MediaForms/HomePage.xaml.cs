@@ -5,6 +5,7 @@ using Plugin.MediaManager.Abstractions.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -100,7 +101,8 @@ namespace MediaForms
                     Type = MediaFileType.Audio,
                     Metadata = new MediaFileMetadata
                     {
-                        Title = "Test2"
+                        Title = "Test2",
+                        DisplayIconUri = "https://d15mj6e6qmt1na.cloudfront.net/i/8457198.jpg"
                     }
                 },
                 new MediaFile
@@ -110,16 +112,8 @@ namespace MediaForms
                     Type = MediaFileType.Audio,
                     Metadata = new MediaFileMetadata
                     {
-                        Title = "Test3"
-                    }
-                },
-                new MediaFile
-                {
-                    Url = "https://audioboom.com/posts/5723344-ep-304-the-4th-dimension.mp3?source=rss&amp;stitched=1",
-                    Type = MediaFileType.Audio,
-                    Metadata = new MediaFileMetadata
-                    {
-                        Title = "Test4"
+                        Title = "Test3",
+                        DisplayIconUri = "https://d15mj6e6qmt1na.cloudfront.net/i/30739475.jpg"
                     }
                 }
             };
@@ -128,6 +122,8 @@ namespace MediaForms
             // Ep. 304: The 4th Dimension
             await CrossMediaManager.Current.Play(list);
         }
+
+
 
         private void SetVolumeBtn_OnClicked(object sender, EventArgs e)
         {
@@ -147,6 +143,30 @@ namespace MediaForms
                 CrossMediaManager.Current.VolumeManager.Muted = true;
                 mutedBtn.Text = "Unmute";
             }
+        }
+
+        private void AddToPlaylistClicked(object sender, EventArgs e)
+        {
+            CrossMediaManager.Current.MediaQueue.Add(new MediaFile
+            {
+                Url = "https://audioboom.com/posts/5723344-ep-304-the-4th-dimension.mp3?source=rss&amp;stitched=1",
+                Type = MediaFileType.Audio,
+                Metadata = new MediaFileMetadata
+                {
+                    Title = "Test4",
+                    DisplayIconUri = "https://d15mj6e6qmt1na.cloudfront.net/i/30739475.jpg"
+                }
+            });
+        }
+
+        private void RemoveLastFromPlaylistClicked(object sender, EventArgs e)
+        {
+            if (!(CrossMediaManager.Current.MediaQueue?.Any() ?? false))
+            {
+                return;
+            }
+
+            CrossMediaManager.Current.MediaQueue.RemoveAt(CrossMediaManager.Current.MediaQueue.Count - 1);
         }
     }
 }
