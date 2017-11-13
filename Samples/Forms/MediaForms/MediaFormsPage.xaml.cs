@@ -25,7 +25,7 @@ namespace MediaForms
                     ProgressBar.Progress = e.Progress;
                     Duration.Text = "" + e.Duration.TotalSeconds + " seconds";
                 });
-            };            
+            };
         }
 
         protected override void OnAppearing()
@@ -34,7 +34,7 @@ namespace MediaForms
         }
 
         void PlayClicked(object sender, System.EventArgs e)
-        {            
+        {
             PlaybackController.Play();
         }
 

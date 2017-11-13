@@ -16,7 +16,6 @@ using Windows.UI.Xaml.Hosting;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
 using Plugin.MediaManager.Interfaces;
 
 namespace Plugin.MediaManager
@@ -24,7 +23,6 @@ namespace Plugin.MediaManager
     public class VideoPlayerImplementation : BasePlayerImplementation, IVideoPlayer
     {
         private readonly IVolumeManager _volumeManager;
-        private readonly MediaPlayer _player;
         private readonly Timer _playProgressTimer;
         private MediaSource _currentMediaSource;
         private TaskCompletionSource<bool> _loadMediaTaskCompletionSource = new TaskCompletionSource<bool>();
@@ -37,28 +35,26 @@ namespace Plugin.MediaManager
             : base(mediaPlyerPlaybackController)
         {
             _volumeManager = volumeManager;
-            _player = new MediaPlayer();
-
             _playProgressTimer = new Timer(state =>
             {
-                if (_player.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
+                if (Player.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
                 {
-                    var progress = _player.PlaybackSession.Position.TotalSeconds /
-                                   _player.PlaybackSession.NaturalDuration.TotalSeconds;
+                    var progress = Player.PlaybackSession.Position.TotalSeconds /
+                                   Player.PlaybackSession.NaturalDuration.TotalSeconds;
                     if (double.IsInfinity(progress))
                         progress = 0;
-                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(progress, _player.PlaybackSession.Position, _player.PlaybackSession.NaturalDuration));
+                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(progress, Player.PlaybackSession.Position, Player.PlaybackSession.NaturalDuration));
                 }
             }, null, 0, int.MaxValue);
 
-            _player.MediaFailed += (sender, args) =>
+            Player.MediaFailed += (sender, args) =>
             {
                 _status = MediaPlayerStatus.Failed;
                 _playProgressTimer.Change(0, int.MaxValue);
                 MediaFailed?.Invoke(this, new MediaFailedEventArgs(args.ErrorMessage, args.ExtendedErrorCode));
             };
 
-            _player.PlaybackSession.PlaybackStateChanged += (sender, args) =>
+            Player.PlaybackSession.PlaybackStateChanged += (sender, args) =>
             {
                 switch (sender.PlaybackState)
                 {
@@ -93,28 +89,28 @@ namespace Plugin.MediaManager
                 }
             };
 
-            _player.MediaEnded += (sender, args) => { MediaFinished?.Invoke(this, new MediaFinishedEventArgs(_currentMediaFile)); };
-            _player.PlaybackSession.BufferingProgressChanged += (sender, args) =>
+            Player.MediaEnded += (sender, args) => { MediaFinished?.Invoke(this, new MediaFinishedEventArgs(_currentMediaFile)); };
+            Player.PlaybackSession.BufferingProgressChanged += (sender, args) =>
             {
                 var bufferedTime =
-                    TimeSpan.FromSeconds(_player.PlaybackSession.BufferingProgress *
-                                         _player.PlaybackSession.NaturalDuration.TotalSeconds);
+                    TimeSpan.FromSeconds(Player.PlaybackSession.BufferingProgress *
+                                         Player.PlaybackSession.NaturalDuration.TotalSeconds);
                 BufferingChanged?.Invoke(this,
-                    new BufferingChangedEventArgs(_player.PlaybackSession.BufferingProgress, bufferedTime));
+                    new BufferingChangedEventArgs(Player.PlaybackSession.BufferingProgress, bufferedTime));
             };
 
-            _player.PlaybackSession.SeekCompleted += (sender, args) => { };
-            _player.MediaOpened += (sender, args) => { _loadMediaTaskCompletionSource.SetResult(true); };
-            int.TryParse((_player.Volume * 100).ToString(), out var vol);
+            Player.PlaybackSession.SeekCompleted += (sender, args) => { };
+            Player.MediaOpened += (sender, args) => { _loadMediaTaskCompletionSource.SetResult(true); };
+            int.TryParse((Player.Volume * 100).ToString(), out var vol);
             _volumeManager.CurrentVolume = vol;
-            _volumeManager.Muted = _player.IsMuted;
+            _volumeManager.Muted = Player.IsMuted;
             _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
         }
 
         private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
         {
-            _player.Volume = (double)volumeChangedEventArgs.NewVolume;
-            _player.IsMuted = volumeChangedEventArgs.Muted;
+            Player.Volume = (double)volumeChangedEventArgs.NewVolume;
+            Player.IsMuted = volumeChangedEventArgs.Muted;
         }
 
         public Dictionary<string, string> RequestHeaders { get; set; }
@@ -139,22 +135,22 @@ namespace Plugin.MediaManager
         {
             get
             {
-                if (_player == null) return TimeSpan.Zero;
+                if (Player == null) return TimeSpan.Zero;
                 return
-                    TimeSpan.FromMilliseconds(_player.PlaybackSession.BufferingProgress *
-                                              _player.PlaybackSession.NaturalDuration.TotalMilliseconds);
+                    TimeSpan.FromMilliseconds(Player.PlaybackSession.BufferingProgress *
+                                              Player.PlaybackSession.NaturalDuration.TotalMilliseconds);
             }
         }
 
-        public TimeSpan Duration => _player?.PlaybackSession.NaturalDuration ?? TimeSpan.Zero;
-        public TimeSpan Position => _player?.PlaybackSession.Position ?? TimeSpan.Zero;
+        public TimeSpan Duration => Player?.PlaybackSession.NaturalDuration ?? TimeSpan.Zero;
+        public TimeSpan Position => Player?.PlaybackSession.Position ?? TimeSpan.Zero;
 
         public Task Pause()
         {
-            if (_player.PlaybackSession.PlaybackState == MediaPlaybackState.Paused)
-                _player.Play();
+            if (Player.PlaybackSession.PlaybackState == MediaPlaybackState.Paused)
+                Player.Play();
             else
-                _player.Pause();
+                Player.Pause();
             return Task.CompletedTask;
         }
 
@@ -183,8 +179,8 @@ namespace Plugin.MediaManager
                 _currentMediaSource.OpenOperationCompleted += MediaSourceOnOpenOperationCompleted;
                 var item = new MediaPlaybackItem(_currentMediaSource);
                 mediaPlaybackList.Items.Add(item);
-                _player.Source = mediaPlaybackList;
-                _player.Play();
+                Player.Source = mediaPlaybackList;
+                Player.Play();
             }
             catch (Exception)
             {
@@ -194,14 +190,14 @@ namespace Plugin.MediaManager
 
         public async Task Seek(TimeSpan position)
         {
-            _player.PlaybackSession.Position = position;
+            Player.PlaybackSession.Position = position;
             await Task.CompletedTask;
         }
 
         public Task Stop()
         {
-            _player.PlaybackSession.PlaybackRate = 0;
-            _player.PlaybackSession.Position = TimeSpan.Zero;
+            Player.PlaybackSession.PlaybackRate = 0;
+            Player.PlaybackSession.Position = TimeSpan.Zero;
             Status = MediaPlayerStatus.Stopped;
             return Task.CompletedTask;
         }
@@ -240,17 +236,17 @@ namespace Plugin.MediaManager
         private void ResizeVideoSurface(object sender, SizeChangedEventArgs e)
         {
             var newSize = new Size(e.NewSize.Width, e.NewSize.Height);
-            _player.SetSurfaceSize(newSize);
+            Player.SetSurfaceSize(newSize);
             _spriteVisual.Size = new Vector2((float)newSize.Width, (float)newSize.Height);
         }
 
         private void SetVideoSurface(VideoSurface canvas)
         {
             var size = new Size(canvas.ActualWidth, canvas.ActualHeight);
-            _player.SetSurfaceSize(size);
+            Player.SetSurfaceSize(size);
 
             var compositor = ElementCompositionPreview.GetElementVisual(canvas).Compositor;
-            var surface = _player.GetSurface(compositor);
+            var surface = Player.GetSurface(compositor);
 
             _spriteVisual = compositor.CreateSpriteVisual();
             _spriteVisual.Size =
@@ -278,27 +274,8 @@ namespace Plugin.MediaManager
             throw new NotImplementedException();
         }
 
-        private async Task<MediaSource> CreateMediaSource(IMediaFile mediaFile)
-        {
-            switch (mediaFile.Availability)
-            {
-                case ResourceAvailability.Remote:
-                    return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
-                case ResourceAvailability.Local:
-                    var du = _player.SystemMediaTransportControls.DisplayUpdater;
-                    var storageFile = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
-                    var playbackType = mediaFile.Type == MediaFileType.Audio
-                        ? MediaPlaybackType.Music
-                        : MediaPlaybackType.Video;
-                    await du.CopyFromFileAsync(playbackType, storageFile);
-                    du.Update();
-                    return MediaSource.CreateFromStorageFile(storageFile);
-            }
-            return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
-        }
-
         private void MediaSourceOnOpenOperationCompleted(MediaSource sender,
-            MediaSourceOpenOperationCompletedEventArgs args)
+             MediaSourceOpenOperationCompletedEventArgs args)
         {
             if (args.Error != null)
                 MediaFailed?.Invoke(this, new MediaFailedEventArgs(args.Error.ToString(), args.Error.ExtendedError));
@@ -329,8 +306,8 @@ namespace Plugin.MediaManager
 
         private Task Play()
         {
-            _player.PlaybackSession.PlaybackRate = 1;
-            _player.Play();
+            Player.PlaybackSession.PlaybackRate = 1;
+            Player.Play();
             return Task.CompletedTask;
         }
     }

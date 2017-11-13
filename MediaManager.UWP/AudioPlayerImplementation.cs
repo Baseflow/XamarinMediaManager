@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Media;
@@ -15,14 +16,36 @@ namespace Plugin.MediaManager
 {
     public class AudioPlayerImplementation : BasePlayerImplementation, IAudioPlayer
     {
+        private readonly IMediaQueue _mediaQueue;
         private readonly IVolumeManager _volumeManager;
         private readonly Timer _playProgressTimer;
         private MediaPlayerStatus _status;
         private IMediaFile _currentMediaFile;
 
-        public AudioPlayerImplementation(IMediaPlyerPlaybackController mediaPlyerPlaybackController, IVolumeManager volumeManager)
+        public AudioPlayerImplementation(IMediaQueue mediaQueue, IMediaPlyerPlaybackController mediaPlyerPlaybackController, IVolumeManager volumeManager)
             : base(mediaPlyerPlaybackController)
         {
+            _mediaQueue = mediaQueue;
+            _mediaQueue.CollectionChanged += async (sender, args) =>
+            {
+                if (args?.NewItems == null)
+                {
+                    return;
+                }
+
+                await Pause();
+                // TODO this should be handled in a better way (i.e. don't re-create entire playlist everytime)
+                PlaybackList.Items.Clear();
+                foreach (var mediaFile in (sender as ICollection<IMediaFile>))
+                {
+                    if (mediaFile == null)
+                    {
+                        continue;
+                    }
+
+                    PlaybackList.Items.Add(await CreateMediaPlaybackItem(mediaFile));
+                }
+            };
             _volumeManager = volumeManager;
             _playProgressTimer = new Timer(state =>
             {
@@ -103,6 +126,8 @@ namespace Plugin.MediaManager
             _volumeManager.CurrentVolume = vol;
             _volumeManager.Muted = Player.IsMuted;
             _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
+
+            Player.Source = PlaybackList;
         }
 
         private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
@@ -161,29 +186,34 @@ namespace Plugin.MediaManager
         {
             try
             {
-                var sameMediaFile = mediaFile == null || mediaFile.Equals(_currentMediaFile);
-                var currentMediaPosition = Player.PlaybackSession?.Position;
-                // This variable will determine whether you will resume your playback or not
-                var resumeMediaFile = Status == MediaPlayerStatus.Paused && sameMediaFile ||
-                                      currentMediaPosition?.TotalSeconds > 0 && sameMediaFile;
-                if (resumeMediaFile)
-                {
-                    // TODO: PlaybackRate needs to be configurable rather than hard-coded here
-                    //Player.PlaybackSession.PlaybackRate = 1;
-                    Player.Play();
-                    return;
-                }
+                //var sameMediaFile = mediaFile == null || mediaFile.Equals(_currentMediaFile);
+                //var currentMediaPosition = Player.PlaybackSession?.Position;
+                //// This variable will determine whether you will resume your playback or not
+                //var resumeMediaFile = Status == MediaPlayerStatus.Paused && sameMediaFile ||
+                //                      currentMediaPosition?.TotalSeconds > 0 && sameMediaFile;
+                //if (resumeMediaFile)
+                //{
+                //    // TODO: PlaybackRate needs to be configurable rather than hard-coded here
+                //    //Player.PlaybackSession.PlaybackRate = 1;
+                //    Player.Play();
+                //    return;
+                //}
 
-                if (mediaFile != null)
-                {
-                    _currentMediaFile = mediaFile;
-                    var mediaPlaybackList = new MediaPlaybackList();
-                    var mediaSource = await CreateMediaSource(mediaFile);
-                    var item = new MediaPlaybackItem(mediaSource);
-                    mediaPlaybackList.Items.Add(item);
-                    Player.Source = mediaPlaybackList;
-                    Player.Play();
-                }
+                //var mediaToPlay = PlaybackList.Items.FirstOrDefault(i => i?.Source?.Uri?.AbsolutePath == mediaFile?.Url);
+                //if (mediaToPlay == null)
+                //{
+                //    _currentMediaFile = mediaFile;
+                //    PlaybackList.Items.Clear();
+                //    var mediaPlaybackItem = await CreateMediaPlaybackItem(mediaFile);
+                //    PlaybackList.Items.Add(mediaPlaybackItem);
+
+                //    Player.Play();
+                //}
+                //else
+                //{
+                //    var mediaToPlayIndex = PlaybackList.Items.IndexOf(mediaToPlay);
+                //    PlaybackList.MoveTo((uint)mediaToPlayIndex);
+                //}
             }
             catch (Exception e)
             {
@@ -205,26 +235,6 @@ namespace Plugin.MediaManager
             Player.PlaybackSession.Position = TimeSpan.Zero;
             Status = MediaPlayerStatus.Stopped;
             return Task.CompletedTask;
-        }
-
-        private async Task<MediaSource> CreateMediaSource(IMediaFile mediaFile)
-        {
-            switch (mediaFile.Availability)
-            {
-                case ResourceAvailability.Remote:
-                    return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
-                case ResourceAvailability.Local:
-                    var du = Player.SystemMediaTransportControls.DisplayUpdater;
-                    var storageFile = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
-                    var playbackType = mediaFile.Type == MediaFileType.Audio
-                        ? MediaPlaybackType.Music
-                        : MediaPlaybackType.Video;
-                    await du.CopyFromFileAsync(playbackType, storageFile);
-                    du.Update();
-                    return MediaSource.CreateFromStorageFile(storageFile);
-            }
-
-            return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
         }
     }
 }

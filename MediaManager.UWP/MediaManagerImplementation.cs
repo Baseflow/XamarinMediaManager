@@ -21,16 +21,9 @@ namespace Plugin.MediaManager
         private IMediaPlyerPlaybackController _mediaPlyerPlaybackController;
         private IMediaPlyerPlaybackController MediaPlyerPlaybackController => _mediaPlyerPlaybackController ?? (_mediaPlyerPlaybackController = new MediaPlayerPlaybackController(this));
 
-        //public MediaManagerImplementation()
-        //{
-        //var systemMediaTransportControlsWrapper = new SystemMediaTransportControlsWrapper(SystemMediaTransportControls.GetForCurrentView());
-        //_mediaButtonPlaybackController = new MediaButtonPlaybackController(systemMediaTransportControlsWrapper, this);
-        //_mediaButtonPlaybackController.SubscribeToNotifications();            
-        //}
-
         public override IAudioPlayer AudioPlayer
         {
-            get => _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(MediaPlyerPlaybackController, VolumeManager));
+            get => _audioPlayer ?? (_audioPlayer = new AudioPlayerImplementation(MediaQueue, MediaPlyerPlaybackController, VolumeManager));
             set => _audioPlayer = value;
         }
 

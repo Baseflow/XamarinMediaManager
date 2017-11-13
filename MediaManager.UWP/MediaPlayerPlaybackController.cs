@@ -12,12 +12,6 @@ namespace Plugin.MediaManager
         {
             _playbackControllerProvider = playbackControllerProvider;
 
-            Player.SystemMediaTransportControls.IsNextEnabled = true;
-            Player.SystemMediaTransportControls.IsPreviousEnabled = true;
-            Player.SystemMediaTransportControls.IsPlayEnabled = true;
-            Player.SystemMediaTransportControls.IsPauseEnabled = true;
-            Player.SystemMediaTransportControls.IsStopEnabled = true;
-
             Player.SystemMediaTransportControls.ButtonPressed += ButtonPressed;
         }
 
