@@ -182,6 +182,7 @@ namespace Plugin.MediaManager
                 if (newMediaFile == oldMediaFile || newMediaFile.Url == oldMediaFile.Url)
                 {
                     // Update same media file
+                    UpdatePlaybackItemDisplayProperties(newMediaFile, mediaFileInPlaylist);
                 }
                 else
                 {
