@@ -4,6 +4,7 @@ using Plugin.MediaManager.Abstractions.EventArguments;
 using Plugin.MediaManager.Abstractions.Implementations;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using Xamarin.Forms;
@@ -33,6 +34,16 @@ namespace MediaForms
         {
             base.OnAppearing();
             CrossMediaManager.Current.StatusChanged += CurrentOnStatusChanged;
+            CrossMediaManager.Current.MediaQueue.CollectionChanged += MediaQueueCollectionChanged;
+        }
+
+        private void MediaQueueCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                NextButton.IsEnabled = CrossMediaManager.Current.MediaQueue.HasNext();
+                PreviousButton.IsEnabled = CrossMediaManager.Current.MediaQueue.HasPrevious();
+            });
         }
 
         protected override void OnDisappearing()
@@ -47,14 +58,38 @@ namespace MediaForms
 
             Device.BeginInvokeOnMainThread(() =>
             {
+                PlayButton.IsEnabled = e.Status == MediaPlayerStatus.Paused || e.Status == MediaPlayerStatus.Stopped;
+                StopButton.IsEnabled = e.Status == MediaPlayerStatus.Playing;
+                PauseButton.IsEnabled = e.Status == MediaPlayerStatus.Playing;
+
                 PlayerStatus.Text = e.Status.ToString();
                 IsBufferingIndicator.IsVisible = e.Status == MediaPlayerStatus.Buffering || e.Status == MediaPlayerStatus.Loading;
             });
         }
 
+        private async void PlayButton_OnClicked(object sender, EventArgs e)
+        {
+            await CrossMediaManager.Current.Play();
+        }
+
+        private async void PauseButton_OnClicked(object sender, EventArgs e)
+        {
+            await CrossMediaManager.Current.Pause();
+        }
+
         private async void StopButton_OnClicked(object sender, EventArgs e)
         {
             await CrossMediaManager.Current.Stop();
+        }
+
+        private async void PreviousButton_OnClicked(object sender, EventArgs e)
+        {
+            await CrossMediaManager.Current.PlayPrevious();
+        }
+
+        private async void NextButton_OnClicked(object sender, EventArgs e)
+        {
+            await CrossMediaManager.Current.PlayNext();
         }
 
         private async void PlayAudio_OnClicked(object sender, EventArgs e)
@@ -121,9 +156,12 @@ namespace MediaForms
             // Ep. 306: A Theory of Evolution
             // Ep. 304: The 4th Dimension
             await CrossMediaManager.Current.Play(list);
+
+            foreach (var child in PlaylistActionContainer.Children)
+            {
+                child.IsEnabled = true;
+            }
         }
-
-
 
         private void SetVolumeBtn_OnClicked(object sender, EventArgs e)
         {
@@ -167,6 +205,11 @@ namespace MediaForms
             }
 
             CrossMediaManager.Current.MediaQueue.RemoveAt(CrossMediaManager.Current.MediaQueue.Count - 1);
+        }
+
+        private void ShuffleClicked(object sender, EventArgs e)
+        {
+            CrossMediaManager.Current.MediaQueue.IsShuffled = !CrossMediaManager.Current.MediaQueue.IsShuffled;
         }
     }
 }

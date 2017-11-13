@@ -12,24 +12,65 @@
                         Clicked="PlayAudio_OnClicked" />
                 <Button Text="Play Audio (Show User Metadata)"
                         Clicked="PlayAudioMyTrack_OnClicked" />
+                <BoxView HeightRequest="2"
+                         Color="Black"></BoxView>
                 <StackLayout Orientation="Vertical">
                     <Label Text="Playlist"></Label>
                     <Button Text="Play Audio List"
                             Clicked="PlaylistButton_OnClicked" />
                 </StackLayout>
-                <StackLayout Orientation="Vertical">
-                    <Label Text="Playlist Actions"></Label>
-                    <StackLayout Orientation="Horizontal">
-                        <Button Text="Add"
-                                Clicked="AddToPlaylistClicked" />
-                        <Button Text="Remove"
-                                Clicked="RemoveLastFromPlaylistClicked" />
-                    </StackLayout>
+                <StackLayout Orientation="Horizontal"
+                             x:Name="PlaylistActionContainer">
+                    <Button Text="Add"
+                            Clicked="AddToPlaylistClicked"
+                            IsEnabled="False" />
+                    <Button Text="Remove"
+                            Clicked="RemoveLastFromPlaylistClicked"
+                            IsEnabled="False" />
+                    <Button Text="Shuffle"
+                            Clicked="ShuffleClicked"
+                            IsEnabled="False" />
                 </StackLayout>
-                <Button Text="Stop Audio"
-                        Clicked="StopButton_OnClicked" />
             </StackLayout>
             <StackLayout VerticalOptions="End">
+                <BoxView HeightRequest="2"
+                         Color="Black"></BoxView>
+
+                <Label Text="Playback"></Label>
+                <Button x:Name="PlayButton"
+                        Text="Play"
+                        Clicked="PlayButton_OnClicked"
+                        IsEnabled="False" />
+                <Button x:Name="PauseButton"
+                        Text="Pause"
+                        Clicked="PauseButton_OnClicked"
+                        IsEnabled="False" />
+                <Button x:Name="StopButton"
+                        Text="Stop"
+                        Clicked="StopButton_OnClicked"
+                        IsEnabled="False" />
+                <Button x:Name="PreviousButton"
+                        Text="Previous"
+                        Clicked="PreviousButton_OnClicked"
+                        IsEnabled="False" />
+                <Button x:Name="NextButton"
+                        Text="Next"
+                        Clicked="NextButton_OnClicked"
+                        IsEnabled="False" />
+
+                <StackLayout Orientation="Horizontal">
+                    <StackLayout Orientation="Vertical">
+                        <Label Text="Status" />
+                        <Label x:Name="PlayerStatus"
+                               Text="Unknown" />
+                    </StackLayout>
+                    <ActivityIndicator x:Name="IsBufferingIndicator"
+                                       Color="Red"
+                                       HorizontalOptions="FillAndExpand"
+                                       IsRunning="True"
+                                       IsVisible="False" />
+                </StackLayout>
+
                 <StackLayout Orientation="Horizontal">
                     <Label x:Name="volumeLabel"
                            Text="Volume (0-100):"
@@ -47,18 +88,6 @@
                             Text="Mute"
                             HorizontalOptions="End"
                             Clicked="MutedBtn_OnClicked"></Button>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <StackLayout Orientation="Vertical">
-                        <Label Text="Status" />
-                        <Label x:Name="PlayerStatus"
-                               Text="Unknown" />
-                    </StackLayout>
-                    <ActivityIndicator x:Name="IsBufferingIndicator"
-                                       Color="Red"
-                                       HorizontalOptions="FillAndExpand"
-                                       IsRunning="True"
-                                       IsVisible="False" />
                 </StackLayout>
             </StackLayout>
         </StackLayout>
