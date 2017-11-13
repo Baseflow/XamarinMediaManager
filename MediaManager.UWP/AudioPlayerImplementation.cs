@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Media;
@@ -9,41 +11,39 @@ using Windows.Storage;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using Plugin.MediaManager.Abstractions.EventArguments;
+using Plugin.MediaManager.Interfaces;
 
 namespace Plugin.MediaManager
 {
-    public class AudioPlayerImplementation : IAudioPlayer
+    public class AudioPlayerImplementation : BasePlayerImplementation, IAudioPlayer
     {
-        private readonly IVolumeManager _volumeManager;
-        private readonly MediaPlayer _player;
         private readonly Timer _playProgressTimer;
         private MediaPlayerStatus _status;
         private IMediaFile _currentMediaFile;
 
-        public AudioPlayerImplementation(IVolumeManager volumeManager)
+        public AudioPlayerImplementation(IMediaQueue mediaQueue, IMediaPlyerPlaybackController mediaPlyerPlaybackController, IVolumeManager volumeManager)
+            : base(mediaQueue, mediaPlyerPlaybackController, volumeManager)
         {
-            _volumeManager = volumeManager;
-            _player = new MediaPlayer();
             _playProgressTimer = new Timer(state =>
             {
-                if (_player.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
+                if (Player.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
                 {
-                    var progress = _player.PlaybackSession.Position.TotalSeconds/
-                                   _player.PlaybackSession.NaturalDuration.TotalSeconds;
+                    var progress = Player.PlaybackSession.Position.TotalSeconds /
+                                   Player.PlaybackSession.NaturalDuration.TotalSeconds;
                     if (double.IsInfinity(progress))
                         progress = 0;
-                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(progress, _player.PlaybackSession.Position, _player.PlaybackSession.NaturalDuration));
+                    PlayingChanged?.Invoke(this, new PlayingChangedEventArgs(progress, Player.PlaybackSession.Position, Player.PlaybackSession.NaturalDuration));
                 }
             }, null, 0, int.MaxValue);
 
-            _player.MediaFailed += (sender, args) =>
+            Player.MediaFailed += (sender, args) =>
                 {
                     _status = MediaPlayerStatus.Failed;
                     _playProgressTimer.Change(0, int.MaxValue);
                     MediaFailed?.Invoke(this, new MediaFailedEventArgs(args.ErrorMessage, args.ExtendedErrorCode));
                 };
 
-            _player.PlaybackSession.PlaybackStateChanged += (sender, args) =>
+            Player.PlaybackSession.PlaybackStateChanged += (sender, args) =>
             {
                 switch (sender.PlaybackState)
                 {
@@ -78,9 +78,9 @@ namespace Plugin.MediaManager
                 }
             };
 
-            _player.MediaEnded += (sender, args) => { MediaFinished?.Invoke(this, new MediaFinishedEventArgs(_currentMediaFile)); };
+            Player.MediaEnded += (sender, args) => { MediaFinished?.Invoke(this, new MediaFinishedEventArgs(_currentMediaFile)); };
 
-            _player.PlaybackSession.BufferingStarted += (sender, args) =>
+            Player.PlaybackSession.BufferingStarted += (sender, args) =>
             {
                 var bufferedTime =
                     TimeSpan.FromSeconds(sender.BufferingProgress *
@@ -89,34 +89,24 @@ namespace Plugin.MediaManager
                     new BufferingChangedEventArgs(sender.BufferingProgress, bufferedTime));
             };
 
-            _player.PlaybackSession.BufferingProgressChanged += (sender, args) =>
+            Player.PlaybackSession.BufferingProgressChanged += (sender, args) =>
             {
                 //This seems not to be fired at all
                 var bufferedTime =
-                    TimeSpan.FromSeconds(_player.PlaybackSession.BufferingProgress*
-                                         _player.PlaybackSession.NaturalDuration.TotalSeconds);
+                    TimeSpan.FromSeconds(Player.PlaybackSession.BufferingProgress *
+                                         Player.PlaybackSession.NaturalDuration.TotalSeconds);
                 BufferingChanged?.Invoke(this,
-                    new BufferingChangedEventArgs(_player.PlaybackSession.BufferingProgress, bufferedTime));
+                    new BufferingChangedEventArgs(Player.PlaybackSession.BufferingProgress, bufferedTime));
             };
 
-            _player.PlaybackSession.SeekCompleted += (sender, args) => { };
-            int.TryParse((_player.Volume * 100).ToString(), out var vol);
-            _volumeManager.CurrentVolume = vol;
-            _volumeManager.Muted = _player.IsMuted;
-            _volumeManager.VolumeChanged += VolumeManagerOnVolumeChanged;
-        }
-
-        private void VolumeManagerOnVolumeChanged(object sender, VolumeChangedEventArgs volumeChangedEventArgs)
-        {
-            _player.Volume = (double) volumeChangedEventArgs.NewVolume;
-            _player.IsMuted = volumeChangedEventArgs.Muted;
+            Player.Source = PlaybackList;
         }
 
         public Dictionary<string, string> RequestHeaders { get; set; }
 
         public MediaPlayerStatus Status
         {
-            get { return _status; }
+            get => _status;
             private set
             {
                 _status = value;
@@ -134,22 +124,19 @@ namespace Plugin.MediaManager
         {
             get
             {
-                if (_player == null) return TimeSpan.Zero;
+                if (Player == null) return TimeSpan.Zero;
                 return
-                    TimeSpan.FromMilliseconds(_player.PlaybackSession.BufferingProgress*
-                                              _player.PlaybackSession.NaturalDuration.TotalMilliseconds);
+                    TimeSpan.FromMilliseconds(Player.PlaybackSession.BufferingProgress *
+                                              Player.PlaybackSession.NaturalDuration.TotalMilliseconds);
             }
         }
 
-        public TimeSpan Duration => _player?.PlaybackSession.NaturalDuration ?? TimeSpan.Zero;
-        public TimeSpan Position => _player?.PlaybackSession.Position ?? TimeSpan.Zero;
+        public TimeSpan Duration => Player?.PlaybackSession.NaturalDuration ?? TimeSpan.Zero;
+        public TimeSpan Position => Player?.PlaybackSession.Position ?? TimeSpan.Zero;
 
         public Task Pause()
         {
-            if (_player.PlaybackSession.PlaybackState == MediaPlaybackState.Paused)
-                _player.Play();
-            else
-                _player.Pause();
+            Player.Pause();
             return Task.CompletedTask;
         }
 
@@ -166,28 +153,36 @@ namespace Plugin.MediaManager
             try
             {
                 var sameMediaFile = mediaFile == null || mediaFile.Equals(_currentMediaFile);
-                var currentMediaPosition = _player.PlaybackSession?.Position;
+                var currentMediaPosition = Player.PlaybackSession?.Position;
                 // This variable will determine whether you will resume your playback or not
                 var resumeMediaFile = Status == MediaPlayerStatus.Paused && sameMediaFile ||
                                       currentMediaPosition?.TotalSeconds > 0 && sameMediaFile;
-                if(resumeMediaFile)
+                if (resumeMediaFile)
                 {
                     // TODO: PlaybackRate needs to be configurable rather than hard-coded here
-                    //_player.PlaybackSession.PlaybackRate = 1;
-                    _player.Play();
+                    //Player.PlaybackSession.PlaybackRate = 1;
+                    Player.Play();
                     return;
                 }
 
-                if (mediaFile != null)
+                var mediaToPlay = RetrievePlaylistItem(mediaFile);
+                if (mediaToPlay == null)
                 {
                     _currentMediaFile = mediaFile;
-                    var mediaPlaybackList = new MediaPlaybackList();
-                    var mediaSource = await CreateMediaSource(mediaFile);
-                    var item = new MediaPlaybackItem(mediaSource);
-                    mediaPlaybackList.Items.Add(item);
-                    _player.Source = mediaPlaybackList;
-                    _player.Play();
+                    PlaybackList.Items.Clear();
+                    var mediaPlaybackItem = await CreateMediaPlaybackItem(mediaFile);
+                    PlaybackList.Items.Add(mediaPlaybackItem);
                 }
+                else
+                {
+                    var mediaToPlayIndex = PlaybackList.Items.IndexOf(mediaToPlay);
+                    if (mediaToPlayIndex != PlaybackList.CurrentItemIndex)
+                    {
+                        PlaybackList.MoveTo((uint)mediaToPlayIndex);
+                    }
+                }
+
+                Player.Play();
             }
             catch (Exception e)
             {
@@ -198,36 +193,17 @@ namespace Plugin.MediaManager
 
         public async Task Seek(TimeSpan position)
         {
-            _player.PlaybackSession.Position = position;
+            Player.PlaybackSession.Position = position;
             await Task.CompletedTask;
         }
 
         public Task Stop()
         {
-            _player.PlaybackSession.PlaybackRate = 0;
-            _player.PlaybackSession.Position = TimeSpan.Zero;
+            Player.Pause();
+            Player.PlaybackSession.PlaybackRate = 0;
+            Player.PlaybackSession.Position = TimeSpan.Zero;
             Status = MediaPlayerStatus.Stopped;
             return Task.CompletedTask;
-        }
-
-        private async Task<MediaSource> CreateMediaSource(IMediaFile mediaFile)
-        {
-            switch (mediaFile.Availability)
-            {
-                case ResourceAvailability.Remote:
-                    return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
-                case ResourceAvailability.Local:
-                    var du = _player.SystemMediaTransportControls.DisplayUpdater;
-                    var storageFile = await StorageFile.GetFileFromPathAsync(mediaFile.Url);
-                    var playbackType = mediaFile.Type == MediaFileType.Audio
-                        ? MediaPlaybackType.Music
-                        : MediaPlaybackType.Video;
-                    await du.CopyFromFileAsync(playbackType, storageFile);
-                    du.Update();
-                    return MediaSource.CreateFromStorageFile(storageFile);
-            }
-
-            return MediaSource.CreateFromUri(new Uri(mediaFile.Url));
         }
     }
 }

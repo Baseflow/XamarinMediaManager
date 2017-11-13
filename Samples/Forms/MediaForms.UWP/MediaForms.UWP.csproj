@@ -135,15 +135,15 @@
   <ItemGroup>
     <Reference Include="Plugin.MediaManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\MediaManager.UWP\bin\Debug\Plugin.MediaManager.dll</HintPath>
+      <HintPath>..\..\..\MediaManager.UWP\bin\x86\Debug\Plugin.MediaManager.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.MediaManager.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\MediaManager.UWP\bin\Debug\Plugin.MediaManager.Abstractions.dll</HintPath>
+      <HintPath>..\..\..\MediaManager.UWP\bin\x86\Debug\Plugin.MediaManager.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.MediaManager.Forms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\MediaManager.Forms\MediaManager.Forms.UWP\bin\Debug\Plugin.MediaManager.Forms.dll</HintPath>
+      <HintPath>..\..\..\MediaManager.Forms\MediaManager.Forms.UWP\bin\x86\Debug\Plugin.MediaManager.Forms.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

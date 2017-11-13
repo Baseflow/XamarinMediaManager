@@ -99,8 +99,6 @@
     <Compile Include="UnitTestApp.xaml.cs">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Unit\MediaButtonPlaybackControllerTest.cs" />
-    <Compile Include="Unit\PlaybackControllerProviderMock.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml">
@@ -150,6 +148,9 @@
       <Project>{e34b516d-c0d8-450f-9db0-bb6a5b04aef1}</Project>
       <Name>Plugin.MediaManager.UWP</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Unit\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
