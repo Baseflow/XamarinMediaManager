@@ -118,7 +118,7 @@ namespace Plugin.MediaManager
                     await HandleMediaQueueReplaceAction(e);
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    PlaybackList.Items.Clear();
+                    await HandleMediaQueueResetAction(sender as IEnumerable<IMediaFile>);
                     break;
             }
         }
@@ -240,6 +240,26 @@ namespace Plugin.MediaManager
                         }
                     }
                 }
+            }
+        }
+
+        private async Task HandleMediaQueueResetAction(IEnumerable<IMediaFile> mediaFiles)
+        {
+            if (mediaFiles == null)
+            {
+                return;
+            }
+
+            if (Player.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
+            {
+                Player.Pause();
+            }
+
+            PlaybackList.Items.Clear();
+            foreach (var mediaFile in mediaFiles)
+            {
+                var newPlaybackItem = await CreateMediaPlaybackItem(mediaFile);
+                PlaybackList.Items.Add(newPlaybackItem);
             }
         }
 
