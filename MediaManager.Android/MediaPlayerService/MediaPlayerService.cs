@@ -98,11 +98,9 @@ namespace Plugin.MediaManager
 
         public override async Task Play(IMediaFile mediaFile = null)
         {
-            var sameMediaFile = mediaFile == null || mediaFile == CurrentFile;
-
             await base.Play(mediaFile);
 
-            if (!sameMediaFile) {
+            if (mediaFile != null) {
                 try
                 {
                     _mediaPlayer.PrepareAsync();
