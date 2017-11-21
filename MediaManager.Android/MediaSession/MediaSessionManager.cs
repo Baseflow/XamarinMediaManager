@@ -80,10 +80,10 @@ namespace Plugin.MediaManager.MediaSession
 
                     RemoteComponentName = new ComponentName(packageName, new RemoteControlBroadcastReceiver().ComponentName);
                     mediaSessionCompat = new MediaSessionCompat(applicationContext, "XamarinStreamingAudio", RemoteComponentName, pIntent);
-                    UpdateAndroidNotificationManagerSettings();
 
                     mediaControllerCompat = new MediaControllerCompat(applicationContext, mediaSessionCompat.SessionToken);
                     _notificationManager = _overrideNotificationManager ?? new MediaNotificationManagerImplementation(applicationContext, typeof(MediaPlayerService));
+                    UpdateAndroidNotificationManagerSettings();
                 }
                 mediaSessionCompat.Active = true;
                 MediaServiceBase mediaServiceBase = binder.GetMediaPlayerService<MediaServiceBase>();
