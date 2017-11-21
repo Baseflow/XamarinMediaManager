@@ -40,6 +40,8 @@ namespace Plugin.MediaManager
 
             _status = MediaPlayerStatus.Stopped;
 
+            InitializePlayer();
+
             // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
             BufferingChanged += (sender, e) =>
             {

@@ -149,7 +149,6 @@ namespace Plugin.MediaManager
 
         public virtual Task Pause()
         {
-            OnStatusChanged(new StatusChangedEventArgs(MediaPlayerStatus.Paused));
             SessionManager.UpdatePlaybackState(PlaybackStateCompat.StatePaused, Position.Seconds);
             return Task.CompletedTask;
         }

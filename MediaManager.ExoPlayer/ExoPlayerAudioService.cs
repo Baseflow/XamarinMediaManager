@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -171,7 +171,7 @@ namespace Plugin.MediaManager.ExoPlayer
             {
                 var status = GetStatusByIntValue(state);
                 var compatState = GetCompatValueByStatus(status);
-                OnStatusChanged(new StatusChangedEventArgs(status));
+                //OnStatusChanged(new StatusChangedEventArgs(status));
                 SessionManager.UpdatePlaybackState(compatState, Position.Seconds);
             }
         }
