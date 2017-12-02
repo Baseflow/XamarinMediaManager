@@ -94,9 +94,8 @@ namespace Plugin.MediaManager
                     nowPlayingInfo.Artwork = new MPMediaItemArtwork(cover);
                 }
             }
-            if (!metadata.AlbumArtUri.Equals(string.Empty))
+            if (!string.IsNullOrEmpty(metadata.AlbumArtUri))
             {
-
                 var cover = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(metadata.AlbumArtUri)));
                 if (cover != null)
                 {
