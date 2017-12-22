@@ -141,18 +141,16 @@ namespace Plugin.MediaManager
 
         public async Task Stop()
         {
-            await Task.Run(() =>
-            {
-                if (CurrentItem == null)
-                    return;
+            if (CurrentItem == null)
+                return;
 
-                if (Player.Rate != 0.0)
-                    Player.Pause();
+            if (Player.Rate != 0.0)
+                Player.Pause();
 
-                CurrentItem.Seek(CMTime.FromSeconds(0d, 1));
+            CurrentItem.Seek(CMTime.FromSeconds(0d, 1));
 
-                Status = MediaPlayerStatus.Stopped;
-            });
+            Status = MediaPlayerStatus.Stopped;
+            await Task.FromResult(true);
         }
 
         public async Task Pause()
