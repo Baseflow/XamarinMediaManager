@@ -218,9 +218,9 @@ namespace Plugin.MediaManager
 
         public TimeSpan Buffered => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.BufferPercentage);
 
-        public TimeSpan Duration => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.Duration);
+        public TimeSpan Duration => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromMilliseconds(VideoViewCanvas.Duration);
 
-        public TimeSpan Position => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.CurrentPosition);
+        public TimeSpan Position => IsReadyRendering == false ? TimeSpan.Zero : TimeSpan.FromMilliseconds(VideoViewCanvas.CurrentPosition);
 
         private int lastPosition = 0;
 
