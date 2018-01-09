@@ -186,7 +186,7 @@ namespace Plugin.MediaManager.MediaSession
             if (currentTrack != null)
             {
                 builder
-                    .PutString(MediaMetadata.MetadataKeyAlbum, currentTrack.Metadata.Artist)
+                    .PutString(MediaMetadata.MetadataKeyAlbum, currentTrack.Metadata.Album)
                     .PutString(MediaMetadata.MetadataKeyArtist, currentTrack.Metadata.Artist)
                     .PutString(MediaMetadata.MetadataKeyTitle, currentTrack.Metadata.Title);
             }
