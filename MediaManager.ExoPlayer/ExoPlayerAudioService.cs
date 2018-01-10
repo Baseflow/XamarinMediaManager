@@ -208,7 +208,7 @@ namespace Plugin.MediaManager.ExoPlayer
                 case Com.Google.Android.Exoplayer2.ExoPlayer.StateReady:
                     return !ManuallyPaused && !TransientPaused ? MediaPlayerStatus.Playing : MediaPlayerStatus.Paused;
                 case Com.Google.Android.Exoplayer2.ExoPlayer.StateIdle:
-                    return MediaPlayerStatus.Loading;
+                    return MediaPlayerStatus.Stopped;
                 default:
                     return MediaPlayerStatus.Failed;
             }
