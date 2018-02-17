@@ -125,7 +125,7 @@ namespace Plugin.MediaManager
             catch (Exception ex)
             {
                 dataSourceSet = false;
-                OnMediaFileFailed(new MediaFileFailedEventArgs(ex, mediaFile));
+                OnMediaFailed(new MediaFailedEventArgs(ex.ToString(), ex));
             }
 
             if (dataSourceSet)
@@ -140,7 +140,7 @@ namespace Plugin.MediaManager
                 }
                 catch (Exception ex)
                 {
-                    OnMediaFileFailed(new MediaFileFailedEventArgs(ex, CurrentFile));
+                    OnMediaFailed(new MediaFailedEventArgs(ex.ToString(), ex));
                 }
             }
         }

@@ -158,7 +158,7 @@ namespace Plugin.MediaManager.ExoPlayer
 
         public void OnPlayerError(ExoPlaybackException ex)
         {
-            OnMediaFileFailed(new MediaFileFailedEventArgs(ex, CurrentFile));
+            OnMediaFailed(new MediaFailedEventArgs(ex.ToString(), ex));
         }
 
         public void OnPlayerStateChanged(bool playWhenReady, int state)
@@ -301,7 +301,7 @@ namespace Plugin.MediaManager.ExoPlayer
         
         public void OnLoadError(IOException ex)
         {
-            OnMediaFileFailed(new MediaFileFailedEventArgs(ex, CurrentFile));
+            OnMediaFailed(new MediaFailedEventArgs(ex.ToString(), ex));
         }
     }
 
