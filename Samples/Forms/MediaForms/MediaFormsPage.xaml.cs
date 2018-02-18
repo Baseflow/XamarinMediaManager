@@ -33,6 +33,11 @@ namespace MediaForms
             videoView.Source = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
         }
 
+        protected override void OnDisappearing()
+        {
+            PlaybackController.Stop();
+        }
+
         void PlayClicked(object sender, System.EventArgs e)
         {            
             PlaybackController.Play();

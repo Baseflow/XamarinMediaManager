@@ -28,6 +28,11 @@ namespace MediaForms
             Navigation.PushAsync(new MediaFormsPage());
         }
 
+        private void PlayLocalVideo_OnClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new LocalMediaFormsPage());
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
