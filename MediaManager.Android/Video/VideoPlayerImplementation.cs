@@ -282,6 +282,7 @@ namespace Plugin.MediaManager
 
             if (mediaFile != null && CurrentFile != mediaFile)
             {
+                mediaFile.Url = GetFullPathUrl(mediaFile.Url);
                 CurrentFile = mediaFile;
                 currentUri = Android.Net.Uri.Parse(mediaFile.Url);
                 VideoViewCanvas.StopPlayback();
@@ -385,6 +386,25 @@ namespace Plugin.MediaManager
             }
 
             return true;
+        }
+
+        private string GetFullPathUrl(string url)
+        {
+            if (url.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+                || url.StartsWith("android.resource", StringComparison.OrdinalIgnoreCase))
+            {
+                return url;
+            }
+            else if (!System.IO.Path.IsPathRooted(url))
+            {
+                string file = System.IO.Path.GetFileNameWithoutExtension(url);
+                string package = Application.Context.PackageName;
+                return $"android.resource://{package}/raw/{file}";
+            }
+            else
+            {
+                return url;
+            }
         }
     }
 }
