@@ -36,7 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj">
-      <Project>{A6FCEF44-D2BA-42C7-B3CB-13667BCD7B54}</Project>
+      <Project>{8EA2620E-671D-49E4-BBCB-1AC7C095ECA8}</Project>
       <Name>Plugin.MediaManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
