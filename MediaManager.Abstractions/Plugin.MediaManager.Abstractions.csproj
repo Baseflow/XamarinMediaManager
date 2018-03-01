@@ -1,87 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Plugin.MediaManager.Abstractions</RootNamespace>
-    <AssemblyName>Plugin.MediaManager.Abstractions</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Plugin.MediaManager.Abstractions.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="IMediaFileMetadata.cs" />
-    <Compile Include="IMediaManager.cs" />
-    <Compile Include="Implementations\MediaFileMetadata.cs" />
-    <Compile Include="IPlaybackManager.cs" />
-    <Compile Include="IVideoSurface.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IMediaQueue.cs" />
-    <Compile Include="IMediaFile.cs" />
-    <Compile Include="EventArguments\BufferingChangedEventArgs.cs" />
-    <Compile Include="EventArguments\PlayingChangedEventArgs.cs" />
-    <Compile Include="EventArguments\StatusChangedEventArgs.cs" />
-    <Compile Include="Implementations\MediaQueue.cs" />
-    <Compile Include="Implementations\Helpers.cs" />
-    <Compile Include="IAudioPlayer.cs" />
-    <Compile Include="IVideoPlayer.cs" />
-    <Compile Include="IMediaNotificationManager.cs" />
-    <Compile Include="IMediaExtractor.cs" />
-    <Compile Include="EventArguments\MediaFinishedEventArgs.cs" />
-    <Compile Include="EventArguments\MediaFailedEventArgs.cs" />
-    <Compile Include="EventArguments\QueueMediaChangedEventArgs.cs" />
-    <Compile Include="EventArguments\QueueEndedEventArgs.cs" />
-    <Compile Include="Implementations\MediaManagerBase.cs" />
-    <Compile Include="EventArguments\MediaFileChangedEventArgs.cs" />
-    <Compile Include="EventArguments\MediaFileFailedEventArgs.cs" />
-    <Compile Include="Implementations\MediaFile.cs" />
-    <Compile Include="EventArguments\MetadataChangedEventArgs.cs" />
-    <Compile Include="IVolumeManager.cs" />
-    <Compile Include="EventArguments\VolumeChangedEventArgs.cs" />
-    <Compile Include="Enums\MediaFileType.cs" />
-    <Compile Include="Enums\RepeatType.cs" />
-    <Compile Include="Enums\VideoAspectMode.cs" />
-    <Compile Include="Enums\MediaPlayerStatus.cs" />
-    <Compile Include="IPlaybackController.cs" />
-    <Compile Include="Implementations\PlaybackController.cs" />
-    <Compile Include="Enums\ResourceAvailability.cs" />
+    <!--<PackageReference Include="" Version=""/>-->
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
