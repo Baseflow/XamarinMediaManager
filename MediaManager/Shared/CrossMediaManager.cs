@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Plugin.MediaManager.Abstractions;
 
 namespace Plugin.MediaManager
 {

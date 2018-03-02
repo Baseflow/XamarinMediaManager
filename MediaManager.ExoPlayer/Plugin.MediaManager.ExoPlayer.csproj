@@ -91,6 +91,10 @@
       <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MediaManager\Plugin.MediaManager.csproj">
+      <Project>{57484D07-A3D9-4E99-8D97-688BFCE137D1}</Project>
+      <Name>Plugin.MediaManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

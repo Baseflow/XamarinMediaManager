@@ -16,12 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="" Version=""/>-->
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj" />
-    <ProjectReference Include="..\..\MediaManager\Plugin.MediaManager.csproj" />
+    <ProjectReference Include="..\..\..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MvvmCross.Plugin.Visibility" Version="5.1.0" />
