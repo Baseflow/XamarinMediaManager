@@ -40,11 +40,6 @@
     <OutputType>Library</OutputType>
     <StartupObject />
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Platforms\**\*.cs" />
-    <None Include="Platforms\**\*.cs" />
-  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.2.0" PrivateAssets="All" />
@@ -73,7 +68,6 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid80' ">
-    <Compile Include="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Android\Audio\AudioPlayerBase.cs" />
     <Compile Include="Platforms\Android\Audio\AudioPlayerBroadcastReceiver.cs" />
     <Compile Include="Platforms\Android\Audio\AudioPlayerImplementation.cs" />
@@ -139,7 +133,7 @@
     <Compile Include="Platforms\macOS\VersionHelper.cs" />
     <Compile Include="Platforms\macOS\VideoSurface.cs" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj" />
   </ItemGroup>

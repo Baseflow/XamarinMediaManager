@@ -19,13 +19,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="" Version=""/>-->
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\..\MediaManager.Forms\MediaManager.Forms\Plugin.MediaManager.Forms.csproj" />
     <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj" />
     <ProjectReference Include="..\..\..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj" />
-    <ProjectReference Include="..\..\..\MediaManager.Forms\MediaManager.Forms\Plugin.MediaManager.Forms.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
