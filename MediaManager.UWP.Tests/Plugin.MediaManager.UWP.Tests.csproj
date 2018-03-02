@@ -146,10 +146,6 @@
       <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MediaManager.UWP\Plugin.MediaManager.UWP.csproj">
-      <Project>{e34b516d-c0d8-450f-9db0-bb6a5b04aef1}</Project>
-      <Name>Plugin.MediaManager.UWP</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

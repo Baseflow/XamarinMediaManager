@@ -122,10 +122,6 @@
       <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\MediaManager.iOS\Plugin.MediaManager.iOS.csproj">
-      <Project>{2882AEEB-D4CD-4EB9-8A6C-6653B33681F0}</Project>
-      <Name>Plugin.MediaManager.iOS</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

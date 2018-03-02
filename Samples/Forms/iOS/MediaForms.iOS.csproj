@@ -146,10 +146,6 @@
       <Project>{586D5119-52D8-40B1-9BB5-CC7FDB033B86}</Project>
       <Name>Plugin.MediaManager.Forms.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\MediaManager.iOS\Plugin.MediaManager.iOS.csproj">
-      <Project>{2882AEEB-D4CD-4EB9-8A6C-6653B33681F0}</Project>
-      <Name>Plugin.MediaManager.iOS</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\..\..\packages\Xamarin.Forms.2.5.0.280555\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\Xamarin.Forms.2.5.0.280555\build\netstandard1.0\Xamarin.Forms.targets')" />
