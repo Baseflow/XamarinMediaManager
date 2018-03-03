@@ -52,40 +52,10 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0.15063' ">
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="5.2.3" />
     <Compile Include="Platforms\UWP\**\*.cs" />
-    <Compile Include="Platforms\UWP\AudioPlayerImplementation.cs" />
-    <Compile Include="Platforms\UWP\IPlaybackControllerProvider.cs" />
-    <Compile Include="Platforms\UWP\MediaButtonPlaybackController.cs" />
-    <Compile Include="Platforms\UWP\MediaExtractorImplementation.cs" />
-    <Compile Include="Platforms\UWP\MediaManagerImplementation.cs" />
-    <Compile Include="Platforms\UWP\MediaNotificationManagerImplementation.cs" />
-    <Compile Include="Platforms\UWP\SystemWrappers\ISystemMediaTransportControlsButtonPressedEventArgsWrapper.cs" />
-    <Compile Include="Platforms\UWP\SystemWrappers\ISystemMediaTransportControlsWrapper.cs" />
-    <Compile Include="Platforms\UWP\SystemWrappers\SystemMediaTransportControlsButtonPressedEventArgsWrapper.cs" />
-    <Compile Include="Platforms\UWP\SystemWrappers\SystemMediaTransportControlsWrapper.cs" />
-    <Compile Include="Platforms\UWP\VideoPlayerImplementation.cs" />
-    <Compile Include="Platforms\UWP\VideoSurface.cs" />
-    <Compile Include="Platforms\UWP\VolumeManagerImplementation.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid80' ">
-    <Compile Include="Platforms\Android\Audio\AudioPlayerBase.cs" />
-    <Compile Include="Platforms\Android\Audio\AudioPlayerBroadcastReceiver.cs" />
-    <Compile Include="Platforms\Android\Audio\AudioPlayerImplementation.cs" />
-    <Compile Include="Platforms\Android\Audio\RemoteControlBroadcastReceiver.cs" />
-    <Compile Include="Platforms\Android\IAndroidMediaNotificationManager.cs" />
-    <Compile Include="Platforms\Android\MediaExtractorImplementation.cs" />
-    <Compile Include="Platforms\Android\MediaManagerImplementation.cs" />
-    <Compile Include="Platforms\Android\MediaPlayerService\MediaPlayerService.cs" />
-    <Compile Include="Platforms\Android\MediaPlayerService\MediaServiceBase.cs" />
-    <Compile Include="Platforms\Android\MediaPlayerService\MediaServiceBinder.cs" />
-    <Compile Include="Platforms\Android\MediaPlayerService\MediaServiceConnection.cs" />
-    <Compile Include="Platforms\Android\MediaSession\MediaNotificationManagerImplementation.cs" />
-    <Compile Include="Platforms\Android\MediaSession\MediaSessionCallback.cs" />
-    <Compile Include="Platforms\Android\MediaSession\MediaSessionManager.cs" />
-    <Compile Include="Platforms\Android\Resources\Resource.Designer.cs" />
-    <Compile Include="Platforms\Android\Video\VideoPlayerImplementation.cs" />
-    <Compile Include="Platforms\Android\Video\VideoSurface.cs" />
-    <Compile Include="Platforms\Android\VolumeManagerImplementation.cs" />
+    <Compile Include="Platforms\Android\**\*.cs" />
     <PackageReference Include="Xamarin.Android.Support.Animated.Vector.Drawable" Version="26.1.0.1">
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Annotations" Version="26.1.0.1">
@@ -102,24 +72,9 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
     <Compile Include="Platforms\iOS\**\*.cs" />
-    <Compile Include="Platforms\iOS\IMediaRemoteControl.cs" />
-    <Compile Include="Platforms\iOS\IVersionHelper.cs" />
-    <Compile Include="Platforms\iOS\MediaExtractorImplementation.cs" />
-    <Compile Include="Platforms\iOS\MediaFileUrlHelper.cs" />
-    <Compile Include="Platforms\iOS\MediaManagerAppleBase.cs" />
-    <Compile Include="Platforms\iOS\MediaManagerImplementation.cs" />
-    <Compile Include="Platforms\iOS\MediaNotificationManagerImplementation.cs" />
-    <Compile Include="Platforms\iOS\MediaRemoteControl.cs" />
-    <Compile Include="Platforms\iOS\RemoteControlNotificationManager.cs" />
-    <Compile Include="Platforms\iOS\VersionHelper.cs" />
-    <Compile Include="Platforms\iOS\VideoPlayerImplementation.cs" />
-    <Compile Include="Platforms\iOS\VideoSurface.cs" />
-    <Compile Include="Platforms\iOS\VolumeManagerImplementation.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.TVOS10' ">
-    <Compile Include="Platforms\TVOS\MediaManagerImplementation.cs" />
-    <Compile Include="Platforms\TVOS\VideoSurface.cs" />
     <Compile Include="Platforms\TVOS\**\*.cs" />
   </ItemGroup>
 
@@ -129,9 +84,6 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.Mac20' ">
     <Compile Include="Platforms\macOS\**\*.cs" />
-    <Compile Include="Platforms\macOS\MediaManagerImplementation.cs" />
-    <Compile Include="Platforms\macOS\VersionHelper.cs" />
-    <Compile Include="Platforms\macOS\VideoSurface.cs" />
   </ItemGroup>
 
   <ItemGroup>

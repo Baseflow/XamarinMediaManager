@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -15,21 +10,18 @@ using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.EventArguments;
-using Plugin.MediaManager.Abstractions.Implementations;
-
-using Object = Java.Lang.Object;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Plugin.MediaManager.ExoPlayer
 {
-
     using Android.Webkit;
-
     using Java.IO;
     using Java.Lang;
     using Java.Util.Concurrent;
-
     using Plugin.MediaManager.Abstractions.Enums;
-
     using Console = System.Console;
     using Double = System.Double;
 
