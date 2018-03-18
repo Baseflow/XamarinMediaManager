@@ -212,9 +212,7 @@ namespace Plugin.MediaManager
                 // Start off with the status LOADING.
                 Status = MediaPlayerStatus.Buffering;
 
-                var options = MediaFileUrlHelper.GetOptionsWithHeaders(RequestHeaders);
-
-                var nsAsset = AVUrlAsset.Create(nsUrl, options);
+                AVAsset nsAsset = GetAsset(nsUrl);
                 var streamingItem = AVPlayerItem.FromAsset(nsAsset);
 
                 Player.CurrentItem?.RemoveObserver(this, new NSString("status"));
@@ -246,6 +244,18 @@ namespace Plugin.MediaManager
             await Task.CompletedTask;
         }
 
+        private AVAsset GetAsset(NSUrl url)
+        {
+            if (url.ToString().StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            {
+                var options = MediaFileUrlHelper.GetOptionsWithHeaders(RequestHeaders);
+                return AVUrlAsset.Create(url, options);
+            }
+            else
+            {
+                return AVAsset.FromUrl(NSUrl.FromFilename(url.ToString()));
+            }
+        }
 
         public bool IsMuted
         {

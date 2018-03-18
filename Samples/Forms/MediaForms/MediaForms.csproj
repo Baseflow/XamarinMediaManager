@@ -33,6 +33,7 @@
   <ItemGroup>
     <EmbeddedResource Include="App.xaml" />
     <EmbeddedResource Include="MediaFormsPage.xaml" />
+    <EmbeddedResource Include="LocalMediaFormsPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -45,6 +46,9 @@
       <DependentUpon>MediaFormsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LocalMediaFormsPage.xaml.cs">
+      <DependentUpon>LocalMediaFormsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.MediaManager">

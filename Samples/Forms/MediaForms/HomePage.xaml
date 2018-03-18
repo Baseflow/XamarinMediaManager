@@ -6,16 +6,18 @@
         <StackLayout Orientation="Vertical">
             <StackLayout VerticalOptions="Start">
                 <Button x:Name="mainBtn"
-                    Text="Click here to view a video"
-                    Clicked="MainBtn_OnClicked" />
+                        Text="Click here to view a video"
+                        Clicked="MainBtn_OnClicked" />
+                <Button Text="Click here to view a local video"
+                        Clicked="PlayLocalVideo_OnClicked" />
                 <Button Text="Play Audio (Show ID3 Metadata)"
                         Clicked="PlayAudio_OnClicked" />
                 <Button Text="Play Audio (Show User Metadata)"
                         Clicked="PlayAudioMyTrack_OnClicked" />
                 <Button Text="Play Audio List"
-                    Clicked="PlaylistButton_OnClicked" />
+                        Clicked="PlaylistButton_OnClicked" />
                 <Button Text="Stop Audio"
-                    Clicked="StopButton_OnClicked" />
+                        Clicked="StopButton_OnClicked" />
             </StackLayout>
 	        <StackLayout Orientation="Horizontal" VerticalOptions="End" Grid.Row="2">
 		        <Label x:Name="volumeLabel" Text="Volume (0-100):" HorizontalOptions="Start"></Label>
