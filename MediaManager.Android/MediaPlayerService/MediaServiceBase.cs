@@ -132,7 +132,7 @@ namespace Plugin.MediaManager
             {
                 try
                 {
-                    var focusResult = AudioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.LossTransientCanDuck);
+                    var focusResult = AudioManager.RequestAudioFocus(this, Stream.Music, AudioFocus.Gain);
                     if (focusResult != AudioFocusRequest.Granted)
                         Console.WriteLine("Could not get audio focus");
 
