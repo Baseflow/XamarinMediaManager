@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;MonoAndroid81;Xamarin.iOS10;Xamarin.TVOS10;uap10.0.16299</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;MonoAndroid81;Xamarin.iOS10;Xamarin.TVOS10</TargetFrameworks>
         <AssemblyName>Plugin.MediaManager</AssemblyName>
         <RootNamespace>Plugin.MediaManager</RootNamespace>
         <PackageId>Plugin.MediaManager</PackageId>
@@ -40,9 +40,9 @@
     </ItemGroup>
     <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0.16299' ">
-    <Compile Include="Platforms\UWP\**\*.cs" />
-  </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0.16299' ">
+        <Compile Include="Platforms\UWP\**\*.cs" />
+    </ItemGroup>
     <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid81' ">
         <Compile Include="Platforms\Android\**\*.cs" />
         <PackageReference Include="Xamarin.Android.Support.Animated.Vector.Drawable" Version="25.3.1">
@@ -71,23 +71,8 @@
         <Compile Include="Platforms\macOS\**\*.cs" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj" />
+      <Compile Remove="Shared\EventArguments\MediaFileFailedEventArgs.cs" />
+      <Compile Remove="Shared\EventArguments\MediaFileFailedEventArgs.cs" />
     </ItemGroup>
-    <!--
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
-    <Compile Include="Platforms\DotNet\**\*.cs" />
-  </ItemGroup>
-  -->
-    <!--
-  <ItemGroup Condition=" '$(TargetFramework)' == 'Tizen40' ">
-    <Compile Include="Platforms\Tizen\**\*.cs" />
-    <PackageReference Include="Tizen.NET" Version="4.0.0" />
-  </ItemGroup>
-  -->
-    <!--
-    <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Compile Include="Platforms\DotNet\**\*.cs" />
-  </ItemGroup>
-  -->
     <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>

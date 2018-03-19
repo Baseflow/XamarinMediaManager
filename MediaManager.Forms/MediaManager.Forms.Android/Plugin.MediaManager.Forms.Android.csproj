@@ -124,10 +124,6 @@
     <AndroidResource Include="Resources\Values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
-      <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
-      <Name>Plugin.MediaManager.Abstractions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\MediaManager\Plugin.MediaManager.csproj">
       <Project>{57484d07-a3d9-4e99-8d97-688bfce137d1}</Project>
       <Name>Plugin.MediaManager</Name>
