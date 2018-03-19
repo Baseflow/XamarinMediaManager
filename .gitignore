@@ -261,3 +261,5 @@ artifacts/
 *.nupkg
 
 \.mfractor/
+
+tools/

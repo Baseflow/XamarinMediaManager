@@ -11,11 +11,11 @@ var isRunningOnAppVeyor = AppVeyor.IsRunningOnAppVeyor;
 
 Task("Clean").Does(() =>
 {
-    CleanDirectories("./**/bin");
-    CleanDirectories("./**/obj");
- CleanDirectories(outputDir.FullPath);
+//     CleanDirectories("./**/bin");
+//     CleanDirectories("./**/obj");
+//  CleanDirectories(outputDir.FullPath);
 
- EnsureDirectoryExists(outputDir);
+//  EnsureDirectoryExists(outputDir);
 });
 
 GitVersion versionInfo = null;

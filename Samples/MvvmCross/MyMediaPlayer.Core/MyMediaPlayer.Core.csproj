@@ -16,7 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj" />
   </ItemGroup>
   <ItemGroup>

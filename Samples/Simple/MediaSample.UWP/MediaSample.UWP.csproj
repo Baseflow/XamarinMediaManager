@@ -129,9 +129,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
-      <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
-      <Name>Plugin.MediaManager.Abstractions</Name>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj">
+      <Project>{57484d07-a3d9-4e99-8d97-688bfce137d1}</Project>
+      <Name>Plugin.MediaManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MediaSample.Core\MediaSample.Core.csproj">
+      <Project>{e7ec3977-08ba-4353-a669-d62c19ab9c4a}</Project>
+      <Name>MediaSample.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -103,13 +103,13 @@
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj">
+      <Project>{57484d07-a3d9-4e99-8d97-688bfce137d1}</Project>
+      <Name>Plugin.MediaManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MediaSample.Core\MediaSample.Core.csproj">
       <Project>{19955052-96FC-4149-84DD-C95A4C846C87}</Project>
       <Name>MediaSample.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj">
-      <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
-      <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\MediaManager.ExoPlayer\Plugin.MediaManager.ExoPlayer.csproj">
       <Project>{06EF2F1F-8A8E-47D6-9FC8-BBC521783F13}</Project>
