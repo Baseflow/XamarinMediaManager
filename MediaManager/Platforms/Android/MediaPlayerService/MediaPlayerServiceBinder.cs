@@ -1,6 +1,6 @@
-﻿using Android.OS;
+using Android.OS;
 
-namespace Plugin.MediaManager.MediaPlayerService
+namespace Plugin.MediaManager
 {
     public class MediaPlayerServiceBinder : Binder
     {

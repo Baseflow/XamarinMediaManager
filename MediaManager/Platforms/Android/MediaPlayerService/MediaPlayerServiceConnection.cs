@@ -2,7 +2,7 @@ using Android.Content;
 using Android.OS;
 using Plugin.MediaManager.Audio;
 
-namespace Plugin.MediaManager.MediaPlayerService
+namespace Plugin.MediaManager
 {
     internal class MediaPlayerServiceConnection : Java.Lang.Object, IServiceConnection
     {
@@ -15,10 +15,10 @@ namespace Plugin.MediaManager.MediaPlayerService
 
         public void OnServiceConnected(ComponentName name, IBinder service)
         {
-            var mediaPlayerServiceBinder = service as MediaPlayerServiceBinder;
-            if (mediaPlayerServiceBinder != null)
+            var mediaServiceBinder = service as MediaServiceBinder;
+            if (mediaServiceBinder != null)
             {
-               instance.OnServiceConnected(mediaPlayerServiceBinder);
+               instance.OnServiceConnected(mediaServiceBinder);
             }
         }
 

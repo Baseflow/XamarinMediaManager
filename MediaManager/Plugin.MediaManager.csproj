@@ -1,114 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;MonoAndroid80;Xamarin.iOS10;uap10.0.16299;Xamarin.TVOS10;Xamarin.WatchOS10;Xamarin.Mac20;</TargetFrameworks>
-    <AssemblyName>Plugin.MediaManager</AssemblyName>
-    <RootNamespace>Plugin.MediaManager</RootNamespace>
-    <PackageId>Plugin.MediaManager</PackageId>
-    
-    <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
-    <Version>1.0.0.0</Version>
-    <PackageVersion>1.0.0.0</PackageVersion>
-    <PackOnBuild>true</PackOnBuild>
-    <NeutralLanguage>en</NeutralLanguage>
-    <LangVersion>default</LangVersion>
-    <DefineConstants>$(DefineConstants);</DefineConstants>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
-    <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
-    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    
-    <!--TODO: Fill these in-->
-    <PackageLicenseUrl>LINK TO LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>LINK TO PROJECT</PackageProjectUrl>
-    <RepositoryUrl>LINK TO PROJECT</RepositoryUrl>
-    <PackageReleaseNotes>RELEASE NOTES</PackageReleaseNotes>
-    <PackageIconUrl>ICON URL</PackageIconUrl>
-    <PackageTags>xamarin, windows, ios, android, xamarin.forms, plugin, MediaManager</PackageTags>
-    
-    <Title>MediaManager Plugin for Xamarin and Windows</Title>
-    <Summary>Summary of nuget</Summary>
-    <Description>Plugin Description</Description>
-
-    <Owners>YOU</Owners>
-    <Authors>YOU</Authors>
-    <Copyright>Copyright 2018</Copyright>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <ApplicationIcon />
-    <OutputType>Library</OutputType>
-    <StartupObject />
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.2.0" PrivateAssets="All" />
-    <Compile Include="Shared\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0.15063' ">
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="5.2.3" />
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;MonoAndroid81;Xamarin.iOS10;Xamarin.TVOS10;uap10.0.16299</TargetFrameworks>
+        <AssemblyName>Plugin.MediaManager</AssemblyName>
+        <RootNamespace>Plugin.MediaManager</RootNamespace>
+        <PackageId>Plugin.MediaManager</PackageId>
+        <Product>$(AssemblyName) ($(TargetFramework))</Product>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
+        <Version>1.0.0.0</Version>
+        <PackageVersion>1.0.0.0</PackageVersion>
+        <PackOnBuild>true</PackOnBuild>
+        <NeutralLanguage>en</NeutralLanguage>
+        <LangVersion>default</LangVersion>
+        <DefineConstants>$(DefineConstants);</DefineConstants>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
+        <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <!--TODO: Fill these in-->
+        <PackageLicenseUrl>LINK TO LICENSE</PackageLicenseUrl>
+        <PackageProjectUrl>LINK TO PROJECT</PackageProjectUrl>
+        <RepositoryUrl>LINK TO PROJECT</RepositoryUrl>
+        <PackageReleaseNotes>RELEASE NOTES</PackageReleaseNotes>
+        <PackageIconUrl>ICON URL</PackageIconUrl>
+        <PackageTags>xamarin, windows, ios, android, xamarin.forms, plugin, MediaManager</PackageTags>
+        <Title>MediaManager Plugin for Xamarin and Windows</Title>
+        <Summary>Summary of nuget</Summary>
+        <Description>Plugin Description</Description>
+        <Owners>YOU</Owners>
+        <Authors>YOU</Authors>
+        <Copyright>Copyright 2018</Copyright>
+        <ApplicationIcon />
+        <OutputType>Library</OutputType>
+        <StartupObject />
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="Shared\**\*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0.16299' ">
     <Compile Include="Platforms\UWP\**\*.cs" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid80' ">
-    <Compile Include="Platforms\Android\**\*.cs" />
-    <PackageReference Include="Xamarin.Android.Support.Animated.Vector.Drawable" Version="26.1.0.1">
-    </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.Annotations" Version="26.1.0.1">
-    </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.Fragment" Version="26.1.0.1">
-    </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.v4" Version="26.1.0.1">
-    </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="26.1.0.1">
-    </PackageReference>
-    <PackageReference Include="Xamarin.Android.Support.Vector.Drawable" Version="26.1.0.1">
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
-    <Compile Include="Platforms\iOS\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.TVOS10' ">
-    <Compile Include="Platforms\TVOS\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.WatchOS10' ">
-    <Compile Include="Platforms\WatchOS\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.Mac20' ">
-    <Compile Include="Platforms\macOS\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj" />
-  </ItemGroup>
-
-  <!--
+    <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid81' ">
+        <Compile Include="Platforms\Android\**\*.cs" />
+        <PackageReference Include="Xamarin.Android.Support.Animated.Vector.Drawable" Version="25.3.1">
+        </PackageReference>
+        <PackageReference Include="Xamarin.Android.Support.Annotations" Version="25.3.1">
+        </PackageReference>
+        <PackageReference Include="Xamarin.Android.Support.Fragment" Version="25.3.1">
+        </PackageReference>
+        <PackageReference Include="Xamarin.Android.Support.v4" Version="25.3.1">
+        </PackageReference>
+        <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="25.3.1">
+        </PackageReference>
+        <PackageReference Include="Xamarin.Android.Support.Vector.Drawable" Version="25.3.1">
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
+        <Compile Include="Platforms\iOS\**\*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.TVOS10' ">
+        <Compile Include="Platforms\TVOS\**\*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.WatchOS10' ">
+        <Compile Include="Platforms\WatchOS\**\*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.Mac20' ">
+        <Compile Include="Platforms\macOS\**\*.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj" />
+    </ItemGroup>
+    <!--
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
     <Compile Include="Platforms\DotNet\**\*.cs" />
   </ItemGroup>
   -->
-
-
-  <!--
+    <!--
   <ItemGroup Condition=" '$(TargetFramework)' == 'Tizen40' ">
     <Compile Include="Platforms\Tizen\**\*.cs" />
     <PackageReference Include="Tizen.NET" Version="4.0.0" />
   </ItemGroup>
   -->
-  
-  <!--
+    <!--
     <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Compile Include="Platforms\DotNet\**\*.cs" />
   </ItemGroup>
   -->
-
-  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+    <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>
