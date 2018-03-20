@@ -57,6 +57,7 @@
         </PackageReference>
         <PackageReference Include="Xamarin.Android.Support.Vector.Drawable" Version="25.3.1">
         </PackageReference>
+      <PackageReference Include="Xamarin.Build.Download" Version="0.4.7" PrivateAssets="All" />
     </ItemGroup>
     <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
         <Compile Include="Platforms\iOS\**\*.cs" />

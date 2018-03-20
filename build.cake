@@ -52,7 +52,16 @@ Task("ResolveBuildTools")
 Task("Restore")
  .IsDependentOn("ResolveBuildTools")
  .Does(() => {
- MSBuild(sln, settings => settings.WithTarget("Restore"));
+     var settings = new MSBuildSettings 
+ {
+     Configuration = "Release",
+     ToolPath = msBuildPath,
+     Verbosity = Verbosity.Minimal
+ };
+ 
+ MSBuild(sln, settings.WithTarget("Restore"));
+ NuGetRestore("./MediaManager.ExoPlayer/Plugin.MediaManager.ExoPlayer.csproj", new NuGetRestoreSettings { ToolPath ="./tools/nuget.exe", Verbosity = NuGetVerbosity.Detailed });
+ 
 });
 
 Task("Build")
