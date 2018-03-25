@@ -71,9 +71,5 @@
     <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.Mac20' ">
         <Compile Include="Platforms\macOS\**\*.cs" />
     </ItemGroup>
-    <ItemGroup>
-      <Compile Remove="Shared\EventArguments\MediaFileFailedEventArgs.cs" />
-      <Compile Remove="Shared\EventArguments\MediaFileFailedEventArgs.cs" />
-    </ItemGroup>
     <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>
