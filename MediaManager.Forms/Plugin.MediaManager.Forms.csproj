@@ -1,11 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;MonoAndroid80;Xamarin.iOS10;uap10.0.16299</TargetFrameworks>
-    <AssemblyName>Plugin.Plugin.MediaManager.Forms1</AssemblyName>
-    <RootNamespace>Plugin.Plugin.MediaManager.Forms1</RootNamespace>
-    <PackageId>Plugin.Plugin.MediaManager.Forms1</PackageId>
-    
+    <TargetFrameworks>netstandard2.0;MonoAndroid81;Xamarin.iOS10</TargetFrameworks>
+    <AssemblyName>Plugin.MediaManager.Forms</AssemblyName>
+    <RootNamespace>Plugin.MediaManager.Forms</RootNamespace>
+    <PackageId>Plugin.MediaManager.Forms</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
@@ -19,22 +18,21 @@
     <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
     <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    
     <!--TODO: Fill these in-->
     <PackageLicenseUrl>LINK TO LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>LINK TO PROJECT</PackageProjectUrl>
     <RepositoryUrl>LINK TO PROJECT</RepositoryUrl>
     <PackageReleaseNotes>RELEASE NOTES</PackageReleaseNotes>
     <PackageIconUrl>ICON URL</PackageIconUrl>
-    <PackageTags>xamarin, windows, ios, android, xamarin.forms, plugin, Plugin.MediaManager.Forms1</PackageTags>
-    
-    <Title>Plugin.MediaManager.Forms1 Plugin for Xamarin and Windows</Title>
+    <PackageTags>xamarin, ios, android, xamarin.forms, plugin, Plugin.MediaManager.Forms</PackageTags>
+    <Title>Plugin.MediaManager.Forms Plugin for Xamarin and Windows</Title>
     <Summary>Summary of nuget</Summary>
     <Description>Plugin Description</Description>
-
     <Owners>YOU</Owners>
     <Authors>YOU</Authors>
     <Copyright>Copyright 2018</Copyright>
+    <OutputType>Library</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -45,11 +43,10 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0.16299' ">
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="5.2.3" />
     <Compile Include="Platforms\UWP\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid80' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid81' ">
     <Compile Include="Platforms\Android\**\*.cs" />
   </ItemGroup>
 

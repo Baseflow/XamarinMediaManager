@@ -61,6 +61,7 @@ Task("Restore")
  
  MSBuild(sln, settings.WithTarget("Restore"));
  NuGetRestore("./MediaManager.ExoPlayer/Plugin.MediaManager.ExoPlayer.csproj", new NuGetRestoreSettings { ToolPath ="./tools/nuget.exe", Verbosity = NuGetVerbosity.Detailed });
+ NuGetRestore("./MediaManager.Forms/Plugin.MediaManager.Forms.csproj", new NuGetRestoreSettings { ToolPath ="./tools/nuget.exe", Verbosity = NuGetVerbosity.Detailed });
  
 });
 
