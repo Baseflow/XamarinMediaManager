@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;MonoAndroid81</TargetFrameworks>
+    <TargetFrameworks>MonoAndroid81</TargetFrameworks>
     <AssemblyName>Plugin.MediaManager.ExoPlayer</AssemblyName>
     <RootNamespace>Plugin.MediaManager.ExoPlayer</RootNamespace>
     <PackageId>Plugin.MediaManager.ExoPlayer</PackageId>
