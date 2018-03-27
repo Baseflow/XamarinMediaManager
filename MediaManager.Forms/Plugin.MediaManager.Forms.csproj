@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;MonoAndroid81;Xamarin.iOS10</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;MonoAndroid81;Xamarin.iOS10;uap10.0.16299</TargetFrameworks>
     <AssemblyName>Plugin.MediaManager.Forms</AssemblyName>
     <RootNamespace>Plugin.MediaManager.Forms</RootNamespace>
     <PackageId>Plugin.MediaManager.Forms</PackageId>
