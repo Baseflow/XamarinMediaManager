@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Project>
-    <PropertyGroup
-        Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
         <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
     
@@ -11,30 +10,23 @@
     <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     
   </PropertyGroup>    
-    <PropertyGroup
-        Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
+    <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
         <DefineConstants>$(DefineConstants);MONO;UIKIT;COCOA</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup
-        Condition="'$(TargetFramework)' == 'Xamarin.Mac20'">
+    <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.Mac20'">
         <DefineConstants>$(DefineConstants);MONO;COCOA</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup
-        Condition="'$(TargetFramework)' == 'Xamarin.TVOS10'">
+    <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.TVOS10'">
         <DefineConstants>$(DefineConstants);MONO;COCOA</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup
-        Condition="'$(TargetFramework)' == 'MonoAndroid81'">
+    <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid81'">
         <DefineConstants>$(DefineConstants);MONO;ANDROID</DefineConstants>
         <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
         <AndroidResgenClass>Resource</AndroidResgenClass>
         <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     </PropertyGroup>
     
-    <ItemGroup
-        Condition=" '$(TargetFramework)' == 'uap10.0.16299' and '$(IsLibraryProject)' == 'true' ">
-        <PackageReference
-            Include="Microsoft.NETCore.UniversalWindowsPlatform"
-            Version="6.0.8" />
+    <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0.16299' and '$(IsLibraryProject)' == 'true' ">
+        <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.0.8" />
     </ItemGroup>
 </Project>
