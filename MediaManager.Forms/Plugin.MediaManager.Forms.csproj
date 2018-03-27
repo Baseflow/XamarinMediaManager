@@ -56,6 +56,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MediaManager\Plugin.MediaManager.csproj" />
+    <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
   </ItemGroup>
 
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
