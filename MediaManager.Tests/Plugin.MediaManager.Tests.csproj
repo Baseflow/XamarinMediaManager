@@ -21,8 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MediaManager.Abstractions\Plugin.MediaManager.Abstractions.csproj" />
-    <ProjectReference Include="..\..\MediaManager\Plugin.MediaManager.csproj" />
+    <ProjectReference Include="..\MediaManager\Plugin.MediaManager.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.7.99" />
