@@ -22,12 +22,12 @@ namespace Plugin.MediaManager
     public abstract class MediaServiceBase : Service, AudioManager.IOnAudioFocusChangeListener, IPlaybackManager
     {
         //Actions
-        public const string ActionPlay = "com.xamarin.action.PLAY";
-        public const string ActionPause = "com.xamarin.action.PAUSE";
-        public const string ActionStop = "com.xamarin.action.STOP";
-        public const string ActionTogglePlayback = "com.xamarin.action.TOGGLEPLAYBACK";
-        public const string ActionNext = "com.xamarin.action.NEXT";
-        public const string ActionPrevious = "com.xamarin.action.PREVIOUS";
+        public static const string ActionPlay = "com.xamarin.action.PLAY";
+        public static const string ActionPause = "com.xamarin.action.PAUSE";
+        public static const string ActionStop = "com.xamarin.action.STOP";
+        public static const string ActionTogglePlayback = "com.xamarin.action.TOGGLEPLAYBACK";
+        public static const string ActionNext = "com.xamarin.action.NEXT";
+        public static const string ActionPrevious = "com.xamarin.action.PREVIOUS";
 
         //internal const int NotificationId = 1;
 
