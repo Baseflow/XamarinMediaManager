@@ -277,7 +277,6 @@ namespace Plugin.MediaManager
                                                                           NSKeyValueObservingOptions.Initial,
                     StatusObservationContext.Handle);
 
-
                 NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification,
                                                                notification => MediaFinished?.Invoke(this, new MediaFinishedEventArgs(mediaFile)), CurrentItem);
 
@@ -295,8 +294,8 @@ namespace Plugin.MediaManager
             await Task.CompletedTask;
         }
 
-        private AVPlayerItem GetPlayerItem(NSUrl url) {
-
+        private AVPlayerItem GetPlayerItem(NSUrl url)
+		{
             AVAsset asset;
 
             if (RequestHeaders != null && RequestHeaders.Any())

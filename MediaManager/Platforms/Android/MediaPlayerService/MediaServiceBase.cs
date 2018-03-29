@@ -22,12 +22,12 @@ namespace Plugin.MediaManager
     public abstract class MediaServiceBase : Service, AudioManager.IOnAudioFocusChangeListener, IPlaybackManager
     {
         //Actions
-        public static const string ActionPlay = "com.xamarin.action.PLAY";
-        public static const string ActionPause = "com.xamarin.action.PAUSE";
-        public static const string ActionStop = "com.xamarin.action.STOP";
-        public static const string ActionTogglePlayback = "com.xamarin.action.TOGGLEPLAYBACK";
-        public static const string ActionNext = "com.xamarin.action.NEXT";
-        public static const string ActionPrevious = "com.xamarin.action.PREVIOUS";
+        public const string ActionPlay = "com.xamarin.action.PLAY";
+        public const string ActionPause = "com.xamarin.action.PAUSE";
+        public const string ActionStop = "com.xamarin.action.STOP";
+        public const string ActionTogglePlayback = "com.xamarin.action.TOGGLEPLAYBACK";
+        public const string ActionNext = "com.xamarin.action.NEXT";
+        public const string ActionPrevious = "com.xamarin.action.PREVIOUS";
 
         //internal const int NotificationId = 1;
 
@@ -253,8 +253,8 @@ namespace Plugin.MediaManager
                     {
                         await Play();
                     }
-
-                    SetVolume(1.0f, 1.0f);//Turn it up!
+					//Turn it up!
+                    SetVolume(1.0f, 1.0f);
 
                     TransientPaused = false;
                     break;
@@ -271,7 +271,6 @@ namespace Plugin.MediaManager
                     //We have lost focus but should still play at a muted 10% volume
                     SetVolume(.1f, .1f);
                     break;
-
             }
         }
 
@@ -374,4 +373,3 @@ namespace Plugin.MediaManager
         }
     }
 }
-

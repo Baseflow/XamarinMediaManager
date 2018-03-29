@@ -360,7 +360,6 @@ namespace Plugin.MediaManager.Abstractions.Implementations
             if (CurrentMediaFile?.Url == e?.File?.Url)
                 MediaNotificationManager?.UpdateNotifications(e?.File, Status);
             MediaFileChanged?.Invoke(sender, e);
-
         }
 
         private void OnMediaFileFailed(object sender, MediaFileFailedEventArgs e)

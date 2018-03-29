@@ -522,4 +522,3 @@ namespace Plugin.MediaManager.Abstractions.Implementations
         }
     }
 }
-

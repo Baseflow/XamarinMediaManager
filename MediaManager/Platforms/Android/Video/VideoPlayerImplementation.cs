@@ -121,7 +121,6 @@ namespace Plugin.MediaManager
             }
         }
 
-
         private bool _IsMuted = false;
         public bool IsMuted
         {

@@ -93,7 +93,7 @@ namespace Plugin.MediaManager
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
             HandleIntent(intent);
-            return StartCommandResult.NotSticky;// base.OnStartCommand(intent, flags, startId);
+            return StartCommandResult.NotSticky;
         }
 
         public override async Task Play(IMediaFile mediaFile = null)
@@ -151,7 +151,6 @@ namespace Plugin.MediaManager
                     }
                 else
                     await SetMediaPlayerDataSourcePostHoneyComb();
-
             }
             catch (Exception e)
             {
@@ -176,7 +175,6 @@ namespace Plugin.MediaManager
                     {
                         return false;
                     }
-
                 }
             }
 
@@ -319,5 +317,4 @@ namespace Plugin.MediaManager
             _mediaPlayer = null;
         }
     }
-
 }

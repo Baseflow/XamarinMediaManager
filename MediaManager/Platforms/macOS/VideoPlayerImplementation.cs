@@ -246,7 +246,6 @@ namespace Plugin.MediaManager
             await Task.CompletedTask;
         }
 
-
         public bool IsMuted
         {
             get { return _player.Muted; }
