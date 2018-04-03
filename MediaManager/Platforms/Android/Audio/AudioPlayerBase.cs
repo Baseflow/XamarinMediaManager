@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -127,7 +127,6 @@ namespace Plugin.MediaManager
             await BinderReady();
             await GetMediaPlayerService().Seek(position);
         }
-
 
         public virtual async Task Stop()
         {
