@@ -18,6 +18,8 @@
         - develop
   version: 1.0.{build}
   image: Visual Studio 2017
+  install:
+  - appveyor-retry powershell .\install-android-sdk.ps1
   environment:
     NUGET_SOURCE: https://www.myget.org/F/martijn00/api/v2/package
     NUGET_APIKEY:
