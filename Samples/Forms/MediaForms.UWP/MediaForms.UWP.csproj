@@ -11,7 +11,7 @@
     <AssemblyName>MediaForms.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -135,7 +135,7 @@
   <ItemGroup>
     <Reference Include="Plugin.MediaManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\MediaManager.UWP\bin\Debug\Plugin.MediaManager.dll</HintPath>
+      <HintPath>..\..\..\MediaManager\obj\Debug\netstandard2.0\Plugin.MediaManager.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.MediaManager.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -143,7 +143,7 @@
     </Reference>
     <Reference Include="Plugin.MediaManager.Forms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\MediaManager.Forms\MediaManager.Forms.UWP\bin\Debug\Plugin.MediaManager.Forms.dll</HintPath>
+      <HintPath>..\..\..\MediaManager.Forms\obj\Debug\netstandard2.0\Plugin.Plugin.MediaManager.Forms1.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
