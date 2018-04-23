@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MediaManager.Forms\MediaManager.Forms\Plugin.MediaManager.Forms.csproj" />
+    <ProjectReference Include="..\..\..\MediaManager.Forms\Plugin.MediaManager.Forms.csproj" />
     <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj" />
   </ItemGroup>
   <ItemGroup>

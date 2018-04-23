@@ -1,0 +1,65 @@
+using System;
+using Tizen.Multimedia;
+using Plugin.MediaManager.Abstractions;
+using EA = Plugin.MediaManager.Abstractions.EventArguments;
+
+namespace Plugin.MediaManager
+{
+    public class VolumeManagerImplementation : IVolumeManager
+    {
+        internal Player _player;
+        private AudioVolume _audioVolume = null;
+
+        public VolumeManagerImplementation()
+        {
+            _audioVolume = AudioManager.VolumeController;
+            _audioVolume.Changed += AudioVolumeChanged;
+        }
+
+        public int CurrentVolume
+        {
+            get => _audioVolume.Level[AudioVolumeType.Media];
+            set
+            {
+                if (_player != null)
+                {
+                    int.TryParse(value.ToString(), out var vol);
+                    if (vol > MaxVolume) vol = MaxVolume;
+                    if (vol < 0) vol = 0;
+
+                    _player.Volume = (float)vol / MaxVolume;
+                    VolumeChanged?.Invoke(this, new EA.VolumeChangedEventArgs(vol, Muted));
+                }
+            }
+        }
+
+        public int MaxVolume
+        {
+            get => _audioVolume.MaxLevel[AudioVolumeType.Media];
+            set { }
+        }
+
+        public bool Muted
+        {
+            get => _player != null ? _player.Muted : false;
+            set
+            {                
+                if (_player == null || Muted == value)
+                    return;
+                _player.Muted = value;
+                VolumeChanged?.Invoke(this, new EA.VolumeChangedEventArgs(CurrentVolume, value));
+            }
+        }
+
+        public event VolumeChangedEventHandler VolumeChanged;
+
+        private void AudioVolumeChanged(object sender, VolumeChangedEventArgs e)
+        {
+            if (e.Type == AudioVolumeType.Media)
+            {
+                VolumeChanged?.Invoke(this, new EA.VolumeChangedEventArgs(e.Level, Muted));
+            }
+        }
+
+    }
+}
