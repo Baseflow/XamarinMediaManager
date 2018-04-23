@@ -110,9 +110,9 @@
     <Compile Include="SampleApplication.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj">
+    <ProjectReference Include="..\..\..\MediaManager\MediaManager.csproj">
       <Project>{57484d07-a3d9-4e99-8d97-688bfce137d1}</Project>
-      <Name>Plugin.MediaManager</Name>
+      <Name>MediaManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\MediaSample.Core\MediaSample.Core.csproj">
       <Project>{19955052-96FC-4149-84DD-C95A4C846C87}</Project>

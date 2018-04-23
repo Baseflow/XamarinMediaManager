@@ -180,9 +180,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj">
+    <ProjectReference Include="..\..\..\MediaManager\MediaManager.csproj">
       <Project>{57484d07-a3d9-4e99-8d97-688bfce137d1}</Project>
-      <Name>Plugin.MediaManager</Name>
+      <Name>MediaManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\MyMediaPlayer.Core\MyMediaPlayer.Core.csproj">
       <Project>{66B081CB-DAD5-4FDF-B361-4BA85B440886}</Project>

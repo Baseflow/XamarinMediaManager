@@ -14,10 +14,6 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MvvmCross.Plugin.Visibility" Version="5.1.0" />
     <PackageReference Include="MvvmCross.Plugin.ResourceLoader" Version="5.1.0" />
@@ -26,5 +22,8 @@
     <PackageReference Include="MvvmCross.Platform" Version="5.1.0" />
     <PackageReference Include="MvvmCross.Binding" Version="5.1.0" />
     <PackageReference Include="MvvmCross.Core" Version="5.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\MediaManager\MediaManager.csproj" />
   </ItemGroup>
 </Project>

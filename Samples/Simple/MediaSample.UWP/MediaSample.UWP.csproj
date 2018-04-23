@@ -129,9 +129,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj">
+    <ProjectReference Include="..\..\..\MediaManager\MediaManager.csproj">
       <Project>{57484d07-a3d9-4e99-8d97-688bfce137d1}</Project>
-      <Name>Plugin.MediaManager</Name>
+      <Name>MediaManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\MediaSample.Core\MediaSample.Core.csproj">
       <Project>{e7ec3977-08ba-4353-a669-d62c19ab9c4a}</Project>

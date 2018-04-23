@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj" />
+    <ProjectReference Include="..\..\..\MediaManager\MediaManager.csproj" />
   </ItemGroup>
 
 </Project>

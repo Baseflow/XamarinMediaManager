@@ -134,13 +134,13 @@
       <Project>{6EDB0588-FFC5-4EF5-8A99-9E241D0F878D}</Project>
       <Name>Plugin.MediaManager.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\MediaManager.Forms\Plugin.MediaManager.Forms.csproj">
+    <ProjectReference Include="..\..\..\MediaManager.Forms\MediaManager.Forms.csproj">
       <Project>{4430a8ba-c7df-4a5f-875e-d5121aa15b52}</Project>
-      <Name>Plugin.MediaManager.Forms</Name>
+      <Name>MediaManager.Forms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\MediaManager\Plugin.MediaManager.csproj">
+    <ProjectReference Include="..\..\..\MediaManager\MediaManager.csproj">
       <Project>{57484d07-a3d9-4e99-8d97-688bfce137d1}</Project>
-      <Name>Plugin.MediaManager</Name>
+      <Name>MediaManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\MediaForms\MediaForms.csproj">
       <Project>{7469C2C8-209A-4202-AEE9-E2B3F451BDD4}</Project>

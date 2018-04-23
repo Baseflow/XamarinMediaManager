@@ -4,12 +4,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{E30B6663-E909-40F4-AE0B-6A8D08BCA39F}"
+	ProjectSection(SolutionItems) = preProject
+		Samples\Directory.build.props = Samples\Directory.build.props
+		Samples\Directory.build.targets = Samples\Directory.build.targets
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.Reactive", "MediaManager.Reactive\Plugin.MediaManager.Reactive.csproj", "{DB2BAFBA-2A85-4E9B-8E9D-0A607A661E84}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Forms", "Forms", "{4D6DBE82-C4E6-4FFB-9D1F-4AE23CF42435}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extentions", "Extentions", "{D603F379-90E7-46B0-9827-306B51D82F9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.Reactive", "MediaManager.Reactive\MediaManager.Reactive.csproj", "{DB2BAFBA-2A85-4E9B-8E9D-0A607A661E84}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Forms", "Forms", "{86F4D7EF-0D08-4967-AD8D-75E476E87EB8}"
 EndProject
@@ -27,9 +27,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaForms.UWP", "Samples\F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Video", "Video", "{A77E4FD3-2812-4330-BC52-B82C885CE0F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.UWP.Tests", "MediaManager.UWP.Tests\Plugin.MediaManager.UWP.Tests.csproj", "{4921043C-6A1F-4663-B0CB-B43D0D61FDF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaManager.UWP.Tests", "MediaManager.UWP.Tests\MediaManager.UWP.Tests.csproj", "{4921043C-6A1F-4663-B0CB-B43D0D61FDF2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.MediaManager", "MediaManager\Plugin.MediaManager.csproj", "{57484D07-A3D9-4E99-8D97-688BFCE137D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager", "MediaManager\MediaManager.csproj", "{57484D07-A3D9-4E99-8D97-688BFCE137D1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{578FA301-8828-47CE-A4E8-2FA05254F04C}"
 	ProjectSection(SolutionItems) = preProject
@@ -60,11 +60,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMediaPlayer.MacOS", "Samp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoSample.iOS", "Samples\Video\VideoSample.iOS\VideoSample.iOS.csproj", "{C2E58BB1-3F2F-40C8-BD3F-38B210E54560}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.MediaManager.Tests", "MediaManager.Tests\Plugin.MediaManager.Tests.csproj", "{1215B0AA-99BB-45DF-A7B9-BE6260C2EED3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.Tests", "MediaManager.Tests\MediaManager.Tests.csproj", "{1215B0AA-99BB-45DF-A7B9-BE6260C2EED3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.MediaManager.Forms", "MediaManager.Forms\Plugin.MediaManager.Forms.csproj", "{4430A8BA-C7DF-4A5F-875E-D5121AA15B52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.Forms", "MediaManager.Forms\MediaManager.Forms.csproj", "{4430A8BA-C7DF-4A5F-875E-D5121AA15B52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.MediaManager.ExoPlayer", "MediaManager.ExoPlayer\Plugin.MediaManager.ExoPlayer.csproj", "{020F3165-7E41-4FAA-A479-0C8D2DEE65A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.ExoPlayer", "MediaManager.ExoPlayer\MediaManager.ExoPlayer.csproj", "{020F3165-7E41-4FAA-A479-0C8D2DEE65A8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaForms.Tizen", "Samples\Forms\MediaForms.Tizen\MediaForms.Tizen.csproj", "{364C4D2B-5684-4548-9A9F-7AC02CFF4B8A}"
 EndProject
@@ -594,7 +594,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{DB2BAFBA-2A85-4E9B-8E9D-0A607A661E84} = {D603F379-90E7-46B0-9827-306B51D82F9D}
 		{86F4D7EF-0D08-4967-AD8D-75E476E87EB8} = {E30B6663-E909-40F4-AE0B-6A8D08BCA39F}
 		{7469C2C8-209A-4202-AEE9-E2B3F451BDD4} = {86F4D7EF-0D08-4967-AD8D-75E476E87EB8}
 		{12B95EC8-F026-40D6-994D-364022F785C0} = {86F4D7EF-0D08-4967-AD8D-75E476E87EB8}
@@ -614,8 +613,6 @@ Global
 		{F7596E36-F0A0-42AD-9552-5EC2197FF083} = {CF5E83A2-37C7-4E6F-9300-1C1EFD5B6FB4}
 		{C817C5F2-B7AC-4418-A30E-322D80E97E57} = {CF5E83A2-37C7-4E6F-9300-1C1EFD5B6FB4}
 		{C2E58BB1-3F2F-40C8-BD3F-38B210E54560} = {A77E4FD3-2812-4330-BC52-B82C885CE0F5}
-		{4430A8BA-C7DF-4A5F-875E-D5121AA15B52} = {4D6DBE82-C4E6-4FFB-9D1F-4AE23CF42435}
-		{020F3165-7E41-4FAA-A479-0C8D2DEE65A8} = {D603F379-90E7-46B0-9827-306B51D82F9D}
 		{364C4D2B-5684-4548-9A9F-7AC02CFF4B8A} = {86F4D7EF-0D08-4967-AD8D-75E476E87EB8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

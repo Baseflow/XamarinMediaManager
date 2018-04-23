@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>MonoAndroid81</TargetFrameworks>
@@ -47,7 +47,7 @@
     <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\MediaManager\Plugin.MediaManager.csproj" />
+      <ProjectReference Include="..\MediaManager\MediaManager.csproj" />
     </ItemGroup>
     <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>
