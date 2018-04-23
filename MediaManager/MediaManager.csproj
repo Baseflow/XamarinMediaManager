@@ -14,7 +14,7 @@
     <None Include="Platforms\**\*.cs" />
     <None Include="Resources\*.cs" />
     <Compile Remove="Resources\*.cs" />
-    <None Include="readme.txt" pack="true" PackagePath="." />
+    <None Include=".\readme.txt" pack="true" PackagePath="." />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">

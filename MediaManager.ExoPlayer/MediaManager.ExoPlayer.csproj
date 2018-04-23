@@ -2,52 +2,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>MonoAndroid81</TargetFrameworks>
-        <AssemblyName>Plugin.MediaManager.ExoPlayer</AssemblyName>
-        <RootNamespace>Plugin.MediaManager.ExoPlayer</RootNamespace>
+        <AssemblyName>MediaManager.ExoPlayer</AssemblyName>
+        <RootNamespace>MediaManager.ExoPlayer</RootNamespace>
         <PackageId>Plugin.MediaManager.ExoPlayer</PackageId>
-        <Product>$(AssemblyName) ($(TargetFramework))</Product>
-        <AssemblyVersion>1.0.0.0</AssemblyVersion>
-        <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
-        <Version>1.0.0.0</Version>
-        <PackageVersion>1.0.0.0</PackageVersion>
-        <PackOnBuild>true</PackOnBuild>
-        <NeutralLanguage>en</NeutralLanguage>
-        <LangVersion>default</LangVersion>
-        <DefineConstants>$(DefineConstants);</DefineConstants>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
-        <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
-        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-        <!--TODO: Fill these in-->
-        <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-        <PackageProjectUrl>https://github.com/martijn00/XamarinMediaManager</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/martijn00/XamarinMediaManager</RepositoryUrl>
-        <PackageReleaseNotes>https://github.com/martijn00/XamarinMediaManager</PackageReleaseNotes>
-        <PackageIconUrl>https://github.com/martijn00/XamarinMediaManager/blob/master/icon_MediaManager.png</PackageIconUrl>
-        <PackageTags>xamarin, android, plugin, MediaManager.ExoPlayer</PackageTags>
         <Title>MediaManager.ExoPlayer Plugin for Xamarin and Windows</Title>
         <Summary>Summary of nuget</Summary>
         <Description>Plugin Description</Description>
-        <Owners>Martijn van Dijk</Owners>
-        <Authors>Martijn van Dijk</Authors>
-        <Copyright>Copyright 2018</Copyright>
     </PropertyGroup>
-    <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid81' ">
-        <Compile Include="Platforms\Android\**\*.cs" />
-        <PackageReference Include="Xam.Plugins.Android.ExoPlayer" version="2.0.4" />
-        <PackageReference Include="Xamarin.Android.Support.Annotations" version="25.3.1" />
-        <PackageReference Include="Xamarin.Android.Support.Compat" version="25.3.1" />
-        <PackageReference Include="Xamarin.Android.Support.Core.UI" version="25.3.1" />
-        <PackageReference Include="Xamarin.Android.Support.Core.Utils" version="25.3.1" />
-        <PackageReference Include="Xamarin.Android.Support.Fragment" version="25.3.1" />
-        <PackageReference Include="Xamarin.Android.Support.Media.Compat" version="25.3.1" />
-        <PackageReference Include="Xamarin.Android.Support.v4" version="25.3.1" />
-        <PackageReference Include="Xamarin.Build.Download" version="0.4.7" />
-    </ItemGroup>
-    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    </ItemGroup>
+	
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+		<Compile Include="Platforms\Android\**\*.cs" />
+		<Compile Include="Platforms\Xamarin-common\**\*.cs" />
+		<PackageReference Include="Xam.Plugins.Android.ExoPlayer" version="2.0.4" />
+        <PackageReference Include="Xamarin.Android.Support.Annotations" version="26.1.0.1" />
+        <PackageReference Include="Xamarin.Android.Support.Compat" version="26.1.0.1" />
+        <PackageReference Include="Xamarin.Android.Support.Core.UI" version="26.1.0.1" />
+        <PackageReference Include="Xamarin.Android.Support.Core.Utils" version="26.1.0.1" />
+        <PackageReference Include="Xamarin.Android.Support.Fragment" version="26.1.0.1" />
+        <PackageReference Include="Xamarin.Android.Support.Media.Compat" version="26.1.0.1" />
+        <PackageReference Include="Xamarin.Android.Support.v4" version="26.1.0.1" />
+		<PackageReference Include="Xamarin.Build.Download" Version="0.4.9" />
+	</ItemGroup>
+	
     <ItemGroup>
       <ProjectReference Include="..\MediaManager\MediaManager.csproj" />
     </ItemGroup>
+	
     <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>

@@ -23,7 +23,7 @@
     <Platform>AnyCPU</Platform>
     <DebugType>full</DebugType>
     <IsTestProject>$(MSBuildProjectName.Contains('Tests'))</IsTestProject>
-    <IsLibraryProject>$(MSBuildProjectName.Contains('Plugin.MediaManager'))</IsLibraryProject>
+    <IsLibraryProject>$(MSBuildProjectName.Contains('MediaManager'))</IsLibraryProject>
   </PropertyGroup>
   
   <ItemGroup Condition="'$(IsLibraryProject)' == 'true'">

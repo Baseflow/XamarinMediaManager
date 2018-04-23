@@ -1,65 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;MonoAndroid81;Xamarin.iOS10;uap10.0.16299;tizen40</TargetFrameworks>
-        <AssemblyName>Plugin.MediaManager.Forms</AssemblyName>
-        <RootNamespace>Plugin.MediaManager.Forms</RootNamespace>
-        <PackageId>Plugin.MediaManager.Forms</PackageId>
-        <Product>$(AssemblyName) ($(TargetFramework))</Product>
-        <AssemblyVersion>1.0.0.0</AssemblyVersion>
-        <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
-        <Version>1.0.0.0</Version>
-        <PackageVersion>1.0.0.0</PackageVersion>
-        <PackOnBuild>true</PackOnBuild>
-        <NeutralLanguage>en</NeutralLanguage>
-        <LangVersion>default</LangVersion>
-        <DefineConstants>$(DefineConstants);</DefineConstants>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
-        <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
-        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-        <!--TODO: Fill these in-->
-        <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-        <PackageProjectUrl>https://github.com/martijn00/XamarinMediaManager</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/martijn00/XamarinMediaManager</RepositoryUrl>
-        <PackageReleaseNotes>https://github.com/martijn00/XamarinMediaManager</PackageReleaseNotes>
-        <PackageIconUrl>https://github.com/martijn00/XamarinMediaManager/blob/master/icon_MediaManager.png</PackageIconUrl>
-        <PackageTags>xamarin, ios, android, xamarin.forms, plugin, Plugin.MediaManager.Forms</PackageTags>
-        <Title>Plugin.MediaManager.Forms Plugin for Xamarin and Windows</Title>
-        <Summary>Summary of nuget</Summary>
-        <Description>Plugin Description</Description>
-        <Owners>Martijn van Dijk</Owners>
-        <Authors>Martijn van Dijk</Authors>
-        <Copyright>Copyright 2018</Copyright>
-        <OutputType>Library</OutputType>
-        <StartupObject />
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="Shared\**\*.cs" />
-    </ItemGroup>
-    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    </ItemGroup>
-    <ItemGroup Condition=" '$(TargetFramework)' == 'uap10.0.16299' ">
-        <Compile Include="Platforms\UWP\**\*.cs" />
-    </ItemGroup>
-    <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid81' ">
-        <Compile Include="Platforms\Android\**\*.cs" />
-    </ItemGroup>
-    <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
-        <Compile Include="Platforms\iOS\**\*.cs" />
-    </ItemGroup>
-    <ItemGroup Condition=" '$(TargetFramework)' == 'tizen40' ">
-      <Compile Include="Platforms\Tizen\**\*.cs" />
-      <PackageReference Include="Tizen.NET" Version="4.0.0">
-        <ExcludeAssets>Runtime</ExcludeAssets>
-      </PackageReference>
-      <PackageReference Include="Xamarin.Forms.Platform.Tizen" Version="2.5.0.280555" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\MediaManager\MediaManager.csproj" />
-    </ItemGroup>
-    <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+  <PropertyGroup>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;Xamarin.WatchOS10;MonoAndroid81;tizen40;uap10.0.16299</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;Xamarin.WatchOS10;MonoAndroid81;tizen40</TargetFrameworks>
+    <AssemblyName>MediaManager.Forms</AssemblyName>
+    <RootNamespace>MediaManager.Forms</RootNamespace>
+    <Description></Description>
+    <PackageId>Plugin.MediaManager.Forms</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Platforms\**\*.cs" />
+    <None Include="Platforms\**\*.cs" />
+    <None Include="Resources\*.cs" />
+    <Compile Remove="Resources\*.cs" />
+    <None Include="readme.txt" pack="true" PackagePath="." />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
+    <Compile Include="Platforms\Netstandard\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
+    <Compile Include="Platforms\Net\**\*.cs" />
+    <Compile Include="Platforms\Wpf\**\*.cs" />
+    <Compile Include="Platforms\Console\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'!='netstandard2.0'">
+    <Compile Include="Platforms\Shared\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
+    <Compile Include="Platforms\Windows-common\**\*.cs" />
+    <Compile Include="Platforms\Uap\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
+    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Ios\**\*.cs" />
+    <Compile Include="Platforms\Xamarin-common\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.Mac')) ">
+    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Mac\**\*.cs" />
+    <Compile Include="Platforms\Xamarin-common\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.TVOS')) ">
+    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Tvos\**\*.cs" />
+    <Compile Include="Platforms\Xamarin-common\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.WatchOS')) ">
+    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Watchos\**\*.cs" />
+    <Compile Include="Platforms\Xamarin-common\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+    <Compile Include="Platforms\Android\**\*.cs" />
+    <Compile Include="Platforms\Xamarin-common\**\*.cs" />
+    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="26.1.0.1" />
+    <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="26.1.0.1" />
+    <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="26.1.0.1" />
+    <PackageReference Include="Xamarin.Build.Download" Version="0.4.9" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('tizen')) ">
+    <Compile Include="Platforms\Tizen\**\*.cs" />
+    <Compile Include="Platforms\Xamarin-common\**\*.cs" />
+    <PackageReference Include="Tizen.NET" Version="4.0.0">
+      <ExcludeAssets>Runtime</ExcludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>
