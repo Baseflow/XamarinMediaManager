@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;MonoAndroid81;Xamarin.iOS10;uap10.0.16299</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;MonoAndroid81;Xamarin.iOS10;uap10.0.16299;tizen40</TargetFrameworks>
         <AssemblyName>Plugin.MediaManager.Forms</AssemblyName>
         <RootNamespace>Plugin.MediaManager.Forms</RootNamespace>
         <PackageId>Plugin.MediaManager.Forms</PackageId>
@@ -47,6 +47,13 @@
     </ItemGroup>
     <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
         <Compile Include="Platforms\iOS\**\*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'tizen40' ">
+      <Compile Include="Platforms\Tizen\**\*.cs" />
+      <PackageReference Include="Tizen.NET" Version="4.0.0">
+        <ExcludeAssets>Runtime</ExcludeAssets>
+      </PackageReference>
+      <PackageReference Include="Xamarin.Forms.Platform.Tizen" Version="2.5.0.280555" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\MediaManager\Plugin.MediaManager.csproj" />

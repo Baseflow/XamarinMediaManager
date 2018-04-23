@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;MonoAndroid81;Xamarin.iOS10;Xamarin.TVOS10;uap10.0.16299</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;MonoAndroid81;Xamarin.iOS10;Xamarin.TVOS10;uap10.0.16299;tizen40</TargetFrameworks>
         <AssemblyName>Plugin.MediaManager</AssemblyName>
         <RootNamespace>Plugin.MediaManager</RootNamespace>
         <PackageId>Plugin.MediaManager</PackageId>
@@ -70,6 +70,12 @@
     </ItemGroup>
     <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.Mac20' ">
         <Compile Include="Platforms\macOS\**\*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'tizen40' ">
+        <Compile Include="Platforms\Tizen\**\*.cs" />
+        <PackageReference Include="Tizen.NET" Version="4.0.0">
+          <ExcludeAssets>Runtime</ExcludeAssets>
+        </PackageReference>
     </ItemGroup>
     <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>

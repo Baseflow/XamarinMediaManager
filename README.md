@@ -29,6 +29,7 @@
 |.Net Standard|Future|
 |Xamarin.Mac|Yes|3.0+|
 |Xamarin.tvOS|Yes|10.0+|
+|Tizen|Yes|4.0+|
 
 ### Example Usage
 
@@ -58,6 +59,10 @@ See Sample for more details.
 * If you are playing audio from a http resource you have to take care of [ATS](https://developer.xamarin.com/guides/ios/platform_features/introduction_to_ios9/ats/).
 * If you want to display a artwork/cover that is embedded into an MP3 file, make sure that you use ID3 v2.3 (not v2.4).
 
+**Tizen:**
+
+* You must request `http://tizen.org/privilege/internet`, `http://tizen.org/privilege/mediastorage`, and `http://tizen.org/privilege/externalstorage` privileges
+
 #### Contributors
 * [martijn00](https://github.com/martijn00)
 * [modplug](https://github.com/modplug)
@@ -65,3 +70,4 @@ See Sample for more details.
 * [SimonSimCity](https://github.com/SimonSimCity)
 * [fela98](https://github.com/fela98)
 * [bubavanhalen](https://github.com/bubavanhalen)
+* [rookiejava](https://github.com/rookiejava)
