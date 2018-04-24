@@ -1,4 +1,4 @@
-using Android;
+﻿using Android;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -7,7 +7,6 @@ using Android.Support.V4.Media.Session;
 using Plugin.MediaManager.Abstractions;
 using Plugin.MediaManager.Abstractions.Enums;
 using System;
-using NotificationCompat = Android.Support.V7.App.NotificationCompat;
 
 namespace Plugin.MediaManager
 {
@@ -22,7 +21,7 @@ namespace Plugin.MediaManager
 
         private PendingIntent _pendingCancelIntent;
         private PendingIntent _pendingIntent;
-        private NotificationCompat.MediaStyle _notificationStyle = new NotificationCompat.MediaStyle();
+        //private NotificationCompat.Style _notificationStyle = NotificationCompat.MediaStyle;
         private Context _applicationContext;
         private NotificationCompat.Builder _builder;
 
@@ -53,12 +52,12 @@ namespace Plugin.MediaManager
         {
             var icon = (_applicationContext.Resources?.GetIdentifier("xam_mediamanager_notify_ic", "drawable", _applicationContext?.PackageName)).GetValueOrDefault(0);
 
-            _notificationStyle.SetMediaSession(SessionToken);
-            _notificationStyle.SetCancelButtonIntent(_pendingCancelIntent);
+            //_notificationStyle.SetMediaSession(SessionToken);
+            //_notificationStyle.SetCancelButtonIntent(_pendingCancelIntent);
 
             _builder = new NotificationCompat.Builder(_applicationContext)
             {
-                MStyle = _notificationStyle
+                //MStyle = _notificationStyle
             };
             _builder.SetSmallIcon(icon != 0 ? icon : _applicationContext.ApplicationInfo.Icon);
             _builder.SetContentIntent(_pendingIntent);
@@ -67,12 +66,12 @@ namespace Plugin.MediaManager
 
             SetMetadata(mediaFile);
             AddActionButtons(mediaIsPlaying);
-            if (_builder.MActions.Count >= 3)
-                ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0, 1, 2);
-            if (_builder.MActions.Count == 2)
-                ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0, 1);
-            if (_builder.MActions.Count == 1)
-                ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0);
+            //if (_builder.MActions.Count >= 3)
+            //    ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0, 1, 2);
+            //if (_builder.MActions.Count == 2)
+            //    ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0, 1);
+            //if (_builder.MActions.Count == 1)
+            //    ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0);
 
             NotificationManagerCompat.From(_applicationContext)
                 .Notify(_notificationId, _builder.Build());

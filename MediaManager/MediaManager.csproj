@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;Xamarin.WatchOS10;MonoAndroid81;tizen40;uap10.0.16299</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;Xamarin.WatchOS10;MonoAndroid81;tizen40</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;MonoAndroid81;tizen40;uap10.0.16299</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;MonoAndroid81;tizen40</TargetFrameworks>
     <AssemblyName>MediaManager</AssemblyName>
     <RootNamespace>MediaManager</RootNamespace>
     <Description></Description>
@@ -14,7 +14,7 @@
     <None Include="Platforms\**\*.cs" />
     <None Include="Resources\*.cs" />
     <Compile Remove="Resources\*.cs" />
-    <None Include=".\readme.txt" pack="true" PackagePath="." />
+    <None Include="..\readme.txt" pack="true" PackagePath="." />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
@@ -32,46 +32,47 @@
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
-    <Compile Include="Platforms\Windows-common\**\*.cs" />
+    <Compile Include="Platforms\Windows\**\*.cs" />
     <Compile Include="Platforms\Uap\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
-    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Ios\**\*.cs" />
-    <Compile Include="Platforms\Xamarin-common\**\*.cs" />
+    <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.Mac')) ">
-    <Compile Include="Platforms\Apple-common\**\*.cs" />
-    <Compile Include="Platforms\Mac\**\*.cs" />
-    <Compile Include="Platforms\Xamarin-common\**\*.cs" />
+    <Compile Include="Platforms\Apple\**\*.cs" />
+    <Compile Include="Platforms\Macos\**\*.cs" />
+    <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.TVOS')) ">
-    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Tvos\**\*.cs" />
-    <Compile Include="Platforms\Xamarin-common\**\*.cs" />
+    <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.WatchOS')) ">
-    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Watchos\**\*.cs" />
-    <Compile Include="Platforms\Xamarin-common\**\*.cs" />
+    <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <Compile Include="Platforms\Android\**\*.cs" />
-    <Compile Include="Platforms\Xamarin-common\**\*.cs" />
-    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="26.1.0.1" />
-    <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="26.1.0.1" />
-    <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="26.1.0.1" />
+    <Compile Include="Platforms\Xamarin\**\*.cs" />
+    
+    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="27.0.2" />
+    <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="27.0.2" />
+    <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="27.0.2" />
     <PackageReference Include="Xamarin.Build.Download" Version="0.4.9" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('tizen')) ">
     <Compile Include="Platforms\Tizen\**\*.cs" />
-    <Compile Include="Platforms\Xamarin-common\**\*.cs" />
+    <Compile Include="Platforms\Xamarin\**\*.cs" />
     <PackageReference Include="Tizen.NET" Version="4.0.0">
       <ExcludeAssets>Runtime</ExcludeAssets>
     </PackageReference>

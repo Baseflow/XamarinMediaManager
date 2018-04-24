@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>MonoAndroid81</TargetFrameworks>
@@ -10,23 +10,11 @@
         <Description>Plugin Description</Description>
     </PropertyGroup>
 	
-	<ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
-		<Compile Include="Platforms\Android\**\*.cs" />
-		<Compile Include="Platforms\Xamarin-common\**\*.cs" />
+	<ItemGroup>
+    <ProjectReference Include="..\MediaManager\MediaManager.csproj" />
 		<PackageReference Include="Xam.Plugins.Android.ExoPlayer" version="2.0.4" />
-        <PackageReference Include="Xamarin.Android.Support.Annotations" version="26.1.0.1" />
-        <PackageReference Include="Xamarin.Android.Support.Compat" version="26.1.0.1" />
-        <PackageReference Include="Xamarin.Android.Support.Core.UI" version="26.1.0.1" />
-        <PackageReference Include="Xamarin.Android.Support.Core.Utils" version="26.1.0.1" />
-        <PackageReference Include="Xamarin.Android.Support.Fragment" version="26.1.0.1" />
-        <PackageReference Include="Xamarin.Android.Support.Media.Compat" version="26.1.0.1" />
-        <PackageReference Include="Xamarin.Android.Support.v4" version="26.1.0.1" />
 		<PackageReference Include="Xamarin.Build.Download" Version="0.4.9" />
 	</ItemGroup>
-	
-    <ItemGroup>
-      <ProjectReference Include="..\MediaManager\MediaManager.csproj" />
-    </ItemGroup>
 	
     <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>

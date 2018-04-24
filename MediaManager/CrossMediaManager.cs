@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Plugin.MediaManager.Abstractions;
 
 namespace Plugin.MediaManager
@@ -33,7 +33,7 @@ namespace Plugin.MediaManager
 
         static IMediaManager CreateMediaManager()
         {
-#if NETSTANDARD2_0
+#if NETSTANDARD
             return null;
 #else
 #pragma warning disable IDE0022 // Use expression body for methods
