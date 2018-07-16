@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager", "MediaManager\MediaManager.csproj", "{ABA3225C-7219-4472-BA3E-CFC3D9C06675}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{3B5D9760-7F39-40DF-A213-ED0410A989BE}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		build.cake = build.cake
+		Directory.build.props = Directory.build.props
+		Directory.build.targets = Directory.build.targets
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{6F888D07-C7FE-4257-9F3C-61EC1C1C39FA}"
+	ProjectSection(SolutionItems) = preProject
+		Samples\Directory.build.props = Samples\Directory.build.props
+		Samples\Directory.build.targets = Samples\Directory.build.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElementPlayer.Android", "Samples\ElementPlayer.Android\ElementPlayer.Android.csproj", "{52381C0D-EAAA-42D6-BAE9-66657B9E0A21}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElementPlayer.Core", "Samples\ElementPlayer.Core\ElementPlayer.Core.csproj", "{D4FBA2B6-2057-412D-A391-0D1BF0E04E12}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.Forms", "MediaManager.Forms\MediaManager.Forms.csproj", "{A1F6D7D2-D6D3-4FF2-87E7-D0CEF41D0653}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ABA3225C-7219-4472-BA3E-CFC3D9C06675}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABA3225C-7219-4472-BA3E-CFC3D9C06675}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABA3225C-7219-4472-BA3E-CFC3D9C06675}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABA3225C-7219-4472-BA3E-CFC3D9C06675}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52381C0D-EAAA-42D6-BAE9-66657B9E0A21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52381C0D-EAAA-42D6-BAE9-66657B9E0A21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52381C0D-EAAA-42D6-BAE9-66657B9E0A21}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{52381C0D-EAAA-42D6-BAE9-66657B9E0A21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52381C0D-EAAA-42D6-BAE9-66657B9E0A21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52381C0D-EAAA-42D6-BAE9-66657B9E0A21}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D4FBA2B6-2057-412D-A391-0D1BF0E04E12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4FBA2B6-2057-412D-A391-0D1BF0E04E12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4FBA2B6-2057-412D-A391-0D1BF0E04E12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4FBA2B6-2057-412D-A391-0D1BF0E04E12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1F6D7D2-D6D3-4FF2-87E7-D0CEF41D0653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1F6D7D2-D6D3-4FF2-87E7-D0CEF41D0653}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1F6D7D2-D6D3-4FF2-87E7-D0CEF41D0653}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1F6D7D2-D6D3-4FF2-87E7-D0CEF41D0653}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{52381C0D-EAAA-42D6-BAE9-66657B9E0A21} = {6F888D07-C7FE-4257-9F3C-61EC1C1C39FA}
+		{D4FBA2B6-2057-412D-A391-0D1BF0E04E12} = {6F888D07-C7FE-4257-9F3C-61EC1C1C39FA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {71F856D1-F12F-4E77-9ECB-5DCAC2CAC99F}
+	EndGlobalSection
+EndGlobal
