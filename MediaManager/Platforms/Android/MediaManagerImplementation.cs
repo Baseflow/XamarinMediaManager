@@ -11,7 +11,6 @@ using MediaManager.Platforms.Android;
 using MediaManager.Playback;
 using MediaManager.Video;
 using MediaManager.Volume;
-using Plugin.CurrentActivity;
 
 namespace MediaManager
 {

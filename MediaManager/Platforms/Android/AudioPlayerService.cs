@@ -22,7 +22,7 @@ namespace MediaManager.Platforms.Android
             get
             {
                 if (_audioPlayer == null)
-                    _audioPlayer = new AudioPlayer();
+                    _audioPlayer = new AudioPlayer(_mediaSession);
                 return _audioPlayer;
             }
             set
@@ -64,6 +64,9 @@ namespace MediaManager.Platforms.Android
 
             mediaCallback.OnPlayFromUriImpl = (uri, bundle) =>
             {
+                if (!_mediaSession.Active)
+                    _mediaSession.Active = true;
+
                 AudioPlayer.Play(uri.ToString());
             };
         }

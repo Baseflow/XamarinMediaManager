@@ -18,12 +18,12 @@ namespace MediaManager.Platforms.Android
     public class MediaBrowserManager
     {
         public MediaControllerCompat mediaController;
-        private MediaBrowserCompat mediaBrowser;
-        private ConnectionCallback mConnectionCallback;
-        private MediaControllerCallback mMediaControllerCallback;
+        protected MediaBrowserCompat mediaBrowser;
+        protected ConnectionCallback mConnectionCallback;
+        protected MediaControllerCallback mMediaControllerCallback;
 
         //TODO: Make it possible to set context from app
-        private Context _context;
+        protected Context _context { get; set; } = Application.Context;
         bool _isConnected = false;
 
         public async Task<bool> EnsureInitialized()
@@ -31,7 +31,6 @@ namespace MediaManager.Platforms.Android
             if (_isConnected)
                 return true;
 
-            _context = Application.Context;
             mMediaControllerCallback = new MediaControllerCallback();
             SubscriptionCallback subscriptionCallback = new SubscriptionCallback();
 
@@ -67,7 +66,7 @@ namespace MediaManager.Platforms.Android
             return _isConnected = await tcs.Task;
         }
 
-        private class MediaControllerCallback : MediaControllerCompat.Callback
+        protected class MediaControllerCallback : MediaControllerCompat.Callback
         {
             public override void OnPlaybackStateChanged(PlaybackStateCompat state)
             {
@@ -85,7 +84,7 @@ namespace MediaManager.Platforms.Android
             }
         }
 
-        class ConnectionCallback : MediaBrowserCompat.ConnectionCallback
+        protected class ConnectionCallback : MediaBrowserCompat.ConnectionCallback
         {
             public Action OnConnectedImpl { get; set; }
 
@@ -95,21 +94,21 @@ namespace MediaManager.Platforms.Android
 
             public override void OnConnected()
             {
-                OnConnectedImpl();
+                OnConnectedImpl?.Invoke();
             }
 
             public override void OnConnectionFailed()
             {
-                OnConnectionFailedImpl();
+                OnConnectionFailedImpl?.Invoke();
             }
 
             public override void OnConnectionSuspended()
             {
-                OnConnectionSuspendedImpl();
+                OnConnectionSuspendedImpl?.Invoke();
             }
         }
 
-        class SubscriptionCallback : MediaBrowserCompat.SubscriptionCallback
+        protected class SubscriptionCallback : MediaBrowserCompat.SubscriptionCallback
         {
             public Action<string, IList<MediaBrowserCompat.MediaItem>> OnChildrenLoadedImpl { get; set; }
 
@@ -117,12 +116,12 @@ namespace MediaManager.Platforms.Android
 
             public override void OnChildrenLoaded(string parentId, IList<MediaBrowserCompat.MediaItem> children)
             {
-                OnChildrenLoadedImpl(parentId, children);
+                OnChildrenLoadedImpl?.Invoke(parentId, children);
             }
 
             public override void OnError(string id)
             {
-                OnErrorImpl(id);
+                OnErrorImpl?.Invoke(id);
             }
         }
     }

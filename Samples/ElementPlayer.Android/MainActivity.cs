@@ -6,7 +6,6 @@ using Android.Views;
 using Android.Widget;
 using ElementPlayer.Core;
 using MediaManager;
-using Plugin.CurrentActivity;
 
 namespace ElementPlayer.Android
 {
@@ -36,7 +35,6 @@ namespace ElementPlayer.Android
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
-            CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
             //_textMessage = FindViewById<TextView>(Resource.Id.message);
             //BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
