@@ -12,7 +12,7 @@ namespace MediaManager
 {
     public abstract class MediaManagerBase : IMediaManager
     {
-        public abstract IAudioPlayer AudioPlayer { get; set; }
+        //public abstract IAudioPlayer AudioPlayer { get; set; }
         public abstract IVideoPlayer VideoPlayer { get; set; }
         public abstract INotificationManager NotificationManager { get; set; }
 

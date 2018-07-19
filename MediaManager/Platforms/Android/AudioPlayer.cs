@@ -37,10 +37,10 @@ namespace MediaManager
             throw new NotImplementedException();
         }
 
-        public Task Play(IMediaItem item)
+        public Task Play(string Url)
         {
-            var mediaUrl = item.MetadataMediaUri;
-            var mediaUri = Android.Net.Uri.Parse(mediaUrl);
+            //var mediaUrl = item.MetadataMediaUri;
+            var mediaUri = Android.Net.Uri.Parse(Url);
 
             var userAgent = Util.GetUserAgent(context, "ExoPlayerDemo");
             var defaultHttpDataSourceFactory = new DefaultHttpDataSourceFactory(userAgent);

@@ -23,7 +23,7 @@ namespace MediaManager
             throw new NotImplementedException();
         }
 
-        public Task Play(IMediaItem mediaItem)
+        public Task Play(string Url)
         {
             throw new NotImplementedException();
         }

@@ -3,19 +3,43 @@ using System.Collections.Generic;
 using System.Text;
 using Android.App;
 using Android.Content;
+using Android.Net;
 using Android.OS;
+using Android.Service.Media;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
+using MediaManager.Audio;
 
 namespace MediaManager.Platforms.Android
 {
+    [Service(Exported = true)]
+    [IntentFilter(new[] { MediaBrowserService.ServiceInterface })]
     public class AudioPlayerService : MediaBrowserServiceCompat
     {
+        private IAudioPlayer _audioPlayer;
+        public virtual IAudioPlayer AudioPlayer
+        {
+            get
+            {
+                if (_audioPlayer == null)
+                    _audioPlayer = new AudioPlayer();
+                return _audioPlayer;
+            }
+            set
+            {
+                _audioPlayer = value;
+            }
+        }
+
         private MediaSessionCompat _mediaSession;
         //private MediaRouter _mediaRouter;
 
         private DelayedStopHandler _delayedStopHandler;
         private int STOP_DELAY = 30000;
+
+        public AudioPlayerService()
+        {
+        }
 
         public override void OnCreate()
         {
@@ -24,12 +48,24 @@ namespace MediaManager.Platforms.Android
             _mediaSession = new MediaSessionCompat(this, nameof(AudioPlayerService));
             SessionToken = _mediaSession.SessionToken;
 
-            //_mediaSession.SetCallback(new MediaSessionCallback());
+            var mediaCallback = new MediaSessionCallback();
+            _mediaSession.SetCallback(mediaCallback);
 
             _mediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
                                    MediaSessionCompat.FlagHandlesTransportControls);
 
+            //Context context = ApplicationContext;
+            //var intent = new Intent(context, typeof(MusicPlayerActivity));
+            //var pi = PendingIntent.GetActivity(context, 99 /*request code*/,
+            //             intent, PendingIntentFlags.UpdateCurrent);
+            //_mediaSession.SetSessionActivity(pi);
+
             //_mediaRouter = MediaRouter.GetInstance(ApplicationContext);
+
+            mediaCallback.OnPlayFromUriImpl = (uri, bundle) =>
+            {
+                AudioPlayer.Play(uri.ToString());
+            };
         }
 
         public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)
@@ -112,6 +148,86 @@ namespace MediaManager.Platforms.Android
         public void onPlaybackStateUpdated(PlaybackStateCompat newState)
         {
             _mediaSession.SetPlaybackState(newState);
+        }
+
+        class MediaSessionCallback : MediaSessionCompat.Callback
+        {
+            public Action OnPlayImpl { get; set; }
+
+            public Action<long> OnSkipToQueueItemImpl { get; set; }
+
+            public Action<long> OnSeekToImpl { get; set; }
+
+            public Action<string, Bundle> OnPlayFromMediaIdImpl { get; set; }
+
+            public Action OnPauseImpl { get; set; }
+
+            public Action OnStopImpl { get; set; }
+
+            public Action OnSkipToNextImpl { get; set; }
+
+            public Action OnSkipToPreviousImpl { get; set; }
+
+            public Action<string, Bundle> OnCustomActionImpl { get; set; }
+
+            public Action<string, Bundle> OnPlayFromSearchImpl { get; set; }
+
+            public Action<global::Android.Net.Uri, Bundle> OnPlayFromUriImpl { get; set; }
+
+            public override void OnPlay()
+            {
+                OnPlayImpl();
+            }
+
+            public override void OnSkipToQueueItem(long id)
+            {
+                OnSkipToQueueItemImpl(id);
+            }
+
+            public override void OnSeekTo(long pos)
+            {
+                OnSeekToImpl(pos);
+            }
+
+            public override void OnPlayFromMediaId(string mediaId, Bundle extras)
+            {
+                OnPlayFromMediaIdImpl(mediaId, extras);
+            }
+
+            public override void OnPlayFromUri(global::Android.Net.Uri uri, Bundle extras)
+            {
+                OnPlayFromUriImpl(uri, extras);
+            }
+
+            public override void OnPause()
+            {
+                OnPauseImpl();
+            }
+
+            public override void OnStop()
+            {
+                OnStopImpl();
+            }
+
+            public override void OnSkipToNext()
+            {
+                OnSkipToNextImpl();
+            }
+
+            public override void OnSkipToPrevious()
+            {
+                OnSkipToPreviousImpl();
+            }
+
+            public override void OnCustomAction(string action, Bundle extras)
+            {
+                OnCustomActionImpl(action, extras);
+            }
+
+            public override void OnPlayFromSearch(string query, Bundle extras)
+            {
+                OnPlayFromSearchImpl(query, extras);
+            }
         }
 
         /**

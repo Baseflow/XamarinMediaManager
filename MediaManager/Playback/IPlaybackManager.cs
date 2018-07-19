@@ -6,7 +6,7 @@ namespace MediaManager.Playback
 {
     public interface IPlaybackManager
     {
-        IMediaPlayer CurrentMediaPlayer { get; }
+        //IMediaPlayer CurrentMediaPlayer { get; }
 
         /// <summary>
         /// Gets the players position

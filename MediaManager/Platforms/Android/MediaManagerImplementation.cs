@@ -11,46 +11,23 @@ using MediaManager.Platforms.Android;
 using MediaManager.Playback;
 using MediaManager.Video;
 using MediaManager.Volume;
+using Plugin.CurrentActivity;
 
 namespace MediaManager
 {
     public class MediaManagerImplementation : MediaManagerBase
     {
-        public MediaControllerCompat mediaController;
-        private MediaBrowserCompat mediaBrowser;
-        private ConnectionCallback mConnectionCallback;
-        private MediaControllerCallback mMediaControllerCallback;
-
         public MediaManagerImplementation()
         {
-            mMediaControllerCallback = new MediaControllerCallback();
-
-            // Connect a media browser just to get the media session token. There are other ways
-            // this can be done, for example by sharing the session token directly.
-            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-            mConnectionCallback = new ConnectionCallback(() =>
-            {
-                mediaController = new MediaControllerCompat(Application.Context, mediaBrowser.SessionToken);
-                mediaController.RegisterCallback(mMediaControllerCallback);
-                tcs.SetResult(true);
-            });
-            mediaBrowser = new MediaBrowserCompat(Application.Context, new ComponentName(Application.Context, nameof(AudioPlayerService)), mConnectionCallback, null);
-            mediaBrowser.Connect();
-            tcs.Task.Wait();
         }
 
-        private IAudioPlayer _audioPlayer;
-        public override IAudioPlayer AudioPlayer
-        {
+        private MediaBrowserManager _mediaBrowserManager;
+        public virtual MediaBrowserManager MediaBrowserManager {
             get
             {
-                if (_audioPlayer == null)
-                    _audioPlayer = new AudioPlayer();
-                return _audioPlayer;
-            }
-            set
-            {
-                _audioPlayer = value;
+                if (_mediaBrowserManager == null)
+                    _mediaBrowserManager = new MediaBrowserManager();
+                return _mediaBrowserManager;
             }
         }
 
@@ -126,51 +103,6 @@ namespace MediaManager
             set
             {
                 _playbackManager = value;
-            }
-        }
-
-        private class MediaControllerCallback : MediaControllerCompat.Callback
-        {
-            public override void OnPlaybackStateChanged(PlaybackStateCompat state)
-            {
-                base.OnPlaybackStateChanged(state);
-            }
-
-            public override void OnMetadataChanged(MediaMetadataCompat metadata)
-            {
-                base.OnMetadataChanged(metadata);
-            }
-
-            public override void OnSessionEvent(string @event, Bundle extras)
-            {
-                base.OnSessionEvent(@event, extras);
-            }
-        }
-
-        private class ConnectionCallback : MediaBrowserCompat.ConnectionCallback
-        {
-            Action OnConnect;
-
-            public ConnectionCallback(Action onConnect)
-            {
-                OnConnect = onConnect;
-            }
-
-            public ConnectionCallback(IntPtr javaReference, Android.Runtime.JniHandleOwnership transfer) : base(javaReference, transfer)
-            {
-
-            }
-
-            public override void OnConnected()
-            {
-                try
-                {
-                    OnConnect?.Invoke();
-                }
-                catch (RemoteException e)
-                {
-
-                }
             }
         }
     }

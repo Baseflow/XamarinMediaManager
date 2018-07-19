@@ -6,15 +6,15 @@ using MediaManager.Media;
 
 namespace MediaManager.Playback
 {
-    public abstract class PlaybackManagerBase : IPlaybackManager
+    /*public abstract class PlaybackManagerBase : IPlaybackManager
     {
-        public abstract IMediaPlayer CurrentMediaPlayer { get; }
+        //public abstract IMediaPlayer CurrentMediaPlayer { get; }
 
-        public TimeSpan Position => CurrentMediaPlayer.Position;
+        //public TimeSpan Position => CurrentMediaPlayer.Position;
 
-        public TimeSpan Duration => CurrentMediaPlayer.Duration;
+        //public TimeSpan Duration => CurrentMediaPlayer.Duration;
 
-        public TimeSpan Buffered => CurrentMediaPlayer.Buffered;
+        //public TimeSpan Buffered => CurrentMediaPlayer.Buffered;
 
         public abstract Task Pause();
 
@@ -43,5 +43,5 @@ namespace MediaManager.Playback
         public abstract void ToggleRepeat();
 
         public abstract void ToggleShuffle();
-    }
+    }*/
 }

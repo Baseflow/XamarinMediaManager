@@ -7,86 +7,93 @@ using MediaManager.Playback;
 
 namespace MediaManager.Platforms.Android
 {
-    public class PlaybackManager : PlaybackManagerBase
+    public class PlaybackManager : IPlaybackManager //PlaybackManagerBase
     {
-        private MediaManagerImplementation mediaManagerImplementation;
+        protected MediaManagerImplementation mediaManagerImplementation;
+        protected MediaBrowserManager mediaBrowserManager => mediaManagerImplementation.MediaBrowserManager;
+
+        public TimeSpan Position => throw new NotImplementedException();
+
+        public TimeSpan Duration => throw new NotImplementedException();
+
+        public TimeSpan Buffered => throw new NotImplementedException();
 
         public PlaybackManager(MediaManagerImplementation mediaManagerImplementation)
         {
             this.mediaManagerImplementation = mediaManagerImplementation;
         }
 
-        public override IMediaPlayer CurrentMediaPlayer => mediaManagerImplementation.AudioPlayer;
+        //public override IMediaPlayer CurrentMediaPlayer => mediaManagerImplementation.AudioPlayer;
 
-        public override Task Pause()
+        public Task Pause()
         {
             throw new NotImplementedException();
         }
 
-        public override Task Play()
+        public async Task Play()
         {
-            mediaManagerImplementation.mediaController.GetTransportControls().Play();
-            return Task.CompletedTask;
+            await mediaBrowserManager.EnsureInitialized();
+            mediaBrowserManager.mediaController.GetTransportControls().Play();
         }
 
-        public override Task Play(IMediaItem mediaItem)
+        public async Task Play(IMediaItem mediaItem)
         {
+            await mediaBrowserManager.EnsureInitialized();
             var mediaUri = global::Android.Net.Uri.Parse(mediaItem.MetadataMediaUri);
-            mediaManagerImplementation.mediaController.GetTransportControls().PlayFromUri(mediaUri, null);
-            return Task.CompletedTask;
+            mediaBrowserManager.mediaController.GetTransportControls().PlayFromUri(mediaUri, null);
         }
 
-        public override Task PlayNext()
+        public Task PlayNext()
         {
             throw new NotImplementedException();
         }
 
-        public override Task PlayPause()
+        public Task PlayPause()
         {
             throw new NotImplementedException();
         }
 
-        public override Task PlayPrevious()
+        public Task PlayPrevious()
         {
             throw new NotImplementedException();
         }
 
-        public override Task PlayPreviousOrSeekToStart()
+        public Task PlayPreviousOrSeekToStart()
         {
             throw new NotImplementedException();
         }
 
-        public override Task SeekTo(TimeSpan position)
+        public Task SeekTo(TimeSpan position)
         {
             throw new NotImplementedException();
         }
 
-        public override Task SeekToStart()
+        public Task SeekToStart()
         {
             throw new NotImplementedException();
         }
 
-        public override Task StepBackward()
+        public Task StepBackward()
         {
             throw new NotImplementedException();
         }
 
-        public override Task StepForward()
+        public Task StepForward()
         {
             throw new NotImplementedException();
         }
 
-        public override Task Stop()
+        public Task Stop()
         {
             throw new NotImplementedException();
         }
 
-        public override void ToggleRepeat()
+        public void ToggleRepeat()
         {
             throw new NotImplementedException();
         }
 
-        public override void ToggleShuffle()
+        public void ToggleShuffle()
         {
             throw new NotImplementedException();
         }
