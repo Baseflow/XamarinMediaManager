@@ -8,32 +8,6 @@ namespace MediaManager
 {
     public interface IMediaPlayer
     {
-        /// <summary>
-        /// Gets or sets the request headers.
-        /// </summary>
-        Dictionary<string, string> RequestHeaders { get; set; }
-
-        /// <summary>
-        /// Reading the current status of the player
-        /// </summary>
-        MediaPlayerStatus Status { get; }
-
-        /// <summary>
-        /// Gets the players position
-        /// </summary>
-        TimeSpan Position { get; }
-
-        /// <summary>
-        /// Gets the source duration
-        /// If the response is TimeSpan.Zero, the duration is unknown or the player is still buffering.
-        /// </summary>
-        TimeSpan Duration { get; }
-
-        /// <summary>
-        /// Gets the buffered time
-        /// </summary>
-        TimeSpan Buffered { get; }
-
         // <summary>
         /// Adds MediaFile to the Queue and starts playing
         /// </summary>

@@ -1,12 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using MediaManager.Media;
 
 namespace MediaManager.Playback
 {
-    public interface IPlaybackManager
+    public interface IPlaybackManager : INotifyPropertyChanged
     {
         //IMediaPlayer CurrentMediaPlayer { get; }
+
+        /// <summary>
+        /// Gets or sets the request headers.
+        /// </summary>
+        Dictionary<string, string> RequestHeaders { get; set; }
+
+        /// <summary>
+        /// Reading the current status of the player
+        /// </summary>
+        MediaPlayerStatus Status { get; }
 
         /// <summary>
         /// Gets the players position

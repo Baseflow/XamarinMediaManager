@@ -1,4 +1,5 @@
-﻿using MediaManager.Media;
+﻿using System;
+using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Volume;
 
@@ -6,6 +7,12 @@ namespace MediaManager
 {
     public interface IMediaManager
     {
+
+        MediaPlayerStatus Status { get; }
+        TimeSpan Duration { get; }
+        TimeSpan Buffered { get; }
+        TimeSpan Position { get; }
+
         //IAudioPlayer AudioPlayer { get; set; }
 
         //IVideoPlayer VideoPlayer { get; set; }

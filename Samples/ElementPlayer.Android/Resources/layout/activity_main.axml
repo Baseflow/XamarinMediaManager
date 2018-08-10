@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <Button
-        android:text="Play"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvPlaying"
+        android:layout_above="@+id/sbProgress"
+        android:text="Press 'Play' to play a song"
+        android:layout_alignParentLeft="true" />
+    <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button2" />
+        android:id="@+id/sbProgress"
+        android:layout_above="@+id/btnPlayPause" />
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnPlayPause"
+        android:textOff="Play"
+        android:textOn="Pause"
+        android:layout_alignParentBottom="true" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnPrevious"
+        android:text="|&lt; Previous"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/btnPlayPause" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnNext"
+        android:text="Next &gt;|"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/btnPrevious" />
 </RelativeLayout>

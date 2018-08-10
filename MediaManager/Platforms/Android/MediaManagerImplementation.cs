@@ -1,12 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Support.V4.Media;
-using Android.Support.V4.Media.Session;
-using MediaManager.Audio;
-using MediaManager.Media;
+﻿using MediaManager.Media;
 using MediaManager.Platforms.Android;
 using MediaManager.Playback;
 using MediaManager.Video;
