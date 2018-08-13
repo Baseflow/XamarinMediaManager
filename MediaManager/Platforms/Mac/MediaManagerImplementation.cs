@@ -7,10 +7,11 @@ namespace MediaManager
 {
     public class MediaManagerImplementation : MediaManagerBase
     {
-        public override IAudioPlayer AudioPlayer { get; set; }
+        //public override IAudioPlayer AudioPlayer { get; set; }
         public override IVideoPlayer VideoPlayer { get; set; }
         public override INotificationManager NotificationManager { get; set; }
         public override IMediaExtractor MediaExtractor { get; set; }
         public override IVolumeManager VolumeManager { get; set; }
+        public override IPlaybackManager PlaybackManager { get; set; }
     }
 }
