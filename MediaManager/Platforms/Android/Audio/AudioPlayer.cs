@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -33,6 +32,7 @@ namespace MediaManager
         private DefaultBandwidthMeter defaultBandwidthMeter;
         private AdaptiveTrackSelection.Factory adaptiveTrackSelectionFactory;
         private DefaultTrackSelector defaultTrackSelector;
+        private MediaSessionConnector connector;
 
         public Dictionary<string, string> RequestHeaders { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
@@ -74,8 +74,9 @@ namespace MediaManager
 
             _player = ExoPlayerFactory.NewSimpleInstance(Context, defaultTrackSelector);
             _player.AddListener(new PlayerEventListener());
-            MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(_mediaSession);
-            mediaSessionConnector.SetPlayer(_player, null, null);
+
+            connector = new MediaSessionConnector(_mediaSession);
+            connector.SetPlayer(_player, null, null);
 
             return Task.CompletedTask;
         }

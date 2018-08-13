@@ -50,7 +50,9 @@ namespace MediaManager.Platforms.Android
         {
             await MediaBrowserManager.EnsureInitialized();
             var mediaUri = global::Android.Net.Uri.Parse(mediaItem.MetadataMediaUri);
-            MediaBrowserManager.mediaController.GetTransportControls().PlayFromUri(mediaUri, null);
+            //MediaBrowserManager.mediaController.GetTransportControls().PlayFromUri(mediaUri, null);
+            MediaBrowserManager.mediaController.GetTransportControls().PrepareFromUri(mediaUri, null);
+            MediaBrowserManager.mediaController.GetTransportControls().Play();
         }
 
         public async Task PlayNext()

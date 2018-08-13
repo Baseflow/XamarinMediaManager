@@ -8,6 +8,8 @@ using Android.OS;
 using Android.Service.Media;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
+using Com.Google.Android.Exoplayer2;
+using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 using MediaManager.Audio;
 
 namespace MediaManager.Platforms.Android
@@ -48,11 +50,13 @@ namespace MediaManager.Platforms.Android
             _mediaSession = new MediaSessionCompat(this, nameof(MediaBrowserService));
             SessionToken = _mediaSession.SessionToken;
 
-            var mediaCallback = new MediaSessionCallback();
-            _mediaSession.SetCallback(mediaCallback);
+            //var mediaCallback = new MediaSessionCallback();
+            //_mediaSession.SetCallback(mediaCallback);
 
             _mediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
                                    MediaSessionCompat.FlagHandlesTransportControls);
+
+
 
             //Context context = ApplicationContext;
             //var intent = new Intent(context, typeof(MusicPlayerActivity));
@@ -62,7 +66,7 @@ namespace MediaManager.Platforms.Android
 
             //_mediaRouter = MediaRouter.GetInstance(ApplicationContext);
 
-            mediaCallback.OnPlayImpl = () =>
+            /*mediaCallback.OnPlayImpl = () =>
             {
                 if (!_mediaSession.Active)
                     _mediaSession.Active = true;
@@ -131,7 +135,7 @@ namespace MediaManager.Platforms.Android
                     _mediaSession.Active = true;
 
                 AudioPlayer.Play(uri.ToString());
-            };
+            };*/
         }
 
         public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)
@@ -216,7 +220,7 @@ namespace MediaManager.Platforms.Android
             _mediaSession.SetPlaybackState(newState);
         }
 
-        class MediaSessionCallback : MediaSessionCompat.Callback
+        /*class MediaSessionCallback : MediaSessionCompat.Callback
         {
             public Action OnPlayImpl { get; set; }
 
@@ -296,6 +300,17 @@ namespace MediaManager.Platforms.Android
                 OnPlayFromSearchImpl?.Invoke(query, extras);
             }
         }
+
+        /*class PlaybackController : Com.Google.Android.Exoplayer2.Ext.Mediasession.DefaultPlaybackController
+        {
+
+            override 
+        }
+
+        class PlaybackPreparer : Com.Google.Android.Exoplayer2.Ext.Mediasession.MediaSessionConnector.PlaybackPreparer
+        {
+
+        }*/
 
         /**
         * A simple handler that stops the service if playback is not active (playing)
