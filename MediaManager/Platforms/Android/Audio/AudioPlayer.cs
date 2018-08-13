@@ -52,7 +52,7 @@ namespace MediaManager
 
         public TimeSpan Buffered => TimeSpan.FromTicks(_player.BufferedPosition);
 
-        protected Context context { get; set; } = Application.Context;
+        protected Context Context { get; set; } = Application.Context;
 
         public Task Pause()
         {
@@ -65,14 +65,14 @@ namespace MediaManager
             if (_player != null)
                 return Task.CompletedTask;
 
-            userAgent = Util.GetUserAgent(context, "MediaManager");
+            userAgent = Util.GetUserAgent(Context, "MediaManager");
             defaultHttpDataSourceFactory = new DefaultHttpDataSourceFactory(userAgent);
-            defaultDataSourceFactory = new DefaultDataSourceFactory(context, null, defaultHttpDataSourceFactory);
+            defaultDataSourceFactory = new DefaultDataSourceFactory(Context, null, defaultHttpDataSourceFactory);
             defaultBandwidthMeter = new DefaultBandwidthMeter();
             adaptiveTrackSelectionFactory = new AdaptiveTrackSelection.Factory(defaultBandwidthMeter);
             defaultTrackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory);
 
-            _player = ExoPlayerFactory.NewSimpleInstance(context, defaultTrackSelector);
+            _player = ExoPlayerFactory.NewSimpleInstance(Context, defaultTrackSelector);
             _player.AddListener(new PlayerEventListener());
             MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(_mediaSession);
             mediaSessionConnector.SetPlayer(_player, null, null);
@@ -101,7 +101,7 @@ namespace MediaManager
 
         public Task Seek(TimeSpan position)
         {
-            _player.SeekTo(position.Ticks);
+            _player.SeekTo((long)position.TotalMilliseconds);
 
             return Task.CompletedTask;
         }

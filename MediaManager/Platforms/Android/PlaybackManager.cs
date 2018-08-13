@@ -80,7 +80,7 @@ namespace MediaManager.Platforms.Android
         public async Task SeekTo(TimeSpan position)
         {
             await MediaBrowserManager.EnsureInitialized();
-            MediaBrowserManager.mediaController.GetTransportControls().SeekTo(position.Milliseconds);
+            MediaBrowserManager.mediaController.GetTransportControls().SeekTo((long)position.TotalMilliseconds);
         }
 
         public async Task SeekToStart()

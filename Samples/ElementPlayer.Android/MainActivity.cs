@@ -69,19 +69,14 @@ namespace ElementPlayer.Android
             sbProgress = FindViewById<SeekBar>(Resource.Id.sbProgress);
             tvPlaying = FindViewById<TextView>(Resource.Id.tvPlaying);
 
-            sbProgress.ProgressChanged += async (sender, args) =>
-            {
-                if (args.FromUser)
-                    await player.SeekTo(args.Progress);
-            };
-
-            sbProgress.StartTrackingTouch += (sender, args) =>
+            sbProgress.StartTrackingTouch += async (sender, args) =>
             {
                 StopSeekbarUpdate();
             };
 
-            sbProgress.StopTrackingTouch += (sender, args) =>
+            sbProgress.StopTrackingTouch += async (sender, args) =>
             {
+                await player.SeekTo(args.SeekBar.Progress);
                 ScheduleSeekbarUpdate();
             };
         }
@@ -92,8 +87,8 @@ namespace ElementPlayer.Android
             TimeSpan position = player.Position;
 
 
-            sbProgress.Max = Convert.ToInt32(duration.TotalSeconds);
-            sbProgress.Progress = Convert.ToInt32(System.Math.Floor(position.TotalSeconds));
+            sbProgress.Max = Convert.ToInt32(duration.TotalMilliseconds);
+            sbProgress.Progress = Convert.ToInt32(System.Math.Floor(position.TotalMilliseconds));
 
             //is {(position.TotalMilliseconds / duration.TotalMilliseconds) * 100: 000}%
 

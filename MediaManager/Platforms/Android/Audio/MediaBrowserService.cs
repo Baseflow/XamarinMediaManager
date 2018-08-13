@@ -67,6 +67,8 @@ namespace MediaManager.Platforms.Android
                 if (!_mediaSession.Active)
                     _mediaSession.Active = true;
 
+                throw new NotImplementedException("Testing Play implementation!");
+
                 AudioPlayer.Play();
             };
 
@@ -78,7 +80,9 @@ namespace MediaManager.Platforms.Android
 
             mediaCallback.OnSeekToImpl = (long pos) =>
             {
-                AudioPlayer.Seek(TimeSpan.FromTicks(pos));
+                throw new NotImplementedException("Testing Seek implementation!");
+
+                AudioPlayer.Seek(TimeSpan.FromMilliseconds(pos));
             };
 
             mediaCallback.OnPlayFromMediaIdImpl = (string mediaId, Bundle bundle) =>
@@ -97,22 +101,26 @@ namespace MediaManager.Platforms.Android
                 AudioPlayer.Stop();
             };
 
-            mediaCallback.OnSkipToNextImpl = () => {
+            mediaCallback.OnSkipToNextImpl = () =>
+            {
                 throw new NotImplementedException();
                 //AudioPlayer.SkipToNext();
             };
 
-            mediaCallback.OnSkipToPreviousImpl = () => {
+            mediaCallback.OnSkipToPreviousImpl = () =>
+            {
                 throw new NotImplementedException();
                 //AudioPlayer.SkipToPrevious();
             };
 
-            mediaCallback.OnCustomActionImpl = (string action, Bundle bundle) => {
+            mediaCallback.OnCustomActionImpl = (string action, Bundle bundle) =>
+            {
                 throw new NotImplementedException();
                 //AudioPlayer.CustomAction(action, bundle);
             };
 
-            mediaCallback.OnPlayFromSearchImpl = (string query, Bundle bundle) => {
+            mediaCallback.OnPlayFromSearchImpl = (string query, Bundle bundle) =>
+            {
                 throw new NotImplementedException();
                 //AudioPlayer.PlayFromSearch(action, bundle);
             };
@@ -234,57 +242,58 @@ namespace MediaManager.Platforms.Android
 
             public override void OnPlay()
             {
-                OnPlayImpl();
+                OnPlayImpl?.Invoke();
             }
 
             public override void OnSkipToQueueItem(long id)
             {
-                OnSkipToQueueItemImpl(id);
+                OnSkipToQueueItemImpl?.Invoke(id);
             }
 
             public override void OnSeekTo(long pos)
             {
-                OnSeekToImpl(pos);
+                OnSeekToImpl?.Invoke(pos);
             }
 
             public override void OnPlayFromMediaId(string mediaId, Bundle extras)
             {
-                OnPlayFromMediaIdImpl(mediaId, extras);
+                OnPlayFromMediaIdImpl?.Invoke(mediaId, extras);
             }
 
             public override void OnPlayFromUri(global::Android.Net.Uri uri, Bundle extras)
             {
-                OnPlayFromUriImpl(uri, extras);
+                //throw new NotImplementedException("Not implemented...");
+                OnPlayFromUriImpl?.Invoke(uri, extras);
             }
 
             public override void OnPause()
             {
-                OnPauseImpl();
+                OnPauseImpl?.Invoke();
             }
 
             public override void OnStop()
             {
-                OnStopImpl();
+                OnStopImpl?.Invoke();
             }
 
             public override void OnSkipToNext()
             {
-                OnSkipToNextImpl();
+                OnSkipToNextImpl?.Invoke();
             }
 
             public override void OnSkipToPrevious()
             {
-                OnSkipToPreviousImpl();
+                OnSkipToPreviousImpl?.Invoke();
             }
 
             public override void OnCustomAction(string action, Bundle extras)
             {
-                OnCustomActionImpl(action, extras);
+                OnCustomActionImpl?.Invoke(action, extras);
             }
 
             public override void OnPlayFromSearch(string query, Bundle extras)
             {
-                OnPlayFromSearchImpl(query, extras);
+                OnPlayFromSearchImpl?.Invoke(query, extras);
             }
         }
 
