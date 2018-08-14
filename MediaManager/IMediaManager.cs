@@ -7,7 +7,6 @@ namespace MediaManager
 {
     public interface IMediaManager
     {
-
         MediaPlayerStatus Status { get; }
         TimeSpan Duration { get; }
         TimeSpan Buffered { get; }
