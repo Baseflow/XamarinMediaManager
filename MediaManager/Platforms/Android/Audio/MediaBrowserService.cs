@@ -1,10 +1,15 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
+using Android.Net;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
+using Com.Google.Android.Exoplayer2;
+using Com.Google.Android.Exoplayer2.Ext.Mediasession;
+using Com.Google.Android.Exoplayer2.UI;
 using MediaManager.Audio;
 
 namespace MediaManager.Platforms.Android
@@ -34,6 +39,9 @@ namespace MediaManager.Platforms.Android
 
         private DelayedStopHandler _delayedStopHandler;
         private int STOP_DELAY = 30000;
+        private PlayerNotificationManager playerNotificationManager;
+        public readonly string ChannelId = "audio_channel";
+        public readonly int FOREGROUND_NOTIFICATION_ID = 1;
 
         public MediaBrowserService()
         {
@@ -57,6 +65,45 @@ namespace MediaManager.Platforms.Android
             NativePlayer.Initialize();
 
             _mediaSession.Active = true;
+
+            playerNotificationManager = new PlayerNotificationManager(
+              this,
+              ChannelId,
+              FOREGROUND_NOTIFICATION_ID,
+              new DescriptionAdapter());
+            playerNotificationManager.SetPlayer(NativePlayer.Player);
+            playerNotificationManager.SetMediaSessionToken(SessionToken);
+
+            //Context context = ApplicationContext;
+            //var intent = new Intent(context, typeof(MusicPlayerActivity));
+            //var pi = PendingIntent.GetActivity(context, 99 /*request code*/,
+            //             intent, PendingIntentFlags.UpdateCurrent);
+            //_mediaSession.SetSessionActivity(pi);
+
+            //_mediaRouter = MediaRouter.GetInstance(ApplicationContext);
+        }
+
+        private class DescriptionAdapter : Java.Lang.Object, PlayerNotificationManager.IMediaDescriptionAdapter
+        {
+            public PendingIntent CreateCurrentContentIntent(IPlayer player)
+            {
+                return null;
+            }
+
+            public string GetCurrentContentText(IPlayer player)
+            {
+                return "Content text";
+            }
+
+            public string GetCurrentContentTitle(IPlayer player)
+            {
+                return "Content title";
+            }
+
+            public Bitmap GetCurrentLargeIcon(IPlayer player, PlayerNotificationManager.BitmapCallback callback)
+            {
+                return null;
+            }
         }
 
         public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)
@@ -75,15 +122,9 @@ namespace MediaManager.Platforms.Android
 
         public override void OnDestroy()
         {
-            //unregisterCarConnectionReceiver();
             // Service is being killed, so make sure we release our resources
-            //mPlaybackManager.handleStopRequest(null);
-            //_mediaNotificationManager.StopNotifications();
 
-            //Maybe use for communication
-            //_mediaSession.Controller.SendCommand();
-
-
+            //unregisterCarConnectionReceiver();
             /*
             if (mCastSessionManager != null)
             {
@@ -91,6 +132,11 @@ namespace MediaManager.Platforms.Android
                         CastSession.class);
             }
             */
+
+            playerNotificationManager.SetPlayer(null);
+            NativePlayer.Player.Release();
+            NativePlayer.Player = null;
+
             _delayedStopHandler.RemoveCallbacksAndMessages(null);
             _mediaSession.Release();
         }

@@ -71,14 +71,14 @@
     <Compile Include="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
     <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Core" Version="2.8.6" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Dash" Version="2.8.6" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Hls" Version="2.8.6" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.SmoothStreaming" Version="2.8.6" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.UI" Version="2.8.6" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.8.6" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.8.6" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.8.6" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Core" Version="2.8.7" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Dash" Version="2.8.7" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Hls" Version="2.8.7" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.SmoothStreaming" Version="2.8.7" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.UI" Version="2.8.7" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.8.7" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.8.7" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.8.7" />
     <PackageReference Include="Xamarin.Build.Download" Version="0.4.11" />
   </ItemGroup>
 

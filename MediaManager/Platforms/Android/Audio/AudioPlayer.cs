@@ -27,7 +27,7 @@ namespace MediaManager
             _mediaSession = mediaSession;
         }
 
-        protected SimpleExoPlayer _player;
+        public SimpleExoPlayer Player;
         string userAgent;
 
         private DefaultHttpDataSourceFactory defaultHttpDataSourceFactory;
@@ -37,7 +37,7 @@ namespace MediaManager
         private DefaultTrackSelector defaultTrackSelector;
         private MediaSessionConnector connector;
 
-        public Dictionary<string, string> RequestHeaders { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Dictionary<string, string> RequestHeaders { get; set; }
 
         public MediaPlayerStatus Status
         {
@@ -49,23 +49,23 @@ namespace MediaManager
             }
         }
 
-        public TimeSpan Position => TimeSpan.FromTicks(_player.CurrentPosition);
+        public TimeSpan Position => TimeSpan.FromTicks(Player.CurrentPosition);
 
-        public TimeSpan Duration => TimeSpan.FromTicks(_player.Duration);
+        public TimeSpan Duration => TimeSpan.FromTicks(Player.Duration);
 
-        public TimeSpan Buffered => TimeSpan.FromTicks(_player.BufferedPosition);
+        public TimeSpan Buffered => TimeSpan.FromTicks(Player.BufferedPosition);
 
         protected Context Context { get; set; } = Application.Context;
 
         public Task Pause()
         {
-            _player.Stop();
+            Player.Stop();
             return Task.CompletedTask;
         }
 
         public void Initialize()
         {
-            if (_player != null)
+            if (Player != null)
                 return;
 
             userAgent = Util.GetUserAgent(Context, "MediaManager");
@@ -75,43 +75,43 @@ namespace MediaManager
             adaptiveTrackSelectionFactory = new AdaptiveTrackSelection.Factory(defaultBandwidthMeter);
             defaultTrackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory);
 
-            _player = ExoPlayerFactory.NewSimpleInstance(Context, defaultTrackSelector);
-            _player.AddListener(new PlayerEventListener());
+            Player = ExoPlayerFactory.NewSimpleInstance(Context, defaultTrackSelector);
+            Player.AddListener(new PlayerEventListener());
 
             connector = new MediaSessionConnector(_mediaSession, new PlaybackController());
-            connector.SetPlayer(_player, new PlaybackPreparer(_player, defaultDataSourceFactory), null);
-            _player.PlayWhenReady = true;
+            connector.SetPlayer(Player, new PlaybackPreparer(Player, defaultDataSourceFactory), null);
+            Player.PlayWhenReady = true;
         }
 
         public Task Play(string Url)
         {
-            var mediaUri = Android.Net.Uri.Parse(Url);
+            //var mediaUri = Android.Net.Uri.Parse(Url);
 
-            var extractorMediaSource = new ExtractorMediaSource(mediaUri, defaultDataSourceFactory, new DefaultExtractorsFactory(), null, null);
-            _player.Prepare(extractorMediaSource);
-            _player.PlayWhenReady = true;
+            //var extractorMediaSource = new ExtractorMediaSource(mediaUri, defaultDataSourceFactory, new DefaultExtractorsFactory(), null, null);
+            //Player.Prepare(extractorMediaSource);
+            //Player.PlayWhenReady = true;
 
             return Task.CompletedTask;
         }
 
         public Task Play()
         {
-            if (_player != null)
-                _player.PlayWhenReady = true;
+            //if (Player != null)
+            //    Player.PlayWhenReady = true;
 
             return Task.CompletedTask;
         }
 
         public Task Seek(TimeSpan position)
         {
-            _player.SeekTo((long)position.TotalMilliseconds);
+            //Player.SeekTo((long)position.TotalMilliseconds);
 
             return Task.CompletedTask;
         }
 
         public Task Stop()
         {
-            _player.Stop(true);
+            //Player.Stop(true);
 
             return Task.CompletedTask;
         }
