@@ -30,7 +30,7 @@ namespace MediaManager
 
         public static bool IsPlaying(this IMediaManager mediaManager)
         {
-            return mediaManager.PlaybackManager.Status == MediaPlayerStatus.playing;
+            return mediaManager.PlaybackManager.Status == MediaPlayerStatus.Playing;
         }
 
         public static Task Pause(this IMediaManager mediaManager)
@@ -42,7 +42,7 @@ namespace MediaManager
         {
             var status = mediaManager.PlaybackManager.Status;
 
-            if (status == MediaPlayerStatus.paused || status == MediaPlayerStatus.stopped)
+            if (status == MediaPlayerStatus.Paused || status == MediaPlayerStatus.Stopped)
                 return mediaManager.Play();
             else
                 return mediaManager.Pause();

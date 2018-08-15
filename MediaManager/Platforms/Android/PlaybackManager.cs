@@ -25,9 +25,9 @@ namespace MediaManager.Platforms.Android
 
         public TimeSpan Buffered => MediaBrowserManager?.PlaybackState?.Buffered ?? TimeSpan.Zero;
 
-        public MediaPlayerStatus Status => MediaBrowserManager?.PlaybackState?.Status ?? MediaPlayerStatus.stopped;
+        public MediaPlayerStatus Status => MediaBrowserManager?.PlaybackState?.Status ?? MediaPlayerStatus.Stopped;
 
-        public Dictionary<string, string> RequestHeaders { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Dictionary<string, string> RequestHeaders { get; set; }
 
         public PlaybackManager(MediaManagerImplementation mediaManagerImplementation)
         {
@@ -60,11 +60,11 @@ namespace MediaManager.Platforms.Android
             MediaBrowserManager.mediaController.GetTransportControls().SkipToNext();
         }
 
-        public async Task PlayPause()
+        /*public async Task PlayPause()
         {
             await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.mediaController.GetTransportControls().SkipToNext();
-        }
+        }*/
 
         public async Task PlayPrevious()
         {
@@ -75,7 +75,10 @@ namespace MediaManager.Platforms.Android
         public async Task PlayPreviousOrSeekToStart()
         {
             await MediaBrowserManager.EnsureInitialized();
-            MediaBrowserManager.mediaController.GetTransportControls().SeekTo(0);
+            if (Position < TimeSpan.FromSeconds(3))
+                MediaBrowserManager.mediaController.GetTransportControls().SkipToPrevious();
+            else
+                MediaBrowserManager.mediaController.GetTransportControls().SeekTo(0);
         }
 
         public async Task SeekTo(TimeSpan position)
@@ -92,12 +95,14 @@ namespace MediaManager.Platforms.Android
 
         public async Task StepBackward()
         {
-            throw new NotImplementedException();
+            await MediaBrowserManager.EnsureInitialized();
+            MediaBrowserManager.mediaController.GetTransportControls().Rewind();
         }
 
         public async Task StepForward()
         {
-            throw new NotImplementedException();
+            await MediaBrowserManager.EnsureInitialized();
+            MediaBrowserManager.mediaController.GetTransportControls().FastForward();
         }
 
         public async Task Stop()
@@ -108,12 +113,12 @@ namespace MediaManager.Platforms.Android
 
         public void ToggleRepeat()
         {
-            throw new NotImplementedException();
+            MediaBrowserManager.mediaController.GetTransportControls().SetRepeatMode(0);
         }
 
         public void ToggleShuffle()
         {
-            throw new NotImplementedException();
+            MediaBrowserManager.mediaController.GetTransportControls().SetShuffleMode(0);
         }
     }
 }

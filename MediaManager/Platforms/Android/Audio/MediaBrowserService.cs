@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Android.App;
 using Android.Content;
-using Android.Net;
 using Android.OS;
-using Android.Service.Media;
+using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
-using Com.Google.Android.Exoplayer2;
-using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 using MediaManager.Audio;
-using static MediaManager.Platforms.Android.Temp.Samples;
 
 namespace MediaManager.Platforms.Android
 {
@@ -35,12 +28,19 @@ namespace MediaManager.Platforms.Android
             }
         }
 
+        private AudioPlayer NativePlayer => AudioPlayer as AudioPlayer;
+
         private MediaSessionCompat _mediaSession;
 
         private DelayedStopHandler _delayedStopHandler;
         private int STOP_DELAY = 30000;
 
         public MediaBrowserService()
+        {
+            _delayedStopHandler = new DelayedStopHandler(this);
+        }
+
+        public MediaBrowserService(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
         }
 
@@ -53,6 +53,8 @@ namespace MediaManager.Platforms.Android
 
             _mediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
                                    MediaSessionCompat.FlagHandlesTransportControls);
+
+            NativePlayer.Initialize();
 
             _mediaSession.Active = true;
         }
@@ -100,11 +102,11 @@ namespace MediaManager.Platforms.Android
 
         public override void OnLoadChildren(string parentId, Result result)
         {
-            //var test = (Result<List<MediaBrowserCompat.MediaItem>>)result;
+            var mediaItems = new JavaList<MediaBrowserCompat.MediaItem>();
 
-            Java.Util.ArrayList list = (Java.Util.ArrayList)FromArray((from aa in SAMPLES
-                                                                       select new MediaBrowserCompat.MediaItem(GetMediaDescription(Application.Context, aa), MediaBrowserCompat.MediaItem.FlagPlayable)).ToArray());
-            result.SendResult(list);
+            /*Java.Util.ArrayList list = (Java.Util.ArrayList)FromArray((from aa in SAMPLES
+                                                                       select new MediaBrowserCompat.MediaItem(GetMediaDescription(Application.Context, aa), MediaBrowserCompat.MediaItem.FlagPlayable)).ToArray());*/
+            result.SendResult(mediaItems);
         }
 
         public void OnPlaybackStart()
@@ -141,16 +143,15 @@ namespace MediaManager.Platforms.Android
             public override void HandleMessage(Message msg)
             {
                 MediaBrowserService service;
-                if (_weakReference.TryGetTarget(out service))
+                _weakReference.TryGetTarget(out service);
+                if (service != null && service.AudioPlayer != null)
                 {
-                    if (service?._mediaSession?.Controller?.PlaybackState?.State != null)
+                    if (service.AudioPlayer.Status == Media.MediaPlayerStatus.Playing)
                     {
-                        if (service?._mediaSession?.Controller?.PlaybackState.State == PlaybackStateCompat.StatePlaying)
-                        {
-                            return;
-                        }
-                        service.StopSelf();
+                        return;
                     }
+                    service.StopSelf();
+                    //service.serviceStarted = false;
                 }
             }
         }

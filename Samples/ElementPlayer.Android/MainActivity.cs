@@ -40,7 +40,7 @@ namespace ElementPlayer.Android
 
             FindViewById<ToggleButton>(Resource.Id.btnPlayPause).Click += async (object sender, System.EventArgs e) =>
             {
-                if (player.Status == MediaPlayerStatus.stopped || player.Status == MediaPlayerStatus.failed)
+                if (player.Status == MediaPlayerStatus.Stopped || player.Status == MediaPlayerStatus.Failed)
                 {
                     await player.Play(await player.CreateMediaItem("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3"));
                     ScheduleSeekbarUpdate();
@@ -49,7 +49,7 @@ namespace ElementPlayer.Android
                 {
                     await player.PlayPause();
 
-                    if (player.Status == MediaPlayerStatus.paused)
+                    if (player.Status == MediaPlayerStatus.Paused)
                         StopSeekbarUpdate();
                     else
                         ScheduleSeekbarUpdate();

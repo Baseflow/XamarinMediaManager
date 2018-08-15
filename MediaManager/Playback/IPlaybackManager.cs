@@ -39,7 +39,7 @@ namespace MediaManager.Playback
         /// <summary>
         /// Plays or pauses the current MediaFile
         /// </summary>
-        Task PlayPause();
+        //Task PlayPause();
 
         /// <summary>
         /// Plays the current MediaFile

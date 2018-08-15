@@ -27,21 +27,21 @@ namespace MediaManager.Platforms.Android.Utils
                     case PlaybackStateCompat.StateSkippingToPrevious:
                     case PlaybackStateCompat.StateSkippingToQueueItem:
                     case PlaybackStateCompat.StatePlaying:
-                        return MediaPlayerStatus.playing;
+                        return MediaPlayerStatus.Playing;
 
                     case PlaybackStateCompat.StatePaused:
-                        return MediaPlayerStatus.paused;
+                        return MediaPlayerStatus.Paused;
 
                     case PlaybackStateCompat.StateConnecting:
                     case PlaybackStateCompat.StateBuffering:
-                        return MediaPlayerStatus.buffering;
+                        return MediaPlayerStatus.Buffering;
 
                     case PlaybackStateCompat.StateError:
                     case PlaybackStateCompat.StateStopped:
-                        return MediaPlayerStatus.stopped;
+                        return MediaPlayerStatus.Stopped;
 
                     default:
-                        return MediaPlayerStatus.stopped;
+                        return MediaPlayerStatus.Stopped;
                 }
             }
         }
@@ -52,7 +52,7 @@ namespace MediaManager.Platforms.Android.Utils
             {
                 long currentPosition = state.Position;
 
-                if (Status == MediaPlayerStatus.playing)
+                if (Status == MediaPlayerStatus.Playing)
                 {
                     // Calculate the elapsed time between the last position update and now and unless
                     // paused, we can assume (delta * speed) + current position is approximately the

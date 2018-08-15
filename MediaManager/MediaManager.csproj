@@ -14,6 +14,7 @@
     <AssemblyName>MediaManager</AssemblyName>
     <RootNamespace>MediaManager</RootNamespace>
     <PackageId>MediaManager</PackageId>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
   
   <ItemGroup>

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Net;
+using Android.OS;
+using Android.Runtime;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
@@ -40,7 +43,7 @@ namespace MediaManager
         {
             get
             {
-                if (!_mediaSession.Active) return MediaPlayerStatus.stopped;
+                if (!_mediaSession.Active) return MediaPlayerStatus.Stopped;
 
                 return GetStatusByCompatValue((int)_mediaSession.Controller.PlaybackState);
             }
@@ -60,10 +63,10 @@ namespace MediaManager
             return Task.CompletedTask;
         }
 
-        protected Task Initialize()
+        public void Initialize()
         {
             if (_player != null)
-                return Task.CompletedTask;
+                return;
 
             userAgent = Util.GetUserAgent(Context, "MediaManager");
             defaultHttpDataSourceFactory = new DefaultHttpDataSourceFactory(userAgent);
@@ -75,21 +78,20 @@ namespace MediaManager
             _player = ExoPlayerFactory.NewSimpleInstance(Context, defaultTrackSelector);
             _player.AddListener(new PlayerEventListener());
 
-            connector = new MediaSessionConnector(_mediaSession);
-            connector.SetPlayer(_player, null, null);
-
-            return Task.CompletedTask;
+            connector = new MediaSessionConnector(_mediaSession, new PlaybackController());
+            connector.SetPlayer(_player, new PlaybackPreparer(_player, defaultDataSourceFactory), null);
+            _player.PlayWhenReady = true;
         }
 
-        public async Task Play(string Url)
+        public Task Play(string Url)
         {
             var mediaUri = Android.Net.Uri.Parse(Url);
-
-            await Initialize();
 
             var extractorMediaSource = new ExtractorMediaSource(mediaUri, defaultDataSourceFactory, new DefaultExtractorsFactory(), null, null);
             _player.Prepare(extractorMediaSource);
             _player.PlayWhenReady = true;
+
+            return Task.CompletedTask;
         }
 
         public Task Play()
@@ -124,29 +126,97 @@ namespace MediaManager
                 case PlaybackStateCompat.StateSkippingToPrevious:
                 case PlaybackStateCompat.StateSkippingToQueueItem:
                 case PlaybackStateCompat.StatePlaying:
-                    return MediaPlayerStatus.playing;
+                    return MediaPlayerStatus.Playing;
 
                 case PlaybackStateCompat.StatePaused:
-                    return MediaPlayerStatus.paused;
+                    return MediaPlayerStatus.Paused;
 
                 case PlaybackStateCompat.StateConnecting:
                 case PlaybackStateCompat.StateBuffering:
-                    return MediaPlayerStatus.buffering;
+                    return MediaPlayerStatus.Buffering;
 
                 case PlaybackStateCompat.StateError:
                 case PlaybackStateCompat.StateStopped:
-                    return MediaPlayerStatus.stopped;
+                    return MediaPlayerStatus.Stopped;
 
                 default:
-                    return MediaPlayerStatus.stopped;
+                    return MediaPlayerStatus.Stopped;
+            }
+        }
+
+        private class PlaybackController : DefaultPlaybackController
+        {
+            public PlaybackController()
+            {
+            }
+
+            public PlaybackController(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+            {
+            }
+        }
+
+        private class PlaybackPreparer : Java.Lang.Object, MediaSessionConnector.IPlaybackPreparer
+        {
+            private SimpleExoPlayer _player;
+            private DefaultDataSourceFactory _dataSourceFactory;
+
+            public PlaybackPreparer(SimpleExoPlayer player, DefaultDataSourceFactory dataSourceFactory)
+            {
+                _player = player;
+                _dataSourceFactory = dataSourceFactory;
+            }
+
+            public PlaybackPreparer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+            {
+            }
+
+            public long SupportedPrepareActions =>
+                    PlaybackStateCompat.ActionPrepare |
+                    PlaybackStateCompat.ActionPrepareFromMediaId |
+                    PlaybackStateCompat.ActionPrepareFromSearch |
+                    PlaybackStateCompat.ActionPrepareFromUri;
+
+            public string[] GetCommands()
+            {
+                return null;
+            }
+
+            public void OnCommand(IPlayer p0, string p1, Bundle p2, ResultReceiver p3)
+            {
+                ;
+            }
+
+            public void OnPrepare()
+            {
+                ;
+            }
+
+            public void OnPrepareFromMediaId(string p0, Bundle p1)
+            {
+                ;
+            }
+
+            public void OnPrepareFromSearch(string p0, Bundle p1)
+            {
+                ;
+            }
+
+            public void OnPrepareFromUri(Android.Net.Uri mediaUri, Bundle p1)
+            {
+                var extractorMediaSource = new ExtractorMediaSource(mediaUri, _dataSourceFactory, new DefaultExtractorsFactory(), null, null);
+                _player.Prepare(extractorMediaSource);
+                _player.PlayWhenReady = true;
             }
         }
 
         private class PlayerEventListener : PlayerDefaultEventListener
         {
-            public override void OnPlayerStateChanged(bool playWhenReady, int playbackState)
+            public PlayerEventListener()
             {
-                base.OnPlayerStateChanged(playWhenReady, playbackState);
+            }
+
+            public PlayerEventListener(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+            {
             }
         }
     }
