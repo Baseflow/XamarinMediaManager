@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
-using Android.Support.V4.Media;
-using Android.Support.V4.Media.Session;
 using MediaManager.Media;
 using MediaManager.Playback;
 

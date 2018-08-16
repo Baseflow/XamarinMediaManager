@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
+using Android.Media;
 using Android.Net;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
-using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 using Com.Google.Android.Exoplayer2.UI;
 using MediaManager.Audio;
 
@@ -150,8 +151,9 @@ namespace MediaManager.Platforms.Android
         {
             var mediaItems = new JavaList<MediaBrowserCompat.MediaItem>();
 
-            /*Java.Util.ArrayList list = (Java.Util.ArrayList)FromArray((from aa in SAMPLES
-                                                                       select new MediaBrowserCompat.MediaItem(GetMediaDescription(Application.Context, aa), MediaBrowserCompat.MediaItem.FlagPlayable)).ToArray());*/
+            foreach (var v in Temp.Samples.SAMPLES)
+                mediaItems.Add(v.GetMediaItem());
+
             result.SendResult(mediaItems);
         }
 

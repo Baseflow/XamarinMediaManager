@@ -27,6 +27,11 @@ namespace MediaManager.Platforms.Android.Temp
             {
                 return title;
             }
+
+            public MediaBrowserCompat.MediaItem GetMediaItem()
+            {
+                return new MediaBrowserCompat.MediaItem(GetMediaDescription(global::Android.App.Application.Context, this), MediaBrowserCompat.MediaItem.FlagPlayable);
+            }
         }
 
         public static Sample[] SAMPLES = new Sample[] {

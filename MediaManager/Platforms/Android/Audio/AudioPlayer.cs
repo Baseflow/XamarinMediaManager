@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Media;
 using Android.Net;
 using Android.OS;
 using Android.Runtime;
@@ -16,10 +17,11 @@ using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
 using MediaManager.Audio;
 using MediaManager.Media;
+using MediaManager.Platforms.Android.Audio;
 
 namespace MediaManager
 {
-    public class AudioPlayer : Java.Lang.Object, IAudioPlayer
+    public class AudioPlayer : Java.Lang.Object, IAudioPlayer, Platforms.Android.Utils.IExoPlayerPlayer
     {
         private MediaSessionCompat _mediaSession;
         public AudioPlayer(MediaSessionCompat mediaSession)
@@ -27,7 +29,7 @@ namespace MediaManager
             _mediaSession = mediaSession;
         }
 
-        public SimpleExoPlayer Player;
+        public SimpleExoPlayer Player { get; internal set; }
         string userAgent;
 
         private DefaultHttpDataSourceFactory defaultHttpDataSourceFactory;
@@ -36,6 +38,7 @@ namespace MediaManager
         private AdaptiveTrackSelection.Factory adaptiveTrackSelectionFactory;
         private DefaultTrackSelector defaultTrackSelector;
         private MediaSessionConnector connector;
+        private AudioFocusManager audioFocusManager;
 
         public Dictionary<string, string> RequestHeaders { get; set; }
 
@@ -45,7 +48,7 @@ namespace MediaManager
             {
                 if (!_mediaSession.Active) return MediaPlayerStatus.Stopped;
 
-                return GetStatusByCompatValue((int)_mediaSession.Controller.PlaybackState);
+                return GetStatusByCompatValue((int)_mediaSession.Controller.PlaybackState.State);
             }
         }
 
@@ -75,11 +78,21 @@ namespace MediaManager
             adaptiveTrackSelectionFactory = new AdaptiveTrackSelection.Factory(defaultBandwidthMeter);
             defaultTrackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory);
 
+
+            Com.Google.Android.Exoplayer2.Audio.AudioAttributes mAudioAttributes = new Com.Google.Android.Exoplayer2.Audio.AudioAttributes.Builder()
+               .SetUsage((int)AudioUsageKind.Media)
+               .SetContentType((int)AudioContentType.Music)
+               .Build();
+
+            audioFocusManager = new Platforms.Android.Audio.AudioFocusManager(this);
+
             Player = ExoPlayerFactory.NewSimpleInstance(Context, defaultTrackSelector);
             Player.AddListener(new PlayerEventListener());
+            Player.AudioAttributes = mAudioAttributes;
 
-            connector = new MediaSessionConnector(_mediaSession, new PlaybackController());
-            connector.SetPlayer(Player, new PlaybackPreparer(Player, defaultDataSourceFactory), null);
+            connector = new MediaSessionConnector(_mediaSession, new PlaybackController(audioFocusManager));
+            connector.SetPlayer(Player, new PlaybackPreparer(Player, defaultDataSourceFactory, audioFocusManager), null);
+
             Player.PlayWhenReady = true;
         }
 
@@ -146,12 +159,31 @@ namespace MediaManager
 
         private class PlaybackController : DefaultPlaybackController
         {
-            public PlaybackController()
+            private AudioFocusManager audioFocusManager;
+
+            public PlaybackController(AudioFocusManager audioFocusManager)
             {
+                this.audioFocusManager = audioFocusManager;
             }
 
             public PlaybackController(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
             {
+            }
+
+            public override void OnPause(IPlayer player)
+            {
+                audioFocusManager.AbandonAudioFocus();
+            }
+
+            public override void OnPlay(IPlayer player)
+            {
+                audioFocusManager.RequestAudioFocus();
+            }
+
+            public override void OnStop(IPlayer player)
+            {
+                audioFocusManager.AbandonAudioFocus();
+                player.Stop();
             }
         }
 
@@ -159,11 +191,13 @@ namespace MediaManager
         {
             private SimpleExoPlayer _player;
             private DefaultDataSourceFactory _dataSourceFactory;
+            private AudioFocusManager audioFocusManager;
 
-            public PlaybackPreparer(SimpleExoPlayer player, DefaultDataSourceFactory dataSourceFactory)
+            public PlaybackPreparer(SimpleExoPlayer player, DefaultDataSourceFactory dataSourceFactory, AudioFocusManager audioFocusManager)
             {
                 _player = player;
                 _dataSourceFactory = dataSourceFactory;
+                this.audioFocusManager = audioFocusManager;
             }
 
             public PlaybackPreparer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
@@ -205,7 +239,7 @@ namespace MediaManager
             {
                 var extractorMediaSource = new ExtractorMediaSource(mediaUri, _dataSourceFactory, new DefaultExtractorsFactory(), null, null);
                 _player.Prepare(extractorMediaSource);
-                _player.PlayWhenReady = true;
+                audioFocusManager.RequestAudioFocus();
             }
         }
 
