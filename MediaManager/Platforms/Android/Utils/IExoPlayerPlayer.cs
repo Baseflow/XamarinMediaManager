@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MediaManager.Platforms.Android.Utils
 {
-    internal interface IExoPlayerPlayer
+    public interface IExoPlayerPlayer
     {
         Com.Google.Android.Exoplayer2.SimpleExoPlayer Player { get; }
     }

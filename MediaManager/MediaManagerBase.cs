@@ -38,7 +38,5 @@ namespace MediaManager
         }
 
         public abstract IPlaybackManager PlaybackManager { get; set; }
-
-        public IMediaLoader MediaLoader { get; set; }
     }
 }

@@ -11,6 +11,7 @@ using Java.Lang;
 using Java.Util.Concurrent;
 using MediaManager;
 using MediaManager.Media;
+using MediaManager.Platforms.Android;
 
 namespace ElementPlayer.Android
 {
@@ -79,6 +80,8 @@ namespace ElementPlayer.Android
                 await player.SeekTo(args.SeekBar.Progress);
                 ScheduleSeekbarUpdate();
             };
+
+            CrossMediaManager.Current.SetContext(this);
         }
 
         private void OnPlaying()

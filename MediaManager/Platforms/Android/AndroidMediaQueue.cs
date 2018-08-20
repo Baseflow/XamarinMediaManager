@@ -7,9 +7,9 @@ using MediaManager.Media;
 
 namespace MediaManager
 {
-    internal class AndroidMediaQueue : MediaQueue
+    public class AndroidMediaQueue : MediaQueue
     {
-        internal IList<MediaSessionCompat.QueueItem> AndroidQueue { private get; set; }
+        protected IList<MediaSessionCompat.QueueItem> AndroidQueue { private get; set; }
 
         public new void Add(IMediaItem item)
         {

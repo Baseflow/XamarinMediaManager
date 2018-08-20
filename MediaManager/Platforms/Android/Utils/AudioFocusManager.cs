@@ -8,7 +8,7 @@ using Android.Runtime;
 
 namespace MediaManager.Platforms.Android.Audio
 {
-    internal class AudioFocusManager
+    public class AudioFocusManager
     {
         Context context;
         AudioManager mAudioManager;
@@ -45,14 +45,6 @@ namespace MediaManager.Platforms.Android.Audio
                 .SetContentType(AudioContentType.Music)
                 .Build();
 
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-                mAudioFocusRequest = new AudioFocusRequestClass
-                    .Builder(AudioFocus.Gain)
-                    .SetAudioAttributes(mAudioAttributes)
-                    .SetAcceptsDelayedFocusGain(true)
-                    .SetOnAudioFocusChangeListener(mFocusListener)
-                    .Build();
-
             mFocusListener = new AudioFocusListener
             {
                 OnAudioFocusChangeImpl = (focusChange) =>
@@ -85,6 +77,14 @@ namespace MediaManager.Platforms.Android.Audio
                     }
                 }
             };
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+                mAudioFocusRequest = new AudioFocusRequestClass
+                    .Builder(AudioFocus.Gain)
+                    .SetAudioAttributes(mAudioAttributes)
+                    .SetAcceptsDelayedFocusGain(true)
+                    .SetOnAudioFocusChangeListener(mFocusListener)
+                    .Build();
         }
 
         public void RequestAudioFocus()
@@ -94,9 +94,11 @@ namespace MediaManager.Platforms.Android.Audio
                 result = mAudioManager.RequestAudioFocus(mAudioFocusRequest);
             else
                 //only when lower than Oreo (Android 8.0 / API 27).
+#pragma warning disable CS0618 // Type or member is obsolete
                 result = mAudioManager.RequestAudioFocus(mFocusListener, Stream.Music, AudioFocus.Gain);
+#pragma warning restore CS0618 // Type or member is obsolete
 
-            // Call the listener whenever focus is granted - even the first time!
+                // Call the listener whenever focus is granted - even the first time!
             if (result == AudioFocusRequest.Granted)
             {
                 ShouldPlayWhenReady = true;
@@ -109,7 +111,9 @@ namespace MediaManager.Platforms.Android.Audio
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
                 mAudioManager.AbandonAudioFocusRequest(mAudioFocusRequest);
             else
+#pragma warning disable CS0618 // Type or member is obsolete
                 mAudioManager.AbandonAudioFocus(mFocusListener);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             exoPlayer.PlayWhenReady = false; //pause.
         }

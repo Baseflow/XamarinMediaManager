@@ -1,8 +1,11 @@
-﻿using MediaManager.Media;
+﻿using Android.App;
+using Android.Content;
+using MediaManager.Media;
 using MediaManager.Platforms.Android;
 using MediaManager.Playback;
 using MediaManager.Video;
 using MediaManager.Volume;
+using MediaManager.Platforms.Android.Audio;
 
 namespace MediaManager
 {
@@ -12,12 +15,14 @@ namespace MediaManager
         {
         }
 
+        public Context Context { get; set; } = Application.Context;
+
         private MediaBrowserManager _mediaBrowserManager;
         public virtual MediaBrowserManager MediaBrowserManager {
             get
             {
                 if (_mediaBrowserManager == null)
-                    _mediaBrowserManager = new MediaBrowserManager();
+                    _mediaBrowserManager = new MediaBrowserManager(this);
                 return _mediaBrowserManager;
             }
         }

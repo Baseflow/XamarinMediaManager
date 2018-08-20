@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Playback;
+using MediaManager.Platforms.Android.Audio;
 
 namespace MediaManager.Platforms.Android
 {
