@@ -58,7 +58,7 @@ namespace MediaManager
             get
             {
                 if (_volumeManager == null)
-                    _volumeManager = new VolumeManager();
+                    _volumeManager = new VolumeManager(this);
                 return _volumeManager;
             }
             set
