@@ -21,7 +21,7 @@ namespace MediaManager
         public abstract IMediaExtractor MediaExtractor { get; set; }
         public abstract IVolumeManager VolumeManager { get; set; }
 
-        private IMediaQueue _mediaQueue;
+        protected IMediaQueue _mediaQueue;
         public virtual IMediaQueue MediaQueue
         {
             get
@@ -38,5 +38,7 @@ namespace MediaManager
         }
 
         public abstract IPlaybackManager PlaybackManager { get; set; }
+
+        public IMediaLoader MediaLoader { get; set; }
     }
 }

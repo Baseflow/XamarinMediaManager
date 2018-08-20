@@ -15,6 +15,7 @@ namespace MediaManager.Platforms.Android
         protected MediaBrowserCompat mediaBrowser;
         protected ConnectionCallback mConnectionCallback;
         protected MediaControllerCallback mMediaControllerCallback;
+        private IMediaManager mediaManager;
 
         //TODO: Make it possible to set context from app
         protected Context _context { get; set; } = Application.Context;
@@ -24,6 +25,14 @@ namespace MediaManager.Platforms.Android
         public Utils.PlaybackStateCompatExtension PlaybackState { get; private set; }
 
         public Utils.MediaMetadataCompatExtension Metadata { get; internal set; }
+
+        public MediaBrowserManager(IMediaManager mediaManager)
+        {
+            this.mediaManager = mediaManager;
+
+            //make sure the service connection is initialized.
+            EnsureInitialized().Wait();
+        }
 
         public async Task<bool> EnsureInitialized()
         {
@@ -66,6 +75,8 @@ namespace MediaManager.Platforms.Android
 
                     mediaBrowser.Subscribe(mediaBrowser.Root, subscriptionCallback);
 
+                    ((AndroidMediaQueue)mediaManager.MediaQueue).AndroidQueue = mediaController.Queue;
+
                     IsInitialized = true;
                     tcs.SetResult(IsInitialized);
                 },
@@ -76,7 +87,6 @@ namespace MediaManager.Platforms.Android
                     tcs.SetResult(IsInitialized);
                 }
             };
-
 
             mediaBrowser = new MediaBrowserCompat(_context,
                 new ComponentName(_context, Java.Lang.Class.FromType(typeof(MediaBrowserService))),

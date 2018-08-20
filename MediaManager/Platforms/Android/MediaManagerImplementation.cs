@@ -96,5 +96,16 @@ namespace MediaManager
                 _playbackManager = value;
             }
         }
+
+        public override IMediaQueue MediaQueue {
+            get
+            {
+                if (_mediaQueue == null)
+                    _mediaQueue = new AndroidMediaQueue();
+
+                return _mediaQueue;
+            }
+            set => base.MediaQueue = value;
+        }
     }
 }

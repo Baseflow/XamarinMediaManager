@@ -144,17 +144,19 @@ namespace MediaManager.Platforms.Android
 
         public override BrowserRoot OnGetRoot(string clientPackageName, int clientUid, Bundle rootHints)
         {
-            return new BrowserRoot(nameof(ApplicationContext.ApplicationInfo.Name), null);
+            return null; //new BrowserRoot(nameof(ApplicationContext.ApplicationInfo.Name), null);
         }
 
         public override void OnLoadChildren(string parentId, Result result)
         {
-            var mediaItems = new JavaList<MediaBrowserCompat.MediaItem>();
+            /*var mediaItems = new JavaList<MediaBrowserCompat.MediaItem>();
 
             foreach (var v in Temp.Samples.SAMPLES)
                 mediaItems.Add(v.GetMediaItem());
 
-            result.SendResult(mediaItems);
+            result.SendResult(mediaItems);*/
+
+            result.SendResult(null);
         }
 
         public void OnPlaybackStart()

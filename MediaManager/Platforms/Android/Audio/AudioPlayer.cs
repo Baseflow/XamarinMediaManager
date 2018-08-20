@@ -84,7 +84,7 @@ namespace MediaManager
                .SetContentType((int)AudioContentType.Music)
                .Build();
 
-            audioFocusManager = new Platforms.Android.Audio.AudioFocusManager(this);
+            audioFocusManager = new AudioFocusManager(this);
 
             Player = ExoPlayerFactory.NewSimpleInstance(Context, defaultTrackSelector);
             Player.AddListener(new PlayerEventListener());
