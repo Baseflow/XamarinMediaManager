@@ -75,6 +75,8 @@ namespace MediaManager.Platforms.Android.Audio
 
                     mediaBrowser.Subscribe(mediaBrowser.Root, subscriptionCallback);
 
+                    //((AndroidMediaQueue)mediaManagerImplementation.MediaQueue).SetAndroidQueue(mediaController.Queue);
+
                     IsInitialized = true;
                     tcs.SetResult(IsInitialized);
                 },

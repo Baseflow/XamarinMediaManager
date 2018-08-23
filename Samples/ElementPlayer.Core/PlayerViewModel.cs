@@ -7,7 +7,7 @@ namespace ElementPlayer.Core
 {
     public class PlayerViewModel
     {
-        public IMediaManager _mediaManager;
+        private IMediaManager _mediaManager;
 
         public PlayerViewModel()
         {
@@ -55,6 +55,14 @@ namespace ElementPlayer.Core
         public async Task<IMediaItem> CreateMediaItem(string url)
         {
             return await _mediaManager.MediaExtractor.CreateMediaItem(url);
+        }
+
+        public IMediaQueue MediaQueue
+        {
+            get
+            {
+                return _mediaManager.MediaQueue;
+            }
         }
     }
 }

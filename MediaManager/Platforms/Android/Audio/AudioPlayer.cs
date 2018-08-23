@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Media;
-using Android.Net;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
@@ -39,6 +39,8 @@ namespace MediaManager
         private DefaultTrackSelector defaultTrackSelector;
         private MediaSessionConnector connector;
         private AudioFocusManager audioFocusManager;
+        private ConcatenatingMediaSource mediaSource;
+        private MediaQueue q;
 
         public Dictionary<string, string> RequestHeaders { get; set; }
 
@@ -78,6 +80,7 @@ namespace MediaManager
             adaptiveTrackSelectionFactory = new AdaptiveTrackSelection.Factory(defaultBandwidthMeter);
             defaultTrackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory);
 
+            mediaSource = new ConcatenatingMediaSource();
 
             Com.Google.Android.Exoplayer2.Audio.AudioAttributes mAudioAttributes = new Com.Google.Android.Exoplayer2.Audio.AudioAttributes.Builder()
                .SetUsage((int)AudioUsageKind.Media)
@@ -93,7 +96,7 @@ namespace MediaManager
             connector = new MediaSessionConnector(_mediaSession, new PlaybackController(audioFocusManager));
             connector.SetPlayer(Player, new PlaybackPreparer(Player, defaultDataSourceFactory, audioFocusManager), null);
 
-            Player.PlayWhenReady = true;
+            //Player.PlayWhenReady = true;
         }
 
         public Task Play(string Url)
@@ -109,8 +112,7 @@ namespace MediaManager
 
         public Task Play()
         {
-            //if (Player != null)
-            //    Player.PlayWhenReady = true;
+            Player.PlayWhenReady = true;
 
             return Task.CompletedTask;
         }
@@ -157,6 +159,14 @@ namespace MediaManager
             }
         }
 
+        internal void SetQueue(MediaQueue mediaQueue)
+        {
+            q = mediaQueue;
+
+            connector.SetQueueEditor(new TimelineQueueEditor(_mediaSession.Controller, mediaSource, new DataAdapter(q), new SourceFactory(defaultDataSourceFactory)));
+            connector.SetQueueNavigator(new QueueNavigator(_mediaSession));
+        }
+
         private class PlaybackController : DefaultPlaybackController
         {
             private AudioFocusManager audioFocusManager;
@@ -184,6 +194,84 @@ namespace MediaManager
             {
                 audioFocusManager.AbandonAudioFocus();
                 player.Stop();
+            }
+        }
+
+        private class DataAdapter : Java.Lang.Object, TimelineQueueEditor.IQueueDataAdapter
+        {
+            private MediaQueue q;
+
+            public DataAdapter(MediaQueue q)
+            {
+                this.q = q;
+            }
+
+            public void Add(int index, MediaDescriptionCompat description)
+            {
+                //TODO: generate IMediaItem from description.
+                q.Insert(index, null);
+            }
+
+            public MediaDescriptionCompat GetMediaDescription(int index)
+            {
+                return q[index].GetDescriptionCompat();
+            }
+
+            public void Move(int oldIndex, int newIndex)
+            {
+                q.Move(oldIndex, newIndex);
+            }
+
+            public void Remove(int index)
+            {
+                q.RemoveAt(index);
+            }
+        }
+
+        private class SourceFactory : Java.Lang.Object, TimelineQueueEditor.IMediaSourceFactory
+        {
+            private DefaultDataSourceFactory factory;
+
+            public SourceFactory(DefaultDataSourceFactory factory)
+            {
+                this.factory = factory;
+            }
+
+            public IMediaSource CreateMediaSource(MediaDescriptionCompat description)
+            {
+                IMediaSource src = null;
+
+                if (description.MediaId != null)
+                    src = null; //TODO: Implement preparefrommediasource
+
+                else if (description.MediaUri != null)
+                    src = new ExtractorMediaSource(description.MediaUri, factory, new DefaultExtractorsFactory(), null, null);
+
+                return src;
+            }
+        }
+
+        private class QueueNavigator : TimelineQueueNavigator
+        {
+            Timeline.Window window = new Timeline.Window();
+            MediaSessionCompat mediaSession;
+
+            public QueueNavigator(MediaSessionCompat mediaSession) : base(mediaSession)
+            {
+                this.mediaSession = mediaSession;
+            }
+
+            public QueueNavigator(MediaSessionCompat mediaSession, int maxQueueSize) : base(mediaSession, maxQueueSize)
+            {
+            }
+
+            protected QueueNavigator(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+            {
+            }
+
+            public override MediaDescriptionCompat GetMediaDescription(IPlayer player, int windowIndex)
+            {
+                return player.CurrentTimeline.GetWindow(windowIndex, window, true).Tag as MediaDescriptionCompat;
             }
         }
 
@@ -239,7 +327,6 @@ namespace MediaManager
             {
                 var extractorMediaSource = new ExtractorMediaSource(mediaUri, _dataSourceFactory, new DefaultExtractorsFactory(), null, null);
                 _player.Prepare(extractorMediaSource);
-                audioFocusManager.RequestAudioFocus();
             }
         }
 

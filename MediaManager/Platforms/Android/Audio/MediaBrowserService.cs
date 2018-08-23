@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
-using Android.Media;
-using Android.Net;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Media;
@@ -12,6 +9,8 @@ using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.UI;
 using MediaManager.Audio;
+using MediaManager.Media;
+using MediaManager.Platforms.Android.ServiceBinder;
 
 namespace MediaManager.Platforms.Android
 {
@@ -43,6 +42,7 @@ namespace MediaManager.Platforms.Android
         private PlayerNotificationManager playerNotificationManager;
         public readonly string ChannelId = "audio_channel";
         public readonly int FOREGROUND_NOTIFICATION_ID = 1;
+        IBinder Binder;
 
         public MediaBrowserService()
         {
@@ -68,20 +68,12 @@ namespace MediaManager.Platforms.Android
             _mediaSession.Active = true;
 
             playerNotificationManager = new PlayerNotificationManager(
-              this,
-              ChannelId,
-              FOREGROUND_NOTIFICATION_ID,
-              new DescriptionAdapter());
+                this,
+                ChannelId,
+                FOREGROUND_NOTIFICATION_ID,
+                new DescriptionAdapter());
             playerNotificationManager.SetPlayer(NativePlayer.Player);
             playerNotificationManager.SetMediaSessionToken(SessionToken);
-
-            //Context context = ApplicationContext;
-            //var intent = new Intent(context, typeof(MusicPlayerActivity));
-            //var pi = PendingIntent.GetActivity(context, 99 /*request code*/,
-            //             intent, PendingIntentFlags.UpdateCurrent);
-            //_mediaSession.SetSessionActivity(pi);
-
-            //_mediaRouter = MediaRouter.GetInstance(ApplicationContext);
         }
 
         private class DescriptionAdapter : Java.Lang.Object, PlayerNotificationManager.IMediaDescriptionAdapter
@@ -144,7 +136,7 @@ namespace MediaManager.Platforms.Android
 
         public override BrowserRoot OnGetRoot(string clientPackageName, int clientUid, Bundle rootHints)
         {
-            return null; //new BrowserRoot(nameof(ApplicationContext.ApplicationInfo.Name), null);
+            return new BrowserRoot(nameof(ApplicationContext.ApplicationInfo.Name), null);
         }
 
         public override void OnLoadChildren(string parentId, Result result)
@@ -157,6 +149,11 @@ namespace MediaManager.Platforms.Android
             result.SendResult(mediaItems);*/
 
             result.SendResult(null);
+        }
+
+        internal void SetQueue(MediaQueue mediaQueue)
+        {
+            NativePlayer.SetQueue(mediaQueue);
         }
 
         public void OnPlaybackStart()
@@ -204,6 +201,14 @@ namespace MediaManager.Platforms.Android
                     //service.serviceStarted = false;
                 }
             }
+        }
+
+        public override IBinder OnBind(Intent intent)
+        {
+            if (ServiceInterface == intent.Action)
+                return base.OnBind(intent);
+            else
+                return Binder = new MediaBrowserServiceBinder(this);
         }
     }
 }

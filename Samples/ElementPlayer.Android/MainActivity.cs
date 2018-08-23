@@ -2,9 +2,7 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Android.Support.Design.Widget;
 using Android.Support.V7.App;
-using Android.Views;
 using Android.Widget;
 using ElementPlayer.Core;
 using Java.Lang;
@@ -22,7 +20,7 @@ namespace ElementPlayer.Android
         Theme = "@style/AppTheme",
         LaunchMode = LaunchMode.SingleTop,
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
-    public class MainActivity : AppCompatActivity//, BottomNavigationView.IOnNavigationItemSelectedListener
+    public class MainActivity : AppCompatActivity
     {
         private IScheduledExecutorService _executorService = Executors.NewSingleThreadScheduledExecutor();
         private IScheduledFuture _scheduledFuture;
@@ -30,20 +28,28 @@ namespace ElementPlayer.Android
         SeekBar sbProgress;
         TextView tvPlaying;
         Handler handler = new Handler();
+        IMediaItem item;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-
-            var runnable = new Runnable(() => { handler.Post(OnPlaying); });
-
-            FindViewById<ToggleButton>(Resource.Id.btnPlayPause).Click += async (object sender, System.EventArgs e) =>
+            FindViewById<ToggleButton>(Resource.Id.btnPlayPause).Click += async (object sender, EventArgs e) =>
             {
+                if (item == null)
+                {
+                    item = player.CreateMediaItem("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3").Result;
+                    player.MediaQueue.Add(item);
+                    player.MediaQueue.Add(item);
+                    player.MediaQueue.Add(item);
+                    player.MediaQueue.Add(item);
+                    player.MediaQueue.Add(item);
+                }
+
                 if (player.Status == MediaPlayerStatus.Stopped || player.Status == MediaPlayerStatus.Failed)
                 {
-                    await player.Play(await player.CreateMediaItem("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3"));
+                    await player.Play(item);
                     ScheduleSeekbarUpdate();
                 }
                 else
@@ -89,7 +95,6 @@ namespace ElementPlayer.Android
             TimeSpan duration = player.Duration;
             TimeSpan position = player.Position;
 
-
             sbProgress.Max = Convert.ToInt32(duration.TotalMilliseconds);
             sbProgress.Progress = Convert.ToInt32(System.Math.Floor(position.TotalMilliseconds));
 
@@ -98,7 +103,6 @@ namespace ElementPlayer.Android
             string text = $"{position.Minutes:00}:{position.Seconds:00} of {duration.Minutes:00}:{duration.Seconds:00}";
 
             tvPlaying.Text = text;
-            Console.WriteLine(text);
         }
 
         private void ScheduleSeekbarUpdate()

@@ -6,19 +6,32 @@ using MediaManager.Playback;
 using MediaManager.Video;
 using MediaManager.Volume;
 using MediaManager.Platforms.Android.Audio;
+using MediaManager.Platforms.Android.ServiceBinder;
+using System.Threading.Tasks;
+using MediaManager.Platforms.Android.Utils;
 
 namespace MediaManager
 {
-    public class MediaManagerImplementation : MediaManagerBase
+    public class MediaManagerImplementation : MediaManagerBase, IMediaBrowserServiceCallback
     {
+        MediaBrowserService _service;
+
         public MediaManagerImplementation()
         {
+            MediaBrowserManager.EnsureInitialized();
+
+            #region servicebinding
+            mediaPlayerServiceIntent = new Intent(Application.Context, typeof(MediaBrowserService));
+            mediaBrowserServiceConnection = new MediaBrowserServiceConnection(this);
+            Application.Context.BindService(mediaPlayerServiceIntent, mediaBrowserServiceConnection, Bind.AutoCreate);
+            #endregion
         }
 
         public Context Context { get; set; } = Application.Context;
 
         private MediaBrowserManager _mediaBrowserManager;
-        public virtual MediaBrowserManager MediaBrowserManager {
+        public virtual MediaBrowserManager MediaBrowserManager
+        {
             get
             {
                 if (_mediaBrowserManager == null)
@@ -102,15 +115,58 @@ namespace MediaManager
             }
         }
 
-        public override IMediaQueue MediaQueue {
-            get
-            {
-                if (_mediaQueue == null)
-                    _mediaQueue = new AndroidMediaQueue();
-
-                return _mediaQueue;
-            }
-            set => base.MediaQueue = value;
+        public void UpdateCurrentPlaying(int index)
+        {
+            //((AndroidMediaQueue)_mediaQueue).UpdateQueue(index);
         }
+
+        public void UpdateMedia()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #region ServiceBinding
+        private MediaBrowserServiceBinder binder;
+        private Intent mediaPlayerServiceIntent;
+        private MediaBrowserServiceConnection mediaBrowserServiceConnection;
+        private bool isBound = false;
+
+        public void UnbindMediaPlayerService()
+        {
+            if (isBound)
+            {
+                Application.Context.UnbindService(mediaBrowserServiceConnection);
+                isBound = false;
+            }
+        }
+
+        internal void OnServiceConnected(MediaBrowserServiceBinder serviceBinder)
+        {
+            binder = serviceBinder;
+            isBound = true;
+            _service = binder.GetMediaPlayerService();
+
+            _service.SetQueue((MediaQueue)MediaQueue);
+        }
+
+        internal void OnServiceDisconnected()
+        {
+            isBound = false;
+        }
+
+        private async Task BinderReady()
+        {
+            int repeat = 10;
+            while ((binder == null) && (repeat > 0))
+            {
+                await Task.Delay(100);
+                repeat--;
+            }
+            if (repeat == 0)
+            {
+                throw new System.TimeoutException("Could not connect to service");
+            }
+        }
+        #endregion
     }
 }
