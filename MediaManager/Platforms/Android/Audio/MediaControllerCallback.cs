@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 
@@ -7,6 +8,14 @@ namespace MediaManager.Platforms.Android.Audio
 {
     public class MediaControllerCallback : MediaControllerCompat.Callback
     {
+        public MediaControllerCallback(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        {
+        }
+
+        public MediaControllerCallback()
+        {
+        }
+
         public Action<PlaybackStateCompat> OnPlaybackStateChangedImpl { get; set; }
 
         public Action<MediaMetadataCompat> OnMetadataChangedImpl { get; set; }

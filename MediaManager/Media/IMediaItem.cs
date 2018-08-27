@@ -50,7 +50,7 @@
         /// <summary>
         /// The metadata key for a Bitmap typed value to retrieve the information about the artwork for the Album of the media's original source.
         /// </summary>
-        string MetadataAlbumArt { get; set; }
+        object MetadataAlbumArt { get; set; }
 
         /// <summary>
         /// The metadata key for a CharSequence or string typed value to retrieve the information about the artist for the Album of the media's original source.

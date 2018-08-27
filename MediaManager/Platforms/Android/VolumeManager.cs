@@ -8,7 +8,7 @@ namespace MediaManager
     public class VolumeManager : IVolumeManager //VolumeProviderCompat.Callback
     {
         private MediaManagerImplementation mediaManagerImplementation;
-        private MediaControllerCompat mediaController => mediaManagerImplementation.MediaBrowserManager.mediaController;
+        private MediaControllerCompat mediaController => mediaManagerImplementation.MediaBrowserManager.MediaController;
 
         public VolumeManager(MediaManagerImplementation mediaManagerImplementation)
         {
@@ -19,7 +19,7 @@ namespace MediaManager
 
         public int MaxVolume { get => mediaController.GetPlaybackInfo().MaxVolume; set => throw new System.NotImplementedException(); }
 
-        public bool Muted { get => mediaManagerImplementation.MediaBrowserManager.mediaController.GetPlaybackInfo().CurrentVolume == 0; set => mediaController.SetVolumeTo(0, 0); }
+        public bool Muted { get => mediaManagerImplementation.MediaBrowserManager.MediaController.GetPlaybackInfo().CurrentVolume == 0; set => mediaController.SetVolumeTo(0, 0); }
 
         public event VolumeChangedEventHandler VolumeChanged;
     }

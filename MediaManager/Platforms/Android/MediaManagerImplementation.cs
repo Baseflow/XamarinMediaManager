@@ -6,28 +6,25 @@ using MediaManager.Playback;
 using MediaManager.Video;
 using MediaManager.Volume;
 using MediaManager.Platforms.Android.Audio;
-using MediaManager.Platforms.Android.ServiceBinder;
 using System.Threading.Tasks;
 using MediaManager.Platforms.Android.Utils;
+using MediaManager.Audio;
+using Android.Support.V4.Media.Session;
+using Android.Content.Res;
+using System.Collections.Generic;
+using System;
+using System.ComponentModel;
 
 namespace MediaManager
 {
-    public class MediaManagerImplementation : MediaManagerBase, IMediaBrowserServiceCallback
+    public class MediaManagerImplementation : IMediaManager
     {
-        MediaBrowserService _service;
-
         public MediaManagerImplementation()
         {
-            MediaBrowserManager.EnsureInitialized();
-
-            #region servicebinding
-            mediaPlayerServiceIntent = new Intent(Application.Context, typeof(MediaBrowserService));
-            mediaBrowserServiceConnection = new MediaBrowserServiceConnection(this);
-            Application.Context.BindService(mediaPlayerServiceIntent, mediaBrowserServiceConnection, Bind.AutoCreate);
-            #endregion
         }
 
         public Context Context { get; set; } = Application.Context;
+        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
         private MediaBrowserManager _mediaBrowserManager;
         public virtual MediaBrowserManager MediaBrowserManager
@@ -40,8 +37,23 @@ namespace MediaManager
             }
         }
 
+        private IAudioPlayer _audioPlayer;
+        public virtual IAudioPlayer AudioPlayer
+        {
+            get
+            {
+                if (_audioPlayer == null)
+                    _audioPlayer = new AudioPlayer();
+                return _audioPlayer;
+            }
+            set
+            {
+                _audioPlayer = value;
+            }
+        }
+
         private IVideoPlayer _videoPlayer;
-        public override IVideoPlayer VideoPlayer
+        public virtual IVideoPlayer VideoPlayer
         {
             get
             {
@@ -56,7 +68,7 @@ namespace MediaManager
         }
 
         private INotificationManager _notificationManager;
-        public override INotificationManager NotificationManager
+        public virtual INotificationManager NotificationManager
         {
             get
             {
@@ -71,7 +83,7 @@ namespace MediaManager
         }
 
         private IVolumeManager _volumeManager;
-        public override IVolumeManager VolumeManager
+        public virtual IVolumeManager VolumeManager
         {
             get
             {
@@ -85,13 +97,29 @@ namespace MediaManager
             }
         }
 
+        private IMediaQueue _mediaQueue;
+        public virtual IMediaQueue MediaQueue
+        {
+            get
+            {
+                if (_mediaQueue == null)
+                    _mediaQueue = new MediaQueue();
+
+                return _mediaQueue;
+            }
+            set
+            {
+                _mediaQueue = value;
+            }
+        }
+
         private IMediaExtractor _mediaExtractor;
-        public override IMediaExtractor MediaExtractor
+        public virtual IMediaExtractor MediaExtractor
         {
             get
             {
                 if (_mediaExtractor == null)
-                    _mediaExtractor = new MediaExtractor();
+                    _mediaExtractor = new MediaExtractor(Resources.System, RequestHeaders);
                 return _mediaExtractor;
             }
             set
@@ -100,73 +128,85 @@ namespace MediaManager
             }
         }
 
-        private IPlaybackManager _playbackManager;
-        public override IPlaybackManager PlaybackManager
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public TimeSpan Position => MediaBrowserManager?.PlaybackState?.Position ?? TimeSpan.Zero;
+
+        public TimeSpan Duration => TimeSpan.FromMilliseconds(MediaBrowserManager?.Metadata?.Duration ?? 0);
+
+        public TimeSpan Buffered => MediaBrowserManager?.PlaybackState?.Buffered ?? TimeSpan.Zero;
+
+        public MediaPlayerStatus Status => MediaBrowserManager?.PlaybackState?.Status ?? MediaPlayerStatus.Stopped;
+
+        public async Task Pause()
         {
-            get
-            {
-                if (_playbackManager == null)
-                    _playbackManager = new PlaybackManager(this);
-                return _playbackManager;
-            }
-            set
-            {
-                _playbackManager = value;
-            }
+            await MediaBrowserManager.EnsureInitialized();
+            MediaBrowserManager.MediaController.GetTransportControls().Pause();
         }
 
-        public void UpdateCurrentPlaying(int index)
+        public async Task Play()
         {
-            //((AndroidMediaQueue)_mediaQueue).UpdateQueue(index);
+            await MediaBrowserManager.EnsureInitialized();
+            MediaBrowserManager.MediaController.GetTransportControls().Play();
         }
 
-        public void UpdateMedia()
+        public async Task Play(IMediaItem mediaItem)
         {
-            throw new System.NotImplementedException();
+            await MediaBrowserManager.EnsureInitialized();
+            var mediaUri = global::Android.Net.Uri.Parse(mediaItem.MetadataMediaUri);
+            MediaBrowserManager.MediaController.GetTransportControls().PlayFromUri(mediaUri, null);
         }
 
-        #region ServiceBinding
-        private MediaBrowserServiceBinder binder;
-        private Intent mediaPlayerServiceIntent;
-        private MediaBrowserServiceConnection mediaBrowserServiceConnection;
-        private bool isBound = false;
-
-        public void UnbindMediaPlayerService()
+        public async Task PlayNext()
         {
-            if (isBound)
-            {
-                Application.Context.UnbindService(mediaBrowserServiceConnection);
-                isBound = false;
-            }
+            await MediaBrowserManager.EnsureInitialized();
+            MediaBrowserManager.MediaController.GetTransportControls().SkipToNext();
         }
 
-        internal void OnServiceConnected(MediaBrowserServiceBinder serviceBinder)
+        public async Task PlayPrevious()
         {
-            binder = serviceBinder;
-            isBound = true;
-            _service = binder.GetMediaPlayerService();
-
-            _service.SetQueue((MediaQueue)MediaQueue);
+            await MediaBrowserManager.EnsureInitialized();
+            MediaBrowserManager.MediaController.GetTransportControls().SkipToPrevious();
         }
 
-        internal void OnServiceDisconnected()
+        public async Task SeekTo(TimeSpan position)
         {
-            isBound = false;
+            await MediaBrowserManager.EnsureInitialized();
+            MediaBrowserManager.MediaController.GetTransportControls().SeekTo((long)position.TotalMilliseconds);
         }
 
-        private async Task BinderReady()
+        public async Task SeekToStart()
         {
-            int repeat = 10;
-            while ((binder == null) && (repeat > 0))
-            {
-                await Task.Delay(100);
-                repeat--;
-            }
-            if (repeat == 0)
-            {
-                throw new System.TimeoutException("Could not connect to service");
-            }
+            await MediaBrowserManager.EnsureInitialized();
+            MediaBrowserManager.MediaController.GetTransportControls().SeekTo(0);
         }
-        #endregion
+
+        public async Task StepBackward()
+        {
+            await MediaBrowserManager.EnsureInitialized();
+            MediaBrowserManager.MediaController.GetTransportControls().Rewind();
+        }
+
+        public async Task StepForward()
+        {
+            await MediaBrowserManager.EnsureInitialized();
+            MediaBrowserManager.MediaController.GetTransportControls().FastForward();
+        }
+
+        public async Task Stop()
+        {
+            await MediaBrowserManager.EnsureInitialized();
+            MediaBrowserManager.MediaController.GetTransportControls().Stop();
+        }
+
+        public void ToggleRepeat()
+        {
+            MediaBrowserManager.MediaController.GetTransportControls().SetRepeatMode(0);
+        }
+
+        public void ToggleShuffle()
+        {
+            MediaBrowserManager.MediaController.GetTransportControls().SetShuffleMode(0);
+        }
     }
 }

@@ -62,11 +62,6 @@ namespace MediaManager.Playback
         Task Stop();
 
         /// <summary>
-        /// Plays the previous MediaFile or seeks to start if far enough into the current one.
-        /// </summary>
-        Task PlayPreviousOrSeekToStart();
-
-        /// <summary>
         /// Plays the previous MediaFile
         /// </summary>
         Task PlayPrevious();

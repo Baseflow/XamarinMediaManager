@@ -20,5 +20,7 @@ namespace MediaManager.Media
             }
             return randomizedList;
         }
+
+        public IMediaItem Current => this[0];
     }
 }

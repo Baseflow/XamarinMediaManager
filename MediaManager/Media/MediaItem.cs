@@ -13,9 +13,10 @@ namespace MediaManager.Media
         public int BtFolderTypePlaylists { get; set; }
         public int BtFolderTypeTitles { get; set; }
         public int BtFolderTypeYears { get; set; }
+
         public string MetadataAdvertisement { get; set; }
         public string MetadataAlbum { get; set; }
-        public string MetadataAlbumArt { get; set; }
+        public object MetadataAlbumArt { get; set; }
         public string MetadataAlbumArtist { get; set; }
         public string MetadataAlbumArtUri { get; set; }
         public string MetadataArt { get; set; }
@@ -45,6 +46,7 @@ namespace MediaManager.Media
         public string MetadataUserRating { get; set; }
         public string MetadataWriter { get; set; }
         public string MetadataYear { get; set; }
+
         public int StatusDownloaded { get; set; }
         public int StatusDownloading { get; set; }
         public int StatusNotDownloaded { get; set; }

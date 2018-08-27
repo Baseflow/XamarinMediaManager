@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
+using Com.Google.Android.Exoplayer2;
 using ElementPlayer.Core;
 using Java.Lang;
 using Java.Util.Concurrent;
@@ -24,11 +27,11 @@ namespace ElementPlayer.Android
     {
         private IScheduledExecutorService _executorService = Executors.NewSingleThreadScheduledExecutor();
         private IScheduledFuture _scheduledFuture;
-        PlayerViewModel player = new PlayerViewModel();
+        PlayerViewModel playerViewModel = new PlayerViewModel();
         SeekBar sbProgress;
         TextView tvPlaying;
         Handler handler = new Handler();
-        IMediaItem item;
+        //IMediaItem item;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -37,26 +40,22 @@ namespace ElementPlayer.Android
 
             FindViewById<ToggleButton>(Resource.Id.btnPlayPause).Click += async (object sender, EventArgs e) =>
             {
-                if (item == null)
+                if (CrossMediaManager.Current.Status == MediaPlayerStatus.Stopped || CrossMediaManager.Current.Status == MediaPlayerStatus.Failed)
                 {
-                    item = player.CreateMediaItem("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3").Result;
-                    player.MediaQueue.Add(item);
-                    player.MediaQueue.Add(item);
-                    player.MediaQueue.Add(item);
-                    player.MediaQueue.Add(item);
-                    player.MediaQueue.Add(item);
-                }
+                    var item1 = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3");
+                    var item2 = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://ia800605.us.archive.org/32/items/Mp3Playlist_555/CelineDion-IfICould.mp3");
+                    var item3 = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://ia800605.us.archive.org/32/items/Mp3Playlist_555/Daughtry-Homeacoustic.mp3");
 
-                if (player.Status == MediaPlayerStatus.Stopped || player.Status == MediaPlayerStatus.Failed)
-                {
-                    await player.Play(item);
+                    var queue = new List<IMediaItem>() { item1, item2, item3 };                    
+
+                    await CrossMediaManager.Current.Play(queue);
                     ScheduleSeekbarUpdate();
                 }
                 else
                 {
-                    await player.PlayPause();
+                    await CrossMediaManager.Current.PlayPause();
 
-                    if (player.Status == MediaPlayerStatus.Paused)
+                    if (CrossMediaManager.Current.Status == MediaPlayerStatus.Paused)
                         StopSeekbarUpdate();
                     else
                         ScheduleSeekbarUpdate();
@@ -65,12 +64,12 @@ namespace ElementPlayer.Android
 
             FindViewById<Button>(Resource.Id.btnNext).Click += async (sender, args) =>
             {
-                await player.PlayNext();
+                await CrossMediaManager.Current.PlayNext();
             };
 
             FindViewById<Button>(Resource.Id.btnPrevious).Click += async (sender, args) =>
             {
-                await player.PlayPrevious();
+                await CrossMediaManager.Current.PlayPrevious();
             };
 
             sbProgress = FindViewById<SeekBar>(Resource.Id.sbProgress);
@@ -83,7 +82,7 @@ namespace ElementPlayer.Android
 
             sbProgress.StopTrackingTouch += async (sender, args) =>
             {
-                await player.SeekTo(args.SeekBar.Progress);
+                await CrossMediaManager.Current.SeekTo(TimeSpan.FromSeconds(args.SeekBar.Progress));
                 ScheduleSeekbarUpdate();
             };
 
@@ -92,8 +91,8 @@ namespace ElementPlayer.Android
 
         private void OnPlaying()
         {
-            TimeSpan duration = player.Duration;
-            TimeSpan position = player.Position;
+            TimeSpan duration = CrossMediaManager.Current.Duration;
+            TimeSpan position = CrossMediaManager.Current.Position;
 
             sbProgress.Max = Convert.ToInt32(duration.TotalMilliseconds);
             sbProgress.Progress = Convert.ToInt32(System.Math.Floor(position.TotalMilliseconds));

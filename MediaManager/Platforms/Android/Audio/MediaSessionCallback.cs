@@ -1,13 +1,22 @@
 ﻿using System;
 using Android.Content;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 
 namespace MediaManager.Platforms.Android.Audio
 {
-    class MediaSessionCallback : MediaSessionCompat.Callback
+    public class MediaSessionCallback : MediaSessionCompat.Callback
     {
+        public MediaSessionCallback()
+        {
+        }
+
+        public MediaSessionCallback(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        {
+        }
+
         public Action<MediaDescriptionCompat> OnAddQueueItemImpl { get; set; }
         public Action<MediaDescriptionCompat, int> OnAddQueueItemAtIndexImpl { get; set; }
         public Action OnFastForwardImpl { get; set; }
@@ -34,6 +43,7 @@ namespace MediaManager.Platforms.Android.Audio
         public Action OnSkipToPreviousImpl { get; private set; }
         public Action OnSkipToQueueItemImpl { get; private set; }
         public Action OnStopImpl { get; private set; }
+
         public override void OnAddQueueItem(MediaDescriptionCompat description) => OnAddQueueItemImpl?.Invoke(description);
         public override void OnAddQueueItem(MediaDescriptionCompat description, int index) => OnAddQueueItemAtIndexImpl?.Invoke(description, index);
         public override void OnFastForward() => OnFastForwardImpl?.Invoke();

@@ -6,5 +6,6 @@ namespace MediaManager.Media
 {
     public interface IMediaQueue : IList<IMediaItem>, INotifyCollectionChanged, INotifyPropertyChanged
     {
+        IMediaItem Current { get; }
     }
 }

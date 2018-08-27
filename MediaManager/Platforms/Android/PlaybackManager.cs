@@ -34,88 +34,81 @@ namespace MediaManager.Platforms.Android
         public async Task Pause()
         {
             await MediaBrowserManager.EnsureInitialized();
-            MediaBrowserManager.mediaController.GetTransportControls().Pause();
+            MediaBrowserManager.MediaController.GetTransportControls().Pause();
         }
 
         public async Task Play()
         {
             await MediaBrowserManager.EnsureInitialized();
-            MediaBrowserManager.mediaController.GetTransportControls().Play();
+            MediaBrowserManager.MediaController.GetTransportControls().Play();
         }
 
         public async Task Play(IMediaItem mediaItem)
         {
             await MediaBrowserManager.EnsureInitialized();
             var mediaUri = global::Android.Net.Uri.Parse(mediaItem.MetadataMediaUri);
-            MediaBrowserManager.mediaController.GetTransportControls().PrepareFromUri(mediaUri, null);
-            MediaBrowserManager.mediaController.GetTransportControls().Play();
+            MediaBrowserManager.MediaController.GetTransportControls().PlayFromUri(mediaUri, null);
         }
 
         public async Task PlayNext()
         {
             await MediaBrowserManager.EnsureInitialized();
-            MediaBrowserManager.mediaController.GetTransportControls().SkipToNext();
+            MediaBrowserManager.MediaController.GetTransportControls().SkipToNext();
         }
-
-        /*public async Task PlayPause()
-        {
-            await MediaBrowserManager.EnsureInitialized();
-            MediaBrowserManager.mediaController.GetTransportControls().SkipToNext();
-        }*/
 
         public async Task PlayPrevious()
         {
             await MediaBrowserManager.EnsureInitialized();
-            MediaBrowserManager.mediaController.GetTransportControls().SkipToPrevious();
+            MediaBrowserManager.MediaController.GetTransportControls().SkipToPrevious();
         }
 
         public async Task PlayPreviousOrSeekToStart()
         {
             await MediaBrowserManager.EnsureInitialized();
             if (Position < TimeSpan.FromSeconds(3))
-                MediaBrowserManager.mediaController.GetTransportControls().SkipToPrevious();
+                MediaBrowserManager.MediaController.GetTransportControls().SkipToPrevious();
             else
-                MediaBrowserManager.mediaController.GetTransportControls().SeekTo(0);
+                MediaBrowserManager.MediaController.GetTransportControls().SeekTo(0);
         }
 
         public async Task SeekTo(TimeSpan position)
         {
             await MediaBrowserManager.EnsureInitialized();
-            MediaBrowserManager.mediaController.GetTransportControls().SeekTo((long)position.TotalMilliseconds);
+            MediaBrowserManager.MediaController.GetTransportControls().SeekTo((long)position.TotalMilliseconds);
         }
 
         public async Task SeekToStart()
         {
             await MediaBrowserManager.EnsureInitialized();
-            MediaBrowserManager.mediaController.GetTransportControls().SeekTo(0);
+            MediaBrowserManager.MediaController.GetTransportControls().SeekTo(0);
         }
 
         public async Task StepBackward()
         {
             await MediaBrowserManager.EnsureInitialized();
-            MediaBrowserManager.mediaController.GetTransportControls().Rewind();
+            MediaBrowserManager.MediaController.GetTransportControls().Rewind();
         }
 
         public async Task StepForward()
         {
             await MediaBrowserManager.EnsureInitialized();
-            MediaBrowserManager.mediaController.GetTransportControls().FastForward();
+            MediaBrowserManager.MediaController.GetTransportControls().FastForward();
         }
 
         public async Task Stop()
         {
             await MediaBrowserManager.EnsureInitialized();
-            MediaBrowserManager.mediaController.GetTransportControls().Stop();
+            MediaBrowserManager.MediaController.GetTransportControls().Stop();
         }
 
         public void ToggleRepeat()
         {
-            MediaBrowserManager.mediaController.GetTransportControls().SetRepeatMode(0);
+            MediaBrowserManager.MediaController.GetTransportControls().SetRepeatMode(0);
         }
 
         public void ToggleShuffle()
         {
-            MediaBrowserManager.mediaController.GetTransportControls().SetShuffleMode(0);
+            MediaBrowserManager.MediaController.GetTransportControls().SetShuffleMode(0);
         }
     }
 }

@@ -5,6 +5,7 @@ using Android.Content;
 using Android.Media;
 using Android.OS;
 using Android.Runtime;
+using Com.Google.Android.Exoplayer2;
 
 namespace MediaManager.Platforms.Android.Audio
 {
@@ -21,12 +22,12 @@ namespace MediaManager.Platforms.Android.Audio
 
         private IMediaPlayer player;
 
-        private Com.Google.Android.Exoplayer2.SimpleExoPlayer exoPlayer
+        private SimpleExoPlayer exoPlayer
         {
             get
             {
-                if (player is Utils.IExoPlayerPlayer)
-                    return ((Utils.IExoPlayerPlayer)player).Player;
+                if (player is Utils.IExoPlayerPlayer exoPlayerPlayer)
+                    return exoPlayerPlayer.Player as SimpleExoPlayer;
 
                 return null;
             }

@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Android.Runtime;
 using Android.Support.V4.Media;
 
 namespace MediaManager.Platforms.Android.Audio
 {
     public class MediaBrowserConnectionCallback : MediaBrowserCompat.ConnectionCallback
     {
+        public MediaBrowserConnectionCallback()
+        {
+        }
+
+        protected MediaBrowserConnectionCallback(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        {
+        }
+
         public Action OnConnectedImpl { get; set; }
 
         public Action OnConnectionFailedImpl { get; set; }

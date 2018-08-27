@@ -8,59 +8,38 @@ namespace MediaManager
 {
     public static class MediaManagerExtensions
     {
-        public static Task Play(this IMediaManager mediaManager)
-        {
-            return mediaManager.PlaybackManager.Play();
-        }
-
-        public static Task Play(this IMediaManager mediaManager, IMediaItem item)
-        {
-            return mediaManager.PlaybackManager.Play(item);
-        }
-
         public static Task Play(this IMediaManager mediaManager, IEnumerable<IMediaItem> items)
         {
+            mediaManager.MediaQueue.Clear();
             foreach (var item in items)
             {
                 mediaManager.MediaQueue.Add(item);
             }
 
-            return mediaManager.PlaybackManager.Play(items.First());
+            return mediaManager.Play(items.First());
+        }
+
+        public static Task PlayPreviousOrSeekToStart(this IMediaManager mediaManager)
+        {
+            if (mediaManager.Position < TimeSpan.FromSeconds(3))
+                return mediaManager.PlayPrevious();
+            else
+                return mediaManager.SeekTo(TimeSpan.Zero);
         }
 
         public static bool IsPlaying(this IMediaManager mediaManager)
         {
-            return mediaManager.PlaybackManager.Status == MediaPlayerStatus.Playing;
-        }
-
-        public static Task Pause(this IMediaManager mediaManager)
-        {
-            return mediaManager.PlaybackManager.Pause();
+            return mediaManager.Status == MediaPlayerStatus.Playing;
         }
 
         public static Task PlayPause(this IMediaManager mediaManager)
         {
-            var status = mediaManager.PlaybackManager.Status;
+            var status = mediaManager.Status;
 
             if (status == MediaPlayerStatus.Paused || status == MediaPlayerStatus.Stopped)
                 return mediaManager.Play();
             else
                 return mediaManager.Pause();
-        }
-
-        public static Task PlayNext(this IMediaManager mediaManager)
-        {
-            return mediaManager.PlaybackManager.PlayNext();
-        }
-
-        public static Task PlayPrevious(this IMediaManager mediaManager)
-        {
-            return mediaManager.PlaybackManager.PlayPrevious();
-        }
-
-        public static Task SeekTo(this IMediaManager mediaManager, int totalMilliSeconds)
-        {
-            return mediaManager.PlaybackManager.SeekTo(TimeSpan.FromMilliseconds(totalMilliSeconds));
         }
     }
 }

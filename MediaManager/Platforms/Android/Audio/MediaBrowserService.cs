@@ -10,7 +10,7 @@ using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.UI;
 using MediaManager.Audio;
 using MediaManager.Media;
-using MediaManager.Platforms.Android.ServiceBinder;
+using MediaManager.Platforms.Android.Audio;
 
 namespace MediaManager.Platforms.Android
 {
@@ -18,17 +18,21 @@ namespace MediaManager.Platforms.Android
     [IntentFilter(new[] { global::Android.Service.Media.MediaBrowserService.ServiceInterface })]
     public class MediaBrowserService : MediaBrowserServiceCompat
     {
+        private IMediaManager mediaManager = CrossMediaManager.Current;
+
         private IAudioPlayer _audioPlayer;
-        public virtual IAudioPlayer AudioPlayer
+        protected IAudioPlayer AudioPlayer
         {
             get
             {
                 if (_audioPlayer == null)
-                    _audioPlayer = new AudioPlayer(_mediaSession);
+                    _audioPlayer = mediaManager.AudioPlayer;
+
                 return _audioPlayer;
             }
             set
             {
+                mediaManager.AudioPlayer = value;
                 _audioPlayer = value;
             }
         }
@@ -36,17 +40,12 @@ namespace MediaManager.Platforms.Android
         private AudioPlayer NativePlayer => AudioPlayer as AudioPlayer;
 
         private MediaSessionCompat _mediaSession;
-
-        private DelayedStopHandler _delayedStopHandler;
-        private int STOP_DELAY = 30000;
         private PlayerNotificationManager playerNotificationManager;
         public readonly string ChannelId = "audio_channel";
-        public readonly int FOREGROUND_NOTIFICATION_ID = 1;
-        IBinder Binder;
+        public readonly int ForegroundNotificationId = 1;
 
         public MediaBrowserService()
         {
-            _delayedStopHandler = new DelayedStopHandler(this);
         }
 
         public MediaBrowserService(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
@@ -57,46 +56,29 @@ namespace MediaManager.Platforms.Android
         {
             base.OnCreate();
 
+            // Build a PendingIntent that can be used to launch the UI.
+            var sessionIntent = PackageManager.GetLaunchIntentForPackage(PackageName);
+            var sessionActivityPendingIntent = PendingIntent.GetActivity(this, 0, sessionIntent, 0);
+
             _mediaSession = new MediaSessionCompat(this, nameof(MediaBrowserService));
+            _mediaSession.SetSessionActivity(sessionActivityPendingIntent);
+            _mediaSession.Active = true;
+
             SessionToken = _mediaSession.SessionToken;
 
             _mediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
                                    MediaSessionCompat.FlagHandlesTransportControls);
 
-            NativePlayer.Initialize();
+            NativePlayer.Initialize(_mediaSession);
 
-            _mediaSession.Active = true;
-
-            playerNotificationManager = new PlayerNotificationManager(
+            playerNotificationManager = PlayerNotificationManager.CreateWithNotificationChannel(
                 this,
                 ChannelId,
-                FOREGROUND_NOTIFICATION_ID,
-                new DescriptionAdapter());
+                Resource.String.download_notification_channel_name,
+                ForegroundNotificationId,
+                new MediaDescriptionAdapter(sessionActivityPendingIntent));
             playerNotificationManager.SetPlayer(NativePlayer.Player);
             playerNotificationManager.SetMediaSessionToken(SessionToken);
-        }
-
-        private class DescriptionAdapter : Java.Lang.Object, PlayerNotificationManager.IMediaDescriptionAdapter
-        {
-            public PendingIntent CreateCurrentContentIntent(IPlayer player)
-            {
-                return null;
-            }
-
-            public string GetCurrentContentText(IPlayer player)
-            {
-                return "Content text";
-            }
-
-            public string GetCurrentContentTitle(IPlayer player)
-            {
-                return "Content title";
-            }
-
-            public Bitmap GetCurrentLargeIcon(IPlayer player, PlayerNotificationManager.BitmapCallback callback)
-            {
-                return null;
-            }
         }
 
         public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)
@@ -105,11 +87,6 @@ namespace MediaManager.Platforms.Android
             {
                 MediaButtonReceiver.HandleIntent(_mediaSession, startIntent);
             }
-
-            // Reset the delay handler to enqueue a message to stop the service if
-            // nothing is playing.
-            _delayedStopHandler.RemoveCallbacksAndMessages(null);
-            _delayedStopHandler.SendEmptyMessageDelayed(0, STOP_DELAY);
             return StartCommandResult.Sticky;
         }
 
@@ -129,8 +106,6 @@ namespace MediaManager.Platforms.Android
             playerNotificationManager.SetPlayer(null);
             NativePlayer.Player.Release();
             NativePlayer.Player = null;
-
-            _delayedStopHandler.RemoveCallbacksAndMessages(null);
             _mediaSession.Release();
         }
 
@@ -141,25 +116,18 @@ namespace MediaManager.Platforms.Android
 
         public override void OnLoadChildren(string parentId, Result result)
         {
-            /*var mediaItems = new JavaList<MediaBrowserCompat.MediaItem>();
+            var mediaItems = new JavaList<MediaBrowserCompat.MediaItem>();
 
-            foreach (var v in Temp.Samples.SAMPLES)
-                mediaItems.Add(v.GetMediaItem());
+            foreach (var item in mediaManager.MediaQueue)
+                mediaItems.Add(item.GetMediaItem());
 
-            result.SendResult(mediaItems);*/
+            result.SendResult(mediaItems);
 
-            result.SendResult(null);
-        }
-
-        internal void SetQueue(MediaQueue mediaQueue)
-        {
-            NativePlayer.SetQueue(mediaQueue);
+            //result.SendResult(null);
         }
 
         public void OnPlaybackStart()
         {
-            _delayedStopHandler.RemoveCallbacksAndMessages(null);
-
             // The service needs to continue running even after the bound client (usually a
             // MediaController) disconnects, otherwise the music playback will stop.
             // Calling startService(Intent) will keep the service running until it is explicitly killed.
@@ -170,8 +138,6 @@ namespace MediaManager.Platforms.Android
         {
             // Reset the delayed stop handler, so after STOP_DELAY it will be executed again,
             // potentially stopping the service.
-            _delayedStopHandler.RemoveCallbacksAndMessages(null);
-            _delayedStopHandler.SendEmptyMessageDelayed(0, STOP_DELAY);
             StopForeground(true);
         }
 
@@ -201,14 +167,6 @@ namespace MediaManager.Platforms.Android
                     //service.serviceStarted = false;
                 }
             }
-        }
-
-        public override IBinder OnBind(Intent intent)
-        {
-            if (ServiceInterface == intent.Action)
-                return base.OnBind(intent);
-            else
-                return Binder = new MediaBrowserServiceBinder(this);
         }
     }
 }
