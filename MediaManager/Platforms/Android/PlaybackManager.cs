@@ -8,7 +8,7 @@ using MediaManager.Platforms.Android.Audio;
 
 namespace MediaManager.Platforms.Android
 {
-    public class PlaybackManager : IPlaybackManager
+    /*public class PlaybackManager : IPlaybackManager
     {
         protected MediaManagerImplementation mediaManagerImplementation;
 
@@ -110,5 +110,5 @@ namespace MediaManager.Platforms.Android
         {
             MediaBrowserManager.MediaController.GetTransportControls().SetShuffleMode(0);
         }
-    }
+    }*/
 }

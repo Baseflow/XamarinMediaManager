@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Threading.Tasks;
 using MediaManager.Media;
 
@@ -50,6 +51,14 @@ namespace MediaManager.Playback
         /// Adds MediaFile to the Queue and starts playing
         /// </summary>
         Task Play(IMediaItem mediaItem);
+
+        //Task PlayFromQueue(IMediaItem mediaItem);
+
+        Task<IMediaItem> Play(string uri);
+
+        Task Play(IEnumerable<IMediaItem> items);
+
+        //Task<IMediaItem> Play(FileInfo file);
 
         /// <summary>
         /// Pauses the current MediaFile

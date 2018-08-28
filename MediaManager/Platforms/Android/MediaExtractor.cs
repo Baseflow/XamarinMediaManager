@@ -13,6 +13,15 @@ namespace MediaManager.Platforms.Android
 {
     public class MediaExtractor : IMediaExtractor
     {
+        protected readonly Resources _resources;
+        protected readonly Dictionary<string, string> _requestHeaders;
+
+        public MediaExtractor(Resources resources, Dictionary<string, string> requestHeaders)
+        {
+            _resources = resources;
+            _requestHeaders = requestHeaders;
+        }
+
         public virtual async Task<IMediaItem> CreateMediaItem(string url)
         {
             var metaRetriever = new MediaMetadataRetriever();
@@ -32,16 +41,7 @@ namespace MediaManager.Platforms.Android
             return await ExtractMediaInfo(metaRetriever, file.FullName);
         }
 
-        private readonly Resources _resources;
-        private readonly Dictionary<string, string> _requestHeaders;
-
-        public MediaExtractor(Resources resources, Dictionary<string, string> requestHeaders)
-        {
-            _resources = resources;
-            _requestHeaders = requestHeaders;
-        }
-
-        public async Task<IMediaItem> ExtractMediaInfo(MediaMetadataRetriever mediaMetadataRetriever, string url)
+        protected async Task<IMediaItem> ExtractMediaInfo(MediaMetadataRetriever mediaMetadataRetriever, string url)
         {
             var mediaFile = new MediaItem();
             mediaFile.MetadataMediaUri = url;
@@ -89,7 +89,7 @@ namespace MediaManager.Platforms.Android
             return mediaFile;
         }
 
-        private Bitmap GetTrackCover(IMediaItem currentTrack)
+        protected Bitmap GetTrackCover(IMediaItem currentTrack)
         {
             string albumFolder = GetCurrentSongFolder(currentTrack);
             if (albumFolder == null)
@@ -117,7 +117,7 @@ namespace MediaManager.Platforms.Android
             return bitmap ?? BitmapFactory.DecodeResource(_resources, Resource.Drawable.exo_notification_play);
         }
 
-        private static string TryGetAlbumArtPathByFilename(System.Uri baseUri, string filename)
+        protected string TryGetAlbumArtPathByFilename(System.Uri baseUri, string filename)
         {
             System.Uri testUri = new System.Uri(baseUri, filename);
             string testPath = testUri.LocalPath;
@@ -127,7 +127,7 @@ namespace MediaManager.Platforms.Android
                 return null;
         }
 
-        private string GetCurrentSongFolder(IMediaItem currentFile)
+        protected string GetCurrentSongFolder(IMediaItem currentFile)
         {
             if (!new System.Uri(currentFile.MetadataMediaUri).IsFile)
                 return null;

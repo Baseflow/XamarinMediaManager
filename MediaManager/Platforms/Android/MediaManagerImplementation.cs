@@ -17,6 +17,7 @@ using System.ComponentModel;
 
 namespace MediaManager
 {
+    [Android.Runtime.Preserve(AllMembers = true)]
     public class MediaManagerImplementation : IMediaManager
     {
         public MediaManagerImplementation()
@@ -150,11 +151,42 @@ namespace MediaManager
             MediaBrowserManager.MediaController.GetTransportControls().Play();
         }
 
+        public async Task<IMediaItem> Play(string uri)
+        {
+            await MediaBrowserManager.EnsureInitialized();
+                        
+            var mediaItem = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem(uri);
+            MediaQueue.Clear();
+            MediaQueue.Add(mediaItem);
+
+            var mediaUri = global::Android.Net.Uri.Parse(uri);
+            MediaBrowserManager.MediaController.GetTransportControls().PlayFromUri(mediaUri, null);
+            return mediaItem;
+        }
+
         public async Task Play(IMediaItem mediaItem)
         {
             await MediaBrowserManager.EnsureInitialized();
+
+            MediaQueue.Clear();
+            MediaQueue.Add(mediaItem);
+
             var mediaUri = global::Android.Net.Uri.Parse(mediaItem.MetadataMediaUri);
             MediaBrowserManager.MediaController.GetTransportControls().PlayFromUri(mediaUri, null);
+        }
+
+        public async Task Play(IEnumerable<IMediaItem> items)
+        {
+            await MediaBrowserManager.EnsureInitialized();
+
+            MediaQueue.Clear();
+            foreach (var item in items)
+            {
+                MediaQueue.Add(item);
+            }
+
+            MediaBrowserManager.MediaController.GetTransportControls().Prepare();
+            MediaBrowserManager.MediaController.GetTransportControls().Play();
         }
 
         public async Task PlayNext()

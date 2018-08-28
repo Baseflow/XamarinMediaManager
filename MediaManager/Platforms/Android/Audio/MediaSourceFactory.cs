@@ -11,24 +11,28 @@ namespace MediaManager.Platforms.Android.Audio
 {
     public class MediaSourceFactory : Java.Lang.Object, TimelineQueueEditor.IMediaSourceFactory
     {
-        private DefaultDataSourceFactory factory;
+        private DefaultDataSourceFactory _defaultDataSourceFactory;
 
         public MediaSourceFactory(DefaultDataSourceFactory factory)
         {
-            this.factory = factory;
+            _defaultDataSourceFactory = factory;
         }
 
         public IMediaSource CreateMediaSource(MediaDescriptionCompat description)
         {
-            IMediaSource src = null;
+            IMediaSource extractorMediaSource = null;
 
             if (description.MediaId != null)
-                src = null; //TODO: Implement preparefrommediasource
+                extractorMediaSource = null; //TODO: Implement preparefrommediasource
 
             else if (description.MediaUri != null)
-                src = new ExtractorMediaSource(description.MediaUri, factory, new DefaultExtractorsFactory(), null, null);
+            {
+                extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
+                    .SetTag(description)
+                    .CreateMediaSource(description.MediaUri);
+            }
 
-            return src;
+            return extractorMediaSource;
         }
     }
 }

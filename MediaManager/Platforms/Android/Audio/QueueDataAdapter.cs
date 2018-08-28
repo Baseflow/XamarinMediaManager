@@ -22,7 +22,7 @@ namespace MediaManager.Platforms.Android.Audio
 
         public void Add(int index, MediaDescriptionCompat description)
         {
-            //mediaManager.MediaQueue.Insert(index);
+            mediaManager.MediaQueue.Insert(index, description.ToMediaItem());
         }
 
         public MediaDescriptionCompat GetMediaDescription(int index)

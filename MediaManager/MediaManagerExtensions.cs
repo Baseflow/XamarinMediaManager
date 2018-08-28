@@ -7,7 +7,7 @@ using MediaManager.Media;
 namespace MediaManager
 {
     public static class MediaManagerExtensions
-    {
+    {/*
         public static Task Play(this IMediaManager mediaManager, IEnumerable<IMediaItem> items)
         {
             mediaManager.MediaQueue.Clear();
@@ -17,7 +17,7 @@ namespace MediaManager
             }
 
             return mediaManager.Play(items.First());
-        }
+        }*/
 
         public static Task PlayPreviousOrSeekToStart(this IMediaManager mediaManager)
         {
