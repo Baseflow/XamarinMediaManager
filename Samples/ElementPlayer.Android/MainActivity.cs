@@ -40,13 +40,19 @@ namespace ElementPlayer.Android
 
             FindViewById<ToggleButton>(Resource.Id.btnPlayPause).Click += async (object sender, EventArgs e) =>
             {
-                if (CrossMediaManager.Current.Status == MediaPlayerStatus.Stopped || CrossMediaManager.Current.Status == MediaPlayerStatus.Failed)
+                if (CrossMediaManager.Current.State == MediaPlayerState.Stopped || CrossMediaManager.Current.State == MediaPlayerState.Failed)
                 {
-                    var item1 = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3");
+                    /*var item1 = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3");
                     var item2 = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://ia800605.us.archive.org/32/items/Mp3Playlist_555/CelineDion-IfICould.mp3");
                     var item3 = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://ia800605.us.archive.org/32/items/Mp3Playlist_555/Daughtry-Homeacoustic.mp3");
+                    
+                    var queue = new List<IMediaItem>() { item1, item2, item3 };*/
 
-                    var queue = new List<IMediaItem>() { item1, item2, item3 };                    
+                    var queue = new List<string>() {
+                        "https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3",
+                        "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/CelineDion-IfICould.mp3",
+                        "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/Daughtry-Homeacoustic.mp3"
+                    };
 
                     await CrossMediaManager.Current.Play(queue);
                     ScheduleSeekbarUpdate();
@@ -54,8 +60,8 @@ namespace ElementPlayer.Android
                 else
                 {
                     await CrossMediaManager.Current.PlayPause();
-
-                    if (CrossMediaManager.Current.Status == MediaPlayerStatus.Paused)
+                    
+                    if (CrossMediaManager.Current.State == MediaPlayerState.Paused)
                         StopSeekbarUpdate();
                     else
                         ScheduleSeekbarUpdate();

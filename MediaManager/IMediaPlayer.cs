@@ -36,6 +36,6 @@ namespace MediaManager
         /// <summary>
         /// Reading the current status of the player
         /// </summary>
-        MediaPlayerStatus Status { get; }
+        MediaPlayerState State { get; }
     }
 }

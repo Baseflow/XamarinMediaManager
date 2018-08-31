@@ -27,7 +27,8 @@ namespace MediaManager.Platforms.Android
             var metaRetriever = new MediaMetadataRetriever();
             await metaRetriever.SetDataSourceAsync(url, _requestHeaders);
 
-            return await ExtractMediaInfo(metaRetriever, url);
+            var mediaItem = new MediaItem(url);
+            return await ExtractMediaInfo(metaRetriever, mediaItem);
         }
 
         public virtual async Task<IMediaItem> CreateMediaItem(FileInfo file)
@@ -38,28 +39,53 @@ namespace MediaManager.Platforms.Android
             var inputStream = new Java.IO.FileInputStream(javaFile);
             await metaRetriever.SetDataSourceAsync(inputStream.FD);
 
-            return await ExtractMediaInfo(metaRetriever, file.FullName);
+            var mediaItem = new MediaItem(file.FullName);
+            return await ExtractMediaInfo(metaRetriever, mediaItem);
         }
 
-        protected async Task<IMediaItem> ExtractMediaInfo(MediaMetadataRetriever mediaMetadataRetriever, string url)
+        public virtual async Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem)
         {
-            var mediaFile = new MediaItem();
-            mediaFile.MetadataMediaUri = url;
-            mediaFile.MetadataAlbum = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Album);
-            mediaFile.MetadataAlbumArtist = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Albumartist);
-            mediaFile.MetadataArtist = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Artist);
-            mediaFile.MetadataAuthor = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Author);
-            mediaFile.MetadataTrackNumber = mediaMetadataRetriever.ExtractMetadata(MetadataKey.CdTrackNumber);
-            mediaFile.MetadataCompilation = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Compilation);
-            mediaFile.MetadataComposer = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Composer);
-            mediaFile.MetadataDate = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Date);
-            mediaFile.MetadataDiscNumber = mediaMetadataRetriever.ExtractMetadata(MetadataKey.DiscNumber);
-            mediaFile.MetadataDuration = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Duration);
-            mediaFile.MetadataGenre = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Genre);
-            mediaFile.MetadataNumTracks = mediaMetadataRetriever.ExtractMetadata(MetadataKey.NumTracks);
-            mediaFile.MetadataTitle = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Title);
-            mediaFile.MetadataWriter = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Writer);
-            mediaFile.MetadataYear = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Year);
+            var metaRetriever = new MediaMetadataRetriever();
+            await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, _requestHeaders);
+
+            return await ExtractMediaInfo(metaRetriever, mediaItem);
+        }
+
+        protected async Task<IMediaItem> ExtractMediaInfo(MediaMetadataRetriever mediaMetadataRetriever, IMediaItem mediaItem)
+        {
+            mediaItem.Album = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Album);
+            mediaItem.AlbumArtist = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Albumartist);
+            mediaItem.Artist = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Artist);
+            mediaItem.Author = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Author);
+
+            var trackNumber = mediaMetadataRetriever.ExtractMetadata(MetadataKey.CdTrackNumber);
+            if(!string.IsNullOrEmpty(trackNumber) && int.TryParse(trackNumber, out int trackNumberResult))
+                mediaItem.TrackNumber = trackNumberResult;
+
+            mediaItem.Compilation = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Compilation);
+            mediaItem.Composer = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Composer);
+            mediaItem.Date = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Date);
+
+            var discNumber = mediaMetadataRetriever.ExtractMetadata(MetadataKey.DiscNumber);
+            if (!string.IsNullOrEmpty(discNumber) && int.TryParse(discNumber, out int discNumberResult))
+                mediaItem.DiscNumber = discNumberResult;
+
+            var duration = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Duration);
+            if (!string.IsNullOrEmpty(duration) && int.TryParse(duration, out int durationResult))
+                mediaItem.Duration = TimeSpan.FromMilliseconds(durationResult);
+
+            mediaItem.Genre = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Genre);
+
+            var numTracks = mediaMetadataRetriever.ExtractMetadata(MetadataKey.NumTracks);
+            if (!string.IsNullOrEmpty(numTracks) && int.TryParse(numTracks, out int numTracksResult))
+                mediaItem.NumTracks = numTracksResult;
+
+            mediaItem.Title = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Title);
+            mediaItem.Writer = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Writer);
+
+            var year = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Year);
+            if (!string.IsNullOrEmpty(year) && int.TryParse(year, out int yearResult))
+                mediaItem.Year = yearResult;
 
             byte[] imageByteArray = null;
             try
@@ -73,20 +99,22 @@ namespace MediaManager.Platforms.Android
 
             if (imageByteArray == null)
             {
-                mediaFile.MetadataAlbumArt = GetTrackCover(mediaFile);
+                mediaItem.AlbumArt = GetTrackCover(mediaItem);
             }
             else
             {
                 try
                 {
-                    mediaFile.MetadataAlbumArt = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
+                    mediaItem.AlbumArt = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
                 }
                 catch (Java.Lang.OutOfMemoryError)
                 {
-                    mediaFile.MetadataAlbumArt = null;
+                    mediaItem.AlbumArt = null;
                 }
             }
-            return mediaFile;
+
+            mediaItem.IsMetadataExtracted = true;
+            return mediaItem;
         }
 
         protected Bitmap GetTrackCover(IMediaItem currentTrack)
@@ -129,10 +157,10 @@ namespace MediaManager.Platforms.Android
 
         protected string GetCurrentSongFolder(IMediaItem currentFile)
         {
-            if (!new System.Uri(currentFile.MetadataMediaUri).IsFile)
+            if (!new System.Uri(currentFile.MediaUri).IsFile)
                 return null;
 
-            return System.IO.Path.GetDirectoryName(currentFile.MetadataMediaUri);
+            return System.IO.Path.GetDirectoryName(currentFile.MediaUri);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace MediaManager.Media
 {
-    public enum MediaPlayerStatus
+    public enum MediaPlayerState
     {
         Playing,
         Paused,

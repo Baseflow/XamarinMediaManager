@@ -31,9 +31,7 @@ namespace MediaManager.Platforms.Android.Audio
 
         public override MediaDescriptionCompat GetMediaDescription(IPlayer player, int windowIndex)
         {
-            //var description = player.CurrentTimeline.GetWindow(windowIndex, window, true).Tag as MediaDescriptionCompat;
-            var item = mediaManager.MediaQueue.ElementAt(windowIndex).GetMediaDescription();
-            return item;
+            return mediaManager.MediaQueue.ElementAtOrDefault(windowIndex)?.ToMediaDescription();
         }
     }
 }

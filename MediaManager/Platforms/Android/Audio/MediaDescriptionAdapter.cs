@@ -37,20 +37,17 @@ namespace MediaManager.Platforms.Android.Audio
 
         public string GetCurrentContentText(IPlayer player)
         {
-            var item = mediaManager.MediaQueue.ElementAt(player.CurrentWindowIndex);
-            return item.MetadataTitle;
+            return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.Title;
         }
 
         public string GetCurrentContentTitle(IPlayer player)
         {
-            var item = mediaManager.MediaQueue.ElementAt(player.CurrentWindowIndex);
-            return item.MetadataAlbumArtist;
+            return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.AlbumArtist;
         }
 
         public Bitmap GetCurrentLargeIcon(IPlayer player, PlayerNotificationManager.BitmapCallback callback)
         {
-            var item = mediaManager.MediaQueue.ElementAt(player.CurrentWindowIndex);
-            return item.MetadataAlbumArt as Bitmap;
+            return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.AlbumArt as Bitmap;
         }
     }
 }

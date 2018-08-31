@@ -53,22 +53,25 @@ namespace MediaManager.Platforms.Android.Audio
             _mediaSource.Clear();
             foreach (var mediaItem in mediaManager.MediaQueue)
             {
-                var uri = global::Android.Net.Uri.Parse(mediaItem.MetadataMediaUri);
+                var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
                 var extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
-                    .SetTag(mediaItem.GetMediaDescription())
+                    .SetTag(mediaItem.ToMediaDescription())
                     .CreateMediaSource(uri);
                 _mediaSource.AddMediaSource(extractorMediaSource);
             }
             _player.Prepare(_mediaSource);
+
+            //Only in case of Prepare set PlayWhenReady to true because we use this to load in the whole queue
+            _player.PlayWhenReady = true;
         }
 
         public void OnPrepareFromMediaId(string mediaId, Bundle p1)
         {
             _mediaSource.Clear();
-            var mediaItem = mediaManager.MediaQueue.FirstOrDefault(x => x.MetadataMediaId == mediaId);
-            var uri = global::Android.Net.Uri.Parse(mediaItem.MetadataMediaUri);
+            var mediaItem = mediaManager.MediaQueue.FirstOrDefault(x => x.MediaId == mediaId);
+            var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
             var extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
-                    .SetTag(mediaItem.GetMediaDescription())
+                    .SetTag(mediaItem.ToMediaDescription())
                     .CreateMediaSource(uri);
             _mediaSource.AddMediaSource(extractorMediaSource);
             _player.Prepare(_mediaSource);
@@ -77,11 +80,11 @@ namespace MediaManager.Platforms.Android.Audio
         public void OnPrepareFromSearch(string searchTerm, Bundle p1)
         {
             _mediaSource.Clear();
-            foreach (var mediaItem in mediaManager.MediaQueue.Where(x => x.MetadataTitle == searchTerm))
+            foreach (var mediaItem in mediaManager.MediaQueue.Where(x => x.Title == searchTerm))
             {
-                var uri = global::Android.Net.Uri.Parse(mediaItem.MetadataMediaUri);
+                var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
                 var extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
-                    .SetTag(mediaItem.GetMediaDescription())
+                    .SetTag(mediaItem.ToMediaDescription())
                     .CreateMediaSource(uri);
                 _mediaSource.AddMediaSource(extractorMediaSource);
             }
@@ -91,9 +94,9 @@ namespace MediaManager.Platforms.Android.Audio
         public void OnPrepareFromUri(global::Android.Net.Uri mediaUri, Bundle p1)
         {
             _mediaSource.Clear();
-            var mediaItem = mediaManager.MediaQueue.FirstOrDefault(x => x.MetadataMediaUri == mediaUri.ToString());
+            var mediaItem = mediaManager.MediaQueue.FirstOrDefault(x => x.MediaUri == mediaUri.ToString());
             var extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
-                .SetTag(mediaItem.GetMediaDescription())
+                .SetTag(mediaItem.ToMediaDescription())
                 .CreateMediaSource(mediaUri);
             _mediaSource.AddMediaSource(extractorMediaSource);
             _player.Prepare(_mediaSource);

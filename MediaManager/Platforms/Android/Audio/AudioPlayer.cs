@@ -47,15 +47,14 @@ namespace MediaManager
         private AudioFocusManager audioFocusManager;
         private ConcatenatingMediaSource mediaSource;
 
-        public Dictionary<string, string> RequestHeaders { get; set; }
-
-        public MediaPlayerStatus Status
+        public MediaPlayerState State
         {
             get
             {
-                if (!_mediaSession.Active) return MediaPlayerStatus.Stopped;
+                if (!_mediaSession.Active)
+                    return MediaPlayerState.Stopped;
 
-                return GetStatusByCompatValue((int)_mediaSession.Controller.PlaybackState.State);
+                return _mediaSession.Controller.PlaybackState.ToMediaPlayerState();
             }
         }
 
@@ -132,34 +131,6 @@ namespace MediaManager
             //Player.Stop(true);
 
             return Task.CompletedTask;
-        }
-
-        public MediaPlayerStatus GetStatusByCompatValue(int state)
-        {
-            switch (state)
-            {
-                case PlaybackStateCompat.StateFastForwarding:
-                case PlaybackStateCompat.StateRewinding:
-                case PlaybackStateCompat.StateSkippingToNext:
-                case PlaybackStateCompat.StateSkippingToPrevious:
-                case PlaybackStateCompat.StateSkippingToQueueItem:
-                case PlaybackStateCompat.StatePlaying:
-                    return MediaPlayerStatus.Playing;
-
-                case PlaybackStateCompat.StatePaused:
-                    return MediaPlayerStatus.Paused;
-
-                case PlaybackStateCompat.StateConnecting:
-                case PlaybackStateCompat.StateBuffering:
-                    return MediaPlayerStatus.Buffering;
-
-                case PlaybackStateCompat.StateError:
-                case PlaybackStateCompat.StateStopped:
-                    return MediaPlayerStatus.Stopped;
-
-                default:
-                    return MediaPlayerStatus.Stopped;
-            }
         }
 
         private class PlayerEventListener : PlayerDefaultEventListener

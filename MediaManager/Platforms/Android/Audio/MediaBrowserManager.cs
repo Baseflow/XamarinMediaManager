@@ -27,10 +27,6 @@ namespace MediaManager.Platforms.Android.Audio
 
         public bool IsInitialized { get; private set; } = false;
 
-        public Utils.PlaybackStateCompatExtension PlaybackState { get; private set; }
-
-        public Utils.MediaMetadataCompatExtension Metadata { get; internal set; }
-
         public async Task<bool> EnsureInitialized()
         {
             if (IsInitialized)
@@ -48,12 +44,12 @@ namespace MediaManager.Platforms.Android.Audio
                 {
                     _mediaControllerCallback.OnMetadataChangedImpl = metadata =>
                     {
-                        Metadata = new Utils.MediaMetadataCompatExtension(metadata);
+                        //TODO: trigger change
                     };
 
                     _mediaControllerCallback.OnPlaybackStateChangedImpl = state =>
                     {
-                        PlaybackState = new Utils.PlaybackStateCompatExtension(state);
+                        //PlaybackState = new Utils.PlaybackStateCompatExtension(state);
                     };
 
                     _mediaControllerCallback.OnSessionEventChangedImpl = (string @event, Bundle extras) =>

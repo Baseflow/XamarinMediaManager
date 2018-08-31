@@ -14,6 +14,7 @@ using Android.Content.Res;
 using System.Collections.Generic;
 using System;
 using System.ComponentModel;
+using System.Linq;
 
 namespace MediaManager
 {
@@ -131,13 +132,13 @@ namespace MediaManager
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TimeSpan Position => MediaBrowserManager?.PlaybackState?.Position ?? TimeSpan.Zero;
+        public TimeSpan Position => TimeSpan.FromMilliseconds(MediaBrowserManager?.MediaController.PlaybackState?.Position ?? 0);
 
-        public TimeSpan Duration => TimeSpan.FromMilliseconds(MediaBrowserManager?.Metadata?.Duration ?? 0);
+        public TimeSpan Duration => MediaBrowserManager?.MediaController.Metadata?.ToMediaItem().Duration ?? TimeSpan.Zero;
 
-        public TimeSpan Buffered => MediaBrowserManager?.PlaybackState?.Buffered ?? TimeSpan.Zero;
+        public TimeSpan Buffered => TimeSpan.FromMilliseconds(MediaBrowserManager?.MediaController?.PlaybackState?.BufferedPosition ?? 0);
 
-        public MediaPlayerStatus Status => MediaBrowserManager?.PlaybackState?.Status ?? MediaPlayerStatus.Stopped;
+        public MediaPlayerState State => MediaBrowserManager?.MediaController?.PlaybackState?.ToMediaPlayerState() ?? MediaPlayerState.Stopped;
 
         public async Task Pause()
         {
@@ -171,8 +172,25 @@ namespace MediaManager
             MediaQueue.Clear();
             MediaQueue.Add(mediaItem);
 
-            var mediaUri = global::Android.Net.Uri.Parse(mediaItem.MetadataMediaUri);
+            var mediaUri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
             MediaBrowserManager.MediaController.GetTransportControls().PlayFromUri(mediaUri, null);
+        }
+
+        public async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
+        {
+            await MediaBrowserManager.EnsureInitialized();
+
+            MediaQueue.Clear();
+            foreach (var url in items)
+            {
+                var mediaItem = new MediaItem(url);
+                MediaQueue.Add(mediaItem);
+            }
+            
+            MediaBrowserManager.MediaController.GetTransportControls().Prepare();
+
+            //TODO: Need to do all of this in the background thread
+            return await MediaQueue.FetchMediaQueueMetaData().ConfigureAwait(false);
         }
 
         public async Task Play(IEnumerable<IMediaItem> items)
@@ -186,7 +204,6 @@ namespace MediaManager
             }
 
             MediaBrowserManager.MediaController.GetTransportControls().Prepare();
-            MediaBrowserManager.MediaController.GetTransportControls().Play();
         }
 
         public async Task PlayNext()

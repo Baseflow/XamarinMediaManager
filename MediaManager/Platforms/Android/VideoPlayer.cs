@@ -10,7 +10,7 @@ namespace MediaManager
     {
         public Dictionary<string, string> RequestHeaders { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public MediaPlayerStatus Status => throw new NotImplementedException();
+        public MediaPlayerState State => throw new NotImplementedException();
 
         public TimeSpan Position => throw new NotImplementedException();
 

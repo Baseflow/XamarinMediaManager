@@ -9,17 +9,10 @@ namespace MediaManager.Playback
 {
     public interface IPlaybackManager : INotifyPropertyChanged
     {
-        //IMediaPlayer CurrentMediaPlayer { get; }
-
-        /// <summary>
-        /// Gets or sets the request headers.
-        /// </summary>
-        Dictionary<string, string> RequestHeaders { get; set; }
-
         /// <summary>
         /// Reading the current status of the player
         /// </summary>
-        MediaPlayerStatus Status { get; }
+        MediaPlayerState State { get; }
 
         /// <summary>
         /// Gets the players position
@@ -38,11 +31,6 @@ namespace MediaManager.Playback
         TimeSpan Buffered { get; }
 
         /// <summary>
-        /// Plays or pauses the current MediaFile
-        /// </summary>
-        //Task PlayPause();
-
-        /// <summary>
         /// Plays the current MediaFile
         /// </summary>
         Task Play();
@@ -52,13 +40,17 @@ namespace MediaManager.Playback
         /// </summary>
         Task Play(IMediaItem mediaItem);
 
-        //Task PlayFromQueue(IMediaItem mediaItem);
-
         Task<IMediaItem> Play(string uri);
 
         Task Play(IEnumerable<IMediaItem> items);
 
+        Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items);
+
+        //TODO: Move to extension
         //Task<IMediaItem> Play(FileInfo file);
+
+        //TODO: Make check inside normal api?
+        //Task PlayFromQueue(IMediaItem mediaItem);
 
         /// <summary>
         /// Pauses the current MediaFile

@@ -119,7 +119,7 @@ namespace MediaManager.Platforms.Android
             var mediaItems = new JavaList<MediaBrowserCompat.MediaItem>();
 
             foreach (var item in mediaManager.MediaQueue)
-                mediaItems.Add(item.GetMediaItem());
+                mediaItems.Add(item.ToMediaBrowserMediaItem());
 
             result.SendResult(mediaItems);
 
@@ -159,7 +159,7 @@ namespace MediaManager.Platforms.Android
                 _weakReference.TryGetTarget(out service);
                 if (service != null && service.AudioPlayer != null)
                 {
-                    if (service.AudioPlayer.Status == Media.MediaPlayerStatus.Playing)
+                    if (service.AudioPlayer.State == Media.MediaPlayerState.Playing)
                     {
                         return;
                     }

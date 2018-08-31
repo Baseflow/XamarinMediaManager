@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Android.Runtime;
 using Android.Support.V4.Media;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 using Com.Google.Android.Exoplayer2.Extractor;
@@ -16,6 +17,14 @@ namespace MediaManager.Platforms.Android.Audio
         public MediaSourceFactory(DefaultDataSourceFactory factory)
         {
             _defaultDataSourceFactory = factory;
+        }
+
+        public MediaSourceFactory(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+        {
+        }
+
+        protected MediaSourceFactory()
+        {
         }
 
         public IMediaSource CreateMediaSource(MediaDescriptionCompat description)

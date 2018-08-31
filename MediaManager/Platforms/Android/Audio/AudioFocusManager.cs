@@ -121,7 +121,7 @@ namespace MediaManager.Platforms.Android.Audio
 
         private bool IsPlaying()
         {
-            return player.Status == Media.MediaPlayerStatus.Playing;
+            return player.State == Media.MediaPlayerState.Playing;
         }
 
         public bool GetPlayWhenReady()

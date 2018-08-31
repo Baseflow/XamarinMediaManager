@@ -10,6 +10,11 @@ namespace MediaManager
 {
     public interface IMediaManager : IPlaybackManager
     {
+        /// <summary>
+        /// Gets or sets the request headers.
+        /// </summary>
+        Dictionary<string, string> RequestHeaders { get; set; }
+
         IAudioPlayer AudioPlayer { get; set; }
 
         IVideoPlayer VideoPlayer { get; set; }
