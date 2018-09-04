@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace MediaManager
 {
@@ -131,6 +132,11 @@ namespace MediaManager
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public TimeSpan Position => TimeSpan.FromMilliseconds(MediaBrowserManager?.MediaController.PlaybackState?.Position ?? 0);
 

@@ -6,21 +6,21 @@ namespace MediaManager.Media
 {
     public class MediaQueue : ObservableCollection<IMediaItem>, IMediaQueue
     {
-        List<IMediaItem> originalList { get; set; }
+        public event QueueEndedEventHandler QueueEnded;
+        public event QueueMediaChangedEventHandler QueueMediaChanged;
 
-        private List<T> Randomize<T>(List<T> list)
+        public bool HasNext()
         {
-            List<T> randomizedList = new List<T>();
-            Random rnd = new Random();
-            while (list.Count > 0)
-            {
-                int index = rnd.Next(0, list.Count); //pick a random item from the master list
-                randomizedList.Add(list[index]); //place it at the end of the randomized list
-                list.RemoveAt(index);
-            }
-            return randomizedList;
+            throw new NotImplementedException();
+        }
+
+        public bool HasPrevious()
+        {
+            throw new NotImplementedException();
         }
 
         public IMediaItem Current => this[0];
+
+        public int Index => throw new NotImplementedException();
     }
 }

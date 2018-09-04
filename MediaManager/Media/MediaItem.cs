@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace MediaManager.Media
@@ -11,7 +13,6 @@ namespace MediaManager.Media
             MediaUri = uri;
         }
 
-        public bool IsMetadataExtracted { get; set; } = false;
         public string Advertisement { get; set; }
         public string Album { get; set; }
         public object AlbumArt { get; set; }
@@ -35,7 +36,7 @@ namespace MediaManager.Media
         public TimeSpan Duration { get; set; }
         public object Extras { get; set; }
         public string Genre { get; set; }
-        public string MediaId { get; set; }
+        public string MediaId { get; set; } = Guid.NewGuid().ToString();
         public string MediaUri { get; set; }
         public int NumTracks { get; set; }
         public object Rating { get; set; }
@@ -44,5 +45,29 @@ namespace MediaManager.Media
         public object UserRating { get; set; }
         public string Writer { get; set; }
         public int Year { get; set; }
+
+        private bool _isMetadataExtracted = false;
+        public bool IsMetadataExtracted
+        {
+            get
+            {
+                return _isMetadataExtracted;
+            }
+            set
+            {
+                _isMetadataExtracted = value;
+                MetadataUpdated?.Invoke(this, new MetadataChangedEventArgs(this));
+            }
+        }
+
+        public event MetadataUpdatedEventHandler MetadataUpdated;
+
+        //TODO: Update all properties to use this
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

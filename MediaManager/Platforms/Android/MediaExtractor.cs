@@ -53,18 +53,30 @@ namespace MediaManager.Platforms.Android
 
         protected async Task<IMediaItem> ExtractMediaInfo(MediaMetadataRetriever mediaMetadataRetriever, IMediaItem mediaItem)
         {
-            mediaItem.Album = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Album);
-            mediaItem.AlbumArtist = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Albumartist);
-            mediaItem.Artist = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Artist);
-            mediaItem.Author = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Author);
+            if(!string.IsNullOrEmpty(mediaItem.Album))
+                mediaItem.Album = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Album);
+
+            if (!string.IsNullOrEmpty(mediaItem.AlbumArtist))
+                mediaItem.AlbumArtist = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Albumartist);
+
+            if (!string.IsNullOrEmpty(mediaItem.Artist))
+                mediaItem.Artist = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Artist);
+
+            if (!string.IsNullOrEmpty(mediaItem.Author))
+                mediaItem.Author = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Author);
 
             var trackNumber = mediaMetadataRetriever.ExtractMetadata(MetadataKey.CdTrackNumber);
             if(!string.IsNullOrEmpty(trackNumber) && int.TryParse(trackNumber, out int trackNumberResult))
                 mediaItem.TrackNumber = trackNumberResult;
 
-            mediaItem.Compilation = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Compilation);
-            mediaItem.Composer = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Composer);
-            mediaItem.Date = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Date);
+            if (!string.IsNullOrEmpty(mediaItem.Compilation))
+                mediaItem.Compilation = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Compilation);
+
+            if (!string.IsNullOrEmpty(mediaItem.Composer))
+                mediaItem.Composer = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Composer);
+
+            if (!string.IsNullOrEmpty(mediaItem.Date))
+                mediaItem.Date = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Date);
 
             var discNumber = mediaMetadataRetriever.ExtractMetadata(MetadataKey.DiscNumber);
             if (!string.IsNullOrEmpty(discNumber) && int.TryParse(discNumber, out int discNumberResult))
@@ -74,14 +86,18 @@ namespace MediaManager.Platforms.Android
             if (!string.IsNullOrEmpty(duration) && int.TryParse(duration, out int durationResult))
                 mediaItem.Duration = TimeSpan.FromMilliseconds(durationResult);
 
-            mediaItem.Genre = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Genre);
+            if (!string.IsNullOrEmpty(mediaItem.Genre))
+                mediaItem.Genre = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Genre);
 
             var numTracks = mediaMetadataRetriever.ExtractMetadata(MetadataKey.NumTracks);
             if (!string.IsNullOrEmpty(numTracks) && int.TryParse(numTracks, out int numTracksResult))
                 mediaItem.NumTracks = numTracksResult;
 
-            mediaItem.Title = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Title);
-            mediaItem.Writer = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Writer);
+            if (!string.IsNullOrEmpty(mediaItem.Title))
+                mediaItem.Title = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Title);
+
+            if (!string.IsNullOrEmpty(mediaItem.Writer))
+                mediaItem.Writer = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Writer);
 
             var year = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Year);
             if (!string.IsNullOrEmpty(year) && int.TryParse(year, out int yearResult))

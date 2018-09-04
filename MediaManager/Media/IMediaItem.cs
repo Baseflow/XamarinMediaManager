@@ -1,10 +1,24 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace MediaManager.Media
 {
-    public interface IMediaItem
+    public delegate void MetadataUpdatedEventHandler(object sender, MetadataChangedEventArgs e);
+
+    public interface IMediaItem : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether [metadata extracted].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [metadata extracted]; otherwise, <c>false</c>.
+        /// </value>
         bool IsMetadataExtracted { get; set; }
+
+        /// <summary>
+        /// Raised when MediaFile is updated
+        /// </summary>
+        event MetadataUpdatedEventHandler MetadataUpdated;
 
         /// <summary>
         /// The metadata key for a int typed value to retrieve the information about whether the media is an advertisement.

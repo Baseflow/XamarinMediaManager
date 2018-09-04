@@ -10,7 +10,7 @@ namespace MediaManager
         public static MediaDescriptionCompat ToMediaDescription(this IMediaItem item)
         {
             var description = new MediaDescriptionCompat.Builder()
-                .SetMediaId(item?.MediaUri)
+                .SetMediaId(item?.MediaId)
                 .SetMediaUri(Android.Net.Uri.Parse(item?.MediaUri))
                 .SetTitle(item?.Title)
                 .SetSubtitle(item?.Artist)
