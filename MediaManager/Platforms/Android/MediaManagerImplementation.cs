@@ -37,7 +37,7 @@ namespace MediaManager
             get
             {
                 if (_mediaBrowserManager == null)
-                    _mediaBrowserManager = new MediaBrowserManager(this);
+                    _mediaBrowserManager = new MediaBrowserManager(Context);
                 return _mediaBrowserManager;
             }
         }

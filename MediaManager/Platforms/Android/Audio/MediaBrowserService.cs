@@ -16,7 +16,7 @@ namespace MediaManager.Platforms.Android
     [IntentFilter(new[] { global::Android.Service.Media.MediaBrowserService.ServiceInterface })]
     public class MediaBrowserService : MediaBrowserServiceCompat
     {
-        private IMediaManager mediaManager = CrossMediaManager.Current;
+        protected IMediaManager MediaManager = CrossMediaManager.Current;
 
         private IAudioPlayer _audioPlayer;
         protected IAudioPlayer AudioPlayer
@@ -24,13 +24,13 @@ namespace MediaManager.Platforms.Android
             get
             {
                 if (_audioPlayer == null)
-                    _audioPlayer = mediaManager.AudioPlayer;
+                    _audioPlayer = MediaManager.AudioPlayer;
 
                 return _audioPlayer;
             }
             set
             {
-                mediaManager.AudioPlayer = value;
+                MediaManager.AudioPlayer = value;
                 _audioPlayer = value;
             }
         }
@@ -40,11 +40,12 @@ namespace MediaManager.Platforms.Android
         protected MediaSessionCompat MediaSession { get; set; }
         protected MediaDescriptionAdapter MediaDescriptionAdapter { get; set; }
         protected PlayerNotificationManager PlayerNotificationManager { get; set; }
+        protected MediaControllerCompat MediaController { get; set; }
+        protected MediaControllerCallback MediaControllerCallback { get; set; }
+        protected BecomingNoisyReceiver BecomingNoisyReceiver { get; set; }
 
         public readonly string ChannelId = "audio_channel";
         public readonly int ForegroundNotificationId = 1;
-        private MediaControllerCompat mediaController;
-        BecomingNoisyReceiver receiver;
 
         public MediaBrowserService()
         {
@@ -83,22 +84,23 @@ namespace MediaManager.Platforms.Android
 
             //needed for enabling the notification as a mediabrowser.
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
-
             PlayerNotificationManager.SetPlayer(NativePlayer.Player);
 
-            receiver = new BecomingNoisyReceiver(Application.Context, NativePlayer.AudioFocusManager);
+            BecomingNoisyReceiver = new BecomingNoisyReceiver(MediaManager.GetContext(), NativePlayer.AudioFocusManager);
 
-            mediaController = new MediaControllerCompat(this, MediaSession);
-            mediaController.RegisterCallback(new MediaControllerCallback()
+            MediaController = new MediaControllerCompat(this, MediaSession);
+
+            MediaControllerCallback = new MediaControllerCallback()
             {
                 OnPlaybackStateChangedImpl = (state) =>
                 {
                     if (state.State == PlaybackStateCompat.StatePlaying || state.State == PlaybackStateCompat.StateBuffering)
-                        receiver.Register();
+                        BecomingNoisyReceiver.Register();
                     else
-                        receiver.Unregister();
+                        BecomingNoisyReceiver.Unregister();
                 }
-            });
+            };
+            MediaController.RegisterCallback(MediaControllerCallback);
         }
 
         public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)
@@ -138,7 +140,7 @@ namespace MediaManager.Platforms.Android
         {
             var mediaItems = new JavaList<MediaBrowserCompat.MediaItem>();
 
-            foreach (var item in mediaManager.MediaQueue)
+            foreach (var item in MediaManager.MediaQueue)
                 mediaItems.Add(item.ToMediaBrowserMediaItem());
 
             result.SendResult(mediaItems);

@@ -3,7 +3,7 @@ using Android.Media;
 
 namespace MediaManager.Platforms.Android.Audio
 {
-    class BecomingNoisyReceiver : BroadcastReceiver
+    public class BecomingNoisyReceiver : BroadcastReceiver
     {
         private readonly IntentFilter NoisyIntentFilter = new IntentFilter(AudioManager.ActionAudioBecomingNoisy);
         private Context context;

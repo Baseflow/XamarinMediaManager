@@ -68,21 +68,25 @@ namespace MediaManager.Platforms.Android.Audio
         public void OnPrepareFromMediaId(string mediaId, Bundle p1)
         {
             _mediaSource.Clear();
-            var mediaItem = mediaManager.MediaQueue.FirstOrDefault(x => x.MediaId == mediaId);
-            var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
-            var extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
+            int windowIndex = 0;
+            foreach (var mediaItem in mediaManager.MediaQueue)
+            {
+                var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
+                if (mediaItem.MediaId == mediaId)
+                    windowIndex = mediaManager.MediaQueue.IndexOf(mediaItem);
+
+                var extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
                     .SetTag(mediaItem.ToMediaDescription())
                     .CreateMediaSource(uri);
-
-            _mediaSource.AddMediaSource(extractorMediaSource);
-
+                _mediaSource.AddMediaSource(extractorMediaSource);
+            }
             _player.Prepare(_mediaSource);
+            _player.SeekTo(windowIndex, 0);
         }
 
         public void OnPrepareFromSearch(string searchTerm, Bundle p1)
         {
             _mediaSource.Clear();
-
             foreach (var mediaItem in mediaManager.MediaQueue.Where(x => x.Title == searchTerm))
             {
                 var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
@@ -91,19 +95,26 @@ namespace MediaManager.Platforms.Android.Audio
                     .CreateMediaSource(uri);
                 _mediaSource.AddMediaSource(extractorMediaSource);
             }
-
             _player.Prepare(_mediaSource);
         }
 
         public void OnPrepareFromUri(global::Android.Net.Uri mediaUri, Bundle p1)
         {
             _mediaSource.Clear();
-            var mediaItem = mediaManager.MediaQueue.FirstOrDefault(x => x.MediaUri == mediaUri.ToString());
-            var extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
-                .SetTag(mediaItem.ToMediaDescription())
-                .CreateMediaSource(mediaUri);
-            _mediaSource.AddMediaSource(extractorMediaSource);
+            int windowIndex = 0;
+            foreach (var mediaItem in mediaManager.MediaQueue)
+            {
+                var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
+                if (uri.Equals(mediaUri))
+                    windowIndex = mediaManager.MediaQueue.IndexOf(mediaItem);
+
+                var extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
+                    .SetTag(mediaItem.ToMediaDescription())
+                    .CreateMediaSource(uri);
+                _mediaSource.AddMediaSource(extractorMediaSource);
+            }
             _player.Prepare(_mediaSource);
+            _player.SeekTo(windowIndex, 0);
         }
     }
 }

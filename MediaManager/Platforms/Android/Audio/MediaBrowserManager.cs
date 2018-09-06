@@ -11,64 +11,63 @@ namespace MediaManager.Platforms.Android.Audio
 {
     public class MediaBrowserManager
     {
-        public MediaControllerCompat MediaController;
-        protected MediaBrowserCompat _mediaBrowser;
+        public MediaControllerCompat MediaController { get; set; }
 
-        protected MediaBrowserConnectionCallback _connectionCallback;
-        protected MediaControllerCallback _mediaControllerCallback;
-        private MediaBrowserSubscriptionCallback _subscriptionCallback;
+        protected MediaBrowserCompat MediaBrowser { get; set; }
+        protected MediaBrowserConnectionCallback MediaBrowserConnectionCallback { get; set; }
+        protected MediaControllerCallback MediaControllerCallback { get; set; }
+        protected MediaBrowserSubscriptionCallback MediaBrowserSubscriptionCallback { get; set; }
 
-        private MediaManagerImplementation _mediaManagerImplementation;
+        protected bool IsInitialized { get; private set; } = false;
+        protected Context Context { get; private set; }
 
-        public MediaBrowserManager(MediaManagerImplementation mediaManagerImplementation)
+        public MediaBrowserManager(Context context)
         {
-            _mediaManagerImplementation = mediaManagerImplementation;
+            Context = context;
         }
-
-        public bool IsInitialized { get; private set; } = false;
 
         public async Task<bool> EnsureInitialized()
         {
             if (IsInitialized)
                 return true;
 
-            _mediaControllerCallback = new MediaControllerCallback();
-            _subscriptionCallback = new MediaBrowserSubscriptionCallback();
+            MediaControllerCallback = new MediaControllerCallback();
+            MediaBrowserSubscriptionCallback = new MediaBrowserSubscriptionCallback();
 
             // Connect a media browser just to get the media session token. There are other ways
             // this can be done, for example by sharing the session token directly.
             TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-            _connectionCallback = new MediaBrowserConnectionCallback
+            MediaBrowserConnectionCallback = new MediaBrowserConnectionCallback
             {
                 OnConnectedImpl = () =>
                 {
-                    _mediaControllerCallback.OnMetadataChangedImpl = metadata =>
+                    MediaControllerCallback.OnMetadataChangedImpl = metadata =>
                     {
                         //TODO: trigger change
                     };
 
-                    _mediaControllerCallback.OnPlaybackStateChangedImpl = state =>
+                    MediaControllerCallback.OnPlaybackStateChangedImpl = state =>
                     {
                         //PlaybackState = new Utils.PlaybackStateCompatExtension(state);
                     };
 
-                    _mediaControllerCallback.OnSessionEventChangedImpl = (string @event, Bundle extras) =>
+                    MediaControllerCallback.OnSessionEventChangedImpl = (string @event, Bundle extras) =>
                     {
                         //Do nothing for now
                     };
 
-                    MediaController = new MediaControllerCompat(_mediaManagerImplementation.Context, _mediaBrowser.SessionToken);
-                    MediaController.RegisterCallback(_mediaControllerCallback);
+                    MediaController = new MediaControllerCompat(Context, MediaBrowser.SessionToken);
+                    MediaController.RegisterCallback(MediaControllerCallback);
 
-                    if (_mediaManagerImplementation.Context is Activity activity)
+                    if (Context is Activity activity)
                         MediaControllerCompat.SetMediaController(activity, MediaController);
 
                     // Sync existing MediaSession state to the UI.
                     // The first time these events are fired, the metadata and playbackstate are null. 
-                    _mediaControllerCallback.OnMetadataChanged(MediaController.Metadata);
-                    _mediaControllerCallback.OnPlaybackStateChanged(MediaController.PlaybackState);
+                    MediaControllerCallback.OnMetadataChanged(MediaController.Metadata);
+                    MediaControllerCallback.OnPlaybackStateChanged(MediaController.PlaybackState);
 
-                    _mediaBrowser.Subscribe(_mediaBrowser.Root, _subscriptionCallback);
+                    MediaBrowser.Subscribe(MediaBrowser.Root, MediaBrowserSubscriptionCallback);
 
                     IsInitialized = true;
                     tcs.SetResult(IsInitialized);
@@ -81,14 +80,14 @@ namespace MediaManager.Platforms.Android.Audio
                 }
             };
 
-            _mediaBrowser = new MediaBrowserCompat(_mediaManagerImplementation.Context,
+            MediaBrowser = new MediaBrowserCompat(Context,
                 new ComponentName(
-                    _mediaManagerImplementation.Context, 
+                    Context, 
                     Java.Lang.Class.FromType(typeof(MediaBrowserService))),
-                    _connectionCallback,
+                    MediaBrowserConnectionCallback,
                     null);
 
-            _mediaBrowser.Connect();
+            MediaBrowser.Connect();
             return IsInitialized = await tcs.Task;
         }
     }

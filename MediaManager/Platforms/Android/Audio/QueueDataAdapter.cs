@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Android.Runtime;
 using Android.Support.V4.Media;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
+using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android.Audio
 {
@@ -32,7 +34,8 @@ namespace MediaManager.Platforms.Android.Audio
 
         public void Move(int oldIndex, int newIndex)
         {
-            //_queue.Move(oldIndex, newIndex);
+            if(mediaManager.MediaQueue is ObservableCollection<IMediaItem> observableCollection)
+                observableCollection.Move(oldIndex, newIndex);
         }
 
         public void Remove(int index)
