@@ -126,9 +126,10 @@ namespace MediaManager.Platforms.Android
             */
 
             PlayerNotificationManager.SetPlayer(null);
-            NativePlayer.Player.Release();
-            NativePlayer.Player = null;
+            NativePlayer.Release();
+            AudioPlayer = null;
             MediaSession.Release();
+            StopForeground(true);
         }
 
         public override BrowserRoot OnGetRoot(string clientPackageName, int clientUid, Bundle rootHints)

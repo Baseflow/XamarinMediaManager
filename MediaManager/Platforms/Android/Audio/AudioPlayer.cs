@@ -135,6 +135,14 @@ namespace MediaManager
             Player.Prepare(MediaSource);
         }
 
+        internal void Release()
+        {
+            Player.Release();
+            Player = null;
+            BufferedTimer.Stop();
+            StatusTimer.Stop();
+        }
+
         public Task Play(string Url)
         {
             return Task.CompletedTask;
@@ -160,7 +168,7 @@ namespace MediaManager
         {
             SimpleExoPlayer simpleExoPlayer = Player as SimpleExoPlayer;
 
-            double progress = (simpleExoPlayer.CurrentPosition / simpleExoPlayer.Duration) * 100;
+            double progress = Math.Ceiling((double)(simpleExoPlayer.CurrentPosition / simpleExoPlayer.Duration) * 100);
             TimeSpan duration = TimeSpan.FromMilliseconds(simpleExoPlayer.Duration);
             TimeSpan position = TimeSpan.FromMilliseconds(simpleExoPlayer.CurrentPosition);
 
@@ -171,7 +179,7 @@ namespace MediaManager
         {
             SimpleExoPlayer simpleExoPlayer = Player as SimpleExoPlayer;
 
-            double progress = System.Math.Ceiling((double)(simpleExoPlayer.BufferedPosition / simpleExoPlayer.Duration) * 100);
+            double progress = simpleExoPlayer.BufferedPercentage;
             TimeSpan bufferedTime = TimeSpan.FromMilliseconds(simpleExoPlayer.BufferedPosition);
 
             CrossMediaManager.Current.OnBufferingChanged(this, new Abstractions.EventArguments.BufferingChangedEventArgs(progress, bufferedTime));
