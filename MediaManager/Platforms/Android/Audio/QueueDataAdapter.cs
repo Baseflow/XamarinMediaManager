@@ -27,7 +27,7 @@ namespace MediaManager.Platforms.Android.Audio
 
         public MediaDescriptionCompat GetMediaDescription(int index)
         {
-            return mediaManager.MediaQueue.ElementAtOrDefault(index).ToMediaDescription();
+            return mediaManager.MediaQueue.ElementAtOrDefault(index)?.ToMediaDescription();
         }
 
         public void Move(int oldIndex, int newIndex)

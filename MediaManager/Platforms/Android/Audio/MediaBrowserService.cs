@@ -35,10 +35,12 @@ namespace MediaManager.Platforms.Android
             }
         }
 
-        private AudioPlayer NativePlayer => AudioPlayer as AudioPlayer;
+        protected AudioPlayer NativePlayer => AudioPlayer as AudioPlayer;
 
-        private MediaSessionCompat _mediaSession;
-        private PlayerNotificationManager playerNotificationManager;
+        protected MediaSessionCompat MediaSession { get; set; }
+        protected MediaDescriptionAdapter MediaDescriptionAdapter { get; set; }
+        protected PlayerNotificationManager PlayerNotificationManager { get; set; }
+
         public readonly string ChannelId = "audio_channel";
         public readonly int ForegroundNotificationId = 1;
         private MediaControllerCompat mediaController;
@@ -60,21 +62,22 @@ namespace MediaManager.Platforms.Android
             var sessionIntent = PackageManager.GetLaunchIntentForPackage(PackageName);
             var sessionActivityPendingIntent = PendingIntent.GetActivity(this, 0, sessionIntent, 0);
 
-            _mediaSession = new MediaSessionCompat(this, nameof(MediaBrowserService));
-            _mediaSession.SetSessionActivity(sessionActivityPendingIntent);
-            _mediaSession.Active = true;
+            MediaSession = new MediaSessionCompat(this, nameof(MediaBrowserService));
+            MediaSession.SetSessionActivity(sessionActivityPendingIntent);
+            MediaSession.Active = true;
 
-            SessionToken = _mediaSession.SessionToken;
+            SessionToken = MediaSession.SessionToken;
 
-            _mediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
+            MediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
                                    MediaSessionCompat.FlagHandlesTransportControls);
 
-            NativePlayer.Initialize(_mediaSession);
+            NativePlayer.Initialize(MediaSession);
 
-            playerNotificationManager = PlayerNotificationManager.CreateWithNotificationChannel(
+            MediaDescriptionAdapter = new MediaDescriptionAdapter(sessionActivityPendingIntent);
+            PlayerNotificationManager = Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.CreateWithNotificationChannel(
                 this,
                 ChannelId,
-                Resource.String.download_notification_channel_name,
+                Resource.String.exo_download_notification_channel_name,
                 ForegroundNotificationId,
                 new MediaDescriptionAdapter(sessionActivityPendingIntent));
 
@@ -103,7 +106,7 @@ namespace MediaManager.Platforms.Android
         {
             if (startIntent != null)
             {
-                MediaButtonReceiver.HandleIntent(_mediaSession, startIntent);
+                MediaButtonReceiver.HandleIntent(MediaSession, startIntent);
             }
             return StartCommandResult.Sticky;
         }
@@ -121,10 +124,10 @@ namespace MediaManager.Platforms.Android
             }
             */
 
-            playerNotificationManager.SetPlayer(null);
+            PlayerNotificationManager.SetPlayer(null);
             NativePlayer.Player.Release();
             NativePlayer.Player = null;
-            _mediaSession.Release();
+            MediaSession.Release();
         }
 
         public override BrowserRoot OnGetRoot(string clientPackageName, int clientUid, Bundle rootHints)
