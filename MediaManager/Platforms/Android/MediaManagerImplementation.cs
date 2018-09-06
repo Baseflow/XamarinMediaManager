@@ -192,7 +192,8 @@ namespace MediaManager
                 var mediaItem = new MediaItem(url);
                 MediaQueue.Add(mediaItem);
             }
-            
+
+            await MediaQueue.FirstOrDefault()?.FetchMediaItemMetaData();
             MediaBrowserManager.MediaController.GetTransportControls().Prepare();
 
             //TODO: Need to do all of this in the background thread

@@ -11,5 +11,10 @@ namespace MediaManager.Platforms.Android
         {
             (mediaManager as MediaManagerImplementation).Context = context;
         }
+
+        public static Context GetContext(this IMediaManager mediaManager)
+        {
+            return (mediaManager as MediaManagerImplementation).Context;
+        }
     }
 }

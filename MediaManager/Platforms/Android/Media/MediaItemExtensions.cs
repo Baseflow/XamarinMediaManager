@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.Graphics;
+using Android.OS;
 using Android.Support.V4.Media;
 using MediaManager.Media;
 
@@ -15,7 +16,7 @@ namespace MediaManager
                 .SetTitle(item?.Title)
                 .SetSubtitle(item?.Artist)
                 .SetDescription(item?.DisplayDescription)
-                .SetExtras(null)
+                .SetExtras(item?.Extras as Bundle)
                 .SetIconBitmap(item?.AlbumArt as Bitmap)
                 .SetIconUri(item?.DisplayIconUri != null ? Android.Net.Uri.Parse(item?.DisplayIconUri) : null)
                 .Build();
@@ -49,8 +50,8 @@ namespace MediaManager
             //item.DisplayDescription = mediaDescription.
             item.DisplayIcon = mediaDescription.IconBitmap;
             item.DisplayIconUri = mediaDescription.IconUri.ToString();
-            //item.DisplaySubtitle = mediaDescription.
-            //item.DisplayTitle = mediaDescription.
+            item.DisplaySubtitle = mediaDescription.Subtitle;
+            item.DisplayTitle = mediaDescription.Title;
             //item.DownloadStatus = mediaDescription.
             //item.Duration = mediaDescription.
             item.Extras = mediaDescription.Extras;

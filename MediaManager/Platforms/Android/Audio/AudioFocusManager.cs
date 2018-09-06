@@ -27,7 +27,7 @@ namespace MediaManager.Platforms.Android.Audio
             get
             {
                 if (player is Utils.IExoPlayerPlayer exoPlayerPlayer)
-                    return exoPlayerPlayer.Player as SimpleExoPlayer;
+                    return exoPlayerPlayer.Player;
 
                 return null;
             }

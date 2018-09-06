@@ -22,7 +22,7 @@ namespace MediaManager.Media
         public string Artist { get; set; }
         public string ArtUri { get; set; }
         public string Author { get; set; }
-        public BtFolderType BtFolderType { get; set; }
+        public BtFolderType BtFolderType { get; set; } = BtFolderType.Mixed;
         public string Compilation { get; set; }
         public string Composer { get; set; }
         public string Date { get; set; }
@@ -32,7 +32,7 @@ namespace MediaManager.Media
         public string DisplayIconUri { get; set; }
         public string DisplaySubtitle { get; set; }
         public string DisplayTitle { get; set; }
-        public DownloadStatus DownloadStatus { get; set; }
+        public DownloadStatus DownloadStatus { get; set; } = DownloadStatus.NotDownloaded;
         public TimeSpan Duration { get; set; }
         public object Extras { get; set; }
         public string Genre { get; set; }

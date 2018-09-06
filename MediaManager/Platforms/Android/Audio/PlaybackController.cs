@@ -15,6 +15,7 @@ namespace MediaManager.Platforms.Android.Audio
         {
         }
 
+        //TODO: Remove in Exoplayer 2.9.0
         public PlaybackController(AudioFocusManager audioFocusManager)
         {
             this.audioFocusManager = audioFocusManager;
@@ -44,7 +45,6 @@ namespace MediaManager.Platforms.Android.Audio
         {
             base.OnStop(player);
             audioFocusManager.AbandonAudioFocus();
-            //player.Stop();
         }
     }
 }

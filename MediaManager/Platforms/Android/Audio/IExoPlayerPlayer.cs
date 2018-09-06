@@ -7,6 +7,6 @@ namespace MediaManager.Platforms.Android.Utils
 {
     public interface IExoPlayerPlayer
     {
-        IExoPlayer Player { get; }
+        SimpleExoPlayer Player { get; }
     }
 }

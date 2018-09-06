@@ -1,24 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Media;
-using Android.OS;
 using Android.Runtime;
-using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
-using Com.Google.Android.Exoplayer2.Extractor;
-using Com.Google.Android.Exoplayer2.Metadata;
 using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
 using MediaManager.Audio;
 using MediaManager.Media;
+using MediaManager.Platforms.Android;
 using MediaManager.Platforms.Android.Audio;
 using MediaManager.Platforms.Android.Utils;
 
@@ -34,27 +29,38 @@ namespace MediaManager
         {
         }
 
-        private MediaSessionCompat _mediaSession;
-        public IExoPlayer Player { get; internal set; }
-        string userAgent;
+        public virtual SimpleExoPlayer Player { get; set; }
 
-        private DefaultHttpDataSourceFactory defaultHttpDataSourceFactory;
-        private DefaultDataSourceFactory defaultDataSourceFactory;
-        private DefaultBandwidthMeter defaultBandwidthMeter;
-        private AdaptiveTrackSelection.Factory adaptiveTrackSelectionFactory;
-        private DefaultTrackSelector defaultTrackSelector;
-        private MediaSessionConnector connector;
-        private AudioFocusManager audioFocusManager;
-        private ConcatenatingMediaSource mediaSource;
+        protected Context Context { get; set; } = CrossMediaManager.Current.GetContext();
 
-        public MediaPlayerState State
+        protected string UserAgent { get; set; }
+        protected MediaSessionCompat MediaSession { get; set; }
+        protected DefaultHttpDataSourceFactory HttpDataSourceFactory { get; set; }
+        protected DefaultDataSourceFactory DataSourceFactory { get; set; }
+        protected DefaultBandwidthMeter BandwidthMeter { get; set; }
+        protected AdaptiveTrackSelection.Factory TrackSelectionFactory { get; set; }
+        protected DefaultTrackSelector TrackSelector { get; set; }
+        protected PlaybackController PlaybackController { get; set; }
+        protected MediaSessionConnector MediaSessionConnector { get; set; }
+        protected QueueNavigator QueueNavigator { get; set; }
+        protected ConcatenatingMediaSource MediaSource { get; set; }
+        protected QueueDataAdapter QueueDataAdapter { get; set; }
+        protected MediaSourceFactory MediaSourceFactory { get; set; }
+        protected TimelineQueueEditor TimelineQueueEditor { get; set; }
+        protected PlaybackPreparer PlaybackPreparer { get; set; }
+        protected PlayerEventListener PlayerEventListener { get; set; }
+
+        //TODO: Remove with Exoplayer 2.9.0
+        protected AudioFocusManager AudioFocusManager { get; set; }
+
+        public virtual MediaPlayerState State
         {
             get
             {
-                if (!_mediaSession.Active)
+                if (!MediaSession.Active)
                     return MediaPlayerState.Stopped;
 
-                return _mediaSession.Controller.PlaybackState.ToMediaPlayerState();
+                return MediaSession.Controller.PlaybackState.ToMediaPlayerState();
             }
         }
 
@@ -64,49 +70,60 @@ namespace MediaManager
 
         public TimeSpan Buffered => TimeSpan.FromTicks(Player.BufferedPosition);
 
-        protected Context Context { get; set; } = Application.Context;
-
         public Task Pause()
         {
             Player.Stop();
             return Task.CompletedTask;
         }
 
-        public void Initialize(MediaSessionCompat mediaSession = null)
+        public virtual void Initialize(MediaSessionCompat mediaSession)
         {
-            if(mediaSession != null)
-                _mediaSession = mediaSession;
-
             if (Player != null)
                 return;
 
-            userAgent = Util.GetUserAgent(Context, "MediaManager");
-            defaultHttpDataSourceFactory = new DefaultHttpDataSourceFactory(userAgent);
-            defaultDataSourceFactory = new DefaultDataSourceFactory(Context, null, defaultHttpDataSourceFactory);
-            defaultBandwidthMeter = new DefaultBandwidthMeter();
-            adaptiveTrackSelectionFactory = new AdaptiveTrackSelection.Factory(defaultBandwidthMeter);
-            defaultTrackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory);
-            mediaSource = new ConcatenatingMediaSource();            
+            MediaSession = mediaSession;
 
-            var audioAttributes = new Com.Google.Android.Exoplayer2.Audio.AudioAttributes.Builder()
-               .SetUsage((int)AudioUsageKind.Media)
-               .SetContentType((int)AudioContentType.Music)
-               .Build();
+            UserAgent = Util.GetUserAgent(Context, "MediaManager");
+            HttpDataSourceFactory = new DefaultHttpDataSourceFactory(UserAgent);
 
-            audioFocusManager = new AudioFocusManager(this);
+            var requestHeaders = CrossMediaManager.Current.RequestHeaders;
+            if (requestHeaders?.Count > 0)
+            {
+                foreach (var item in requestHeaders)
+                {
+                    HttpDataSourceFactory.DefaultRequestProperties.Set(item.Key, item.Value);
+                }
+            }
 
-            Player = ExoPlayerFactory.NewSimpleInstance(Context, defaultTrackSelector);
-            Player.AddListener(new PlayerEventListener());
-            if(Player is SimpleExoPlayer exoPlayer)
-            exoPlayer.AudioAttributes = audioAttributes;
+            DataSourceFactory = new DefaultDataSourceFactory(Context, null, HttpDataSourceFactory);
+            BandwidthMeter = new DefaultBandwidthMeter();
+            TrackSelectionFactory = new AdaptiveTrackSelection.Factory(BandwidthMeter);
+            TrackSelector = new DefaultTrackSelector(TrackSelectionFactory);
+            MediaSource = new ConcatenatingMediaSource();
 
-            connector = new MediaSessionConnector(_mediaSession, new PlaybackController(audioFocusManager));
-            connector.SetQueueNavigator(new QueueNavigator(_mediaSession));
-            connector.SetQueueEditor(new TimelineQueueEditor(_mediaSession.Controller, mediaSource, new QueueDataAdapter(), new MediaSourceFactory(defaultDataSourceFactory)));
+            //TODO: Replace with built-in AudioManager in Exoplayer 2.9.0
+            AudioFocusManager = new AudioFocusManager(this);
 
-            connector.SetPlayer(Player, new PlaybackPreparer(Player, defaultDataSourceFactory, mediaSource), null);
-            Player.Prepare(mediaSource);
-            //Player.PlayWhenReady = true;
+            Player = ExoPlayerFactory.NewSimpleInstance(Context, TrackSelector);
+            Player.AudioAttributes.ContentType = (int)AudioContentType.Music;
+
+            PlayerEventListener = new PlayerEventListener();
+            Player.AddListener(PlayerEventListener);
+
+            PlaybackController = new PlaybackController(AudioFocusManager);
+            MediaSessionConnector = new MediaSessionConnector(MediaSession, PlaybackController);
+
+            QueueNavigator = new QueueNavigator(MediaSession);
+            MediaSessionConnector.SetQueueNavigator(QueueNavigator);
+
+            QueueDataAdapter = new QueueDataAdapter();
+            MediaSourceFactory = new MediaSourceFactory(DataSourceFactory);
+            TimelineQueueEditor = new TimelineQueueEditor(MediaSession.Controller, MediaSource, QueueDataAdapter, MediaSourceFactory);
+            MediaSessionConnector.SetQueueEditor(TimelineQueueEditor);
+
+            PlaybackPreparer = new PlaybackPreparer(Player, DataSourceFactory, MediaSource);
+            MediaSessionConnector.SetPlayer(Player, PlaybackPreparer, null);
+            Player.Prepare(MediaSource);
         }
 
         public Task Play(string Url)
@@ -117,7 +134,6 @@ namespace MediaManager
         public Task Play()
         {
             Player.PlayWhenReady = true;
-
             return Task.CompletedTask;
         }
 
@@ -128,37 +144,7 @@ namespace MediaManager
 
         public Task Stop()
         {
-            //Player.Stop(true);
-
             return Task.CompletedTask;
-        }
-
-        private class PlayerEventListener : PlayerDefaultEventListener
-        {
-            public PlayerEventListener()
-            {
-            }
-
-            public PlayerEventListener(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
-            {
-            }
-
-            public override void OnTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections)
-            {
-                for (int i = 0; i < trackGroups.Length; i++)
-                {
-                    TrackGroup trackGroup = trackGroups.Get(i);
-                    for (int j = 0; j < trackGroup.Length; j++)
-                    {
-                        Metadata trackMetadata = trackGroup.GetFormat(j).Metadata;
-                        if (trackMetadata != null)
-                        {
-                            // We found metadata. Do something with it here!
-                        }
-                    }
-                }
-                base.OnTracksChanged(trackGroups, trackSelections);
-            }
         }
     }
 }
