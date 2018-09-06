@@ -44,25 +44,25 @@
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
-    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Ios\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.Mac')) ">
-    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Mac\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.TVOS')) ">
-    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Tvos\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.WatchOS')) ">
-    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Watchos\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
