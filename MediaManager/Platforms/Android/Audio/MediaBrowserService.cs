@@ -82,14 +82,13 @@ namespace MediaManager.Platforms.Android
                 new MediaDescriptionAdapter(sessionActivityPendingIntent));
 
             //needed for enabling the notification as a mediabrowser.
-            playerNotificationManager.SetMediaSessionToken(SessionToken);
+            PlayerNotificationManager.SetMediaSessionToken(SessionToken);
 
-            playerNotificationManager.SetPlayer(NativePlayer.Player);
-            playerNotificationManager.SetMediaSessionToken(SessionToken);
+            PlayerNotificationManager.SetPlayer(NativePlayer.Player);
 
-            receiver = new BecomingNoisyReceiver(Application.Context, NativePlayer.audioFocusManager);
+            receiver = new BecomingNoisyReceiver(Application.Context, NativePlayer.AudioFocusManager);
 
-            mediaController = new MediaControllerCompat(this, _mediaSession);
+            mediaController = new MediaControllerCompat(this, MediaSession);
             mediaController.RegisterCallback(new MediaControllerCallback()
             {
                 OnPlaybackStateChangedImpl = (state) =>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Timers;
-using Android.App;
 using Android.Content;
 using Android.Media;
 using Android.Runtime;
@@ -12,11 +11,8 @@ using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
-using Java.Lang;
-using Java.Util.Concurrent;
 using MediaManager.Abstractions.Enums;
 using MediaManager.Audio;
-using MediaManager.Media;
 using MediaManager.Platforms.Android;
 using MediaManager.Platforms.Android.Audio;
 using MediaManager.Platforms.Android.Utils;
@@ -59,10 +55,10 @@ namespace MediaManager
         protected PlayerEventListener PlayerEventListener { get; set; }
 
         //TODO: Remove with Exoplayer 2.9.0
-        protected AudioFocusManager AudioFocusManager { get; set; }
+        internal AudioFocusManager AudioFocusManager { get; set; }
 
         #region scheduled updates
-        Timer StatusTimer = new Timer(1000), BufferedTimer = new Timer(1000);
+        internal Timer StatusTimer = new Timer(1000), BufferedTimer = new Timer(1000);
         #endregion
 
         public MediaPlayerState State
@@ -118,8 +114,9 @@ namespace MediaManager
 
             Player = ExoPlayerFactory.NewSimpleInstance(Context, TrackSelector);
             Player.AudioAttributes.ContentType = (int)AudioContentType.Music;
+            Player.AudioAttributes.Usage = (int)AudioUsageKind.Media;
 
-            PlayerEventListener = new PlayerEventListener();
+            PlayerEventListener = new PlayerEventListener(this);
             Player.AddListener(PlayerEventListener);
 
             PlaybackController = new PlaybackController(AudioFocusManager);
@@ -157,66 +154,6 @@ namespace MediaManager
         public Task Stop()
         {
             return Task.CompletedTask;
-        }
-
-        private class PlayerEventListener : PlayerDefaultEventListener
-        {
-            private AudioPlayer player;
-
-            public PlayerEventListener(AudioPlayer player)
-            {
-                this.player = player;
-            }
-
-            public PlayerEventListener(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
-            {
-            }
-
-            public override void OnTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections)
-            {
-                for (int i = 0; i < trackGroups.Length; i++)
-                {
-                    TrackGroup trackGroup = trackGroups.Get(i);
-                    for (int j = 0; j < trackGroup.Length; j++)
-                    {
-                        Metadata trackMetadata = trackGroup.GetFormat(j).Metadata;
-                        if (trackMetadata != null)
-                        {
-                            // We found metadata. Do something with it here!
-                        }
-                    }
-                }
-                base.OnTracksChanged(trackGroups, trackSelections);
-            }
-
-            public override void OnPlayerStateChanged(bool playWhenReady, int playbackState)
-            {
-                if (playWhenReady)
-                {
-                    switch (playbackState)
-                    {
-                        case Com.Google.Android.Exoplayer2.Player.StateBuffering:
-                            player.BufferedTimer.Start();
-                            player.StatusTimer.Start();
-                            break;
-                        case Com.Google.Android.Exoplayer2.Player.StateReady:
-                            player.StatusTimer.Start();
-                            break;
-                        case Com.Google.Android.Exoplayer2.Player.StateEnded:
-                        case Com.Google.Android.Exoplayer2.Player.StateIdle:
-                            player.BufferedTimer.Stop();
-                            player.StatusTimer.Stop();
-                            break;
-                    }
-                }
-                else
-                {
-                    player.BufferedTimer.Stop();
-                    player.StatusTimer.Stop();
-                }
-
-                base.OnPlayerStateChanged(playWhenReady, playbackState);
-            }
         }
 
         private void OnPlaying()

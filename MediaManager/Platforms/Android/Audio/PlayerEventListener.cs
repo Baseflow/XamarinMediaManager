@@ -11,8 +11,10 @@ namespace MediaManager.Platforms.Android.Audio
 {
     public class PlayerEventListener : PlayerDefaultEventListener
     {
-        public PlayerEventListener()
+        AudioPlayer player;
+        public PlayerEventListener(AudioPlayer player)
         {
+            this.player = player;
         }
 
         public PlayerEventListener(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
@@ -34,6 +36,35 @@ namespace MediaManager.Platforms.Android.Audio
                 }
             }
             base.OnTracksChanged(trackGroups, trackSelections);
+        }
+
+        public override void OnPlayerStateChanged(bool playWhenReady, int playbackState)
+        {
+            if (playWhenReady)
+            {
+                switch (playbackState)
+                {
+                    case Player.StateBuffering:
+                        player.BufferedTimer.Start();
+                        player.StatusTimer.Start();
+                        break;
+                    case Player.StateReady:
+                        player.StatusTimer.Start();
+                        break;
+                    case Player.StateEnded:
+                    case Player.StateIdle:
+                        player.BufferedTimer.Stop();
+                        player.StatusTimer.Stop();
+                        break;
+                }
+            }
+            else
+            {
+                player.BufferedTimer.Stop();
+                player.StatusTimer.Stop();
+            }
+
+            base.OnPlayerStateChanged(playWhenReady, playbackState);
         }
     }
 }
