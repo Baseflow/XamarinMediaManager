@@ -16,6 +16,8 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using MediaManager.Abstractions.Enums;
+using MediaManager.Abstractions.EventArguments;
 
 namespace MediaManager
 {
@@ -132,6 +134,13 @@ namespace MediaManager
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event StatusChangedEventHandler StatusChanged;
+        public event PlayingChangedEventHandler PlayingChanged;
+        public event BufferingChangedEventHandler BufferingChanged;
+        public event MediaFinishedEventHandler MediaFinished;
+        public event MediaFailedEventHandler MediaFailed;
+        public event MediaItemChangedEventHandler MediaItemChanged;
+        public event MediaItemFailedEventHandler MediaItemFailed;
 
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -161,7 +170,7 @@ namespace MediaManager
         public async Task<IMediaItem> Play(string uri)
         {
             await MediaBrowserManager.EnsureInitialized();
-                        
+
             var mediaItem = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem(uri);
             MediaQueue.Clear();
             MediaQueue.Add(mediaItem);
@@ -192,11 +201,11 @@ namespace MediaManager
                 var mediaItem = new MediaItem(url);
                 MediaQueue.Add(mediaItem);
             }
-            
+
             MediaBrowserManager.MediaController.GetTransportControls().Prepare();
 
             //TODO: Need to do all of this in the background thread
-            return await MediaQueue.FetchMediaQueueMetaData().ConfigureAwait(false);
+            return await MediaQueue.FetchMediaQueueMetaData();
         }
 
         public async Task Play(IEnumerable<IMediaItem> items)
@@ -263,5 +272,15 @@ namespace MediaManager
         {
             MediaBrowserManager.MediaController.GetTransportControls().SetShuffleMode(0);
         }
+
+        #region Events
+        public void OnStatusChanged(object sender, StatusChangedEventArgs e) => StatusChanged?.Invoke(sender, e);
+        public void OnPlayingChanged(object sender, PlayingChangedEventArgs e) => PlayingChanged?.Invoke(sender, e);
+        public void OnBufferingChanged(object sender, BufferingChangedEventArgs e) => BufferingChanged?.Invoke(sender, e);
+        public void OnMediaFinished(object sender, MediaFinishedEventArgs e) => MediaFinished?.Invoke(sender, e);
+        public void OnMediaFailed(object sender, MediaFailedEventArgs e) => MediaFailed?.Invoke(sender, e);
+        public void OnItemChanged(object sender, MediaFileChangedEventArgs e) => MediaItemChanged?.Invoke(sender, e);
+        public void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
+        #endregion
     }
 }

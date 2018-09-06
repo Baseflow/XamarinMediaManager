@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MediaManager.Abstractions.Enums;
 using MediaManager.Media;
 using MediaManager.Video;
 

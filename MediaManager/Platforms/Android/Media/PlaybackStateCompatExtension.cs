@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Android.OS;
 using Android.Support.V4.Media.Session;
+using MediaManager.Abstractions.Enums;
 using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android.Utils

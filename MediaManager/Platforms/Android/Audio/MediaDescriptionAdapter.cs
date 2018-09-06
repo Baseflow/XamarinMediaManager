@@ -45,6 +45,8 @@ namespace MediaManager.Platforms.Android.Audio
             return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.AlbumArtist;
         }
 
+
+
         public Bitmap GetCurrentLargeIcon(IPlayer player, PlayerNotificationManager.BitmapCallback callback)
         {
             return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.AlbumArt as Bitmap;

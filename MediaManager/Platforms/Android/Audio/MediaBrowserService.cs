@@ -1,15 +1,13 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
-using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
-using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.UI;
+using MediaManager.Abstractions.Enums;
 using MediaManager.Audio;
-using MediaManager.Media;
 using MediaManager.Platforms.Android.Audio;
 
 namespace MediaManager.Platforms.Android
@@ -43,6 +41,8 @@ namespace MediaManager.Platforms.Android
         private PlayerNotificationManager playerNotificationManager;
         public readonly string ChannelId = "audio_channel";
         public readonly int ForegroundNotificationId = 1;
+        private MediaControllerCompat mediaController;
+        BecomingNoisyReceiver receiver;
 
         public MediaBrowserService()
         {
@@ -77,8 +77,26 @@ namespace MediaManager.Platforms.Android
                 Resource.String.download_notification_channel_name,
                 ForegroundNotificationId,
                 new MediaDescriptionAdapter(sessionActivityPendingIntent));
+
+            //needed for enabling the notification as a mediabrowser.
+            playerNotificationManager.SetMediaSessionToken(SessionToken);
+
             playerNotificationManager.SetPlayer(NativePlayer.Player);
             playerNotificationManager.SetMediaSessionToken(SessionToken);
+
+            receiver = new BecomingNoisyReceiver(Application.Context, NativePlayer.audioFocusManager);
+
+            mediaController = new MediaControllerCompat(this, _mediaSession);
+            mediaController.RegisterCallback(new MediaControllerCallback()
+            {
+                OnPlaybackStateChangedImpl = (state) =>
+                {
+                    if (state.State == PlaybackStateCompat.StatePlaying || state.State == PlaybackStateCompat.StateBuffering)
+                        receiver.Register();
+                    else
+                        receiver.Unregister();
+                }
+            });
         }
 
         public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)
@@ -159,7 +177,7 @@ namespace MediaManager.Platforms.Android
                 _weakReference.TryGetTarget(out service);
                 if (service != null && service.AudioPlayer != null)
                 {
-                    if (service.AudioPlayer.State == Media.MediaPlayerState.Playing)
+                    if (service.AudioPlayer.State == MediaPlayerState.Playing)
                     {
                         return;
                     }

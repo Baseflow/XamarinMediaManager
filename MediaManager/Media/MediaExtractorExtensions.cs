@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,14 +16,11 @@ namespace MediaManager.Media
             return mediaItem = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem(mediaItem);
         }
 
-        public static async Task<IEnumerable<IMediaItem>> FetchMediaQueueMetaData(this IMediaQueue mediaQueue)
+        public static async Task<IMediaItem[]> FetchMediaQueueMetaData(this IMediaQueue mediaQueue)
         {
-            var mediaItems = new List<IMediaItem>();
-            foreach (var item in mediaQueue)
-            {
-                mediaItems.Add(await item.FetchMediaItemMetaData().ConfigureAwait(false));
-            }
-            return mediaItems;
+            var mediaItems = mediaQueue.Select(i => i.FetchMediaItemMetaData());
+
+            return await Task.WhenAll(mediaItems);
         }
     }
 }

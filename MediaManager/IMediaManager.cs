@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MediaManager.Abstractions.EventArguments;
 using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Playback;
@@ -28,5 +29,29 @@ namespace MediaManager
         IMediaQueue MediaQueue { get; set; }
 
         //IPlaybackManager PlaybackManager { get; set; }
+
+        #region Events
+        event StatusChangedEventHandler StatusChanged;
+
+        event PlayingChangedEventHandler PlayingChanged;
+
+        event BufferingChangedEventHandler BufferingChanged;
+
+        event MediaFinishedEventHandler MediaFinished;
+
+        event MediaFailedEventHandler MediaFailed;
+
+        event MediaItemChangedEventHandler MediaItemChanged;
+
+        event MediaItemFailedEventHandler MediaItemFailed;
+
+        void OnStatusChanged(object sender, StatusChangedEventArgs e);
+        void OnPlayingChanged(object sender, PlayingChangedEventArgs e);
+        void OnBufferingChanged(object sender, BufferingChangedEventArgs e);
+        void OnMediaFinished(object sender, MediaFinishedEventArgs e);
+        void OnMediaFailed(object sender, MediaFailedEventArgs e);
+        void OnItemChanged(object sender, MediaFileChangedEventArgs e);
+        void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e);
+        #endregion
     }
 }

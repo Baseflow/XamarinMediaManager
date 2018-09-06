@@ -5,12 +5,14 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Support.V7.App;
+using Android.Util;
 using Android.Widget;
 using Com.Google.Android.Exoplayer2;
 using ElementPlayer.Core;
 using Java.Lang;
 using Java.Util.Concurrent;
 using MediaManager;
+using MediaManager.Abstractions.Enums;
 using MediaManager.Media;
 using MediaManager.Platforms.Android;
 
@@ -25,6 +27,7 @@ namespace ElementPlayer.Android
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class MainActivity : AppCompatActivity
     {
+        const string TAG = "XamarinMediaManagerSample";
         private IScheduledExecutorService _executorService = Executors.NewSingleThreadScheduledExecutor();
         private IScheduledFuture _scheduledFuture;
         PlayerViewModel playerViewModel = new PlayerViewModel();
@@ -51,20 +54,15 @@ namespace ElementPlayer.Android
                     var queue = new List<string>() {
                         "https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3",
                         "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/CelineDion-IfICould.mp3",
-                        "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/Daughtry-Homeacoustic.mp3"
+                        "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/Daughtry-Homeacoustic.mp3",
+                        "https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Alan_Watts.mp3"
                     };
 
                     await CrossMediaManager.Current.Play(queue);
-                    ScheduleSeekbarUpdate();
                 }
                 else
                 {
                     await CrossMediaManager.Current.PlayPause();
-                    
-                    if (CrossMediaManager.Current.State == MediaPlayerState.Paused)
-                        StopSeekbarUpdate();
-                    else
-                        ScheduleSeekbarUpdate();
                 }
             };
 
@@ -83,49 +81,45 @@ namespace ElementPlayer.Android
 
             sbProgress.StartTrackingTouch += async (sender, args) =>
             {
-                StopSeekbarUpdate();
+                CrossMediaManager.Current.PlayingChanged -= Current_PlayingChanged;
             };
 
             sbProgress.StopTrackingTouch += async (sender, args) =>
             {
-                await CrossMediaManager.Current.SeekTo(TimeSpan.FromSeconds(args.SeekBar.Progress));
-                ScheduleSeekbarUpdate();
+                await CrossMediaManager.Current.SeekTo(TimeSpan.FromMilliseconds(args.SeekBar.Progress));
+                CrossMediaManager.Current.PlayingChanged += Current_PlayingChanged;
             };
 
             CrossMediaManager.Current.SetContext(this);
-        }
 
-        private void OnPlaying()
-        {
-            TimeSpan duration = CrossMediaManager.Current.Duration;
-            TimeSpan position = CrossMediaManager.Current.Position;
-
-            sbProgress.Max = Convert.ToInt32(duration.TotalMilliseconds);
-            sbProgress.Progress = Convert.ToInt32(System.Math.Floor(position.TotalMilliseconds));
-
-            //is {(position.TotalMilliseconds / duration.TotalMilliseconds) * 100: 000}%
-
-            string text = $"{position.Minutes:00}:{position.Seconds:00} of {duration.Minutes:00}:{duration.Seconds:00}";
-
-            tvPlaying.Text = text;
-        }
-
-        private void ScheduleSeekbarUpdate()
-        {
-            StopSeekbarUpdate();
-            if (!_executorService.IsShutdown)
+            CrossMediaManager.Current.BufferingChanged += (object s, MediaManager.Abstractions.EventArguments.BufferingChangedEventArgs e) =>
             {
-                var runnable = new Runnable(() => { handler.Post(OnPlaying); });
-                _scheduledFuture = _executorService.ScheduleAtFixedRate(runnable, 100, 1000, TimeUnit.Milliseconds);
-            }
+                RunOnUiThread(() =>
+                {
+                    Log.Debug(TAG, string.Format("{0:0.##}% Total buffered time is {1:mm\\:ss}", e.BufferProgress, e.BufferedTime));
+                });
+            };
+
+            /*CrossMediaManager.Current.StatusChanged += (object s, MediaManager.Abstractions.EventArguments.StatusChangedEventArgs e) =>
+            {
+
+            };*/
+
+            CrossMediaManager.Current.PlayingChanged += Current_PlayingChanged;
         }
 
-        private void StopSeekbarUpdate()
+        private void Current_PlayingChanged(object sender, MediaManager.Abstractions.EventArguments.PlayingChangedEventArgs e)
         {
-            if (_scheduledFuture != null)
+            RunOnUiThread(() =>
             {
-                _scheduledFuture.Cancel(false);
-            }
+                string text = string.Format("{0:0.##}% Total played is {1:mm\\:ss} of {2:mm\\:ss}", e.Progress, e.Position, e.Duration);
+
+                tvPlaying.Text = text;
+                Log.Debug(TAG, text);
+
+                sbProgress.Max = Convert.ToInt32(e.Duration.TotalMilliseconds);
+                sbProgress.Progress = Convert.ToInt32(System.Math.Floor(e.Position.TotalMilliseconds));
+            });
         }
     }
 }

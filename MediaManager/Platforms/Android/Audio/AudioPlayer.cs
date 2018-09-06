@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using Android.App;
 using Android.Content;
 using Android.Media;
@@ -17,8 +18,10 @@ using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
+using Java.Lang;
+using Java.Util.Concurrent;
+using MediaManager.Abstractions.Enums;
 using MediaManager.Audio;
-using MediaManager.Media;
 using MediaManager.Platforms.Android.Audio;
 using MediaManager.Platforms.Android.Utils;
 
@@ -28,6 +31,10 @@ namespace MediaManager
     {
         public AudioPlayer()
         {
+            StatusTimer.Elapsed += (object sender, ElapsedEventArgs e) => { OnPlaying(); };
+            BufferedTimer.Elapsed += (object sender, ElapsedEventArgs e) => { OnBuffering(); };
+
+            StatusTimer.AutoReset = BufferedTimer.AutoReset = true;
         }
 
         public AudioPlayer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
@@ -44,8 +51,12 @@ namespace MediaManager
         private AdaptiveTrackSelection.Factory adaptiveTrackSelectionFactory;
         private DefaultTrackSelector defaultTrackSelector;
         private MediaSessionConnector connector;
-        private AudioFocusManager audioFocusManager;
+        public AudioFocusManager audioFocusManager;
         private ConcatenatingMediaSource mediaSource;
+
+        #region scheduled updates
+        Timer StatusTimer = new Timer(1000), BufferedTimer = new Timer(1000);
+        #endregion
 
         public MediaPlayerState State
         {
@@ -74,7 +85,7 @@ namespace MediaManager
 
         public void Initialize(MediaSessionCompat mediaSession = null)
         {
-            if(mediaSession != null)
+            if (mediaSession != null)
                 _mediaSession = mediaSession;
 
             if (Player != null)
@@ -86,7 +97,7 @@ namespace MediaManager
             defaultBandwidthMeter = new DefaultBandwidthMeter();
             adaptiveTrackSelectionFactory = new AdaptiveTrackSelection.Factory(defaultBandwidthMeter);
             defaultTrackSelector = new DefaultTrackSelector(adaptiveTrackSelectionFactory);
-            mediaSource = new ConcatenatingMediaSource();            
+            mediaSource = new ConcatenatingMediaSource();
 
             var audioAttributes = new Com.Google.Android.Exoplayer2.Audio.AudioAttributes.Builder()
                .SetUsage((int)AudioUsageKind.Media)
@@ -96,9 +107,9 @@ namespace MediaManager
             audioFocusManager = new AudioFocusManager(this);
 
             Player = ExoPlayerFactory.NewSimpleInstance(Context, defaultTrackSelector);
-            Player.AddListener(new PlayerEventListener());
-            if(Player is SimpleExoPlayer exoPlayer)
-            exoPlayer.AudioAttributes = audioAttributes;
+            Player.AddListener(new PlayerEventListener(this));
+            if (Player is SimpleExoPlayer exoPlayer)
+                exoPlayer.AudioAttributes = audioAttributes;
 
             connector = new MediaSessionConnector(_mediaSession, new PlaybackController(audioFocusManager));
             connector.SetQueueNavigator(new QueueNavigator(_mediaSession));
@@ -110,7 +121,7 @@ namespace MediaManager
         }
 
         public Task Play(string Url)
-        { 
+        {
             return Task.CompletedTask;
         }
 
@@ -135,8 +146,11 @@ namespace MediaManager
 
         private class PlayerEventListener : PlayerDefaultEventListener
         {
-            public PlayerEventListener()
+            private AudioPlayer player;
+
+            public PlayerEventListener(AudioPlayer player)
             {
+                this.player = player;
             }
 
             public PlayerEventListener(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
@@ -159,6 +173,59 @@ namespace MediaManager
                 }
                 base.OnTracksChanged(trackGroups, trackSelections);
             }
+
+            public override void OnPlayerStateChanged(bool playWhenReady, int playbackState)
+            {
+                if (playWhenReady)
+                {
+                    switch (playbackState)
+                    {
+                        case Com.Google.Android.Exoplayer2.Player.StateBuffering:
+                            player.BufferedTimer.Start();
+                            player.StatusTimer.Start();
+                            break;
+                        case Com.Google.Android.Exoplayer2.Player.StateReady:
+                            player.StatusTimer.Start();
+                            break;
+                        case Com.Google.Android.Exoplayer2.Player.StateEnded:
+                        case Com.Google.Android.Exoplayer2.Player.StateIdle:
+                            player.BufferedTimer.Stop();
+                            player.StatusTimer.Stop();
+                            break;
+                    }
+                }
+                else
+                {
+                    player.BufferedTimer.Stop();
+                    player.StatusTimer.Stop();
+                }
+
+                base.OnPlayerStateChanged(playWhenReady, playbackState);
+            }
+        }
+
+        private void OnPlaying()
+        {
+            SimpleExoPlayer simpleExoPlayer = Player as SimpleExoPlayer;
+
+            double progress = (simpleExoPlayer.CurrentPosition / simpleExoPlayer.Duration) * 100;
+            TimeSpan duration = TimeSpan.FromMilliseconds(simpleExoPlayer.Duration);
+            TimeSpan position = TimeSpan.FromMilliseconds(simpleExoPlayer.CurrentPosition);
+
+            CrossMediaManager.Current.OnPlayingChanged(this, new Abstractions.EventArguments.PlayingChangedEventArgs(progress, position, duration));
+        }
+
+        private void OnBuffering()
+        {
+            SimpleExoPlayer simpleExoPlayer = Player as SimpleExoPlayer;
+
+            double progress = System.Math.Ceiling((double)(simpleExoPlayer.BufferedPosition / simpleExoPlayer.Duration) * 100);
+            TimeSpan bufferedTime = TimeSpan.FromMilliseconds(simpleExoPlayer.BufferedPosition);
+
+            CrossMediaManager.Current.OnBufferingChanged(this, new Abstractions.EventArguments.BufferingChangedEventArgs(progress, bufferedTime));
+
+            if (progress == 100)
+                BufferedTimer.Stop();
         }
     }
 }

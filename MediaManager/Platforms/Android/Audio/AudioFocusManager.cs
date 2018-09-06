@@ -6,6 +6,7 @@ using Android.Media;
 using Android.OS;
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
+using MediaManager.Abstractions.Enums;
 
 namespace MediaManager.Platforms.Android.Audio
 {
@@ -99,7 +100,7 @@ namespace MediaManager.Platforms.Android.Audio
                 result = mAudioManager.RequestAudioFocus(mFocusListener, Stream.Music, AudioFocus.Gain);
 #pragma warning restore CS0618 // Type or member is obsolete
 
-                // Call the listener whenever focus is granted - even the first time!
+            // Call the listener whenever focus is granted - even the first time!
             if (result == AudioFocusRequest.Granted)
             {
                 ShouldPlayWhenReady = true;
@@ -121,7 +122,7 @@ namespace MediaManager.Platforms.Android.Audio
 
         private bool IsPlaying()
         {
-            return player.State == Media.MediaPlayerState.Playing;
+            return player.State == MediaPlayerState.Playing;
         }
 
         public bool GetPlayWhenReady()
