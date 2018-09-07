@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
 using Android.Content;
@@ -133,10 +134,74 @@ namespace MediaManager
             PlaybackPreparer = new PlaybackPreparer(Player, DataSourceFactory, MediaSource);
             MediaSessionConnector.SetPlayer(Player, PlaybackPreparer, null);
             Player.Prepare(MediaSource);
+
+            CrossMediaManager.Current.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
+        }
+
+        private void MediaQueue_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                    if (MediaSource.Size != CrossMediaManager.Current.MediaQueue.Count)
+                    {
+                        for (int i = e.NewItems.Count - 1; i >= 0; i--)
+                        {
+                            var uri = global::Android.Net.Uri.Parse(((Media.IMediaItem)e.NewItems[i]).MediaUri);
+                            var extractorMediaSource = new ExtractorMediaSource.Factory(DataSourceFactory)
+                                .SetTag(((Media.IMediaItem)e.NewItems[i]).ToMediaDescription())
+                                .CreateMediaSource(uri);
+                            MediaSource.AddMediaSource(e.NewStartingIndex, extractorMediaSource);
+                        }
+                    }
+                    break;
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Move:
+                    if (e.NewItems.Count > 1)
+                    {
+                        int oldBeginIndex = e.OldStartingIndex;
+                        int oldEndIndex = e.OldStartingIndex + e.NewItems.Count - 1;
+
+                        int newBeginIndex = e.NewStartingIndex;
+                        int newEndIndex = e.NewStartingIndex + e.NewItems.Count - 1;
+
+                        //move when new is before old
+                        if (newBeginIndex < oldBeginIndex)
+                            for (int i = 0; i > e.NewItems.Count; i++)
+                                MediaSource.MoveMediaSource(oldEndIndex, newBeginIndex);
+
+                        //move when new is after old
+                        else if (newBeginIndex > oldBeginIndex)
+                            for (int i = 0; i > e.NewItems.Count; i++)
+                                MediaSource.MoveMediaSource(oldBeginIndex, newEndIndex);
+                    }
+                    else
+                        MediaSource.MoveMediaSource(e.OldStartingIndex, e.NewStartingIndex);
+                    break;
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                    if (e.NewItems.Count > 1)
+                    {
+                        for (int i = 0; i > e.NewItems.Count; i++)
+                            MediaSource.RemoveMediaSource(e.OldStartingIndex);
+                    }
+                    else
+                        MediaSource.RemoveMediaSource(e.OldStartingIndex);
+                    break;
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
+                    throw new ArgumentException("Replacing in MediaQueue not supported.");
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
+                    MediaSource.Clear();
+                    break;
+            }
         }
 
         internal void Release()
         {
+            try
+            {
+                CrossMediaManager.Current.MediaQueue.CollectionChanged -= MediaQueue_CollectionChanged;
+            }
+            catch { }
+
             Player.Release();
             Player = null;
             BufferedTimer.Stop();

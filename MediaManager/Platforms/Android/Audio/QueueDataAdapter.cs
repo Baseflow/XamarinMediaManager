@@ -34,7 +34,7 @@ namespace MediaManager.Platforms.Android.Audio
 
         public void Move(int oldIndex, int newIndex)
         {
-            if(mediaManager.MediaQueue is ObservableCollection<IMediaItem> observableCollection)
+            if (mediaManager.MediaQueue is ObservableCollection<IMediaItem> observableCollection)
                 observableCollection.Move(oldIndex, newIndex);
         }
 

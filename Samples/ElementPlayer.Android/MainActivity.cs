@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
@@ -34,9 +35,8 @@ namespace ElementPlayer.Android
         SeekBar sbProgress;
         TextView tvPlaying;
         Handler handler = new Handler();
-        //IMediaItem item;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
@@ -45,20 +45,22 @@ namespace ElementPlayer.Android
             {
                 if (CrossMediaManager.Current.State == MediaPlayerState.Stopped || CrossMediaManager.Current.State == MediaPlayerState.Failed)
                 {
-                    /*var item1 = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3");
-                    var item2 = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://ia800605.us.archive.org/32/items/Mp3Playlist_555/CelineDion-IfICould.mp3");
-                    var item3 = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://ia800605.us.archive.org/32/items/Mp3Playlist_555/Daughtry-Homeacoustic.mp3");
-                    
-                    var queue = new List<IMediaItem>() { item1, item2, item3 };*/
-
                     var queue = new List<string>() {
                         "https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3",
-                        "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/CelineDion-IfICould.mp3",
-                        "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/Daughtry-Homeacoustic.mp3",
-                        "https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Alan_Watts.mp3"
                     };
 
                     await CrossMediaManager.Current.Play(queue);
+
+                    /*var list = new string[]{
+                            "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/CelineDion-IfICould.mp3",
+                            "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/Daughtry-Homeacoustic.mp3",
+                            "https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Alan_Watts.mp3" };
+
+                    var IMediaItemList = await Task.WhenAll((from aa in list
+                                                             select CrossMediaManager.Current.MediaExtractor.CreateMediaItem(aa)));
+
+                    foreach (var item in IMediaItemList)
+                        CrossMediaManager.Current.MediaQueue.Add(item);*/
                 }
                 else
                 {
@@ -106,6 +108,26 @@ namespace ElementPlayer.Android
             };*/
 
             CrossMediaManager.Current.PlayingChanged += Current_PlayingChanged;
+
+            var list = new string[]{
+                            "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/CelineDion-IfICould.mp3",
+                            "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/Daughtry-Homeacoustic.mp3",
+                            "https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Alan_Watts.mp3" };
+
+            var IMediaItemList = await Task.WhenAll((from aa in list
+                                                     select CrossMediaManager.Current.MediaExtractor.CreateMediaItem(aa)));
+
+            ((List<IMediaItem>)CrossMediaManager.Current.MediaQueue).AddRange(IMediaItemList);
+
+            FindViewById<Button>(Resource.Id.btnAddToQueue).Click += (sender, args) =>
+            {
+                if (IMediaItemList.Count() > 0)
+                {
+                    int index = new Random().Next(0, IMediaItemList.Count() - 1);
+
+                    CrossMediaManager.Current.MediaQueue.Add(IMediaItemList[index]);
+                }
+            };
         }
 
         private void Current_PlayingChanged(object sender, MediaManager.Abstractions.EventArguments.PlayingChangedEventArgs e)

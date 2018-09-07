@@ -4,13 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnAddToQueue"
+        android:text="Add random song to to queue"
+        android:layout_above="@+id/tvPlaying" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvPlaying"
         android:layout_above="@+id/sbProgress"
-        android:text="Press 'Play' to play a song"
-        android:layout_alignParentLeft="true" />
+        android:text="Press 'Play' to play a song" />
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
