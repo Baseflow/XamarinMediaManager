@@ -53,7 +53,7 @@ namespace MediaManager.Platforms.Android
 
         protected async Task<IMediaItem> ExtractMediaInfo(MediaMetadataRetriever mediaMetadataRetriever, IMediaItem mediaItem)
         {
-            if(string.IsNullOrEmpty(mediaItem.Album))
+            if (string.IsNullOrEmpty(mediaItem.Album))
                 mediaItem.Album = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Album);
 
             if (string.IsNullOrEmpty(mediaItem.AlbumArtist))
@@ -66,7 +66,7 @@ namespace MediaManager.Platforms.Android
                 mediaItem.Author = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Author);
 
             var trackNumber = mediaMetadataRetriever.ExtractMetadata(MetadataKey.CdTrackNumber);
-            if(!string.IsNullOrEmpty(trackNumber) && int.TryParse(trackNumber, out int trackNumberResult))
+            if (!string.IsNullOrEmpty(trackNumber) && int.TryParse(trackNumber, out int trackNumberResult))
                 mediaItem.TrackNumber = trackNumberResult;
 
             if (string.IsNullOrEmpty(mediaItem.Compilation))
@@ -173,7 +173,7 @@ namespace MediaManager.Platforms.Android
 
         protected string GetCurrentSongFolder(IMediaItem currentFile)
         {
-            if (!new System.Uri(currentFile.MediaUri).IsFile)
+            if (!new Uri(currentFile.MediaUri).IsFile)
                 return null;
 
             return System.IO.Path.GetDirectoryName(currentFile.MediaUri);

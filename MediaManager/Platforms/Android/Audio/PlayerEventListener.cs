@@ -6,6 +6,7 @@ using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Metadata;
 using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
+using Java.Lang;
 
 namespace MediaManager.Platforms.Android.Audio
 {
@@ -38,6 +39,23 @@ namespace MediaManager.Platforms.Android.Audio
             base.OnTracksChanged(trackGroups, trackSelections);
         }
 
+        public override void OnPositionDiscontinuity(int reason)
+        {
+            switch (reason)
+            {
+                case Player.DiscontinuityReasonAdInsertion:
+                case Player.DiscontinuityReasonSeek:
+                case Player.DiscontinuityReasonSeekAdjustment:
+                    break;
+                case Player.DiscontinuityReasonPeriodTransition:
+                    player.OnMediaItemFinished();
+                    break;
+                case Player.DiscontinuityReasonInternal:
+                    break;
+            }
+            base.OnPositionDiscontinuity(reason);
+        }
+
         public override void OnPlayerStateChanged(bool playWhenReady, int playbackState)
         {
             if (playWhenReady)
@@ -45,13 +63,16 @@ namespace MediaManager.Platforms.Android.Audio
                 switch (playbackState)
                 {
                     case Player.StateBuffering:
+                    case Player.StateReady:
                         player.BufferedTimer.Start();
                         player.StatusTimer.Start();
-                        break;
-                    case Player.StateReady:
-                        player.StatusTimer.Start();
+                        player.OnMediaItemChanged();
                         break;
                     case Player.StateEnded:
+                        player.OnMediaItemFinished();
+                        player.BufferedTimer.Stop();
+                        player.StatusTimer.Stop();
+                        break;
                     case Player.StateIdle:
                         player.BufferedTimer.Stop();
                         player.StatusTimer.Stop();
@@ -65,6 +86,12 @@ namespace MediaManager.Platforms.Android.Audio
             }
 
             base.OnPlayerStateChanged(playWhenReady, playbackState);
+        }
+
+        public override void OnPlayerError(ExoPlaybackException error)
+        {
+            CrossMediaManager.Current.OnMediaItemFailed(this, new Abstractions.EventArguments.MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[player.Player.CurrentWindowIndex], error.InnerException, error.Message));
+            base.OnPlayerError(error);
         }
     }
 }

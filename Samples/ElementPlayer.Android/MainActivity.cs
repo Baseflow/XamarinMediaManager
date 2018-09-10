@@ -107,7 +107,7 @@ namespace ElementPlayer.Android
 
             };*/
 
-            CrossMediaManager.Current.PlayingChanged += Current_PlayingChanged;
+            //CrossMediaManager.Current.PlayingChanged += Current_PlayingChanged;
 
             var list = new string[]{
                             "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/CelineDion-IfICould.mp3",
@@ -116,8 +116,6 @@ namespace ElementPlayer.Android
 
             var IMediaItemList = await Task.WhenAll((from aa in list
                                                      select CrossMediaManager.Current.MediaExtractor.CreateMediaItem(aa)));
-
-            ((List<IMediaItem>)CrossMediaManager.Current.MediaQueue).AddRange(IMediaItemList);
 
             FindViewById<Button>(Resource.Id.btnAddToQueue).Click += (sender, args) =>
             {
@@ -142,6 +140,20 @@ namespace ElementPlayer.Android
                 sbProgress.Max = Convert.ToInt32(e.Duration.TotalMilliseconds);
                 sbProgress.Progress = Convert.ToInt32(System.Math.Floor(e.Position.TotalMilliseconds));
             });
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+
+            CrossMediaManager.Current.PlayingChanged -= Current_PlayingChanged;
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+
+            CrossMediaManager.Current.PlayingChanged += Current_PlayingChanged;
         }
     }
 }

@@ -12,9 +12,8 @@ namespace MediaManager.Playback
     public delegate void StatusChangedEventHandler(object sender, StatusChangedEventArgs e);
     public delegate void PlayingChangedEventHandler(object sender, PlayingChangedEventArgs e);
     public delegate void BufferingChangedEventHandler(object sender, BufferingChangedEventArgs e);
-    public delegate void MediaFinishedEventHandler(object sender, MediaFinishedEventArgs e);
-    public delegate void MediaFailedEventHandler(object sender, MediaFailedEventArgs e);
-    public delegate void MediaItemChangedEventHandler(object sender, MediaFileChangedEventArgs e);
+    public delegate void MediaItemFinishedEventHandler(object sender, MediaItemEventArgs e);
+    public delegate void MediaItemChangedEventHandler(object sender, MediaItemEventArgs e);
     public delegate void MediaItemFailedEventHandler(object sender, MediaItemFailedEventArgs e);
 
     public interface IPlaybackManager : INotifyPropertyChanged

@@ -4,6 +4,7 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
+using MediaManager.Platforms.Android.Utils;
 
 namespace MediaManager.Platforms.Android.Audio
 {
@@ -41,12 +42,11 @@ namespace MediaManager.Platforms.Android.Audio
                 {
                     MediaControllerCallback.OnMetadataChangedImpl = metadata =>
                     {
-                        //TODO: trigger change
                     };
 
                     MediaControllerCallback.OnPlaybackStateChangedImpl = state =>
                     {
-                        //PlaybackState = new Utils.PlaybackStateCompatExtension(state);
+                        CrossMediaManager.Current.OnStatusChanged(this, new Abstractions.EventArguments.StatusChangedEventArgs(state.ToMediaPlayerState()));
                     };
 
                     MediaControllerCallback.OnSessionEventChangedImpl = (string @event, Bundle extras) =>
@@ -80,7 +80,7 @@ namespace MediaManager.Platforms.Android.Audio
 
             MediaBrowser = new MediaBrowserCompat(Context,
                 new ComponentName(
-                    Context, 
+                    Context,
                     Java.Lang.Class.FromType(typeof(MediaBrowserService))),
                     MediaBrowserConnectionCallback,
                     null);

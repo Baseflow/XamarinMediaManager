@@ -9,7 +9,6 @@ using MediaManager.Platforms.Android.Audio;
 using System.Threading.Tasks;
 using MediaManager.Platforms.Android.Utils;
 using MediaManager.Audio;
-using Android.Support.V4.Media.Session;
 using Android.Content.Res;
 using System.Collections.Generic;
 using System;
@@ -137,8 +136,7 @@ namespace MediaManager
         public event StatusChangedEventHandler StatusChanged;
         public event PlayingChangedEventHandler PlayingChanged;
         public event BufferingChangedEventHandler BufferingChanged;
-        public event MediaFinishedEventHandler MediaFinished;
-        public event MediaFailedEventHandler MediaFailed;
+        public event MediaItemFinishedEventHandler MediaItemFinished;
         public event MediaItemChangedEventHandler MediaItemChanged;
         public event MediaItemFailedEventHandler MediaItemFailed;
 
@@ -278,9 +276,8 @@ namespace MediaManager
         public void OnStatusChanged(object sender, StatusChangedEventArgs e) => StatusChanged?.Invoke(sender, e);
         public void OnPlayingChanged(object sender, PlayingChangedEventArgs e) => PlayingChanged?.Invoke(sender, e);
         public void OnBufferingChanged(object sender, BufferingChangedEventArgs e) => BufferingChanged?.Invoke(sender, e);
-        public void OnMediaFinished(object sender, MediaFinishedEventArgs e) => MediaFinished?.Invoke(sender, e);
-        public void OnMediaFailed(object sender, MediaFailedEventArgs e) => MediaFailed?.Invoke(sender, e);
-        public void OnItemChanged(object sender, MediaFileChangedEventArgs e) => MediaItemChanged?.Invoke(sender, e);
+        public void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
+        public void OnMediaItemChanged(object sender, MediaItemEventArgs e) => MediaItemChanged?.Invoke(sender, e);
         public void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
         #endregion
     }

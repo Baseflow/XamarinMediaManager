@@ -37,9 +37,7 @@ namespace MediaManager
 
         event BufferingChangedEventHandler BufferingChanged;
 
-        event MediaFinishedEventHandler MediaFinished;
-
-        event MediaFailedEventHandler MediaFailed;
+        event MediaItemFinishedEventHandler MediaItemFinished;
 
         event MediaItemChangedEventHandler MediaItemChanged;
 
@@ -48,9 +46,8 @@ namespace MediaManager
         void OnStatusChanged(object sender, StatusChangedEventArgs e);
         void OnPlayingChanged(object sender, PlayingChangedEventArgs e);
         void OnBufferingChanged(object sender, BufferingChangedEventArgs e);
-        void OnMediaFinished(object sender, MediaFinishedEventArgs e);
-        void OnMediaFailed(object sender, MediaFailedEventArgs e);
-        void OnItemChanged(object sender, MediaFileChangedEventArgs e);
+        void OnMediaItemFinished(object sender, MediaItemEventArgs e);
+        void OnMediaItemChanged(object sender, MediaItemEventArgs e);
         void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e);
         #endregion
     }

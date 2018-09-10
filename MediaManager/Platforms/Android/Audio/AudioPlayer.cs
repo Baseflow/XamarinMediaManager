@@ -5,6 +5,7 @@ using System.Timers;
 using Android.Content;
 using Android.Media;
 using Android.Runtime;
+using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
@@ -12,6 +13,7 @@ using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
+using Java.IO;
 using MediaManager.Abstractions.Enums;
 using MediaManager.Audio;
 using MediaManager.Platforms.Android;
@@ -46,6 +48,7 @@ namespace MediaManager
         protected AdaptiveTrackSelection.Factory TrackSelectionFactory { get; set; }
         protected DefaultTrackSelector TrackSelector { get; set; }
         protected PlaybackController PlaybackController { get; set; }
+
         protected MediaSessionConnector MediaSessionConnector { get; set; }
         protected QueueNavigator QueueNavigator { get; set; }
         protected ConcatenatingMediaSource MediaSource { get; set; }
@@ -251,6 +254,35 @@ namespace MediaManager
 
             if (progress == 100)
                 BufferedTimer.Stop();
+        }
+
+        int windowIndex = C.IndexUnset;
+        internal void OnMediaItemFinished()
+        {
+            if (windowIndex != Player.CurrentWindowIndex)
+            {
+                CrossMediaManager.Current.OnMediaItemFinished(this, new Abstractions.EventArguments.MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex]));
+                windowIndex = Player.CurrentWindowIndex;
+            }
+        }
+
+        string currentMediaId = null;
+        internal void OnMediaItemChanged()
+        {
+            MediaDescriptionCompat desc = null;
+            if (!Player.CurrentTimeline.IsEmpty)
+                desc = Player.CurrentTag as MediaDescriptionCompat;
+
+            if (desc != null && currentMediaId != desc.MediaId)
+            {
+                CrossMediaManager.Current.OnMediaItemChanged(this, new Abstractions.EventArguments.MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex]));
+                currentMediaId = desc.MediaId;
+            }
+        }
+
+        internal void OnMediaItemFailed()
+        {
+            CrossMediaManager.Current.OnMediaItemFailed(this, new Abstractions.EventArguments.MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex], null, null));
         }
     }
 }

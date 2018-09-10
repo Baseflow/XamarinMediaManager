@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace MediaManager.Media
@@ -7,20 +6,23 @@ namespace MediaManager.Media
     public class MediaQueue : ObservableCollection<IMediaItem>, IMediaQueue
     {
         public event QueueEndedEventHandler QueueEnded;
-        public event QueueMediaChangedEventHandler QueueMediaChanged;
 
         public bool HasNext()
         {
-            throw new NotImplementedException();
+            return Count > Index - 1;
         }
 
         public bool HasPrevious()
         {
-            throw new NotImplementedException();
+            return Index > 0;
         }
 
-        public IMediaItem Current => this[0];
+        public IMediaItem Current => this[Index];
 
-        public int Index => throw new NotImplementedException();
+        public int Index => currentIndex;
+
+        internal void OnQueueEnded(object s, QueueEndedEventArgs e) => QueueEnded?.Invoke(s, e);
+
+        internal int currentIndex = -1;
     }
 }
