@@ -63,7 +63,7 @@ namespace MediaManager
             item.Title = mediaDescription.Title;
             //item.TrackNumber = mediaDescription.
             //item.UserRating = mediaDescription.
-           // item.Writer = mediaDescription.
+            //item.Writer = mediaDescription.
             //item.Year = mediaDescription.
             item.IsMetadataExtracted = true;
             return item;

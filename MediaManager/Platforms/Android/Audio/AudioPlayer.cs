@@ -261,7 +261,7 @@ namespace MediaManager
         {
             if (windowIndex != Player.CurrentWindowIndex)
             {
-                CrossMediaManager.Current.OnMediaItemFinished(this, new Abstractions.EventArguments.MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex]));
+                CrossMediaManager.Current.OnMediaItemFinished(this, new Abstractions.EventArguments.MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.PreviousWindowIndex]));
                 windowIndex = Player.CurrentWindowIndex;
             }
         }

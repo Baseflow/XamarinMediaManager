@@ -94,14 +94,6 @@ namespace ElementPlayer.Android
 
             CrossMediaManager.Current.SetContext(this);
 
-            CrossMediaManager.Current.BufferingChanged += (object s, MediaManager.Abstractions.EventArguments.BufferingChangedEventArgs e) =>
-            {
-                RunOnUiThread(() =>
-                {
-                    Log.Debug(TAG, string.Format("{0:0.##}% Total buffered time is {1:mm\\:ss}", e.BufferProgress, e.BufferedTime));
-                });
-            };
-
             /*CrossMediaManager.Current.StatusChanged += (object s, MediaManager.Abstractions.EventArguments.StatusChangedEventArgs e) =>
             {
 
@@ -128,25 +120,16 @@ namespace ElementPlayer.Android
             };
         }
 
-        private void Current_PlayingChanged(object sender, MediaManager.Abstractions.EventArguments.PlayingChangedEventArgs e)
-        {
-            RunOnUiThread(() =>
-            {
-                string text = string.Format("{0:0.##}% Total played is {1:mm\\:ss} of {2:mm\\:ss}", e.Progress, e.Position, e.Duration);
-
-                tvPlaying.Text = text;
-                Log.Debug(TAG, text);
-
-                sbProgress.Max = Convert.ToInt32(e.Duration.TotalMilliseconds);
-                sbProgress.Progress = Convert.ToInt32(System.Math.Floor(e.Position.TotalMilliseconds));
-            });
-        }
-
         protected override void OnPause()
         {
             base.OnPause();
 
             CrossMediaManager.Current.PlayingChanged -= Current_PlayingChanged;
+            CrossMediaManager.Current.BufferingChanged -= Current_BufferingChanged;
+            CrossMediaManager.Current.StatusChanged -= Current_StatusChanged;
+            CrossMediaManager.Current.MediaItemChanged -= Current_MediaItemChanged;
+            CrossMediaManager.Current.MediaItemFinished -= Current_MediaItemFinished;
+            CrossMediaManager.Current.MediaItemFailed -= Current_MediaItemFailed;
         }
 
         protected override void OnResume()
@@ -154,6 +137,65 @@ namespace ElementPlayer.Android
             base.OnResume();
 
             CrossMediaManager.Current.PlayingChanged += Current_PlayingChanged;
+            CrossMediaManager.Current.BufferingChanged += Current_BufferingChanged;
+            CrossMediaManager.Current.StatusChanged += Current_StatusChanged;
+            CrossMediaManager.Current.MediaItemChanged += Current_MediaItemChanged;
+            CrossMediaManager.Current.MediaItemFinished += Current_MediaItemFinished;
+            CrossMediaManager.Current.MediaItemFailed += Current_MediaItemFailed;
+        }
+
+        private void Current_MediaItemFailed(object sender, MediaManager.Abstractions.EventArguments.MediaItemFailedEventArgs e)
+        {
+            RunOnUiThread(() =>
+            {
+                Log.Debug(TAG, string.Format("Media item failed: {0}, Message: {1}, Exception: {2};", e.Item.Title, e.Message, e.Exeption?.ToString()));
+            });
+        }
+
+        private void Current_MediaItemFinished(object sender, MediaManager.Abstractions.EventArguments.MediaItemEventArgs e)
+        {
+            RunOnUiThread(() =>
+            {
+                Log.Debug(TAG, string.Format("Media item finished: {0};", e.Item.Title));
+            });
+        }
+
+        private void Current_MediaItemChanged(object sender, MediaManager.Abstractions.EventArguments.MediaItemEventArgs e)
+        {
+            RunOnUiThread(() =>
+            {
+                Log.Debug(TAG, string.Format("Media item changed, new item title: {0};", e.Item.Title));
+            });
+        }
+
+        private void Current_StatusChanged(object sender, MediaManager.Abstractions.EventArguments.StatusChangedEventArgs e)
+        {
+            RunOnUiThread(() =>
+            {
+                Log.Debug(TAG, string.Format("Status changed: {0};", System.Enum.GetName(typeof(MediaPlayerState), e.Status)));
+            });
+        }
+
+        private void Current_BufferingChanged(object sender, MediaManager.Abstractions.EventArguments.BufferingChangedEventArgs e)
+        {
+            RunOnUiThread(() =>
+            {
+                Log.Debug(TAG, string.Format("{0:0.##}% Total buffered time is {1:mm\\:ss};", e.BufferProgress, e.BufferedTime));
+            });
+        }
+
+        private void Current_PlayingChanged(object sender, MediaManager.Abstractions.EventArguments.PlayingChangedEventArgs e)
+        {
+            RunOnUiThread(() =>
+            {
+                string text = string.Format("{0:0.##}% Total played is {1:mm\\:ss} of {2:mm\\:ss};", e.Progress, e.Position, e.Duration);
+
+                tvPlaying.Text = text;
+                Log.Debug(TAG, text);
+
+                sbProgress.Max = Convert.ToInt32(e.Duration.TotalMilliseconds);
+                sbProgress.Progress = Convert.ToInt32(System.Math.Floor(e.Position.TotalMilliseconds));
+            });
         }
     }
 }
