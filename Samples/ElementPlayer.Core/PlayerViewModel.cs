@@ -1,24 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using MediaManager;
+using MediaManager.Media;
 
 namespace ElementPlayer.Core
 {
     public class PlayerViewModel
     {
-        private IMediaManager _mediaManager;
+        public IMediaManager MediaManager;
 
         public PlayerViewModel()
         {
-            _mediaManager = CrossMediaManager.Current;
+            MediaManager = CrossMediaManager.Current;
         }
 
-        public async Task Play ()
+        public IMediaQueue MediaQueue
         {
-            var item = await _mediaManager.MediaExtractor.CreateMediaItem("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3");
-            await _mediaManager.Play(item);
+            get
+            {
+                return MediaManager.MediaQueue;
+            }
         }
     }
 }
+
+

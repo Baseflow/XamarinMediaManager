@@ -1,24 +1,32 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
-using MediaManager.Media;
+using MediaManager.Abstractions.Enums;
 
 namespace MediaManager
 {
     public static class MediaManagerExtensions
     {
-        public static Task Play(this IMediaManager mediaManager, IMediaItem item)
+        public static Task PlayPreviousOrSeekToStart(this IMediaManager mediaManager)
         {
-            return mediaManager.PlaybackManager.Play(item);
+            if (mediaManager.Position < TimeSpan.FromSeconds(3))
+                return mediaManager.PlayPrevious();
+            else
+                return mediaManager.SeekTo(TimeSpan.Zero);
         }
 
-        public static Task Play(this IMediaManager mediaManager, IEnumerable<IMediaItem> items)
+        public static bool IsPlaying(this IMediaManager mediaManager)
         {
-            foreach (var item in items)
-            {
-                mediaManager.MediaQueue.Add(item);
-            }
-            return mediaManager.PlaybackManager.Play(items.First());
+            return mediaManager.State == MediaPlayerState.Playing;
+        }
+
+        public static Task PlayPause(this IMediaManager mediaManager)
+        {
+            var status = mediaManager.State;
+
+            if (status == MediaPlayerState.Paused || status == MediaPlayerState.Stopped)
+                return mediaManager.Play();
+            else
+                return mediaManager.Pause();
         }
     }
 }

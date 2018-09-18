@@ -15,6 +15,7 @@ using Android.App;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
+[assembly: Application(Icon = "@drawable/btn_play_active", RoundIcon = "@drawable/btn_play_active")]
 
 // Version information for an assembly consists of the following four values:
 //

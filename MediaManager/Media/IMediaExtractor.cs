@@ -8,5 +8,7 @@ namespace MediaManager.Media
         Task<IMediaItem> CreateMediaItem(string url);
 
         Task<IMediaItem> CreateMediaItem(FileInfo file);
+
+        Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem);
     }
 }

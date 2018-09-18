@@ -1,12 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Threading.Tasks;
+using MediaManager.Abstractions.Enums;
+using MediaManager.Abstractions.EventArguments;
 using MediaManager.Media;
 
 namespace MediaManager.Playback
 {
-    public interface IPlaybackManager
+    public delegate void StatusChangedEventHandler(object sender, StatusChangedEventArgs e);
+    public delegate void PlayingChangedEventHandler(object sender, PlayingChangedEventArgs e);
+    public delegate void BufferingChangedEventHandler(object sender, BufferingChangedEventArgs e);
+    public delegate void MediaItemFinishedEventHandler(object sender, MediaItemEventArgs e);
+    public delegate void MediaItemChangedEventHandler(object sender, MediaItemEventArgs e);
+    public delegate void MediaItemFailedEventHandler(object sender, MediaItemFailedEventArgs e);
+
+    public interface IPlaybackManager : INotifyPropertyChanged
     {
-        //IMediaPlayer CurrentMediaPlayer { get; }
+        /// <summary>
+        /// Reading the current status of the player
+        /// </summary>
+        MediaPlayerState State { get; }
 
         /// <summary>
         /// Gets the players position
@@ -25,11 +40,6 @@ namespace MediaManager.Playback
         TimeSpan Buffered { get; }
 
         /// <summary>
-        /// Plays or pauses the current MediaFile
-        /// </summary>
-        Task PlayPause();
-
-        /// <summary>
         /// Plays the current MediaFile
         /// </summary>
         Task Play();
@@ -38,6 +48,18 @@ namespace MediaManager.Playback
         /// Adds MediaFile to the Queue and starts playing
         /// </summary>
         Task Play(IMediaItem mediaItem);
+
+        Task<IMediaItem> Play(string uri);
+
+        Task Play(IEnumerable<IMediaItem> items);
+
+        Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items);
+
+        //TODO: Move to extension
+        //Task<IMediaItem> Play(FileInfo file);
+
+        //TODO: Make check inside normal api?
+        //Task PlayFromQueue(IMediaItem mediaItem);
 
         /// <summary>
         /// Pauses the current MediaFile
@@ -48,11 +70,6 @@ namespace MediaManager.Playback
         /// Stops playing
         /// </summary>
         Task Stop();
-
-        /// <summary>
-        /// Plays the previous MediaFile or seeks to start if far enough into the current one.
-        /// </summary>
-        Task PlayPreviousOrSeekToStart();
 
         /// <summary>
         /// Plays the previous MediaFile

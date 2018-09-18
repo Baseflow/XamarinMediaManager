@@ -14,6 +14,7 @@
     <AssemblyName>MediaManager</AssemblyName>
     <RootNamespace>MediaManager</RootNamespace>
     <PackageId>MediaManager</PackageId>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
   
   <ItemGroup>
@@ -43,25 +44,25 @@
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
-    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Ios\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.Mac')) ">
-    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Mac\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.TVOS')) ">
-    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Tvos\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.WatchOS')) ">
-    <Compile Include="Platforms\Apple-common\**\*.cs" />
+    <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Watchos\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
@@ -70,14 +71,14 @@
     <Compile Include="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
     <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Core" Version="2.8.4" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Dash" Version="2.8.4" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Hls" Version="2.8.4" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.SmoothStreaming" Version="2.8.4" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.UI" Version="2.8.4" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.8.4" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.8.4" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.8.4" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Core" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Dash" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Hls" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.SmoothStreaming" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.UI" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.8.8" />
     <PackageReference Include="Xamarin.Build.Download" Version="0.4.11" />
   </ItemGroup>
 

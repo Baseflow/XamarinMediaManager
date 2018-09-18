@@ -1,52 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace MediaManager.Media
 {
     public class MediaItem : IMediaItem
     {
-        public int BtFolderTypeAlbums { get; set; }
-        public int BtFolderTypeArtists { get; set; }
-        public int BtFolderTypeGenres { get; set; }
-        public int BtFolderTypeMixed { get; set; }
-        public int BtFolderTypePlaylists { get; set; }
-        public int BtFolderTypeTitles { get; set; }
-        public int BtFolderTypeYears { get; set; }
-        public string MetadataAdvertisement { get; set; }
-        public string MetadataAlbum { get; set; }
-        public string MetadataAlbumArt { get; set; }
-        public string MetadataAlbumArtist { get; set; }
-        public string MetadataAlbumArtUri { get; set; }
-        public string MetadataArt { get; set; }
-        public string MetadataArtist { get; set; }
-        public string MetadataArtUri { get; set; }
-        public string MetadataAuthor { get; set; }
-        public string MetadataBtFolderType { get; set; }
-        public string MetadataCompilation { get; set; }
-        public string MetadataComposer { get; set; }
-        public string MetadataDate { get; set; }
-        public string MetadataDiscNumber { get; set; }
-        public string MetadataDisplayDescription { get; set; }
-        public string MetadataDisplayIcon { get; set; }
-        public string MetadataDisplayIconUri { get; set; }
-        public string MetadataDisplaySubtitle { get; set; }
-        public string MetadataDisplayTitle { get; set; }
-        public string MetadataDownloadStatus { get; set; }
-        public string MetadataDuration { get; set; }
-        public string MetadataExtras { get; set; }
-        public string MetadataGenre { get; set; }
-        public string MetadataMediaId { get; set; }
-        public string MetadataMediaUri { get; set; }
-        public string MetadataNumTracks { get; set; }
-        public string MetadataRating { get; set; }
-        public string MetadataTitle { get; set; }
-        public string MetadataTrackNumber { get; set; }
-        public string MetadataUserRating { get; set; }
-        public string MetadataWriter { get; set; }
-        public string MetadataYear { get; set; }
-        public int StatusDownloaded { get; set; }
-        public int StatusDownloading { get; set; }
-        public int StatusNotDownloaded { get; set; }
+        public MediaItem(string uri)
+        {
+            MediaUri = uri;
+        }
+
+        public string Advertisement { get; set; }
+        public string Album { get; set; }
+        public object AlbumArt { get; set; }
+        public string AlbumArtist { get; set; }
+        public string AlbumArtUri { get; set; }
+        public object Art { get; set; }
+        public string Artist { get; set; }
+        public string ArtUri { get; set; }
+        public string Author { get; set; }
+        public BtFolderType BtFolderType { get; set; } = BtFolderType.Mixed;
+        public string Compilation { get; set; }
+        public string Composer { get; set; }
+        public string Date { get; set; }
+        public int DiscNumber { get; set; }
+        public string DisplayDescription { get; set; }
+        public object DisplayIcon { get; set; }
+        public string DisplayIconUri { get; set; }
+        public string DisplaySubtitle { get; set; }
+        public string DisplayTitle { get; set; }
+        public DownloadStatus DownloadStatus { get; set; } = DownloadStatus.NotDownloaded;
+        public TimeSpan Duration { get; set; }
+        public object Extras { get; set; }
+        public string Genre { get; set; }
+        public string MediaId { get; set; } = Guid.NewGuid().ToString();
+        public string MediaUri { get; set; }
+        public int NumTracks { get; set; }
+        public object Rating { get; set; }
+        public string Title { get; set; }
+        public int TrackNumber { get; set; }
+        public object UserRating { get; set; }
+        public string Writer { get; set; }
+        public int Year { get; set; }
+
+        private bool _isMetadataExtracted = false;
+        public bool IsMetadataExtracted
+        {
+            get
+            {
+                return _isMetadataExtracted;
+            }
+            set
+            {
+                _isMetadataExtracted = value;
+                MetadataUpdated?.Invoke(this, new MetadataChangedEventArgs(this));
+            }
+        }
+
+        public event MetadataUpdatedEventHandler MetadataUpdated;
+
+        //TODO: Update all properties to use this
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
