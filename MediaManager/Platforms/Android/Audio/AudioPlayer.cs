@@ -17,11 +17,12 @@ using Java.IO;
 using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Platforms.Android.Media;
+using MediaManager.Platforms.Android.Playback;
 using MediaManager.Playback;
 
 namespace MediaManager.Platforms.Android.Audio
 {
-    public class AudioPlayer : Java.Lang.Object, IAudioPlayer, IExoPlayerPlayer
+    public class AudioPlayer : Java.Lang.Object, IAudioPlayer, IExoPlayerImplementation
     {
         public AudioPlayer()
         {
@@ -223,11 +224,13 @@ namespace MediaManager.Platforms.Android.Audio
 
         public Task Seek(TimeSpan position)
         {
+            Player.SeekTo(position.Milliseconds);
             return Task.CompletedTask;
         }
 
         public Task Stop()
         {
+            Player.Stop();
             return Task.CompletedTask;
         }
 

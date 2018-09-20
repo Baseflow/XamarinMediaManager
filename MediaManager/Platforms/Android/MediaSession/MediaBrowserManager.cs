@@ -5,9 +5,10 @@ using Android.OS;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using MediaManager.Platforms.Android.Media;
+using MediaManager.Platforms.Android.Playback;
 using MediaManager.Playback;
 
-namespace MediaManager.Platforms.Android.Audio
+namespace MediaManager.Platforms.Android.MediaSession
 {
     public class MediaBrowserManager
     {

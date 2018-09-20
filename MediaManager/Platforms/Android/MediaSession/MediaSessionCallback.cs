@@ -5,7 +5,7 @@ using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 
-namespace MediaManager.Platforms.Android.Audio
+namespace MediaManager.Platforms.Android.MediaSession
 {
     public class MediaSessionCallback : MediaSessionCompat.Callback
     {

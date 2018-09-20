@@ -11,7 +11,7 @@ using MediaManager.Platforms.Android.Audio;
 using MediaManager.Platforms.Android.Media;
 using MediaManager.Playback;
 
-namespace MediaManager.Platforms.Android.Audio
+namespace MediaManager.Platforms.Android.MediaSession
 {
     [Service(Exported = true)]
     [IntentFilter(new[] { global::Android.Service.Media.MediaBrowserService.ServiceInterface })]

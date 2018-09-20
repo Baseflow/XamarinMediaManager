@@ -33,5 +33,7 @@ namespace MediaManager.Queue
         /// Get the current track from the Queue
         /// </summary>
         IMediaItem Current { get; }
+
+        string Title { get; set; }
     }
 }

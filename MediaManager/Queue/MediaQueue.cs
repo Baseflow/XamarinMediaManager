@@ -22,6 +22,8 @@ namespace MediaManager.Queue
 
         public int Index => currentIndex;
 
+        public string Title { get ; set; }
+
         internal void OnQueueEnded(object s, QueueEndedEventArgs e) => QueueEnded?.Invoke(s, e);
 
         internal int currentIndex = -1;

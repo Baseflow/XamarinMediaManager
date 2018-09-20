@@ -5,7 +5,7 @@ using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Video;
 
-namespace MediaManager.Platforms.Android
+namespace MediaManager.Platforms.Android.Video
 {
     public class VideoPlayer : IVideoPlayer
     {

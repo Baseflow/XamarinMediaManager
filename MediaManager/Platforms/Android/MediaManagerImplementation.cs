@@ -17,6 +17,9 @@ using System.Runtime.CompilerServices;
 using MediaManager.Platforms.Android.Media;
 using MediaManager.Queue;
 using NotificationManager = MediaManager.Platforms.Android.NotificationManager;
+using MediaManager.Platforms.Android.MediaSession;
+using MediaManager.Platforms.Android.Video;
+using MediaManager.Platforms.Android.Playback;
 
 namespace MediaManager
 {
@@ -272,13 +275,11 @@ namespace MediaManager
             MediaBrowserManager.MediaController.GetTransportControls().SetShuffleMode(0);
         }
 
-        #region Events
         public void OnStatusChanged(object sender, StatusChangedEventArgs e) => StatusChanged?.Invoke(sender, e);
         public void OnPlayingChanged(object sender, PlayingChangedEventArgs e) => PlayingChanged?.Invoke(sender, e);
         public void OnBufferingChanged(object sender, BufferingChangedEventArgs e) => BufferingChanged?.Invoke(sender, e);
         public void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
         public void OnMediaItemChanged(object sender, MediaItemEventArgs e) => MediaItemChanged?.Invoke(sender, e);
         public void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
-        #endregion
     }
 }

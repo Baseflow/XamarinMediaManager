@@ -4,7 +4,7 @@ using System.Text;
 using Android.Runtime;
 using Android.Support.V4.Media;
 
-namespace MediaManager.Platforms.Android.Audio
+namespace MediaManager.Platforms.Android.MediaSession
 {
     public class MediaBrowserConnectionCallback : MediaBrowserCompat.ConnectionCallback
     {

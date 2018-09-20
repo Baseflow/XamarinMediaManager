@@ -10,6 +10,7 @@ using MediaManager.Playback;
 
 namespace MediaManager.Platforms.Android.Audio
 {
+    //TODO: Remove in ExoPlayer 2.9.0
     public class AudioFocusManager
     {
         Context context;
@@ -27,7 +28,7 @@ namespace MediaManager.Platforms.Android.Audio
         {
             get
             {
-                if (player is IExoPlayerPlayer exoPlayerPlayer)
+                if (player is IExoPlayerImplementation exoPlayerPlayer)
                     return exoPlayerPlayer.Player;
 
                 return null;
