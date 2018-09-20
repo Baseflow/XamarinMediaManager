@@ -7,7 +7,6 @@ using MediaManager.Video;
 using MediaManager.Volume;
 using MediaManager.Platforms.Android.Audio;
 using System.Threading.Tasks;
-using MediaManager.Platforms.Android.Utils;
 using MediaManager.Audio;
 using Android.Content.Res;
 using System.Collections.Generic;
@@ -15,12 +14,13 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using MediaManager.Abstractions.Enums;
-using MediaManager.Abstractions.EventArguments;
+using MediaManager.Platforms.Android.Media;
+using MediaManager.Queue;
+using NotificationManager = MediaManager.Platforms.Android.NotificationManager;
 
 namespace MediaManager
 {
-    [Android.Runtime.Preserve(AllMembers = true)]
+    [global::Android.Runtime.Preserve(AllMembers = true)]
     public class MediaManagerImplementation : IMediaManager
     {
         public MediaManagerImplementation()

@@ -14,13 +14,12 @@ using Com.Google.Android.Exoplayer2.Trackselection;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
 using Java.IO;
-using MediaManager.Abstractions.Enums;
 using MediaManager.Audio;
-using MediaManager.Platforms.Android;
-using MediaManager.Platforms.Android.Audio;
-using MediaManager.Platforms.Android.Utils;
+using MediaManager.Media;
+using MediaManager.Platforms.Android.Media;
+using MediaManager.Playback;
 
-namespace MediaManager
+namespace MediaManager.Platforms.Android.Audio
 {
     public class AudioPlayer : Java.Lang.Object, IAudioPlayer, IExoPlayerPlayer
     {
@@ -150,9 +149,9 @@ namespace MediaManager
                     {
                         for (int i = e.NewItems.Count - 1; i >= 0; i--)
                         {
-                            var uri = global::Android.Net.Uri.Parse(((Media.IMediaItem)e.NewItems[i]).MediaUri);
+                            var uri = global::Android.Net.Uri.Parse(((IMediaItem)e.NewItems[i]).MediaUri);
                             var extractorMediaSource = new ExtractorMediaSource.Factory(DataSourceFactory)
-                                .SetTag(((Media.IMediaItem)e.NewItems[i]).ToMediaDescription())
+                                .SetTag(((IMediaItem)e.NewItems[i]).ToMediaDescription())
                                 .CreateMediaSource(uri);
                             MediaSource.AddMediaSource(e.NewStartingIndex, extractorMediaSource);
                         }
@@ -240,7 +239,7 @@ namespace MediaManager
             TimeSpan duration = TimeSpan.FromMilliseconds(simpleExoPlayer.Duration);
             TimeSpan position = TimeSpan.FromMilliseconds(simpleExoPlayer.CurrentPosition);
 
-            CrossMediaManager.Current.OnPlayingChanged(this, new Abstractions.EventArguments.PlayingChangedEventArgs(progress, position, duration));
+            CrossMediaManager.Current.OnPlayingChanged(this, new PlayingChangedEventArgs(progress, position, duration));
         }
 
         private void OnBuffering()
@@ -250,7 +249,7 @@ namespace MediaManager
             double progress = simpleExoPlayer.BufferedPercentage;
             TimeSpan bufferedTime = TimeSpan.FromMilliseconds(simpleExoPlayer.BufferedPosition);
 
-            CrossMediaManager.Current.OnBufferingChanged(this, new Abstractions.EventArguments.BufferingChangedEventArgs(progress, bufferedTime));
+            CrossMediaManager.Current.OnBufferingChanged(this, new BufferingChangedEventArgs(progress, bufferedTime));
 
             if (progress == 100)
                 BufferedTimer.Stop();
@@ -261,7 +260,7 @@ namespace MediaManager
         {
             if (windowIndex != Player.CurrentWindowIndex)
             {
-                CrossMediaManager.Current.OnMediaItemFinished(this, new Abstractions.EventArguments.MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.PreviousWindowIndex]));
+                CrossMediaManager.Current.OnMediaItemFinished(this, new MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.PreviousWindowIndex]));
                 windowIndex = Player.CurrentWindowIndex;
             }
         }
@@ -275,14 +274,14 @@ namespace MediaManager
 
             if (desc != null && currentMediaId != desc.MediaId)
             {
-                CrossMediaManager.Current.OnMediaItemChanged(this, new Abstractions.EventArguments.MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex]));
+                CrossMediaManager.Current.OnMediaItemChanged(this, new MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex]));
                 currentMediaId = desc.MediaId;
             }
         }
 
         internal void OnMediaItemFailed()
         {
-            CrossMediaManager.Current.OnMediaItemFailed(this, new Abstractions.EventArguments.MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex], null, null));
+            CrossMediaManager.Current.OnMediaItemFailed(this, new MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex], null, null));
         }
     }
 }

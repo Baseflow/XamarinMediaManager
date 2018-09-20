@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MediaManager.Media
+namespace MediaManager.Queue
 {
     public class QueueMediaChangedEventArgs : EventArgs
     {

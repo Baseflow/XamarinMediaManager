@@ -7,6 +7,7 @@ using Com.Google.Android.Exoplayer2.Metadata;
 using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
 using Java.Lang;
+using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android.Audio
 {
@@ -90,7 +91,7 @@ namespace MediaManager.Platforms.Android.Audio
 
         public override void OnPlayerError(ExoPlaybackException error)
         {
-            CrossMediaManager.Current.OnMediaItemFailed(this, new Abstractions.EventArguments.MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[player.Player.CurrentWindowIndex], error.InnerException, error.Message));
+            CrossMediaManager.Current.OnMediaItemFailed(this, new MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[player.Player.CurrentWindowIndex], error.InnerException, error.Message));
             base.OnPlayerError(error);
         }
     }

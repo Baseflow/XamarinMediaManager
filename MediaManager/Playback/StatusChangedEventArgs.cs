@@ -1,7 +1,6 @@
 ﻿using System;
-using MediaManager.Abstractions.Enums;
 
-namespace MediaManager.Abstractions.EventArguments
+namespace MediaManager.Playback
 {
     public class StatusChangedEventArgs : EventArgs
     {

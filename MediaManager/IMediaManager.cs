@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using MediaManager.Abstractions.EventArguments;
 using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Playback;
+using MediaManager.Queue;
 using MediaManager.Video;
 using MediaManager.Volume;
 

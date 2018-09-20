@@ -7,6 +7,7 @@ using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Upstream;
 using System.Linq;
+using MediaManager.Platforms.Android.Media;
 
 namespace MediaManager.Platforms.Android.Audio
 {

@@ -6,7 +6,7 @@ using Android.Media;
 using Android.OS;
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
-using MediaManager.Abstractions.Enums;
+using MediaManager.Playback;
 
 namespace MediaManager.Platforms.Android.Audio
 {
@@ -27,7 +27,7 @@ namespace MediaManager.Platforms.Android.Audio
         {
             get
             {
-                if (player is Utils.IExoPlayerPlayer exoPlayerPlayer)
+                if (player is IExoPlayerPlayer exoPlayerPlayer)
                     return exoPlayerPlayer.Player;
 
                 return null;

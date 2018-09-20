@@ -1,4 +1,4 @@
-﻿namespace MediaManager.Abstractions.Enums
+﻿namespace MediaManager.Playback
 {
     public enum MediaPlayerState
     {

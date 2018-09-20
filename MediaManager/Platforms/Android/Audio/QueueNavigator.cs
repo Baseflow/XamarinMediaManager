@@ -6,6 +6,7 @@ using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
+using MediaManager.Platforms.Android.Media;
 
 namespace MediaManager.Platforms.Android.Audio
 {

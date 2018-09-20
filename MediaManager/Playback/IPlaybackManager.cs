@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
-using MediaManager.Abstractions.Enums;
-using MediaManager.Abstractions.EventArguments;
 using MediaManager.Media;
 
 namespace MediaManager.Playback

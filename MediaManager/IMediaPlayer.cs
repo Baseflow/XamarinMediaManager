@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using MediaManager.Abstractions.Enums;
 using MediaManager.Media;
+using MediaManager.Playback;
 
 namespace MediaManager
 {

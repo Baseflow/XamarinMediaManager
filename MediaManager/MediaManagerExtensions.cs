@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MediaManager.Abstractions.Enums;
+using MediaManager.Playback;
 
 namespace MediaManager
 {

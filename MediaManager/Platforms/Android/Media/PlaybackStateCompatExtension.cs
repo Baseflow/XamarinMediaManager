@@ -1,7 +1,7 @@
 ﻿using Android.Support.V4.Media.Session;
-using MediaManager.Abstractions.Enums;
+using MediaManager.Playback;
 
-namespace MediaManager.Platforms.Android.Utils
+namespace MediaManager.Platforms.Android.Media
 {
     public static class PlaybackStateExtensions
     {

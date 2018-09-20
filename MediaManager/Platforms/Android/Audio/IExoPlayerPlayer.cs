@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Com.Google.Android.Exoplayer2;
 
-namespace MediaManager.Platforms.Android.Utils
+namespace MediaManager.Platforms.Android.Audio
 {
     public interface IExoPlayerPlayer
     {

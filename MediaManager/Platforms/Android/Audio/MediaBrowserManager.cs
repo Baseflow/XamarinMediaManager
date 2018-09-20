@@ -4,7 +4,8 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
-using MediaManager.Platforms.Android.Utils;
+using MediaManager.Platforms.Android.Media;
+using MediaManager.Playback;
 
 namespace MediaManager.Platforms.Android.Audio
 {
@@ -46,7 +47,7 @@ namespace MediaManager.Platforms.Android.Audio
 
                     MediaControllerCallback.OnPlaybackStateChangedImpl = state =>
                     {
-                        CrossMediaManager.Current.OnStatusChanged(this, new Abstractions.EventArguments.StatusChangedEventArgs(state.ToMediaPlayerState()));
+                        CrossMediaManager.Current.OnStatusChanged(this, new StatusChangedEventArgs(state.ToMediaPlayerState()));
                     };
 
                     MediaControllerCallback.OnSessionEventChangedImpl = (string @event, Bundle extras) =>

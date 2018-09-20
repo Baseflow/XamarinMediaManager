@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using MediaManager.Media;
 
-namespace MediaManager.Media
+namespace MediaManager.Queue
 {
     public class MediaQueue : ObservableCollection<IMediaItem>, IMediaQueue
     {

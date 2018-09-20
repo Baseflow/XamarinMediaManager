@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MediaManager.Abstractions.EventArguments
+namespace MediaManager.Playback
 {
     public class PlayingChangedEventArgs : EventArgs
     {

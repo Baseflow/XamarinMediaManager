@@ -3,7 +3,7 @@ using MediaManager.Media;
 using MediaManager.Video;
 using MediaManager.Volume;
 
-namespace MediaManager
+namespace MediaManager.Platforms.Mac
 {
     public class MediaManagerImplementation : MediaManagerBase
     {

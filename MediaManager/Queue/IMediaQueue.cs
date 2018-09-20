@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using MediaManager.Media;
 
-namespace MediaManager.Media
+namespace MediaManager.Queue
 {
     public delegate void QueueEndedEventHandler(object sender, QueueEndedEventArgs e);
 

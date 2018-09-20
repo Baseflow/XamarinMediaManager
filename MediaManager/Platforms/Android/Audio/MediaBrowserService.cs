@@ -6,11 +6,12 @@ using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2.UI;
-using MediaManager.Abstractions.Enums;
 using MediaManager.Audio;
 using MediaManager.Platforms.Android.Audio;
+using MediaManager.Platforms.Android.Media;
+using MediaManager.Playback;
 
-namespace MediaManager.Platforms.Android
+namespace MediaManager.Platforms.Android.Audio
 {
     [Service(Exported = true)]
     [IntentFilter(new[] { global::Android.Service.Media.MediaBrowserService.ServiceInterface })]

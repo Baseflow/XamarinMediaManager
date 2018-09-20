@@ -1,7 +1,7 @@
 ﻿using System;
 using MediaManager.Media;
 
-namespace MediaManager.Abstractions.EventArguments
+namespace MediaManager.Media
 {
     public class MediaItemEventArgs : EventArgs
     {

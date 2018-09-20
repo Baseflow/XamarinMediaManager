@@ -4,7 +4,7 @@ using Android.OS;
 using Android.Support.V4.Media;
 using MediaManager.Media;
 
-namespace MediaManager
+namespace MediaManager.Platforms.Android.Media
 {
     public static class MediaItemExtensions
     {
@@ -12,13 +12,13 @@ namespace MediaManager
         {
             var description = new MediaDescriptionCompat.Builder()
                 .SetMediaId(item?.MediaId)
-                .SetMediaUri(Android.Net.Uri.Parse(item?.MediaUri))
+                .SetMediaUri(global::Android.Net.Uri.Parse(item?.MediaUri))
                 .SetTitle(item?.Title)
                 .SetSubtitle(item?.Artist)
                 .SetDescription(item?.DisplayDescription)
                 .SetExtras(item?.Extras as Bundle)
                 .SetIconBitmap(item?.AlbumArt as Bitmap)
-                .SetIconUri(item?.DisplayIconUri != null ? Android.Net.Uri.Parse(item?.DisplayIconUri) : null)
+                .SetIconUri(item?.DisplayIconUri != null ? global::Android.Net.Uri.Parse(item?.DisplayIconUri) : null)
                 .Build();
 
             return description;
