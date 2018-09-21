@@ -41,7 +41,6 @@ namespace MediaManager.Platforms.Android.Audio
         protected Context Context { get; set; } = CrossMediaManager.Current.GetContext();
 
         protected string UserAgent { get; set; }
-        protected MediaSessionCompat MediaSession { get; set; }
         protected DefaultHttpDataSourceFactory HttpDataSourceFactory { get; set; }
         protected DefaultDataSourceFactory DataSourceFactory { get; set; }
         protected DefaultBandwidthMeter BandwidthMeter { get; set; }
@@ -64,6 +63,8 @@ namespace MediaManager.Platforms.Android.Audio
         #region scheduled updates
         internal Timer StatusTimer = new Timer(1000), BufferedTimer = new Timer(1000);
         #endregion
+
+        public MediaSessionCompat MediaSession { get; set; }
 
         public MediaPlayerState State
         {
@@ -88,12 +89,13 @@ namespace MediaManager.Platforms.Android.Audio
             return Task.CompletedTask;
         }
 
-        public virtual void Initialize(MediaSessionCompat mediaSession)
+        public virtual void Initialize()
         {
             if (Player != null)
                 return;
 
-            MediaSession = mediaSession;
+            if (MediaSession == null)
+                throw new ArgumentNullException(nameof(MediaSession));
 
             UserAgent = Util.GetUserAgent(Context, "MediaManager");
             HttpDataSourceFactory = new DefaultHttpDataSourceFactory(UserAgent);
@@ -242,7 +244,7 @@ namespace MediaManager.Platforms.Android.Audio
             TimeSpan duration = TimeSpan.FromMilliseconds(simpleExoPlayer.Duration);
             TimeSpan position = TimeSpan.FromMilliseconds(simpleExoPlayer.CurrentPosition);
 
-            CrossMediaManager.Current.OnPlayingChanged(this, new PlayingChangedEventArgs(progress, position, duration));
+            //CrossMediaManager.Current.OnPlayingChanged(this, new PlayingChangedEventArgs(progress, position, duration));
         }
 
         private void OnBuffering()
@@ -252,7 +254,7 @@ namespace MediaManager.Platforms.Android.Audio
             double progress = simpleExoPlayer.BufferedPercentage;
             TimeSpan bufferedTime = TimeSpan.FromMilliseconds(simpleExoPlayer.BufferedPosition);
 
-            CrossMediaManager.Current.OnBufferingChanged(this, new BufferingChangedEventArgs(progress, bufferedTime));
+            //CrossMediaManager.Current.OnBufferingChanged(this, new BufferingChangedEventArgs(progress, bufferedTime));
 
             if (progress == 100)
                 BufferedTimer.Stop();
@@ -263,7 +265,7 @@ namespace MediaManager.Platforms.Android.Audio
         {
             if (windowIndex != Player.CurrentWindowIndex)
             {
-                CrossMediaManager.Current.OnMediaItemFinished(this, new MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.PreviousWindowIndex]));
+                //CrossMediaManager.Current.OnMediaItemFinished(this, new MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.PreviousWindowIndex]));
                 windowIndex = Player.CurrentWindowIndex;
             }
         }
@@ -277,14 +279,14 @@ namespace MediaManager.Platforms.Android.Audio
 
             if (desc != null && currentMediaId != desc.MediaId)
             {
-                CrossMediaManager.Current.OnMediaItemChanged(this, new MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex]));
+                //CrossMediaManager.Current.OnMediaItemChanged(this, new MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex]));
                 currentMediaId = desc.MediaId;
             }
         }
 
         internal void OnMediaItemFailed()
         {
-            CrossMediaManager.Current.OnMediaItemFailed(this, new MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex], null, null));
+            //CrossMediaManager.Current.OnMediaItemFailed(this, new MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex], null, null));
         }
     }
 }

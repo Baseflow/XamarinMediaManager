@@ -7,7 +7,7 @@ using MediaManager.Video;
 
 namespace MediaManager.Platforms.Android.Video
 {
-    public class VideoPlayer : IVideoPlayer
+    public class VideoPlayer : Java.Lang.Object, IVideoPlayer
     {
         public Dictionary<string, string> RequestHeaders { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
@@ -18,6 +18,11 @@ namespace MediaManager.Platforms.Android.Video
         public TimeSpan Duration => throw new NotImplementedException();
 
         public TimeSpan Buffered => throw new NotImplementedException();
+
+        public void Initialize()
+        {
+            throw new NotImplementedException();
+        }
 
         public Task Pause()
         {

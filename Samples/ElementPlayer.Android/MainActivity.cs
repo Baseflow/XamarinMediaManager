@@ -126,7 +126,7 @@ namespace ElementPlayer.Android
 
             CrossMediaManager.Current.PlayingChanged -= Current_PlayingChanged;
             CrossMediaManager.Current.BufferingChanged -= Current_BufferingChanged;
-            CrossMediaManager.Current.StatusChanged -= Current_StatusChanged;
+            CrossMediaManager.Current.StateChanged -= Current_StatusChanged;
             CrossMediaManager.Current.MediaItemChanged -= Current_MediaItemChanged;
             CrossMediaManager.Current.MediaItemFinished -= Current_MediaItemFinished;
             CrossMediaManager.Current.MediaItemFailed -= Current_MediaItemFailed;
@@ -138,7 +138,7 @@ namespace ElementPlayer.Android
 
             CrossMediaManager.Current.PlayingChanged += Current_PlayingChanged;
             CrossMediaManager.Current.BufferingChanged += Current_BufferingChanged;
-            CrossMediaManager.Current.StatusChanged += Current_StatusChanged;
+            CrossMediaManager.Current.StateChanged += Current_StatusChanged;
             CrossMediaManager.Current.MediaItemChanged += Current_MediaItemChanged;
             CrossMediaManager.Current.MediaItemFinished += Current_MediaItemFinished;
             CrossMediaManager.Current.MediaItemFailed += Current_MediaItemFailed;
@@ -168,11 +168,11 @@ namespace ElementPlayer.Android
             });
         }
 
-        private void Current_StatusChanged(object sender, StatusChangedEventArgs e)
+        private void Current_StatusChanged(object sender, StateChangedEventArgs e)
         {
             RunOnUiThread(() =>
             {
-                Log.Debug(TAG, string.Format("Status changed: {0};", System.Enum.GetName(typeof(MediaPlayerState), e.Status)));
+                Log.Debug(TAG, string.Format("Status changed: {0};", System.Enum.GetName(typeof(MediaPlayerState), e.State)));
             });
         }
 

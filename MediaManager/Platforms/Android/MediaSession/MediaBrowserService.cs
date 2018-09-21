@@ -44,6 +44,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         protected MediaControllerCompat MediaController { get; set; }
         protected MediaControllerCallback MediaControllerCallback { get; set; }
         protected BecomingNoisyReceiver BecomingNoisyReceiver { get; set; }
+        protected NotificationListener NotificationListener { get; set; }
 
         public readonly string ChannelId = "audio_channel";
         public readonly int ForegroundNotificationId = 1;
@@ -73,7 +74,8 @@ namespace MediaManager.Platforms.Android.MediaSession
             MediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
                                    MediaSessionCompat.FlagHandlesTransportControls);
 
-            NativePlayer.Initialize(MediaSession);
+            NativePlayer.MediaSession = MediaSession;
+            AudioPlayer.Initialize();
 
             MediaDescriptionAdapter = new MediaDescriptionAdapter(sessionActivityPendingIntent);
             PlayerNotificationManager = Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.CreateWithNotificationChannel(
@@ -85,10 +87,12 @@ namespace MediaManager.Platforms.Android.MediaSession
 
             //needed for enabling the notification as a mediabrowser.
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
+            NotificationListener = new NotificationListener();
+            PlayerNotificationManager.SetNotificationListener(NotificationListener);
             PlayerNotificationManager.SetPlayer(NativePlayer.Player);
 
+            //Everything after this probably needs to be removed. 
             BecomingNoisyReceiver = new BecomingNoisyReceiver(MediaManager.GetContext(), NativePlayer.AudioFocusManager);
-
             MediaController = new MediaControllerCompat(this, MediaSession);
 
             MediaControllerCallback = new MediaControllerCallback()
@@ -117,15 +121,6 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
             // Service is being killed, so make sure we release our resources
 
-            //unregisterCarConnectionReceiver();
-            /*
-            if (mCastSessionManager != null)
-            {
-                mCastSessionManager.removeSessionManagerListener(mCastSessionManagerListener,
-                        CastSession.class);
-            }
-            */
-
             PlayerNotificationManager.SetPlayer(null);
             NativePlayer.Release();
             AudioPlayer = null;
@@ -146,51 +141,6 @@ namespace MediaManager.Platforms.Android.MediaSession
                 mediaItems.Add(item.ToMediaBrowserMediaItem());
 
             result.SendResult(mediaItems);
-
-            //result.SendResult(null);
-        }
-
-        public void OnPlaybackStart()
-        {
-            // The service needs to continue running even after the bound client (usually a
-            // MediaController) disconnects, otherwise the music playback will stop.
-            // Calling startService(Intent) will keep the service running until it is explicitly killed.
-            StartService(new Intent(ApplicationContext, typeof(MediaBrowserService)));
-        }
-
-        public void OnPlaybackStop()
-        {
-            // Reset the delayed stop handler, so after STOP_DELAY it will be executed again,
-            // potentially stopping the service.
-            StopForeground(true);
-        }
-
-        /**
-        * A simple handler that stops the service if playback is not active (playing)
-        */
-        public class DelayedStopHandler : Handler
-        {
-            private WeakReference<MediaBrowserService> _weakReference;
-
-            public DelayedStopHandler(MediaBrowserService service)
-            {
-                _weakReference = new WeakReference<MediaBrowserService>(service);
-            }
-
-            public override void HandleMessage(Message msg)
-            {
-                MediaBrowserService service;
-                _weakReference.TryGetTarget(out service);
-                if (service != null && service.AudioPlayer != null)
-                {
-                    if (service.AudioPlayer.State == MediaPlayerState.Playing)
-                    {
-                        return;
-                    }
-                    service.StopSelf();
-                    //service.serviceStarted = false;
-                }
-            }
         }
     }
 }

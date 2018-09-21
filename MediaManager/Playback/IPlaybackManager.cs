@@ -7,7 +7,7 @@ using MediaManager.Media;
 
 namespace MediaManager.Playback
 {
-    public delegate void StatusChangedEventHandler(object sender, StatusChangedEventArgs e);
+    public delegate void StateChangedEventHandler(object sender, StateChangedEventArgs e);
     public delegate void PlayingChangedEventHandler(object sender, PlayingChangedEventArgs e);
     public delegate void BufferingChangedEventHandler(object sender, BufferingChangedEventArgs e);
     public delegate void MediaItemFinishedEventHandler(object sender, MediaItemEventArgs e);
@@ -41,23 +41,6 @@ namespace MediaManager.Playback
         /// Plays the current MediaFile
         /// </summary>
         Task Play();
-
-        // <summary>
-        /// Adds MediaFile to the Queue and starts playing
-        /// </summary>
-        Task Play(IMediaItem mediaItem);
-
-        Task<IMediaItem> Play(string uri);
-
-        Task Play(IEnumerable<IMediaItem> items);
-
-        Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items);
-
-        //TODO: Move to extension
-        //Task<IMediaItem> Play(FileInfo file);
-
-        //TODO: Make check inside normal api?
-        //Task PlayFromQueue(IMediaItem mediaItem);
 
         /// <summary>
         /// Pauses the current MediaFile
@@ -110,5 +93,17 @@ namespace MediaManager.Playback
         /// Enables or disables shuffling
         /// </summary>
         void ToggleShuffle();
+
+        event StateChangedEventHandler StateChanged;
+
+        event PlayingChangedEventHandler PlayingChanged;
+
+        event BufferingChangedEventHandler BufferingChanged;
+
+        event MediaItemFinishedEventHandler MediaItemFinished;
+
+        event MediaItemChangedEventHandler MediaItemChanged;
+
+        event MediaItemFailedEventHandler MediaItemFailed;
     }
 }

@@ -48,7 +48,7 @@ namespace MediaManager.Platforms.Android.MediaSession
 
                     MediaControllerCallback.OnPlaybackStateChangedImpl = state =>
                     {
-                        CrossMediaManager.Current.OnStatusChanged(this, new StatusChangedEventArgs(state.ToMediaPlayerState()));
+                        //CrossMediaManager.Current.OnStatusChanged(this, new StateChangedEventArgs(state.ToMediaPlayerState()));
                     };
 
                     MediaControllerCallback.OnSessionEventChangedImpl = (string @event, Bundle extras) =>

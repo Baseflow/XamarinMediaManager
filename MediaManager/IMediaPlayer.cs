@@ -7,8 +7,10 @@ using MediaManager.Playback;
 
 namespace MediaManager
 {
-    public interface IMediaPlayer
+    public interface IMediaPlayer : IDisposable
     {
+        void Initialize();
+
         // <summary>
         /// Adds MediaFile to the Queue and starts playing
         /// </summary>

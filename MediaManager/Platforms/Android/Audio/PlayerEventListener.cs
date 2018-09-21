@@ -91,8 +91,43 @@ namespace MediaManager.Platforms.Android.Audio
 
         public override void OnPlayerError(ExoPlaybackException error)
         {
-            CrossMediaManager.Current.OnMediaItemFailed(this, new MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[player.Player.CurrentWindowIndex], error.InnerException, error.Message));
+            //CrossMediaManager.Current.OnMediaItemFailed(this, new MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[player.Player.CurrentWindowIndex], error.InnerException, error.Message));
             base.OnPlayerError(error);
+        }
+
+        public override void OnLoadingChanged(bool isLoading)
+        {
+            base.OnLoadingChanged(isLoading);
+        }
+
+        public override void OnPlaybackParametersChanged(PlaybackParameters playbackParameters)
+        {
+            base.OnPlaybackParametersChanged(playbackParameters);
+        }
+
+        public override void OnRepeatModeChanged(int repeatMode)
+        {
+            base.OnRepeatModeChanged(repeatMode);
+        }
+
+        public override void OnSeekProcessed()
+        {
+            base.OnSeekProcessed();
+        }
+
+        public override void OnShuffleModeEnabledChanged(bool shuffleModeEnabled)
+        {
+            base.OnShuffleModeEnabledChanged(shuffleModeEnabled);
+        }
+
+        public override void OnTimelineChanged(Timeline timeline, Java.Lang.Object manifest)
+        {
+            base.OnTimelineChanged(timeline, manifest);
+        }
+
+        public override void OnTimelineChanged(Timeline timeline, Java.Lang.Object manifest, int reason)
+        {
+            base.OnTimelineChanged(timeline, manifest, reason);
         }
     }
 }

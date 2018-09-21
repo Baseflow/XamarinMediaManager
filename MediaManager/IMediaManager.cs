@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Playback;
@@ -28,27 +30,55 @@ namespace MediaManager
 
         IMediaQueue MediaQueue { get; set; }
 
-        //IPlaybackManager PlaybackManager { get; set; }
+        // <summary>
+        /// Plays a media item
+        /// </summary>
+        Task Play(IMediaItem mediaItem);
 
-        #region Events
-        event StatusChangedEventHandler StatusChanged;
+        /// <summary>
+        /// Plays an uri that can be both remote or local
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        Task<IMediaItem> Play(string uri);
 
-        event PlayingChangedEventHandler PlayingChanged;
+        /// <summary>
+        /// Plays a list of media items
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        Task Play(IEnumerable<IMediaItem> items);
 
-        event BufferingChangedEventHandler BufferingChanged;
+        /// <summary>
+        /// Plays a list of uri's
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items);
 
-        event MediaItemFinishedEventHandler MediaItemFinished;
+        /// <summary>
+        /// Plays a file from the local file system
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        Task<IMediaItem> Play(FileInfo file);
 
-        event MediaItemChangedEventHandler MediaItemChanged;
+        /// <summary>
+        /// Plays all files inside the directory
+        /// </summary>
+        /// <param name="directoryInfo"></param>
+        /// <returns></returns>
+        Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo);
 
-        event MediaItemFailedEventHandler MediaItemFailed;
+        /*event StatusChangedEventHandler StatusChanged;
+
+        
 
         void OnStatusChanged(object sender, StatusChangedEventArgs e);
         void OnPlayingChanged(object sender, PlayingChangedEventArgs e);
         void OnBufferingChanged(object sender, BufferingChangedEventArgs e);
         void OnMediaItemFinished(object sender, MediaItemEventArgs e);
         void OnMediaItemChanged(object sender, MediaItemEventArgs e);
-        void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e);
-        #endregion
+        void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e);*/
     }
 }

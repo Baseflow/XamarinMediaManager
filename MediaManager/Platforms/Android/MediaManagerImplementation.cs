@@ -20,6 +20,7 @@ using NotificationManager = MediaManager.Platforms.Android.NotificationManager;
 using MediaManager.Platforms.Android.MediaSession;
 using MediaManager.Platforms.Android.Video;
 using MediaManager.Platforms.Android.Playback;
+using System.IO;
 
 namespace MediaManager
 {
@@ -136,12 +137,12 @@ namespace MediaManager
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public event StatusChangedEventHandler StatusChanged;
         public event PlayingChangedEventHandler PlayingChanged;
         public event BufferingChangedEventHandler BufferingChanged;
         public event MediaItemFinishedEventHandler MediaItemFinished;
         public event MediaItemChangedEventHandler MediaItemChanged;
         public event MediaItemFailedEventHandler MediaItemFailed;
+        public event StateChangedEventHandler StateChanged;
 
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -223,6 +224,16 @@ namespace MediaManager
             MediaBrowserManager.MediaController.GetTransportControls().Prepare();
         }
 
+        public Task<IMediaItem> Play(FileInfo file)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task PlayNext()
         {
             await MediaBrowserManager.EnsureInitialized();
@@ -275,7 +286,7 @@ namespace MediaManager
             MediaBrowserManager.MediaController.GetTransportControls().SetShuffleMode(0);
         }
 
-        public void OnStatusChanged(object sender, StatusChangedEventArgs e) => StatusChanged?.Invoke(sender, e);
+        public void OnStateChanged(object sender, StateChangedEventArgs e) => StateChanged?.Invoke(sender, e);
         public void OnPlayingChanged(object sender, PlayingChangedEventArgs e) => PlayingChanged?.Invoke(sender, e);
         public void OnBufferingChanged(object sender, BufferingChangedEventArgs e) => BufferingChanged?.Invoke(sender, e);
         public void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
