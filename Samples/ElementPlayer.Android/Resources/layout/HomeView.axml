@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnAddToQueue"
         android:text="Add random song to to queue"
-        android:layout_above="@+id/tvPlaying" />
+        android:layout_above="@+id/tvPlaying" 
+    local:MvxBind="Click AddRandomToQueueCommand"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,26 +21,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/sbProgress"
-        android:layout_above="@+id/btnPlayPause" />
+        android:layout_above="@+id/btnPlayPause"
+        />
     <ToggleButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnPlayPause"
         android:textOff="Play"
         android:textOn="Pause"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true" 
+        local:MvxBind="Click PlayPauseCommand"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnPrevious"
         android:text="|&lt; Previous"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btnPlayPause" />
+        android:layout_toRightOf="@+id/btnPlayPause" 
+        local:MvxBind="Click PlayNextCommand"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnNext"
         android:text="Next &gt;|"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btnPrevious" />
+        android:layout_toRightOf="@+id/btnPrevious" 
+        local:MvxBind="Click PlayPreviousCommand"/>
 </RelativeLayout>
