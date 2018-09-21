@@ -13,9 +13,9 @@ using ElementPlayer.Core;
 using Java.Lang;
 using Java.Util.Concurrent;
 using MediaManager;
-using MediaManager.Abstractions.Enums;
 using MediaManager.Media;
 using MediaManager.Platforms.Android;
+using MediaManager.Playback;
 
 namespace ElementPlayer.Android
 {
@@ -144,7 +144,7 @@ namespace ElementPlayer.Android
             CrossMediaManager.Current.MediaItemFailed += Current_MediaItemFailed;
         }
 
-        private void Current_MediaItemFailed(object sender, MediaManager.Abstractions.EventArguments.MediaItemFailedEventArgs e)
+        private void Current_MediaItemFailed(object sender, MediaItemFailedEventArgs e)
         {
             RunOnUiThread(() =>
             {
@@ -152,7 +152,7 @@ namespace ElementPlayer.Android
             });
         }
 
-        private void Current_MediaItemFinished(object sender, MediaManager.Abstractions.EventArguments.MediaItemEventArgs e)
+        private void Current_MediaItemFinished(object sender, MediaItemEventArgs e)
         {
             RunOnUiThread(() =>
             {
@@ -160,7 +160,7 @@ namespace ElementPlayer.Android
             });
         }
 
-        private void Current_MediaItemChanged(object sender, MediaManager.Abstractions.EventArguments.MediaItemEventArgs e)
+        private void Current_MediaItemChanged(object sender, MediaItemEventArgs e)
         {
             RunOnUiThread(() =>
             {
@@ -168,7 +168,7 @@ namespace ElementPlayer.Android
             });
         }
 
-        private void Current_StatusChanged(object sender, MediaManager.Abstractions.EventArguments.StatusChangedEventArgs e)
+        private void Current_StatusChanged(object sender, StatusChangedEventArgs e)
         {
             RunOnUiThread(() =>
             {
@@ -176,7 +176,7 @@ namespace ElementPlayer.Android
             });
         }
 
-        private void Current_BufferingChanged(object sender, MediaManager.Abstractions.EventArguments.BufferingChangedEventArgs e)
+        private void Current_BufferingChanged(object sender, BufferingChangedEventArgs e)
         {
             RunOnUiThread(() =>
             {
@@ -184,7 +184,7 @@ namespace ElementPlayer.Android
             });
         }
 
-        private void Current_PlayingChanged(object sender, MediaManager.Abstractions.EventArguments.PlayingChangedEventArgs e)
+        private void Current_PlayingChanged(object sender, PlayingChangedEventArgs e)
         {
             RunOnUiThread(() =>
             {

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediaManager;
 using MediaManager.Media;
+using MediaManager.Queue;
 
 namespace ElementPlayer.Core
 {
