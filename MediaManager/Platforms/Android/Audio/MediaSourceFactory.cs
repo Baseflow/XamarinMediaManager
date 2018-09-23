@@ -23,10 +23,6 @@ namespace MediaManager.Platforms.Android.Audio
         {
         }
 
-        protected MediaSourceFactory()
-        {
-        }
-
         public IMediaSource CreateMediaSource(MediaDescriptionCompat description)
         {
             IMediaSource extractorMediaSource = null;

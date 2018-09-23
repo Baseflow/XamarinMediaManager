@@ -86,19 +86,19 @@ namespace ElementPlayer.Core
 
         private void Current_MediaItemFailed(object sender, MediaItemFailedEventArgs e)
         {
-            _log.Debug(string.Format("Media item failed: {0}, Message: {1}, Exception: {2};", e.Item.Title, e.Message, e.Exeption?.ToString()));
+            _log.Debug(string.Format("Media item failed: {0}, Message: {1}, Exception: {2};", e.MediaItem.Title, e.Message, e.Exeption?.ToString()));
 
         }
 
         private void Current_MediaItemFinished(object sender, MediaItemEventArgs e)
         {
-            _log.Debug(string.Format("Media item finished: {0};", e.Item.Title));
+            _log.Debug(string.Format("Media item finished: {0};", e.MediaItem.Title));
 
         }
 
         private void Current_MediaItemChanged(object sender, MediaItemEventArgs e)
         {
-            _log.Debug(string.Format("Media item changed, new item title: {0};", e.Item.Title));
+            _log.Debug(string.Format("Media item changed, new item title: {0};", e.MediaItem.Title));
 
         }
 

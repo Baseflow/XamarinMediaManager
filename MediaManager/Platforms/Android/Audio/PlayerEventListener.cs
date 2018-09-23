@@ -13,15 +13,25 @@ namespace MediaManager.Platforms.Android.Audio
 {
     public class PlayerEventListener : PlayerDefaultEventListener
     {
-        AudioPlayer player;
-        public PlayerEventListener(AudioPlayer player)
+        public PlayerEventListener()
         {
-            this.player = player;
         }
 
         public PlayerEventListener(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
+
         }
+
+        public Action<TrackGroupArray, TrackSelectionArray> OnTracksChangedImpl { get; set; }
+        public Action<int> OnPositionDiscontinuityImpl { get; set; }
+        public Action<bool, int> OnPlayerStateChangedImpl { get; set; }
+        public Action<ExoPlaybackException> OnPlayerErrorImpl { get; set; }
+        public Action<bool> OnLoadingChangedImpl { get; set; }
+        public Action<PlaybackParameters> OnPlaybackParametersChangedImpl { get; set; }
+        public Action<int> OnRepeatModeChangedImpl { get; set; }
+        public Action OnSeekProcessedImpl { get; set; }
+        public Action<bool> OnShuffleModeEnabledChangedImpl { get; set; }
+        public Action<Timeline, Java.Lang.Object, int> OnTimelineChangedImpl { get; set; }
 
         public override void OnTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections)
         {
@@ -37,6 +47,7 @@ namespace MediaManager.Platforms.Android.Audio
                     }
                 }
             }
+            OnTracksChangedImpl?.Invoke(trackGroups, trackSelections);
             base.OnTracksChanged(trackGroups, trackSelections);
         }
 
@@ -49,84 +60,61 @@ namespace MediaManager.Platforms.Android.Audio
                 case Player.DiscontinuityReasonSeekAdjustment:
                     break;
                 case Player.DiscontinuityReasonPeriodTransition:
-                    player.OnMediaItemFinished();
+                    //player.OnMediaItemFinished();
                     break;
                 case Player.DiscontinuityReasonInternal:
                     break;
             }
+            OnPositionDiscontinuityImpl?.Invoke(reason);
             base.OnPositionDiscontinuity(reason);
         }
 
         public override void OnPlayerStateChanged(bool playWhenReady, int playbackState)
         {
-            if (playWhenReady)
-            {
-                switch (playbackState)
-                {
-                    case Player.StateBuffering:
-                    case Player.StateReady:
-                        player.BufferedTimer.Start();
-                        player.StatusTimer.Start();
-                        player.OnMediaItemChanged();
-                        break;
-                    case Player.StateEnded:
-                        player.OnMediaItemFinished();
-                        player.BufferedTimer.Stop();
-                        player.StatusTimer.Stop();
-                        break;
-                    case Player.StateIdle:
-                        player.BufferedTimer.Stop();
-                        player.StatusTimer.Stop();
-                        break;
-                }
-            }
-            else
-            {
-                player.BufferedTimer.Stop();
-                player.StatusTimer.Stop();
-            }
-
+            OnPlayerStateChangedImpl?.Invoke(playWhenReady, playbackState);
             base.OnPlayerStateChanged(playWhenReady, playbackState);
         }
 
         public override void OnPlayerError(ExoPlaybackException error)
         {
             //CrossMediaManager.Current.OnMediaItemFailed(this, new MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[player.Player.CurrentWindowIndex], error.InnerException, error.Message));
+            OnPlayerErrorImpl?.Invoke(error);
             base.OnPlayerError(error);
         }
 
         public override void OnLoadingChanged(bool isLoading)
         {
+            OnLoadingChangedImpl?.Invoke(isLoading);
             base.OnLoadingChanged(isLoading);
         }
 
         public override void OnPlaybackParametersChanged(PlaybackParameters playbackParameters)
         {
+            OnPlaybackParametersChangedImpl?.Invoke(playbackParameters);
             base.OnPlaybackParametersChanged(playbackParameters);
         }
 
         public override void OnRepeatModeChanged(int repeatMode)
         {
+            OnRepeatModeChangedImpl?.Invoke(repeatMode);
             base.OnRepeatModeChanged(repeatMode);
         }
 
         public override void OnSeekProcessed()
         {
+            OnSeekProcessedImpl?.Invoke();
             base.OnSeekProcessed();
         }
 
         public override void OnShuffleModeEnabledChanged(bool shuffleModeEnabled)
         {
+            OnShuffleModeEnabledChangedImpl?.Invoke(shuffleModeEnabled);
             base.OnShuffleModeEnabledChanged(shuffleModeEnabled);
-        }
-
-        public override void OnTimelineChanged(Timeline timeline, Java.Lang.Object manifest)
-        {
-            base.OnTimelineChanged(timeline, manifest);
         }
 
         public override void OnTimelineChanged(Timeline timeline, Java.Lang.Object manifest, int reason)
         {
+            OnTimelineChangedImpl?.Invoke(timeline, manifest, reason);
             base.OnTimelineChanged(timeline, manifest, reason);
         }
     }

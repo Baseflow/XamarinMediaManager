@@ -56,13 +56,12 @@ namespace MediaManager.Platforms.Android.Audio
         protected TimelineQueueEditor TimelineQueueEditor { get; set; }
         protected PlaybackPreparer PlaybackPreparer { get; set; }
         protected PlayerEventListener PlayerEventListener { get; set; }
+        protected RatingCallback RatingCallback { get; set; }
 
         //TODO: Remove with Exoplayer 2.9.0
         internal AudioFocusManager AudioFocusManager { get; set; }
 
-        #region scheduled updates
         internal Timer StatusTimer = new Timer(1000), BufferedTimer = new Timer(1000);
-        #endregion
 
         public MediaSessionCompat MediaSession { get; set; }
 
@@ -82,6 +81,9 @@ namespace MediaManager.Platforms.Android.Audio
         public TimeSpan Duration => TimeSpan.FromTicks(Player.Duration);
 
         public TimeSpan Buffered => TimeSpan.FromTicks(Player.BufferedPosition);
+
+        public event BeforePlayingEventHandler BeforePlaying;
+        public event AfterPlayingEventHandler AfterPlaying;
 
         public Task Pause()
         {
@@ -122,7 +124,9 @@ namespace MediaManager.Platforms.Android.Audio
             Player.AudioAttributes.ContentType = (int)AudioContentType.Music;
             Player.AudioAttributes.Usage = (int)AudioUsageKind.Media;
 
-            PlayerEventListener = new PlayerEventListener(this);
+            PlayerEventListener = new PlayerEventListener();
+            //TODO: Hook up events
+
             Player.AddListener(PlayerEventListener);
 
             PlaybackController = new PlaybackController(AudioFocusManager);
@@ -135,6 +139,9 @@ namespace MediaManager.Platforms.Android.Audio
             MediaSourceFactory = new MediaSourceFactory(DataSourceFactory);
             TimelineQueueEditor = new TimelineQueueEditor(MediaSession.Controller, MediaSource, QueueDataAdapter, MediaSourceFactory);
             MediaSessionConnector.SetQueueEditor(TimelineQueueEditor);
+
+            RatingCallback = new RatingCallback();
+            MediaSessionConnector.SetRatingCallback(RatingCallback);
 
             PlaybackPreparer = new PlaybackPreparer(Player, DataSourceFactory, MediaSource);
             MediaSessionConnector.SetPlayer(Player, PlaybackPreparer, null);
@@ -199,7 +206,7 @@ namespace MediaManager.Platforms.Android.Audio
             }
         }
 
-        internal void Release()
+        protected override void Dispose(bool disposing)
         {
             try
             {
@@ -211,6 +218,8 @@ namespace MediaManager.Platforms.Android.Audio
             Player = null;
             BufferedTimer.Stop();
             StatusTimer.Stop();
+
+            base.Dispose(disposing);
         }
 
         public Task Play(string Url)
@@ -271,6 +280,7 @@ namespace MediaManager.Platforms.Android.Audio
         }
 
         string currentMediaId = null;
+
         internal void OnMediaItemChanged()
         {
             MediaDescriptionCompat desc = null;

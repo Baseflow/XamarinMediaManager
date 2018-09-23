@@ -19,6 +19,9 @@ namespace MediaManager.Platforms.Android.Video
 
         public TimeSpan Buffered => throw new NotImplementedException();
 
+        public event BeforePlayingEventHandler BeforePlaying;
+        public event AfterPlayingEventHandler AfterPlaying;
+
         public void Initialize()
         {
             throw new NotImplementedException();

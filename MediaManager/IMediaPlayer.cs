@@ -7,6 +7,10 @@ using MediaManager.Playback;
 
 namespace MediaManager
 {
+    public delegate void BeforePlayingEventHandler(object sender, MediaPlayerEventArgs e);
+
+    public delegate void AfterPlayingEventHandler(object sender, MediaPlayerEventArgs e);
+
     public interface IMediaPlayer : IDisposable
     {
         void Initialize();
@@ -40,5 +44,9 @@ namespace MediaManager
         /// Reading the current status of the player
         /// </summary>
         MediaPlayerState State { get; }
+
+        event BeforePlayingEventHandler BeforePlaying;
+
+        event AfterPlayingEventHandler AfterPlaying;
     }
 }

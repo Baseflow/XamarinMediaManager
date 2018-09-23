@@ -120,9 +120,8 @@ namespace MediaManager.Platforms.Android.MediaSession
         public override void OnDestroy()
         {
             // Service is being killed, so make sure we release our resources
-
             PlayerNotificationManager.SetPlayer(null);
-            NativePlayer.Release();
+            NativePlayer.Dispose();
             AudioPlayer = null;
             MediaSession.Release();
             StopForeground(true);

@@ -5,11 +5,11 @@ namespace MediaManager.Media
 {
     public class MediaItemEventArgs : EventArgs
     {
-        public MediaItemEventArgs(IMediaItem Item)
+        public MediaItemEventArgs(IMediaItem mediaItem)
         {
-            this.Item = Item;
+            MediaItem = mediaItem;
         }
 
-        public IMediaItem Item { get; private set; }
+        public IMediaItem MediaItem { get; private set; }
     }
 }

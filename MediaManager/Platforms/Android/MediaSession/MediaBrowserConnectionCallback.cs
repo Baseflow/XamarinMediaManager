@@ -12,7 +12,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
         }
 
-        protected MediaBrowserConnectionCallback(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        public MediaBrowserConnectionCallback(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
         }
 
