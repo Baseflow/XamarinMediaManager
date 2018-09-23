@@ -11,7 +11,7 @@ using Com.Google.Android.Exoplayer2.Upstream;
 using MediaManager.Media;
 using MediaManager.Platforms.Android.Media;
 
-namespace MediaManager.Platforms.Android.Audio
+namespace MediaManager.Platforms.Android.Media
 {
     public class QueueDataAdapter : Java.Lang.Object, TimelineQueueEditor.IQueueDataAdapter
     {

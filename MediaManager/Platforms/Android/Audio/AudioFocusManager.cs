@@ -6,6 +6,7 @@ using Android.Media;
 using Android.OS;
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
+using MediaManager.Platforms.Android.Media;
 using MediaManager.Playback;
 
 namespace MediaManager.Platforms.Android.Audio

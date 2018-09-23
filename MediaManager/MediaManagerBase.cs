@@ -72,13 +72,14 @@ namespace MediaManager
         public Timer Timer { get; } = new Timer(1000);
         public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
+        public event PropertyChangedEventHandler PropertyChanged;
         public event StateChangedEventHandler StateChanged;
         public event PlayingChangedEventHandler PlayingChanged;
         public event BufferingChangedEventHandler BufferingChanged;
+
         public event MediaItemFinishedEventHandler MediaItemFinished;
         public event MediaItemChangedEventHandler MediaItemChanged;
         public event MediaItemFailedEventHandler MediaItemFailed;
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnBufferingChanged(object sender, BufferingChangedEventArgs e) => BufferingChanged?.Invoke(sender, e);
         public void OnMediaItemChanged(object sender, MediaItemEventArgs e) => MediaItemChanged?.Invoke(sender, e);

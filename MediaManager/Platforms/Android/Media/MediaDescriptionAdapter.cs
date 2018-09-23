@@ -10,7 +10,7 @@ using Com.Google.Android.Exoplayer2.Trackselection;
 using Com.Google.Android.Exoplayer2.UI;
 using static Com.Google.Android.Exoplayer2.Trackselection.MappingTrackSelector;
 
-namespace MediaManager.Platforms.Android.Audio
+namespace MediaManager.Platforms.Android.Media
 {
     public class MediaDescriptionAdapter : Java.Lang.Object, PlayerNotificationManager.IMediaDescriptionAdapter
     {

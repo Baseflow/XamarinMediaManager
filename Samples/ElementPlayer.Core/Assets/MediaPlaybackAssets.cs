@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ElementPlayer.Core
+namespace ElementPlayer.Core.Assets
 {
     public static class MediaPlaybackAssets
     {

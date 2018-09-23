@@ -9,23 +9,23 @@ using Com.Google.Android.Exoplayer2.Upstream;
 using System.Linq;
 using MediaManager.Platforms.Android.Media;
 
-namespace MediaManager.Platforms.Android.Audio
+namespace MediaManager.Platforms.Android.Media
 {
-    public class PlaybackPreparer : Java.Lang.Object, MediaSessionConnector.IPlaybackPreparer
+    public class MediaSessionConnectorPlaybackPreparer : Java.Lang.Object, MediaSessionConnector.IPlaybackPreparer
     {
         private IExoPlayer _player;
         private DefaultDataSourceFactory _defaultDataSourceFactory;
         private ConcatenatingMediaSource _mediaSource;
         private IMediaManager mediaManager = CrossMediaManager.Current;
 
-        public PlaybackPreparer(IExoPlayer player, DefaultDataSourceFactory dataSourceFactory, ConcatenatingMediaSource mediaSource)
+        public MediaSessionConnectorPlaybackPreparer(IExoPlayer player, DefaultDataSourceFactory dataSourceFactory, ConcatenatingMediaSource mediaSource)
         {
             _player = player;
             _defaultDataSourceFactory = dataSourceFactory;
             _mediaSource = mediaSource;
         }
 
-        public PlaybackPreparer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+        public MediaSessionConnectorPlaybackPreparer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
         }
 

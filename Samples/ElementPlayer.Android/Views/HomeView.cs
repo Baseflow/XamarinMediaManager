@@ -1,15 +1,17 @@
-﻿
-using Android.App;
+﻿using Android.App;
 using Android.OS;
-
+using ElementPlayer.Core;
+using ElementPlayer.Core.ViewModels;
+using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
-using MvvmCross.Platforms.Android.Views;
 
 namespace ElementPlayer.Android.Views
 {
     [MvxActivityPresentation]
-    [Activity(Label = "@string/ApplicationName")]
-    public class HomeView : MvxActivity
+    [Activity(
+        Label = "@string/ApplicationName", 
+        Theme = "@style/AppTheme")]
+    public class HomeView : MvxAppCompatActivity<HomeViewModel>
     {
         protected override void OnCreate(Bundle bundle)
         {

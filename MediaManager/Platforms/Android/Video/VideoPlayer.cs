@@ -1,55 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Android.Media;
+using Android.Runtime;
+using Com.Google.Android.Exoplayer2;
+using Com.Google.Android.Exoplayer2.UI;
 using MediaManager.Media;
+using MediaManager.Platforms.Android.Media;
 using MediaManager.Playback;
 using MediaManager.Video;
 
 namespace MediaManager.Platforms.Android.Video
 {
-    public class VideoPlayer : Java.Lang.Object, IVideoPlayer
+    public class VideoPlayer : Media.MediaPlayer
     {
-        public Dictionary<string, string> RequestHeaders { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public MediaPlayerState State => throw new NotImplementedException();
-
-        public TimeSpan Position => throw new NotImplementedException();
-
-        public TimeSpan Duration => throw new NotImplementedException();
-
-        public TimeSpan Buffered => throw new NotImplementedException();
-
-        public event BeforePlayingEventHandler BeforePlaying;
-        public event AfterPlayingEventHandler AfterPlaying;
-
-        public void Initialize()
+        public VideoPlayer()
         {
-            throw new NotImplementedException();
         }
 
-        public Task Pause()
+        public VideoPlayer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
-            throw new NotImplementedException();
         }
 
-        public Task Play(string Url)
+        protected override int AudioAttributesContentType => (int)AudioContentType.Movie;
+
+        protected override int AudioAttributesUsage => (int)AudioUsageKind.Media;
+
+        //TODO: Set the playerview
+        public PlayerView playerView;
+
+        public override void Initialize()
         {
-            throw new NotImplementedException();
+            base.Initialize();
+            playerView.Player = Player;
+            //playerView.SetPlaybackPreparer();
         }
 
-        public Task Play()
+        protected override void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task Seek(TimeSpan position)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Stop()
-        {
-            throw new NotImplementedException();
+            playerView.OverlayFrameLayout.RemoveAllViews();
+            base.Dispose(disposing);
         }
     }
 }

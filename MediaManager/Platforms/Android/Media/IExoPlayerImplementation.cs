@@ -4,7 +4,7 @@ using System.Text;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 
-namespace MediaManager.Platforms.Android.Audio
+namespace MediaManager.Platforms.Android.Media
 {
     public interface IExoPlayerImplementation
     {

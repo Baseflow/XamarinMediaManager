@@ -2,7 +2,7 @@
 
 namespace MediaManager.Queue
 {
-    public class QueueMediaChangedEventArgs : EventArgs
+    public class QueueChangedEventArgs : EventArgs
     {
     }
 }

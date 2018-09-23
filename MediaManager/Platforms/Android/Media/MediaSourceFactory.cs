@@ -8,7 +8,7 @@ using Com.Google.Android.Exoplayer2.Extractor;
 using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Upstream;
 
-namespace MediaManager.Platforms.Android.Audio
+namespace MediaManager.Platforms.Android.Media
 {
     public class MediaSourceFactory : Java.Lang.Object, TimelineQueueEditor.IMediaSourceFactory
     {

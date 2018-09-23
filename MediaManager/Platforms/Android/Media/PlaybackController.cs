@@ -4,16 +4,13 @@ using System.Text;
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
+using MediaManager.Platforms.Android.Audio;
 
-namespace MediaManager.Platforms.Android.Audio
+namespace MediaManager.Platforms.Android.Media
 {
     public class PlaybackController : DefaultPlaybackController
     {
         private AudioFocusManager audioFocusManager;
-
-        public PlaybackController()
-        {
-        }
 
         //TODO: Remove in Exoplayer 2.9.0
         public PlaybackController(AudioFocusManager audioFocusManager)

@@ -7,28 +7,26 @@ using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using MvvmCross.Logging;
+using ElementPlayer.Core.Assets;
 
-namespace ElementPlayer.Core
+namespace ElementPlayer.Core.ViewModels
 {
-    public class HomeViewModel : MvxViewModel
+    public class HomeViewModel : MvxNavigationViewModel
     {
-        private IMvxNavigationService _navigationService;
-        private readonly IMvxLog _log;
-        public IMediaManager MediaManager;
-        public IMvxCommand PlayPauseCommand { get; set; }
-        public IMvxCommand StopCommand { get; set; }
-        public IMvxCommand PlayNextCommand { get; set; }
-        public IMvxCommand PlayPreviousCommand { get; set; }
-        public IMvxCommand AddRandomToQueueCommand { get; set; }
+        public readonly IMediaManager MediaManager;
+        public IMvxAsyncCommand PlayPauseCommand { get; set; }
+        public IMvxAsyncCommand StopCommand { get; set; }
+        public IMvxAsyncCommand PlayNextCommand { get; set; }
+        public IMvxAsyncCommand PlayPreviousCommand { get; set; }
+        public IMvxAsyncCommand AddRandomToQueueCommand { get; set; }
 
-        public HomeViewModel(IMvxLog log)
+        public HomeViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IMediaManager mediaManager) : base(logProvider, navigationService)
         {
-            _log = log;
-            MediaManager = CrossMediaManager.Current;
+            MediaManager = mediaManager;
             PlayPauseCommand = new MvxAsyncCommand(PlayPause);
-            StopCommand = new MvxAsyncCommand(Stop);
-            PlayNextCommand = new MvxAsyncCommand(PlayNext);
-            PlayPreviousCommand = new MvxAsyncCommand(PlayPrevious);
+            StopCommand = new MvxAsyncCommand(MediaManager.Stop);
+            PlayNextCommand = new MvxAsyncCommand(MediaManager.PlayNext);
+            PlayPreviousCommand = new MvxAsyncCommand(MediaManager.PlayPrevious);
             AddRandomToQueueCommand = new MvxAsyncCommand(AddRandomToQueue);
 
             MediaManager.PlayingChanged += Current_PlayingChanged;
@@ -46,21 +44,6 @@ namespace ElementPlayer.Core
         }
 
         public IMediaQueue MediaQueue => MediaManager.MediaQueue;
-
-        private async Task PlayPrevious()
-        {
-            await MediaManager.PlayPrevious();
-        }
-
-        private async Task PlayNext()
-        {
-            await MediaManager.PlayNext();
-        }
-
-        private async Task Stop()
-        {
-            await MediaManager.Stop();
-        }
 
         private async Task PlayPause()
         {
@@ -86,41 +69,38 @@ namespace ElementPlayer.Core
 
         private void Current_MediaItemFailed(object sender, MediaItemFailedEventArgs e)
         {
-            _log.Debug(string.Format("Media item failed: {0}, Message: {1}, Exception: {2};", e.MediaItem.Title, e.Message, e.Exeption?.ToString()));
+            Log.Debug(string.Format("Media item failed: {0}, Message: {1}, Exception: {2};", e.MediaItem.Title, e.Message, e.Exeption?.ToString()));
 
         }
 
         private void Current_MediaItemFinished(object sender, MediaItemEventArgs e)
         {
-            _log.Debug(string.Format("Media item finished: {0};", e.MediaItem.Title));
+            Log.Debug(string.Format("Media item finished: {0};", e.MediaItem.Title));
 
         }
 
         private void Current_MediaItemChanged(object sender, MediaItemEventArgs e)
         {
-            _log.Debug(string.Format("Media item changed, new item title: {0};", e.MediaItem.Title));
+            Log.Debug(string.Format("Media item changed, new item title: {0};", e.MediaItem.Title));
 
         }
 
         private void Current_StatusChanged(object sender, StateChangedEventArgs e)
         {
-            _log.Debug(string.Format("Status changed: {0};", System.Enum.GetName(typeof(MediaPlayerState), e.State)));
+            Log.Debug(string.Format("Status changed: {0};", System.Enum.GetName(typeof(MediaPlayerState), e.State)));
 
         }
 
         private void Current_BufferingChanged(object sender, BufferingChangedEventArgs e)
         {
 
-            //_log.Debug(string.Format("{0:0.##}% Total buffered time is {1:mm\\:ss};", e.BufferProgress, e.BufferedTime));
+            //Log.Debug(string.Format("{0:0.##}% Total buffered time is {1:mm\\:ss};", e.BufferProgress, e.BufferedTime));
 
         }
 
         private void Current_PlayingChanged(object sender, PlayingChangedEventArgs e)
         {
-            //_log.Debug(string.Format("{0:0.##}% Total played is {1:mm\\:ss} of {2:mm\\:ss};", e.Position, e.Duration));
+            //Log.Debug(string.Format("{0:0.##}% Total played is {1:mm\\:ss} of {2:mm\\:ss};", e.Position, e.Duration));
         }
-
     }
 }
-
-

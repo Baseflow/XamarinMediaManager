@@ -8,7 +8,7 @@ using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 using MediaManager.Platforms.Android.Media;
 
-namespace MediaManager.Platforms.Android.Audio
+namespace MediaManager.Platforms.Android.Media
 {
     public class QueueNavigator : TimelineQueueNavigator
     {

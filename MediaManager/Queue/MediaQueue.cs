@@ -8,24 +8,36 @@ namespace MediaManager.Queue
     {
         public event QueueEndedEventHandler QueueEnded;
 
+        public event QueueChangedEventHandler QueueChanged;
+
         public bool HasNext()
         {
-            return Count > Index - 1;
+            return Count > CurrentIndex - 1;
         }
 
         public bool HasPrevious()
         {
-            return Index > 0;
+            return CurrentIndex > 0;
         }
 
-        public IMediaItem Current => this[Index];
+        public IMediaItem Current => Count > 0 ? this[CurrentIndex] : null;
 
-        public int Index => currentIndex;
+        private int _currentIndex = 0;
+        public int CurrentIndex
+        {
+            get => _currentIndex;
+            set
+            {
+                if (_currentIndex != value)
+                    OnQueueChanged(this, new QueueChangedEventArgs());
+                _currentIndex = value;
+            }
+        }
 
-        public string Title { get ; set; }
+        public string Title { get; set; }
 
         internal void OnQueueEnded(object s, QueueEndedEventArgs e) => QueueEnded?.Invoke(s, e);
 
-        internal int currentIndex = -1;
+        internal void OnQueueChanged(object s, QueueChangedEventArgs e) => QueueChanged?.Invoke(s, e);
     }
 }
