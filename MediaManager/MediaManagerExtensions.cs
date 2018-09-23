@@ -19,6 +19,11 @@ namespace MediaManager
             return mediaManager.State == MediaPlayerState.Playing;
         }
 
+        public static bool IsBuffering(this IMediaManager mediaManager)
+        {
+            return mediaManager.State == MediaPlayerState.Buffering;
+        }
+
         public static Task PlayPause(this IMediaManager mediaManager)
         {
             var status = mediaManager.State;

@@ -37,6 +37,8 @@ namespace MediaManager.Playback
         /// </summary>
         TimeSpan Buffered { get; }
 
+        float Speed { get; set; }
+
         /// <summary>
         /// Plays the current MediaFile
         /// </summary>

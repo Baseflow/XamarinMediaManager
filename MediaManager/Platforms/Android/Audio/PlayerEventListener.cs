@@ -4,6 +4,7 @@ using System.Text;
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Metadata;
+using Com.Google.Android.Exoplayer2.Metadata.Id3;
 using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
 using Java.Lang;
@@ -43,10 +44,17 @@ namespace MediaManager.Platforms.Android.Audio
                     Metadata trackMetadata = trackGroup.GetFormat(j).Metadata;
                     if (trackMetadata != null)
                     {
-                        // We found metadata. Do something with it here!
+                        for (int v = 0; v < trackMetadata.Length(); v++)
+                        {
+                            Metadata.IEntry entry = trackMetadata.Get(v);
+                            if (entry is Id3Frame id3Frame)
+                            {
+                            }
+                        }
                     }
                 }
             }
+
             OnTracksChangedImpl?.Invoke(trackGroups, trackSelections);
             base.OnTracksChanged(trackGroups, trackSelections);
         }
@@ -77,7 +85,6 @@ namespace MediaManager.Platforms.Android.Audio
 
         public override void OnPlayerError(ExoPlaybackException error)
         {
-            //CrossMediaManager.Current.OnMediaItemFailed(this, new MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[player.Player.CurrentWindowIndex], error.InnerException, error.Message));
             OnPlayerErrorImpl?.Invoke(error);
             base.OnPlayerError(error);
         }

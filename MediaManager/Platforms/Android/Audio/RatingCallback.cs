@@ -21,17 +21,17 @@ namespace MediaManager.Platforms.Android.Audio
 
         public string[] GetCommands()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public void OnCommand(IPlayer p0, string p1, Bundle p2, ResultReceiver p3)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void OnSetRating(IPlayer p0, RatingCompat p1)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Timers;
 using Android.Content;
 using Android.Media;
 using Android.Runtime;
-using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
@@ -13,10 +10,8 @@ using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
-using Java.IO;
 using MediaManager.Audio;
 using MediaManager.Media;
-using MediaManager.Platforms.Android.Media;
 using MediaManager.Platforms.Android.Playback;
 using MediaManager.Playback;
 
@@ -26,18 +21,13 @@ namespace MediaManager.Platforms.Android.Audio
     {
         public AudioPlayer()
         {
-            StatusTimer.Elapsed += (object sender, ElapsedEventArgs e) => { OnPlaying(); };
-            BufferedTimer.Elapsed += (object sender, ElapsedEventArgs e) => { OnBuffering(); };
-
-            StatusTimer.AutoReset = BufferedTimer.AutoReset = true;
         }
 
         public AudioPlayer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
         }
 
-        public virtual SimpleExoPlayer Player { get; set; }
-
+        protected INotifyMediaManager MediaManager = CrossMediaManager.Current as INotifyMediaManager;
         protected Context Context { get; set; } = CrossMediaManager.Current.GetContext();
 
         protected string UserAgent { get; set; }
@@ -61,8 +51,7 @@ namespace MediaManager.Platforms.Android.Audio
         //TODO: Remove with Exoplayer 2.9.0
         internal AudioFocusManager AudioFocusManager { get; set; }
 
-        internal Timer StatusTimer = new Timer(1000), BufferedTimer = new Timer(1000);
-
+        public SimpleExoPlayer Player { get; set; }
         public MediaSessionCompat MediaSession { get; set; }
 
         public MediaPlayerState State
@@ -84,12 +73,6 @@ namespace MediaManager.Platforms.Android.Audio
 
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;
-
-        public Task Pause()
-        {
-            Player.Stop();
-            return Task.CompletedTask;
-        }
 
         public virtual void Initialize()
         {
@@ -124,9 +107,13 @@ namespace MediaManager.Platforms.Android.Audio
             Player.AudioAttributes.ContentType = (int)AudioContentType.Music;
             Player.AudioAttributes.Usage = (int)AudioUsageKind.Media;
 
-            PlayerEventListener = new PlayerEventListener();
-            //TODO: Hook up events
-
+            PlayerEventListener = new PlayerEventListener()
+            {
+                OnPlayerErrorImpl = (exception) =>
+                {
+                    MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, exception, exception.Message));
+                }
+            };
             Player.AddListener(PlayerEventListener);
 
             PlaybackController = new PlaybackController(AudioFocusManager);
@@ -135,7 +122,7 @@ namespace MediaManager.Platforms.Android.Audio
             QueueNavigator = new QueueNavigator(MediaSession);
             MediaSessionConnector.SetQueueNavigator(QueueNavigator);
 
-            QueueDataAdapter = new QueueDataAdapter();
+            QueueDataAdapter = new QueueDataAdapter(MediaSource, DataSourceFactory);
             MediaSourceFactory = new MediaSourceFactory(DataSourceFactory);
             TimelineQueueEditor = new TimelineQueueEditor(MediaSession.Controller, MediaSource, QueueDataAdapter, MediaSourceFactory);
             MediaSessionConnector.SetQueueEditor(TimelineQueueEditor);
@@ -146,90 +133,29 @@ namespace MediaManager.Platforms.Android.Audio
             PlaybackPreparer = new PlaybackPreparer(Player, DataSourceFactory, MediaSource);
             MediaSessionConnector.SetPlayer(Player, PlaybackPreparer, null);
             Player.Prepare(MediaSource);
-
-            CrossMediaManager.Current.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
         }
 
-        private void MediaQueue_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        public Task Play(string url)
         {
-            switch (e.Action)
-            {
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
-                    if (MediaSource.Size != CrossMediaManager.Current.MediaQueue.Count)
-                    {
-                        for (int i = e.NewItems.Count - 1; i >= 0; i--)
-                        {
-                            var uri = global::Android.Net.Uri.Parse(((IMediaItem)e.NewItems[i]).MediaUri);
-                            var extractorMediaSource = new ExtractorMediaSource.Factory(DataSourceFactory)
-                                .SetTag(((IMediaItem)e.NewItems[i]).ToMediaDescription())
-                                .CreateMediaSource(uri);
-                            MediaSource.AddMediaSource(e.NewStartingIndex, extractorMediaSource);
-                        }
-                    }
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Move:
-                    if (e.NewItems.Count > 1)
-                    {
-                        int oldBeginIndex = e.OldStartingIndex;
-                        int oldEndIndex = e.OldStartingIndex + e.NewItems.Count - 1;
-
-                        int newBeginIndex = e.NewStartingIndex;
-                        int newEndIndex = e.NewStartingIndex + e.NewItems.Count - 1;
-
-                        //move when new is before old
-                        if (newBeginIndex < oldBeginIndex)
-                            for (int i = 0; i > e.NewItems.Count; i++)
-                                MediaSource.MoveMediaSource(oldEndIndex, newBeginIndex);
-
-                        //move when new is after old
-                        else if (newBeginIndex > oldBeginIndex)
-                            for (int i = 0; i > e.NewItems.Count; i++)
-                                MediaSource.MoveMediaSource(oldBeginIndex, newEndIndex);
-                    }
-                    else
-                        MediaSource.MoveMediaSource(e.OldStartingIndex, e.NewStartingIndex);
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
-                    if (e.NewItems.Count > 1)
-                    {
-                        for (int i = 0; i > e.NewItems.Count; i++)
-                            MediaSource.RemoveMediaSource(e.OldStartingIndex);
-                    }
-                    else
-                        MediaSource.RemoveMediaSource(e.OldStartingIndex);
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
-                    throw new ArgumentException("Replacing in MediaQueue not supported.");
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
-                    MediaSource.Clear();
-                    break;
-            }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            try
-            {
-                CrossMediaManager.Current.MediaQueue.CollectionChanged -= MediaQueue_CollectionChanged;
-            }
-            catch { }
-
-            Player.Release();
-            Player = null;
-            BufferedTimer.Stop();
-            StatusTimer.Stop();
-
-            base.Dispose(disposing);
-        }
-
-        public Task Play(string Url)
-        {
-            return Task.CompletedTask;
+            MediaSource.Clear();
+            var uri = global::Android.Net.Uri.Parse(url);
+            var extractorMediaSource = new ExtractorMediaSource.Factory(DataSourceFactory)
+                    //.SetTag(mediaItem.ToMediaDescription())
+                    .CreateMediaSource(uri);
+            MediaSource.AddMediaSource(extractorMediaSource);
+            Player.Prepare(MediaSource);
+            return Play();
         }
 
         public Task Play()
         {
             Player.PlayWhenReady = true;
+            return Task.CompletedTask;
+        }
+
+        public Task Pause()
+        {
+            Player.Stop();
             return Task.CompletedTask;
         }
 
@@ -245,58 +171,12 @@ namespace MediaManager.Platforms.Android.Audio
             return Task.CompletedTask;
         }
 
-        private void OnPlaying()
+        protected override void Dispose(bool disposing)
         {
-            SimpleExoPlayer simpleExoPlayer = Player as SimpleExoPlayer;
+            Player.Release();
+            Player = null;
 
-            double progress = Math.Ceiling((double)(simpleExoPlayer.CurrentPosition / simpleExoPlayer.Duration) * 100);
-            TimeSpan duration = TimeSpan.FromMilliseconds(simpleExoPlayer.Duration);
-            TimeSpan position = TimeSpan.FromMilliseconds(simpleExoPlayer.CurrentPosition);
-
-            //CrossMediaManager.Current.OnPlayingChanged(this, new PlayingChangedEventArgs(progress, position, duration));
-        }
-
-        private void OnBuffering()
-        {
-            SimpleExoPlayer simpleExoPlayer = Player as SimpleExoPlayer;
-
-            double progress = simpleExoPlayer.BufferedPercentage;
-            TimeSpan bufferedTime = TimeSpan.FromMilliseconds(simpleExoPlayer.BufferedPosition);
-
-            //CrossMediaManager.Current.OnBufferingChanged(this, new BufferingChangedEventArgs(progress, bufferedTime));
-
-            if (progress == 100)
-                BufferedTimer.Stop();
-        }
-
-        int windowIndex = C.IndexUnset;
-        internal void OnMediaItemFinished()
-        {
-            if (windowIndex != Player.CurrentWindowIndex)
-            {
-                //CrossMediaManager.Current.OnMediaItemFinished(this, new MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.PreviousWindowIndex]));
-                windowIndex = Player.CurrentWindowIndex;
-            }
-        }
-
-        string currentMediaId = null;
-
-        internal void OnMediaItemChanged()
-        {
-            MediaDescriptionCompat desc = null;
-            if (!Player.CurrentTimeline.IsEmpty)
-                desc = Player.CurrentTag as MediaDescriptionCompat;
-
-            if (desc != null && currentMediaId != desc.MediaId)
-            {
-                //CrossMediaManager.Current.OnMediaItemChanged(this, new MediaItemEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex]));
-                currentMediaId = desc.MediaId;
-            }
-        }
-
-        internal void OnMediaItemFailed()
-        {
-            //CrossMediaManager.Current.OnMediaItemFailed(this, new MediaItemFailedEventArgs(CrossMediaManager.Current.MediaQueue[Player.CurrentWindowIndex], null, null));
+            base.Dispose(disposing);
         }
     }
 }

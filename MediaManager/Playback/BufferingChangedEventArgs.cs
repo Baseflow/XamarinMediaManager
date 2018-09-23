@@ -4,13 +4,11 @@ namespace MediaManager.Playback
 {
     public class BufferingChangedEventArgs : EventArgs
     {
-        public BufferingChangedEventArgs(double bufferProgress, TimeSpan bufferedTime)
+        public BufferingChangedEventArgs(TimeSpan buffered)
         {
-            BufferProgress = bufferProgress;
-            BufferedTime = bufferedTime;
+            Buffered = buffered;
         }
 
-        public double BufferProgress { get; }
-        public TimeSpan BufferedTime { get; }
+        public TimeSpan Buffered { get; }
     }
 }

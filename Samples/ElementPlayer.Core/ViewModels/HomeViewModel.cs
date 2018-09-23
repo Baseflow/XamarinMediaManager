@@ -111,13 +111,13 @@ namespace ElementPlayer.Core
         private void Current_BufferingChanged(object sender, BufferingChangedEventArgs e)
         {
 
-            _log.Debug(string.Format("{0:0.##}% Total buffered time is {1:mm\\:ss};", e.BufferProgress, e.BufferedTime));
+            //_log.Debug(string.Format("{0:0.##}% Total buffered time is {1:mm\\:ss};", e.BufferProgress, e.BufferedTime));
 
         }
 
         private void Current_PlayingChanged(object sender, PlayingChangedEventArgs e)
         {
-            _log.Debug(string.Format("{0:0.##}% Total played is {1:mm\\:ss} of {2:mm\\:ss};", e.Progress, e.Position, e.Duration));
+            //_log.Debug(string.Format("{0:0.##}% Total played is {1:mm\\:ss} of {2:mm\\:ss};", e.Position, e.Duration));
         }
 
     }

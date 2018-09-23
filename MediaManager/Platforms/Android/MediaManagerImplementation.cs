@@ -1,38 +1,34 @@
-﻿using Android.App;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Android.App;
 using Android.Content;
+using Android.Content.Res;
+using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Platforms.Android;
+using MediaManager.Platforms.Android.Audio;
+using MediaManager.Platforms.Android.Media;
+using MediaManager.Platforms.Android.MediaSession;
+using MediaManager.Platforms.Android.Playback;
+using MediaManager.Platforms.Android.Video;
 using MediaManager.Playback;
 using MediaManager.Video;
 using MediaManager.Volume;
-using MediaManager.Platforms.Android.Audio;
-using System.Threading.Tasks;
-using MediaManager.Audio;
-using Android.Content.Res;
-using System.Collections.Generic;
-using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using MediaManager.Platforms.Android.Media;
-using MediaManager.Queue;
 using NotificationManager = MediaManager.Platforms.Android.NotificationManager;
-using MediaManager.Platforms.Android.MediaSession;
-using MediaManager.Platforms.Android.Video;
-using MediaManager.Platforms.Android.Playback;
-using System.IO;
 
 namespace MediaManager
 {
     [global::Android.Runtime.Preserve(AllMembers = true)]
-    public class MediaManagerImplementation : IMediaManager
+    public class MediaManagerImplementation : MediaManagerBase
     {
         public MediaManagerImplementation()
         {
         }
 
         public Context Context { get; set; } = Application.Context;
-        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
         private MediaBrowserManager _mediaBrowserManager;
         public virtual MediaBrowserManager MediaBrowserManager
@@ -46,7 +42,7 @@ namespace MediaManager
         }
 
         private IAudioPlayer _audioPlayer;
-        public virtual IAudioPlayer AudioPlayer
+        public override IAudioPlayer AudioPlayer
         {
             get
             {
@@ -61,7 +57,7 @@ namespace MediaManager
         }
 
         private IVideoPlayer _videoPlayer;
-        public virtual IVideoPlayer VideoPlayer
+        public override IVideoPlayer VideoPlayer
         {
             get
             {
@@ -91,7 +87,7 @@ namespace MediaManager
         }
 
         private IVolumeManager _volumeManager;
-        public virtual IVolumeManager VolumeManager
+        public override IVolumeManager VolumeManager
         {
             get
             {
@@ -105,24 +101,8 @@ namespace MediaManager
             }
         }
 
-        private IMediaQueue _mediaQueue;
-        public virtual IMediaQueue MediaQueue
-        {
-            get
-            {
-                if (_mediaQueue == null)
-                    _mediaQueue = new MediaQueue();
-
-                return _mediaQueue;
-            }
-            set
-            {
-                _mediaQueue = value;
-            }
-        }
-
         private IMediaExtractor _mediaExtractor;
-        public virtual IMediaExtractor MediaExtractor
+        public override IMediaExtractor MediaExtractor
         {
             get
             {
@@ -136,40 +116,29 @@ namespace MediaManager
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public event PlayingChangedEventHandler PlayingChanged;
-        public event BufferingChangedEventHandler BufferingChanged;
-        public event MediaItemFinishedEventHandler MediaItemFinished;
-        public event MediaItemChangedEventHandler MediaItemChanged;
-        public event MediaItemFailedEventHandler MediaItemFailed;
-        public event StateChangedEventHandler StateChanged;
+        public override TimeSpan Position => TimeSpan.FromMilliseconds(MediaBrowserManager?.MediaController.PlaybackState?.Position ?? 0);
 
-        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public override TimeSpan Duration => MediaBrowserManager?.MediaController.Metadata?.ToMediaItem().Duration ?? TimeSpan.Zero;
 
-        public TimeSpan Position => TimeSpan.FromMilliseconds(MediaBrowserManager?.MediaController.PlaybackState?.Position ?? 0);
+        public override TimeSpan Buffered => TimeSpan.FromMilliseconds(MediaBrowserManager?.MediaController?.PlaybackState?.BufferedPosition ?? 0);
 
-        public TimeSpan Duration => MediaBrowserManager?.MediaController.Metadata?.ToMediaItem().Duration ?? TimeSpan.Zero;
+        public override MediaPlayerState State => MediaBrowserManager?.MediaController?.PlaybackState?.ToMediaPlayerState() ?? MediaPlayerState.Stopped;
 
-        public TimeSpan Buffered => TimeSpan.FromMilliseconds(MediaBrowserManager?.MediaController?.PlaybackState?.BufferedPosition ?? 0);
+        public override float Speed { get => MediaBrowserManager?.MediaController.PlaybackState?.PlaybackSpeed ?? 0; set => throw new NotImplementedException(); }
 
-        public MediaPlayerState State => MediaBrowserManager?.MediaController?.PlaybackState?.ToMediaPlayerState() ?? MediaPlayerState.Stopped;
-
-        public async Task Pause()
+        public override async Task Pause()
         {
             await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().Pause();
         }
 
-        public async Task Play()
+        public override async Task Play()
         {
             await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().Play();
         }
 
-        public async Task<IMediaItem> Play(string uri)
+        public override async Task<IMediaItem> Play(string uri)
         {
             await MediaBrowserManager.EnsureInitialized();
 
@@ -182,7 +151,7 @@ namespace MediaManager
             return mediaItem;
         }
 
-        public async Task Play(IMediaItem mediaItem)
+        public override async Task Play(IMediaItem mediaItem)
         {
             await MediaBrowserManager.EnsureInitialized();
 
@@ -193,7 +162,7 @@ namespace MediaManager
             MediaBrowserManager.MediaController.GetTransportControls().PlayFromUri(mediaUri, null);
         }
 
-        public async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
+        public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
         {
             await MediaBrowserManager.EnsureInitialized();
 
@@ -211,7 +180,7 @@ namespace MediaManager
             return await MediaQueue.FetchMediaQueueMetaData();
         }
 
-        public async Task Play(IEnumerable<IMediaItem> items)
+        public override async Task Play(IEnumerable<IMediaItem> items)
         {
             await MediaBrowserManager.EnsureInitialized();
 
@@ -224,73 +193,66 @@ namespace MediaManager
             MediaBrowserManager.MediaController.GetTransportControls().Prepare();
         }
 
-        public Task<IMediaItem> Play(FileInfo file)
+        public override Task<IMediaItem> Play(FileInfo file)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
+        public override Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
         {
             throw new NotImplementedException();
         }
 
-        public async Task PlayNext()
+        public override async Task PlayNext()
         {
             await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().SkipToNext();
         }
 
-        public async Task PlayPrevious()
+        public override async Task PlayPrevious()
         {
             await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().SkipToPrevious();
         }
 
-        public async Task SeekTo(TimeSpan position)
+        public override async Task SeekTo(TimeSpan position)
         {
             await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().SeekTo((long)position.TotalMilliseconds);
         }
 
-        public async Task SeekToStart()
+        public override async Task SeekToStart()
         {
             await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().SeekTo(0);
         }
 
-        public async Task StepBackward()
+        public override async Task StepBackward()
         {
             await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().Rewind();
         }
 
-        public async Task StepForward()
+        public override async Task StepForward()
         {
             await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().FastForward();
         }
 
-        public async Task Stop()
+        public override async Task Stop()
         {
             await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().Stop();
         }
 
-        public void ToggleRepeat()
+        public override void ToggleRepeat()
         {
             MediaBrowserManager.MediaController.GetTransportControls().SetRepeatMode(0);
         }
 
-        public void ToggleShuffle()
+        public override void ToggleShuffle()
         {
             MediaBrowserManager.MediaController.GetTransportControls().SetShuffleMode(0);
         }
-
-        public void OnStateChanged(object sender, StateChangedEventArgs e) => StateChanged?.Invoke(sender, e);
-        public void OnPlayingChanged(object sender, PlayingChangedEventArgs e) => PlayingChanged?.Invoke(sender, e);
-        public void OnBufferingChanged(object sender, BufferingChangedEventArgs e) => BufferingChanged?.Invoke(sender, e);
-        public void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
-        public void OnMediaItemChanged(object sender, MediaItemEventArgs e) => MediaItemChanged?.Invoke(sender, e);
-        public void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
     }
 }

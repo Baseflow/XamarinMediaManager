@@ -14,6 +14,7 @@ namespace MediaManager.Platforms.Android.MediaSession
     {
         public MediaControllerCompat MediaController { get; set; }
 
+        protected INotifyMediaManager MediaManager = CrossMediaManager.Current as INotifyMediaManager;
         protected MediaBrowserCompat MediaBrowser { get; set; }
         protected MediaBrowserConnectionCallback MediaBrowserConnectionCallback { get; set; }
         protected MediaControllerCallback MediaControllerCallback { get; set; }
@@ -44,11 +45,12 @@ namespace MediaManager.Platforms.Android.MediaSession
                 {
                     MediaControllerCallback.OnMetadataChangedImpl = metadata =>
                     {
+                        var test = metadata;
                     };
 
                     MediaControllerCallback.OnPlaybackStateChangedImpl = state =>
                     {
-                        //CrossMediaManager.Current.OnStatusChanged(this, new StateChangedEventArgs(state.ToMediaPlayerState()));
+                        MediaManager.OnStateChanged(this, new StateChangedEventArgs(state.ToMediaPlayerState()));
                     };
 
                     MediaControllerCallback.OnSessionEventChangedImpl = (string @event, Bundle extras) =>

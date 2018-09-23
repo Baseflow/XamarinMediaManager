@@ -7,7 +7,12 @@ namespace MediaManager.Platforms.Android.Playback
     {
         public static MediaPlayerState ToMediaPlayerState(this PlaybackStateCompat playbackState)
         {
-            switch (playbackState.State)
+            return ToMediaPlayerState(playbackState.State);
+        }
+
+        public static MediaPlayerState ToMediaPlayerState(this int playbackState)
+        {
+            switch (playbackState)
             {
                 case PlaybackStateCompat.StateFastForwarding:
                 case PlaybackStateCompat.StateRewinding:

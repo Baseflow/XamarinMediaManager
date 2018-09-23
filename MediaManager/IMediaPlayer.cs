@@ -18,7 +18,7 @@ namespace MediaManager
         // <summary>
         /// Adds MediaFile to the Queue and starts playing
         /// </summary>
-        Task Play(string Url);
+        Task Play(string url);
 
         // <summary>
         /// Starts playing
