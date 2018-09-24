@@ -30,8 +30,8 @@ namespace MediaManager.Platforms.Android.Media
         {
         }
 
-        protected abstract int AudioAttributesContentType { get; }
-        protected abstract int AudioAttributesUsage { get; }
+        protected virtual int AudioAttributesContentType => (int)AudioContentType.Music;
+        protected virtual int AudioAttributesUsage => (int)AudioUsageKind.Media;
 
         protected INotifyMediaManager MediaManager = CrossMediaManager.Current as INotifyMediaManager;
 

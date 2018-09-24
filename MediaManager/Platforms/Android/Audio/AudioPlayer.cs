@@ -14,9 +14,5 @@ namespace MediaManager.Platforms.Android.Audio
         public AudioPlayer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
         }
-
-        protected override int AudioAttributesContentType => (int)AudioContentType.Music;
-
-        protected override int AudioAttributesUsage => (int)AudioUsageKind.Media;
     }
 }

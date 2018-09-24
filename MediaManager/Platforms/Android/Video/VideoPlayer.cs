@@ -24,8 +24,6 @@ namespace MediaManager.Platforms.Android.Video
 
         protected override int AudioAttributesContentType => (int)AudioContentType.Movie;
 
-        protected override int AudioAttributesUsage => (int)AudioUsageKind.Media;
-
         //TODO: Set the playerview
         public PlayerView playerView;
 

@@ -11,7 +11,7 @@ using ElementPlayer.Core.Assets;
 
 namespace ElementPlayer.Core.ViewModels
 {
-    public class HomeViewModel : MvxNavigationViewModel
+    public class HomeViewModel : BaseViewModel
     {
         public readonly IMediaManager MediaManager;
         public IMvxAsyncCommand PlayPauseCommand { get; set; }
@@ -19,6 +19,8 @@ namespace ElementPlayer.Core.ViewModels
         public IMvxAsyncCommand PlayNextCommand { get; set; }
         public IMvxAsyncCommand PlayPreviousCommand { get; set; }
         public IMvxAsyncCommand AddRandomToQueueCommand { get; set; }
+
+        public override string Title => "Home";
 
         public HomeViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IMediaManager mediaManager) : base(logProvider, navigationService)
         {

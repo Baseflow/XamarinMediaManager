@@ -28,6 +28,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             Context = context;
         }
 
+        //TODO: Maybe let the user call this
         public async Task<bool> EnsureInitialized()
         {
             if (IsInitialized)

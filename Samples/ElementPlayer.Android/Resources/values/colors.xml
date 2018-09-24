@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
   <!-- General colors -->
-  <color name="colorPrimary">#85E76E</color>
-  <color name="colorPrimaryDark">#6CBD5C</color>
-  <color name="colorAccent">#C2EF66</color>
-
-  <color name="player_statusbar">#222930</color>
+  <color name="colorPrimary">#00695f</color>
+  <color name="colorPrimaryDark">#009688</color>
+  <color name="colorAccent">#d81b60</color>
 
   <color name="white">#FFFFFF</color>
   <color name="light_gray">#EFF2F5</color>

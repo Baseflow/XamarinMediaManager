@@ -8,15 +8,16 @@ namespace ElementPlayer.Android
 {
     [Activity(Label = "@string/ApplicationName",
         MainLauncher = true,
-        Icon = "@drawable/btn_play_active",
-        RoundIcon = "@drawable/btn_play_active",
+        NoHistory = true,
+        Icon = "@drawable/baseline_play_circle_filled_24",
+        RoundIcon = "@drawable/baseline_play_circle_filled_24",
         Theme = "@style/AppTheme.Splash",
         LaunchMode = LaunchMode.SingleTop,
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class SplashScreen : MvxSplashScreenAppCompatActivity<MvxAppCompatSetup<Core.App>, Core.App>
     {
         public SplashScreen()
-             : base(Resource.Layout.SplashScreen)
+             : base(Resource.Layout.splash_screen)
         {
         }
     }
