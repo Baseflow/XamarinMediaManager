@@ -23,6 +23,8 @@ namespace ElementPlayer.Android.Fragments
         private Toolbar _toolbar;
         protected virtual string Title => (ViewModel as BaseViewModel)?.Title ?? "";
 
+        protected abstract int FragmentId { get; }
+
         public MvxAppCompatActivity ParentActivity
         {
             get
@@ -53,8 +55,6 @@ namespace ElementPlayer.Android.Fragments
 
             return view;
         }
-
-        protected abstract int FragmentId { get; }
     }
 
     public abstract class BaseFragment<TViewModel> : BaseFragment where TViewModel : class, IMvxViewModel

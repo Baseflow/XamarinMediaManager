@@ -14,10 +14,6 @@ namespace ElementPlayer.Core.ViewModels
     public class HomeViewModel : BaseViewModel
     {
         public readonly IMediaManager MediaManager;
-        public IMvxAsyncCommand PlayPauseCommand { get; set; }
-        public IMvxAsyncCommand StopCommand { get; set; }
-        public IMvxAsyncCommand PlayNextCommand { get; set; }
-        public IMvxAsyncCommand PlayPreviousCommand { get; set; }
         public IMvxAsyncCommand AddRandomToQueueCommand { get; set; }
 
         public override string Title => "Home";
@@ -25,10 +21,6 @@ namespace ElementPlayer.Core.ViewModels
         public HomeViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IMediaManager mediaManager) : base(logProvider, navigationService)
         {
             MediaManager = mediaManager;
-            PlayPauseCommand = new MvxAsyncCommand(PlayPause);
-            StopCommand = new MvxAsyncCommand(MediaManager.Stop);
-            PlayNextCommand = new MvxAsyncCommand(MediaManager.PlayNext);
-            PlayPreviousCommand = new MvxAsyncCommand(MediaManager.PlayPrevious);
             AddRandomToQueueCommand = new MvxAsyncCommand(AddRandomToQueue);
 
             MediaManager.PlayingChanged += Current_PlayingChanged;
@@ -71,38 +63,33 @@ namespace ElementPlayer.Core.ViewModels
 
         private void Current_MediaItemFailed(object sender, MediaItemFailedEventArgs e)
         {
-            Log.Debug(string.Format("Media item failed: {0}, Message: {1}, Exception: {2};", e.MediaItem.Title, e.Message, e.Exeption?.ToString()));
-
+            Log.Debug($"Media item failed: {e.MediaItem.Title}, Message: {e.Message}, Exception: {e.Exeption?.ToString()};");
         }
 
         private void Current_MediaItemFinished(object sender, MediaItemEventArgs e)
         {
-            Log.Debug(string.Format("Media item finished: {0};", e.MediaItem.Title));
-
+            Log.Debug($"Media item finished: {e.MediaItem.Title};");
         }
 
         private void Current_MediaItemChanged(object sender, MediaItemEventArgs e)
         {
-            Log.Debug(string.Format("Media item changed, new item title: {0};", e.MediaItem.Title));
-
+            Log.Debug($"Media item changed, new item title: {e.MediaItem.Title};");
         }
 
         private void Current_StatusChanged(object sender, StateChangedEventArgs e)
         {
-            Log.Debug(string.Format("Status changed: {0};", System.Enum.GetName(typeof(MediaPlayerState), e.State)));
+            Log.Debug($"Status changed: {System.Enum.GetName(typeof(MediaPlayerState), e.State)};");
 
         }
 
         private void Current_BufferingChanged(object sender, BufferingChangedEventArgs e)
         {
-
-            //Log.Debug(string.Format("{0:0.##}% Total buffered time is {1:mm\\:ss};", e.BufferProgress, e.BufferedTime));
-
+            Log.Debug($"Total buffered time is {e.Buffered};");
         }
 
         private void Current_PlayingChanged(object sender, PlayingChangedEventArgs e)
         {
-            //Log.Debug(string.Format("{0:0.##}% Total played is {1:mm\\:ss} of {2:mm\\:ss};", e.Position, e.Duration));
+            Log.Debug($"Total played is {e.Position} of {e.Duration};");
         }
     }
 }
