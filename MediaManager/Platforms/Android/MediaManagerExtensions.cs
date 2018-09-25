@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using Android.Content;
 
-namespace MediaManager.Platforms.Android
+namespace MediaManager
 {
-    public static class MediaManagerExtensions
+    public static partial class MediaManagerExtensions
     {
+        public static void Init(this IMediaManager mediaManager, Context context)
+        {
+            mediaManager.SetContext(context);
+            mediaManager.Init();
+        }
+
         public static void SetContext(this IMediaManager mediaManager, Context context)
         {
             (mediaManager as MediaManagerImplementation).Context = context;

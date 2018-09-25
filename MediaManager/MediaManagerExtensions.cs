@@ -4,7 +4,7 @@ using MediaManager.Playback;
 
 namespace MediaManager
 {
-    public static class MediaManagerExtensions
+    public static partial class MediaManagerExtensions
     {
         public static Task PlayPreviousOrSeekToStart(this IMediaManager mediaManager)
         {

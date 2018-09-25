@@ -143,7 +143,6 @@ namespace MediaManager.Platforms.Android.Media
 
             PlaybackPreparer = new MediaSessionConnectorPlaybackPreparer(Player, DataSourceFactory, MediaSource);
             MediaSessionConnector.SetPlayer(Player, PlaybackPreparer, null);
-            Player.Prepare(MediaSource);
         }
 
         public async Task Play(string url)

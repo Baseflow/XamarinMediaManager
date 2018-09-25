@@ -24,7 +24,7 @@ namespace ElementPlayer.Android.Activities
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.main_activity);
 
-            CrossMediaManager.Current.Init();
+            CrossMediaManager.Current.Init(this);
 
             bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
             bottomNavigation.NavigationItemSelected += BottomNavigation_NavigationItemSelected; ;
