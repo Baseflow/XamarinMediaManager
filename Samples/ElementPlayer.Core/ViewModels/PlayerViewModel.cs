@@ -23,6 +23,8 @@ namespace ElementPlayer.Core.ViewModels
         public IMvxAsyncCommand PlayNextCommand { get; set; }
         public IMvxAsyncCommand PlayPreviousCommand { get; set; }
 
+        public IMediaItem Current => MediaManager.MediaQueue.Current;
+
         private void Current_MediaItemFailed(object sender, MediaItemFailedEventArgs e)
         {
             Log.Debug($"Media item failed: {e.MediaItem.Title}, Message: {e.Message}, Exception: {e.Exeption?.ToString()};");

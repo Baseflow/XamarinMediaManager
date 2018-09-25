@@ -1,50 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dp">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnAddToQueue"
-        android:text="Add random song to to queue"
-        android:layout_above="@+id/tvPlaying" 
-    local:MvxBind="Click AddRandomToQueueCommand"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvPlaying"
-        android:layout_above="@+id/sbProgress"
-        android:text="Press 'Play' to play a song" />
-    <SeekBar
+    android:layout_height="match_parent">
+    <ImageView
+        android:src="@drawable/baseline_image_24"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/imageView_Cover"
+        android:layout_margin="16dp"  />
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sbProgress"
-        android:layout_above="@+id/btnPlayPause"
-        />
-    <ToggleButton
-        android:layout_width="wrap_content"
+        android:layout_below="@id/imageView_Cover"
+        android:id="@+id/relativeLayout1"
+        android:padding="8dp">
+        <ImageButton
+            android:src="@drawable/baseline_add_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_Plus" />
+        <TextView
+            android:text="Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_Title"
+            android:layout_toLeftOf="@+id/imageButton_Options"
+            android:layout_toRightOf="@id/imageButton_Plus"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            local:MvxBind="Text Current.Title" />
+        <TextView
+            android:text="Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewSubtitle"
+            android:layout_toLeftOf="@+id/imageButton_Options"
+            android:layout_toRightOf="@id/imageButton_Plus"
+            android:layout_below="@id/textView_Title"
+            android:textAlignment="center" />
+        <ImageButton
+            android:src="@drawable/baseline_more_vert_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_Options"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnPlayPause"
-        android:textOff="Play"
-        android:textOn="Pause"
-        android:layout_alignParentBottom="true" 
-        local:MvxBind="Click PlayPauseCommand"/>
-    <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/relativeLayout2"
+        android:layout_below="@id/relativeLayout1"
+        android:layout_above="@+id/relativeLayout3"
+        android:padding="8dp">
+        <TextView
+            android:text="00:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_playedtime" />
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekBar_Current"
+            android:layout_toLeftOf="@+id/textView_duration"
+            android:layout_toRightOf="@id/textView_playedtime" />
+        <TextView
+            android:text="00:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_duration"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnPrevious"
-        android:text="|&lt; Previous"
+        android:id="@+id/relativeLayout3"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btnPlayPause" 
-        local:MvxBind="Click PlayNextCommand"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnNext"
-        android:text="Next &gt;|"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btnPrevious" 
-        local:MvxBind="Click PlayPreviousCommand"/>
+        android:paddingBottom="24dp"
+        android:paddingTop="24dp">
+        <ImageButton
+            android:src="@drawable/baseline_repeat_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/imageButton_previous"
+            android:id="@+id/imageButton_shuffle"
+            android:layout_centerVertical="true" />
+        <ImageButton
+            android:src="@drawable/baseline_skip_next_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/imageButton_playpause"
+            android:id="@+id/imageButton_previous"
+            android:layout_centerVertical="true" />
+        <ImageButton
+            android:src="@drawable/baseline_play_arrow_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_playpause"
+            android:layout_centerInParent="true" />
+        <ImageButton
+            android:src="@drawable/baseline_skip_previous_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/imageButton_playpause"
+            android:id="@+id/imageButton_next"
+            android:layout_centerVertical="true" />
+        <ImageButton
+            android:src="@drawable/baseline_shuffle_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/imageButton_next"
+            android:id="@+id/imageButton_repeat"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
 </RelativeLayout>
