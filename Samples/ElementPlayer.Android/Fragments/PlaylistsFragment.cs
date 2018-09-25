@@ -6,6 +6,6 @@ namespace ElementPlayer.Android.Fragments
     [MvxFragmentPresentation(typeof(MainViewModel), Resource.Id.content_frame, false)]
     public class PlaylistsFragment : BaseFragment<PlaylistsViewModel>
     {
-        protected override int FragmentId => Resource.Layout.home_fragment;
+        protected override int FragmentId => Resource.Layout.playlists_fragment;
     }
 }

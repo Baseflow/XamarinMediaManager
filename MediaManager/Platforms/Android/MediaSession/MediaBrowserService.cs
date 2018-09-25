@@ -38,6 +38,7 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         protected AudioPlayer NativePlayer => AudioPlayer as AudioPlayer;
 
+        protected PendingIntent SessionActivityPendingIntent { get; private set; }
         protected MediaSessionCompat MediaSession { get; set; }
         protected MediaDescriptionAdapter MediaDescriptionAdapter { get; set; }
         protected PlayerNotificationManager PlayerNotificationManager { get; set; }
@@ -63,39 +64,56 @@ namespace MediaManager.Platforms.Android.MediaSession
 
             // Build a PendingIntent that can be used to launch the UI.
             var sessionIntent = PackageManager.GetLaunchIntentForPackage(PackageName);
-            var sessionActivityPendingIntent = PendingIntent.GetActivity(this, 0, sessionIntent, 0);
+            SessionActivityPendingIntent = PendingIntent.GetActivity(this, 0, sessionIntent, 0);
 
+            PrepareMediaSession();
+            PrepareMediaPlayer();
+            PrepareNotificationManager();
+            PrepareBecomingNoisyReceiver();
+        }
+
+        protected virtual void PrepareMediaSession()
+        {
             MediaSession = new MediaSessionCompat(this, nameof(MediaBrowserService));
-            MediaSession.SetSessionActivity(sessionActivityPendingIntent);
+            MediaSession.SetSessionActivity(SessionActivityPendingIntent);
             MediaSession.Active = true;
 
             SessionToken = MediaSession.SessionToken;
 
             MediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
                                    MediaSessionCompat.FlagHandlesTransportControls);
+        }
 
+        protected virtual void PrepareMediaPlayer()
+        {
             NativePlayer.MediaSession = MediaSession;
             AudioPlayer.Initialize();
+        }
 
-            MediaDescriptionAdapter = new MediaDescriptionAdapter(sessionActivityPendingIntent);
+        protected virtual void PrepareNotificationManager()
+        {
+            MediaDescriptionAdapter = new MediaDescriptionAdapter(SessionActivityPendingIntent);
             PlayerNotificationManager = Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.CreateWithNotificationChannel(
                 this,
                 ChannelId,
                 Resource.String.exo_download_notification_channel_name,
                 ForegroundNotificationId,
-                new MediaDescriptionAdapter(sessionActivityPendingIntent));
+                MediaDescriptionAdapter);
 
-            //needed for enabling the notification as a mediabrowser.
-            PlayerNotificationManager.SetMediaSessionToken(SessionToken);
+            //Needed for enabling the notification as a mediabrowser.
             NotificationListener = new NotificationListener();
             PlayerNotificationManager.SetNotificationListener(NotificationListener);
+            PlayerNotificationManager.SetMediaSessionToken(SessionToken);
             PlayerNotificationManager.SetPlayer(NativePlayer.Player);
 
             //TODO: When only 1 in queue disable navigation
             //PlayerNotificationManager.SetUseNavigationActions(false);
             //PlayerNotificationManager.SetUsePlayPauseActions(false);
+        }
 
-            //Everything after this probably needs to be removed. 
+        //TODO: Probably needs to be removed.
+        protected virtual void PrepareBecomingNoisyReceiver()
+        {
             BecomingNoisyReceiver = new BecomingNoisyReceiver(MediaManager.GetContext(), NativePlayer.AudioFocusManager);
             MediaController = new MediaControllerCompat(this, MediaSession);
 

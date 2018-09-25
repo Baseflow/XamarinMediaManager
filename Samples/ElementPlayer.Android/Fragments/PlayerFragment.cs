@@ -4,8 +4,8 @@ using MvvmCross.Platforms.Android.Presenters.Attributes;
 namespace ElementPlayer.Android.Fragments
 {
     [MvxFragmentPresentation(typeof(MainViewModel), Resource.Id.content_frame, false)]
-    public class SearchFragment : BaseFragment<SearchViewModel>
+    public class PlayerFragment : BaseFragment<PlayerViewModel>
     {
-        protected override int FragmentId => Resource.Layout.search_fragment;
+        protected override int FragmentId => Resource.Layout.player_fragment;
     }
 }
