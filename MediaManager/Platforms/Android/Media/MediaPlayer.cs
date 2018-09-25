@@ -146,16 +146,18 @@ namespace MediaManager.Platforms.Android.Media
             Player.Prepare(MediaSource);
         }
 
-        public Task Play(string url)
+        public async Task Play(string url)
         {
+            var mediaItem = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem(url);
+
             MediaSource.Clear();
             var uri = global::Android.Net.Uri.Parse(url);
             var extractorMediaSource = new ExtractorMediaSource.Factory(DataSourceFactory)
-                    //.SetTag(mediaItem.ToMediaDescription())
+                    .SetTag(mediaItem.ToMediaDescription())
                     .CreateMediaSource(uri);
             MediaSource.AddMediaSource(extractorMediaSource);
             Player.Prepare(MediaSource);
-            return Play();
+            await Play();
         }
 
         public Task Play()

@@ -3,6 +3,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Support.Design.Widget;
 using ElementPlayer.Core.ViewModels;
+using MediaManager;
 using MvvmCross;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Navigation;
@@ -22,6 +23,8 @@ namespace ElementPlayer.Android.Activities
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.main_activity);
+
+            CrossMediaManager.Current.Init();
 
             bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
             bottomNavigation.NavigationItemSelected += BottomNavigation_NavigationItemSelected; ;

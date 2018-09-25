@@ -13,12 +13,12 @@ namespace MediaManager.Platforms.Android.Media
             var description = new MediaDescriptionCompat.Builder()
                 .SetMediaId(item?.MediaId)
                 .SetMediaUri(global::Android.Net.Uri.Parse(item?.MediaUri))
-                .SetTitle(item?.Title)
-                .SetSubtitle(item?.Artist)
+                .SetTitle(item?.GetTitle())
+                .SetSubtitle(item?.GetContentTitle())
                 .SetDescription(item?.DisplayDescription)
                 .SetExtras(item?.Extras as Bundle)
-                .SetIconBitmap(item?.AlbumArt as Bitmap)
-                .SetIconUri(item?.DisplayIconUri != null ? global::Android.Net.Uri.Parse(item?.DisplayIconUri) : null)
+                .SetIconBitmap(item?.GetCover())
+                .SetIconUri(!string.IsNullOrEmpty(item?.DisplayIconUri) ? global::Android.Net.Uri.Parse(item?.DisplayIconUri) : null)
                 .Build();
 
             return description;
@@ -106,6 +106,39 @@ namespace MediaManager.Platforms.Android.Media
             item.Year = Convert.ToInt32(mediaMetadata.GetLong(MediaMetadataCompat.MetadataKeyYear));
             item.IsMetadataExtracted = true;
             return item;
+        }
+
+        public static Bitmap GetCover(this IMediaItem mediaItem)
+        {
+            if (mediaItem.AlbumArt is Bitmap bitmap)
+                return bitmap;
+            else if (mediaItem.Art is Bitmap artBitmap)
+                return artBitmap;
+            else if (!string.IsNullOrEmpty(mediaItem.ArtUri))
+            {
+                return GetImageBitmapFromUrl(mediaItem.ArtUri);
+            }
+            else if (!string.IsNullOrEmpty(mediaItem.AlbumArtUri))
+            {
+                return GetImageBitmapFromUrl(mediaItem.AlbumArtUri);
+            }
+            return null;
+        }
+
+        private static Bitmap GetImageBitmapFromUrl(string url)
+        {
+            Bitmap imageBitmap = null;
+
+            using (var webClient = new System.Net.WebClient())
+            {
+                var imageBytes = webClient.DownloadData(url);
+                if (imageBytes != null && imageBytes.Length > 0)
+                {
+                    imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                }
+            }
+
+            return imageBitmap;
         }
     }
 }

@@ -91,6 +91,10 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.SetNotificationListener(NotificationListener);
             PlayerNotificationManager.SetPlayer(NativePlayer.Player);
 
+            //TODO: When only 1 in queue disable navigation
+            //PlayerNotificationManager.SetUseNavigationActions(false);
+            //PlayerNotificationManager.SetUsePlayPauseActions(false);
+
             //Everything after this probably needs to be removed. 
             BecomingNoisyReceiver = new BecomingNoisyReceiver(MediaManager.GetContext(), NativePlayer.AudioFocusManager);
             MediaController = new MediaControllerCompat(this, MediaSession);

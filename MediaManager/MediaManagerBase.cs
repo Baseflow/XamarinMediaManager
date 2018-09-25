@@ -23,6 +23,8 @@ namespace MediaManager
             Timer.Elapsed += Timer_Elapsed;
             Timer.Start();
         }
+        
+        public bool IsInitialized { get; protected set; }
 
         public abstract IAudioPlayer AudioPlayer { get; set; }
         public abstract IVideoPlayer VideoPlayer { get; set; }
@@ -95,6 +97,9 @@ namespace MediaManager
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            if (!IsInitialized)
+                return;
+
             if (this.IsPlaying())
             {
                 OnPlayingChanged(this, new PlayingChangedEventArgs(Position, Duration));
@@ -104,5 +109,7 @@ namespace MediaManager
                 OnBufferingChanged(this, new BufferingChangedEventArgs(Buffered));
             }
         }
+
+        public abstract void Init();
     }
 }

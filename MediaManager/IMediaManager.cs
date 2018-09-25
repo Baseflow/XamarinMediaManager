@@ -30,6 +30,8 @@ namespace MediaManager
 
         IMediaQueue MediaQueue { get; set; }
 
+        void Init();
+
         // <summary>
         /// Plays a media item
         /// </summary>

@@ -30,6 +30,11 @@ namespace MediaManager
 
         public Context Context { get; set; } = Application.Context;
 
+        public override void Init()
+        {
+            IsInitialized = MediaBrowserManager.Init();
+        }
+
         private MediaBrowserManager _mediaBrowserManager;
         public virtual MediaBrowserManager MediaBrowserManager
         {
@@ -126,22 +131,20 @@ namespace MediaManager
 
         public override float Speed { get => MediaBrowserManager?.MediaController.PlaybackState?.PlaybackSpeed ?? 0; set => throw new NotImplementedException(); }
 
-        public override async Task Pause()
+        public override Task Pause()
         {
-            await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().Pause();
+            return Task.CompletedTask;
         }
 
-        public override async Task Play()
+        public override Task Play()
         {
-            await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().Play();
+            return Task.CompletedTask;
         }
 
         public override async Task<IMediaItem> Play(string uri)
         {
-            await MediaBrowserManager.EnsureInitialized();
-
             var mediaItem = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem(uri);
             MediaQueue.Clear();
             MediaQueue.Add(mediaItem);
@@ -151,21 +154,18 @@ namespace MediaManager
             return mediaItem;
         }
 
-        public override async Task Play(IMediaItem mediaItem)
+        public override Task Play(IMediaItem mediaItem)
         {
-            await MediaBrowserManager.EnsureInitialized();
-
             MediaQueue.Clear();
             MediaQueue.Add(mediaItem);
 
             var mediaUri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
             MediaBrowserManager.MediaController.GetTransportControls().PlayFromUri(mediaUri, null);
+            return Task.CompletedTask;
         }
 
         public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
         {
-            await MediaBrowserManager.EnsureInitialized();
-
             MediaQueue.Clear();
             foreach (var url in items)
             {
@@ -180,10 +180,8 @@ namespace MediaManager
             return await MediaQueue.FetchMediaQueueMetaData();
         }
 
-        public override async Task Play(IEnumerable<IMediaItem> items)
+        public override Task Play(IEnumerable<IMediaItem> items)
         {
-            await MediaBrowserManager.EnsureInitialized();
-
             MediaQueue.Clear();
             foreach (var item in items)
             {
@@ -191,6 +189,7 @@ namespace MediaManager
             }
 
             MediaBrowserManager.MediaController.GetTransportControls().Prepare();
+            return Task.CompletedTask;
         }
 
         public override Task<IMediaItem> Play(FileInfo file)
@@ -203,46 +202,47 @@ namespace MediaManager
             throw new NotImplementedException();
         }
 
-        public override async Task PlayNext()
+        public override Task PlayNext()
         {
-            await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().SkipToNext();
+            return Task.CompletedTask;
         }
 
-        public override async Task PlayPrevious()
+        public override Task PlayPrevious()
         {
-            await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().SkipToPrevious();
+            return Task.CompletedTask;
         }
 
-        public override async Task SeekTo(TimeSpan position)
+        public override Task SeekTo(TimeSpan position)
         {
-            await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().SeekTo((long)position.TotalMilliseconds);
+            return Task.CompletedTask;
         }
 
-        public override async Task SeekToStart()
+        //TODO: Move to extension method
+        public override Task SeekToStart()
         {
-            await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().SeekTo(0);
+            return Task.CompletedTask;
         }
 
-        public override async Task StepBackward()
+        public override Task StepBackward()
         {
-            await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().Rewind();
+            return Task.CompletedTask;
         }
 
-        public override async Task StepForward()
+        public override Task StepForward()
         {
-            await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().FastForward();
+            return Task.CompletedTask;
         }
 
-        public override async Task Stop()
+        public override Task Stop()
         {
-            await MediaBrowserManager.EnsureInitialized();
             MediaBrowserManager.MediaController.GetTransportControls().Stop();
+            return Task.CompletedTask;
         }
 
         public override void ToggleRepeat()

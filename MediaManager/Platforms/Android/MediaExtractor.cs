@@ -133,6 +133,12 @@ namespace MediaManager.Platforms.Android
             return mediaItem;
         }
 
+        public object GetMediaCover(IMediaItem mediaItem)
+        {
+            //TODO: move cover in here
+            return null;
+        }
+
         protected Bitmap GetTrackCover(IMediaItem currentTrack)
         {
             string albumFolder = GetCurrentSongFolder(currentTrack);

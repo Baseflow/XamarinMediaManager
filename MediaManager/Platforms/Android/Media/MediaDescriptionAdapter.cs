@@ -8,6 +8,7 @@ using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Trackselection;
 using Com.Google.Android.Exoplayer2.UI;
+using MediaManager.Media;
 using static Com.Google.Android.Exoplayer2.Trackselection.MappingTrackSelector;
 
 namespace MediaManager.Platforms.Android.Media
@@ -26,10 +27,6 @@ namespace MediaManager.Platforms.Android.Media
         {
         }
 
-        protected MediaDescriptionAdapter()
-        {
-        }
-
         public PendingIntent CreateCurrentContentIntent(IPlayer player)
         {
             return sessionActivityPendingIntent;
@@ -37,17 +34,17 @@ namespace MediaManager.Platforms.Android.Media
 
         public string GetCurrentContentText(IPlayer player)
         {
-            return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.Title;
+            return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetTitle();
         }
 
         public string GetCurrentContentTitle(IPlayer player)
         {
-            return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.AlbumArtist;
+            return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetContentTitle();
         }
 
         public Bitmap GetCurrentLargeIcon(IPlayer player, PlayerNotificationManager.BitmapCallback callback)
         {
-            return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.AlbumArt as Bitmap;
+            return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetCover();
         }
     }
 }
