@@ -7,6 +7,8 @@ using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 using Com.Google.Android.Exoplayer2.Source;
+using Com.Google.Android.Exoplayer2.Source.Dash;
+using Com.Google.Android.Exoplayer2.Source.Smoothstreaming;
 using Com.Google.Android.Exoplayer2.Trackselection;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
@@ -39,7 +41,10 @@ namespace MediaManager.Platforms.Android.Media
 
         protected string UserAgent { get; set; }
         protected DefaultHttpDataSourceFactory HttpDataSourceFactory { get; set; }
-        protected DefaultDataSourceFactory DataSourceFactory { get; set; }
+        public static DefaultDataSourceFactory DefaultDataSourceFactory { get; set; }
+        public static DefaultDashChunkSource.Factory DefaultDashChunkSource { get; set; }
+        public static DefaultSsChunkSource.Factory DefaultSsChunkSource { get; set; }
+
         protected DefaultBandwidthMeter BandwidthMeter { get; set; }
         protected AdaptiveTrackSelection.Factory TrackSelectionFactory { get; set; }
         protected DefaultTrackSelector TrackSelector { get; set; }
@@ -101,7 +106,10 @@ namespace MediaManager.Platforms.Android.Media
                 }
             }
 
-            DataSourceFactory = new DefaultDataSourceFactory(Context, null, HttpDataSourceFactory);
+            DefaultDataSourceFactory = new DefaultDataSourceFactory(Context, null, HttpDataSourceFactory);
+            DefaultDashChunkSource = new DefaultDashChunkSource.Factory(DefaultDataSourceFactory);
+            DefaultSsChunkSource = new DefaultSsChunkSource.Factory(DefaultDataSourceFactory);
+
             BandwidthMeter = new DefaultBandwidthMeter();
             TrackSelectionFactory = new AdaptiveTrackSelection.Factory(BandwidthMeter);
             TrackSelector = new DefaultTrackSelector(TrackSelectionFactory);
@@ -133,15 +141,15 @@ namespace MediaManager.Platforms.Android.Media
             QueueNavigator = new QueueNavigator(MediaSession);
             MediaSessionConnector.SetQueueNavigator(QueueNavigator);
 
-            QueueDataAdapter = new QueueDataAdapter(MediaSource, DataSourceFactory);
-            MediaSourceFactory = new MediaSourceFactory(DataSourceFactory);
+            QueueDataAdapter = new QueueDataAdapter(MediaSource);
+            MediaSourceFactory = new MediaSourceFactory();
             TimelineQueueEditor = new TimelineQueueEditor(MediaSession.Controller, MediaSource, QueueDataAdapter, MediaSourceFactory);
             MediaSessionConnector.SetQueueEditor(TimelineQueueEditor);
 
             RatingCallback = new RatingCallback();
             MediaSessionConnector.SetRatingCallback(RatingCallback);
 
-            PlaybackPreparer = new MediaSessionConnectorPlaybackPreparer(Player, DataSourceFactory, MediaSource);
+            PlaybackPreparer = new MediaSessionConnectorPlaybackPreparer(Player, MediaSource);
             MediaSessionConnector.SetPlayer(Player, PlaybackPreparer, null);
         }
 
@@ -150,11 +158,7 @@ namespace MediaManager.Platforms.Android.Media
             var mediaItem = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem(url);
 
             MediaSource.Clear();
-            var uri = global::Android.Net.Uri.Parse(url);
-            var extractorMediaSource = new ExtractorMediaSource.Factory(DataSourceFactory)
-                    .SetTag(mediaItem.ToMediaDescription())
-                    .CreateMediaSource(uri);
-            MediaSource.AddMediaSource(extractorMediaSource);
+            MediaSource.AddMediaSource(mediaItem.ToMediaSource());
             Player.Prepare(MediaSource);
             await Play();
         }

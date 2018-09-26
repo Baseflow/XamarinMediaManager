@@ -4,13 +4,16 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="50dp">
-    <TextView
-        android:id="@+id/innerText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_gravity="center_horizontal"
-        android:padding="10dp"
-        local:MvxBind="Text ."
-        android:textColor="#ff000000" />
-    </LinearLayout>
+    <TextView 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    local:MvxBind="Text Title" />
+    <TextView 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    local:MvxBind="Text Artist" />
+    <TextView 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    local:MvxBind="Text Album" />
+</LinearLayout>

@@ -15,13 +15,20 @@ namespace ElementPlayer.Core.ViewModels
     {
         public PlayerViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IMediaManager mediaManager) : base(logProvider, navigationService)
         {
+            MediaManager = mediaManager;
+            PlayPauseCommand = new MvxAsyncCommand(MediaManager.PlayPause);
+            PlayNextCommand = new MvxAsyncCommand(MediaManager.PlayNext);
+            PlayPreviousCommand = new MvxAsyncCommand(MediaManager.PlayPrevious);
+            ToggleShuffleCommand = new MvxCommand(MediaManager.ToggleShuffle);
+            ToggleRepeatCommand = new MvxCommand(MediaManager.ToggleRepeat);
         }
 
         public readonly IMediaManager MediaManager;
-        public IMvxAsyncCommand PlayPauseCommand { get; set; }
-        public IMvxAsyncCommand StopCommand { get; set; }
-        public IMvxAsyncCommand PlayNextCommand { get; set; }
-        public IMvxAsyncCommand PlayPreviousCommand { get; set; }
+        public IMvxAsyncCommand PlayPauseCommand { get; }
+        public IMvxAsyncCommand PlayNextCommand { get; }
+        public IMvxAsyncCommand PlayPreviousCommand { get; }
+        public IMvxCommand ToggleShuffleCommand { get; }
+        public IMvxCommand ToggleRepeatCommand { get; }
 
         public IMediaItem Current => MediaManager.MediaQueue.Current;
 

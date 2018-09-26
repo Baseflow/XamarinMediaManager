@@ -2,12 +2,58 @@
 using Android.Graphics;
 using Android.OS;
 using Android.Support.V4.Media;
+using Com.Google.Android.Exoplayer2.Source;
+using Com.Google.Android.Exoplayer2.Source.Dash;
+using Com.Google.Android.Exoplayer2.Source.Hls;
+using Com.Google.Android.Exoplayer2.Source.Smoothstreaming;
+using Com.Google.Android.Exoplayer2.Upstream;
 using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android.Media
 {
     public static class MediaItemExtensions
     {
+        public static IMediaSource ToMediaSource(this IMediaItem mediaItem)
+        {
+            if (MediaPlayer.DefaultDataSourceFactory == null)
+                throw new ArgumentNullException(nameof(MediaPlayer.DefaultDataSourceFactory));
+
+            IMediaSource mediaSource;
+            switch (mediaItem.MediaFormat)
+            {
+                default:
+                case MediaFormat.Default:
+                    mediaSource = new ExtractorMediaSource.Factory(MediaPlayer.DefaultDataSourceFactory)
+                        .SetTag(mediaItem.ToMediaDescription())
+                        .CreateMediaSource(global::Android.Net.Uri.Parse(mediaItem.MediaUri));
+                    break;
+                case MediaFormat.Dash:
+                    if (MediaPlayer.DefaultDashChunkSource == null)
+                        throw new ArgumentNullException(nameof(MediaPlayer.DefaultDashChunkSource));
+
+                    mediaSource = new DashMediaSource.Factory(MediaPlayer.DefaultDashChunkSource, MediaPlayer.DefaultDataSourceFactory)
+                        .SetTag(mediaItem.ToMediaDescription())
+                        .CreateMediaSource(global::Android.Net.Uri.Parse(mediaItem.MediaUri));
+                    break;
+                case MediaFormat.Hls:
+                    mediaSource = new HlsMediaSource.Factory(MediaPlayer.DefaultDataSourceFactory)
+                        .SetAllowChunklessPreparation(true)
+                        .SetTag(mediaItem.ToMediaDescription())
+                        .CreateMediaSource(global::Android.Net.Uri.Parse(mediaItem.MediaUri));
+                    break;
+                case MediaFormat.SmoothStreaming:
+                    if (MediaPlayer.DefaultSsChunkSource == null)
+                        throw new ArgumentNullException(nameof(MediaPlayer.DefaultSsChunkSource));
+
+                    mediaSource = new SsMediaSource.Factory(MediaPlayer.DefaultSsChunkSource, MediaPlayer.DefaultDataSourceFactory)
+                        .SetTag(mediaItem.ToMediaDescription())
+                        .CreateMediaSource(global::Android.Net.Uri.Parse(mediaItem.MediaUri));
+                    break;
+            }
+
+            return mediaSource;
+        }
+
         public static MediaDescriptionCompat ToMediaDescription(this IMediaItem item)
         {
             var description = new MediaDescriptionCompat.Builder()
