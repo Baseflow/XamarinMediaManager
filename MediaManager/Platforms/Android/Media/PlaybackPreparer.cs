@@ -14,14 +14,12 @@ namespace MediaManager.Platforms.Android.Media
     public class MediaSessionConnectorPlaybackPreparer : Java.Lang.Object, MediaSessionConnector.IPlaybackPreparer
     {
         private IExoPlayer _player;
-        private DefaultDataSourceFactory _defaultDataSourceFactory;
         private ConcatenatingMediaSource _mediaSource;
         private IMediaManager mediaManager = CrossMediaManager.Current;
 
-        public MediaSessionConnectorPlaybackPreparer(IExoPlayer player, DefaultDataSourceFactory dataSourceFactory, ConcatenatingMediaSource mediaSource)
+        public MediaSessionConnectorPlaybackPreparer(IExoPlayer player, ConcatenatingMediaSource mediaSource)
         {
             _player = player;
-            _defaultDataSourceFactory = dataSourceFactory;
             _mediaSource = mediaSource;
         }
 
@@ -52,11 +50,7 @@ namespace MediaManager.Platforms.Android.Media
             _mediaSource.Clear();
             foreach (var mediaItem in mediaManager.MediaQueue)
             {
-                var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
-                var extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
-                    .SetTag(mediaItem.ToMediaDescription())
-                    .CreateMediaSource(uri);
-                _mediaSource.AddMediaSource(extractorMediaSource);
+                _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }
             _player.Prepare(_mediaSource);
 
@@ -70,14 +64,10 @@ namespace MediaManager.Platforms.Android.Media
             int windowIndex = 0;
             foreach (var mediaItem in mediaManager.MediaQueue)
             {
-                var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
                 if (mediaItem.MediaId == mediaId)
                     windowIndex = mediaManager.MediaQueue.IndexOf(mediaItem);
 
-                var extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
-                    .SetTag(mediaItem.ToMediaDescription())
-                    .CreateMediaSource(uri);
-                _mediaSource.AddMediaSource(extractorMediaSource);
+                _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }
             _player.Prepare(_mediaSource);
             _player.SeekTo(windowIndex, 0);
@@ -88,11 +78,7 @@ namespace MediaManager.Platforms.Android.Media
             _mediaSource.Clear();
             foreach (var mediaItem in mediaManager.MediaQueue.Where(x => x.Title == searchTerm))
             {
-                var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
-                var extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
-                    .SetTag(mediaItem.ToMediaDescription())
-                    .CreateMediaSource(uri);
-                _mediaSource.AddMediaSource(extractorMediaSource);
+                _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }
             _player.Prepare(_mediaSource);
         }
@@ -107,10 +93,7 @@ namespace MediaManager.Platforms.Android.Media
                 if (uri.Equals(mediaUri))
                     windowIndex = mediaManager.MediaQueue.IndexOf(mediaItem);
 
-                var extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
-                    .SetTag(mediaItem.ToMediaDescription())
-                    .CreateMediaSource(uri);
-                _mediaSource.AddMediaSource(extractorMediaSource);
+                _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }
             _player.Prepare(_mediaSource);
             _player.SeekTo(windowIndex, 0);

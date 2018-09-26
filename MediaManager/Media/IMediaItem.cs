@@ -179,5 +179,9 @@ namespace MediaManager.Media
         /// The metadata key for a int typed value to retrieve the information about the year the media was created or published.
         /// </summary>
         int Year { get; set; }
+
+        string FileExtension { get; set; }
+
+        MediaFormat MediaFormat { get; set; }
     }
 }

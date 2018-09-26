@@ -17,12 +17,10 @@ namespace MediaManager.Platforms.Android.Media
     {
         private IMediaManager mediaManager = CrossMediaManager.Current;
         private ConcatenatingMediaSource _mediaSource;
-        private DefaultDataSourceFactory _dataSourceFactory;
 
-        public QueueDataAdapter(ConcatenatingMediaSource mediaSource, DefaultDataSourceFactory dataSourceFactory)
+        public QueueDataAdapter(ConcatenatingMediaSource mediaSource)
         {
             _mediaSource = mediaSource;
-            _dataSourceFactory = dataSourceFactory;
             mediaManager.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
         }
 
@@ -60,11 +58,8 @@ namespace MediaManager.Platforms.Android.Media
                     {
                         for (int i = e.NewItems.Count - 1; i >= 0; i--)
                         {
-                            var uri = global::Android.Net.Uri.Parse(((IMediaItem)e.NewItems[i]).MediaUri);
-                            var extractorMediaSource = new ExtractorMediaSource.Factory(_dataSourceFactory)
-                                .SetTag(((IMediaItem)e.NewItems[i]).ToMediaDescription())
-                                .CreateMediaSource(uri);
-                            _mediaSource.AddMediaSource(e.NewStartingIndex, extractorMediaSource);
+                            var mediaItem = (IMediaItem)e.NewItems[i];
+                            _mediaSource.AddMediaSource(e.NewStartingIndex, mediaItem.ToMediaSource());
                         }
                     }
                     break;

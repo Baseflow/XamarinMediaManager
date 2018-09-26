@@ -12,11 +12,8 @@ namespace MediaManager.Platforms.Android.Media
 {
     public class MediaSourceFactory : Java.Lang.Object, TimelineQueueEditor.IMediaSourceFactory
     {
-        private DefaultDataSourceFactory _defaultDataSourceFactory;
-
-        public MediaSourceFactory(DefaultDataSourceFactory factory)
+        public MediaSourceFactory()
         {
-            _defaultDataSourceFactory = factory;
         }
 
         public MediaSourceFactory(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
@@ -25,19 +22,7 @@ namespace MediaManager.Platforms.Android.Media
 
         public IMediaSource CreateMediaSource(MediaDescriptionCompat description)
         {
-            IMediaSource extractorMediaSource = null;
-
-            if (description.MediaId != null)
-                extractorMediaSource = null; //TODO: Implement preparefrommediasource
-
-            else if (description.MediaUri != null)
-            {
-                extractorMediaSource = new ExtractorMediaSource.Factory(_defaultDataSourceFactory)
-                    .SetTag(description)
-                    .CreateMediaSource(description.MediaUri);
-            }
-
-            return extractorMediaSource;
+            return description?.ToMediaItem()?.ToMediaSource();
         }
     }
 }
