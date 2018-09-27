@@ -10,13 +10,13 @@ using Com.Google.Android.Exoplayer2.Upstream;
 
 namespace MediaManager.Platforms.Android.Media
 {
-    public class MediaSourceFactory : Java.Lang.Object, TimelineQueueEditor.IMediaSourceFactory
+    public class QueueEditorMediaSourceFactory : Java.Lang.Object, TimelineQueueEditor.IMediaSourceFactory
     {
-        public MediaSourceFactory()
+        public QueueEditorMediaSourceFactory()
         {
         }
 
-        public MediaSourceFactory(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+        public QueueEditorMediaSourceFactory(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
         }
 

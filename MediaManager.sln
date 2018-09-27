@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.Forms", "Media
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElementPlayer.iOS", "Samples\ElementPlayer.iOS\ElementPlayer.iOS.csproj", "{101E3060-8799-4119-8A7A-4F86A01C0C84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaManager.UnitTest", "MediaManager.UnitTest\MediaManager.UnitTest.csproj", "{810498DD-1B7D-4777-A609-0034F354A191}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,18 @@ Global
 		{101E3060-8799-4119-8A7A-4F86A01C0C84}.Release|iPhone.Build.0 = Release|iPhone
 		{101E3060-8799-4119-8A7A-4F86A01C0C84}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{101E3060-8799-4119-8A7A-4F86A01C0C84}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{810498DD-1B7D-4777-A609-0034F354A191}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{810498DD-1B7D-4777-A609-0034F354A191}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{810498DD-1B7D-4777-A609-0034F354A191}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{810498DD-1B7D-4777-A609-0034F354A191}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{810498DD-1B7D-4777-A609-0034F354A191}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{810498DD-1B7D-4777-A609-0034F354A191}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{810498DD-1B7D-4777-A609-0034F354A191}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{810498DD-1B7D-4777-A609-0034F354A191}.Release|Any CPU.Build.0 = Release|Any CPU
+		{810498DD-1B7D-4777-A609-0034F354A191}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{810498DD-1B7D-4777-A609-0034F354A191}.Release|iPhone.Build.0 = Release|Any CPU
+		{810498DD-1B7D-4777-A609-0034F354A191}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{810498DD-1B7D-4777-A609-0034F354A191}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

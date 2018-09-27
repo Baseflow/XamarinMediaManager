@@ -18,7 +18,6 @@ namespace MediaManager.Platforms.Android
 
         public MediaExtractor()
         {
-            //_resources = resources;
         }
 
         public virtual async Task<IMediaItem> CreateMediaItem(string url)

@@ -43,9 +43,9 @@ namespace MediaManager.Platforms.Android.Media
 
         protected string UserAgent { get; set; }
         protected DefaultHttpDataSourceFactory HttpDataSourceFactory { get; set; }
-        public static DefaultDataSourceFactory DefaultDataSourceFactory { get; set; }
-        public static DefaultDashChunkSource.Factory DefaultDashChunkSource { get; set; }
-        public static DefaultSsChunkSource.Factory DefaultSsChunkSource { get; set; }
+        public static DefaultDataSourceFactory DataSourceFactory { get; set; }
+        public static DefaultDashChunkSource.Factory DashChunkSourceFactory { get; set; }
+        public static DefaultSsChunkSource.Factory SsChunkSourceFactory { get; set; }
 
         protected DefaultBandwidthMeter BandwidthMeter { get; set; }
         protected AdaptiveTrackSelection.Factory TrackSelectionFactory { get; set; }
@@ -56,7 +56,7 @@ namespace MediaManager.Platforms.Android.Media
         protected QueueNavigator QueueNavigator { get; set; }
         protected ConcatenatingMediaSource MediaSource { get; set; }
         protected QueueDataAdapter QueueDataAdapter { get; set; }
-        protected MediaSourceFactory MediaSourceFactory { get; set; }
+        protected QueueEditorMediaSourceFactory MediaSourceFactory { get; set; }
         protected TimelineQueueEditor TimelineQueueEditor { get; set; }
         protected MediaSessionConnectorPlaybackPreparer PlaybackPreparer { get; set; }
         protected PlayerEventListener PlayerEventListener { get; set; }
@@ -111,9 +111,9 @@ namespace MediaManager.Platforms.Android.Media
                 }
             }
 
-            DefaultDataSourceFactory = new DefaultDataSourceFactory(Context, null, HttpDataSourceFactory);
-            DefaultDashChunkSource = new DefaultDashChunkSource.Factory(DefaultDataSourceFactory);
-            DefaultSsChunkSource = new DefaultSsChunkSource.Factory(DefaultDataSourceFactory);
+            DataSourceFactory = new DefaultDataSourceFactory(Context, null, HttpDataSourceFactory);
+            DashChunkSourceFactory = new DefaultDashChunkSource.Factory(DataSourceFactory);
+            SsChunkSourceFactory = new DefaultSsChunkSource.Factory(DataSourceFactory);
 
             BandwidthMeter = new DefaultBandwidthMeter();
             TrackSelectionFactory = new AdaptiveTrackSelection.Factory(BandwidthMeter);
@@ -147,7 +147,7 @@ namespace MediaManager.Platforms.Android.Media
             MediaSessionConnector.SetQueueNavigator(QueueNavigator);
 
             QueueDataAdapter = new QueueDataAdapter(MediaSource);
-            MediaSourceFactory = new MediaSourceFactory();
+            MediaSourceFactory = new QueueEditorMediaSourceFactory();
             TimelineQueueEditor = new TimelineQueueEditor(MediaSession.Controller, MediaSource, QueueDataAdapter, MediaSourceFactory);
             MediaSessionConnector.SetQueueEditor(TimelineQueueEditor);
 
