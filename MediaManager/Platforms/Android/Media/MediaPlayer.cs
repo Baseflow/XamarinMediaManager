@@ -153,10 +153,8 @@ namespace MediaManager.Platforms.Android.Media
             MediaSessionConnector.SetPlayer(Player, PlaybackPreparer, null);
         }
 
-        public async Task Play(string url)
+        public async Task Play(IMediaItem mediaItem)
         {
-            var mediaItem = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem(url);
-
             MediaSource.Clear();
             MediaSource.AddMediaSource(mediaItem.ToMediaSource());
             Player.Prepare(MediaSource);

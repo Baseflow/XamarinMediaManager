@@ -112,7 +112,7 @@ namespace MediaManager
             get
             {
                 if (_mediaExtractor == null)
-                    _mediaExtractor = new MediaExtractor(Resources.System, RequestHeaders);
+                    _mediaExtractor = new MediaExtractor();
                 return _mediaExtractor;
             }
             set

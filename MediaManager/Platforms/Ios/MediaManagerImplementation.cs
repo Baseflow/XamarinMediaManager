@@ -1,17 +1,21 @@
-﻿using MediaManager.Audio;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using MediaManager.Audio;
 using MediaManager.Media;
+using MediaManager.Playback;
 using MediaManager.Video;
 using MediaManager.Volume;
 
-namespace MediaManager.Platforms.Ios
+namespace MediaManager
 {
-    public class MediaManagerImplementation : MediaManagerBase
+    [Foundation.Preserve(AllMembers = true)]
+    public class MediaManagerImplementation : AppleMediaManagerBase
     {
-        //public override IAudioPlayer AudioPlayer { get; set; }
-        public override IVideoPlayer VideoPlayer { get; set; }
-        public override INotificationManager NotificationManager { get; set; }
-        public override IMediaExtractor MediaExtractor { get; set; }
-        public override IVolumeManager VolumeManager { get; set; }
-        public override IPlaybackManager PlaybackManager { get; set; }
+        public MediaManagerImplementation()
+        {
+
+        }
     }
 }

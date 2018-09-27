@@ -13,19 +13,18 @@ namespace MediaManager.Platforms.Android
 {
     public class MediaExtractor : IMediaExtractor
     {
-        protected readonly Resources _resources;
-        protected readonly Dictionary<string, string> _requestHeaders;
+        protected Resources Resources => Resources.System;
+        protected Dictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
 
-        public MediaExtractor(Resources resources, Dictionary<string, string> requestHeaders)
+        public MediaExtractor()
         {
-            _resources = resources;
-            _requestHeaders = requestHeaders;
+            //_resources = resources;
         }
 
         public virtual async Task<IMediaItem> CreateMediaItem(string url)
         {
             var metaRetriever = new MediaMetadataRetriever();
-            await metaRetriever.SetDataSourceAsync(url, _requestHeaders);
+            await metaRetriever.SetDataSourceAsync(url, RequestHeaders);
 
             var mediaItem = new MediaItem(url);
             return await ExtractMediaInfo(metaRetriever, mediaItem);
@@ -46,7 +45,7 @@ namespace MediaManager.Platforms.Android
         public virtual async Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem)
         {
             var metaRetriever = new MediaMetadataRetriever();
-            await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, _requestHeaders);
+            await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
 
             return await ExtractMediaInfo(metaRetriever, mediaItem);
         }
@@ -164,7 +163,7 @@ namespace MediaManager.Platforms.Android
             }
 
             Bitmap bitmap = BitmapFactory.DecodeFile(albumArtPath);
-            return bitmap ?? BitmapFactory.DecodeResource(_resources, Resource.Drawable.exo_notification_play);
+            return bitmap ?? BitmapFactory.DecodeResource(Resources, Resource.Drawable.exo_notification_play);
         }
 
         protected string TryGetAlbumArtPathByFilename(System.Uri baseUri, string filename)

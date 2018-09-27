@@ -10,7 +10,7 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public class MediaManagerImplementation : MediaManagerBase
+    public abstract class AppleMediaManagerBase : MediaManagerBase
     {
         public override IAudioPlayer AudioPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IVideoPlayer VideoPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
