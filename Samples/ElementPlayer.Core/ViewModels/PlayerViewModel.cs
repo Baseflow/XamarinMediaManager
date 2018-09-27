@@ -21,7 +21,16 @@ namespace ElementPlayer.Core.ViewModels
             PlayPreviousCommand = new MvxAsyncCommand(MediaManager.PlayPrevious);
             ToggleShuffleCommand = new MvxCommand(MediaManager.ToggleShuffle);
             ToggleRepeatCommand = new MvxCommand(MediaManager.ToggleRepeat);
+
+            MediaManager.PlayingChanged += MediaManager_PlayingChanged;
         }
+
+        private void MediaManager_PlayingChanged(object sender, PlayingChangedEventArgs e)
+        {
+            RaiseAllPropertiesChanged();
+        }
+
+        public override string Title => "Player";
 
         public readonly IMediaManager MediaManager;
         public IMvxAsyncCommand PlayPauseCommand { get; }
@@ -31,6 +40,16 @@ namespace ElementPlayer.Core.ViewModels
         public IMvxCommand ToggleRepeatCommand { get; }
 
         public IMediaItem Current => MediaManager.MediaQueue.Current;
+
+        public string CurrentTitle => Current.GetTitle();
+        public string CurrentSubtitle => Current.GetContentTitle();
+
+        public int Buffered => Convert.ToInt32(MediaManager.Buffered.TotalSeconds);
+        public int Duration => Convert.ToInt32(MediaManager.Duration.TotalSeconds);
+        public int Position => Convert.ToInt32(MediaManager.Position.TotalSeconds);
+
+        public string TotalDuration => MediaManager.Duration.ToString(@"mm\:ss");
+        public string TotalPlayed => MediaManager.Position.ToString(@"mm\:ss");
 
         private void Current_MediaItemFailed(object sender, MediaItemFailedEventArgs e)
         {

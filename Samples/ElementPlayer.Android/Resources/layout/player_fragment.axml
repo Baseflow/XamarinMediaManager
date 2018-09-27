@@ -31,7 +31,7 @@
             android:layout_toRightOf="@id/imageButton_Plus"
             android:textAlignment="center"
             android:textStyle="bold"
-            local:MvxBind="Text Current.Title" />
+            local:MvxBind="Text CurrentTitle" />
         <TextView
             android:text="Subtitle"
             android:layout_width="wrap_content"
@@ -40,7 +40,8 @@
             android:layout_toLeftOf="@+id/imageButton_Options"
             android:layout_toRightOf="@id/imageButton_Plus"
             android:layout_below="@id/textView_Title"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            local:MvxBind="Text CurrentSubtitle"/>
         <ImageButton
             android:src="@drawable/baseline_more_vert_24"
             android:layout_width="wrap_content"
@@ -59,6 +60,7 @@
             android:text="00:00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            local:MvxBind="Text TotalPlayed"
             android:id="@+id/textView_playedtime" />
         <SeekBar
             android:layout_width="match_parent"
@@ -67,12 +69,13 @@
             android:layout_toLeftOf="@+id/textView_duration"
             android:layout_toRightOf="@id/textView_playedtime"
             android:min="0"
-            local:MvxBind="Progress MediaManager.Position"/>
+            local:MvxBind="Max Duration; Progress Position, Mode=OneWay; SecondaryProgress Buffered" />
         <TextView
             android:text="00:00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView_duration"
+            local:MvxBind="Text TotalDuration"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
     <RelativeLayout

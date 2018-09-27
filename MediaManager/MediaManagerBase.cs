@@ -95,7 +95,7 @@ namespace MediaManager
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        protected virtual void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (!IsInitialized)
                 return;

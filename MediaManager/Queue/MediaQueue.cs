@@ -6,6 +6,8 @@ namespace MediaManager.Queue
 {
     public class MediaQueue : ObservableCollection<IMediaItem>, IMediaQueue
     {
+        IMediaManager MediaManager = CrossMediaManager.Current;
+
         public event QueueEndedEventHandler QueueEnded;
 
         public event QueueChangedEventHandler QueueChanged;
