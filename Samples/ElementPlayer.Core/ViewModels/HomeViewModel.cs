@@ -8,6 +8,7 @@ using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using MvvmCross.Logging;
 using ElementPlayer.Core.Assets;
+using System.Linq;
 
 namespace ElementPlayer.Core.ViewModels
 {
@@ -27,12 +28,11 @@ namespace ElementPlayer.Core.ViewModels
         private async Task SelectItem(string url)
         {
             MediaManager.MediaQueue.Clear();
-            foreach (var item in Items)
+            await MediaManager.Play(url);
+            foreach (var item in Items.Except<string>(new[] { url }))
             {
                 MediaManager.MediaQueue.Add(new MediaItem(item));
             }
-            
-            await MediaManager.Play(url);
         }
     }
 }

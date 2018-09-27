@@ -148,6 +148,9 @@
     <AndroidResource Include="Resources\layout\main_activity.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\listitem_mediaitem.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Colors.xml" />
@@ -222,7 +225,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\listitem_mediaitem.axml">
+    <AndroidResource Include="Resources\layout\listitem_stringitem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
