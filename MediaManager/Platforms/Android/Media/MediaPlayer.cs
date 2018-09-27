@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Media;
@@ -36,6 +37,7 @@ namespace MediaManager.Platforms.Android.Media
         protected virtual int AudioAttributesUsage => (int)AudioUsageKind.Media;
 
         protected INotifyMediaManager MediaManager = CrossMediaManager.Current as INotifyMediaManager;
+        protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
 
         protected Context Context { get; set; } = CrossMediaManager.Current.GetContext();
 
@@ -94,13 +96,16 @@ namespace MediaManager.Platforms.Android.Media
             if (MediaSession == null)
                 throw new ArgumentNullException(nameof(MediaSession));
 
-            UserAgent = Util.GetUserAgent(Context, "MediaManager");
+            if (RequestHeaders?.Count > 0 && RequestHeaders.TryGetValue("User-Agent", out string userAgent))
+                UserAgent = userAgent;
+            else
+                UserAgent = Util.GetUserAgent(Context, "MediaManager");
+
             HttpDataSourceFactory = new DefaultHttpDataSourceFactory(UserAgent);
 
-            var requestHeaders = CrossMediaManager.Current.RequestHeaders;
-            if (requestHeaders?.Count > 0)
+            if (RequestHeaders?.Count > 0)
             {
-                foreach (var item in requestHeaders)
+                foreach (var item in RequestHeaders)
                 {
                     HttpDataSourceFactory.DefaultRequestProperties.Set(item.Key, item.Value);
                 }
