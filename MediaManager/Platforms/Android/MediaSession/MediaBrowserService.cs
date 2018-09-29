@@ -69,7 +69,6 @@ namespace MediaManager.Platforms.Android.MediaSession
             PrepareMediaSession();
             PrepareMediaPlayer();
             PrepareNotificationManager();
-            PrepareBecomingNoisyReceiver();
         }
 
         protected virtual void PrepareMediaSession()
@@ -109,25 +108,6 @@ namespace MediaManager.Platforms.Android.MediaSession
             //TODO: When only 1 in queue disable navigation
             //PlayerNotificationManager.SetUseNavigationActions(false);
             //PlayerNotificationManager.SetUsePlayPauseActions(false);
-        }
-
-        //TODO: Probably needs to be removed.
-        protected virtual void PrepareBecomingNoisyReceiver()
-        {
-            BecomingNoisyReceiver = new BecomingNoisyReceiver(MediaManager.GetContext(), NativePlayer.AudioFocusManager);
-            MediaController = new MediaControllerCompat(this, MediaSession);
-
-            MediaControllerCallback = new MediaControllerCallback()
-            {
-                OnPlaybackStateChangedImpl = (state) =>
-                {
-                    if (state.State == PlaybackStateCompat.StatePlaying || state.State == PlaybackStateCompat.StateBuffering)
-                        BecomingNoisyReceiver.Register();
-                    else
-                        BecomingNoisyReceiver.Unregister();
-                }
-            };
-            MediaController.RegisterCallback(MediaControllerCallback);
         }
 
         public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)

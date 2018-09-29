@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Android.OS;
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
@@ -10,15 +11,11 @@ namespace MediaManager.Platforms.Android.Media
 {
     public class PlaybackController : DefaultPlaybackController
     {
-        private AudioFocusManager audioFocusManager;
-
-        //TODO: Remove in Exoplayer 2.9.0
-        public PlaybackController(AudioFocusManager audioFocusManager)
+        public PlaybackController()
         {
-            this.audioFocusManager = audioFocusManager;
         }
 
-        public PlaybackController(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+        protected PlaybackController(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
         }
 
@@ -26,22 +23,59 @@ namespace MediaManager.Platforms.Android.Media
         {
         }
 
+        public override string[] GetCommands()
+        {
+            return base.GetCommands();
+        }
+
+        public override long GetSupportedPlaybackActions(IPlayer player)
+        {
+            return base.GetSupportedPlaybackActions(player);
+        }
+
+        public override void OnCommand(IPlayer player, string command, Bundle extras, ResultReceiver cb)
+        {
+            base.OnCommand(player, command, extras, cb);
+        }
+
+        public override void OnFastForward(IPlayer player)
+        {
+            base.OnFastForward(player);
+        }
+
         public override void OnPause(IPlayer player)
         {
             base.OnPause(player);
-            audioFocusManager.AbandonAudioFocus();
         }
 
         public override void OnPlay(IPlayer player)
         {
             base.OnPlay(player);
-            audioFocusManager.RequestAudioFocus();
+        }
+
+        public override void OnRewind(IPlayer player)
+        {
+            base.OnRewind(player);
+        }
+
+        public override void OnSeekTo(IPlayer player, long position)
+        {
+            base.OnSeekTo(player, position);
+        }
+
+        public override void OnSetRepeatMode(IPlayer player, int repeatMode)
+        {
+            base.OnSetRepeatMode(player, repeatMode);
+        }
+
+        public override void OnSetShuffleMode(IPlayer player, int shuffleMode)
+        {
+            base.OnSetShuffleMode(player, shuffleMode);
         }
 
         public override void OnStop(IPlayer player)
         {
             base.OnStop(player);
-            audioFocusManager.AbandonAudioFocus();
         }
     }
 }

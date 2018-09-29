@@ -33,9 +33,6 @@ namespace MediaManager.Platforms.Android.Media
         {
         }
 
-        protected virtual int AudioAttributesContentType => (int)AudioContentType.Music;
-        protected virtual int AudioAttributesUsage => (int)AudioUsageKind.Media;
-
         protected INotifyMediaManager MediaManager = CrossMediaManager.Current as INotifyMediaManager;
         protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
 
@@ -61,9 +58,6 @@ namespace MediaManager.Platforms.Android.Media
         protected MediaSessionConnectorPlaybackPreparer PlaybackPreparer { get; set; }
         protected PlayerEventListener PlayerEventListener { get; set; }
         protected RatingCallback RatingCallback { get; set; }
-
-        //TODO: Remove with Exoplayer 2.9.0
-        internal AudioFocusManager AudioFocusManager { get; set; }
 
         public SimpleExoPlayer Player { get; set; }
         public MediaSessionCompat MediaSession { get; set; }
@@ -120,12 +114,15 @@ namespace MediaManager.Platforms.Android.Media
             TrackSelector = new DefaultTrackSelector(TrackSelectionFactory);
             MediaSource = new ConcatenatingMediaSource();
 
-            //TODO: Replace with built-in AudioManager in Exoplayer 2.9.0
-            AudioFocusManager = new AudioFocusManager(this);
+            var audioAttributes = new Com.Google.Android.Exoplayer2.Audio.AudioAttributes.Builder()
+             .SetUsage(C.UsageMedia)
+             .SetContentType(C.ContentTypeMusic)
+             .Build();
 
-            Player = ExoPlayerFactory.NewSimpleInstance(Context, TrackSelector);
-            Player.AudioAttributes.ContentType = AudioAttributesContentType;
-            Player.AudioAttributes.Usage = AudioAttributesUsage;
+            Player.AudioAttributes = audioAttributes;
+
+            //TODO: Use this in 2.9.0
+            //Player.SetAudioAttributes(audioAttributes, true);
 
             PlayerEventListener = new PlayerEventListener()
             {
@@ -140,7 +137,7 @@ namespace MediaManager.Platforms.Android.Media
             };
             Player.AddListener(PlayerEventListener);
 
-            PlaybackController = new PlaybackController(AudioFocusManager);
+            PlaybackController = new PlaybackController();
             MediaSessionConnector = new MediaSessionConnector(MediaSession, PlaybackController);
 
             QueueNavigator = new QueueNavigator(MediaSession);

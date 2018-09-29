@@ -12,7 +12,7 @@ using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android.Media
 {
-    public class PlayerEventListener : PlayerDefaultEventListener
+    public class PlayerEventListener : Java.Lang.Object, IPlayerEventListener
     {
         public PlayerEventListener()
         {
@@ -34,7 +34,7 @@ namespace MediaManager.Platforms.Android.Media
         public Action<bool> OnShuffleModeEnabledChangedImpl { get; set; }
         public Action<Timeline, Java.Lang.Object, int> OnTimelineChangedImpl { get; set; }
 
-        public override void OnTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections)
+        public void OnTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections)
         {
             for (int i = 0; i < trackGroups.Length; i++)
             {
@@ -56,10 +56,9 @@ namespace MediaManager.Platforms.Android.Media
             }
 
             OnTracksChangedImpl?.Invoke(trackGroups, trackSelections);
-            base.OnTracksChanged(trackGroups, trackSelections);
         }
 
-        public override void OnPositionDiscontinuity(int reason)
+        public void OnPositionDiscontinuity(int reason)
         {
             switch (reason)
             {
@@ -74,55 +73,46 @@ namespace MediaManager.Platforms.Android.Media
                     break;
             }
             OnPositionDiscontinuityImpl?.Invoke(reason);
-            base.OnPositionDiscontinuity(reason);
         }
 
-        public override void OnPlayerStateChanged(bool playWhenReady, int playbackState)
+        public void OnPlayerStateChanged(bool playWhenReady, int playbackState)
         {
             OnPlayerStateChangedImpl?.Invoke(playWhenReady, playbackState);
-            base.OnPlayerStateChanged(playWhenReady, playbackState);
         }
 
-        public override void OnPlayerError(ExoPlaybackException error)
+        public void OnPlayerError(ExoPlaybackException error)
         {
             OnPlayerErrorImpl?.Invoke(error);
-            base.OnPlayerError(error);
         }
 
-        public override void OnLoadingChanged(bool isLoading)
+        public void OnLoadingChanged(bool isLoading)
         {
             OnLoadingChangedImpl?.Invoke(isLoading);
-            base.OnLoadingChanged(isLoading);
         }
 
-        public override void OnPlaybackParametersChanged(PlaybackParameters playbackParameters)
+        public void OnPlaybackParametersChanged(PlaybackParameters playbackParameters)
         {
             OnPlaybackParametersChangedImpl?.Invoke(playbackParameters);
-            base.OnPlaybackParametersChanged(playbackParameters);
         }
 
-        public override void OnRepeatModeChanged(int repeatMode)
+        public void OnRepeatModeChanged(int repeatMode)
         {
             OnRepeatModeChangedImpl?.Invoke(repeatMode);
-            base.OnRepeatModeChanged(repeatMode);
         }
 
-        public override void OnSeekProcessed()
+        public void OnSeekProcessed()
         {
             OnSeekProcessedImpl?.Invoke();
-            base.OnSeekProcessed();
         }
 
-        public override void OnShuffleModeEnabledChanged(bool shuffleModeEnabled)
+        public void OnShuffleModeEnabledChanged(bool shuffleModeEnabled)
         {
             OnShuffleModeEnabledChangedImpl?.Invoke(shuffleModeEnabled);
-            base.OnShuffleModeEnabledChanged(shuffleModeEnabled);
         }
 
-        public override void OnTimelineChanged(Timeline timeline, Java.Lang.Object manifest, int reason)
+        public void OnTimelineChanged(Timeline timeline, Java.Lang.Object manifest, int reason)
         {
             OnTimelineChangedImpl?.Invoke(timeline, manifest, reason);
-            base.OnTimelineChanged(timeline, manifest, reason);
         }
     }
 }
