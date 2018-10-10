@@ -114,6 +114,8 @@ namespace MediaManager.Platforms.Android.Media
             TrackSelector = new DefaultTrackSelector(TrackSelectionFactory);
             MediaSource = new ConcatenatingMediaSource();
 
+            Player = ExoPlayerFactory.NewSimpleInstance(Context, TrackSelector);
+
             var audioAttributes = new Com.Google.Android.Exoplayer2.Audio.AudioAttributes.Builder()
              .SetUsage(C.UsageMedia)
              .SetContentType(C.ContentTypeMusic)

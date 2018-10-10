@@ -1,6 +1,6 @@
 ﻿namespace MediaManager.Media
 {
-    public enum MediaFormat
+    public enum MediaType
     {
         Default,
         Dash,

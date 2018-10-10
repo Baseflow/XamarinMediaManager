@@ -47,7 +47,8 @@ namespace MediaManager.Media
         public int Year { get; set; }
 
         public string FileExtension { get; set; }
-        public MediaFormat MediaFormat { get; set; } = MediaFormat.Default;
+        public MediaType MediaType { get; set; } = MediaType.Default;
+        public MediaLocation MediaLocation { get; set; } = MediaLocation.Default;
 
         private bool _isMetadataExtracted = false;
         public bool IsMetadataExtracted

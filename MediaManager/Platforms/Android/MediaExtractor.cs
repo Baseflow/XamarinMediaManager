@@ -22,31 +22,49 @@ namespace MediaManager.Platforms.Android
 
         public virtual async Task<IMediaItem> CreateMediaItem(string url)
         {
-            var metaRetriever = new MediaMetadataRetriever();
-            await metaRetriever.SetDataSourceAsync(url, RequestHeaders);
-
-            var mediaItem = new MediaItem(url);
-            return await ExtractMediaInfo(metaRetriever, mediaItem);
+            IMediaItem mediaItem = new MediaItem(url);
+            try
+            {
+                var metaRetriever = new MediaMetadataRetriever();
+                await metaRetriever.SetDataSourceAsync(url, RequestHeaders);
+                mediaItem = await ExtractMediaInfo(metaRetriever, mediaItem);
+            }
+            catch (Exception)
+            {
+            }
+            return mediaItem;
         }
 
         public virtual async Task<IMediaItem> CreateMediaItem(FileInfo file)
         {
-            var metaRetriever = new MediaMetadataRetriever();
+            IMediaItem mediaItem = new MediaItem(file.FullName);
+            try
+            {
+                var metaRetriever = new MediaMetadataRetriever();
 
-            var javaFile = new Java.IO.File(file.FullName);
-            var inputStream = new Java.IO.FileInputStream(javaFile);
-            await metaRetriever.SetDataSourceAsync(inputStream.FD);
-
-            var mediaItem = new MediaItem(file.FullName);
-            return await ExtractMediaInfo(metaRetriever, mediaItem);
+                var javaFile = new Java.IO.File(file.FullName);
+                var inputStream = new Java.IO.FileInputStream(javaFile);
+                await metaRetriever.SetDataSourceAsync(inputStream.FD);
+                mediaItem = await ExtractMediaInfo(metaRetriever, mediaItem);
+            }
+            catch (Exception)
+            {
+            }
+            return mediaItem;
         }
 
         public virtual async Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem)
         {
-            var metaRetriever = new MediaMetadataRetriever();
-            await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
-
-            return await ExtractMediaInfo(metaRetriever, mediaItem);
+            try
+            {
+                var metaRetriever = new MediaMetadataRetriever();
+                await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
+                mediaItem = await ExtractMediaInfo(metaRetriever, mediaItem);
+            }
+            catch (Exception)
+            {
+            }
+            return mediaItem;
         }
 
         protected async Task<IMediaItem> ExtractMediaInfo(MediaMetadataRetriever mediaMetadataRetriever, IMediaItem mediaItem)

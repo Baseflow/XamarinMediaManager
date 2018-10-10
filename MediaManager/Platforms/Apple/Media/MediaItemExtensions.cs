@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using AVFoundation;
@@ -16,7 +17,15 @@ namespace MediaManager.Platforms.Apple.Media
         {
             AVAsset asset;
 
-            if (RequestHeaders != null && RequestHeaders.Any())
+            if(mediaItem.MediaLocation == MediaLocation.Embedded)
+            {
+                string directory = Path.GetDirectoryName(mediaItem.MediaUri);
+                string filename = Path.GetFileNameWithoutExtension(mediaItem.MediaUri);
+                string extension = Path.GetExtension(mediaItem.MediaUri).Substring(1);
+                NSUrl url = NSBundle.MainBundle.GetUrlForResource(filename, extension, directory);
+                asset = AVAsset.FromUrl(url);
+            }
+            else if (RequestHeaders != null && RequestHeaders.Any())
             {
                 asset = AVUrlAsset.Create(NSUrl.FromString(mediaItem.MediaUri), GetOptionsWithHeaders(RequestHeaders));
             }
@@ -30,7 +39,7 @@ namespace MediaManager.Platforms.Apple.Media
             return playerItem;
         }
 
-        public static AVUrlAssetOptions GetOptionsWithHeaders(IDictionary<string, string> headers)
+        private static AVUrlAssetOptions GetOptionsWithHeaders(IDictionary<string, string> headers)
         {
             var nativeHeaders = new NSMutableDictionary();
 

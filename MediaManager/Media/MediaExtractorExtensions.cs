@@ -9,7 +9,7 @@ namespace MediaManager.Media
 {
     public static class MediaExtractorExtensions
     {
-        public static async Task<IMediaItem> FetchMediaItemMetaData(this IMediaItem mediaItem)
+        public static async Task<IMediaItem> FetchMetaData(this IMediaItem mediaItem)
         {
             if (mediaItem.IsMetadataExtracted)
                 return mediaItem;
@@ -17,9 +17,9 @@ namespace MediaManager.Media
             return mediaItem = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem(mediaItem);
         }
 
-        public static async Task<IMediaItem[]> FetchMediaQueueMetaData(this IMediaQueue mediaQueue)
+        public static async Task<IMediaItem[]> FetchMetaData(this IMediaQueue mediaQueue)
         {
-            var mediaItems = mediaQueue.Select(i => i.FetchMediaItemMetaData());
+            var mediaItems = mediaQueue.Select(i => i.FetchMetaData());
 
             return await Task.WhenAll(mediaItems);
         }

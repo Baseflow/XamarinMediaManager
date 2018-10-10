@@ -30,5 +30,12 @@ namespace MediaManager.Platforms.Ios.Audio
             {
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            var audioSession = AVAudioSession.SharedInstance();
+            audioSession.SetActive(false);
+            base.Dispose(disposing);
+        }
     }
 }

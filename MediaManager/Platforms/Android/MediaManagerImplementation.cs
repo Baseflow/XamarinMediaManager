@@ -145,7 +145,7 @@ namespace MediaManager
 
         public override async Task<IMediaItem> Play(string uri)
         {
-            var mediaItem = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem(uri);
+            var mediaItem = await MediaExtractor.CreateMediaItem(uri);
             MediaQueue.Clear();
             MediaQueue.Add(mediaItem);
 
@@ -169,15 +169,13 @@ namespace MediaManager
             MediaQueue.Clear();
             foreach (var url in items)
             {
-                var mediaItem = new MediaItem(url);
+                var mediaItem = await MediaExtractor.CreateMediaItem(url);
                 MediaQueue.Add(mediaItem);
             }
 
-            await MediaQueue.FirstOrDefault()?.FetchMediaItemMetaData();
+            await MediaQueue.FirstOrDefault()?.FetchMetaData();
             MediaBrowserManager.MediaController.GetTransportControls().Prepare();
-
-            //TODO: Need to do all of this in the background thread
-            return await MediaQueue.FetchMediaQueueMetaData();
+            return MediaQueue;
         }
 
         public override Task Play(IEnumerable<IMediaItem> items)
@@ -192,14 +190,26 @@ namespace MediaManager
             return Task.CompletedTask;
         }
 
-        public override Task<IMediaItem> Play(FileInfo file)
+        public override async Task<IMediaItem> Play(FileInfo file)
         {
-            throw new NotImplementedException();
+            var mediaItem = await MediaExtractor.CreateMediaItem(file);
+            var mediaUri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
+            MediaBrowserManager.MediaController.GetTransportControls().PlayFromUri(mediaUri, null);
+            return mediaItem;
         }
 
-        public override Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
+        public override async Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
         {
-            throw new NotImplementedException();
+            MediaQueue.Clear();
+            foreach (var file in directoryInfo.GetFiles())
+            {
+                var mediaItem = await MediaExtractor.CreateMediaItem(file);
+                MediaQueue.Add(mediaItem);
+            }
+
+            await MediaQueue.FirstOrDefault()?.FetchMetaData();
+            MediaBrowserManager.MediaController.GetTransportControls().Prepare();
+            return MediaQueue;
         }
 
         public override Task PlayNext()

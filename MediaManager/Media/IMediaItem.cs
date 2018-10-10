@@ -180,8 +180,22 @@ namespace MediaManager.Media
         /// </summary>
         int Year { get; set; }
 
+        /// <summary>
+        /// The file extension of the media item
+        /// This may not be available for every item
+        /// </summary>
         string FileExtension { get; set; }
 
-        MediaFormat MediaFormat { get; set; }
+        /// <summary>
+        /// The type of the media item
+        /// Standard Type is Default which will try to play in the standard way.
+        /// </summary>
+        MediaType MediaType { get; set; }
+
+        /// <summary>
+        /// The location of the media item
+        /// Standard location is Default which will make a guess based on the URI.
+        /// </summary>
+        MediaLocation MediaLocation { get; set; }
     }
 }

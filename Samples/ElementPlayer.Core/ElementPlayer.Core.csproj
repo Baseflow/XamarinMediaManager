@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\media.exolist.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\media.exolist.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MvvmCross" Version="6.2.0" />
     <PackageReference Include="MvvmCross.Plugin.Json" Version="6.2.0" />
     <PackageReference Include="MvvmCross.Plugin.Visibility" Version="6.2.0" />

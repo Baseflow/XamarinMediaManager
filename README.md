@@ -1,17 +1,17 @@
-## MediaManager - Cross platform media plugin for Xamarin and Windows
+# MediaManager - Cross platform media plugin for Xamarin and Windows
 * Designed to be simple and easy to use
-* Stand alone for easy integration with existing projects and frameworks
-* Native playback of media files from remote and local sources
+* Native playback of media files from remote http(s), embedded and local sources
 * Native media notifications and remote controls
+* Queue and playback management by default
 * Playback status (Playing, Buffering, Loading, Paused, Progress)
+* Events for media handling to hook into
 
-
-### Setup & Usage
+## Setup & Usage
 * Available on NuGet: https://www.nuget.org/packages/Plugin.MediaManager/
 * Install into each project that utilizes MediaManager
 * More information on the [Xamarin Blog](https://blog.xamarin.com/play-audio-and-video-with-the-mediamanager-plugin-for-xamarin/ )
 
-### Build Status: 
+## Build Status: 
 [![Build status](https://ci.appveyor.com/api/projects/status/c9c6recwcu7k0s15?svg=true)](https://ci.appveyor.com/project/martijn00/xamarinmediamanager)
 ![GitHub tag](https://img.shields.io/github/tag/martijn00/XamarinMediaManager.svg)
 [![NuGet](https://img.shields.io/nuget/v/Plugin.MediaManager.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.MediaManager/)
@@ -19,35 +19,79 @@
 
 **Platform Support**
 
-|Platform|Supported|Version|
-| ------------------- | :-----------: | :------------------: |
-|Xamarin.iOS|Yes|iOS 7+|
-|Xamarin.Android|Yes|API 9+|
-|Windows 10 UWP|Yes|10+|
+|Platform|Supported|Version|Native|
+| ------------------- | :-----------: | :------------------: |:------------------: |
+|Xamarin.iOS|Yes|iOS 10+|AVPlayer|
+|Xamarin.Android|Yes|API 16+|ExoPlayer|
+|Windows 10 UWP|Yes|10+|MediaElement|
 |Windows WPF|No|
-|.Net Framework|Yes|4.5|
-|.Net Standard|Future|
-|Xamarin.Mac|Yes|3.0+|
-|Xamarin.tvOS|Yes|10.0+|
+|.Net Standard|Yes|2.0+|MediaManager|
+|Xamarin.Mac|Yes|3.0+|AVPlayer|
+|Xamarin.tvOS|Yes|10.0+|AVPlayer|
 |Tizen|Yes|4.0+|
+|Xamarin.Forms|Yes|3.2+|MediaManager|
 
-### Example Usage
+## Installation
 
-### Add the NuGet package to your PCL 
+Add the NuGet package to all the projects you want to use it in.
+
 * In Visual Studio - Tools > NuGet Package Manager > Manage Packages for Solution
 * Select the Browse tab, search for MediaManager
 * Select Plugin.MediaManager
 * Install into each project within your solution
 
+## Usage
+
 Call **MediaManager.Current** from any .Net library or Xamarin project to gain access to APIs.
+
+### Initialize plugin
+
+Make sure to call Init() on startup of your app. Optionally provide the `Activity` on Android.
+
+```csharp
+CrossMediaManager.Current.Init();
+```
+
+### Play a single media item
 
 ```csharp
 await CrossMediaManager.Current.Play("http://www.montemagno.com/sample.mp3");
 ```
 
-See Sample for more details.
+### Play multiple media items
 
-### **IMPORTANT**
+```csharp
+await CrossMediaManager.Current.
+```
+
+### Retrive metadata for media
+
+```csharp
+await CrossMediaManager.Current.
+```
+
+### Add Video Player to the UI
+
+```csharp
+await CrossMediaManager.Current.
+```
+
+## Xamarin.Forms
+
+```csharp
+await CrossMediaManager.Current.
+```
+## Platform specific features
+
+|Feature|Android|iOS, Mac, tvOS|UWP|Tizen|
+| ------------------- | :-----------: | :------------------: |:------------------: |
+|HLS|x|||
+|DASH|x|||
+|SmoothStreaming|x|||
+|ChromeCast|x|||
+|Apple TV||x||
+
+## **IMPORTANT**
 **Android:**
 
 * You must request `AccessWifiState`, `Internet`, `MediaContentControl` and `WakeLock` permissions
@@ -63,7 +107,7 @@ See Sample for more details.
 
 * You must request `http://tizen.org/privilege/internet`, `http://tizen.org/privilege/mediastorage`, and `http://tizen.org/privilege/externalstorage` privileges
 
-#### Contributors
+## Contributors
 * [martijn00](https://github.com/martijn00)
 * [modplug](https://github.com/modplug)
 * [jmartine2](https://github.com/jmartine2)

@@ -38,7 +38,9 @@ namespace MediaManager.Platforms.Apple.Media
 
         public Task Play(IMediaItem mediaItem)
         {
-            Player.ReplaceCurrentItemWithPlayerItem(mediaItem.GetPlayerItem());
+            var item = mediaItem.GetPlayerItem();
+
+            Player.ReplaceCurrentItemWithPlayerItem(item);
             Player.Play();
             return Task.CompletedTask;
         }
