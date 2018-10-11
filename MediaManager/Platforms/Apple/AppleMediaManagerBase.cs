@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using AVFoundation;
 using MediaManager.Audio;
 using MediaManager.Media;
+using MediaManager.Platforms.Apple.Media;
 using MediaManager.Playback;
 using MediaManager.Video;
 using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class AppleMediaManagerBase : MediaManagerBase
+    public abstract class AppleMediaManagerBase : MediaManagerBase<AppleMediaPlayer, AVQueuePlayer>
     {
-        public override IAudioPlayer AudioPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override IVideoPlayer VideoPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override AppleMediaPlayer MediaPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public override IMediaExtractor MediaExtractor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IVolumeManager VolumeManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
@@ -25,7 +27,21 @@ namespace MediaManager
 
         public override TimeSpan Buffered => throw new NotImplementedException();
 
-        public override float Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override float Speed
+        {
+            get
+            {
+                if (MediaPlayer.Player != null)
+                    return MediaPlayer.Player.Rate;
+                return 0.0f;
+            }
+            set
+            {
+                if (MediaPlayer.Player != null)
+                    MediaPlayer.Player.Rate = value;
+            }
+        }
+
 
         public override void Init()
         {

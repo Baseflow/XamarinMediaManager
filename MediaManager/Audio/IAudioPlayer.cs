@@ -1,6 +1,6 @@
 ﻿namespace MediaManager.Audio
 {
-    public interface IAudioPlayer : IMediaPlayer
+    public interface IAudioPlayer<TPlayer> : IMediaPlayer<TPlayer> where TPlayer : class
     {
     }
 }

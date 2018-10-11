@@ -12,8 +12,12 @@ using MediaManager.Video;
 
 namespace MediaManager.Platforms.Apple.Media
 {
-    public class AppleMediaPlayer : NSObject, IAudioPlayer, IVideoPlayer
+    public abstract class AppleMediaPlayer : NSObject, IAudioPlayer<AVQueuePlayer>, IVideoPlayer<AVQueuePlayer>
     {
+        private NSObject DidFinishPlayingObserver;
+        private NSObject ItemFailedToPlayToEndTimeObserver;
+        private NSObject ErrorObserver;
+
         public AppleMediaPlayer()
         {
         }
@@ -27,7 +31,20 @@ namespace MediaManager.Platforms.Apple.Media
 
         public virtual void Initialize()
         {
+            DidFinishPlayingObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification, DidFinishPlaying);
+            ItemFailedToPlayToEndTimeObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.ItemFailedToPlayToEndTimeNotification, DidErrorOcurred);
+            ErrorObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.NewErrorLogEntryNotification, DidErrorOcurred);
             Player = new AVQueuePlayer();
+        }
+
+        private void DidErrorOcurred(NSNotification obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DidFinishPlaying(NSNotification obj)
+        {
+            throw new NotImplementedException();
         }
 
         public Task Pause()
@@ -40,6 +57,7 @@ namespace MediaManager.Platforms.Apple.Media
         {
             var item = mediaItem.GetPlayerItem();
 
+            Player.ActionAtItemEnd = AVPlayerActionAtItemEnd.None;
             Player.ReplaceCurrentItemWithPlayerItem(item);
             Player.Play();
             return Task.CompletedTask;

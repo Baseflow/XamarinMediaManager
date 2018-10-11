@@ -4,15 +4,14 @@ using System.Text;
 using AVFoundation;
 using AVKit;
 using Foundation;
-using MediaManager.Platforms.Apple.Audio;
+using MediaManager.Platforms.Apple.Media;
 
-namespace MediaManager.Platforms.Ios.Audio
+namespace MediaManager.Platforms.Ios.Media
 {
-    public class AudioPlayer : AppleAudioPlayer
+    public class MediaPlayer : AppleMediaPlayer
     {
-        public AudioPlayer()
-        {
-        }
+        //TODO: Make possible to hook into
+        AVPlayerViewController aVPlayerViewController;
 
         public override void Initialize()
         {

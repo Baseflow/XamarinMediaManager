@@ -11,6 +11,7 @@ using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Source.Dash;
 using Com.Google.Android.Exoplayer2.Source.Smoothstreaming;
 using Com.Google.Android.Exoplayer2.Trackselection;
+using Com.Google.Android.Exoplayer2.UI;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
 using MediaManager.Audio;
@@ -23,7 +24,7 @@ using MediaManager.Video;
 
 namespace MediaManager.Platforms.Android.Media
 {
-    public abstract class MediaPlayer : Java.Lang.Object, IAudioPlayer, IVideoPlayer, IExoPlayerImplementation
+    public class MediaPlayer : Java.Lang.Object, IAudioPlayer<SimpleExoPlayer>, IVideoPlayer<SimpleExoPlayer>
     {
         public MediaPlayer()
         {
@@ -60,6 +61,7 @@ namespace MediaManager.Platforms.Android.Media
         protected RatingCallback RatingCallback { get; set; }
 
         public SimpleExoPlayer Player { get; set; }
+        //public PlayerView PlayerView { get; set; }
         public MediaSessionCompat MediaSession { get; set; }
 
         public MediaPlayerState State

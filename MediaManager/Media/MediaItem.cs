@@ -10,6 +10,8 @@ namespace MediaManager.Media
     {
         public MediaItem(string uri)
         {
+            if (string.IsNullOrEmpty(uri))
+                throw new ArgumentNullException(uri);
             MediaUri = uri;
         }
 

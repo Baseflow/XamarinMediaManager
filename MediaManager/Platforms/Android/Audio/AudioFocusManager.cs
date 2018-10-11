@@ -23,24 +23,21 @@ namespace MediaManager.Platforms.Android.Audio
         private const float MEDIA_VOLUME_DEFAULT = 1.0f;
         private const float MEDIA_VOLUME_DUCK = 0.2f;
 
-        private IMediaPlayer player;
+        private IMediaPlayer<SimpleExoPlayer> mediaPlayer;
 
         private SimpleExoPlayer exoPlayer
         {
             get
             {
-                if (player is IExoPlayerImplementation exoPlayerPlayer)
-                    return exoPlayerPlayer.Player;
-
-                return null;
+                return mediaPlayer.Player;
             }
         }
 
         public bool ShouldPlayWhenReady { get; private set; }
 
-        public AudioFocusManager(IMediaPlayer player)
+        public AudioFocusManager(IMediaPlayer<SimpleExoPlayer> player)
         {
-            this.player = player;
+            this.mediaPlayer = player;
             context = global::Android.App.Application.Context;
             mAudioManager = (AudioManager)context.GetSystemService(Context.AudioService);
 
@@ -124,7 +121,7 @@ namespace MediaManager.Platforms.Android.Audio
 
         private bool IsPlaying()
         {
-            return player.State == MediaPlayerState.Playing;
+            return mediaPlayer.State == MediaPlayerState.Playing;
         }
 
         public bool GetPlayWhenReady()

@@ -34,12 +34,23 @@ namespace ElementPlayer.Core.ViewModels
             {
                 foreach (var sample in item.Samples)
                 {
-                    Items.Add(new MediaItem(sample.Uri)
+                    if (!string.IsNullOrEmpty(sample.Uri))
                     {
-                        Title = sample.Name,
-                        Album = item.Name,
-                        FileExtension = sample.Extension
-                    });
+                        var mediaItem = new MediaItem(sample.Uri)
+                        {
+                            Title = sample.Name,
+                            Album = item.Name,
+                            FileExtension = sample.Extension ?? ""
+                        };
+                        if (mediaItem.FileExtension == "mpd" || mediaItem.MediaUri.EndsWith(".mpd"))
+                            mediaItem.MediaType = MediaType.Dash;
+                        else if (mediaItem.FileExtension == "ism" || mediaItem.MediaUri.EndsWith(".ism"))
+                            mediaItem.MediaType = MediaType.SmoothStreaming;
+                        else if (mediaItem.FileExtension == "m3u8" || mediaItem.MediaUri.EndsWith(".m3u8"))
+                            mediaItem.MediaType = MediaType.Hls;
+
+                        Items.Add(mediaItem);
+                    }
                 }                
             }
 

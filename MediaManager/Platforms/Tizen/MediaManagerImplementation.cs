@@ -4,16 +4,17 @@ using System.IO;
 using System.Threading.Tasks;
 using MediaManager.Audio;
 using MediaManager.Media;
+using MediaManager.Platforms.Tizen.Media;
 using MediaManager.Playback;
 using MediaManager.Video;
 using MediaManager.Volume;
+using Tizen.Multimedia;
 
 namespace MediaManager
 {
-    public class MediaManagerImplementation : MediaManagerBase
+    public class MediaManagerImplementation : MediaManagerBase<MediaPlayer, Player>
     {
-        public override IAudioPlayer AudioPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override IVideoPlayer VideoPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override MediaPlayer MediaPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IMediaExtractor MediaExtractor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IVolumeManager VolumeManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

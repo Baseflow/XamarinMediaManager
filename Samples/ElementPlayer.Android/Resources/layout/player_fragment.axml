@@ -4,17 +4,19 @@
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ImageView
-        android:src="@drawable/baseline_image_24"
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/exoplayerview_activity_video"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:id="@+id/imageView_Cover"
-        android:layout_margin="16dp"
-        />
+        local:use_artwork="true"
+        local:default_artwork="@drawable/baseline_image_24"
+        local:show_timeout="5000"
+        local:fastforward_increment="1000"
+        local:rewind_increment="1000" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imageView_Cover"
+        android:layout_below="@+id/exoplayerview_activity_video"
         android:id="@+id/relativeLayout1"
         android:padding="8dp">
         <ImageButton

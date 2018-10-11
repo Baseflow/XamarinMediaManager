@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.Res;
+using Com.Google.Android.Exoplayer2;
 using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Platforms.Android;
@@ -22,7 +23,7 @@ using NotificationManager = MediaManager.Platforms.Android.NotificationManager;
 namespace MediaManager
 {
     [global::Android.Runtime.Preserve(AllMembers = true)]
-    public class MediaManagerImplementation : MediaManagerBase
+    public class MediaManagerImplementation : MediaManagerBase<MediaPlayer, SimpleExoPlayer>
     {
         public MediaManagerImplementation()
         {
@@ -46,7 +47,21 @@ namespace MediaManager
             }
         }
 
-        private IAudioPlayer _audioPlayer;
+        private MediaPlayer _mediaPlayer;
+        public override MediaPlayer MediaPlayer {
+            get
+            {
+                if (_mediaPlayer == null)
+                    _mediaPlayer = new MediaPlayer();
+                return _mediaPlayer;
+            }
+            set
+            {
+                _mediaPlayer = value;
+            }
+        }
+
+        /*private IAudioPlayer _audioPlayer;
         public override IAudioPlayer AudioPlayer
         {
             get
@@ -75,7 +90,7 @@ namespace MediaManager
                 _videoPlayer = value;
             }
         }
-
+        */
         private INotificationManager _notificationManager;
         public virtual INotificationManager NotificationManager
         {

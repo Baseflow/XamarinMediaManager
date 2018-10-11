@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
+using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.UI;
 using MediaManager.Audio;
 using MediaManager.Platforms.Android.Audio;
@@ -17,26 +18,7 @@ namespace MediaManager.Platforms.Android.MediaSession
     [IntentFilter(new[] { global::Android.Service.Media.MediaBrowserService.ServiceInterface })]
     public class MediaBrowserService : MediaBrowserServiceCompat
     {
-        protected IMediaManager MediaManager = CrossMediaManager.Current;
-
-        private IAudioPlayer _audioPlayer;
-        protected IAudioPlayer AudioPlayer
-        {
-            get
-            {
-                if (_audioPlayer == null)
-                    _audioPlayer = MediaManager.AudioPlayer;
-
-                return _audioPlayer;
-            }
-            set
-            {
-                MediaManager.AudioPlayer = value;
-                _audioPlayer = value;
-            }
-        }
-
-        protected AudioPlayer NativePlayer => AudioPlayer as AudioPlayer;
+        protected IMediaManager<MediaPlayer, SimpleExoPlayer> MediaManager = CrossMediaManager.Current as IMediaManager<MediaPlayer, SimpleExoPlayer>;
 
         protected PendingIntent SessionActivityPendingIntent { get; private set; }
         protected MediaSessionCompat MediaSession { get; set; }
@@ -85,8 +67,8 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         protected virtual void PrepareMediaPlayer()
         {
-            NativePlayer.MediaSession = MediaSession;
-            AudioPlayer.Initialize();
+            MediaManager.MediaPlayer.MediaSession = MediaSession;
+            MediaManager.MediaPlayer.Initialize();
         }
 
         protected virtual void PrepareNotificationManager()
@@ -103,7 +85,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             NotificationListener = new NotificationListener();
             PlayerNotificationManager.SetNotificationListener(NotificationListener);
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
-            PlayerNotificationManager.SetPlayer(NativePlayer.Player);
+            PlayerNotificationManager.SetPlayer(MediaManager.MediaPlayer.Player);
 
             //TODO: When only 1 in queue disable navigation
             //PlayerNotificationManager.SetUseNavigationActions(false);
@@ -123,8 +105,8 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
             // Service is being killed, so make sure we release our resources
             PlayerNotificationManager.SetPlayer(null);
-            NativePlayer.Dispose();
-            AudioPlayer = null;
+            MediaManager.MediaPlayer.Dispose();
+            MediaManager.MediaPlayer = null;
             MediaSession.Release();
             StopForeground(true);
         }

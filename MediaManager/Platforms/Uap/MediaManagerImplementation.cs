@@ -4,20 +4,21 @@ using System.IO;
 using System.Threading.Tasks;
 using MediaManager.Audio;
 using MediaManager.Media;
+using MediaManager.Platforms.Uap.Media;
 using MediaManager.Playback;
 using MediaManager.Video;
 using MediaManager.Volume;
+using Windows.Media.Playback;
 
 namespace MediaManager
 {
-    public class MediaManagerImplementation : MediaManagerBase
+    public class MediaManagerImplementation : MediaManagerBase<WindowsMediaPlayer, MediaPlayer>
     {
-        public override IAudioPlayer AudioPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override IVideoPlayer VideoPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override WindowsMediaPlayer MediaPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IMediaExtractor MediaExtractor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IVolumeManager VolumeManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public override MediaPlayerState State => throw new NotImplementedException();
+        public override Playback.MediaPlayerState State => throw new NotImplementedException();
 
         public override TimeSpan Position => throw new NotImplementedException();
 

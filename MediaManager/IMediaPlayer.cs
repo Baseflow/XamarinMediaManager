@@ -11,6 +11,11 @@ namespace MediaManager
 
     public delegate void AfterPlayingEventHandler(object sender, MediaPlayerEventArgs e);
 
+    public interface IMediaPlayer<TPlayer> : IMediaPlayer where TPlayer : class
+    {
+        TPlayer Player { get; set; }
+    }
+
     public interface IMediaPlayer : IDisposable
     {
         void Initialize();

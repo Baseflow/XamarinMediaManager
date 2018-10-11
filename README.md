@@ -84,12 +84,14 @@ await CrossMediaManager.Current.
 ## Platform specific features
 
 |Feature|Android|iOS, Mac, tvOS|UWP|Tizen|
-| ------------------- | :-----------: | :------------------: |:------------------: |
-|HLS|x|||
-|DASH|x|||
-|SmoothStreaming|x|||
-|ChromeCast|x|||
-|Apple TV||x||
+| ------------------- | :-----------: | :------------------: | :------------------: |:------------------: |
+|Audio|x|x|x|x|
+|Video|x|x|x|x|
+|HLS|x||||
+|DASH|x||||
+|SmoothStreaming|x||||
+|ChromeCast|x||||
+|Apple TV||x|||
 
 ## **IMPORTANT**
 **Android:**
