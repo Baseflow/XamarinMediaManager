@@ -10,11 +10,13 @@ using Windows.Media.Playback;
 
 namespace MediaManager.Platforms.Uap.Media
 {
-    public class WindowsMediaPlayer : IAudioPlayer<MediaPlayer>, IVideoPlayer<MediaPlayer>
+    public class WindowsMediaPlayer : IAudioPlayer<MediaPlayer>, IVideoPlayer<MediaPlayer, MediaPlayerSurface>
     {
         public MediaPlayer Player { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public Playback.MediaPlayerState State => throw new NotImplementedException();
+
+        public MediaPlayerSurface PlayerView { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;

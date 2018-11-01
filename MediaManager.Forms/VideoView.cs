@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MediaManager.Media;
 using MediaManager.Video;
 using Xamarin.Forms;
 
@@ -43,15 +44,28 @@ namespace MediaManager.Forms
 
         private static void OnAspectModeChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
-            //CrossMediaManager.Current.VideoPlayer.AspectMode = ((VideoAspectMode)newvalue);
+            CrossMediaManager.Current.MediaPlayer.GetPlayerView().VideoAspect = ((VideoAspectMode)newvalue);
         }
 
         private static void OnSourceChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
-            var url = newvalue as string;
-
-            //Auto play by adding video to the queue and then play
-            CrossMediaManager.Current.Play(url);
+            switch (newvalue)
+            {
+                case string url:
+                    CrossMediaManager.Current.Play(url);
+                    break;
+                case IEnumerable<string> urls:
+                    CrossMediaManager.Current.Play(urls);
+                    break;
+                case IMediaItem mediaItem:
+                    CrossMediaManager.Current.Play(mediaItem);
+                    break;
+                case IEnumerable<IMediaItem> mediaItems:
+                    CrossMediaManager.Current.Play(mediaItems);
+                    break;
+                default:
+                    break;
+            }            
         }
     }
 }

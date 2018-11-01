@@ -25,7 +25,7 @@ using static Com.Google.Android.Exoplayer2.Trackselection.MappingTrackSelector;
 
 namespace MediaManager.Platforms.Android.Media
 {
-    public class MediaPlayer : Java.Lang.Object, IMediaPlayer<SimpleExoPlayer>, IAudioPlayer<SimpleExoPlayer>, IVideoPlayer<SimpleExoPlayer>
+    public class MediaPlayer : Java.Lang.Object, IAudioPlayer<SimpleExoPlayer>, IVideoPlayer<SimpleExoPlayer, PlayerView>
     {
         public MediaPlayer()
         {
@@ -62,7 +62,8 @@ namespace MediaManager.Platforms.Android.Media
         protected RatingCallback RatingCallback { get; set; }
 
         public SimpleExoPlayer Player { get; set; }
-        //public PlayerView PlayerView { get; set; }
+        public PlayerView PlayerView { get; set; }
+
         public MediaSessionCompat MediaSession { get; set; }
 
         public MediaPlayerState State
@@ -138,6 +139,7 @@ namespace MediaManager.Platforms.Android.Media
                 OnTracksChangedImpl = (trackGroups, trackSelections) =>
                 {
                     MediaManager.MediaQueue.CurrentIndex = Player.CurrentWindowIndex;
+                    //TODO: Update metadata of item here
                 }
             };
             Player.AddListener(PlayerEventListener);

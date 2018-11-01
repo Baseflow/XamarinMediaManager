@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.Text;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.UI;
+using MediaManager.Platforms.Android.Video;
+using MediaManager.Video;
 
 namespace MediaManager
 {
-    public static class MediaPlayerExtensions
+    public static partial class MediaPlayerExtensions
     {
-        public static void SetPlayerView(this IMediaPlayer mediaPlayer, PlayerView playerView)
+        public static void SetPlayerView(this IMediaPlayer mediaPlayer, VideoView videoView)
         {
-            if (mediaPlayer is IMediaPlayer<SimpleExoPlayer> exoPlayer)
+            if (mediaPlayer is IVideoPlayer<SimpleExoPlayer, PlayerView> videoPlayer)
             {
-                playerView.RequestFocus();
-                playerView.Player = exoPlayer.Player;
+                videoPlayer.PlayerView = videoView;
+                videoView.RequestFocus();
+                videoView.Player = videoPlayer.Player;
             }
             else
                 throw new ArgumentException("MediaPlayer needs to be of type IMediaPlayer<SimpleExoPlayer> to use this extension", nameof(mediaPlayer));

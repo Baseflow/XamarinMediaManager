@@ -10,11 +10,13 @@ using Tizen.Multimedia;
 
 namespace MediaManager.Platforms.Tizen.Media
 {
-    public class MediaPlayer : IAudioPlayer<Player>, IVideoPlayer<Player>
+    public class MediaPlayer : IAudioPlayer<Player>, IVideoPlayer<Player, MediaView>
     {
         public Player Player { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public MediaPlayerState State => throw new NotImplementedException();
+
+        public MediaView PlayerView { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;

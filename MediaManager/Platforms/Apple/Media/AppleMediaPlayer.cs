@@ -8,11 +8,11 @@ using Foundation;
 using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Playback;
-using MediaManager.Video;
+
 
 namespace MediaManager.Platforms.Apple.Media
 {
-    public abstract class AppleMediaPlayer : NSObject, IAudioPlayer<AVQueuePlayer>, IVideoPlayer<AVQueuePlayer>
+    public abstract class AppleMediaPlayer : NSObject, IAudioPlayer<AVQueuePlayer> //, IVideoPlayer<AVQueuePlayer, UIView>
     {
         private NSObject DidFinishPlayingObserver;
         private NSObject ItemFailedToPlayToEndTimeObserver;
@@ -25,6 +25,8 @@ namespace MediaManager.Platforms.Apple.Media
         public AVQueuePlayer Player { get; set; }
 
         public MediaPlayerState State => throw new NotImplementedException();
+
+        //public UIView PlayerView { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;
