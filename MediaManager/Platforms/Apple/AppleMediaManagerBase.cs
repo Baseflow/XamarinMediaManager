@@ -12,9 +12,8 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class AppleMediaManagerBase : MediaManagerBase<AppleMediaPlayer, AVQueuePlayer>
+    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVQueuePlayer> where TMediaPlayer : class, IMediaPlayer<AVQueuePlayer>
     {
-        public override AppleMediaPlayer NativeMediaPlayer => throw new System.NotImplementedException();
 
         public override IMediaPlayer MediaPlayer { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
@@ -101,11 +100,6 @@ namespace MediaManager
         }
 
         public override Task SeekTo(TimeSpan position)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task SeekToStart()
         {
             throw new NotImplementedException();
         }

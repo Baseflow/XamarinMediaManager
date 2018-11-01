@@ -11,7 +11,7 @@ using MediaManager.Volume;
 namespace MediaManager
 {
     [Foundation.Preserve(AllMembers = true)]
-    public class MediaManagerImplementation : AppleMediaManagerBase
+    public class MediaManagerImplementation : AppleMediaManagerBase<MediaManager.Platforms.Ios.Media.MediaPlayer>
     {
         public MediaManagerImplementation()
         {

@@ -87,11 +87,6 @@ namespace MediaManager
             throw new NotImplementedException();
         }
 
-        public override Task SeekToStart()
-        {
-            throw new NotImplementedException();
-        }
-
         public override Task StepBackward()
         {
             throw new NotImplementedException();

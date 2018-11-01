@@ -11,7 +11,7 @@ namespace MediaManager
             if (mediaManager.Position < TimeSpan.FromSeconds(3))
                 return mediaManager.PlayPrevious();
             else
-                return mediaManager.SeekTo(TimeSpan.Zero);
+                return SeekToStart(mediaManager);
         }
 
         public static bool IsPlaying(this IMediaManager mediaManager)
@@ -32,6 +32,11 @@ namespace MediaManager
                 return mediaManager.Play();
             else
                 return mediaManager.Pause();
+        }
+
+        public static Task SeekToStart(this IMediaManager mediaManager)
+        {
+            return mediaManager.SeekTo(TimeSpan.Zero);
         }
     }
 }

@@ -66,11 +66,6 @@ namespace MediaManager.Playback
         Task PlayNext();
 
         /// <summary>
-        /// Seeks to the start of the current MediaFile
-        /// </summary>
-        Task SeekToStart();
-
-        /// <summary>
         /// Seeks forward a fixed amount of seconds of the current MediaFile
         /// </summary>
         Task StepForward();

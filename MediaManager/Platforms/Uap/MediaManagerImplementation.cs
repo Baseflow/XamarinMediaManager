@@ -28,8 +28,6 @@ namespace MediaManager
 
         public override float Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public override WindowsMediaPlayer NativeMediaPlayer => throw new NotImplementedException();
-
         public override void Init()
         {
             throw new NotImplementedException();
@@ -86,11 +84,6 @@ namespace MediaManager
         }
 
         public override Task SeekTo(TimeSpan position)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task SeekToStart()
         {
             throw new NotImplementedException();
         }

@@ -61,12 +61,6 @@ namespace MediaManager
             }
         }
 
-        public override MediaPlayer NativeMediaPlayer {
-            get
-            {
-                return MediaPlayer as MediaPlayer;
-            }
-        }
 
         /*private IAudioPlayer _audioPlayer;
         public override IAudioPlayer AudioPlayer
@@ -250,13 +244,6 @@ namespace MediaManager
         public override Task SeekTo(TimeSpan position)
         {
             MediaBrowserManager.MediaController.GetTransportControls().SeekTo((long)position.TotalMilliseconds);
-            return Task.CompletedTask;
-        }
-
-        //TODO: Move to extension method
-        public override Task SeekToStart()
-        {
-            MediaBrowserManager.MediaController.GetTransportControls().SeekTo(0);
             return Task.CompletedTask;
         }
 

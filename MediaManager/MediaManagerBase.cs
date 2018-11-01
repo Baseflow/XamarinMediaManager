@@ -17,7 +17,7 @@ namespace MediaManager
 {
     public abstract class MediaManagerBase<TMediaPlayer, TPlayer> : MediaManagerBase, IMediaManager<TMediaPlayer, TPlayer> where TMediaPlayer : class, IMediaPlayer<TPlayer> where TPlayer : class
     {
-        public abstract TMediaPlayer NativeMediaPlayer { get; }
+        public TMediaPlayer NativeMediaPlayer => MediaPlayer as TMediaPlayer;
     }
 
     public abstract class MediaManagerBase : IMediaManager, INotifyMediaManager
@@ -69,7 +69,6 @@ namespace MediaManager
         public abstract Task PlayNext();
         public abstract Task PlayPrevious();
         public abstract Task SeekTo(TimeSpan position);
-        public abstract Task SeekToStart();
         public abstract Task StepBackward();
         public abstract Task StepForward();
         public abstract Task Stop();
