@@ -13,7 +13,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
         }
 
-        public MediaBrowserSubscriptionCallback(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        protected MediaBrowserSubscriptionCallback(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
         }
 

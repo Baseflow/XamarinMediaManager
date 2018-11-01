@@ -25,7 +25,7 @@ namespace MediaManager.Platforms.Android.Media
         {
         }
 
-        public QueueNavigator(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        protected QueueNavigator(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
         }
 

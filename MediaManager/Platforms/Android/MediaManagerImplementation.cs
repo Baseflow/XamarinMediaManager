@@ -47,8 +47,8 @@ namespace MediaManager
             }
         }
 
-        private MediaPlayer _mediaPlayer;
-        public override MediaPlayer MediaPlayer {
+        private IMediaPlayer _mediaPlayer;
+        public override IMediaPlayer MediaPlayer {
             get
             {
                 if (_mediaPlayer == null)
@@ -58,6 +58,13 @@ namespace MediaManager
             set
             {
                 _mediaPlayer = value;
+            }
+        }
+
+        public override MediaPlayer NativeMediaPlayer {
+            get
+            {
+                return MediaPlayer as MediaPlayer;
             }
         }
 
@@ -145,6 +152,7 @@ namespace MediaManager
         public override MediaPlayerState State => MediaBrowserManager?.MediaController?.PlaybackState?.ToMediaPlayerState() ?? MediaPlayerState.Stopped;
 
         public override float Speed { get => MediaBrowserManager?.MediaController.PlaybackState?.PlaybackSpeed ?? 0; set => throw new NotImplementedException(); }
+        
 
         public override Task Pause()
         {

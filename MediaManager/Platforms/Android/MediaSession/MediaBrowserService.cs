@@ -36,7 +36,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
         }
 
-        public MediaBrowserService(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        protected MediaBrowserService(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
         }
 
@@ -67,7 +67,7 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         protected virtual void PrepareMediaPlayer()
         {
-            MediaManager.MediaPlayer.MediaSession = MediaSession;
+            MediaManager.NativeMediaPlayer.MediaSession = MediaSession;
             MediaManager.MediaPlayer.Initialize();
         }
 
@@ -83,9 +83,18 @@ namespace MediaManager.Platforms.Android.MediaSession
 
             //Needed for enabling the notification as a mediabrowser.
             NotificationListener = new NotificationListener();
+            NotificationListener.OnNotificationStartedImpl = (notificationId, notification) =>
+            {
+                StartForeground(notificationId, notification);
+            };
+            NotificationListener.OnNotificationCancelledImpl = (notificationId) =>
+            {
+                StopSelf();
+            };
+
             PlayerNotificationManager.SetNotificationListener(NotificationListener);
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
-            PlayerNotificationManager.SetPlayer(MediaManager.MediaPlayer.Player);
+            PlayerNotificationManager.SetPlayer(MediaManager.NativeMediaPlayer.Player);
 
             //TODO: When only 1 in queue disable navigation
             //PlayerNotificationManager.SetUseNavigationActions(false);

@@ -8,6 +8,7 @@
         android:id="@+id/exoplayerview_activity_video"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:focusable="true"
         local:use_artwork="true"
         local:default_artwork="@drawable/baseline_image_24"
         local:show_timeout="5000"

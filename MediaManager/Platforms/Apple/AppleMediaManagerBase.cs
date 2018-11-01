@@ -14,7 +14,9 @@ namespace MediaManager
 {
     public abstract class AppleMediaManagerBase : MediaManagerBase<AppleMediaPlayer, AVQueuePlayer>
     {
-        public override AppleMediaPlayer MediaPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override AppleMediaPlayer NativeMediaPlayer => throw new System.NotImplementedException();
+
+        public override IMediaPlayer MediaPlayer { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
         public override IMediaExtractor MediaExtractor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IVolumeManager VolumeManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -31,14 +33,14 @@ namespace MediaManager
         {
             get
             {
-                if (MediaPlayer.Player != null)
-                    return MediaPlayer.Player.Rate;
+                if (NativeMediaPlayer.Player != null)
+                    return NativeMediaPlayer.Player.Rate;
                 return 0.0f;
             }
             set
             {
-                if (MediaPlayer.Player != null)
-                    MediaPlayer.Player.Rate = value;
+                if (NativeMediaPlayer.Player != null)
+                    NativeMediaPlayer.Player.Rate = value;
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using MediaManager.Audio;
 using MediaManager.Media;
+using MediaManager.Platforms.Apple.Media;
 using MediaManager.Video;
 using MediaManager.Volume;
 

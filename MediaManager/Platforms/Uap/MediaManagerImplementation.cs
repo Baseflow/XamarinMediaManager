@@ -14,7 +14,7 @@ namespace MediaManager
 {
     public class MediaManagerImplementation : MediaManagerBase<WindowsMediaPlayer, MediaPlayer>
     {
-        public override WindowsMediaPlayer MediaPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override IMediaPlayer MediaPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IMediaExtractor MediaExtractor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IVolumeManager VolumeManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
@@ -27,6 +27,8 @@ namespace MediaManager
         public override TimeSpan Buffered => throw new NotImplementedException();
 
         public override float Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public override WindowsMediaPlayer NativeMediaPlayer => throw new NotImplementedException();
 
         public override void Init()
         {

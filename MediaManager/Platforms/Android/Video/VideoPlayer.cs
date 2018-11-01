@@ -12,7 +12,7 @@ using MediaManager.Video;
 
 namespace MediaManager.Platforms.Android.Video
 {
-    public class VideoPlayer : Media.MediaPlayer
+    /*public class VideoPlayer : Media.MediaPlayer
     {
         public VideoPlayer()
         {
@@ -37,5 +37,5 @@ namespace MediaManager.Platforms.Android.Video
             playerView.OverlayFrameLayout.RemoveAllViews();
             base.Dispose(disposing);
         }
-    }
+    }*/
 }

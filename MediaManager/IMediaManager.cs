@@ -13,7 +13,7 @@ namespace MediaManager
 {
     public interface IMediaManager<TMediaPlayer, TPlayer> : IMediaManager where TMediaPlayer : class, IMediaPlayer<TPlayer> where TPlayer : class
     {
-        new TMediaPlayer MediaPlayer { get; set; }
+        TMediaPlayer NativeMediaPlayer { get; }
     }
 
     public interface IMediaManager : IPlaybackManager

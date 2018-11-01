@@ -10,11 +10,11 @@ namespace MediaManager.Platforms.Android.MediaSession
 {
     public class MediaControllerCallback : MediaControllerCompat.Callback
     {
-        public MediaControllerCallback(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        public MediaControllerCallback()
         {
         }
 
-        public MediaControllerCallback()
+        protected MediaControllerCallback(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
         }
 

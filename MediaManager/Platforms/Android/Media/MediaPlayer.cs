@@ -21,10 +21,11 @@ using MediaManager.Platforms.Android.Playback;
 using MediaManager.Playback;
 using MediaManager.Queue;
 using MediaManager.Video;
+using static Com.Google.Android.Exoplayer2.Trackselection.MappingTrackSelector;
 
 namespace MediaManager.Platforms.Android.Media
 {
-    public class MediaPlayer : Java.Lang.Object, IAudioPlayer<SimpleExoPlayer>, IVideoPlayer<SimpleExoPlayer>
+    public class MediaPlayer : Java.Lang.Object, IMediaPlayer<SimpleExoPlayer>, IAudioPlayer<SimpleExoPlayer>, IVideoPlayer<SimpleExoPlayer>
     {
         public MediaPlayer()
         {

@@ -12,8 +12,11 @@ namespace MediaManager
         {
             if (mediaPlayer is IMediaPlayer<SimpleExoPlayer> exoPlayer)
             {
+                playerView.RequestFocus();
                 playerView.Player = exoPlayer.Player;
             }
+            else
+                throw new ArgumentException("MediaPlayer needs to be of type IMediaPlayer<SimpleExoPlayer> to use this extension", nameof(mediaPlayer));
         }
     }
 }

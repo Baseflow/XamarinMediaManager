@@ -17,7 +17,7 @@ namespace MediaManager
 {
     public abstract class MediaManagerBase<TMediaPlayer, TPlayer> : MediaManagerBase, IMediaManager<TMediaPlayer, TPlayer> where TMediaPlayer : class, IMediaPlayer<TPlayer> where TPlayer : class
     {
-        public virtual new TMediaPlayer MediaPlayer { get; set; }
+        public abstract TMediaPlayer NativeMediaPlayer { get; }
     }
 
     public abstract class MediaManagerBase : IMediaManager, INotifyMediaManager
@@ -31,7 +31,7 @@ namespace MediaManager
         
         public bool IsInitialized { get; protected set; }
 
-        public virtual IMediaPlayer MediaPlayer { get; set; }
+        public abstract IMediaPlayer MediaPlayer { get; set; }
 
         public abstract IMediaExtractor MediaExtractor { get; set; }
         public abstract IVolumeManager VolumeManager { get; set; }
