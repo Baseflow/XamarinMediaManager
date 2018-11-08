@@ -20,6 +20,9 @@ namespace MediaManager
     {
         IMediaPlayer MediaPlayer { get; set; }
 
+        //TODO: Make browsable library
+        //IMediaLibrary MediaLibrary { get; set; }
+
         /// <summary>
         /// Gets or sets the request headers.
         /// </summary>

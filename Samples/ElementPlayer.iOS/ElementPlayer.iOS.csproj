@@ -120,6 +120,7 @@
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
+    <InterfaceDefinition Include="Views\HomeViewController.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -127,6 +128,10 @@
     <Compile Include="ViewController.cs" />
     <Compile Include="ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HomeViewController.cs" />
+    <Compile Include="Views\HomeViewController.designer.cs">
+      <DependentUpon>HomeViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

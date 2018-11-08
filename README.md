@@ -6,7 +6,7 @@
 * Playback status (Playing, Buffering, Loading, Paused, Progress)
 * Events for media handling to hook into
 
-## Build Status: 
+## Status: 
 [![Build status](https://ci.appveyor.com/api/projects/status/c9c6recwcu7k0s15?svg=true)](https://ci.appveyor.com/project/martijn00/xamarinmediamanager)
 ![GitHub tag](https://img.shields.io/github/tag/martijn00/XamarinMediaManager.svg)
 [![NuGet](https://img.shields.io/nuget/v/Plugin.MediaManager.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.MediaManager/)
@@ -14,17 +14,17 @@
 
 **Platform Support**
 
-|Platform|Supported|Version|Native|
+|Platform|Supported|Version|Player|
 | ------------------- | :-----------: | :------------------: |:------------------: |
-|Xamarin.iOS|Yes|iOS 10+|AVPlayer|
+|.Net Standard|Yes|2.0+|MediaManager|
+|Xamarin.Forms|Yes|3.2+|MediaManager|
 |Xamarin.Android|Yes|API 16+|ExoPlayer|
+|Xamarin.iOS|Yes|iOS 10+|AVQueuePlayer|
+|Xamarin.Mac|Yes|3.0+|AVQueuePlayer|
+|Xamarin.tvOS|Yes|10.0+|AVQueuePlayer|
+|Tizen|Yes|4.0+|MediaPlayer|
 |Windows 10 UWP|Yes|10+|MediaElement|
 |Windows WPF|No|
-|.Net Standard|Yes|2.0+|MediaManager|
-|Xamarin.Mac|Yes|3.0+|AVPlayer|
-|Xamarin.tvOS|Yes|10.0+|AVPlayer|
-|Tizen|Yes|4.0+|
-|Xamarin.Forms|Yes|3.2+|MediaManager|
 
 ## Installation
 
@@ -41,7 +41,7 @@ More information on the [Xamarin Blog](https://blog.xamarin.com/play-audio-and-v
 
 Call **MediaManager.Current** from any .Net library or Xamarin project to gain access to APIs.
 
-### **IMPORTANT** Initialize plugin
+### **IMPORTANT:** Initialize plugin
 
 Make sure to call Init() on startup of your app. Optionally provide the `Activity` on Android.
 
