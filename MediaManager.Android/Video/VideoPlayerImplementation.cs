@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -84,6 +84,7 @@ namespace Plugin.MediaManager
 
                 var canvas = (VideoSurface)value;
                 _renderSurface = canvas;
+                isPlayerReady = false;
             }
         }
 
@@ -155,7 +156,23 @@ namespace Plugin.MediaManager
 
         public TimeSpan Duration => VideoViewCanvas == null ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.Duration);
 
-        public TimeSpan Position => VideoViewCanvas == null ? TimeSpan.Zero : TimeSpan.FromSeconds(VideoViewCanvas.CurrentPosition);
+        public TimeSpan Position
+        {
+            get
+            {
+                try
+                {
+                    return VideoViewCanvas == null
+                        ? TimeSpan.Zero
+                        : TimeSpan.FromMilliseconds(VideoViewCanvas.CurrentPosition);
+                }
+                catch
+                {
+                    return TimeSpan.Zero;
+                }
+            }
+        }
+
 		private int lastPosition = 0;
 
 		private MediaPlayerStatus _status = MediaPlayerStatus.Stopped;
