@@ -82,6 +82,7 @@ namespace MediaManager
         public event StateChangedEventHandler StateChanged;
         public event PlayingChangedEventHandler PlayingChanged;
         public event BufferingChangedEventHandler BufferingChanged;
+        public event PositionChangedEventHandler PositionChanged;
 
         public event MediaItemFinishedEventHandler MediaItemFinished;
         public event MediaItemChangedEventHandler MediaItemChanged;
@@ -93,17 +94,24 @@ namespace MediaManager
         public void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
         public void OnPlayingChanged(object sender, PlayingChangedEventArgs e) => PlayingChanged?.Invoke(sender, e);
         public void OnStateChanged(object sender, StateChangedEventArgs e) => StateChanged?.Invoke(sender, e);
+        public void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
 
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private TimeSpan PreviousPosition = new TimeSpan();
         protected virtual void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (!IsInitialized)
                 return;
 
+            if (PreviousPosition != Position)
+            {
+                PreviousPosition = Position;
+                OnPositionChanged(this, new PositionChangedEventArgs(Position));
+            }
             if (this.IsPlaying())
             {
                 OnPlayingChanged(this, new PlayingChangedEventArgs(Position, Duration));
