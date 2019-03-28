@@ -2,13 +2,13 @@
 
 namespace MediaManager.Playback
 {
-    public class BufferingChangedEventArgs : EventArgs
+    public class PositionChangedEventArgs : EventArgs
     {
-        public BufferingChangedEventArgs(TimeSpan buffered)
+        public PositionChangedEventArgs(TimeSpan position)
         {
-            Buffered = buffered;
+            Position = position;
         }
 
-        public TimeSpan Buffered { get; }
+        public TimeSpan Position { get; }
     }
 }

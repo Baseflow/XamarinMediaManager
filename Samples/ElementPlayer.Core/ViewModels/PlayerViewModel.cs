@@ -23,6 +23,7 @@ namespace ElementPlayer.Core.ViewModels
             ToggleRepeatCommand = new MvxCommand(MediaManager.ToggleRepeat);
 
             MediaManager.PlayingChanged += MediaManager_PlayingChanged;
+            MediaManager.PositionChanged += Current_PositionChanged;
         }
 
         private void MediaManager_PlayingChanged(object sender, PlayingChangedEventArgs e)
@@ -79,6 +80,12 @@ namespace ElementPlayer.Core.ViewModels
         private void Current_PlayingChanged(object sender, PlayingChangedEventArgs e)
         {
             Log.Debug($"Total played is {e.Position} of {e.Duration};");
+        }
+
+        private void Current_PositionChanged(object sender, PositionChangedEventArgs e)
+        {
+            Log.Debug($"Current position is {e.Position};");
+            RaisePropertyChanged(() => Position);
         }
     }
 }
