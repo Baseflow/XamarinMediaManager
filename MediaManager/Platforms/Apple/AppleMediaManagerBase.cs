@@ -63,7 +63,8 @@ namespace MediaManager
 
         public override Task Pause()
         {
-            throw new NotImplementedException();
+            this.MediaPlayer.Pause();
+            return Task.CompletedTask;
         }
 
         public override Task Play(IMediaItem mediaItem)
