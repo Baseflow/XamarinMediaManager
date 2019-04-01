@@ -139,6 +139,10 @@
     <Compile Include="LinkerPleaseInclude.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\MediaManager\MediaManager.csproj">
+      <Project>{aba3225c-7219-4472-ba3e-cfc3d9c06675}</Project>
+      <Name>MediaManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ElementPlayer.Core\ElementPlayer.Core.csproj">
       <Project>{d4fba2b6-2057-412d-a391-0d1bf0e04e12}</Project>
       <Name>ElementPlayer.Core</Name>
