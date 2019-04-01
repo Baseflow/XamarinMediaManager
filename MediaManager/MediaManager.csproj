@@ -20,6 +20,7 @@
   
   <ItemGroup>
     <Compile Remove="Platforms\**\*.cs" />
+    <None Include="Platforms\**\*.cs" />
     <None Include="Resources\*.cs" />
     <Compile Remove="Resources\*.cs" />
     <None Include="readme.txt" pack="true" PackagePath="." />
