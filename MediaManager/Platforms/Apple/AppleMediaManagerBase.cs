@@ -107,9 +107,12 @@ namespace MediaManager
             return Task.CompletedTask;
         }
 
-        public override Task<IMediaItem> Play(string uri)
+        public override async Task<IMediaItem> Play(string uri)
         {
-            throw new NotImplementedException();
+            var mediaItem = await MediaExtractor.CreateMediaItem(uri);
+
+            await this.MediaPlayer.Play(mediaItem);
+            return mediaItem;
         }
 
         public override Task Play(IEnumerable<IMediaItem> items)
@@ -150,7 +153,7 @@ namespace MediaManager
 
         public override Task SeekTo(TimeSpan position)
         {
-            throw new NotImplementedException();
+            return this.MediaPlayer.Seek(position);
         }
 
         public override Task StepBackward()
@@ -165,7 +168,7 @@ namespace MediaManager
 
         public override Task Stop()
         {
-            throw new NotImplementedException();
+            return this.MediaPlayer.Stop();
         }
 
         public override void ToggleRepeat()
