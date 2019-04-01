@@ -8,19 +8,19 @@ using Foundation;
 using System;
 using System.CodeDom.Compiler;
 
-namespace ElementPlayer.iOS.Views
+namespace ElementPlayer.iOS.Views.Cells
 {
-    [Register("HomeViewController")]
-    partial class HomeViewController
+    [Register ("MediaCell")]
+    partial class MediaCell
     {
         [Outlet]
-        UIKit.UITableView tblItems { get; set; }
+        UIKit.UILabel lblTitle { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (tblItems != null) {
-                tblItems.Dispose ();
-                tblItems = null;
+            if (lblTitle != null) {
+                lblTitle.Dispose ();
+                lblTitle = null;
             }
         }
     }
