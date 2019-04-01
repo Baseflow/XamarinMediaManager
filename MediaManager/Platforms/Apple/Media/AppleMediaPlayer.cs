@@ -20,6 +20,7 @@ namespace MediaManager.Platforms.Apple.Media
 
         public AppleMediaPlayer()
         {
+            this.Initialize();
         }
 
         public AVQueuePlayer Player { get; set; }
