@@ -28,7 +28,9 @@ namespace MediaManager.Platforms.Apple.Media
             get
             {
                 if (this._player == null)
+                {
                     this.Initialize();
+                }
 
                 return this._player;
             }

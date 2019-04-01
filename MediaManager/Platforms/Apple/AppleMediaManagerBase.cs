@@ -20,7 +20,9 @@ namespace MediaManager
             get
             {
                 if (_mediaPlayer == null)
+                {
                     _mediaPlayer = new TMediaPlayer();
+                }
                 return _mediaPlayer;
             }
             set
