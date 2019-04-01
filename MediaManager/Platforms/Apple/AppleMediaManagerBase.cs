@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AVFoundation;
 using MediaManager.Audio;
@@ -36,11 +37,42 @@ namespace MediaManager
 
         public override MediaPlayerState State => throw new NotImplementedException();
 
-        public override TimeSpan Position => throw new NotImplementedException();
+        public override TimeSpan Position
+        {
+            get
+            {
+                if (NativeMediaPlayer.Player.CurrentItem == null)
+                    return TimeSpan.Zero;
+                return TimeSpan.FromSeconds(NativeMediaPlayer.Player.CurrentItem.CurrentTime.Seconds);
+            }
+        }
 
-        public override TimeSpan Duration => throw new NotImplementedException();
+        public override TimeSpan Duration
+        {
+            get
+            {
+                if (NativeMediaPlayer.Player.CurrentItem == null)
+                    return TimeSpan.Zero;
+                if (double.IsNaN(NativeMediaPlayer.Player.CurrentItem.Duration.Seconds))
+                    return TimeSpan.Zero;
+                return TimeSpan.FromSeconds(NativeMediaPlayer.Player.CurrentItem.Duration.Seconds);
+            }
+        }
 
-        public override TimeSpan Buffered => throw new NotImplementedException();
+        public override TimeSpan Buffered
+        {
+            get
+            {
+                var buffered = TimeSpan.Zero;
+                if (NativeMediaPlayer.Player.CurrentItem != null)
+                    buffered =
+                        TimeSpan.FromSeconds(
+                            NativeMediaPlayer.Player.CurrentItem.LoadedTimeRanges.Select(
+                                tr => tr.CMTimeRangeValue.Start.Seconds + tr.CMTimeRangeValue.Duration.Seconds).Max());
+
+                return buffered;
+            }
+        }
 
         public override float Speed
         {
