@@ -22,7 +22,23 @@ namespace MediaManager.Platforms.Apple.Media
         {
         }
 
-        public AVQueuePlayer Player { get; set; }
+        private AVQueuePlayer _player;
+        public AVQueuePlayer Player
+        {
+            get
+            {
+                if (this._player == null)
+                {
+                    this.Initialize();
+                }
+
+                return this._player;
+            }
+            set
+            {
+                this._player = value;
+            }
+        }
 
         public MediaPlayerState State => throw new NotImplementedException();
 

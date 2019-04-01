@@ -13,9 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MvvmCross" Version="6.2.0" />
-    <PackageReference Include="MvvmCross.Plugin.Json" Version="6.2.0" />
-    <PackageReference Include="MvvmCross.Plugin.Visibility" Version="6.2.0" />
+    <PackageReference Include="MvvmCross" Version="6.2.3" />
+    <PackageReference Include="MvvmCross.Plugin.Json" Version="6.2.3" />
+    <PackageReference Include="MvvmCross.Plugin.Visibility" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>

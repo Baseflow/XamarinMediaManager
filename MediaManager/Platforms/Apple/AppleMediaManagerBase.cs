@@ -12,10 +12,24 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVQueuePlayer> where TMediaPlayer : class, IMediaPlayer<AVQueuePlayer>
+    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVQueuePlayer> where TMediaPlayer : class, IMediaPlayer<AVQueuePlayer>, new()
     {
-
-        public override IMediaPlayer MediaPlayer { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        private IMediaPlayer _mediaPlayer;
+        public override IMediaPlayer MediaPlayer
+        {
+            get
+            {
+                if (_mediaPlayer == null)
+                {
+                    _mediaPlayer = new TMediaPlayer();
+                }
+                return _mediaPlayer;
+            }
+            set
+            {
+                _mediaPlayer = value;
+            }
+        }
 
         public override IMediaExtractor MediaExtractor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IVolumeManager VolumeManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -56,7 +70,8 @@ namespace MediaManager
 
         public override Task Play(IMediaItem mediaItem)
         {
-            throw new NotImplementedException();
+            this.MediaPlayer.Play(mediaItem);
+            return Task.CompletedTask;
         }
 
         public override Task<IMediaItem> Play(string uri)
@@ -86,7 +101,8 @@ namespace MediaManager
 
         public override Task Play()
         {
-            throw new NotImplementedException();
+            this.MediaPlayer.Play();
+            return Task.CompletedTask;
         }
 
         public override Task PlayNext()
