@@ -22,9 +22,7 @@ namespace ElementPlayer.iOS.Views
         {
             base.ViewDidLoad();
 
-            _videoSurface = new VideoSurface();
-            _videoSurface.Frame = vwPlayer.Frame;
-            vwPlayer.Add(_videoSurface);
+            _videoSurface = new VideoSurface(vwPlayer);
             CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoSurface);
         }
 

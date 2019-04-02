@@ -1,4 +1,5 @@
 ﻿using AVFoundation;
+using CoreGraphics;
 using MediaManager.Video;
 using UIKit;
 
@@ -6,18 +7,13 @@ namespace MediaManager.Platforms.Ios.Video
 {
     public class VideoSurface : UIView, IVideoView
     {
+        private UIView _view;
 
-        public override void LayoutSubviews()
+        public VideoSurface(UIView view)
         {
-            base.LayoutSubviews();
-            if (Layer.Sublayers == null || Layer.Sublayers.Length == 0)
-                return;
-            foreach (var layer in Layer.Sublayers)
-            {
-                var avPlayerLayer = layer as AVPlayerLayer;
-                if (avPlayerLayer != null)
-                    avPlayerLayer.Frame = Bounds;
-            }
+            this._view = view;
+            Frame = view.Frame;
+            view.Add(this);
         }
 
         #region IDisposable
