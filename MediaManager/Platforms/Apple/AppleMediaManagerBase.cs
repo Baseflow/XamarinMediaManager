@@ -130,7 +130,6 @@ namespace MediaManager
 
         public override void Init()
         {
-            throw new NotImplementedException();
         }
 
         public override Task Pause()

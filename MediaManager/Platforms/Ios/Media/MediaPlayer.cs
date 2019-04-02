@@ -5,13 +5,17 @@ using AVFoundation;
 using AVKit;
 using Foundation;
 using MediaManager.Platforms.Apple.Media;
+using MediaManager.Video;
+using UIKit;
 
 namespace MediaManager.Platforms.Ios.Media
 {
-    public class MediaPlayer : AppleMediaPlayer
+    public class MediaPlayer : AppleMediaPlayer, IVideoPlayer<AVQueuePlayer, UIView>
     {
         //TODO: Make possible to hook into
         AVPlayerViewController aVPlayerViewController;
+
+        UIView IVideoPlayer<AVQueuePlayer, UIView>.PlayerView { get; set; }
 
         public override void Initialize()
         {
