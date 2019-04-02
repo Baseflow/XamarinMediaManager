@@ -39,7 +39,9 @@ namespace MediaManager
             get
             {
                 if (_mediaExtractor == null)
+                {
                     _mediaExtractor = new AppleMediaExtractor();
+                }
                 return _mediaExtractor;
             }
             set
@@ -56,7 +58,9 @@ namespace MediaManager
             get
             {
                 if (NativeMediaPlayer.Player.CurrentItem == null)
+                {
                     return TimeSpan.Zero;
+                }
                 return TimeSpan.FromSeconds(NativeMediaPlayer.Player.CurrentItem.CurrentTime.Seconds);
             }
         }
@@ -66,9 +70,13 @@ namespace MediaManager
             get
             {
                 if (NativeMediaPlayer.Player.CurrentItem == null)
+                {
                     return TimeSpan.Zero;
+                }
                 if (double.IsNaN(NativeMediaPlayer.Player.CurrentItem.Duration.Seconds))
+                {
                     return TimeSpan.Zero;
+                }
                 return TimeSpan.FromSeconds(NativeMediaPlayer.Player.CurrentItem.Duration.Seconds);
             }
         }
@@ -79,10 +87,12 @@ namespace MediaManager
             {
                 var buffered = TimeSpan.Zero;
                 if (NativeMediaPlayer.Player.CurrentItem != null)
+                {
                     buffered =
                         TimeSpan.FromSeconds(
                             NativeMediaPlayer.Player.CurrentItem.LoadedTimeRanges.Select(
                                 tr => tr.CMTimeRangeValue.Start.Seconds + tr.CMTimeRangeValue.Duration.Seconds).Max());
+                }
 
                 return buffered;
             }
