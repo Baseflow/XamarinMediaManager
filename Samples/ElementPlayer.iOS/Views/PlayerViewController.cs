@@ -4,12 +4,15 @@ using System.Drawing;
 
 using Foundation;
 using MediaManager;
+using MediaManager.Platforms.Ios.Video;
 using UIKit;
 
 namespace ElementPlayer.iOS.Views
 {
     public partial class PlayerViewController : UIViewController
     {
+        VideoSurface _videoSurface;
+
         public PlayerViewController(IntPtr handle) : base(handle)
         {
         }
@@ -20,7 +23,9 @@ namespace ElementPlayer.iOS.Views
         {
             base.ViewDidLoad();
 
-            CrossMediaManager.Current.MediaPlayer.SetPlayerView(vwPlayer);
+            _videoSurface = new VideoSurface();
+            vwPlayer.Add(_videoSurface);
+            CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoSurface);
         }
 
         public override void ViewWillAppear(bool animated)

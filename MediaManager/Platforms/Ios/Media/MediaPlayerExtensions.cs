@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using AVFoundation;
+using MediaManager.Platforms.Ios.Video;
 using MediaManager.Video;
 using UIKit;
 
@@ -9,9 +10,9 @@ namespace MediaManager
 {
     public static partial class MediaPlayerExtensions
     {
-        public static void SetPlayerView(this IMediaPlayer mediaPlayer, UIView videoView)
+        public static void SetPlayerView(this IMediaPlayer mediaPlayer, VideoSurface videoView)
         {
-            if (mediaPlayer is IVideoPlayer<AVQueuePlayer, UIView> videoPlayer)
+            if (mediaPlayer is IVideoPlayer<AVQueuePlayer, VideoSurface> videoPlayer)
             {
                 videoPlayer.PlayerView = videoView;
                 //videoView.Player = videoPlayer.Player;
