@@ -49,7 +49,21 @@ namespace MediaManager
                 _mediaExtractor = value;
             }
         }
-        public override IVolumeManager VolumeManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        private IVolumeManager _volumeManager;
+        public override IVolumeManager VolumeManager
+        {
+            get
+            {
+                if (_volumeManager == null)
+                    _volumeManager = new VolumeManager(NativeMediaPlayer.Player);
+                return _volumeManager;
+            }
+            set
+            {
+                _volumeManager = value;
+            }
+        }
 
         public override MediaPlayerState State => throw new NotImplementedException();
 
