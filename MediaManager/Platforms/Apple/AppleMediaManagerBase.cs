@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AVFoundation;
 using MediaManager.Audio;
 using MediaManager.Media;
+using MediaManager.Platforms.Apple;
 using MediaManager.Platforms.Apple.Media;
 using MediaManager.Playback;
 using MediaManager.Video;
@@ -31,16 +33,70 @@ namespace MediaManager
             }
         }
 
-        public override IMediaExtractor MediaExtractor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        private IMediaExtractor _mediaExtractor;
+        public override IMediaExtractor MediaExtractor
+        {
+            get
+            {
+                if (_mediaExtractor == null)
+                {
+                    _mediaExtractor = new AppleMediaExtractor();
+                }
+                return _mediaExtractor;
+            }
+            set
+            {
+                _mediaExtractor = value;
+            }
+        }
         public override IVolumeManager VolumeManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public override MediaPlayerState State => throw new NotImplementedException();
 
-        public override TimeSpan Position => throw new NotImplementedException();
+        public override TimeSpan Position
+        {
+            get
+            {
+                if (NativeMediaPlayer.Player.CurrentItem == null)
+                {
+                    return TimeSpan.Zero;
+                }
+                return TimeSpan.FromSeconds(NativeMediaPlayer.Player.CurrentItem.CurrentTime.Seconds);
+            }
+        }
 
-        public override TimeSpan Duration => throw new NotImplementedException();
+        public override TimeSpan Duration
+        {
+            get
+            {
+                if (NativeMediaPlayer.Player.CurrentItem == null)
+                {
+                    return TimeSpan.Zero;
+                }
+                if (double.IsNaN(NativeMediaPlayer.Player.CurrentItem.Duration.Seconds))
+                {
+                    return TimeSpan.Zero;
+                }
+                return TimeSpan.FromSeconds(NativeMediaPlayer.Player.CurrentItem.Duration.Seconds);
+            }
+        }
 
-        public override TimeSpan Buffered => throw new NotImplementedException();
+        public override TimeSpan Buffered
+        {
+            get
+            {
+                var buffered = TimeSpan.Zero;
+                if (NativeMediaPlayer.Player.CurrentItem != null)
+                {
+                    buffered =
+                        TimeSpan.FromSeconds(
+                            NativeMediaPlayer.Player.CurrentItem.LoadedTimeRanges.Select(
+                                tr => tr.CMTimeRangeValue.Start.Seconds + tr.CMTimeRangeValue.Duration.Seconds).Max());
+                }
+
+                return buffered;
+            }
+        }
 
         public override float Speed
         {
@@ -65,7 +121,8 @@ namespace MediaManager
 
         public override Task Pause()
         {
-            throw new NotImplementedException();
+            this.MediaPlayer.Pause();
+            return Task.CompletedTask;
         }
 
         public override Task Play(IMediaItem mediaItem)
@@ -74,9 +131,12 @@ namespace MediaManager
             return Task.CompletedTask;
         }
 
-        public override Task<IMediaItem> Play(string uri)
+        public override async Task<IMediaItem> Play(string uri)
         {
-            throw new NotImplementedException();
+            var mediaItem = await MediaExtractor.CreateMediaItem(uri);
+
+            await this.MediaPlayer.Play(mediaItem);
+            return mediaItem;
         }
 
         public override Task Play(IEnumerable<IMediaItem> items)
@@ -117,7 +177,7 @@ namespace MediaManager
 
         public override Task SeekTo(TimeSpan position)
         {
-            throw new NotImplementedException();
+            return this.MediaPlayer.Seek(position);
         }
 
         public override Task StepBackward()
@@ -132,7 +192,7 @@ namespace MediaManager
 
         public override Task Stop()
         {
-            throw new NotImplementedException();
+            return this.MediaPlayer.Stop();
         }
 
         public override void ToggleRepeat()
