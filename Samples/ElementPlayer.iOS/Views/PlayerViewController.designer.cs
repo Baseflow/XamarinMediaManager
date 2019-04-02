@@ -17,6 +17,10 @@ namespace ElementPlayer.iOS.Views
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIView vwPlayer { get; set; }
 
+        [Action ("UIButton1265_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void UIButton1265_TouchUpInside (UIKit.UIButton sender);
+
         void ReleaseDesignerOutlets ()
         {
             if (vwPlayer != null) {

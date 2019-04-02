@@ -10,12 +10,12 @@
     <scenes>
         <scene sceneID="224">
             <objects>
-                <viewController id="225" sceneMemberID="viewController" customClass="PlayerViewController">
+                <viewController id="225" sceneMemberID="viewController" customClass="PlayerViewController" storyboardIdentifier="PlayerViewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="222"/>
                         <viewControllerLayoutGuide type="bottom" id="223"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="226" customClass="UiView">
+                    <view key="view" contentMode="scaleToFill" id="226">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -25,6 +25,14 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1265" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
+                                <rect key="frame" x="164" y="500" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Play"/>
+                                <connections>
+                                    <action selector="UIButton1265_TouchUpInside:" destination="225" id="1271" eventType="touchUpInside"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>

@@ -23,7 +23,7 @@ namespace ElementPlayer.Core.ViewModels
         public readonly IMediaManager MediaManager;
         public MvxObservableCollection<IMediaItem> Items { get; set; } = new MvxObservableCollection<IMediaItem>();
 
-        public IMvxAsyncCommand<IMediaItem> ItemSelected => new MvxAsyncCommand<IMediaItem>(SelectItem);
+        public IMvxAsyncCommand ItemSelected => new MvxAsyncCommand(async () => await this.NavigationService.Navigate<PlayerViewModel>());
 
         public override Task Initialize()
         {
