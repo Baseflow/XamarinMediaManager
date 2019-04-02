@@ -20,12 +20,12 @@ namespace MediaManager
     {
         void Initialize();
 
-        // <summary>
+        /// <summary>
         /// Adds MediaFile to the Queue and starts playing
         /// </summary>
         Task Play(IMediaItem mediaItem);
 
-        // <summary>
+        /// <summary>
         /// Starts playing
         /// </summary>
         Task Play();

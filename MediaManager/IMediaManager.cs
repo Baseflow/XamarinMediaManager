@@ -42,7 +42,7 @@ namespace MediaManager
 
         void Init();
 
-        // <summary>
+        /// <summary>
         /// Plays a media item
         /// </summary>
         Task Play(IMediaItem mediaItem);
