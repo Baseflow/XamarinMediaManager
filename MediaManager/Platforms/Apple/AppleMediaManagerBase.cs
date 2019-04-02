@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AVFoundation;
 using MediaManager.Audio;
 using MediaManager.Media;
+using MediaManager.Platforms.Apple;
 using MediaManager.Platforms.Apple.Media;
 using MediaManager.Playback;
 using MediaManager.Video;
@@ -32,7 +33,21 @@ namespace MediaManager
         }
 
         public override IMediaExtractor MediaExtractor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override IVolumeManager VolumeManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        private IVolumeManager _volumeManager;
+        public override IVolumeManager VolumeManager
+        {
+            get
+            {
+                if (_volumeManager == null)
+                    _volumeManager = new VolumeManager(NativeMediaPlayer.Player);
+                return _volumeManager;
+            }
+            set
+            {
+                _volumeManager = value;
+            }
+        }
 
         public override MediaPlayerState State => throw new NotImplementedException();
 
