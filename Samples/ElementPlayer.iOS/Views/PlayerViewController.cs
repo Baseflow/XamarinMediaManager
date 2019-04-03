@@ -3,6 +3,7 @@ using ElementPlayer.Core.ViewModels;
 using MediaManager;
 using MediaManager.Media;
 using MediaManager.Platforms.Ios.Video;
+using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
 using UIKit;
@@ -25,12 +26,10 @@ namespace ElementPlayer.iOS.Views
             _videoSurface = new VideoSurface(vwPlayer);
             CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoSurface);
             CrossMediaManager.Current.Play(ViewModel.MediaItemToPlay);
-        }
 
-        partial void UIButton1265_TouchUpInside(UIButton sender)
-        {
-            var video = new MediaItem("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
-            CrossMediaManager.Current.Play(video);
+            var set = this.CreateBindingSet<PlayerViewController, PlayerViewModel>();
+            set.Bind(progressPlayer).To(vm => vm.FloatedPosition);
+            set.Apply();
         }
     }
 }

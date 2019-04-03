@@ -56,6 +56,8 @@ namespace ElementPlayer.Core.ViewModels
         public int Duration => Convert.ToInt32(MediaManager.Duration.TotalSeconds);
         public int Position => Convert.ToInt32(MediaManager.Position.TotalSeconds);
 
+        public float FloatedPosition => (float)Position / (float)Duration;
+
         public string TotalDuration => MediaManager.Duration.ToString(@"mm\:ss");
         public string TotalPlayed => MediaManager.Position.ToString(@"mm\:ss");
 

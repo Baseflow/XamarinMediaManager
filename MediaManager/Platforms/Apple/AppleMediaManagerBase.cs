@@ -136,6 +136,8 @@ namespace MediaManager
 
         public override void Init()
         {
+            MediaPlayer.Initialize();
+            IsInitialized = true;
         }
 
         public override Task Pause()
@@ -146,6 +148,7 @@ namespace MediaManager
 
         public override Task Play(IMediaItem mediaItem)
         {
+            IsInitialized = true;
             this.MediaPlayer.Play(mediaItem);
             return Task.CompletedTask;
         }

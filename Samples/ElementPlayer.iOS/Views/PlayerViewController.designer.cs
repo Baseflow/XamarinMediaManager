@@ -15,14 +15,19 @@ namespace ElementPlayer.iOS.Views
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIView vwPlayer { get; set; }
+        UIKit.UIProgressView progressPlayer { get; set; }
 
-        [Action ("UIButton1265_TouchUpInside:")]
+        [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        partial void UIButton1265_TouchUpInside (UIKit.UIButton sender);
+        UIKit.UIView vwPlayer { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
+            if (progressPlayer != null) {
+                progressPlayer.Dispose ();
+                progressPlayer = null;
+            }
+
             if (vwPlayer != null) {
                 vwPlayer.Dispose ();
                 vwPlayer = null;
