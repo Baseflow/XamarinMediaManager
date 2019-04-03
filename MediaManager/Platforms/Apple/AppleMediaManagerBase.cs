@@ -65,7 +65,13 @@ namespace MediaManager
             }
         }
 
-        public override MediaPlayerState State => throw new NotImplementedException();
+        public override MediaPlayerState State
+        {
+            get
+            {
+                return MediaPlayer.State;
+            }
+        }
 
         public override TimeSpan Position
         {
