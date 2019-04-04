@@ -9,14 +9,14 @@ using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Playback;
 
-
 namespace MediaManager.Platforms.Apple.Media
 {
-    public abstract class AppleMediaPlayer : NSObject, IAudioPlayer<AVQueuePlayer> //, IVideoPlayer<AVQueuePlayer, UIView>
+    public abstract class AppleMediaPlayer : NSObject, IAudioPlayer<AVQueuePlayer>
     {
         private NSObject DidFinishPlayingObserver;
         private NSObject ItemFailedToPlayToEndTimeObserver;
         private NSObject ErrorObserver;
+        protected INotifyMediaManager MediaManager = CrossMediaManager.Current as INotifyMediaManager;
 
         public AppleMediaPlayer()
         {
@@ -40,19 +40,38 @@ namespace MediaManager.Platforms.Apple.Media
             }
         }
 
-        public MediaPlayerState State => throw new NotImplementedException();
-
-        //public UIView PlayerView { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        private MediaPlayerState _state;
+        public MediaPlayerState State
+        {
+            get { return _state; }
+            private set
+            {
+                _state = value;
+                MediaManager.OnStateChanged(this, new StateChangedEventArgs(_state));
+            }
+        }
 
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;
 
         public virtual void Initialize()
         {
+            Player = new AVQueuePlayer();
+
+            _state = MediaPlayerState.Stopped;
+
             DidFinishPlayingObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification, DidFinishPlaying);
             ItemFailedToPlayToEndTimeObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.ItemFailedToPlayToEndTimeNotification, DidErrorOcurred);
             ErrorObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.NewErrorLogEntryNotification, DidErrorOcurred);
-            Player = new AVQueuePlayer();
+
+            // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
+            MediaManager.BufferingChanged += (sender, e) =>
+            {
+                // If the player is ready to play, it's paused and the status is still on PLAYING, go on!
+                if ((Player.Status == AVPlayerStatus.ReadyToPlay) && (Player.Rate == 0.0f) &&
+                    (State == MediaPlayerState.Playing))
+                    Player.Play();
+            };
         }
 
         private void DidErrorOcurred(NSNotification obj)
@@ -62,12 +81,13 @@ namespace MediaManager.Platforms.Apple.Media
 
         private void DidFinishPlaying(NSNotification obj)
         {
-            throw new NotImplementedException();
+            State = MediaPlayerState.Stopped;
         }
 
         public Task Pause()
         {
             Player.Pause();
+            State = MediaPlayerState.Stopped;
             return Task.CompletedTask;
         }
 
@@ -78,12 +98,15 @@ namespace MediaManager.Platforms.Apple.Media
             Player.ActionAtItemEnd = AVPlayerActionAtItemEnd.None;
             Player.ReplaceCurrentItemWithPlayerItem(item);
             Player.Play();
+
+            State = MediaPlayerState.Playing;
             return Task.CompletedTask;
         }
 
         public Task Play()
         {
             Player.Play();
+            State = MediaPlayerState.Playing;
             return Task.CompletedTask;
         }
 
@@ -95,6 +118,7 @@ namespace MediaManager.Platforms.Apple.Media
         public Task Stop()
         {
             Player.Pause();
+            State = MediaPlayerState.Stopped;
             return Task.CompletedTask;
         }
     }

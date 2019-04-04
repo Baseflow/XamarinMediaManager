@@ -11,7 +11,7 @@ using MvvmCross.ViewModels;
 
 namespace ElementPlayer.Core.ViewModels
 {
-    public class PlayerViewModel : BaseViewModel
+    public class PlayerViewModel : BaseViewModel<IMediaItem>
     {
         public PlayerViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IMediaManager mediaManager) : base(logProvider, navigationService)
         {
@@ -24,6 +24,13 @@ namespace ElementPlayer.Core.ViewModels
 
             MediaManager.PlayingChanged += MediaManager_PlayingChanged;
             MediaManager.PositionChanged += Current_PositionChanged;
+        }
+
+        public IMediaItem MediaItemToPlay;
+
+        public override void Prepare(IMediaItem mediaItem)
+        {
+            MediaItemToPlay = mediaItem;
         }
 
         private void MediaManager_PlayingChanged(object sender, PlayingChangedEventArgs e)
@@ -48,6 +55,8 @@ namespace ElementPlayer.Core.ViewModels
         public int Buffered => Convert.ToInt32(MediaManager.Buffered.TotalSeconds);
         public int Duration => Convert.ToInt32(MediaManager.Duration.TotalSeconds);
         public int Position => Convert.ToInt32(MediaManager.Position.TotalSeconds);
+
+        public float FloatedPosition => (float)Position / (float)Duration;
 
         public string TotalDuration => MediaManager.Duration.ToString(@"mm\:ss");
         public string TotalPlayed => MediaManager.Position.ToString(@"mm\:ss");

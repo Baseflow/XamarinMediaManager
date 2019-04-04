@@ -65,7 +65,13 @@ namespace MediaManager
             }
         }
 
-        public override MediaPlayerState State => throw new NotImplementedException();
+        public override MediaPlayerState State
+        {
+            get
+            {
+                return MediaPlayer.State;
+            }
+        }
 
         public override TimeSpan Position
         {
@@ -130,7 +136,8 @@ namespace MediaManager
 
         public override void Init()
         {
-            throw new NotImplementedException();
+            MediaPlayer.Initialize();
+            IsInitialized = true;
         }
 
         public override Task Pause()
@@ -141,6 +148,7 @@ namespace MediaManager
 
         public override Task Play(IMediaItem mediaItem)
         {
+            IsInitialized = true;
             this.MediaPlayer.Play(mediaItem);
             return Task.CompletedTask;
         }

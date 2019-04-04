@@ -123,6 +123,7 @@
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
+    <InterfaceDefinition Include="Views\PlayerViewController.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -137,6 +138,10 @@
     </Compile>
     <Compile Include="Setup.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
+    <Compile Include="Views\PlayerViewController.cs" />
+    <Compile Include="Views\PlayerViewController.designer.cs">
+      <DependentUpon>PlayerViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MediaManager\MediaManager.csproj">

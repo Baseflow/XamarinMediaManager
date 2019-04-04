@@ -16,4 +16,13 @@ namespace ElementPlayer.Core.ViewModels
 
         public virtual string Title => "ElementPlayer";
     }
+
+    public abstract class BaseViewModel<TParameter> : BaseViewModel, IMvxViewModel<TParameter>
+    {
+        public BaseViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
+        {
+        }
+
+        public abstract void Prepare(TParameter parameter);
+    }
 }
