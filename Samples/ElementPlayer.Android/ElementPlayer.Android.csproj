@@ -111,6 +111,9 @@
     <PackageReference Include="Xamarin.Android.Support.Media.Compat">
       <Version>27.0.2.1</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.v17.Leanback">
+      <Version>27.0.2.1</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v4">
       <Version>27.0.2.1</Version>
     </PackageReference>
