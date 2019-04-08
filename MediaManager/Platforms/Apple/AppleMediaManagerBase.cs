@@ -155,23 +155,39 @@ namespace MediaManager
 
         public override async Task<IMediaItem> Play(string uri)
         {
+            MediaQueue.Clear();
             var mediaItem = await MediaExtractor.CreateMediaItem(uri);
 
-            await this.MediaPlayer.Play(mediaItem);
+            this.MediaQueue.Add(mediaItem);
+            await this.MediaPlayer.Play();
             return mediaItem;
         }
 
-        public override Task Play(IEnumerable<IMediaItem> items)
+        public override async Task Play(IEnumerable<IMediaItem> items)
         {
-            throw new NotImplementedException();
+            MediaQueue.Clear();
+            foreach (var item in items)
+            {
+                MediaQueue.Add(item);
+            }
+            await this.MediaPlayer.Play();
         }
 
-        public override Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
+        public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
         {
-            throw new NotImplementedException();
+            MediaQueue.Clear();
+
+            foreach (var uri in items)
+            {
+                var mediaItem = await MediaExtractor.CreateMediaItem(uri);
+                MediaQueue.Add(mediaItem);
+            }
+
+            await this.MediaPlayer.Play();
+            return MediaQueue;
         }
 
-        public override Task<IMediaItem> Play(FileInfo file)
+        public override async Task<IMediaItem> Play(FileInfo file)
         {
             throw new NotImplementedException();
         }
@@ -189,11 +205,13 @@ namespace MediaManager
 
         public override Task PlayNext()
         {
-            throw new NotImplementedException();
+            NativeMediaPlayer.Player.AdvanceToNextItem();
+            return Task.CompletedTask;
         }
 
         public override Task PlayPrevious()
         {
+            // TODO: For the previous we have to do some manual labour!
             throw new NotImplementedException();
         }
 
