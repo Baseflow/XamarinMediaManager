@@ -14,10 +14,10 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVQueuePlayer> where TMediaPlayer : class, IMediaPlayer<AVQueuePlayer>, new()
+    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVQueuePlayer> where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer>, new()
     {
         private IMediaPlayer _mediaPlayer;
-        public override IMediaPlayer MediaPlayer
+        public override AppleMediaPlayer MediaPlayer
         {
             get
             {
@@ -133,11 +133,13 @@ namespace MediaManager
             }
         }
 
+        private bool _repeat { get; set; } = false;
 
         public override void Init()
         {
             MediaPlayer.Initialize();
             IsInitialized = true;
+            _repeat = false;
         }
 
         public override Task Pause()
@@ -237,7 +239,8 @@ namespace MediaManager
 
         public override void ToggleRepeat()
         {
-            throw new NotImplementedException();
+            this._repeat = !this._repeat;
+            this.MediaPlayer.Repeat = this._repeat;
         }
 
         public override void ToggleShuffle()

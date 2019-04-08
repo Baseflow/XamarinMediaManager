@@ -79,8 +79,14 @@ namespace MediaManager.Platforms.Apple.Media
             throw new NotImplementedException();
         }
 
-        private void DidFinishPlaying(NSNotification obj)
+        private async void DidFinishPlaying(NSNotification obj)
         {
+            if (Repeat)
+            {
+                // Do not set the state to stopped, but just reiterate playing the element
+                await Seek(new TimeSpan(0));
+                return;
+            }
             State = MediaPlayerState.Stopped;
         }
 
@@ -121,5 +127,7 @@ namespace MediaManager.Platforms.Apple.Media
             State = MediaPlayerState.Stopped;
             return Task.CompletedTask;
         }
+
+        public bool Repeat { get; set; } = false;
     }
 }
