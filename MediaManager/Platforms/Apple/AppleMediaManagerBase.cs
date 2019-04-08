@@ -17,7 +17,7 @@ namespace MediaManager
     public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVQueuePlayer> where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer>, new()
     {
         private IMediaPlayer _mediaPlayer;
-        public override AppleMediaPlayer MediaPlayer
+        public override IMediaPlayer MediaPlayer
         {
             get
             {
@@ -133,13 +133,10 @@ namespace MediaManager
             }
         }
 
-        private bool _repeat { get; set; } = false;
-
         public override void Init()
         {
             MediaPlayer.Initialize();
             IsInitialized = true;
-            _repeat = false;
         }
 
         public override Task Pause()
@@ -237,10 +234,9 @@ namespace MediaManager
             return this.MediaPlayer.Stop();
         }
 
-        public override void ToggleRepeat()
+        public override void SetRepeatMode(RepeatMode repeatMode)
         {
-            this._repeat = !this._repeat;
-            this.MediaPlayer.Repeat = this._repeat;
+            this.MediaPlayer.Repeat = repeatMode;
         }
 
         public override void ToggleShuffle()

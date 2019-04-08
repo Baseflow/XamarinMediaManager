@@ -72,7 +72,7 @@ namespace MediaManager
         public abstract Task StepBackward();
         public abstract Task StepForward();
         public abstract Task Stop();
-        public abstract void ToggleRepeat();
+        public abstract void SetRepeatMode(RepeatMode repeatMode);
         public abstract void ToggleShuffle();
 
         public Timer Timer { get; } = new Timer(1000);

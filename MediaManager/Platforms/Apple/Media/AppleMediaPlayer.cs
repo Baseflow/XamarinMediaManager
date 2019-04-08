@@ -81,11 +81,19 @@ namespace MediaManager.Platforms.Apple.Media
 
         private async void DidFinishPlaying(NSNotification obj)
         {
-            if (Repeat)
+            if (Repeat == RepeatMode.One)
             {
                 // Do not set the state to stopped, but just reiterate playing the element
                 await Seek(new TimeSpan(0));
                 return;
+            }
+            if (Repeat == RepeatMode.All)
+            {
+                throw new ArgumentException("Repeatmode all has not yet been implemented for iOS");
+                // TODO: Implement the all repeat mode
+                // Do not set the state to stopped, but just reiterate playing the element
+                //await Seek(new TimeSpan(0));
+                //return;
             }
             State = MediaPlayerState.Stopped;
         }
@@ -128,6 +136,6 @@ namespace MediaManager.Platforms.Apple.Media
             return Task.CompletedTask;
         }
 
-        public bool Repeat { get; set; } = false;
+        public RepeatMode Repeat { get; set; } = RepeatMode.Off;
     }
 }

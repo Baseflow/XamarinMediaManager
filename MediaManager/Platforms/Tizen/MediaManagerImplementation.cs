@@ -103,7 +103,7 @@ namespace MediaManager
             throw new NotImplementedException();
         }
 
-        public override void ToggleRepeat()
+        public override void SetRepeatMode(RepeatMode repeatMode)
         {
             throw new NotImplementedException();
         }

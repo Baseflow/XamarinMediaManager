@@ -85,7 +85,7 @@ namespace MediaManager.Playback
         /// <summary>
         /// Toggles between the different repeat: modes None, RepeatOne and RepeatAll
         /// </summary>
-        void ToggleRepeat();
+        void SetRepeatMode(RepeatMode mode);
 
         /// <summary>
         /// Enables or disables shuffling

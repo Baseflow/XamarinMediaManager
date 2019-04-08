@@ -83,6 +83,15 @@ namespace MediaManager.Platforms.Android.Media
 
         public TimeSpan Buffered => TimeSpan.FromTicks(Player.BufferedPosition);
 
+        public RepeatMode Repeat {
+            get {
+                return (RepeatMode)Player.RepeatMode;
+            }
+            set {
+                this.MediaManager.SetRepeatMode(value);
+            }
+        }
+
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;
 
