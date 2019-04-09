@@ -11,7 +11,7 @@ using MediaManager.Playback;
 
 namespace MediaManager.Platforms.Apple.Media
 {
-    public abstract class AppleMediaPlayer : NSObject, IAudioPlayer<AVQueuePlayer>
+    public abstract class AppleMediaPlayer : NSObject, IAudioPlayer<AVPlayer>
     {
         private NSObject DidFinishPlayingObserver;
         private NSObject ItemFailedToPlayToEndTimeObserver;
@@ -22,8 +22,8 @@ namespace MediaManager.Platforms.Apple.Media
         {
         }
 
-        private AVQueuePlayer _player;
-        public AVQueuePlayer Player
+        private AVPlayer _player;
+        public AVPlayer Player
         {
             get
             {
@@ -56,7 +56,7 @@ namespace MediaManager.Platforms.Apple.Media
 
         public virtual void Initialize()
         {
-            Player = new AVQueuePlayer();
+            Player = new AVPlayer();
 
             _state = MediaPlayerState.Stopped;
 

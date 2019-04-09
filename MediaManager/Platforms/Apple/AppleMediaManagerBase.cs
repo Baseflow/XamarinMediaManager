@@ -14,7 +14,7 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVQueuePlayer> where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer>, new()
+    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVPlayer> where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVPlayer>, new()
     {
         private IMediaPlayer _mediaPlayer;
         public override IMediaPlayer MediaPlayer
@@ -204,14 +204,36 @@ namespace MediaManager
 
         public override Task PlayNext()
         {
-            NativeMediaPlayer.Player.AdvanceToNextItem();
+            if (MediaQueue.HasNext())
+            {
+                MediaPlayer.Play(MediaQueue.NextItem);
+            } else
+            {
+                if (MediaPlayer.Repeat == RepeatMode.One)
+                {
+                    MediaPlayer.Play(MediaQueue.Current);
+                } else
+                {
+                    // Go to the start of the queue again
+                    MediaQueue.CurrentIndex = 0;
+                    if (MediaQueue.HasCurrent())
+                    {
+                        MediaPlayer.Play(MediaQueue.Current);
+                    }
+                }
+            }
+
             return Task.CompletedTask;
         }
 
         public override Task PlayPrevious()
         {
-            // TODO: For the previous we have to do some manual labour!
-            throw new NotImplementedException();
+            if (MediaQueue.HasPrevious())
+            {
+                MediaPlayer.Play(MediaQueue.PreviousItem);
+            }
+
+            return Task.CompletedTask;
         }
 
         public override Task SeekTo(TimeSpan position)
@@ -241,7 +263,7 @@ namespace MediaManager
 
         public override void ToggleShuffle()
         {
-            throw new NotImplementedException();
+            this.MediaQueue.Shuffle();
         }
     }
 }

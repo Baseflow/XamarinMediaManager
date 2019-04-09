@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using MediaManager.Media;
 
 namespace MediaManager.Queue
@@ -12,16 +14,42 @@ namespace MediaManager.Queue
 
         public event QueueChangedEventHandler QueueChanged;
 
-        public bool HasNext()
+        public bool HasNext() => Count > CurrentIndex - 1;
+
+        public IMediaItem NextItem
         {
-            return Count > CurrentIndex - 1;
+            get
+            {
+                if (HasNext())
+                {
+                    CurrentIndex++;
+                    return Current;
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
 
-        public bool HasPrevious()
+        public bool HasPrevious() => CurrentIndex > 0;
+        public IMediaItem PreviousItem
         {
-            return CurrentIndex > 0;
+            get
+            {
+                if (HasPrevious())
+                {
+                    CurrentIndex--;
+                    return Current;
+                } else
+                {
+                    return null;
+                }
+            }
         }
 
+
+        public bool HasCurrent() => Count >= CurrentIndex;
         public IMediaItem Current => Count > 0 ? this[CurrentIndex] : null;
 
         private int _currentIndex = 0;
@@ -33,6 +61,17 @@ namespace MediaManager.Queue
                 if (_currentIndex != value)
                     OnQueueChanged(this, new QueueChangedEventArgs());
                 _currentIndex = value;
+            }
+        }
+
+        public void Shuffle()
+        {
+            Random rng = new Random();
+            var rndItems = this.OrderBy(a => rng.Next());
+            this.Clear();
+            foreach (var rndItem in rndItems)
+            {
+                this.Add(rndItem);
             }
         }
 
