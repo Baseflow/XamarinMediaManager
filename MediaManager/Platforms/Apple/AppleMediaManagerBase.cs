@@ -255,12 +255,14 @@ namespace MediaManager
 
         public override Task StepBackward()
         {
-            throw new NotImplementedException();
+            var playerTime = NativeMediaPlayer.Player.CurrentTime;
+            return this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(playerTime.Seconds) ? 0 : ((playerTime.Seconds < 10) ? 0 : playerTime.Seconds - 10)));
         }
 
         public override Task StepForward()
         {
-            throw new NotImplementedException();
+            var playerTime = NativeMediaPlayer.Player.CurrentTime;
+            return this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(playerTime.Seconds) ? 0 : playerTime.Seconds + 10));
         }
 
         public override Task Stop()
