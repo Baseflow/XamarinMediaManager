@@ -17,6 +17,7 @@ namespace MediaManager.Platforms.Tizen.Media
         public MediaPlayerState State => throw new NotImplementedException();
 
         public MediaView PlayerView { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public RepeatMode RepeatMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;

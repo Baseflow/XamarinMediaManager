@@ -40,6 +40,8 @@ namespace MediaManager.Playback
 
         float Speed { get; set; }
 
+        RepeatMode RepeatMode { get; set; }
+
         /// <summary>
         /// Plays the current MediaFile
         /// </summary>
@@ -83,14 +85,14 @@ namespace MediaManager.Playback
         Task SeekTo(TimeSpan position);
 
         /// <summary>
-        /// Toggles between the different repeat: modes None, RepeatOne and RepeatAll
-        /// </summary>
-        void ToggleRepeat();
-
-        /// <summary>
         /// Enables or disables shuffling
         /// </summary>
         void ToggleShuffle();
+
+        /// <summary>
+        /// Enables or disables repeat mode
+        /// </summary>
+        void ToggleRepeat();
 
         event StateChangedEventHandler StateChanged;
 

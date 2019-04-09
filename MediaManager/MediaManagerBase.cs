@@ -57,6 +57,7 @@ namespace MediaManager
         public abstract TimeSpan Duration { get; }
         public abstract TimeSpan Buffered { get; }
         public abstract float Speed { get; set; }
+        public abstract RepeatMode RepeatMode { get; set; }
 
         public abstract Task Pause();
         public abstract Task Play(IMediaItem mediaItem);
@@ -72,8 +73,19 @@ namespace MediaManager
         public abstract Task StepBackward();
         public abstract Task StepForward();
         public abstract Task Stop();
-        public abstract void ToggleRepeat();
         public abstract void ToggleShuffle();
+
+        public void ToggleRepeat()
+        {
+            if (RepeatMode == (int)RepeatMode.Off)
+            {
+                RepeatMode = RepeatMode.All;
+            }
+            else
+            {
+                RepeatMode = RepeatMode.Off;
+            }
+        }
 
         public Timer Timer { get; } = new Timer(1000);
         public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();

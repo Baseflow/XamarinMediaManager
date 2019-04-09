@@ -14,7 +14,7 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVQueuePlayer> where TMediaPlayer : class, IMediaPlayer<AVQueuePlayer>, new()
+    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVQueuePlayer> where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer>, new()
     {
         private IMediaPlayer _mediaPlayer;
         public override IMediaPlayer MediaPlayer
@@ -133,7 +133,6 @@ namespace MediaManager
             }
         }
 
-
         public override void Init()
         {
             MediaPlayer.Initialize();
@@ -155,23 +154,39 @@ namespace MediaManager
 
         public override async Task<IMediaItem> Play(string uri)
         {
+            MediaQueue.Clear();
             var mediaItem = await MediaExtractor.CreateMediaItem(uri);
 
-            await this.MediaPlayer.Play(mediaItem);
+            this.MediaQueue.Add(mediaItem);
+            await this.MediaPlayer.Play();
             return mediaItem;
         }
 
-        public override Task Play(IEnumerable<IMediaItem> items)
+        public override async Task Play(IEnumerable<IMediaItem> items)
         {
-            throw new NotImplementedException();
+            MediaQueue.Clear();
+            foreach (var item in items)
+            {
+                MediaQueue.Add(item);
+            }
+            await this.MediaPlayer.Play();
         }
 
-        public override Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
+        public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
         {
-            throw new NotImplementedException();
+            MediaQueue.Clear();
+
+            foreach (var uri in items)
+            {
+                var mediaItem = await MediaExtractor.CreateMediaItem(uri);
+                MediaQueue.Add(mediaItem);
+            }
+
+            await this.MediaPlayer.Play();
+            return MediaQueue;
         }
 
-        public override Task<IMediaItem> Play(FileInfo file)
+        public override async Task<IMediaItem> Play(FileInfo file)
         {
             throw new NotImplementedException();
         }
@@ -189,11 +204,13 @@ namespace MediaManager
 
         public override Task PlayNext()
         {
-            throw new NotImplementedException();
+            NativeMediaPlayer.Player.AdvanceToNextItem();
+            return Task.CompletedTask;
         }
 
         public override Task PlayPrevious()
         {
+            // TODO: For the previous we have to do some manual labour!
             throw new NotImplementedException();
         }
 
@@ -217,9 +234,16 @@ namespace MediaManager
             return this.MediaPlayer.Stop();
         }
 
-        public override void ToggleRepeat()
+        public override RepeatMode RepeatMode
         {
-            throw new NotImplementedException();
+            get
+            {
+                return MediaPlayer.RepeatMode;
+            }
+            set
+            {
+                MediaPlayer.RepeatMode = value;
+            }
         }
 
         public override void ToggleShuffle()
