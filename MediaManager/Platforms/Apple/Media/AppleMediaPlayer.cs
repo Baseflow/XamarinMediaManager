@@ -81,13 +81,13 @@ namespace MediaManager.Platforms.Apple.Media
 
         private async void DidFinishPlaying(NSNotification obj)
         {
-            if (Repeat == RepeatMode.One)
+            if (RepeatMode == RepeatMode.One)
             {
                 // Do not set the state to stopped, but just reiterate playing the element
                 await Seek(new TimeSpan(0));
                 return;
             }
-            if (Repeat == RepeatMode.All)
+            if (RepeatMode == RepeatMode.All)
             {
                 throw new ArgumentException("Repeatmode all has not yet been implemented for iOS");
                 // TODO: Implement the all repeat mode
@@ -136,6 +136,6 @@ namespace MediaManager.Platforms.Apple.Media
             return Task.CompletedTask;
         }
 
-        public RepeatMode Repeat { get; set; } = RepeatMode.Off;
+        public RepeatMode RepeatMode { get; set; } = RepeatMode.Off;
     }
 }

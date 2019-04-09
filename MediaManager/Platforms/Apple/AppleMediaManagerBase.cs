@@ -209,7 +209,7 @@ namespace MediaManager
                 MediaPlayer.Play(MediaQueue.NextItem);
             } else
             {
-                if (MediaPlayer.Repeat == RepeatMode.One)
+                if (MediaPlayer.RepeatMode == RepeatMode.One)
                 {
                     MediaPlayer.Play(MediaQueue.Current);
                 } else
@@ -256,9 +256,16 @@ namespace MediaManager
             return this.MediaPlayer.Stop();
         }
 
-        public override void SetRepeatMode(RepeatMode repeatMode)
+        public override RepeatMode RepeatMode
         {
-            this.MediaPlayer.Repeat = repeatMode;
+            get
+            {
+                return MediaPlayer.RepeatMode;
+            }
+            set
+            {
+                MediaPlayer.RepeatMode = value;
+            }
         }
 
         public override void ToggleShuffle()

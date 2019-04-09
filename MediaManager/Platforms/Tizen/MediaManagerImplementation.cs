@@ -27,7 +27,8 @@ namespace MediaManager
         public override TimeSpan Buffered => throw new NotImplementedException();
 
         public override float Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        
+        public override RepeatMode RepeatMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public override void Init()
         {
             throw new NotImplementedException();
@@ -99,11 +100,6 @@ namespace MediaManager
         }
 
         public override Task Stop()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void SetRepeatMode(RepeatMode repeatMode)
         {
             throw new NotImplementedException();
         }
