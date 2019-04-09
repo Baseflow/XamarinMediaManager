@@ -229,10 +229,10 @@ namespace MediaManager
             return MediaQueue;
         }
 
-        public override Task PlayNext()
+        public override Task<bool> PlayNext()
         {
             MediaBrowserManager.MediaController.GetTransportControls().SkipToNext();
-            return Task.CompletedTask;
+            return Task.FromResult(true);
         }
 
         public override Task PlayPrevious()
