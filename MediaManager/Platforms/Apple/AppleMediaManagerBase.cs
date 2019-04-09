@@ -204,25 +204,32 @@ namespace MediaManager
 
         public override Task<bool> PlayNext()
         {
-            if (MediaQueue.HasNext())
+            // If we repeat just the single media item, we do that first
+            if (MediaPlayer.RepeatMode == RepeatMode.One)
             {
-                MediaPlayer.Play(MediaQueue.NextItem);
+                MediaPlayer.Play(MediaQueue.Current);
                 return Task.FromResult(true);
-            } else
-            {
-                if (MediaPlayer.RepeatMode == RepeatMode.One)
+            }
+            else {
+                // Otherwise we try to play the next media item in the queue
+                if (MediaQueue.HasNext())
                 {
-                    MediaPlayer.Play(MediaQueue.Current);
+                    MediaPlayer.Play(MediaQueue.NextItem);
                     return Task.FromResult(true);
-                } else
+                }
+                else
                 {
-                    // Go to the start of the queue again
-                    MediaQueue.CurrentIndex = 0;
-                    if (MediaQueue.HasCurrent())
+                    // If there is no next media item, but we repeat them all, we reset the current index and start playing it again
+                    if (MediaPlayer.RepeatMode == RepeatMode.All)
                     {
-                        MediaPlayer.Play(MediaQueue.Current);
+                        // Go to the start of the queue again
+                        MediaQueue.CurrentIndex = 0;
+                        if (MediaQueue.HasCurrent())
+                        {
+                            MediaPlayer.Play(MediaQueue.Current);
+                        }
+                        return Task.FromResult(true);
                     }
-                    return Task.FromResult(true);
                 }
             }
 
