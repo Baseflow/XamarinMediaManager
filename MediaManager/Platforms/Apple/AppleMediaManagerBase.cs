@@ -147,8 +147,8 @@ namespace MediaManager
 
         public override Task Play(IMediaItem mediaItem)
         {
+            base.Play(mediaItem);
             IsInitialized = true;
-            MediaQueue.Add(mediaItem);
 
             MediaPlayer.Play(MediaQueue.Current);
             return Task.CompletedTask;
@@ -156,33 +156,22 @@ namespace MediaManager
 
         public override async Task<IMediaItem> Play(string uri)
         {
-            MediaQueue.Clear();
-            var mediaItem = await MediaExtractor.CreateMediaItem(uri);
+            var mediaItem = await base.Play(uri);
 
-            MediaQueue.Add(mediaItem);
             await MediaPlayer.Play(MediaQueue.Current);
             return mediaItem;
         }
 
         public override async Task Play(IEnumerable<IMediaItem> items)
         {
-            MediaQueue.Clear();
-            foreach (var item in items)
-            {
-                MediaQueue.Add(item);
-            }
+            await base.Play(items);
+
             await this.MediaPlayer.Play(MediaQueue.Current);
         }
 
         public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
         {
-            MediaQueue.Clear();
-
-            foreach (var uri in items)
-            {
-                var mediaItem = await MediaExtractor.CreateMediaItem(uri);
-                MediaQueue.Add(mediaItem);
-            }
+            await base.Play(items);
 
             await this.MediaPlayer.Play(MediaQueue.Current);
             return MediaQueue;
