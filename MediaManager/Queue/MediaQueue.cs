@@ -14,7 +14,7 @@ namespace MediaManager.Queue
 
         public event QueueChangedEventHandler QueueChanged;
 
-        public bool HasNext() => Count > CurrentIndex - 1;
+        public bool HasNext() => Count > CurrentIndex + 1;
 
         public IMediaItem NextItem
         {
