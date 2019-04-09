@@ -66,7 +66,7 @@ namespace MediaManager.Playback
         /// Plays the next MediaFile
         /// </summary>
         /// <returns></returns>
-        Task PlayNext();
+        Task<bool> PlayNext();
 
         /// <summary>
         /// Seeks forward a fixed amount of seconds of the current MediaFile

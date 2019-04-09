@@ -67,7 +67,7 @@ namespace MediaManager
         public abstract Task<IMediaItem> Play(FileInfo file);
         public abstract Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo);
         public abstract Task Play();
-        public abstract Task PlayNext();
+        public abstract Task<bool> PlayNext();
         public abstract Task PlayPrevious();
         public abstract Task SeekTo(TimeSpan position);
         public abstract Task StepBackward();

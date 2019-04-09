@@ -202,16 +202,18 @@ namespace MediaManager
             return Task.CompletedTask;
         }
 
-        public override Task PlayNext()
+        public override Task<bool> PlayNext()
         {
             if (MediaQueue.HasNext())
             {
                 MediaPlayer.Play(MediaQueue.NextItem);
+                return Task.FromResult(true);
             } else
             {
                 if (MediaPlayer.RepeatMode == RepeatMode.One)
                 {
                     MediaPlayer.Play(MediaQueue.Current);
+                    return Task.FromResult(true);
                 } else
                 {
                     // Go to the start of the queue again
@@ -220,10 +222,11 @@ namespace MediaManager
                     {
                         MediaPlayer.Play(MediaQueue.Current);
                     }
+                    return Task.FromResult(true);
                 }
             }
 
-            return Task.CompletedTask;
+            return Task.FromResult(false);
         }
 
         public override Task PlayPrevious()
