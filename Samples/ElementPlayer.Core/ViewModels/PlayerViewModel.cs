@@ -20,16 +20,7 @@ namespace ElementPlayer.Core.ViewModels
             PlayNextCommand = new MvxAsyncCommand(MediaManager.PlayNext);
             PlayPreviousCommand = new MvxAsyncCommand(MediaManager.PlayPrevious);
             ToggleShuffleCommand = new MvxCommand(MediaManager.ToggleShuffle);
-            ToggleRepeatCommand = new MvxCommand(() => {
-                if (MediaManager.MediaPlayer.Repeat == RepeatMode.Off)
-                {
-                    MediaManager.SetRepeatMode(RepeatMode.One);
-                }
-                else
-                {
-                    MediaManager.SetRepeatMode(RepeatMode.Off);
-                }
-            });
+            ToggleRepeatCommand = new MvxCommand(MediaManager.ToggleRepeat);
 
             MediaManager.PlayingChanged += MediaManager_PlayingChanged;
             MediaManager.PositionChanged += Current_PositionChanged;

@@ -265,9 +265,16 @@ namespace MediaManager
             return Task.CompletedTask;
         }
 
-        public override void SetRepeatMode(RepeatMode repeatMode)
+        public override RepeatMode RepeatMode
         {
-            MediaBrowserManager.MediaController.GetTransportControls().SetRepeatMode((int)repeatMode);
+            get
+            {
+                return NativeMediaPlayer.RepeatMode;
+            }
+            set
+            {
+                MediaBrowserManager.MediaController.GetTransportControls().SetRepeatMode((int)value);
+            }
         }
 
         public override void ToggleShuffle()
