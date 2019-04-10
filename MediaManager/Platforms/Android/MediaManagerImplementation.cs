@@ -16,6 +16,7 @@ using MediaManager.Platforms.Android.MediaSession;
 using MediaManager.Platforms.Android.Playback;
 using MediaManager.Platforms.Android.Video;
 using MediaManager.Playback;
+using MediaManager.Queue;
 using MediaManager.Video;
 using MediaManager.Volume;
 using NotificationManager = MediaManager.Platforms.Android.NotificationManager;
@@ -285,9 +286,16 @@ namespace MediaManager
             }
         }
 
-        public override void ToggleShuffle()
+        public override ShuffleMode ShuffleMode
         {
-            MediaBrowserManager.MediaController.GetTransportControls().SetShuffleMode(0);
+            get
+            {
+                return (ShuffleMode)MediaBrowserManager.MediaController.ShuffleMode;
+            }
+            set
+            {
+                MediaBrowserManager.MediaController.GetTransportControls().SetShuffleMode((int)value);
+            }
         }
     }
 }

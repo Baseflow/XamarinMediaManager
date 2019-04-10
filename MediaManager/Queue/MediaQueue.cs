@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace MediaManager.Queue
 
         public event QueueChangedEventHandler QueueChanged;
 
-        public bool HasNext() => Count > CurrentIndex + 1;
+        public bool HasNext() => ShuffleMode == ShuffleMode.All ? _shuffledIndexes.Count() > _indexOfCurrentItemInShuffledIndexes + 1 : Count > CurrentIndex + 1;
 
         public IMediaItem NextItem
         {
@@ -22,7 +23,14 @@ namespace MediaManager.Queue
             {
                 if (HasNext())
                 {
-                    CurrentIndex++;
+                    if (ShuffleMode == ShuffleMode.All)
+                    {
+                        CurrentIndex = _shuffledIndexes[_indexOfCurrentItemInShuffledIndexes + 1];
+                    }
+                    else
+                    {
+                        CurrentIndex++;
+                    }
                     return Current;
                 }
                 else
@@ -32,14 +40,31 @@ namespace MediaManager.Queue
             }
         }
 
-        public bool HasPrevious() => CurrentIndex > 0;
+        public bool HasPrevious()
+        {
+            if (ShuffleMode == ShuffleMode.All)
+            {
+                return _indexOfCurrentItemInShuffledIndexes > 0;
+            }
+            else
+            {
+                return CurrentIndex > 0;
+            }
+        }
         public IMediaItem PreviousItem
         {
             get
             {
                 if (HasPrevious())
                 {
-                    CurrentIndex--;
+                    if (ShuffleMode == ShuffleMode.All)
+                    {
+                        CurrentIndex = _shuffledIndexes[_indexOfCurrentItemInShuffledIndexes - 1];
+                    }
+                    else
+                    {
+                        CurrentIndex--;
+                    }
                     return Current;
                 } else
                 {
@@ -64,18 +89,46 @@ namespace MediaManager.Queue
             }
         }
 
-        public void Shuffle()
+        public string Title { get; set; }
+
+
+        private ShuffleMode _shuffleMode;
+        private IList<int> _shuffledIndexes;
+        private int _indexOfCurrentItemInShuffledIndexes => _shuffledIndexes.Select((v, i) => new { originalIndex = v, index = i }).First(x => x.originalIndex == CurrentIndex).index;
+
+        public ShuffleMode ShuffleMode
         {
-            Random rng = new Random();
-            var rndItems = this.OrderBy(a => rng.Next());
-            this.Clear();
-            foreach (var rndItem in rndItems)
+            get
             {
-                this.Add(rndItem);
+                return _shuffleMode;
+            }
+            set
+            {
+                _shuffleMode = value;
+                if (ShuffleMode == ShuffleMode.All)
+                {
+                    // Create a shuffled remainder of the queue
+                    CreateShuffledIndexes();
+                    CollectionChanged += (s, e) => CreateShuffledIndexes();
+                } else
+                {
+                    CollectionChanged -= (s, e) => CreateShuffledIndexes();
+                }
             }
         }
 
-        public string Title { get; set; }
+        private void CreateShuffledIndexes()
+        {
+            Random rand = new Random();
+            var ints = Enumerable.Range(CurrentIndex + 1, Count - 1)
+                .Select(i => new Tuple<int, int>(rand.Next(Count), i))
+                .OrderBy(i => i.Item1)
+                .Select(i => i.Item2)
+                .ToList();
+            // We always put the current index at the start of the list
+            ints.Insert(0, CurrentIndex);
+            _shuffledIndexes = ints;
+        }
 
         internal void OnQueueEnded(object s, QueueEndedEventArgs e) => QueueEnded?.Invoke(s, e);
 

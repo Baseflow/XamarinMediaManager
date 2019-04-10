@@ -60,6 +60,7 @@ namespace MediaManager
         public abstract TimeSpan Buffered { get; }
         public abstract float Speed { get; set; }
         public abstract RepeatMode RepeatMode { get; set; }
+        public abstract ShuffleMode ShuffleMode { get; set; }
 
         public abstract Task Pause();
         public abstract Task Play(IMediaItem mediaItem);
@@ -145,7 +146,6 @@ namespace MediaManager
             return seekTo;
         }
         public abstract Task Stop();
-        public abstract void ToggleShuffle();
 
         public void ToggleRepeat()
         {
@@ -156,6 +156,18 @@ namespace MediaManager
             else
             {
                 RepeatMode = RepeatMode.Off;
+            }
+        }
+
+        public void ToggleShuffle()
+        {
+            if (ShuffleMode == (int)ShuffleMode.Off)
+            {
+                ShuffleMode = ShuffleMode.All;
+            }
+            else
+            {
+                ShuffleMode = ShuffleMode.Off;
             }
         }
 

@@ -57,9 +57,6 @@ namespace MediaManager.Queue
 
         string Title { get; set; }
 
-        /// <summary>
-        /// Shuffle the queue
-        /// </summary>
-        void Shuffle();
+        ShuffleMode ShuffleMode { get; set; }
     }
 }

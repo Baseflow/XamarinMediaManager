@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using MediaManager.Media;
+using MediaManager.Queue;
 
 namespace MediaManager.Playback
 {
@@ -47,6 +48,8 @@ namespace MediaManager.Playback
         float Speed { get; set; }
 
         RepeatMode RepeatMode { get; set; }
+
+        ShuffleMode ShuffleMode { get; set; }
 
         /// <summary>
         /// Plays the current MediaFile
