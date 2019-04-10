@@ -151,12 +151,16 @@ namespace MediaManager
 
         public virtual Task StepBackward()
         {
-            return this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.Seconds) ? 0 : ((Position.Seconds < StepSize.Seconds) ? 0 : Position.Seconds - StepSize.Seconds)));
+            var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.Seconds) ? 0 : ((Position.Seconds < StepSize.Seconds) ? 0 : Position.Seconds - StepSize.Seconds)));
+            Timer_Elapsed(null, null);
+            return seekTo;
         }
 
         public virtual Task StepForward()
         {
-            return this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.Seconds) ? 0 : Position.Seconds + StepSize.Seconds));
+            var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.Seconds) ? 0 : Position.Seconds + StepSize.Seconds));
+            Timer_Elapsed(null, null);
+            return seekTo;
         }
         public abstract Task Stop();
         public abstract void ToggleShuffle();
