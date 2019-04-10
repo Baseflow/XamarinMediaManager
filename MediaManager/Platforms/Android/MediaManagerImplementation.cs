@@ -219,15 +219,37 @@ namespace MediaManager
 
         public override Task<bool> PlayNext()
         {
+            if (NativeMediaPlayer.Player.NextWindowIndex == NativeMediaPlayer.Player.CurrentWindowIndex)
+            {
+                SeekTo(TimeSpan.FromSeconds(0));
+                return Task.FromResult(true);
+            }
+
+            if (NativeMediaPlayer.Player.NextWindowIndex == -1)
+            {
+                return Task.FromResult(false);
+            }
+
             MediaBrowserManager.MediaController.GetTransportControls().SkipToNext();
-            // TODO: Check whether or not we were able to skip to the next element
+
             return Task.FromResult(true);
         }
 
         public override Task<bool> PlayPrevious()
         {
+            if (NativeMediaPlayer.Player.PreviousWindowIndex == NativeMediaPlayer.Player.CurrentWindowIndex)
+            {
+                SeekTo(TimeSpan.FromSeconds(0));
+                return Task.FromResult(true);
+            }
+
+            if (NativeMediaPlayer.Player.PreviousWindowIndex == -1)
+            {
+                return Task.FromResult(false);
+            }
+
             MediaBrowserManager.MediaController.GetTransportControls().SkipToPrevious();
-            // TODO: Check whether or not we were able to skip to the previous element
+
             return Task.FromResult(true);
         }
 
