@@ -12,7 +12,7 @@ namespace MediaManager
     {
         public static void SetPlayerView(this IMediaPlayer mediaPlayer, VideoSurface videoView)
         {
-            if (mediaPlayer is IVideoPlayer<AVQueuePlayer, VideoSurface> videoPlayer)
+            if (mediaPlayer is IVideoPlayer<AVPlayer, VideoSurface> videoPlayer)
             {
                 var layer = AVPlayerLayer.FromPlayer(videoPlayer.Player);
                 layer.Frame = videoView.Frame;

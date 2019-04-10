@@ -28,6 +28,8 @@ namespace MediaManager
             Timer.Elapsed += Timer_Elapsed;
             Timer.Start();
         }
+
+        public TimeSpan StepSize { get; set; } = TimeSpan.FromSeconds(10);
         
         public bool IsInitialized { get; protected set; }
 
@@ -58,22 +60,92 @@ namespace MediaManager
         public abstract TimeSpan Buffered { get; }
         public abstract float Speed { get; set; }
         public abstract RepeatMode RepeatMode { get; set; }
+        public abstract ShuffleMode ShuffleMode { get; set; }
 
         public abstract Task Pause();
         public abstract Task Play(IMediaItem mediaItem);
         public abstract Task<IMediaItem> Play(string uri);
         public abstract Task Play(IEnumerable<IMediaItem> items);
         public abstract Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items);
+        public virtual Task<IMediaItem> AddMediaItemsToQueue(IEnumerable<IMediaItem> items, bool clearQueue = false)
+        {
+            if (clearQueue)
+            {
+                MediaQueue.Clear();
+            }
+
+            foreach (var item in items)
+            {
+                MediaQueue.Add(item);
+            }
+
+            return Task.FromResult(MediaQueue.Current);
+        }
         public abstract Task<IMediaItem> Play(FileInfo file);
         public abstract Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo);
         public abstract Task Play();
-        public abstract Task PlayNext();
-        public abstract Task PlayPrevious();
+        public virtual Task<bool> PlayNext()
+        {
+            // If we repeat just the single media item, we do that first
+            if (MediaPlayer.RepeatMode == RepeatMode.One)
+            {
+                MediaPlayer.Play(MediaQueue.Current);
+                return Task.FromResult(true);
+            }
+            else
+            {
+                // Otherwise we try to play the next media item in the queue
+                if (MediaQueue.HasNext())
+                {
+                    MediaPlayer.Play(MediaQueue.NextItem);
+                    return Task.FromResult(true);
+                }
+                else
+                {
+                    // If there is no next media item, but we repeat them all, we reset the current index and start playing it again
+                    if (MediaPlayer.RepeatMode == RepeatMode.All)
+                    {
+                        // Go to the start of the queue again
+                        MediaQueue.CurrentIndex = 0;
+                        if (MediaQueue.HasCurrent())
+                        {
+                            MediaPlayer.Play(MediaQueue.Current);
+                            return Task.FromResult(true);
+                        }
+                    }
+                }
+            }
+
+            return Task.FromResult(false);
+        }
+
+        public virtual Task<bool> PlayPrevious()
+        {
+            if (MediaQueue.HasPrevious())
+            {
+                MediaPlayer.Play(MediaQueue.PreviousItem);
+                return Task.FromResult(true);
+            }
+
+            return Task.FromResult(false);
+        }
         public abstract Task SeekTo(TimeSpan position);
-        public abstract Task StepBackward();
-        public abstract Task StepForward();
+
+
+        public virtual Task StepBackward()
+        {
+            var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.Seconds) ? 0 : ((Position.Seconds < StepSize.Seconds) ? 0 : Position.Seconds - StepSize.Seconds)));
+            Timer_Elapsed(null, null);
+            return seekTo;
+        }
+
+        public virtual Task StepForward()
+        {
+            var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.Seconds) ? 0 : Position.Seconds + StepSize.Seconds));
+            Timer_Elapsed(null, null);
+            return seekTo;
+        }
         public abstract Task Stop();
-        public abstract void ToggleShuffle();
 
         public void ToggleRepeat()
         {
@@ -84,6 +156,18 @@ namespace MediaManager
             else
             {
                 RepeatMode = RepeatMode.Off;
+            }
+        }
+
+        public void ToggleShuffle()
+        {
+            if (ShuffleMode == (int)ShuffleMode.Off)
+            {
+                ShuffleMode = ShuffleMode.All;
+            }
+            else
+            {
+                ShuffleMode = ShuffleMode.Off;
             }
         }
 

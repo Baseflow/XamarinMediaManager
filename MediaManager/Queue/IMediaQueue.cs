@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using MediaManager.Media;
 
 namespace MediaManager.Queue
@@ -24,9 +25,25 @@ namespace MediaManager.Queue
         bool HasNext();
 
         /// <summary>
+        /// Get the next item from the queue
+        /// </summary>
+        IMediaItem NextItem { get; }
+
+        /// <summary>
         /// If the Queue has a previous track
         /// </summary>
         bool HasPrevious();
+
+        /// <summary>
+        /// Get the previous item from the queue
+        /// </summary>
+        IMediaItem PreviousItem { get; }
+
+
+        /// <summary>
+        /// If the Queue has a track it can currently play
+        /// </summary>
+        bool HasCurrent();
 
         /// <summary>
         /// Get the current playing index the Queue
@@ -39,5 +56,7 @@ namespace MediaManager.Queue
         IMediaItem Current { get; }
 
         string Title { get; set; }
+
+        ShuffleMode ShuffleMode { get; set; }
     }
 }

@@ -11,7 +11,7 @@ using MediaManager.Playback;
 
 namespace MediaManager.Platforms.Apple.Media
 {
-    public abstract class AppleMediaPlayer : NSObject, IAudioPlayer<AVQueuePlayer>
+    public abstract class AppleMediaPlayer : NSObject, IAudioPlayer<AVPlayer>
     {
         private NSObject DidFinishPlayingObserver;
         private NSObject ItemFailedToPlayToEndTimeObserver;
@@ -22,8 +22,8 @@ namespace MediaManager.Platforms.Apple.Media
         {
         }
 
-        private AVQueuePlayer _player;
-        public AVQueuePlayer Player
+        private AVPlayer _player;
+        public AVPlayer Player
         {
             get
             {
@@ -56,7 +56,7 @@ namespace MediaManager.Platforms.Apple.Media
 
         public virtual void Initialize()
         {
-            Player = new AVQueuePlayer();
+            Player = new AVPlayer();
 
             _state = MediaPlayerState.Stopped;
 
@@ -81,21 +81,12 @@ namespace MediaManager.Platforms.Apple.Media
 
         private async void DidFinishPlaying(NSNotification obj)
         {
-            if (RepeatMode == RepeatMode.One)
+            var succesfullNext = await MediaManager.PlayNext();
+
+            if (!succesfullNext)
             {
-                // Do not set the state to stopped, but just reiterate playing the element
-                await Seek(new TimeSpan(0));
-                return;
+                State = MediaPlayerState.Stopped;
             }
-            if (RepeatMode == RepeatMode.All)
-            {
-                throw new ArgumentException("Repeatmode all has not yet been implemented for iOS");
-                // TODO: Implement the all repeat mode
-                // Do not set the state to stopped, but just reiterate playing the element
-                //await Seek(new TimeSpan(0));
-                //return;
-            }
-            State = MediaPlayerState.Stopped;
         }
 
         public Task Pause()

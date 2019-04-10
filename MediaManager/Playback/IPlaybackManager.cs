@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using MediaManager.Media;
+using MediaManager.Queue;
 
 namespace MediaManager.Playback
 {
@@ -17,6 +18,12 @@ namespace MediaManager.Playback
 
     public interface IPlaybackManager : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Managing the step size for the step forward and step backward functions
+        /// </summary>
+        TimeSpan StepSize { get; set; }
+
+
         /// <summary>
         /// Reading the current status of the player
         /// </summary>
@@ -42,6 +49,8 @@ namespace MediaManager.Playback
 
         RepeatMode RepeatMode { get; set; }
 
+        ShuffleMode ShuffleMode { get; set; }
+
         /// <summary>
         /// Plays the current MediaFile
         /// </summary>
@@ -60,13 +69,14 @@ namespace MediaManager.Playback
         /// <summary>
         /// Plays the previous MediaFile
         /// </summary>
-        Task PlayPrevious();
+        /// <returns>Playing previous MediaFile was possible</returns>
+        Task<bool> PlayPrevious();
 
         /// <summary>
         /// Plays the next MediaFile
         /// </summary>
-        /// <returns></returns>
-        Task PlayNext();
+        /// <returns>Playing next MediaFile was possible</returns>
+        Task<bool> PlayNext();
 
         /// <summary>
         /// Seeks forward a fixed amount of seconds of the current MediaFile

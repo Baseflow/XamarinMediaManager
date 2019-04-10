@@ -9,12 +9,13 @@ using MediaManager.Media;
 using MediaManager.Platforms.Apple;
 using MediaManager.Platforms.Apple.Media;
 using MediaManager.Playback;
+using MediaManager.Queue;
 using MediaManager.Video;
 using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVQueuePlayer> where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer>, new()
+    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVPlayer> where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVPlayer>, new()
     {
         private IMediaPlayer _mediaPlayer;
         public override IMediaPlayer MediaPlayer
@@ -81,7 +82,7 @@ namespace MediaManager
                 {
                     return TimeSpan.Zero;
                 }
-                return TimeSpan.FromSeconds(NativeMediaPlayer.Player.CurrentItem.CurrentTime.Seconds);
+                return TimeSpan.FromSeconds(NativeMediaPlayer.Player.CurrentTime.Seconds);
             }
         }
 
@@ -145,44 +146,40 @@ namespace MediaManager
             return Task.CompletedTask;
         }
 
-        public override Task Play(IMediaItem mediaItem)
+        public override async Task Play(IMediaItem mediaItem)
         {
-            IsInitialized = true;
-            this.MediaPlayer.Play(mediaItem);
-            return Task.CompletedTask;
+            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
+
+            await MediaPlayer.Play(mediaItemToPlay);
+            return;
         }
 
         public override async Task<IMediaItem> Play(string uri)
         {
-            MediaQueue.Clear();
             var mediaItem = await MediaExtractor.CreateMediaItem(uri);
+            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
 
-            this.MediaQueue.Add(mediaItem);
-            await this.MediaPlayer.Play();
+            await MediaPlayer.Play(mediaItemToPlay);
             return mediaItem;
         }
 
         public override async Task Play(IEnumerable<IMediaItem> items)
         {
-            MediaQueue.Clear();
-            foreach (var item in items)
-            {
-                MediaQueue.Add(item);
-            }
-            await this.MediaPlayer.Play();
+            var mediaItemToPlay = await AddMediaItemsToQueue(items, true);
+
+            await MediaPlayer.Play(mediaItemToPlay);
         }
 
         public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
         {
-            MediaQueue.Clear();
-
+            List<IMediaItem> mediaItems = new List<IMediaItem>();
             foreach (var uri in items)
             {
-                var mediaItem = await MediaExtractor.CreateMediaItem(uri);
-                MediaQueue.Add(mediaItem);
+                mediaItems.Add(await MediaExtractor.CreateMediaItem(uri));
             }
 
-            await this.MediaPlayer.Play();
+            var mediaItemToPlay = await AddMediaItemsToQueue(mediaItems, true);
+            await MediaPlayer.Play(mediaItemToPlay);
             return MediaQueue;
         }
 
@@ -202,31 +199,9 @@ namespace MediaManager
             return Task.CompletedTask;
         }
 
-        public override Task PlayNext()
-        {
-            NativeMediaPlayer.Player.AdvanceToNextItem();
-            return Task.CompletedTask;
-        }
-
-        public override Task PlayPrevious()
-        {
-            // TODO: For the previous we have to do some manual labour!
-            throw new NotImplementedException();
-        }
-
         public override Task SeekTo(TimeSpan position)
         {
             return this.MediaPlayer.Seek(position);
-        }
-
-        public override Task StepBackward()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task StepForward()
-        {
-            throw new NotImplementedException();
         }
 
         public override Task Stop()
@@ -246,9 +221,16 @@ namespace MediaManager
             }
         }
 
-        public override void ToggleShuffle()
+        public override ShuffleMode ShuffleMode
         {
-            throw new NotImplementedException();
+            get
+            {
+                return MediaQueue.ShuffleMode;
+            }
+            set
+            {
+                MediaQueue.ShuffleMode = value;
+            }
         }
     }
 }

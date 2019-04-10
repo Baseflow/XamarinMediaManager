@@ -5,9 +5,9 @@ namespace MediaManager.Platforms.Apple
 {
     public class VolumeManager : IVolumeManager //VolumeProviderCompat.Callback
     {
-        internal AVQueuePlayer player;
+        internal AVPlayer player;
 
-        public VolumeManager(AVQueuePlayer player)
+        public VolumeManager(AVPlayer player)
         {
             this.player = player;
         }
