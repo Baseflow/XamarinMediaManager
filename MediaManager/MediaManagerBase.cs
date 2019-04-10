@@ -99,8 +99,50 @@ namespace MediaManager
         public abstract Task<IMediaItem> Play(FileInfo file);
         public abstract Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo);
         public abstract Task Play();
-        public abstract Task<bool> PlayNext();
-        public abstract Task PlayPrevious();
+        public virtual Task<bool> PlayNext()
+        {
+            // If we repeat just the single media item, we do that first
+            if (MediaPlayer.RepeatMode == RepeatMode.One)
+            {
+                MediaPlayer.Play(MediaQueue.Current);
+                return Task.FromResult(true);
+            }
+            else
+            {
+                // Otherwise we try to play the next media item in the queue
+                if (MediaQueue.HasNext())
+                {
+                    MediaPlayer.Play(MediaQueue.NextItem);
+                    return Task.FromResult(true);
+                }
+                else
+                {
+                    // If there is no next media item, but we repeat them all, we reset the current index and start playing it again
+                    if (MediaPlayer.RepeatMode == RepeatMode.All)
+                    {
+                        // Go to the start of the queue again
+                        MediaQueue.CurrentIndex = 0;
+                        if (MediaQueue.HasCurrent())
+                        {
+                            MediaPlayer.Play(MediaQueue.Current);
+                            return Task.FromResult(true);
+                        }
+                    }
+                }
+            }
+
+            return Task.FromResult(false);
+        }
+
+        public virtual Task PlayPrevious()
+        {
+            if (MediaQueue.HasPrevious())
+            {
+                MediaPlayer.Play(MediaQueue.PreviousItem);
+            }
+
+            return Task.CompletedTask;
+        }
         public abstract Task SeekTo(TimeSpan position);
         public abstract Task StepBackward();
         public abstract Task StepForward();
