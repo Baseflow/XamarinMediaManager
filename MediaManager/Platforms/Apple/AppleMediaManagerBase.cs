@@ -81,7 +81,7 @@ namespace MediaManager
                 {
                     return TimeSpan.Zero;
                 }
-                return TimeSpan.FromSeconds(NativeMediaPlayer.Player.CurrentItem.CurrentTime.Seconds);
+                return TimeSpan.FromSeconds(NativeMediaPlayer.Player.CurrentTime.Seconds);
             }
         }
 
@@ -148,7 +148,6 @@ namespace MediaManager
         public override async Task Play(IMediaItem mediaItem)
         {
             var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
-            IsInitialized = true;
 
             await MediaPlayer.Play(mediaItemToPlay);
             return;
