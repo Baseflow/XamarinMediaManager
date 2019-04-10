@@ -145,35 +145,41 @@ namespace MediaManager
             return Task.CompletedTask;
         }
 
-        public override Task Play(IMediaItem mediaItem)
+        public override async Task Play(IMediaItem mediaItem)
         {
-            base.Play(mediaItem);
+            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
             IsInitialized = true;
 
-            MediaPlayer.Play(MediaQueue.Current);
-            return Task.CompletedTask;
+            await MediaPlayer.Play(mediaItemToPlay);
+            return;
         }
 
         public override async Task<IMediaItem> Play(string uri)
         {
-            var mediaItem = await base.Play(uri);
+            var mediaItem = await MediaExtractor.CreateMediaItem(uri);
+            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
 
-            await MediaPlayer.Play(MediaQueue.Current);
+            await MediaPlayer.Play(mediaItemToPlay);
             return mediaItem;
         }
 
         public override async Task Play(IEnumerable<IMediaItem> items)
         {
-            await base.Play(items);
+            var mediaItemToPlay = await AddMediaItemsToQueue(items, true);
 
-            await this.MediaPlayer.Play(MediaQueue.Current);
+            await MediaPlayer.Play(mediaItemToPlay);
         }
 
         public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
         {
-            await base.Play(items);
+            List<IMediaItem> mediaItems = new List<IMediaItem>();
+            foreach (var uri in items)
+            {
+                mediaItems.Add(await MediaExtractor.CreateMediaItem(uri));
+            }
 
-            await this.MediaPlayer.Play(MediaQueue.Current);
+            var mediaItemToPlay = await AddMediaItemsToQueue(mediaItems, true);
+            await MediaPlayer.Play(mediaItemToPlay);
             return MediaQueue;
         }
 

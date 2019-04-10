@@ -162,55 +162,63 @@ namespace MediaManager
 
         public override async Task<IMediaItem> Play(string uri)
         {
-            var mediaItem = await base.Play(uri);
+            var mediaItem = await MediaExtractor.CreateMediaItem(uri);
+            await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
 
-            var mediaUri = global::Android.Net.Uri.Parse(uri);
-            MediaBrowserManager.MediaController.GetTransportControls().PlayFromUri(mediaUri, null);
+            MediaBrowserManager.MediaController.GetTransportControls().Prepare();
             return mediaItem;
         }
 
-        public override Task Play(IMediaItem mediaItem)
+        public override async Task Play(IMediaItem mediaItem)
         {
-            base.Play(mediaItem);
+            await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
 
-            var mediaUri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
-            MediaBrowserManager.MediaController.GetTransportControls().PlayFromUri(mediaUri, null);
-            return Task.CompletedTask;
+            MediaBrowserManager.MediaController.GetTransportControls().Prepare();
+            return;
         }
 
         public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
         {
-            await base.Play(items);
+            List<IMediaItem> mediaItems = new List<IMediaItem>();
+            foreach (var uri in items)
+            {
+                mediaItems.Add(await MediaExtractor.CreateMediaItem(uri));
+            }
+
+            await AddMediaItemsToQueue(mediaItems, true);
 
             await MediaQueue.FirstOrDefault()?.FetchMetaData();
             MediaBrowserManager.MediaController.GetTransportControls().Prepare();
             return MediaQueue;
         }
 
-        public override Task Play(IEnumerable<IMediaItem> items)
+        public override async Task Play(IEnumerable<IMediaItem> items)
         {
-            base.Play(items);
+            await AddMediaItemsToQueue(items, true);
 
             MediaBrowserManager.MediaController.GetTransportControls().Prepare();
-            return Task.CompletedTask;
+            return;
         }
 
         public override async Task<IMediaItem> Play(FileInfo file)
         {
             var mediaItem = await MediaExtractor.CreateMediaItem(file);
-            var mediaUri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
-            MediaBrowserManager.MediaController.GetTransportControls().PlayFromUri(mediaUri, null);
+            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
+
+            MediaBrowserManager.MediaController.GetTransportControls().Prepare();
             return mediaItem;
         }
 
         public override async Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
         {
-            MediaQueue.Clear();
+            List<IMediaItem> mediaItems = new List<IMediaItem>();
             foreach (var file in directoryInfo.GetFiles())
             {
                 var mediaItem = await MediaExtractor.CreateMediaItem(file);
-                MediaQueue.Add(mediaItem);
+                mediaItems.Add(mediaItem);
             }
+
+            await AddMediaItemsToQueue(mediaItems, true);
 
             await MediaQueue.FirstOrDefault()?.FetchMetaData();
             MediaBrowserManager.MediaController.GetTransportControls().Prepare();

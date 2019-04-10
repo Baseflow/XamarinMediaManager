@@ -62,41 +62,23 @@ namespace MediaManager
         public abstract RepeatMode RepeatMode { get; set; }
 
         public abstract Task Pause();
-        public virtual Task Play(IMediaItem mediaItem)
+        public abstract Task Play(IMediaItem mediaItem);
+        public abstract Task<IMediaItem> Play(string uri);
+        public abstract Task Play(IEnumerable<IMediaItem> items);
+        public abstract Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items);
+        public virtual Task<IMediaItem> AddMediaItemsToQueue(IEnumerable<IMediaItem> items, bool clearQueue = false)
         {
-            MediaQueue.Clear();
-            MediaQueue.Add(mediaItem);
-            return Task.CompletedTask;
-        }
-        public async virtual Task<IMediaItem> Play(string uri)
-        {
-            var mediaItem = await MediaExtractor.CreateMediaItem(uri);
-            MediaQueue.Clear();
-            MediaQueue.Add(mediaItem);
+            if (clearQueue)
+            {
+                MediaQueue.Clear();
+            }
 
-            return mediaItem;
-        }
-        public virtual Task Play(IEnumerable<IMediaItem> items)
-        {
-            MediaQueue.Clear();
             foreach (var item in items)
             {
                 MediaQueue.Add(item);
             }
 
-            return Task.CompletedTask;
-        }
-        public async virtual Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
-        {
-            MediaQueue.Clear();
-
-            foreach (var uri in items)
-            {
-                var mediaItem = await MediaExtractor.CreateMediaItem(uri);
-                MediaQueue.Add(mediaItem);
-            }
-
-            return MediaQueue;
+            return Task.FromResult(MediaQueue.Current);
         }
         public abstract Task<IMediaItem> Play(FileInfo file);
         public abstract Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo);
