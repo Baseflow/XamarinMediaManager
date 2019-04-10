@@ -220,13 +220,15 @@ namespace MediaManager
         public override Task<bool> PlayNext()
         {
             MediaBrowserManager.MediaController.GetTransportControls().SkipToNext();
+            // TODO: Check whether or not we were able to skip to the next element
             return Task.FromResult(true);
         }
 
-        public override Task PlayPrevious()
+        public override Task<bool> PlayPrevious()
         {
             MediaBrowserManager.MediaController.GetTransportControls().SkipToPrevious();
-            return Task.CompletedTask;
+            // TODO: Check whether or not we were able to skip to the previous element
+            return Task.FromResult(true);
         }
 
         public override Task SeekTo(TimeSpan position)

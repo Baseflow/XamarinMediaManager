@@ -66,12 +66,13 @@ namespace MediaManager.Playback
         /// <summary>
         /// Plays the previous MediaFile
         /// </summary>
-        Task PlayPrevious();
+        /// <returns>Playing previous MediaFile was possible</returns>
+        Task<bool> PlayPrevious();
 
         /// <summary>
         /// Plays the next MediaFile
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Playing next MediaFile was possible</returns>
         Task<bool> PlayNext();
 
         /// <summary>

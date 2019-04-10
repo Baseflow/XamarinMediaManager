@@ -136,14 +136,15 @@ namespace MediaManager
             return Task.FromResult(false);
         }
 
-        public virtual Task PlayPrevious()
+        public virtual Task<bool> PlayPrevious()
         {
             if (MediaQueue.HasPrevious())
             {
                 MediaPlayer.Play(MediaQueue.PreviousItem);
+                return Task.FromResult(true);
             }
 
-            return Task.CompletedTask;
+            return Task.FromResult(false);
         }
         public abstract Task SeekTo(TimeSpan position);
 

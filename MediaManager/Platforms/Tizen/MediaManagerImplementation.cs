@@ -79,7 +79,7 @@ namespace MediaManager
             throw new NotImplementedException();
         }
 
-        public override Task PlayPrevious()
+        public override Task<bool> PlayPrevious()
         {
             throw new NotImplementedException();
         }
