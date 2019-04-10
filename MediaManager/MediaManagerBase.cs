@@ -28,6 +28,8 @@ namespace MediaManager
             Timer.Elapsed += Timer_Elapsed;
             Timer.Start();
         }
+
+        public TimeSpan StepSize { get; set; } = TimeSpan.FromSeconds(10);
         
         public bool IsInitialized { get; protected set; }
 
@@ -144,8 +146,17 @@ namespace MediaManager
             return Task.CompletedTask;
         }
         public abstract Task SeekTo(TimeSpan position);
-        public abstract Task StepBackward();
-        public abstract Task StepForward();
+
+
+        public virtual Task StepBackward()
+        {
+            return this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.Seconds) ? 0 : ((Position.Seconds < StepSize.Seconds) ? 0 : Position.Seconds - StepSize.Seconds)));
+        }
+
+        public virtual Task StepForward()
+        {
+            return this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.Seconds) ? 0 : Position.Seconds + StepSize.Seconds));
+        }
         public abstract Task Stop();
         public abstract void ToggleShuffle();
 

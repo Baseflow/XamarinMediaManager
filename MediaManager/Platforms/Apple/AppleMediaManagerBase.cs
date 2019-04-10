@@ -198,18 +198,6 @@ namespace MediaManager
             return this.MediaPlayer.Seek(position);
         }
 
-        public override Task StepBackward()
-        {
-            var playerTime = NativeMediaPlayer.Player.CurrentTime;
-            return this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(playerTime.Seconds) ? 0 : ((playerTime.Seconds < 10) ? 0 : playerTime.Seconds - 10)));
-        }
-
-        public override Task StepForward()
-        {
-            var playerTime = NativeMediaPlayer.Player.CurrentTime;
-            return this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(playerTime.Seconds) ? 0 : playerTime.Seconds + 10));
-        }
-
         public override Task Stop()
         {
             return this.MediaPlayer.Stop();

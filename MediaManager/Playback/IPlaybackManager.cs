@@ -18,6 +18,12 @@ namespace MediaManager.Playback
     public interface IPlaybackManager : INotifyPropertyChanged
     {
         /// <summary>
+        /// Managing the step size for the step forward and step backward functions
+        /// </summary>
+        TimeSpan StepSize { get; set; }
+
+
+        /// <summary>
         /// Reading the current status of the player
         /// </summary>
         MediaPlayerState State { get; }

@@ -235,18 +235,6 @@ namespace MediaManager
             return Task.CompletedTask;
         }
 
-        public override Task StepBackward()
-        {
-            MediaBrowserManager.MediaController.GetTransportControls().Rewind();
-            return Task.CompletedTask;
-        }
-
-        public override Task StepForward()
-        {
-            MediaBrowserManager.MediaController.GetTransportControls().FastForward();
-            return Task.CompletedTask;
-        }
-
         public override Task Stop()
         {
             MediaBrowserManager.MediaController.GetTransportControls().Stop();
