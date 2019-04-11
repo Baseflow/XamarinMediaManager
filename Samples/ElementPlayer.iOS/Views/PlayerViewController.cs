@@ -10,7 +10,7 @@ using UIKit;
 
 namespace ElementPlayer.iOS.Views
 {
-    [MvxRootPresentation(WrapInNavigationController = false)]
+    [MvxChildPresentation]
     [MvxFromStoryboard]
     public partial class PlayerViewController : MvxViewController<PlayerViewModel>
     {
@@ -31,6 +31,13 @@ namespace ElementPlayer.iOS.Views
 
             var set = this.CreateBindingSet<PlayerViewController, PlayerViewModel>();
             set.Bind(progressPlayer).To(vm => vm.FloatedPosition);
+            set.Bind(btnRepeat).To(vm => vm.ToggleRepeatCommand);
+            set.Bind(btnPrevious).To(vm => vm.PlayPreviousCommand);
+            set.Bind(btnPlayPause).To(vm => vm.PlayPauseCommand);
+            set.Bind(btnNext).To(vm => vm.PlayNextCommand);
+            set.Bind(btnShuffle).To(vm => vm.ToggleShuffleCommand);
+            set.Bind(btnStepBackwards).To(vm => vm.StepBackwardCommand);
+            set.Bind(btnStepForward).To(vm => vm.StepForwardCommand);
             set.Apply();
         }
     }

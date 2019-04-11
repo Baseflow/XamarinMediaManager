@@ -10,7 +10,7 @@ using System.CodeDom.Compiler;
 
 namespace ElementPlayer.iOS.Views
 {
-    [Register("HomeViewController")]
+    [Register ("HomeViewController")]
     partial class HomeViewController
     {
         [Outlet]
