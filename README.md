@@ -41,6 +41,11 @@ More information on the [Xamarin Blog](https://blog.xamarin.com/play-audio-and-v
 
 Call **MediaManager.Current** from any .Net library or Xamarin project to gain access to APIs.
 
+You can also directly access the native media player if you need it!
+```csharp
+CrossMediaManager.Current.NativeMediaPlayer;
+```
+
 ### **IMPORTANT:** Initialize plugin
 
 Make sure to call Init() on startup of your app. Optionally provide the `Activity` on Android.
@@ -53,6 +58,10 @@ CrossMediaManager.Current.Init();
 
 ```csharp
 await CrossMediaManager.Current.Play("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3");
+```
+
+```csharp
+await CrossMediaManager.Current.Play("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
 ```
 
 ### Play multiple media items
@@ -69,14 +78,26 @@ public IList<string> Mp3UrlList => new[]{
 await CrossMediaManager.Current.Play(Mp3UrlList);
 ```
 
-### Retrive metadata for media
+### Retrieve metadata for media
 
 ```csharp
-await CrossMediaManager.Current.
+CrossMediaManager.Current.Title;
+CrossMediaManager.Current.AlbumArt;
 ```
 
 ### Add Video Player to the UI
 
+For android we need a videoview
+```csharp
+playerView = view.FindViewById<VideoView>(Resource.Id.exoplayerview_activity_video);
+```
+
+For iOS we need a UIView, which we add to the videoSurface
+```csharp
+_videoSurface = new VideoSurface(vwPlayer);
+```
+
+Then for both android and iOS we have to add the player view to the mediaplayer
 ```csharp
 CrossMediaManager.Current.MediaPlayer.SetPlayerView(playerView);
 ```
@@ -118,6 +139,7 @@ event BufferingChangedEventHandler BufferingChanged;
 event MediaItemFinishedEventHandler MediaItemFinished;
 event MediaItemChangedEventHandler MediaItemChanged;
 event MediaItemFailedEventHandler MediaItemFailed;
+event PositionChangedEventHandler PositionChanged;
 ```
 
 ## Xamarin.Forms
