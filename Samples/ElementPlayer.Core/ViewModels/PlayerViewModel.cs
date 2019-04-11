@@ -21,6 +21,8 @@ namespace ElementPlayer.Core.ViewModels
             PlayPreviousCommand = new MvxAsyncCommand(MediaManager.PlayPrevious);
             ToggleShuffleCommand = new MvxCommand(MediaManager.ToggleShuffle);
             ToggleRepeatCommand = new MvxCommand(MediaManager.ToggleRepeat);
+            StepForwardCommand = new MvxCommand(async () => await MediaManager.StepForward());
+            StepBackwardCommand = new MvxCommand(async () => await MediaManager.StepBackward());
 
             MediaManager.PlayingChanged += MediaManager_PlayingChanged;
             MediaManager.PositionChanged += Current_PositionChanged;
@@ -46,6 +48,8 @@ namespace ElementPlayer.Core.ViewModels
         public IMvxAsyncCommand PlayPreviousCommand { get; }
         public IMvxCommand ToggleShuffleCommand { get; }
         public IMvxCommand ToggleRepeatCommand { get; }
+        public IMvxCommand StepForwardCommand { get; }
+        public IMvxCommand StepBackwardCommand { get; }
 
         public IMediaItem Current => MediaManager.MediaQueue.Current;
 

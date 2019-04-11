@@ -9,7 +9,7 @@ using UIKit;
 
 namespace ElementPlayer.iOS.Views
 {
-    [MvxRootPresentation(WrapInNavigationController = false)]
+    [MvxRootPresentation(WrapInNavigationController = true)]
     [MvxFromStoryboard]
     public partial class HomeViewController : MvxViewController<HomeViewModel>
     {
@@ -24,7 +24,6 @@ namespace ElementPlayer.iOS.Views
 
             var source = new MvxSimpleTableViewSource(tblItems, MediaCell.Key, MediaCell.Key);
             source.DeselectAutomatically = true;
-            tblItems.RowHeight = 55;
             tblItems.Source = source;
 
             var set = this.CreateBindingSet<HomeViewController, HomeViewModel>();
