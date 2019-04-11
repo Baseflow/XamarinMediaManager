@@ -17,6 +17,7 @@ namespace MediaManager.Platforms.Uap.Media
         public Playback.MediaPlayerState State => throw new NotImplementedException();
 
         public MediaPlayerSurface PlayerView { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public RepeatMode RepeatMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;

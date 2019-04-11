@@ -6,6 +6,7 @@ using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Platforms.Uap.Media;
 using MediaManager.Playback;
+using MediaManager.Queue;
 using MediaManager.Video;
 using MediaManager.Volume;
 using Windows.Media.Playback;
@@ -27,6 +28,8 @@ namespace MediaManager
         public override TimeSpan Buffered => throw new NotImplementedException();
 
         public override float Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override RepeatMode RepeatMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override ShuffleMode ShuffleMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public override void Init()
         {
@@ -73,12 +76,12 @@ namespace MediaManager
             throw new NotImplementedException();
         }
 
-        public override Task PlayNext()
+        public override Task<bool> PlayNext()
         {
             throw new NotImplementedException();
         }
 
-        public override Task PlayPrevious()
+        public override Task<bool> PlayPrevious()
         {
             throw new NotImplementedException();
         }
@@ -99,16 +102,6 @@ namespace MediaManager
         }
 
         public override Task Stop()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void ToggleRepeat()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void ToggleShuffle()
         {
             throw new NotImplementedException();
         }
