@@ -1,20 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;MonoAndroid81;tizen40;uap10.0.16299</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;MonoAndroid81;tizen40</TargetFrameworks>
-    <AssemblyName>MediaManager</AssemblyName>
-    <RootNamespace>MediaManager</RootNamespace>
-    <Description></Description>
-    <PackageId>Plugin.MediaManager</PackageId>
+﻿<Project Sdk="MSBuild.Sdk.Extras">
+  <PropertyGroup Condition=" '$(TargetsToBuild)' == 'All' ">
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;MonoAndroid90;tizen40;uap10.0.16299</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;MonoAndroid90;tizen40</TargetFrameworks>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetsToBuild)' != 'All' ">
+    <TargetFrameworks Condition=" '$(TargetsToBuild)' == 'Android' ">netstandard2.0;MonoAndroid90;</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(TargetsToBuild)' == 'Uap' ">netstandard2.0;uap10.0.16299</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(TargetsToBuild)' == 'iOS' ">netstandard2.0;Xamarin.iOS10</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(TargetsToBuild)' == 'Apple' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10</TargetFrameworks>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <AssemblyName>MediaManager</AssemblyName>
+    <RootNamespace>MediaManager</RootNamespace>
+    <PackageId>MediaManager</PackageId>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Compile Remove="Platforms\**\*.cs" />
     <None Include="Platforms\**\*.cs" />
     <None Include="Resources\*.cs" />
     <Compile Remove="Resources\*.cs" />
-    <None Include="..\readme.txt" pack="true" PackagePath="." />
+    <None Include="readme.txt" pack="true" PackagePath="." />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
@@ -24,7 +33,6 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
     <Compile Include="Platforms\Net\**\*.cs" />
     <Compile Include="Platforms\Wpf\**\*.cs" />
-    <Compile Include="Platforms\Console\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'!='netstandard2.0'">
@@ -33,7 +41,7 @@
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
     <Compile Include="Platforms\Windows\**\*.cs" />
-    <Compile Include="Platforms\Uap\**\*.cs" />
+    <Compile Condition=" '$(OS)' == 'Windows_NT' " Include="Platforms\Uap\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
@@ -44,7 +52,7 @@
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.Mac')) ">
     <Compile Include="Platforms\Apple\**\*.cs" />
-    <Compile Include="Platforms\Macos\**\*.cs" />
+    <Compile Include="Platforms\Mac\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
 
@@ -63,20 +71,21 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <Compile Include="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
-    
-    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="27.0.2" />
-    <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="27.0.2" />
-    <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="27.0.2" />
-    <PackageReference Include="Xamarin.Build.Download" Version="0.4.9" />
+    <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Core" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Dash" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Hls" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.SmoothStreaming" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.UI" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.8.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.8.8" />
+    <PackageReference Include="Xamarin.Build.Download" Version="0.4.11" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('tizen')) ">
     <Compile Include="Platforms\Tizen\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
-    <PackageReference Include="Tizen.NET" Version="4.0.0">
-      <ExcludeAssets>Runtime</ExcludeAssets>
-    </PackageReference>
   </ItemGroup>
-
-  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+  
 </Project>

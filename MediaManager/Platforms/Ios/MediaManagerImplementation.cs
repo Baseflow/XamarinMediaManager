@@ -1,20 +1,21 @@
-﻿using Plugin.MediaManager.Abstractions;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using MediaManager.Audio;
+using MediaManager.Media;
+using MediaManager.Playback;
+using MediaManager.Video;
+using MediaManager.Volume;
 
-namespace Plugin.MediaManager
+namespace MediaManager
 {
-    public class MediaManagerImplementation: MediaManagerAppleBase
+    [Foundation.Preserve(AllMembers = true)]
+    public class MediaManagerImplementation : AppleMediaManagerBase<MediaManager.Platforms.Ios.Media.MediaPlayer>
     {
         public MediaManagerImplementation()
         {
-            MediaRemoteControl = new MediaRemoteControl(PlaybackController);
-            MediaNotificationManager = new MediaNotificationManagerImplementation(this);
+
         }
-
-        /// <summary>
-        /// Default implementation for IMediaRemoteControl that uses the default PlaybackController.
-        /// </summary>
-        public IMediaRemoteControl MediaRemoteControl { get; set; }
-
-        public sealed override IMediaNotificationManager MediaNotificationManager { get; set; }
     }
 }

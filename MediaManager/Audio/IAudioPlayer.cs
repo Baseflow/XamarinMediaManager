@@ -1,6 +1,6 @@
-﻿namespace Plugin.MediaManager.Abstractions
+﻿namespace MediaManager.Audio
 {
-    public interface IAudioPlayer : IPlaybackManager
+    public interface IAudioPlayer<TPlayer> : IMediaPlayer<TPlayer> where TPlayer : class
     {
     }
 }

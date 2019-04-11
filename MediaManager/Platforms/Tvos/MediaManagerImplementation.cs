@@ -1,10 +1,17 @@
-﻿namespace Plugin.MediaManager
+﻿using MediaManager.Audio;
+using MediaManager.Media;
+using MediaManager.Platforms.Apple.Media;
+using MediaManager.Video;
+using MediaManager.Volume;
+using MediaManager.Platforms.Tvos.Media;
+
+namespace MediaManager
 {
-    public class MediaManagerImplementation : MediaManagerAppleBase
+    [Foundation.Preserve(AllMembers = true)]
+    public class MediaManagerImplementation : AppleMediaManagerBase<MediaManager.Platforms.Tvos.Media.MediaPlayer>
     {
-        /// <summary>
-        /// Default implementation for IMediaRemoteControl that uses the default PlaybackController.
-        /// </summary>
-        public IMediaRemoteControl MediaRemoteControl => new MediaRemoteControl(PlaybackController);
+        public MediaManagerImplementation()
+        {
+        }
     }
 }

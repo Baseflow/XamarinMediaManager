@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <mediamanager.platforms.android.video.VideoView
+        android:id="@+id/exoplayerview_activity_video"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:focusable="true"
+        local:use_artwork="true"
+        local:default_artwork="@drawable/baseline_image_24"
+        local:show_timeout="5000"
+        local:fastforward_increment="1000"
+        local:rewind_increment="1000" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/exoplayerview_activity_video"
+        android:id="@+id/relativeLayout1"
+        android:padding="8dp">
+        <ImageButton
+            android:src="@drawable/baseline_add_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_Plus" />
+        <TextView
+            android:text="Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_Title"
+            android:layout_toLeftOf="@+id/imageButton_Options"
+            android:layout_toRightOf="@id/imageButton_Plus"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            local:MvxBind="Text CurrentTitle" />
+        <TextView
+            android:text="Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewSubtitle"
+            android:layout_toLeftOf="@+id/imageButton_Options"
+            android:layout_toRightOf="@id/imageButton_Plus"
+            android:layout_below="@id/textView_Title"
+            android:textAlignment="center"
+            local:MvxBind="Text CurrentSubtitle"/>
+        <ImageButton
+            android:src="@drawable/baseline_more_vert_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_Options"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout2"
+        android:layout_below="@id/relativeLayout1"
+        android:layout_above="@+id/relativeLayout3"
+        android:padding="8dp">
+        <TextView
+            android:text="00:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            local:MvxBind="Text TotalPlayed"
+            android:id="@+id/textView_playedtime" />
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekBar_Current"
+            android:layout_toLeftOf="@+id/textView_duration"
+            android:layout_toRightOf="@id/textView_playedtime"
+            android:min="0"
+            local:MvxBind="Max Duration; Progress Position, Mode=OneWay; SecondaryProgress Buffered" />
+        <TextView
+            android:text="00:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_duration"
+            local:MvxBind="Text TotalDuration"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout3"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="24dp"
+        android:paddingTop="24dp">
+        <ImageButton
+            android:src="@drawable/baseline_repeat_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/imageButton_next"
+            android:id="@+id/imageButton_repeat"
+            android:layout_centerVertical="true" 
+            local:MvxBind="Click ToggleRepeatCommand"/>
+        <ImageButton
+            android:src="@drawable/baseline_skip_next_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/imageButton_playpause"
+            android:id="@+id/imageButton_next"
+            android:layout_centerVertical="true"
+            local:MvxBind="Click PlayNextCommand"/>
+        <ImageButton
+            android:src="@drawable/baseline_play_arrow_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_playpause"
+            android:layout_centerInParent="true" 
+            local:MvxBind="Click PlayPauseCommand"/>
+        <ImageButton
+            android:src="@drawable/baseline_skip_previous_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/imageButton_playpause"
+            android:id="@+id/imageButton_previous"
+            android:layout_centerVertical="true"
+            local:MvxBind="Click PlayPreviousCommand"/>
+        <ImageButton
+            android:src="@drawable/baseline_shuffle_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/imageButton_previous"
+            android:id="@+id/imageButton_shuffle"
+            android:layout_centerVertical="true" 
+            local:MvxBind="Click ToggleShuffleCommand"/>
+    </RelativeLayout>
+</RelativeLayout>

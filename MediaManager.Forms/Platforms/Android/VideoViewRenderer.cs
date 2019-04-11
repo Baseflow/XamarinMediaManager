@@ -1,15 +1,22 @@
 ﻿using System;
-using Plugin.MediaManager.Forms;
-using Plugin.MediaManager.Forms.Android;
+using System.Collections.Generic;
+using System.Text;
+using Android.Content;
+using MediaManager.Forms;
+using MediaManager.Forms.Platforms.Android;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(VideoView), typeof(VideoViewRenderer))]
-namespace Plugin.MediaManager.Forms.Android
+namespace MediaManager.Forms.Platforms.Android
 {
-    public class VideoViewRenderer : ViewRenderer<VideoView, VideoSurface>
+    public class VideoViewRenderer : Xamarin.Forms.Platform.Android.AppCompat.ViewRenderer<VideoView, MediaManager.Platforms.Android.Video.VideoView>
     {
-        private VideoSurface _videoSurface;
+        private MediaManager.Platforms.Android.Video.VideoView _videoView;
+
+        public VideoViewRenderer(Context context) : base(context)
+        {
+        }
 
         public static void Init()
         {
@@ -21,18 +28,18 @@ namespace Plugin.MediaManager.Forms.Android
             base.OnElementChanged(e);
             if (Control == null)
             {
-                _videoSurface = new VideoSurface(Context);
-                SetNativeControl(_videoSurface);
-                CrossMediaManager.Current.VideoPlayer.RenderSurface = _videoSurface;
-            }                       
+                _videoView = new MediaManager.Platforms.Android.Video.VideoView(Context);
+                SetNativeControl(_videoView);
+                CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
+            }
         }
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            var p = _videoSurface.LayoutParameters;
+            var p = _videoView.LayoutParameters;
             p.Height = heightMeasureSpec;
             p.Width = widthMeasureSpec;
-            _videoSurface.LayoutParameters = p;
+            _videoView.LayoutParameters = p;
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }

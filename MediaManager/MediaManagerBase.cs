@@ -1,426 +1,223 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading.Tasks;
-using Plugin.MediaManager.Abstractions.Enums;
-using Plugin.MediaManager.Abstractions.EventArguments;
+using System.Timers;
+using MediaManager.Audio;
+using MediaManager.Media;
+using MediaManager.Playback;
+using MediaManager.Queue;
+using MediaManager.Video;
+using MediaManager.Volume;
 
-namespace Plugin.MediaManager.Abstractions.Implementations
+namespace MediaManager
 {
-    /// <summary>
-    ///     Implementation for MediaManager
-    /// </summary>
-    public abstract class MediaManagerBase : IMediaManager, IDisposable
+    public abstract class MediaManagerBase<TMediaPlayer, TPlayer> : MediaManagerBase, IMediaManager<TMediaPlayer, TPlayer> where TMediaPlayer : class, IMediaPlayer<TPlayer> where TPlayer : class
     {
-        private IPlaybackManager _currentPlaybackManager;
+        public TMediaPlayer NativeMediaPlayer => MediaPlayer as TMediaPlayer;
+    }
 
-        private Func<IMediaFile, Task> _onBeforePlay;
+    public abstract class MediaManagerBase : IMediaManager, INotifyMediaManager
+    {
+        public MediaManagerBase()
+        {
+            Timer.AutoReset = true;
+            Timer.Elapsed += Timer_Elapsed;
+            Timer.Start();
+        }
 
-        private IPlaybackManager CurrentPlaybackManager
+        public TimeSpan StepSize { get; set; } = TimeSpan.FromSeconds(10);
+        
+        public bool IsInitialized { get; protected set; }
+
+        public abstract IMediaPlayer MediaPlayer { get; set; }
+
+        public abstract IMediaExtractor MediaExtractor { get; set; }
+        public abstract IVolumeManager VolumeManager { get; set; }
+
+        private IMediaQueue _mediaQueue;
+        public virtual IMediaQueue MediaQueue
         {
             get
             {
-                if (_currentPlaybackManager == null && CurrentMediaFile != null) SetCurrentPlayer(CurrentMediaFile.Type);
+                if (_mediaQueue == null)
+                    _mediaQueue = new MediaQueue();
 
-                if (_currentPlaybackManager != null)
-                {
-                    _currentPlaybackManager.RequestHeaders = RequestHeaders;
-                }
-
-                return _currentPlaybackManager;
+                return _mediaQueue;
+            }
+            set
+            {
+                _mediaQueue = value;
             }
         }
 
-        public virtual IMediaQueue MediaQueue { get; set; } = new MediaQueue();
+        public abstract MediaPlayerState State { get; }
+        public abstract TimeSpan Position { get; }
+        public abstract TimeSpan Duration { get; }
+        public abstract TimeSpan Buffered { get; }
+        public abstract float Speed { get; set; }
+        public abstract RepeatMode RepeatMode { get; set; }
+        public abstract ShuffleMode ShuffleMode { get; set; }
 
-        public abstract IAudioPlayer AudioPlayer { get; set; }
-
-        public abstract IVideoPlayer VideoPlayer { get; set; }
-
-        public abstract IMediaNotificationManager MediaNotificationManager { get; set; }
-
-        public abstract IMediaExtractor MediaExtractor { get; set; }
-
-        public abstract IVolumeManager VolumeManager { get; set; }
-
-        public IPlaybackController PlaybackController { get; set; }
-
-        public MediaPlayerStatus Status => CurrentPlaybackManager?.Status ?? MediaPlayerStatus.Stopped;
-
-        public TimeSpan Position => CurrentPlaybackManager?.Position ?? TimeSpan.Zero;
-
-        public TimeSpan Duration => CurrentPlaybackManager?.Duration ?? TimeSpan.Zero;
-
-        public TimeSpan Buffered => CurrentPlaybackManager?.Buffered ?? TimeSpan.Zero;
-
-        public event StatusChangedEventHandler StatusChanged;
-
-        public event PlayingChangedEventHandler PlayingChanged;
-
-        public event BufferingChangedEventHandler BufferingChanged;
-
-        public event MediaFinishedEventHandler MediaFinished;
-
-        public event MediaFailedEventHandler MediaFailed;
-
-        public event MediaFileChangedEventHandler MediaFileChanged;
-
-        public event MediaFileFailedEventHandler MediaFileFailed;
-
-        private IMediaFile CurrentMediaFile => MediaQueue.Current;
-
-        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
-
-        private bool _startedPlaying;
-
-        protected MediaManagerBase()
+        public abstract Task Pause();
+        public abstract Task Play(IMediaItem mediaItem);
+        public abstract Task<IMediaItem> Play(string uri);
+        public abstract Task Play(IEnumerable<IMediaItem> items);
+        public abstract Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items);
+        public virtual Task<IMediaItem> AddMediaItemsToQueue(IEnumerable<IMediaItem> items, bool clearQueue = false)
         {
-            PlaybackController = new PlaybackController(this);
-        }
-
-        public async Task PlayNext()
-        {
-            await RaiseMediaFileFailedEventOnException(async () =>
+            if (clearQueue)
             {
-                if (MediaQueue.HasNext())
-                {
-                    MediaQueue.SetNextAsCurrent();
-
-                    await PlayCurrent();
-                }
-                else
-                {
-                    MediaQueue.SetIndexAsCurrent(0);
-
-                    await PrepareCurrentAndThen(async () =>
-                    {
-                        await CurrentPlaybackManager.Play();
-                        await CurrentPlaybackManager.Pause();
-                        await Seek(TimeSpan.Zero);
-                    });
-
-                    OnMediaFileChanged(this, new MediaFileChangedEventArgs(CurrentMediaFile));
-                }
-            });
-        }
-
-        public async Task PlayPrevious()
-        {
-            await RaiseMediaFileFailedEventOnException(async () =>
-            {
-                MediaQueue.SetPreviousAsCurrent();
-
-                await PlayCurrent();
-            });
-        }
-
-        public async Task PlayByPosition(int index)
-        {
-            MediaQueue.SetIndexAsCurrent(index);
-            await Play(CurrentMediaFile);
-        }
-
-        public Task Play(string url)
-        {
-            var mediaFile = new MediaFile(url);
-            return Play(mediaFile);
-        }
-
-        public Task Play(string url, MediaFileType fileType)
-        {
-            var mediaFile = new MediaFile(url, fileType);
-            return Play(mediaFile);
-        }
-
-        public Task Play(string url, MediaFileType fileType, ResourceAvailability availability)
-        {
-            var mediaFile = new MediaFile(url, fileType, availability);
-            return Play(mediaFile);
-        }
-
-        public async Task Play(IMediaFile mediaFile = null)
-        {
-            if (mediaFile == null)
-            {
-                if (Status == MediaPlayerStatus.Paused)
-                {
-                    await Resume();
-                    return;
-                }
-
-                mediaFile = CurrentMediaFile;
+                MediaQueue.Clear();
             }
 
-            if (_currentPlaybackManager != null && Status == MediaPlayerStatus.Failed)
+            foreach (var item in items)
             {
-                await PlayNext();
-                return;
+                MediaQueue.Add(item);
             }
 
-            if (mediaFile == null)
+            return Task.FromResult(MediaQueue.Current);
+        }
+        public abstract Task<IMediaItem> Play(FileInfo file);
+        public abstract Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo);
+        public abstract Task Play();
+        public virtual Task<bool> PlayNext()
+        {
+            // If we repeat just the single media item, we do that first
+            if (MediaPlayer.RepeatMode == RepeatMode.One)
             {
-                await Play(MediaQueue);
-                return;
-            }
-
-            if (!MediaQueue.Contains(mediaFile))
-                MediaQueue.Add(mediaFile);
-
-            MediaQueue.SetTrackAsCurrent(mediaFile);
-
-            await RaiseMediaFileFailedEventOnException(async () =>
-            {
-                await PlayCurrent();
-            });
-
-            MediaNotificationManager?.StartNotification(mediaFile);
-        }
-
-        /// <summary>
-        /// Adds all MediaFiles to the Queue and starts playing the first item
-        /// </summary>
-        /// <param name="mediaFiles"></param>
-        /// <returns></returns>
-        public async Task Play(IEnumerable<IMediaFile> mediaFiles)
-        {
-            MediaQueue.Clear();
-            MediaQueue.AddRange(mediaFiles);
-
-            // Play from index 0
-            MediaQueue.SetIndexAsCurrent(0);
-            await PlayCurrent();
-
-            MediaNotificationManager?.StartNotification(CurrentMediaFile);
-        }
-
-        public void SetOnBeforePlay(Func<IMediaFile, Task> beforePlay)
-        {
-            _onBeforePlay = beforePlay;
-        }
-
-        public async Task Pause()
-        {
-            IPlaybackManager currentPlaybackManager = CurrentPlaybackManager;
-            if (currentPlaybackManager != null)
-                await currentPlaybackManager.Pause();
-        }
-
-        public async Task Stop()
-        {
-            if (CurrentPlaybackManager == null)
-                return;
-            await CurrentPlaybackManager.Stop();
-            MediaNotificationManager?.StopNotifications();
-        }
-
-        public async Task Seek(TimeSpan position)
-        {
-            if (CurrentPlaybackManager == null)
-                return;
-            await CurrentPlaybackManager.Seek(position);
-            MediaNotificationManager?.UpdateNotifications(CurrentMediaFile, Status);
-        }
-
-        private async Task Resume()
-        {
-            if (CurrentPlaybackManager == null)
-                return;
-            await CurrentPlaybackManager.Play(CurrentMediaFile);
-        }
-
-        private async Task RaiseMediaFileFailedEventOnException(Func<Task> action)
-        {
-            try
-            {
-                await action();
-            }
-            catch (Exception ex)
-            {
-                OnMediaFileFailed(CurrentPlaybackManager, new MediaFileFailedEventArgs(ex, CurrentMediaFile));
-            }
-        }
-
-        private Task PlayCurrent()
-        {
-            return PrepareCurrentAndThen(() => CurrentPlaybackManager.Play(CurrentMediaFile));
-        }
-
-        private async Task PrepareCurrentAndThen(Func<Task> action = null)
-        {
-            await ExecuteOnBeforePlay();
-
-            if (CurrentPlaybackManager != null)
-                await Task.WhenAll(
-                    action?.Invoke(),
-                    ExtractMediaInformation(CurrentMediaFile));
-        }
-
-        private async Task ExecuteOnBeforePlay()
-        {
-            var beforePlayTask = _onBeforePlay?.Invoke(CurrentMediaFile);
-            if (beforePlayTask != null) await beforePlayTask;
-        }
-
-        private void SetCurrentPlayer(MediaFileType fileType)
-        {
-            if (_currentPlaybackManager != null)
-            {
-                RemoveEventHandlers();
-            }
-            switch (fileType)
-            {
-                case MediaFileType.Audio:
-                    _currentPlaybackManager = AudioPlayer;
-                    break;
-                case MediaFileType.Video:
-                    _currentPlaybackManager = VideoPlayer;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            AddEventHandlers();
-        }
-
-        private async Task ExtractMediaInformation(IMediaFile mediaFile)
-        {
-            if (mediaFile.ExtractMetadata)
-            {
-                var index = MediaQueue.IndexOf(mediaFile);
-                await MediaExtractor.ExtractMediaInfo(mediaFile);
-
-                if (index >= 0)
-                {
-                    MediaQueue[index] = mediaFile;
-                }
-
-                OnMediaFileChanged(CurrentPlaybackManager, new MediaFileChangedEventArgs(mediaFile));
-            }
-        }
-
-        private void OnStatusChanged(object sender, StatusChangedEventArgs e)
-        {
-            if (sender != CurrentPlaybackManager) return;
-
-            if (Status == MediaPlayerStatus.Playing)
-            {
-                _startedPlaying = false;
-            }
-
-            MediaNotificationManager?.UpdateNotifications(CurrentMediaFile, e.Status);
-            StatusChanged?.Invoke(sender, e);
-        }
-
-        private void OnPlayingChanged(object sender, PlayingChangedEventArgs e)
-        {
-            if (sender == CurrentPlaybackManager)
-            {
-                if (!_startedPlaying && Duration != TimeSpan.Zero)
-                {
-                    MediaNotificationManager?.UpdateNotifications(MediaQueue.Current, Status);
-                    _startedPlaying = true;
-                }
-
-                PlayingChanged?.Invoke(sender, e);
-            }
-        }
-
-        private async void OnMediaFinished(object sender, MediaFinishedEventArgs e)
-        {
-            if (sender != CurrentPlaybackManager) return;
-
-            MediaFinished?.Invoke(sender, e);
-
-            if (MediaQueue.Repeat == RepeatType.RepeatOne)
-            {
-                await Seek(TimeSpan.Zero);
-                await Resume();
+                MediaPlayer.Play(MediaQueue.Current);
+                return Task.FromResult(true);
             }
             else
             {
-                await PlayNext();
+                // Otherwise we try to play the next media item in the queue
+                if (MediaQueue.HasNext())
+                {
+                    MediaPlayer.Play(MediaQueue.NextItem);
+                    return Task.FromResult(true);
+                }
+                else
+                {
+                    // If there is no next media item, but we repeat them all, we reset the current index and start playing it again
+                    if (MediaPlayer.RepeatMode == RepeatMode.All)
+                    {
+                        // Go to the start of the queue again
+                        MediaQueue.CurrentIndex = 0;
+                        if (MediaQueue.HasCurrent())
+                        {
+                            MediaPlayer.Play(MediaQueue.Current);
+                            return Task.FromResult(true);
+                        }
+                    }
+                }
             }
+
+            return Task.FromResult(false);
         }
 
-        private void OnMediaFailed(object sender, MediaFailedEventArgs e)
+        public virtual Task<bool> PlayPrevious()
         {
-            if (sender == CurrentPlaybackManager)
+            if (MediaQueue.HasPrevious())
             {
-                OnStatusChanged(sender, new StatusChangedEventArgs(MediaPlayerStatus.Failed));
+                MediaPlayer.Play(MediaQueue.PreviousItem);
+                return Task.FromResult(true);
             }
-            MediaFailed?.Invoke(sender, e);
+
+            return Task.FromResult(false);
+        }
+        public abstract Task SeekTo(TimeSpan position);
+
+
+        public virtual Task StepBackward()
+        {
+            var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.TotalSeconds) ? 0 : ((Position.TotalSeconds < StepSize.TotalSeconds) ? 0 : Position.TotalSeconds - StepSize.TotalSeconds)));
+            Timer_Elapsed(null, null);
+            return seekTo;
         }
 
-        private void OnBufferingChanged(object sender, BufferingChangedEventArgs e)
+        public virtual Task StepForward()
         {
-            if (sender == CurrentPlaybackManager)
-                BufferingChanged?.Invoke(sender, e);
+            var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.TotalSeconds) ? 0 : Position.TotalSeconds + StepSize.TotalSeconds));
+            Timer_Elapsed(null, null);
+            return seekTo;
         }
+        public abstract Task Stop();
 
-        private void OnMediaFileChanged(object sender, MediaFileChangedEventArgs e)
+        public void ToggleRepeat()
         {
-            if (CurrentMediaFile?.Url == e?.File?.Url)
-                MediaNotificationManager?.UpdateNotifications(e?.File, Status);
-            MediaFileChanged?.Invoke(sender, e);
-        }
-
-        private void OnMediaFileFailed(object sender, MediaFileFailedEventArgs e)
-        {
-            if (sender == CurrentPlaybackManager)
+            if (RepeatMode == (int)RepeatMode.Off)
             {
-                OnStatusChanged(sender, new StatusChangedEventArgs(MediaPlayerStatus.Failed));
-                MediaFileFailed?.Invoke(sender, e);
+                RepeatMode = RepeatMode.All;
+            }
+            else
+            {
+                RepeatMode = RepeatMode.Off;
             }
         }
 
-        private void AddEventHandlers()
+        public void ToggleShuffle()
         {
-            _currentPlaybackManager.BufferingChanged += OnBufferingChanged;
-            _currentPlaybackManager.MediaFailed += OnMediaFailed;
-            _currentPlaybackManager.MediaFinished += OnMediaFinished;
-            _currentPlaybackManager.PlayingChanged += OnPlayingChanged;
-            _currentPlaybackManager.StatusChanged += OnStatusChanged;
+            if (ShuffleMode == (int)ShuffleMode.Off)
+            {
+                ShuffleMode = ShuffleMode.All;
+            }
+            else
+            {
+                ShuffleMode = ShuffleMode.Off;
+            }
         }
 
-        private void RemoveEventHandlers()
+        public Timer Timer { get; } = new Timer(1000);
+        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event StateChangedEventHandler StateChanged;
+        public event PlayingChangedEventHandler PlayingChanged;
+        public event BufferingChangedEventHandler BufferingChanged;
+        public event PositionChangedEventHandler PositionChanged;
+
+        public event MediaItemFinishedEventHandler MediaItemFinished;
+        public event MediaItemChangedEventHandler MediaItemChanged;
+        public event MediaItemFailedEventHandler MediaItemFailed;
+
+        public void OnBufferingChanged(object sender, BufferingChangedEventArgs e) => BufferingChanged?.Invoke(sender, e);
+        public void OnMediaItemChanged(object sender, MediaItemEventArgs e) => MediaItemChanged?.Invoke(sender, e);
+        public void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
+        public void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
+        public void OnPlayingChanged(object sender, PlayingChangedEventArgs e) => PlayingChanged?.Invoke(sender, e);
+        public void OnStateChanged(object sender, StateChangedEventArgs e) => StateChanged?.Invoke(sender, e);
+        public void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
+
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            _currentPlaybackManager.BufferingChanged -= OnBufferingChanged;
-            _currentPlaybackManager.MediaFailed -= OnMediaFailed;
-            _currentPlaybackManager.MediaFinished -= OnMediaFinished;
-            _currentPlaybackManager.PlayingChanged -= OnPlayingChanged;
-            _currentPlaybackManager.StatusChanged -= OnStatusChanged;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #region IDisposable        
-        // Flag: Has Dispose already been called?
-        bool disposed = false;
-
-        // Public implementation of Dispose pattern callable by consumers.
-        public void Dispose()
+        private TimeSpan PreviousPosition = new TimeSpan();
+        protected virtual void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        // Protected implementation of Dispose pattern.
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposed)
+            if (!IsInitialized)
                 return;
 
-            if (disposing)
+            if (PreviousPosition != Position)
             {
-                // Free any other managed objects here.
-                RemoveEventHandlers();
+                PreviousPosition = Position;
+                OnPositionChanged(this, new PositionChangedEventArgs(Position));
             }
-
-            // Free any unmanaged objects here.
-            //
-            disposed = true;
+            if (this.IsPlaying())
+            {
+                OnPlayingChanged(this, new PlayingChangedEventArgs(Position, Duration));
+            }
+            if(this.IsBuffering())
+            {
+                OnBufferingChanged(this, new BufferingChangedEventArgs(Buffered));
+            }
         }
 
-        ~MediaManagerBase()
-        {
-            Dispose(false);
-        }
-        #endregion
+        public abstract void Init();
     }
 }

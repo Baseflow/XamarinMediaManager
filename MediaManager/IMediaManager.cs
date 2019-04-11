@@ -1,107 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
-using Plugin.MediaManager.Abstractions.Enums;
-using Plugin.MediaManager.Abstractions.EventArguments;
+using MediaManager.Audio;
+using MediaManager.Media;
+using MediaManager.Playback;
+using MediaManager.Queue;
+using MediaManager.Video;
+using MediaManager.Volume;
 
-namespace Plugin.MediaManager.Abstractions
+namespace MediaManager
 {
-    public delegate void MediaFileChangedEventHandler(object sender, MediaFileChangedEventArgs e);
+    public interface IMediaManager<TMediaPlayer, TPlayer> : IMediaManager where TMediaPlayer : class, IMediaPlayer<TPlayer> where TPlayer : class
+    {
+        TMediaPlayer NativeMediaPlayer { get; }
+    }
 
-    public delegate void MediaFileFailedEventHandler(object sender, MediaFileFailedEventArgs e);
-
-    /// <summary>
-    /// The main purpose of this class is to be a controlling unit for all the single MediaItem implementations, who
-    /// in themselve can play their media, but need a central controling unit, surrounding them
-    /// </summary>
-    /// <seealso cref="Plugin.MediaManager.Abstractions.IPlaybackManager" />
     public interface IMediaManager : IPlaybackManager
     {
-        /// <summary>
-        /// Player responsible for audio playback
-        /// </summary>
-        IAudioPlayer AudioPlayer { get; set; }
+        IMediaPlayer MediaPlayer { get; set; }
+
+        //TODO: Make browsable library
+        //IMediaLibrary MediaLibrary { get; set; }
 
         /// <summary>
-        /// Player responsible for video playback
+        /// Gets or sets the request headers.
         /// </summary>
-        IVideoPlayer VideoPlayer { get; set; }
+        Dictionary<string, string> RequestHeaders { get; set; }
 
-        /// <summary>
-        /// Queue to play media in sequences
-        /// </summary>
-        IMediaQueue MediaQueue { get; set; }
+        //IAudioPlayer AudioPlayer { get; set; }
 
-        /// <summary>
-        /// Manages notifications to the native system
-        /// </summary>
-        IMediaNotificationManager MediaNotificationManager { get; set; }
+        //IVideoPlayer VideoPlayer { get; set; }
 
-        /// <summary>
-        /// Extracts media information to put it into an IMediaFile
-        /// </summary>
+        //INotificationManager NotificationManager { get; set; }
+
         IMediaExtractor MediaExtractor { get; set; }
 
-        /// <summary>
-        /// Used to manage the volume
-        /// </summary>
         IVolumeManager VolumeManager { get; set; }
 
-        /// <summary>
-        /// Used in various views to control the playback
-        /// </summary>
-        IPlaybackController PlaybackController { get; set; }
+        IMediaQueue MediaQueue { get; set; }
+
+        void Init();
 
         /// <summary>
-        /// Raised when the media information of the track has changed.
+        /// Plays a media item
         /// </summary>
-        event MediaFileChangedEventHandler MediaFileChanged;
+        Task Play(IMediaItem mediaItem);
 
         /// <summary>
-        /// Raised when mediadata of MediaFile failed to update
+        /// Plays an uri that can be both remote or local
         /// </summary>
-        event MediaFileFailedEventHandler MediaFileFailed;
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        Task<IMediaItem> Play(string uri);
 
         /// <summary>
-        /// Creates new MediaFile object, adds it to the queue and starts playing
+        /// Plays a list of media items
         /// </summary>
-        Task Play(string url);
+        /// <param name="items"></param>
+        /// <returns></returns>
+        Task Play(IEnumerable<IMediaItem> items);
 
         /// <summary>
-        /// Creates new MediaFile object, adds it to the queue and starts playing
+        /// Plays a list of uri's
         /// </summary>
-        Task Play(string url, MediaFileType fileType);
+        /// <param name="items"></param>
+        /// <returns></returns>
+        Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items);
 
         /// <summary>
-        /// Creates new MediaFile object, adds it to the queue and starts playing
+        /// Plays a file from the local file system
         /// </summary>
-        Task Play(string url, MediaFileType fileType, ResourceAvailability availability);
+        /// <param name="file"></param>
+        /// <returns></returns>
+        Task<IMediaItem> Play(FileInfo file);
 
         /// <summary>
-        /// Adds all MediaFiles to the Queue and starts playing the first one
+        /// Plays all files inside the directory
         /// </summary>
-        Task Play(IEnumerable<IMediaFile> mediaFiles);
-
-        /// <summary>
-        /// Plays the next MediaFile in the Queue
-        /// </summary>
-        Task PlayNext();
-
-        /// <summary>
-        /// Plays the previous MediaFile in the Queue
-        /// </summary>
-        Task PlayPrevious();
-        
-        /// <summary>
-        /// Plays a MediaFile by its position in the Queue
-        /// </summary>
-        Task PlayByPosition(int index);
-
-        /// <summary>
-        /// Sets a function which gets called before the MediaFile is played
-        /// </summary>
-        /// <param name="beforePlay">The before play.</param>
-        void SetOnBeforePlay(Func<IMediaFile, Task> beforePlay);
-
+        /// <param name="directoryInfo"></param>
+        /// <returns></returns>
+        Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo);
     }
 }

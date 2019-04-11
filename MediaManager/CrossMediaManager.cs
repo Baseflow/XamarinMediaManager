@@ -1,7 +1,6 @@
 ﻿using System;
-using Plugin.MediaManager.Abstractions;
 
-namespace Plugin.MediaManager
+namespace MediaManager
 {
     /// <summary>
     /// Cross MediaManager
