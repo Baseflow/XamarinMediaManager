@@ -14,7 +14,8 @@
   <PropertyGroup>
     <AssemblyName>MediaManager</AssemblyName>
     <RootNamespace>MediaManager</RootNamespace>
-    <PackageId>MediaManager</PackageId>
+    <PackageId>Plugin.MediaManager</PackageId>
+    <Description>Cross platform Xamarin plugin to play and control Audio and Video</Description>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
   
