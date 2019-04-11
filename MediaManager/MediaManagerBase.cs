@@ -134,14 +134,14 @@ namespace MediaManager
 
         public virtual Task StepBackward()
         {
-            var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.Seconds) ? 0 : ((Position.Seconds < StepSize.Seconds) ? 0 : Position.Seconds - StepSize.Seconds)));
+            var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.TotalSeconds) ? 0 : ((Position.TotalSeconds < StepSize.TotalSeconds) ? 0 : Position.TotalSeconds - StepSize.TotalSeconds)));
             Timer_Elapsed(null, null);
             return seekTo;
         }
 
         public virtual Task StepForward()
         {
-            var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.Seconds) ? 0 : Position.Seconds + StepSize.Seconds));
+            var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.TotalSeconds) ? 0 : Position.TotalSeconds + StepSize.TotalSeconds));
             Timer_Elapsed(null, null);
             return seekTo;
         }
