@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Fragments\BaseFragment.cs" />
+    <Compile Include="Fragments\MiniPlayerFragment.cs" />
     <Compile Include="Fragments\PlayerFragment.cs" />
     <Compile Include="Fragments\SettingsFragment.cs" />
     <Compile Include="Fragments\BrowseFragment.cs" />

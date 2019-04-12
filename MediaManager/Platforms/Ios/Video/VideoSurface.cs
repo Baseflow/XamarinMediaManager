@@ -5,11 +5,11 @@ using UIKit;
 
 namespace MediaManager.Platforms.Ios.Video
 {
-    public class VideoSurface : UIView, IVideoView
+    public class VideoView : UIView, IVideoView
     {
         private UIView _view;
 
-        public VideoSurface(UIView view)
+        public VideoView(UIView view)
         {
             this._view = view;
             Frame = view.Frame;

@@ -19,9 +19,9 @@
 |.Net Standard|Yes|2.0+|MediaManager|
 |Xamarin.Forms|Yes|3.2+|MediaManager|
 |Xamarin.Android|Yes|API 16+|ExoPlayer|
-|Xamarin.iOS|Yes|iOS 10+|AVQueuePlayer|
-|Xamarin.Mac|Yes|3.0+|AVQueuePlayer|
-|Xamarin.tvOS|Yes|10.0+|AVQueuePlayer|
+|Xamarin.iOS|Yes|iOS 10+|AVPlayer|
+|Xamarin.Mac|Yes|3.0+|AVPlayer|
+|Xamarin.tvOS|Yes|10.0+|AVPlayer|
 |Tizen|Yes|4.0+|MediaPlayer|
 |Windows 10 UWP|Yes|10+|MediaElement|
 |Windows WPF|No|
@@ -41,11 +41,6 @@ More information on the [Xamarin Blog](https://blog.xamarin.com/play-audio-and-v
 
 Call **MediaManager.Current** from any .Net library or Xamarin project to gain access to APIs.
 
-You can also directly access the native media player if you need it!
-```csharp
-CrossMediaManager.Current.NativeMediaPlayer;
-```
-
 ### **IMPORTANT:** Initialize plugin
 
 Make sure to call Init() on startup of your app. Optionally provide the `Activity` on Android.
@@ -57,10 +52,9 @@ CrossMediaManager.Current.Init();
 ### Play a single media item
 
 ```csharp
+//Audio
 await CrossMediaManager.Current.Play("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3");
-```
-
-```csharp
+//Video
 await CrossMediaManager.Current.Play("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
 ```
 
@@ -80,9 +74,12 @@ await CrossMediaManager.Current.Play(Mp3UrlList);
 
 ### Retrieve metadata for media
 
+Depending on the platform and the media item metadata will be extracted from ID3 data in the file.
+
 ```csharp
-CrossMediaManager.Current.Title;
-CrossMediaManager.Current.AlbumArt;
+CrossMediaManager.Current.MediaQueue.Current.Title;
+CrossMediaManager.Current.MediaQueue.Current.AlbumArt;
+CrossMediaManager.Current.MediaQueue.Current.*
 ```
 
 ### Add Video Player to the UI
@@ -145,20 +142,30 @@ event PositionChangedEventHandler PositionChanged;
 ## Xamarin.Forms
 
 ```csharp
-await CrossMediaManager.Current.
+await CrossMediaManager.Current.*
 ```
+
 ## Platform specific features
 
 |Feature|Android|iOS, Mac, tvOS|UWP|Tizen|
 | ------------------- | :-----------: | :------------------: | :------------------: |:------------------: |
 |Audio|x|x|x|x|
 |Video|x|x|x|x|
+|Queue|x|x|x|x|
+|Notifications|x|x|x|x|
+|Volume|x|x|x|x|
+|Media Extraction|x|x|x|x|
 |HLS|x|x|||
 |DASH|x||||
 |SmoothStreaming|x||||
 |ChromeCast|x||||
 |Airplay||x|||
 |Xamarin.Forms|x|x|x||
+
+You can also directly access the native media player if you need it!
+```csharp
+CrossMediaManager.Current.NativeMediaPlayer;
+```
 
 ## **IMPORTANT**
 **Android:**

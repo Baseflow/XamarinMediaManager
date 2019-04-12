@@ -7,13 +7,13 @@ using MediaManager.Platforms.Ios.Video;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly: ExportRenderer(typeof(VideoView), typeof(VideoViewRenderer))]
+[assembly: ExportRenderer(typeof(MediaManager.Forms.VideoView), typeof(VideoViewRenderer))]
 namespace MediaManager.Forms.Platforms.iOS
 {
     [Preserve(AllMembers = true)]
-    public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Ios.Video.VideoSurface> 
+    public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Ios.Video.VideoView> 
     {
-        private MediaManager.Platforms.Ios.Video.VideoSurface _videoSurface;
+        private MediaManager.Platforms.Ios.Video.VideoView _videoView;
 
         public static void Init()
         {
@@ -25,9 +25,9 @@ namespace MediaManager.Forms.Platforms.iOS
             base.OnElementChanged(e);
             if (Control == null)
             {
-                _videoSurface = new VideoSurface(Control);
-                SetNativeControl(_videoSurface);
-                CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoSurface);
+                _videoView = new MediaManager.Platforms.Ios.Video.VideoView(Control);
+                SetNativeControl(_videoView);
+                CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
             }
         }
     }

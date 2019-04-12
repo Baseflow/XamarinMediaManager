@@ -14,7 +14,7 @@ namespace ElementPlayer.iOS.Views
     [MvxFromStoryboard]
     public partial class PlayerViewController : MvxViewController<PlayerViewModel>
     {
-        private VideoSurface _videoSurface;
+        private VideoView _videoView;
 
         public PlayerViewController(IntPtr handle) : base(handle)
         {
@@ -25,8 +25,8 @@ namespace ElementPlayer.iOS.Views
 
             CrossMediaManager.Current.Init();
 
-            _videoSurface = new VideoSurface(vwPlayer);
-            CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoSurface);
+            _videoView = new VideoView(vwPlayer);
+            CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
             CrossMediaManager.Current.Play(ViewModel.MediaItemToPlay);
 
             var set = this.CreateBindingSet<PlayerViewController, PlayerViewModel>();
