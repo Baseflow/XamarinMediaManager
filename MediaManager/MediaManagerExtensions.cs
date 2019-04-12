@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MediaManager.Playback;
+using MediaManager.Queue;
 
 namespace MediaManager
 {
@@ -37,6 +38,40 @@ namespace MediaManager
         public static Task SeekToStart(this IMediaManager mediaManager)
         {
             return mediaManager.SeekTo(TimeSpan.Zero);
+        }
+
+        /// <summary>
+        /// Enables or disables repeat mode
+        /// </summary>
+        public static void ToggleRepeat(this IMediaManager mediaManager)
+        {
+            if (mediaManager.RepeatMode == RepeatMode.Off)
+            {
+                mediaManager.RepeatMode = RepeatMode.All;
+            }
+            else if(mediaManager.RepeatMode == RepeatMode.All)
+            {
+                mediaManager.RepeatMode = RepeatMode.One;
+            }
+            else
+            {
+                mediaManager.RepeatMode = RepeatMode.Off;
+            }
+        }
+
+        /// <summary>
+        /// Enables or disables shuffling
+        /// </summary>
+        public static void ToggleShuffle(this IMediaManager mediaManager)
+        {
+            if (mediaManager.ShuffleMode == ShuffleMode.Off)
+            {
+                mediaManager.ShuffleMode = ShuffleMode.All;
+            }
+            else
+            {
+                mediaManager.ShuffleMode = ShuffleMode.Off;
+            }
         }
     }
 }

@@ -94,16 +94,6 @@ namespace MediaManager.Playback
         /// <param name="position"></param>
         Task SeekTo(TimeSpan position);
 
-        /// <summary>
-        /// Enables or disables shuffling
-        /// </summary>
-        void ToggleShuffle();
-
-        /// <summary>
-        /// Enables or disables repeat mode
-        /// </summary>
-        void ToggleRepeat();
-
         event StateChangedEventHandler StateChanged;
 
         event PlayingChangedEventHandler PlayingChanged;

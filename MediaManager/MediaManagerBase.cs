@@ -54,6 +54,8 @@ namespace MediaManager
             }
         }
 
+        public Timer Timer { get; } = new Timer(1000);
+        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
         public abstract MediaPlayerState State { get; }
         public abstract TimeSpan Position { get; }
         public abstract TimeSpan Duration { get; }
@@ -129,8 +131,8 @@ namespace MediaManager
 
             return Task.FromResult(false);
         }
-        public abstract Task SeekTo(TimeSpan position);
 
+        public abstract Task SeekTo(TimeSpan position);
 
         public virtual Task StepBackward()
         {
@@ -145,34 +147,8 @@ namespace MediaManager
             Timer_Elapsed(null, null);
             return seekTo;
         }
+
         public abstract Task Stop();
-
-        public void ToggleRepeat()
-        {
-            if (RepeatMode == (int)RepeatMode.Off)
-            {
-                RepeatMode = RepeatMode.All;
-            }
-            else
-            {
-                RepeatMode = RepeatMode.Off;
-            }
-        }
-
-        public void ToggleShuffle()
-        {
-            if (ShuffleMode == (int)ShuffleMode.Off)
-            {
-                ShuffleMode = ShuffleMode.All;
-            }
-            else
-            {
-                ShuffleMode = ShuffleMode.Off;
-            }
-        }
-
-        public Timer Timer { get; } = new Timer(1000);
-        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event StateChangedEventHandler StateChanged;
