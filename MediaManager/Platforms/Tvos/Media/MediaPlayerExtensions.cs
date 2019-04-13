@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using AVFoundation;
-using MediaManager.Platforms.Ios.Video;
+using MediaManager.Platforms.Tvos.Video;
 using MediaManager.Video;
 using UIKit;
 

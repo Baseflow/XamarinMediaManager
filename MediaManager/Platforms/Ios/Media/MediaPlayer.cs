@@ -11,12 +11,12 @@ using UIKit;
 
 namespace MediaManager.Platforms.Ios.Media
 {
-    public class MediaPlayer : AppleMediaPlayer, IVideoPlayer<AVPlayer, VideoView>
+    public class MediaPlayer : AppleMediaPlayer, IVideoPlayer<AVPlayer, VideoSurface>
     {
         //TODO: Make possible to hook into
         AVPlayerViewController aVPlayerViewController;
 
-        public VideoView PlayerView { get; set; }
+        public VideoSurface PlayerView { get; set; }
 
         public override void Initialize()
         {

@@ -2,18 +2,17 @@
 using Foundation;
 using MediaManager;
 using MediaManager.Forms;
-using MediaManager.Forms.Platforms.iOS;
-using MediaManager.Platforms.Ios.Video;
+using MediaManager.Forms.Platforms.Mac;
 using Xamarin.Forms;
-using Xamarin.Forms.Platform.iOS;
+using Xamarin.Forms.Platform.MacOS;
 
 [assembly: ExportRenderer(typeof(MediaManager.Forms.VideoView), typeof(VideoViewRenderer))]
-namespace MediaManager.Forms.Platforms.iOS
+namespace MediaManager.Forms.Platforms.Mac
 {
     [Preserve(AllMembers = true)]
-    public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Ios.Video.VideoSurface> 
+    public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Mac.Video.VideoSurface> 
     {
-        private MediaManager.Platforms.Ios.Video.VideoSurface _videoView;
+        private MediaManager.Platforms.Mac.Video.VideoSurface _videoView;
 
         public static void Init()
         {
@@ -25,7 +24,7 @@ namespace MediaManager.Forms.Platforms.iOS
             base.OnElementChanged(e);
             if (Control == null)
             {
-                _videoView = new MediaManager.Platforms.Ios.Video.VideoSurface(Control);
+                _videoView = new MediaManager.Platforms.Mac.Video.VideoSurface(Control);
                 SetNativeControl(_videoView);
                 CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
             }

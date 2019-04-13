@@ -3,7 +3,7 @@ using CoreGraphics;
 using MediaManager.Video;
 using UIKit;
 
-namespace MediaManager.Platforms.Ios.Video
+namespace MediaManager.Platforms.Tvos.Video
 {
     public class VideoSurface : UIView, IVideoView
     {

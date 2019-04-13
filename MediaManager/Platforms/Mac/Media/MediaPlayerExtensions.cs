@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using AVFoundation;
-using MediaManager.Platforms.Ios.Video;
+using MediaManager.Platforms.Mac.Video;
 using MediaManager.Video;
-using UIKit;
 
 namespace MediaManager
 {

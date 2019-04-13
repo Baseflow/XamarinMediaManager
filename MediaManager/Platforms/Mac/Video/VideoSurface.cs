@@ -1,19 +1,19 @@
-﻿using AVFoundation;
+﻿using AppKit;
+using AVFoundation;
 using CoreGraphics;
 using MediaManager.Video;
-using UIKit;
 
-namespace MediaManager.Platforms.Ios.Video
+namespace MediaManager.Platforms.Mac.Video
 {
-    public class VideoSurface : UIView, IVideoView
+    public class VideoSurface : NSView, IVideoView
     {
-        private UIView _view;
+        private NSView _view;
 
-        public VideoSurface(UIView view)
+        public VideoSurface(NSView view)
         {
             this._view = view;
             Frame = view.Frame;
-            view.Add(this);
+            view.AddSubview(this);
         }
 
         #region IDisposable
