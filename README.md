@@ -43,10 +43,25 @@ Call **MediaManager.Current** from any .Net library or Xamarin project to gain a
 
 ### **IMPORTANT:** Initialize plugin
 
-Make sure to call Init() on startup of your app. Optionally provide the `Activity` on Android.
+Make sure to call Init() in all the native platforms on startup of your app.
 
 ```csharp
 CrossMediaManager.Current.Init();
+```
+
+Optionally provide the `Activity` on Android.
+
+```csharp
+public class MainActivity : AppCompatActivity
+{
+	protected override void OnCreate(Bundle savedInstanceState)
+	{
+		base.OnCreate(savedInstanceState);
+		SetContentView(Resource.Layout.main_activity);
+
+		CrossMediaManager.Current.Init(this);
+	}
+}
 ```
 
 ### Play a single media item
@@ -167,6 +182,11 @@ You can also directly access the native media player if you need it!
 //Access ExoPlayer on Android
 (CrossMediaManager.Current as IMediaManager<MediaPlayer, SimpleExoPlayer>).NativeMediaPlayer.Player.VideoDecoderCounters
 ```
+
+## Building the source code
+
+* On Windows you need Visual Studio 2019 with the latest Xamarin, .NET Core and UWP installed.
+* On Visual Studio for Mac 2019 multi-target is not supported. Therefor you need to compile from command line on a Mac. Simple go to the folder where the source code is and run: `msbuild MediaManager.sln /t:rebuild /p:Configuration=Release`
 
 ## **IMPORTANT**
 **Android:**
