@@ -180,7 +180,14 @@ await CrossMediaManager.Current.*
 You can also directly access the native media player if you need it!
 ```csharp
 //Access ExoPlayer on Android
-(CrossMediaManager.Current as IMediaManager<MediaPlayer, SimpleExoPlayer>).NativeMediaPlayer.Player.VideoDecoderCounters
+CrossMediaManager.Android.NativeMediaPlayer.Player.VideoDecoderCounters
+CrossMediaManager.Android.*
+//iOS, MacOS or tvOS
+CrossMediaManager.Apple.*
+//UWP
+CrossMediaManager.Windows.*
+//Tizen
+CrossMediaManager.Tizen.*
 ```
 
 ## Building the source code

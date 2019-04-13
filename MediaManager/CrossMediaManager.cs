@@ -30,6 +30,16 @@ namespace MediaManager
             }
         }
 
+#if ANDROID
+        public static IMediaManager<Platforms.Android.Media.MediaPlayer, Com.Google.Android.Exoplayer2.SimpleExoPlayer> Android => Current as IMediaManager<Platforms.Android.Media.MediaPlayer, Com.Google.Android.Exoplayer2.SimpleExoPlayer>;
+#elif COCOA
+        public static IMediaManager<Platforms.Apple.Media.AppleMediaPlayer, AVFoundation.AVPlayer> Apple => Current as IMediaManager<Platforms.Apple.Media.AppleMediaPlayer, AVFoundation.AVPlayer>;
+#elif WINDOWS
+        public static IMediaManager<Platforms.Uap.Media.WindowsMediaPlayer, Windows.Media.Playback.MediaPlayer> Windows => Current as IMediaManager<Platforms.Uap.Media.WindowsMediaPlayer, Windows.Media.Playback.MediaPlayer>;
+#elif TIZEN
+        public static IMediaManager<Platforms.Tizen.Media.MediaPlayer, Tizen.Multimedia.Player> Tizen => Current as IMediaManager<Platforms.Tizen.Media.MediaPlayer, Tizen.Multimedia.Player>;
+#endif
+
         static IMediaManager CreateMediaManager()
         {
 #if NETSTANDARD
