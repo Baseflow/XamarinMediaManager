@@ -62,37 +62,6 @@ namespace MediaManager
             }
         }
 
-
-        /*private IAudioPlayer _audioPlayer;
-        public override IAudioPlayer AudioPlayer
-        {
-            get
-            {
-                if (_audioPlayer == null)
-                    _audioPlayer = new AudioPlayer();
-                return _audioPlayer;
-            }
-            set
-            {
-                _audioPlayer = value;
-            }
-        }
-
-        private IVideoPlayer _videoPlayer;
-        public override IVideoPlayer VideoPlayer
-        {
-            get
-            {
-                if (_videoPlayer == null)
-                    _videoPlayer = new VideoPlayer();
-                return _videoPlayer;
-            }
-            set
-            {
-                _videoPlayer = value;
-            }
-        }
-        */
         private INotificationManager _notificationManager;
         public virtual INotificationManager NotificationManager
         {
