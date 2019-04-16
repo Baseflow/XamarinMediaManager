@@ -9,7 +9,9 @@ using MediaManager.Playback;
 using MediaManager.Queue;
 using MediaManager.Video;
 using MediaManager.Volume;
+using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.Storage;
 
 namespace MediaManager
 {
@@ -21,7 +23,19 @@ namespace MediaManager
 
         // - - -  - - - 
 
-        public override Playback.MediaPlayerState State => GetMediaPlayerState();
+        Playback.MediaPlayerState _State;
+
+        private Playback.MediaPlayerState _state;
+        public override Playback.MediaPlayerState State
+        {
+            get { return _state; }
+            //ToDo: ME discuss with Martijn
+            //private set
+            //{
+            //    _state = value;
+            //    MediaManager.OnStateChanged(this, new StateChangedEventArgs(_state));
+            //}
+        }
 
         private Playback.MediaPlayerState GetMediaPlayerState()
         {
@@ -38,6 +52,7 @@ namespace MediaManager
 
             return Playback.MediaPlayerState.Paused;
         }
+
         // - - -  - - - 
 
         public override TimeSpan Position => _player.PlaybackSession.Position;
@@ -65,9 +80,39 @@ namespace MediaManager
 
         public override void Init()
         {
-            //ToDo: ME
+            //ToDo: ME - reorg
+
+            _player.CurrentStateChanged += (MediaPlayer sender, object args) =>
+            {
+                _State = GetMediaPlayerState();
+                this.OnStateChanged(this, new StateChangedEventArgs(GetMediaPlayerState()));
+            };
+
+            //ToDo: ME - todo
+            //event PlayingChangedEventHandler PlayingChanged;
+            //event BufferingChangedEventHandler BufferingChanged;
+            //event PositionChangedEventHandler PositionChanged;
+            //event MediaItemFinishedEventHandler MediaItemFinished;
+            //event MediaItemChangedEventHandler MediaItemChanged;
+
+            _player.SourceChanged += (MediaPlayer sender, object args) =>
+            {
+                this.OnMediaItemChanged(this, new MediaItemEventArgs(this.MediaQueue.Current));
+            };
+
+            _player.MediaFailed += (MediaPlayer sender, MediaPlayerFailedEventArgs args) =>
+            {
+                _State = Playback.MediaPlayerState.Failed;
+
+                //ToDo: ME - todo ProgressTimer
+                //_playProgressTimer.Change(0, int.MaxValue);
+
+                this.OnMediaItemFailed(this, new MediaItemFailedEventArgs(this.MediaQueue.Current, args.ExtendedErrorCode, args.ErrorMessage));
+            };
+
             IsInitialized = true;
         }
+
 
         public override Task Pause()
         {
@@ -79,17 +124,42 @@ namespace MediaManager
             throw new NotImplementedException();
         }
 
+        // - - -  - - - 
+
         public override async Task<IMediaItem> Play(string uri)
         {
             var mediaItem = await MediaExtractor.CreateMediaItem(uri);
 
-            //ToDo: ME
-            _player.SetUriSource( new Uri(mediaItem.MediaUri) );
-            _player.Play(); // ? autoplay
-            // _player.Source = new MediaPlaybackItem(new Uri(uri));
+            var mediaPlaybackList = new MediaPlaybackList();
+            var mediaSource = await CreateMediaSource(mediaItem);
+            var item = new MediaPlaybackItem(mediaSource);
+            mediaPlaybackList.Items.Add(item);
+            _player.Source = mediaPlaybackList;
+            _player.Play();
 
             return mediaItem;
         }
+
+        private async Task<MediaSource> CreateMediaSource(IMediaItem mediaItem)
+        {
+            switch (mediaItem.MediaLocation)
+            {
+                case MediaLocation.Remote:
+                    return MediaSource.CreateFromUri(new Uri(mediaItem.MediaUri));
+
+                case MediaLocation.FileSystem:
+                    var du = _player.SystemMediaTransportControls.DisplayUpdater;
+                    var storageFile = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
+                    var playbackType = ( mediaItem.MediaType == MediaType.Audio ? Windows.Media.MediaPlaybackType.Music : Windows.Media.MediaPlaybackType.Video );
+                    await du.CopyFromFileAsync(playbackType, storageFile);
+                    du.Update();
+                    return MediaSource.CreateFromStorageFile(storageFile);
+            }
+
+            return MediaSource.CreateFromUri(new Uri(mediaItem.MediaUri));
+        }
+
+        // - - -  - - - 
 
         public override Task Play(IEnumerable<IMediaItem> items)
         {

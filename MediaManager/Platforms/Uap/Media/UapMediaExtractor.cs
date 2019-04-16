@@ -37,6 +37,9 @@ namespace MediaManager.Platforms.Uap
 
         public async Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem)
         {
+            // default title
+            mediaItem.Title = System.IO.Path.GetFileNameWithoutExtension(mediaItem.MediaUri);
+
             if (mediaItem.MediaLocation == MediaLocation.FileSystem)
             {
                 var file = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
