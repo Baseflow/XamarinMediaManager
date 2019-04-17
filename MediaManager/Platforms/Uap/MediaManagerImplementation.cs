@@ -21,12 +21,9 @@ namespace MediaManager
 
         // - - -  - - - 
 
-        Playback.MediaPlayerState _State;
-
-        private Playback.MediaPlayerState _state;
         public override Playback.MediaPlayerState State
         {
-            get { return _state; }
+            get { return _State; }
             //ToDo: ME discuss with Martijn
             //private set
             //{
@@ -34,6 +31,8 @@ namespace MediaManager
             //    MediaManager.OnStateChanged(this, new StateChangedEventArgs(_state));
             //}
         }
+        private Playback.MediaPlayerState _State;
+
 
         private Playback.MediaPlayerState GetMediaPlayerState()
         {
@@ -89,7 +88,7 @@ namespace MediaManager
             //ToDo: ME - todo
             //event PlayingChangedEventHandler PlayingChanged;
             //event BufferingChangedEventHandler BufferingChanged;
-            //event PositionChangedEventHandler PositionChanged;
+
             //event MediaItemFinishedEventHandler MediaItemFinished;
             //event MediaItemChangedEventHandler MediaItemChanged;
 
@@ -101,10 +100,7 @@ namespace MediaManager
             _player.MediaFailed += (MediaPlayer sender, MediaPlayerFailedEventArgs args) =>
             {
                 _State = Playback.MediaPlayerState.Failed;
-
-                //ToDo: ME - todo ProgressTimer
-                //_playProgressTimer.Change(0, int.MaxValue);
-
+                _player.PlaybackSession.Position = TimeSpan.Zero;
                 this.OnMediaItemFailed(this, new MediaItemFailedEventArgs(this.MediaQueue.Current, args.ExtendedErrorCode, args.ErrorMessage));
             };
 
@@ -205,20 +201,21 @@ namespace MediaManager
             throw new NotImplementedException();
         }
 
-        public override Task SeekTo(TimeSpan position)
+        public override async Task SeekTo(TimeSpan position)
         {
-            throw new NotImplementedException();
+            _player.PlaybackSession.Position = position;
+            await Task.CompletedTask;
         }
 
-        public override Task StepBackward()
-        {
-            throw new NotImplementedException();
-        }
+        //public override Task StepBackward()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public override Task StepForward()
-        {
-            throw new NotImplementedException();
-        }
+        //public override Task StepForward()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public override Task Stop()
         {
