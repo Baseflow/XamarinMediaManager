@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Platforms.Uap.Media;
 using MediaManager.Playback;
 using MediaManager.Queue;
-using MediaManager.Video;
 using MediaManager.Volume;
 using Windows.Media.Core;
 using Windows.Media.Playback;
@@ -23,12 +21,9 @@ namespace MediaManager
 
         // - - -  - - - 
 
-        Playback.MediaPlayerState _State;
-
-        private Playback.MediaPlayerState _state;
         public override Playback.MediaPlayerState State
         {
-            get { return _state; }
+            get { return _State; }
             //ToDo: ME discuss with Martijn
             //private set
             //{
@@ -36,6 +31,8 @@ namespace MediaManager
             //    MediaManager.OnStateChanged(this, new StateChangedEventArgs(_state));
             //}
         }
+        private Playback.MediaPlayerState _State;
+
 
         private Playback.MediaPlayerState GetMediaPlayerState()
         {
@@ -91,7 +88,7 @@ namespace MediaManager
             //ToDo: ME - todo
             //event PlayingChangedEventHandler PlayingChanged;
             //event BufferingChangedEventHandler BufferingChanged;
-            //event PositionChangedEventHandler PositionChanged;
+
             //event MediaItemFinishedEventHandler MediaItemFinished;
             //event MediaItemChangedEventHandler MediaItemChanged;
 
@@ -103,20 +100,26 @@ namespace MediaManager
             _player.MediaFailed += (MediaPlayer sender, MediaPlayerFailedEventArgs args) =>
             {
                 _State = Playback.MediaPlayerState.Failed;
-
-                //ToDo: ME - todo ProgressTimer
-                //_playProgressTimer.Change(0, int.MaxValue);
-
+                _player.PlaybackSession.Position = TimeSpan.Zero;
                 this.OnMediaItemFailed(this, new MediaItemFailedEventArgs(this.MediaQueue.Current, args.ExtendedErrorCode, args.ErrorMessage));
             };
 
             IsInitialized = true;
         }
 
-
         public override Task Pause()
         {
-            throw new NotImplementedException();
+            if (_player.PlaybackSession.PlaybackState == MediaPlaybackState.Paused)
+            {
+                _player.Play();
+            }
+            else
+            {
+                //ToDo: ME: Why not a play from zéro?
+                _player.Pause();
+            };
+
+            return Task.CompletedTask;
         }
 
         public override Task Play(IMediaItem mediaItem)
@@ -150,7 +153,7 @@ namespace MediaManager
                 case MediaLocation.FileSystem:
                     var du = _player.SystemMediaTransportControls.DisplayUpdater;
                     var storageFile = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
-                    var playbackType = ( mediaItem.MediaType == MediaType.Audio ? Windows.Media.MediaPlaybackType.Music : Windows.Media.MediaPlaybackType.Video );
+                    var playbackType = (mediaItem.MediaType == MediaType.Audio ? Windows.Media.MediaPlaybackType.Music : Windows.Media.MediaPlaybackType.Video);
                     await du.CopyFromFileAsync(playbackType, storageFile);
                     du.Update();
                     return MediaSource.CreateFromStorageFile(storageFile);
@@ -183,7 +186,9 @@ namespace MediaManager
 
         public override Task Play()
         {
-            throw new NotImplementedException();
+            _player.PlaybackSession.PlaybackRate = 1;
+            _player.Play();
+            return Task.CompletedTask;
         }
 
         public override Task<bool> PlayNext()
@@ -196,24 +201,31 @@ namespace MediaManager
             throw new NotImplementedException();
         }
 
-        public override Task SeekTo(TimeSpan position)
+        public override async Task SeekTo(TimeSpan position)
         {
-            throw new NotImplementedException();
+            _player.PlaybackSession.Position = position;
+            await Task.CompletedTask;
         }
 
-        public override Task StepBackward()
-        {
-            throw new NotImplementedException();
-        }
+        //public override Task StepBackward()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public override Task StepForward()
-        {
-            throw new NotImplementedException();
-        }
+        //public override Task StepForward()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public override Task Stop()
         {
-            throw new NotImplementedException();
+            _player.PlaybackSession.PlaybackRate = 0;
+            _player.PlaybackSession.Position = TimeSpan.Zero;
+
+            _State = Playback.MediaPlayerState.Stopped;
+            this.OnStateChanged(this, new StateChangedEventArgs(_State));
+
+            return Task.CompletedTask;
         }
     }
 }
