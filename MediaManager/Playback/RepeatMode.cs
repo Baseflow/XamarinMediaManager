@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MediaManager.Playback
+﻿namespace MediaManager.Playback
 {
     public enum RepeatMode
     {

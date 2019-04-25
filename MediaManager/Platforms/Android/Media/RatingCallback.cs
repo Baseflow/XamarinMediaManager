@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Media;
@@ -26,12 +24,12 @@ namespace MediaManager.Platforms.Android.Media
 
         public void OnCommand(IPlayer p0, string p1, Bundle p2, ResultReceiver p3)
         {
-            
+
         }
 
         public void OnSetRating(IPlayer p0, RatingCompat p1)
         {
-            
+
         }
     }
 }

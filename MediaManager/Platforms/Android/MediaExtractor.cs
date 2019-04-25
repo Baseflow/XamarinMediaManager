@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Android.Content.Res;
 using Android.Graphics;
 using Android.Media;
-using Android.Support.V4.Media;
 using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android

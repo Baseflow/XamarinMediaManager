@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Content;
-using Android.Media;
 using Android.Runtime;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
@@ -16,12 +15,9 @@ using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
 using MediaManager.Audio;
 using MediaManager.Media;
-using MediaManager.Platforms.Android.Audio;
 using MediaManager.Platforms.Android.Playback;
 using MediaManager.Playback;
-using MediaManager.Queue;
 using MediaManager.Video;
-using static Com.Google.Android.Exoplayer2.Trackselection.MappingTrackSelector;
 
 namespace MediaManager.Platforms.Android.Media
 {
@@ -85,10 +81,12 @@ namespace MediaManager.Platforms.Android.Media
 
         public RepeatMode RepeatMode
         {
-            get {
+            get
+            {
                 return (RepeatMode)Player.RepeatMode;
             }
-            set {
+            set
+            {
                 this.MediaManager.RepeatMode = value;
             }
         }

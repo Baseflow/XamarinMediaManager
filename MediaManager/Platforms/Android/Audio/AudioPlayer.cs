@@ -1,7 +1,5 @@
-﻿using Android.Media;
+﻿using System;
 using Android.Runtime;
-using MediaManager.Platforms.Android.Media;
-using System;
 
 namespace MediaManager.Platforms.Android.Audio
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediaManager.Media;
+﻿using MediaManager.Media;
 
 namespace MediaManager
 {

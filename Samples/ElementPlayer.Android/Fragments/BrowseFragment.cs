@@ -1,6 +1,4 @@
-﻿using Android.OS;
-using Android.Views;
-using ElementPlayer.Core.ViewModels;
+﻿using ElementPlayer.Core.ViewModels;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 
 namespace ElementPlayer.Android.Fragments

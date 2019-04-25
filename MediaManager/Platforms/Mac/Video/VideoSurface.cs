@@ -1,6 +1,4 @@
 ﻿using AppKit;
-using AVFoundation;
-using CoreGraphics;
 using MediaManager.Video;
 
 namespace MediaManager.Platforms.Mac.Video

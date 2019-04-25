@@ -4,7 +4,6 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
-using MediaManager.Platforms.Android.Media;
 using MediaManager.Platforms.Android.Playback;
 using MediaManager.Playback;
 
@@ -28,7 +27,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
             Context = context;
         }
-        
+
         public bool Init()
         {
             if (MediaBrowser == null)
@@ -55,8 +54,8 @@ namespace MediaManager.Platforms.Android.MediaSession
 
                         MediaControllerCallback.OnSessionEventChangedImpl = (string @event, Bundle extras) =>
                         {
-                        //Do nothing for now
-                    };
+                            //Do nothing for now
+                        };
 
                         MediaController = new MediaControllerCompat(Context, MediaBrowser.SessionToken);
                         MediaController.RegisterCallback(MediaControllerCallback);
@@ -64,9 +63,9 @@ namespace MediaManager.Platforms.Android.MediaSession
                         if (Context is Activity activity)
                             MediaControllerCompat.SetMediaController(activity, MediaController);
 
-                    // Sync existing MediaSession state to the UI.
-                    // The first time these events are fired, the metadata and playbackstate are null. 
-                    MediaControllerCallback.OnMetadataChanged(MediaController.Metadata);
+                        // Sync existing MediaSession state to the UI.
+                        // The first time these events are fired, the metadata and playbackstate are null. 
+                        MediaControllerCallback.OnMetadataChanged(MediaController.Metadata);
                         MediaControllerCallback.OnPlaybackStateChanged(MediaController.PlaybackState);
 
                         MediaBrowser.Subscribe(MediaBrowser.Root, MediaBrowserSubscriptionCallback);

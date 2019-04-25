@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using MediaManager.Media;
 using MediaManager.Video;
 using Xamarin.Forms;
@@ -65,7 +63,7 @@ namespace MediaManager.Forms
                     break;
                 default:
                     break;
-            }            
+            }
         }
     }
 }

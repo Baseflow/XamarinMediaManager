@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using AVFoundation;
 using AVKit;
 using Foundation;
 using MediaManager.Platforms.Apple.Media;
 using MediaManager.Platforms.Ios.Video;
 using MediaManager.Video;
-using UIKit;
 
 namespace MediaManager.Platforms.Ios.Media
 {

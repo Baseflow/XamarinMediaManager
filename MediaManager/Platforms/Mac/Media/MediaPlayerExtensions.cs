@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using AVFoundation;
 using MediaManager.Platforms.Mac.Video;
 using MediaManager.Video;

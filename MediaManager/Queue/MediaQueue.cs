@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using MediaManager.Media;
 
 namespace MediaManager.Queue
@@ -66,7 +65,8 @@ namespace MediaManager.Queue
                         CurrentIndex--;
                     }
                     return Current;
-                } else
+                }
+                else
                 {
                     return null;
                 }
@@ -110,7 +110,8 @@ namespace MediaManager.Queue
                     // Create a shuffled remainder of the queue
                     CreateShuffledIndexes();
                     CollectionChanged += (s, e) => CreateShuffledIndexes();
-                } else
+                }
+                else
                 {
                     CollectionChanged -= (s, e) => CreateShuffledIndexes();
                 }

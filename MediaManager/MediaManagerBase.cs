@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Queue;
-using MediaManager.Video;
 using MediaManager.Volume;
 
 namespace MediaManager
@@ -30,7 +27,7 @@ namespace MediaManager
         }
 
         public TimeSpan StepSize { get; set; } = TimeSpan.FromSeconds(10);
-        
+
         public bool IsInitialized { get; protected set; }
 
         public abstract IMediaPlayer MediaPlayer { get; set; }
@@ -188,7 +185,7 @@ namespace MediaManager
             {
                 OnPlayingChanged(this, new PlayingChangedEventArgs(Position, Duration));
             }
-            if(this.IsBuffering())
+            if (this.IsBuffering())
             {
                 OnBufferingChanged(this, new BufferingChangedEventArgs(Buffered));
             }

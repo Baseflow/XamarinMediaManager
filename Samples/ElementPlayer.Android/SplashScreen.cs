@@ -1,8 +1,6 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using MvvmCross.Droid.Support.V7.AppCompat;
-using MvvmCross.Platforms.Android.Core;
-using MvvmCross.Platforms.Android.Views;
 
 namespace ElementPlayer.Android
 {

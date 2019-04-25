@@ -1,6 +1,4 @@
-﻿using AVFoundation;
-using CoreGraphics;
-using MediaManager.Video;
+﻿using MediaManager.Video;
 using UIKit;
 
 namespace MediaManager.Platforms.Ios.Video

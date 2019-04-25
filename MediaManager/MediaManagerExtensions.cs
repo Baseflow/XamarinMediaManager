@@ -49,7 +49,7 @@ namespace MediaManager
             {
                 mediaManager.RepeatMode = RepeatMode.All;
             }
-            else if(mediaManager.RepeatMode == RepeatMode.All)
+            else if (mediaManager.RepeatMode == RepeatMode.All)
             {
                 mediaManager.RepeatMode = RepeatMode.One;
             }

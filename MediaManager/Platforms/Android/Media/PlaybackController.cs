@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Android.OS;
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
-using MediaManager.Platforms.Android.Audio;
 
 namespace MediaManager.Platforms.Android.Media
 {

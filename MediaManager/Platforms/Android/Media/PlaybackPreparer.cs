@@ -1,13 +1,11 @@
 ﻿using System;
+using System.Linq;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 using Com.Google.Android.Exoplayer2.Source;
-using Com.Google.Android.Exoplayer2.Upstream;
-using System.Linq;
-using MediaManager.Platforms.Android.Media;
 
 namespace MediaManager.Platforms.Android.Media
 {

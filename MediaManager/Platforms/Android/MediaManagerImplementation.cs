@@ -5,19 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
-using Android.Content.Res;
 using Com.Google.Android.Exoplayer2;
-using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Platforms.Android;
-using MediaManager.Platforms.Android.Audio;
 using MediaManager.Platforms.Android.Media;
 using MediaManager.Platforms.Android.MediaSession;
 using MediaManager.Platforms.Android.Playback;
-using MediaManager.Platforms.Android.Video;
 using MediaManager.Playback;
 using MediaManager.Queue;
-using MediaManager.Video;
 using MediaManager.Volume;
 using NotificationManager = MediaManager.Platforms.Android.NotificationManager;
 
@@ -49,7 +44,8 @@ namespace MediaManager
         }
 
         private IMediaPlayer _mediaPlayer;
-        public override IMediaPlayer MediaPlayer {
+        public override IMediaPlayer MediaPlayer
+        {
             get
             {
                 if (_mediaPlayer == null)
@@ -116,7 +112,7 @@ namespace MediaManager
         public override MediaPlayerState State => MediaBrowserManager?.MediaController?.PlaybackState?.ToMediaPlayerState() ?? MediaPlayerState.Stopped;
 
         public override float Speed { get => MediaBrowserManager?.MediaController.PlaybackState?.PlaybackSpeed ?? 0; set => throw new NotImplementedException(); }
-        
+
 
         public override Task Pause()
         {

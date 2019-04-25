@@ -77,7 +77,7 @@ namespace ElementPlayer.Core.Assets
             return assembly.GetManifestResourceStream(resourcePaths.Single());
         }
 
-		public static string GetEmbeddedResourceString(Assembly assembly, string resourceFileName)
+        public static string GetEmbeddedResourceString(Assembly assembly, string resourceFileName)
         {
             var stream = GetEmbeddedResourceStream(assembly, resourceFileName);
 
@@ -88,9 +88,9 @@ namespace ElementPlayer.Core.Assets
         }
 
         public static string GetEmbeddedResourceString(string resourceFileName)
-		{
-			return GetEmbeddedResourceString(Assembly.GetCallingAssembly (), resourceFileName);
-		}
+        {
+            return GetEmbeddedResourceString(Assembly.GetCallingAssembly(), resourceFileName);
+        }
 
         public static List<ExoPlayerSamples> FromJson(string json) => JsonConvert.DeserializeObject<List<ExoPlayerSamples>>(json);
     }

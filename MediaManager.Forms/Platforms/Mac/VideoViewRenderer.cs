@@ -1,7 +1,5 @@
 ﻿using System;
 using Foundation;
-using MediaManager;
-using MediaManager.Forms;
 using MediaManager.Forms.Platforms.Mac;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
@@ -10,7 +8,7 @@ using Xamarin.Forms.Platform.MacOS;
 namespace MediaManager.Forms.Platforms.Mac
 {
     [Preserve(AllMembers = true)]
-    public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Mac.Video.VideoSurface> 
+    public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Mac.Video.VideoSurface>
     {
         private MediaManager.Platforms.Mac.Video.VideoSurface _videoView;
 

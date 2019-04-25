@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Android.App;
 using Android.Graphics;
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
-using Com.Google.Android.Exoplayer2.Trackselection;
 using Com.Google.Android.Exoplayer2.UI;
 using MediaManager.Media;
-using static Com.Google.Android.Exoplayer2.Trackselection.MappingTrackSelector;
 
 namespace MediaManager.Platforms.Android.Media
 {

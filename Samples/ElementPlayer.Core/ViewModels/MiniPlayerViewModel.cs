@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using MediaManager;
 using MediaManager.Media;
 using MediaManager.Playback;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
-using MvvmCross.ViewModels;
 
 namespace ElementPlayer.Core.ViewModels
 {
@@ -37,7 +34,7 @@ namespace ElementPlayer.Core.ViewModels
         }
 
         public override string Title => "Player";
-        
+
         public IMvxAsyncCommand PlayPauseCommand { get; }
 
         public IMediaItem Current => MediaManager.MediaQueue.Current;

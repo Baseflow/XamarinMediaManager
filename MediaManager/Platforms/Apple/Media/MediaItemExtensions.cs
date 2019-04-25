@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using AVFoundation;
 using Foundation;
 using MediaManager.Media;
@@ -17,7 +15,7 @@ namespace MediaManager.Platforms.Apple.Media
         {
             AVAsset asset;
 
-            if(mediaItem.MediaLocation == MediaLocation.Embedded)
+            if (mediaItem.MediaLocation == MediaLocation.Embedded)
             {
                 string directory = Path.GetDirectoryName(mediaItem.MediaUri);
                 string filename = Path.GetFileNameWithoutExtension(mediaItem.MediaUri);

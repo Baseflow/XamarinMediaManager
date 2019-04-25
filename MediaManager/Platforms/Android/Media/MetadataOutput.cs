@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Com.Google.Android.Exoplayer2.Metadata;
+﻿using Com.Google.Android.Exoplayer2.Metadata;
 
 namespace MediaManager.Platforms.Android.Media
 {
@@ -9,7 +6,7 @@ namespace MediaManager.Platforms.Android.Media
     {
         public void OnMetadata(Metadata metadata)
         {
-            
+
         }
     }
 }

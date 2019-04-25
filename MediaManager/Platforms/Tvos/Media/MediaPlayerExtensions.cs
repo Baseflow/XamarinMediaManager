@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using AVFoundation;
 using MediaManager.Platforms.Tvos.Video;
 using MediaManager.Video;
-using UIKit;
 
 namespace MediaManager
 {

@@ -1,9 +1,4 @@
-﻿using Android.OS;
-using Android.Views;
-using Com.Google.Android.Exoplayer2.UI;
-using ElementPlayer.Core.ViewModels;
-using MediaManager;
-using MediaManager.Platforms.Android.Video;
+﻿using ElementPlayer.Core.ViewModels;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 
 namespace ElementPlayer.Android.Fragments

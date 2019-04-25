@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
@@ -28,7 +26,8 @@ namespace MediaManager.Platforms.Android.Video
         {
         }
 
-        public VideoAspectMode VideoAspect {
+        public VideoAspectMode VideoAspect
+        {
             get
             {
                 switch (VideoAspect)

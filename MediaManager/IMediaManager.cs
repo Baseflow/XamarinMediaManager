@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Queue;
-using MediaManager.Video;
 using MediaManager.Volume;
 
 namespace MediaManager

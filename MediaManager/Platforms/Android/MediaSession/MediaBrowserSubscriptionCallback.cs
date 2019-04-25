@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Media;

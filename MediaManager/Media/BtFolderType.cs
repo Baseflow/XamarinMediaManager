@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MediaManager.Media
+﻿namespace MediaManager.Media
 {
     public enum BtFolderType
     {

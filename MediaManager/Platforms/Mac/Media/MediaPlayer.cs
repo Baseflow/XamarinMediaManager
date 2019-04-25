@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AppKit;
-using AVFoundation;
-using AVKit;
-using Foundation;
+﻿using AppKit;
 using MediaManager.Platforms.Apple.Media;
 
 namespace MediaManager.Platforms.Mac.Media

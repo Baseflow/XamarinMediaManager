@@ -1,5 +1,4 @@
 ﻿using System;
-using MediaManager.Media;
 
 namespace MediaManager.Media
 {

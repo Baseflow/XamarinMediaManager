@@ -1,9 +1,6 @@
 ﻿using System;
 using Foundation;
-using MediaManager;
-using MediaManager.Forms;
 using MediaManager.Forms.Platforms.iOS;
-using MediaManager.Platforms.Ios.Video;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
@@ -11,7 +8,7 @@ using Xamarin.Forms.Platform.iOS;
 namespace MediaManager.Forms.Platforms.iOS
 {
     [Preserve(AllMembers = true)]
-    public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Ios.Video.VideoSurface> 
+    public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Ios.Video.VideoSurface>
     {
         private MediaManager.Platforms.Ios.Video.VideoSurface _videoView;
 

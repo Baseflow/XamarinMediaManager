@@ -1,6 +1,4 @@
-﻿using Android.Media;
-using Android.Support.V4.Media;
-using Android.Support.V4.Media.Session;
+﻿using Android.Support.V4.Media.Session;
 using MediaManager.Volume;
 
 namespace MediaManager.Platforms.Android
@@ -14,7 +12,7 @@ namespace MediaManager.Platforms.Android
         {
             this.mediaManagerImplementation = mediaManagerImplementation;
         }
-        
+
         public int CurrentVolume { get => mediaController.GetPlaybackInfo().CurrentVolume; set => mediaController.SetVolumeTo(value, 0); }
 
         public int MaxVolume { get => mediaController.GetPlaybackInfo().MaxVolume; set => throw new System.NotImplementedException(); }

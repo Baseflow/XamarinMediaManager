@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MediaManager.Queue
+﻿namespace MediaManager.Queue
 {
     public enum ShuffleMode
     {

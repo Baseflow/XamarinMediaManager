@@ -4,13 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AVFoundation;
-using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Platforms.Apple;
 using MediaManager.Platforms.Apple.Media;
 using MediaManager.Playback;
 using MediaManager.Queue;
-using MediaManager.Video;
 using MediaManager.Volume;
 
 namespace MediaManager

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
-using MediaManager.Media;
 using AVFoundation;
 using Foundation;
+using MediaManager.Media;
 #if __IOS__ || __TVOS__
 using UIKit;
 #endif
