@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
     <mediamanager.platforms.android.video.VideoView
         android:id="@+id/exoplayerview_activity_video"
         android:layout_width="match_parent"
@@ -94,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/imageButton_next"
             android:id="@+id/imageButton_repeat"
-            android:layout_centerVertical="true" 
+            android:layout_centerVertical="true"
             local:MvxBind="Click ToggleRepeatCommand"/>
         <ImageButton
             android:src="@drawable/baseline_skip_next_24"
@@ -109,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageButton_playpause"
-            android:layout_centerInParent="true" 
+            android:layout_centerInParent="true"
             local:MvxBind="Click PlayPauseCommand"/>
         <ImageButton
             android:src="@drawable/baseline_skip_previous_24"
@@ -125,7 +126,7 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/imageButton_previous"
             android:id="@+id/imageButton_shuffle"
-            android:layout_centerVertical="true" 
+            android:layout_centerVertical="true"
             local:MvxBind="Click ToggleShuffleCommand"/>
     </RelativeLayout>
 </RelativeLayout>

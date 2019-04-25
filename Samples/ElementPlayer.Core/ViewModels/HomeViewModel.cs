@@ -1,14 +1,11 @@
 ﻿using System.Threading.Tasks;
+using ElementPlayer.Core.Assets;
 using MediaManager;
 using MediaManager.Media;
-using MediaManager.Playback;
-using MediaManager.Queue;
 using MvvmCross.Commands;
+using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
-using MvvmCross.Logging;
-using ElementPlayer.Core.Assets;
-using System.Linq;
 
 namespace ElementPlayer.Core.ViewModels
 {
@@ -23,7 +20,8 @@ namespace ElementPlayer.Core.ViewModels
         public readonly IMediaManager MediaManager;
         public MvxObservableCollection<IMediaItem> Items { get; set; } = new MvxObservableCollection<IMediaItem>();
 
-        public IMvxAsyncCommand<IMediaItem> ItemSelected => new MvxAsyncCommand<IMediaItem>(async (item) => await this.NavigationService.Navigate<PlayerViewModel, IMediaItem>(item));
+        public IMvxAsyncCommand<IMediaItem> ItemSelected => new MvxAsyncCommand<IMediaItem>(SelectItem);
+        //new MvxAsyncCommand<IMediaItem>(async (item) => await this.NavigationService.Navigate<PlayerViewModel, IMediaItem>(item));
 
         public override Task Initialize()
         {
@@ -51,7 +49,7 @@ namespace ElementPlayer.Core.ViewModels
 
                         Items.Add(mediaItem);
                     }
-                }                
+                }
             }
 
             return base.Initialize();
@@ -60,6 +58,9 @@ namespace ElementPlayer.Core.ViewModels
         private async Task SelectItem(IMediaItem mediaItem)
         {
             MediaManager.MediaQueue.Clear();
+
+            await this.NavigationService.Navigate<PlayerViewModel, IMediaItem>(mediaItem);
+
             await MediaManager.Play(mediaItem);
 
             /*foreach (var item in Items.Except<string>(new[] { url }))

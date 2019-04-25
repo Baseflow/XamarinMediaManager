@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_main"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
+        android:layout_height="match_parent"
+        android:id="@+id/coordinatorLayout1"
         android:layout_above="@+id/bottom_navigation">
-        <!--<android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:src="@drawable/baseline_queue_play_next_24"
-            android:layout_margin="16dp"
-            local:MvxBind="Click PlayerCommand" />-->
-        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <FrameLayout
+            android:id="@+id/player_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            local:behavior_hideable="false"
+            local:behavior_peekHeight="56dp"
+            local:layout_behavior="android.support.design.widget.BottomSheetBehavior" />
+    </android.support.design.widget.CoordinatorLayout>
     <android.support.design.widget.BottomNavigationView
-      android:id="@+id/bottom_navigation"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="start"
-      android:layout_alignParentBottom="true"
-      android:background="@color/colorPrimary"
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:background="@color/colorPrimary"
+        android:layout_gravity="bottom"
+        local:itemIconSize="20dp"
         local:itemIconTint="@color/white"
         local:itemTextColor="@color/white"
-        local:itemBackground="@color/colorPrimary"
-      local:elevation="16dp"
-      local:menu="@menu/bottom_navigation_main" />
-  </RelativeLayout>
+        local:labelVisibilityMode="labeled"
+        local:menu="@menu/bottom_navigation_main"
+        android:layout_alignParentBottom="true"  />
+</RelativeLayout>

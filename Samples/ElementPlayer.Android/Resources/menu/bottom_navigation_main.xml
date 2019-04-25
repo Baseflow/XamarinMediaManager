@@ -16,13 +16,6 @@
       app:showAsAction="ifRoom" />
 
   <item
-      android:id="@+id/menu_search"
-      android:enabled="true"
-      android:title="Search"
-      android:icon="@drawable/baseline_search_24"
-      app:showAsAction="ifRoom" />
-
-  <item
       android:id="@+id/menu_playlists"
       android:enabled="true"
       android:title="Playlists"

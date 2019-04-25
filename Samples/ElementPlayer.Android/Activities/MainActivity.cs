@@ -26,7 +26,7 @@ namespace ElementPlayer.Android.Activities
 
             CrossMediaManager.Current.Init(this);
             bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
-            bottomNavigation.NavigationItemSelected += BottomNavigation_NavigationItemSelected; ;
+            bottomNavigation.NavigationItemSelected += BottomNavigation_NavigationItemSelected;
         }
 
         private void BottomNavigation_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
@@ -38,9 +38,6 @@ namespace ElementPlayer.Android.Activities
                     break;
                 case Resource.Id.menu_browse:
                     Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<BrowseViewModel>();
-                    break;
-                case Resource.Id.menu_search:
-                    Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<SearchViewModel>();
                     break;
                 case Resource.Id.menu_playlists:
                     Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<PlaylistsViewModel>();
