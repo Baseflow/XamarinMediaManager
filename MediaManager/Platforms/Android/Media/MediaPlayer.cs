@@ -105,7 +105,7 @@ namespace MediaManager.Platforms.Android.Media
             if (RequestHeaders?.Count > 0 && RequestHeaders.TryGetValue("User-Agent", out string userAgent))
                 UserAgent = userAgent;
             else
-                UserAgent = Util.GetUserAgent(Context, "MediaManager");
+                UserAgent = Util.GetUserAgent(Context, Context.PackageName);
 
             HttpDataSourceFactory = new DefaultHttpDataSourceFactory(UserAgent);
 
