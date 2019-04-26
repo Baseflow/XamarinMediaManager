@@ -16,9 +16,13 @@ using MediaManager.Queue;
 using MediaManager.Volume;
 using NotificationManager = MediaManager.Platforms.Android.NotificationManager;
 
+[assembly: UsesPermission(Android.Manifest.Permission.Internet)]
+[assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)]
+[assembly: UsesPermission(Android.Manifest.Permission.AccessWifiState)]
+[assembly: UsesPermission(Android.Manifest.Permission.ForegroundService)]
 namespace MediaManager
 {
-    [global::Android.Runtime.Preserve(AllMembers = true)]
+    [global::Android.Runtime.Preserve(AllMembers = true)]    
     public class MediaManagerImplementation : MediaManagerBase<MediaPlayer, SimpleExoPlayer>
     {
         public MediaManagerImplementation()

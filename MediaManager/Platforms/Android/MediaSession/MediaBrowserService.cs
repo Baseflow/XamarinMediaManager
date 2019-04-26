@@ -42,8 +42,12 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
             base.OnCreate();
 
+            Intent sessionIntent;
             // Build a PendingIntent that can be used to launch the UI.
-            var sessionIntent = PackageManager.GetLaunchIntentForPackage(PackageName);
+            if (MediaManager.GetContext() is Activity activity)
+                sessionIntent = new Intent(this, activity.GetType());
+            else
+                sessionIntent = PackageManager.GetLaunchIntentForPackage(PackageName);
             SessionActivityPendingIntent = PendingIntent.GetActivity(this, 0, sessionIntent, 0);
 
             PrepareMediaSession();
@@ -87,16 +91,28 @@ namespace MediaManager.Platforms.Android.MediaSession
             };
             NotificationListener.OnNotificationCancelledImpl = (notificationId) =>
             {
-                StopSelf();
+                StopForeground(true);
             };
 
+            MediaManager.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
+
+            PlayerNotificationManager.SetFastForwardIncrementMs((long)MediaManager.StepSize.TotalMilliseconds);
+            PlayerNotificationManager.SetRewindIncrementMs((long)MediaManager.StepSize.TotalMilliseconds);
             PlayerNotificationManager.SetNotificationListener(NotificationListener);
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
             PlayerNotificationManager.SetPlayer(MediaManager.NativeMediaPlayer.Player);
+        }
 
-            //TODO: When only 1 in queue disable navigation
-            //PlayerNotificationManager.SetUseNavigationActions(false);
-            //PlayerNotificationManager.SetUsePlayPauseActions(false);
+        private void MediaQueue_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (MediaManager.MediaQueue.Count > 1)
+            {
+                PlayerNotificationManager?.SetUseNavigationActions(true);
+            }
+            else
+            {
+                PlayerNotificationManager?.SetUseNavigationActions(false);
+            }
         }
 
         public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)
