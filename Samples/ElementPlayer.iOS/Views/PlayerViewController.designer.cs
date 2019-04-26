@@ -46,45 +46,10 @@ namespace ElementPlayer.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIView vwPlayer { get; set; }
+        MediaManager.Platforms.Ios.Video.VideoView vwPlayer { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (btnNext != null) {
-                btnNext.Dispose ();
-                btnNext = null;
-            }
-
-            if (btnPlayPause != null) {
-                btnPlayPause.Dispose ();
-                btnPlayPause = null;
-            }
-
-            if (btnPrevious != null) {
-                btnPrevious.Dispose ();
-                btnPrevious = null;
-            }
-
-            if (btnRepeat != null) {
-                btnRepeat.Dispose ();
-                btnRepeat = null;
-            }
-
-            if (btnShuffle != null) {
-                btnShuffle.Dispose ();
-                btnShuffle = null;
-            }
-
-            if (btnStepBackwards != null) {
-                btnStepBackwards.Dispose ();
-                btnStepBackwards = null;
-            }
-
-            if (btnStepForward != null) {
-                btnStepForward.Dispose ();
-                btnStepForward = null;
-            }
-
             if (progressPlayer != null) {
                 progressPlayer.Dispose ();
                 progressPlayer = null;

@@ -30,14 +30,18 @@ namespace MediaManager.Platforms.Android.Video
         {
             get
             {
-                switch (VideoAspect)
+                switch (ResizeMode)
                 {
-                    case VideoAspectMode.None:
-                        return VideoAspectMode.None;
-                    case VideoAspectMode.AspectFit:
-                        return VideoAspectMode.AspectFit;
-                    case VideoAspectMode.AspectFill:
+                    case AspectRatioFrameLayout.ResizeModeFill:
                         return VideoAspectMode.AspectFill;
+                    case AspectRatioFrameLayout.ResizeModeFit:
+                        return VideoAspectMode.AspectFit;
+                    case AspectRatioFrameLayout.ResizeModeFixedHeight:
+                        return VideoAspectMode.AspectFill;
+                    case AspectRatioFrameLayout.ResizeModeFixedWidth:
+                        return VideoAspectMode.AspectFill;
+                    case AspectRatioFrameLayout.ResizeModeZoom:
+                        return VideoAspectMode.None;
                     default:
                         return VideoAspectMode.None;
                 }
@@ -47,16 +51,16 @@ namespace MediaManager.Platforms.Android.Video
                 switch (value)
                 {
                     case VideoAspectMode.None:
-                        VideoAspect = VideoAspectMode.None;
+                        ResizeMode = AspectRatioFrameLayout.ResizeModeZoom;
                         break;
                     case VideoAspectMode.AspectFit:
-                        VideoAspect = VideoAspectMode.AspectFit;
+                        ResizeMode = AspectRatioFrameLayout.ResizeModeFit;
                         break;
                     case VideoAspectMode.AspectFill:
-                        VideoAspect = VideoAspectMode.AspectFill;
+                        ResizeMode = AspectRatioFrameLayout.ResizeModeFill;
                         break;
                     default:
-                        VideoAspect = VideoAspectMode.None;
+                        ResizeMode = AspectRatioFrameLayout.ResizeModeZoom;
                         break;
                 }
             }

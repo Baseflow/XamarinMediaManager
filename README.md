@@ -104,9 +104,10 @@ For android we need a videoview
 playerView = view.FindViewById<VideoView>(Resource.Id.exoplayerview_activity_video);
 ```
 
-For iOS we need a UIView, which we add to the videoSurface
+For iOS we need to add a VideoView either in code, or in a Xib or Storyboard.
 ```csharp
-_videoSurface = new VideoSurface(vwPlayer);
+var playerView = new VideoView();
+View.AddSubview(playerView);
 ```
 
 Then for both android and iOS we have to add the player view to the mediaplayer

@@ -18,10 +18,6 @@ namespace ElementPlayer.iOS.Views.Cells
 
         void ReleaseDesignerOutlets ()
         {
-            if (lblTitle != null) {
-                lblTitle.Dispose ();
-                lblTitle = null;
-            }
         }
     }
 }

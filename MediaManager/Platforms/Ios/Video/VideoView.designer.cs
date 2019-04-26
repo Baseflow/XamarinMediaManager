@@ -8,14 +8,11 @@ using Foundation;
 using System;
 using System.CodeDom.Compiler;
 
-namespace ElementPlayer.iOS.Views
+namespace MediaManager.Platforms.Ios.Video
 {
-    [Register ("HomeViewController")]
-    partial class HomeViewController
+    [Register ("VideoView")]
+    partial class VideoView
     {
-        [Outlet]
-        UIKit.UITableView tblItems { get; set; }
-
         void ReleaseDesignerOutlets ()
         {
         }

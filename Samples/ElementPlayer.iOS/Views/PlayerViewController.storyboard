@@ -58,7 +58,7 @@
                                 <rect key="frame" x="28" y="216" width="31" height="30"/>
                                 <state key="normal" title="-10s"/>
                             </button>
-                            <view contentMode="center" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="248" misplaced="YES" horizontalHuggingPriority="251">
+                            <view contentMode="center" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="248" misplaced="YES" horizontalHuggingPriority="251" customClass="VideoView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
