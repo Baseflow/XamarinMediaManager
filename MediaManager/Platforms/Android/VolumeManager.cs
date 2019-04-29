@@ -5,19 +5,50 @@ namespace MediaManager.Platforms.Android
 {
     public class VolumeManager : IVolumeManager //VolumeProviderCompat.Callback
     {
-        private MediaManagerImplementation mediaManagerImplementation;
-        private MediaControllerCompat mediaController => mediaManagerImplementation.MediaBrowserManager.MediaController;
+        private MediaManagerImplementation _mediaManagerImplementation;
+        private MediaControllerCompat _mediaController => _mediaManagerImplementation.MediaBrowserManager.MediaController;
 
+        //TODO: Probably inject another class
         public VolumeManager(MediaManagerImplementation mediaManagerImplementation)
         {
-            this.mediaManagerImplementation = mediaManagerImplementation;
+            _mediaManagerImplementation = mediaManagerImplementation;
         }
 
-        public int CurrentVolume { get => mediaController.GetPlaybackInfo().CurrentVolume; set => mediaController.SetVolumeTo(value, 0); }
+        public int CurrentVolume
+        {
+            get => _mediaController.GetPlaybackInfo().CurrentVolume;
+            set
+            {
+                _mediaController.SetVolumeTo(value, 0);
+                VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(value, Muted));
+            }
+        }
 
-        public int MaxVolume { get => mediaController.GetPlaybackInfo().MaxVolume; set => throw new System.NotImplementedException(); }
+        public int MaxVolume
+        {
+            get => _mediaController.GetPlaybackInfo().MaxVolume;
+            set
+            {
+                if (CurrentVolume > value)
+                    CurrentVolume = value;
+            }
+        }
 
-        public bool Muted { get => mediaManagerImplementation.MediaBrowserManager.MediaController.GetPlaybackInfo().CurrentVolume == 0; set => mediaController.SetVolumeTo(0, 0); }
+        protected int preMutedVolume = 0;
+        public bool Muted
+        {
+            get => CurrentVolume == 0;
+            set
+            {
+                if (!Muted)
+                {
+                    preMutedVolume = CurrentVolume;
+                    CurrentVolume = 0;
+                }
+                else
+                    CurrentVolume = preMutedVolume;
+            }
+        }
 
         public event VolumeChangedEventHandler VolumeChanged;
     }

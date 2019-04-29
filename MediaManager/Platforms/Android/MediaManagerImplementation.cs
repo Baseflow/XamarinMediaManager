@@ -23,7 +23,7 @@ using NotificationManager = MediaManager.Platforms.Android.NotificationManager;
 namespace MediaManager
 {
     [global::Android.Runtime.Preserve(AllMembers = true)]    
-    public class MediaManagerImplementation : MediaManagerBase<MediaPlayer, SimpleExoPlayer>
+    public class MediaManagerImplementation : MediaManagerBase
     {
         public MediaManagerImplementation()
         {
@@ -42,8 +42,12 @@ namespace MediaManager
             get
             {
                 if (_mediaBrowserManager == null)
-                    _mediaBrowserManager = new MediaBrowserManager(Context);
+                    _mediaBrowserManager = new MediaBrowserManager();
                 return _mediaBrowserManager;
+            }
+            set
+            {
+                _mediaBrowserManager = value;
             }
         }
 
@@ -53,7 +57,7 @@ namespace MediaManager
             get
             {
                 if (_mediaPlayer == null)
-                    _mediaPlayer = new MediaPlayer();
+                    _mediaPlayer = new AndroidMediaPlayer();
                 return _mediaPlayer;
             }
             set
@@ -61,6 +65,8 @@ namespace MediaManager
                 _mediaPlayer = value;
             }
         }
+
+        public AndroidMediaPlayer AndroidMediaPlayer => (AndroidMediaPlayer)MediaPlayer;
 
         private INotificationManager _notificationManager;
         public virtual INotificationManager NotificationManager
@@ -197,13 +203,13 @@ namespace MediaManager
 
         public override Task<bool> PlayNext()
         {
-            if (NativeMediaPlayer.Player.NextWindowIndex == NativeMediaPlayer.Player.CurrentWindowIndex)
+            if (AndroidMediaPlayer.Player.NextWindowIndex == AndroidMediaPlayer.Player.CurrentWindowIndex)
             {
                 SeekTo(TimeSpan.FromSeconds(0));
                 return Task.FromResult(true);
             }
 
-            if (NativeMediaPlayer.Player.NextWindowIndex == -1)
+            if (AndroidMediaPlayer.Player.NextWindowIndex == -1)
             {
                 return Task.FromResult(false);
             }
@@ -215,13 +221,13 @@ namespace MediaManager
 
         public override Task<bool> PlayPrevious()
         {
-            if (NativeMediaPlayer.Player.PreviousWindowIndex == NativeMediaPlayer.Player.CurrentWindowIndex)
+            if (AndroidMediaPlayer.Player.PreviousWindowIndex == AndroidMediaPlayer.Player.CurrentWindowIndex)
             {
                 SeekTo(TimeSpan.FromSeconds(0));
                 return Task.FromResult(true);
             }
 
-            if (NativeMediaPlayer.Player.PreviousWindowIndex == -1)
+            if (AndroidMediaPlayer.Player.PreviousWindowIndex == -1)
             {
                 return Task.FromResult(false);
             }
@@ -247,7 +253,7 @@ namespace MediaManager
         {
             get
             {
-                return NativeMediaPlayer.RepeatMode;
+                return AndroidMediaPlayer.RepeatMode;
             }
             set
             {

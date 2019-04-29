@@ -12,11 +12,6 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class MediaManagerBase<TMediaPlayer, TPlayer> : MediaManagerBase, IMediaManager<TMediaPlayer, TPlayer> where TMediaPlayer : class, IMediaPlayer<TPlayer> where TPlayer : class
-    {
-        public TMediaPlayer NativeMediaPlayer => MediaPlayer as TMediaPlayer;
-    }
-
     public abstract class MediaManagerBase : IMediaManager, INotifyMediaManager
     {
         public MediaManagerBase()

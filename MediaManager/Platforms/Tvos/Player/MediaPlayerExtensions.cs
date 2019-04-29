@@ -1,6 +1,6 @@
 ﻿using System;
 using AVFoundation;
-using MediaManager.Platforms.Mac.Video;
+using MediaManager.Platforms.Tvos.Video;
 using MediaManager.Video;
 
 namespace MediaManager
@@ -9,7 +9,7 @@ namespace MediaManager
     {
         public static void SetPlayerView(this IMediaPlayer mediaPlayer, VideoSurface videoView)
         {
-            if (mediaPlayer is IVideoPlayer<AVPlayer, VideoSurface> videoPlayer)
+            if (mediaPlayer is IMediaPlayer<AVPlayer, VideoSurface> videoPlayer)
             {
                 var layer = AVPlayerLayer.FromPlayer(videoPlayer.Player);
                 layer.Frame = videoView.Frame;
@@ -18,7 +18,7 @@ namespace MediaManager
                 videoPlayer.PlayerView = videoView;
             }
             else
-                throw new ArgumentException($"MediaPlayer needs to be of type {nameof(IVideoPlayer<AVPlayer, VideoSurface>)} to use this extension", nameof(mediaPlayer));
+                throw new ArgumentException($"MediaPlayer needs to be of type {nameof(IMediaPlayer<AVPlayer, VideoSurface>)} to use this extension", nameof(mediaPlayer));
         }
     }
 }

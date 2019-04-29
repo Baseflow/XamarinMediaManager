@@ -10,13 +10,12 @@ namespace MediaManager.Platforms.Android.Media
 {
     public class QueueNavigator : TimelineQueueNavigator
     {
-        private Timeline.Window window = new Timeline.Window();
-        private MediaSessionCompat mediaSession;
-        private IMediaManager mediaManager = CrossMediaManager.Current;
+        private MediaSessionCompat _mediaSession;
+        private IMediaManager _mediaManager = CrossMediaManager.Current;
 
         public QueueNavigator(MediaSessionCompat mediaSession) : base(mediaSession)
         {
-            this.mediaSession = mediaSession;
+            _mediaSession = mediaSession;
         }
 
         public QueueNavigator(MediaSessionCompat mediaSession, int maxQueueSize) : base(mediaSession, maxQueueSize)
@@ -29,7 +28,7 @@ namespace MediaManager.Platforms.Android.Media
 
         public override MediaDescriptionCompat GetMediaDescription(IPlayer player, int windowIndex)
         {
-            return mediaManager.MediaQueue.ElementAtOrDefault(windowIndex)?.ToMediaDescription();
+            return _mediaManager.MediaQueue.ElementAtOrDefault(windowIndex)?.ToMediaDescription();
         }
     }
 }

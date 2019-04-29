@@ -13,7 +13,6 @@ using Com.Google.Android.Exoplayer2.Trackselection;
 using Com.Google.Android.Exoplayer2.UI;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
-using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Platforms.Android.Playback;
 using MediaManager.Playback;
@@ -21,20 +20,21 @@ using MediaManager.Video;
 
 namespace MediaManager.Platforms.Android.Media
 {
-    public class MediaPlayer : Java.Lang.Object, IAudioPlayer<SimpleExoPlayer>, IVideoPlayer<SimpleExoPlayer, PlayerView>
+    public class AndroidMediaPlayer : Java.Lang.Object, IMediaPlayer<SimpleExoPlayer, PlayerView>
     {
-        public MediaPlayer()
+        public AndroidMediaPlayer()
         {
         }
 
-        public MediaPlayer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+        protected AndroidMediaPlayer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
         }
 
-        protected INotifyMediaManager MediaManager = CrossMediaManager.Current as INotifyMediaManager;
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Android;
+
         protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
 
-        protected Context Context { get; set; } = CrossMediaManager.Current.GetContext();
+        protected Context Context => CrossMediaManager.Android.Context;
 
         protected string UserAgent { get; set; }
         protected DefaultHttpDataSourceFactory HttpDataSourceFactory { get; set; }
@@ -66,7 +66,7 @@ namespace MediaManager.Platforms.Android.Media
         {
             get
             {
-                if (!MediaSession.Active)
+                if (MediaSession == null || !MediaSession.Active)
                     return MediaPlayerState.Stopped;
 
                 return MediaSession.Controller.PlaybackState.ToMediaPlayerState();

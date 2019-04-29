@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Video;
@@ -8,7 +7,7 @@ using Windows.Media.Playback;
 
 namespace MediaManager.Platforms.Uap.Media
 {
-    public class WindowsMediaPlayer : IAudioPlayer<MediaPlayer>, IVideoPlayer<MediaPlayer, MediaPlayerSurface>
+    public class WindowsMediaPlayer : IMediaPlayer<MediaPlayer, MediaPlayerSurface>
     {
         public MediaPlayer Player { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

@@ -8,11 +8,6 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public interface IMediaManager<TMediaPlayer, TPlayer> : IMediaManager where TMediaPlayer : class, IMediaPlayer<TPlayer> where TPlayer : class
-    {
-        TMediaPlayer NativeMediaPlayer { get; }
-    }
-
     public interface IMediaManager : IPlaybackManager
     {
         IMediaPlayer MediaPlayer { get; set; }
@@ -24,10 +19,6 @@ namespace MediaManager
         /// Gets or sets the request headers.
         /// </summary>
         Dictionary<string, string> RequestHeaders { get; set; }
-
-        //IAudioPlayer AudioPlayer { get; set; }
-
-        //IVideoPlayer VideoPlayer { get; set; }
 
         //INotificationManager NotificationManager { get; set; }
 

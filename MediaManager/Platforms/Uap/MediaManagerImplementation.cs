@@ -13,7 +13,7 @@ using Windows.Storage;
 
 namespace MediaManager
 {
-    public class MediaManagerImplementation : MediaManagerBase<WindowsMediaPlayer, MediaPlayer>
+    public class MediaManagerImplementation : MediaManagerBase //<WindowsMediaPlayer, MediaPlayer>
     {
         public override IMediaPlayer MediaPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IMediaExtractor MediaExtractor { get => _MediaExtractor; set => _MediaExtractor = value; }

@@ -9,11 +9,11 @@ namespace MediaManager.Platforms.Android.Media
 {
     public class RatingCallback : Java.Lang.Object, MediaSessionConnector.IRatingCallback
     {
-        public RatingCallback(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+        public RatingCallback()
         {
         }
 
-        public RatingCallback()
+        protected RatingCallback(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
         }
 

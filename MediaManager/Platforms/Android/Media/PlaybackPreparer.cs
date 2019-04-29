@@ -13,7 +13,7 @@ namespace MediaManager.Platforms.Android.Media
     {
         private IExoPlayer _player;
         private ConcatenatingMediaSource _mediaSource;
-        private IMediaManager mediaManager = CrossMediaManager.Current;
+        private IMediaManager _mediaManager = CrossMediaManager.Current;
 
         public MediaSessionConnectorPlaybackPreparer(IExoPlayer player, ConcatenatingMediaSource mediaSource)
         {
@@ -21,7 +21,7 @@ namespace MediaManager.Platforms.Android.Media
             _mediaSource = mediaSource;
         }
 
-        public MediaSessionConnectorPlaybackPreparer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+        protected MediaSessionConnectorPlaybackPreparer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
         }
 
@@ -46,7 +46,7 @@ namespace MediaManager.Platforms.Android.Media
         public void OnPrepare()
         {
             _mediaSource.Clear();
-            foreach (var mediaItem in mediaManager.MediaQueue)
+            foreach (var mediaItem in _mediaManager.MediaQueue)
             {
                 _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }
@@ -60,10 +60,10 @@ namespace MediaManager.Platforms.Android.Media
         {
             _mediaSource.Clear();
             int windowIndex = 0;
-            foreach (var mediaItem in mediaManager.MediaQueue)
+            foreach (var mediaItem in _mediaManager.MediaQueue)
             {
                 if (mediaItem.MediaId == mediaId)
-                    windowIndex = mediaManager.MediaQueue.IndexOf(mediaItem);
+                    windowIndex = _mediaManager.MediaQueue.IndexOf(mediaItem);
 
                 _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }
@@ -74,7 +74,7 @@ namespace MediaManager.Platforms.Android.Media
         public void OnPrepareFromSearch(string searchTerm, Bundle p1)
         {
             _mediaSource.Clear();
-            foreach (var mediaItem in mediaManager.MediaQueue.Where(x => x.Title == searchTerm))
+            foreach (var mediaItem in _mediaManager.MediaQueue.Where(x => x.Title == searchTerm))
             {
                 _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }
@@ -85,11 +85,11 @@ namespace MediaManager.Platforms.Android.Media
         {
             _mediaSource.Clear();
             int windowIndex = 0;
-            foreach (var mediaItem in mediaManager.MediaQueue)
+            foreach (var mediaItem in _mediaManager.MediaQueue)
             {
                 var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
                 if (uri.Equals(mediaUri))
-                    windowIndex = mediaManager.MediaQueue.IndexOf(mediaItem);
+                    windowIndex = _mediaManager.MediaQueue.IndexOf(mediaItem);
 
                 _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }

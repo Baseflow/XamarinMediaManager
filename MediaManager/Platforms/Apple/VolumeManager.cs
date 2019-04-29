@@ -3,7 +3,7 @@ using MediaManager.Volume;
 
 namespace MediaManager.Platforms.Apple
 {
-    public class VolumeManager : IVolumeManager //VolumeProviderCompat.Callback
+    public class VolumeManager : IVolumeManager
     {
         internal AVPlayer player;
 
@@ -34,13 +34,13 @@ namespace MediaManager.Platforms.Apple
             }
         }
 
-        private int maxVolume = 100;
+        private int _maxVolume = 100;
         public int MaxVolume
         {
-            get => maxVolume;
+            get => _maxVolume;
             set
             {
-                maxVolume = value;
+                _maxVolume = value;
                 VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(value, Muted));
             }
         }

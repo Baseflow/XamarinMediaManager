@@ -16,7 +16,7 @@ namespace MediaManager.Platforms.Android.Media
         {
         }
 
-        public PlayerEventListener(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+        protected PlayerEventListener(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
 
         }

@@ -14,37 +14,37 @@ namespace MediaManager.Platforms.Android.Media
     {
         public static IMediaSource ToMediaSource(this IMediaItem mediaItem)
         {
-            if (MediaPlayer.DataSourceFactory == null)
-                throw new ArgumentNullException(nameof(MediaPlayer.DataSourceFactory));
+            if (AndroidMediaPlayer.DataSourceFactory == null)
+                throw new ArgumentNullException(nameof(AndroidMediaPlayer.DataSourceFactory));
 
             IMediaSource mediaSource;
             switch (mediaItem.MediaType)
             {
                 default:
                 case MediaType.Default:
-                    mediaSource = new ExtractorMediaSource.Factory(MediaPlayer.DataSourceFactory)
+                    mediaSource = new ExtractorMediaSource.Factory(AndroidMediaPlayer.DataSourceFactory)
                         .SetTag(mediaItem.ToMediaDescription())
                         .CreateMediaSource(global::Android.Net.Uri.Parse(mediaItem.MediaUri));
                     break;
                 case MediaType.Dash:
-                    if (MediaPlayer.DashChunkSourceFactory == null)
-                        throw new ArgumentNullException(nameof(MediaPlayer.DashChunkSourceFactory));
+                    if (AndroidMediaPlayer.DashChunkSourceFactory == null)
+                        throw new ArgumentNullException(nameof(AndroidMediaPlayer.DashChunkSourceFactory));
 
-                    mediaSource = new DashMediaSource.Factory(MediaPlayer.DashChunkSourceFactory, MediaPlayer.DataSourceFactory)
+                    mediaSource = new DashMediaSource.Factory(AndroidMediaPlayer.DashChunkSourceFactory, AndroidMediaPlayer.DataSourceFactory)
                         .SetTag(mediaItem.ToMediaDescription())
                         .CreateMediaSource(global::Android.Net.Uri.Parse(mediaItem.MediaUri));
                     break;
                 case MediaType.Hls:
-                    mediaSource = new HlsMediaSource.Factory(MediaPlayer.DataSourceFactory)
+                    mediaSource = new HlsMediaSource.Factory(AndroidMediaPlayer.DataSourceFactory)
                         .SetAllowChunklessPreparation(true)
                         .SetTag(mediaItem.ToMediaDescription())
                         .CreateMediaSource(global::Android.Net.Uri.Parse(mediaItem.MediaUri));
                     break;
                 case MediaType.SmoothStreaming:
-                    if (MediaPlayer.SsChunkSourceFactory == null)
-                        throw new ArgumentNullException(nameof(MediaPlayer.SsChunkSourceFactory));
+                    if (AndroidMediaPlayer.SsChunkSourceFactory == null)
+                        throw new ArgumentNullException(nameof(AndroidMediaPlayer.SsChunkSourceFactory));
 
-                    mediaSource = new SsMediaSource.Factory(MediaPlayer.SsChunkSourceFactory, MediaPlayer.DataSourceFactory)
+                    mediaSource = new SsMediaSource.Factory(AndroidMediaPlayer.SsChunkSourceFactory, AndroidMediaPlayer.DataSourceFactory)
                         .SetTag(mediaItem.ToMediaDescription())
                         .CreateMediaSource(global::Android.Net.Uri.Parse(mediaItem.MediaUri));
                     break;

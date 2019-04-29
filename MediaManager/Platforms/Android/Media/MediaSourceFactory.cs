@@ -12,7 +12,7 @@ namespace MediaManager.Platforms.Android.Media
         {
         }
 
-        public QueueEditorMediaSourceFactory(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+        protected QueueEditorMediaSourceFactory(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
         }
 

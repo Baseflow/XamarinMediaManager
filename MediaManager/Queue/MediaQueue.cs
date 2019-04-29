@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using MediaManager.Media;
 
@@ -8,11 +9,13 @@ namespace MediaManager.Queue
 {
     public class MediaQueue : ObservableCollection<IMediaItem>, IMediaQueue
     {
-        IMediaManager MediaManager = CrossMediaManager.Current;
+        private IMediaManager _mediaManager = CrossMediaManager.Current;
 
         public event QueueEndedEventHandler QueueEnded;
 
         public event QueueChangedEventHandler QueueChanged;
+
+        public string Title { get; set; }
 
         public bool HasNext() => ShuffleMode == ShuffleMode.All ? _shuffledIndexes.Count() > _indexOfCurrentItemInShuffledIndexes + 1 : Count > CurrentIndex + 1;
 
@@ -73,8 +76,8 @@ namespace MediaManager.Queue
             }
         }
 
-
         public bool HasCurrent() => Count >= CurrentIndex;
+
         public IMediaItem Current => Count > 0 ? this[CurrentIndex] : null;
 
         private int _currentIndex = 0;
@@ -89,11 +92,9 @@ namespace MediaManager.Queue
             }
         }
 
-        public string Title { get; set; }
-
-
         private ShuffleMode _shuffleMode;
         private IList<int> _shuffledIndexes;
+
         private int _indexOfCurrentItemInShuffledIndexes => _shuffledIndexes.Select((v, i) => new { originalIndex = v, index = i }).First(x => x.originalIndex == CurrentIndex).index;
 
         public ShuffleMode ShuffleMode
@@ -129,6 +130,12 @@ namespace MediaManager.Queue
             // We always put the current index at the start of the list
             ints.Insert(0, CurrentIndex);
             _shuffledIndexes = ints;
+        }
+
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            base.OnCollectionChanged(e);
+            OnQueueChanged(this, new QueueChangedEventArgs());
         }
 
         internal void OnQueueEnded(object s, QueueEndedEventArgs e) => QueueEnded?.Invoke(s, e);

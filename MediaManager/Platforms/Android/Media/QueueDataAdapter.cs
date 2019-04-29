@@ -11,38 +11,38 @@ namespace MediaManager.Platforms.Android.Media
 {
     public class QueueDataAdapter : Java.Lang.Object, TimelineQueueEditor.IQueueDataAdapter
     {
-        private IMediaManager mediaManager = CrossMediaManager.Current;
+        private IMediaManager _mediaManager = CrossMediaManager.Current;
         private ConcatenatingMediaSource _mediaSource;
 
         public QueueDataAdapter(ConcatenatingMediaSource mediaSource)
         {
             _mediaSource = mediaSource;
-            mediaManager.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
+            _mediaManager.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
         }
 
-        public QueueDataAdapter(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+        protected QueueDataAdapter(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
         }
 
         public void Add(int index, MediaDescriptionCompat description)
         {
-            mediaManager.MediaQueue.Insert(index, description.ToMediaItem());
+            _mediaManager.MediaQueue.Insert(index, description.ToMediaItem());
         }
 
         public MediaDescriptionCompat GetMediaDescription(int index)
         {
-            return mediaManager.MediaQueue.ElementAtOrDefault(index)?.ToMediaDescription();
+            return _mediaManager.MediaQueue.ElementAtOrDefault(index)?.ToMediaDescription();
         }
 
         public void Move(int oldIndex, int newIndex)
         {
-            if (mediaManager.MediaQueue is ObservableCollection<IMediaItem> observableCollection)
+            if (_mediaManager.MediaQueue is ObservableCollection<IMediaItem> observableCollection)
                 observableCollection.Move(oldIndex, newIndex);
         }
 
         public void Remove(int index)
         {
-            mediaManager.MediaQueue.RemoveAt(index);
+            _mediaManager.MediaQueue.RemoveAt(index);
         }
 
         private void MediaQueue_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -50,7 +50,7 @@ namespace MediaManager.Platforms.Android.Media
             switch (e.Action)
             {
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
-                    if (_mediaSource.Size != CrossMediaManager.Current.MediaQueue.Count)
+                    if (_mediaSource.Size != _mediaManager.MediaQueue.Count)
                     {
                         for (int i = e.NewItems.Count - 1; i >= 0; i--)
                         {

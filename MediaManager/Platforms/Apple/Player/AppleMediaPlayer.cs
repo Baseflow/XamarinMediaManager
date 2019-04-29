@@ -3,13 +3,12 @@ using System.Threading.Tasks;
 using AVFoundation;
 using CoreMedia;
 using Foundation;
-using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Playback;
 
 namespace MediaManager.Platforms.Apple.Media
 {
-    public abstract class AppleMediaPlayer : NSObject, IAudioPlayer<AVPlayer>
+    public abstract class AppleMediaPlayer : NSObject, IMediaPlayer<AVPlayer>
     {
         private NSObject DidFinishPlayingObserver;
         private NSObject ItemFailedToPlayToEndTimeObserver;

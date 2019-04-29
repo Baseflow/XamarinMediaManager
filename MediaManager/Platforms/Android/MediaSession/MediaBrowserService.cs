@@ -7,7 +7,6 @@ using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.UI;
-using MediaManager.Platforms.Android.Audio;
 using MediaManager.Platforms.Android.Media;
 
 namespace MediaManager.Platforms.Android.MediaSession
@@ -16,7 +15,7 @@ namespace MediaManager.Platforms.Android.MediaSession
     [IntentFilter(new[] { global::Android.Service.Media.MediaBrowserService.ServiceInterface })]
     public class MediaBrowserService : MediaBrowserServiceCompat
     {
-        protected IMediaManager<MediaPlayer, SimpleExoPlayer> MediaManager = CrossMediaManager.Current as IMediaManager<MediaPlayer, SimpleExoPlayer>;
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Android;
 
         protected PendingIntent SessionActivityPendingIntent { get; private set; }
         protected MediaSessionCompat MediaSession { get; set; }
@@ -24,7 +23,6 @@ namespace MediaManager.Platforms.Android.MediaSession
         protected PlayerNotificationManager PlayerNotificationManager { get; set; }
         protected MediaControllerCompat MediaController { get; set; }
         protected MediaControllerCallback MediaControllerCallback { get; set; }
-        protected BecomingNoisyReceiver BecomingNoisyReceiver { get; set; }
         protected NotificationListener NotificationListener { get; set; }
 
         public readonly string ChannelId = "audio_channel";
@@ -69,7 +67,7 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         protected virtual void PrepareMediaPlayer()
         {
-            MediaManager.NativeMediaPlayer.MediaSession = MediaSession;
+            MediaManager.AndroidMediaPlayer.MediaSession = MediaSession;
             MediaManager.MediaPlayer.Initialize();
         }
 
@@ -100,7 +98,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.SetRewindIncrementMs((long)MediaManager.StepSize.TotalMilliseconds);
             PlayerNotificationManager.SetNotificationListener(NotificationListener);
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
-            PlayerNotificationManager.SetPlayer(MediaManager.NativeMediaPlayer.Player);
+            PlayerNotificationManager.SetPlayer(MediaManager.AndroidMediaPlayer.Player);
         }
 
         private void MediaQueue_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

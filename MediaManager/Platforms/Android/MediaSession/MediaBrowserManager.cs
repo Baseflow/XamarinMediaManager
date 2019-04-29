@@ -11,9 +11,9 @@ namespace MediaManager.Platforms.Android.MediaSession
 {
     public class MediaBrowserManager
     {
-        public MediaControllerCompat MediaController { get; set; }
+        protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
 
-        protected INotifyMediaManager MediaManager = CrossMediaManager.Current as INotifyMediaManager;
+        public MediaControllerCompat MediaController { get; set; }
         protected MediaBrowserCompat MediaBrowser { get; set; }
         protected MediaBrowserConnectionCallback MediaBrowserConnectionCallback { get; set; }
         protected MediaControllerCallback MediaControllerCallback { get; set; }
@@ -21,11 +21,10 @@ namespace MediaManager.Platforms.Android.MediaSession
         protected virtual Java.Lang.Class ServiceType { get; } = Java.Lang.Class.FromType(typeof(MediaBrowserService));
 
         protected bool IsInitialized { get; private set; } = false;
-        protected Context Context { get; private set; }
+        protected Context Context => MediaManager.Context;
 
-        public MediaBrowserManager(Context context)
+        public MediaBrowserManager()
         {
-            Context = context;
         }
 
         public bool Init()

@@ -13,7 +13,7 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase<TMediaPlayer, AVPlayer> where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVPlayer>, new()
+    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVPlayer>, new()
     {
         private IMediaPlayer _mediaPlayer;
         public override IMediaPlayer MediaPlayer
@@ -31,6 +31,8 @@ namespace MediaManager
                 _mediaPlayer = value;
             }
         }
+
+        public AppleMediaPlayer AppleMediaPlayer => (AppleMediaPlayer)MediaPlayer;
 
         private IMediaExtractor _mediaExtractor;
         public override IMediaExtractor MediaExtractor
@@ -55,7 +57,7 @@ namespace MediaManager
             get
             {
                 if (_volumeManager == null)
-                    _volumeManager = new VolumeManager(NativeMediaPlayer.Player);
+                    _volumeManager = new VolumeManager(AppleMediaPlayer.Player);
                 return _volumeManager;
             }
             set
@@ -76,11 +78,11 @@ namespace MediaManager
         {
             get
             {
-                if (NativeMediaPlayer.Player.CurrentItem == null)
+                if (AppleMediaPlayer.Player.CurrentItem == null)
                 {
                     return TimeSpan.Zero;
                 }
-                return TimeSpan.FromSeconds(NativeMediaPlayer.Player.CurrentTime.Seconds);
+                return TimeSpan.FromSeconds(AppleMediaPlayer.Player.CurrentTime.Seconds);
             }
         }
 
@@ -88,15 +90,15 @@ namespace MediaManager
         {
             get
             {
-                if (NativeMediaPlayer.Player.CurrentItem == null)
+                if (AppleMediaPlayer.Player.CurrentItem == null)
                 {
                     return TimeSpan.Zero;
                 }
-                if (double.IsNaN(NativeMediaPlayer.Player.CurrentItem.Duration.Seconds))
+                if (double.IsNaN(AppleMediaPlayer.Player.CurrentItem.Duration.Seconds))
                 {
                     return TimeSpan.Zero;
                 }
-                return TimeSpan.FromSeconds(NativeMediaPlayer.Player.CurrentItem.Duration.Seconds);
+                return TimeSpan.FromSeconds(AppleMediaPlayer.Player.CurrentItem.Duration.Seconds);
             }
         }
 
@@ -105,11 +107,11 @@ namespace MediaManager
             get
             {
                 var buffered = TimeSpan.Zero;
-                if (NativeMediaPlayer.Player.CurrentItem != null)
+                if (AppleMediaPlayer.Player.CurrentItem != null)
                 {
                     buffered =
                         TimeSpan.FromSeconds(
-                            NativeMediaPlayer.Player.CurrentItem.LoadedTimeRanges.Select(
+                            AppleMediaPlayer.Player.CurrentItem.LoadedTimeRanges.Select(
                                 tr => tr.CMTimeRangeValue.Start.Seconds + tr.CMTimeRangeValue.Duration.Seconds).Max());
                 }
 
@@ -121,14 +123,14 @@ namespace MediaManager
         {
             get
             {
-                if (NativeMediaPlayer.Player != null)
-                    return NativeMediaPlayer.Player.Rate;
+                if (AppleMediaPlayer.Player != null)
+                    return AppleMediaPlayer.Player.Rate;
                 return 0.0f;
             }
             set
             {
-                if (NativeMediaPlayer.Player != null)
-                    NativeMediaPlayer.Player.Rate = value;
+                if (AppleMediaPlayer.Player != null)
+                    AppleMediaPlayer.Player.Rate = value;
             }
         }
 

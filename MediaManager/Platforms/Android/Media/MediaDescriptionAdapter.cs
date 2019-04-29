@@ -11,36 +11,36 @@ namespace MediaManager.Platforms.Android.Media
 {
     public class MediaDescriptionAdapter : Java.Lang.Object, PlayerNotificationManager.IMediaDescriptionAdapter
     {
-        private PendingIntent sessionActivityPendingIntent;
-        private IMediaManager mediaManager = CrossMediaManager.Current;
+        protected PendingIntent SessionActivityPendingIntent;
+        protected IMediaManager MediaManager = CrossMediaManager.Current;
 
         public MediaDescriptionAdapter(PendingIntent sessionActivityPendingIntent)
         {
-            this.sessionActivityPendingIntent = sessionActivityPendingIntent;
+            SessionActivityPendingIntent = sessionActivityPendingIntent;
         }
 
-        public MediaDescriptionAdapter(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+        protected MediaDescriptionAdapter(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
         }
 
         public PendingIntent CreateCurrentContentIntent(IPlayer player)
         {
-            return sessionActivityPendingIntent;
+            return SessionActivityPendingIntent;
         }
 
         public string GetCurrentContentText(IPlayer player)
         {
-            return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetTitle();
+            return MediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetTitle();
         }
 
         public string GetCurrentContentTitle(IPlayer player)
         {
-            return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetContentTitle();
+            return MediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetContentTitle();
         }
 
         public Bitmap GetCurrentLargeIcon(IPlayer player, PlayerNotificationManager.BitmapCallback callback)
         {
-            return mediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetCover();
+            return MediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetCover();
         }
     }
 }

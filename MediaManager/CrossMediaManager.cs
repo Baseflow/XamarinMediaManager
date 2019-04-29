@@ -29,15 +29,15 @@ namespace MediaManager
                 return ret;
             }
         }
-
+        
 #if ANDROID
-        public static IMediaManager<Platforms.Android.Media.MediaPlayer, Com.Google.Android.Exoplayer2.SimpleExoPlayer> Android => Current as IMediaManager<Platforms.Android.Media.MediaPlayer, Com.Google.Android.Exoplayer2.SimpleExoPlayer>;
+        public static MediaManagerImplementation Android => (MediaManagerImplementation)Current;
 #elif COCOA
-        public static IMediaManager<Platforms.Apple.Media.AppleMediaPlayer, AVFoundation.AVPlayer> Apple => Current as IMediaManager<Platforms.Apple.Media.AppleMediaPlayer, AVFoundation.AVPlayer>;
+        public static MediaManagerImplementation Apple => (MediaManagerImplementation)Current;
 #elif WINDOWS
-        public static IMediaManager<Platforms.Uap.Media.WindowsMediaPlayer, Windows.Media.Playback.MediaPlayer> Windows => Current as IMediaManager<Platforms.Uap.Media.WindowsMediaPlayer, Windows.Media.Playback.MediaPlayer>;
+        public static MediaManagerImplementation Windows => (MediaManagerImplementation)Current;
 #elif TIZEN
-        public static IMediaManager<Platforms.Tizen.Media.MediaPlayer, Tizen.Multimedia.Player> Tizen => Current as IMediaManager<Platforms.Tizen.Media.MediaPlayer, Tizen.Multimedia.Player>;
+        public static MediaManagerImplementation Tizen => (MediaManagerImplementation)Current;
 #endif
 
         static IMediaManager CreateMediaManager()

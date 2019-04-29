@@ -2,12 +2,18 @@
 using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Playback;
+using MediaManager.Video;
 
 namespace MediaManager
 {
     public delegate void BeforePlayingEventHandler(object sender, MediaPlayerEventArgs e);
 
     public delegate void AfterPlayingEventHandler(object sender, MediaPlayerEventArgs e);
+
+    public interface IMediaPlayer<TPlayer, TPlayerView> : IMediaPlayer<TPlayer> where TPlayer : class where TPlayerView : class
+    {
+        TPlayerView PlayerView { get; set; }
+    }
 
     public interface IMediaPlayer<TPlayer> : IMediaPlayer where TPlayer : class
     {

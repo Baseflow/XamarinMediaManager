@@ -10,7 +10,7 @@ namespace MediaManager
     {
         public static void SetPlayerView(this IMediaPlayer mediaPlayer, VideoView videoView)
         {
-            if (mediaPlayer is IVideoPlayer<SimpleExoPlayer, PlayerView> videoPlayer)
+            if (mediaPlayer is IMediaPlayer<SimpleExoPlayer, PlayerView> videoPlayer)
             {
                 videoPlayer.PlayerView = videoView;
                 videoView.RequestFocus();

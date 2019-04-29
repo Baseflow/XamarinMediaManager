@@ -8,7 +8,7 @@ using MediaManager.Video;
 
 namespace MediaManager.Platforms.Ios.Media
 {
-    public class MediaPlayer : AppleMediaPlayer, IVideoPlayer<AVPlayer, VideoView>
+    public class MediaPlayer : AppleMediaPlayer, IMediaPlayer<AVPlayer, VideoView>
     {
         //TODO: Make possible to hook into
         AVPlayerViewController aVPlayerViewController;

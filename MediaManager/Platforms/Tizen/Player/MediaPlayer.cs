@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MediaManager.Audio;
 using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Video;
@@ -8,7 +7,7 @@ using Tizen.Multimedia;
 
 namespace MediaManager.Platforms.Tizen.Media
 {
-    public class MediaPlayer : IAudioPlayer<Player>, IVideoPlayer<Player, MediaView>
+    public class MediaPlayer : IMediaPlayer<Player, MediaView>
     {
         public Player Player { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

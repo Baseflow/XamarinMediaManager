@@ -18,14 +18,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         public Action<int> OnNotificationCancelledImpl { get; set; }
         public Action<int, Notification> OnNotificationStartedImpl { get; set; }
 
-        public void OnNotificationCancelled(int p0)
-        {
-            OnNotificationCancelledImpl?.Invoke(p0);
-        }
-
-        public void OnNotificationStarted(int p0, Notification p1)
-        {
-            OnNotificationStartedImpl?.Invoke(p0, p1);
-        }
+        public void OnNotificationCancelled(int p0) => OnNotificationCancelledImpl?.Invoke(p0);
+        public void OnNotificationStarted(int p0, Notification p1) => OnNotificationStartedImpl?.Invoke(p0, p1);
     }
 }
