@@ -7,6 +7,7 @@ namespace MediaManager
     {
         public static IVideoView GetPlayerView(this IMediaPlayer mediaPlayer)
         {
+            //TODO: IVideoView should be IVideoPlayer
             if (mediaPlayer is IVideoView videoPlayer)
                 return videoPlayer;
             else

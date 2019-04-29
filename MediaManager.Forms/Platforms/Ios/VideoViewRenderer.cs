@@ -22,7 +22,7 @@ namespace MediaManager.Forms.Platforms.iOS
             base.OnElementChanged(e);
             if (Control == null)
             {
-                _videoView = new MediaManager.Platforms.Ios.Video.VideoView(Control);
+                _videoView = new MediaManager.Platforms.Ios.Video.VideoView();
                 SetNativeControl(_videoView);
                 CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
             }
