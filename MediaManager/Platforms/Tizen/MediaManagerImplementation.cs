@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using MediaManager.Media;
-using MediaManager.Platforms.Tizen.Media;
 using MediaManager.Playback;
 using MediaManager.Queue;
 using MediaManager.Volume;
-using Tizen.Multimedia;
 
 namespace MediaManager
 {

@@ -2,7 +2,6 @@
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.UI;
 using MediaManager.Platforms.Android.Video;
-using MediaManager.Video;
 
 namespace MediaManager
 {

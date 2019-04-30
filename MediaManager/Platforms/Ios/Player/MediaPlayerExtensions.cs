@@ -1,7 +1,6 @@
 ﻿using System;
 using AVFoundation;
 using MediaManager.Platforms.Ios.Video;
-using MediaManager.Video;
 
 namespace MediaManager
 {

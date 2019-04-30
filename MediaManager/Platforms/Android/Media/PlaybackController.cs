@@ -1,7 +1,5 @@
 ﻿using System;
-using Android.OS;
 using Android.Runtime;
-using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 
 namespace MediaManager.Platforms.Android.Media

@@ -4,7 +4,6 @@ using AVKit;
 using Foundation;
 using MediaManager.Platforms.Apple.Media;
 using MediaManager.Platforms.Ios.Video;
-using MediaManager.Video;
 
 namespace MediaManager.Platforms.Ios.Media
 {

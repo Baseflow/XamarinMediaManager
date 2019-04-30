@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using MediaManager.Media;
-using MediaManager.Platforms.Uap.Media;
 using MediaManager.Playback;
 using MediaManager.Queue;
 using MediaManager.Volume;

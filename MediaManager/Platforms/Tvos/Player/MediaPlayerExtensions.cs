@@ -1,7 +1,6 @@
 ﻿using System;
 using AVFoundation;
 using MediaManager.Platforms.Tvos.Video;
-using MediaManager.Video;
 
 namespace MediaManager
 {

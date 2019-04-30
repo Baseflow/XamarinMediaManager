@@ -1,7 +1,6 @@
 ﻿using System;
 using ElementPlayer.Core.ViewModels;
 using MediaManager;
-using MediaManager.Platforms.Ios.Video;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;

@@ -29,7 +29,7 @@ namespace MediaManager
                 return ret;
             }
         }
-        
+
 #if ANDROID
         public static MediaManagerImplementation Android => (MediaManagerImplementation)Current;
 #elif COCOA

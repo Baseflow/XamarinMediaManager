@@ -16,7 +16,6 @@ using Com.Google.Android.Exoplayer2.Util;
 using MediaManager.Media;
 using MediaManager.Platforms.Android.Playback;
 using MediaManager.Playback;
-using MediaManager.Video;
 
 namespace MediaManager.Platforms.Android.Media
 {

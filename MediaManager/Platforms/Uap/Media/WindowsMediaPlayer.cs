@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Playback;
-using MediaManager.Video;
 using Windows.Media.Playback;
 
 namespace MediaManager.Platforms.Uap.Media

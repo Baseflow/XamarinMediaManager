@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
-using Com.Google.Android.Exoplayer2;
 using MediaManager.Media;
 using MediaManager.Platforms.Android;
 using MediaManager.Platforms.Android.Media;
@@ -22,7 +21,7 @@ using NotificationManager = MediaManager.Platforms.Android.NotificationManager;
 [assembly: UsesPermission(Android.Manifest.Permission.ForegroundService)]
 namespace MediaManager
 {
-    [global::Android.Runtime.Preserve(AllMembers = true)]    
+    [global::Android.Runtime.Preserve(AllMembers = true)]
     public class MediaManagerImplementation : MediaManagerBase
     {
         public MediaManagerImplementation()

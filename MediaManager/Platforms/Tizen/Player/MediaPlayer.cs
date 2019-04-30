@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Playback;
-using MediaManager.Video;
 using Tizen.Multimedia;
 
 namespace MediaManager.Platforms.Tizen.Media

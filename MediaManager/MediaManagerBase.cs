@@ -21,14 +21,7 @@ namespace MediaManager
             Timer.Start();
         }
 
-        public TimeSpan StepSize { get; set; } = TimeSpan.FromSeconds(10);
-
         public bool IsInitialized { get; protected set; }
-
-        public abstract IMediaPlayer MediaPlayer { get; set; }
-
-        public abstract IMediaExtractor MediaExtractor { get; set; }
-        public abstract IVolumeManager VolumeManager { get; set; }
 
         private IMediaQueue _mediaQueue;
         public virtual IMediaQueue MediaQueue
@@ -46,7 +39,13 @@ namespace MediaManager
             }
         }
 
+        public TimeSpan StepSize { get; set; } = TimeSpan.FromSeconds(10);
         public Timer Timer { get; } = new Timer(1000);
+
+        public abstract IMediaPlayer MediaPlayer { get; set; }
+        public abstract IMediaExtractor MediaExtractor { get; set; }
+        public abstract IVolumeManager VolumeManager { get; set; }
+
         public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
         public abstract MediaPlayerState State { get; }
         public abstract TimeSpan Position { get; }
@@ -78,21 +77,21 @@ namespace MediaManager
         public abstract Task<IMediaItem> Play(FileInfo file);
         public abstract Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo);
         public abstract Task Play();
-        public virtual Task<bool> PlayNext()
+        public virtual async Task<bool> PlayNext()
         {
             // If we repeat just the single media item, we do that first
             if (MediaPlayer.RepeatMode == RepeatMode.One)
             {
-                MediaPlayer.Play(MediaQueue.Current);
-                return Task.FromResult(true);
+                await MediaPlayer.Play(MediaQueue.Current);
+                return true;
             }
             else
             {
                 // Otherwise we try to play the next media item in the queue
                 if (MediaQueue.HasNext())
                 {
-                    MediaPlayer.Play(MediaQueue.NextItem);
-                    return Task.FromResult(true);
+                    await MediaPlayer.Play(MediaQueue.NextItem);
+                    return true;
                 }
                 else
                 {
@@ -103,25 +102,25 @@ namespace MediaManager
                         MediaQueue.CurrentIndex = 0;
                         if (MediaQueue.HasCurrent())
                         {
-                            MediaPlayer.Play(MediaQueue.Current);
-                            return Task.FromResult(true);
+                            await MediaPlayer.Play(MediaQueue.Current);
+                            return true;
                         }
                     }
                 }
             }
 
-            return Task.FromResult(false);
+            return false;
         }
 
-        public virtual Task<bool> PlayPrevious()
+        public virtual async Task<bool> PlayPrevious()
         {
             if (MediaQueue.HasPrevious())
             {
-                MediaPlayer.Play(MediaQueue.PreviousItem);
-                return Task.FromResult(true);
+                await MediaPlayer.Play(MediaQueue.PreviousItem);
+                return true;
             }
 
-            return Task.FromResult(false);
+            return false;
         }
 
         public abstract Task SeekTo(TimeSpan position);
