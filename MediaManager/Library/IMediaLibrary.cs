@@ -1,6 +1,6 @@
 ﻿using MediaManager.Media;
 
-namespace MediaManager
+namespace MediaManager.Library
 {
     public interface IMediaLibrary
     {

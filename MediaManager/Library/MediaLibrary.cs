@@ -1,7 +1,7 @@
 ﻿using System;
 using MediaManager.Media;
 
-namespace MediaManager
+namespace MediaManager.Library
 {
     public class MediaLibrary : IMediaLibrary
     {
