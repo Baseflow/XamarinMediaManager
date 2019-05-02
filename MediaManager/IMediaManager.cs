@@ -20,6 +20,7 @@ namespace MediaManager
         /// </summary>
         Dictionary<string, string> RequestHeaders { get; set; }
 
+        //TODO: See if this is still useful
         //INotificationManager NotificationManager { get; set; }
 
         IMediaExtractor MediaExtractor { get; set; }

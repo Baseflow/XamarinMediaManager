@@ -9,7 +9,7 @@ namespace MediaManager.Queue
 {
     public class MediaQueue : ObservableCollection<IMediaItem>, IMediaQueue
     {
-        private IMediaManager _mediaManager = CrossMediaManager.Current;
+        protected IMediaManager MediaManager = CrossMediaManager.Current;
 
         public event QueueEndedEventHandler QueueEnded;
 
@@ -140,6 +140,12 @@ namespace MediaManager.Queue
 
         internal void OnQueueEnded(object s, QueueEndedEventArgs e) => QueueEnded?.Invoke(s, e);
 
-        internal void OnQueueChanged(object s, QueueChangedEventArgs e) => QueueChanged?.Invoke(s, e);
+        internal void OnQueueChanged(object s, QueueChangedEventArgs e)
+        {
+            if (this.LastOrDefault() == Current)
+                OnQueueEnded(this, new QueueEndedEventArgs());
+
+            QueueChanged?.Invoke(s, e);
+        }
     }
 }

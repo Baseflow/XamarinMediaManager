@@ -27,9 +27,9 @@ namespace MediaManager
 
         public static Task PlayPause(this IMediaManager mediaManager)
         {
-            var status = mediaManager.State;
+            var state = mediaManager.State;
 
-            if (status == MediaPlayerState.Paused || status == MediaPlayerState.Stopped)
+            if (state == MediaPlayerState.Paused || state == MediaPlayerState.Stopped)
                 return mediaManager.Play();
             else
                 return mediaManager.Pause();

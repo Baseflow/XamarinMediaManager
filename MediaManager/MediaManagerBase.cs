@@ -33,20 +33,29 @@ namespace MediaManager
 
                 return _mediaQueue;
             }
-            set
-            {
-                _mediaQueue = value;
-            }
+            set => SetProperty(ref _mediaQueue, value);
         }
-
-        public TimeSpan StepSize { get; set; } = TimeSpan.FromSeconds(10);
-        public Timer Timer { get; } = new Timer(1000);
 
         public abstract IMediaPlayer MediaPlayer { get; set; }
         public abstract IMediaExtractor MediaExtractor { get; set; }
         public abstract IVolumeManager VolumeManager { get; set; }
 
-        public Dictionary<string, string> RequestHeaders { get; set; } = new Dictionary<string, string>();
+        public Timer Timer { get; } = new Timer(1000);
+
+        private TimeSpan _stepSize = TimeSpan.FromSeconds(10);
+        public TimeSpan StepSize
+        {
+            get => _stepSize;
+            set => SetProperty(ref _stepSize, value);
+        }
+
+        private Dictionary<string, string> _requestHeaders = new Dictionary<string, string>();
+        public Dictionary<string, string> RequestHeaders
+        {
+            get => _requestHeaders;
+            set => SetProperty(ref _requestHeaders, value);
+        }
+
         public abstract MediaPlayerState State { get; }
         public abstract TimeSpan Position { get; }
         public abstract TimeSpan Duration { get; }
@@ -142,6 +151,7 @@ namespace MediaManager
         public abstract Task Stop();
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         public event StateChangedEventHandler StateChanged;
         public event PlayingChangedEventHandler PlayingChanged;
         public event BufferingChangedEventHandler BufferingChanged;
@@ -159,12 +169,25 @@ namespace MediaManager
         public void OnStateChanged(object sender, StateChangedEventArgs e) => StateChanged?.Invoke(sender, e);
         public void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
 
-        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(storage, value))
+            {
+                return false;
+            }
+
+            storage = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+
         private TimeSpan PreviousPosition = new TimeSpan();
+
         protected virtual void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (!IsInitialized)

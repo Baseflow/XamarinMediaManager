@@ -86,7 +86,7 @@ namespace MediaManager.Platforms.Android.Media
             }
             set
             {
-                this.MediaManager.RepeatMode = value;
+                MediaManager.RepeatMode = value;
             }
         }
 
@@ -146,7 +146,21 @@ namespace MediaManager.Platforms.Android.Media
                 OnTracksChangedImpl = (trackGroups, trackSelections) =>
                 {
                     MediaManager.MediaQueue.CurrentIndex = Player.CurrentWindowIndex;
+                    MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
                     //TODO: Update metadata of item here
+                },
+                OnPlayerStateChangedImpl = (bool playWhenReady, int playbackState) => {
+                    switch (playbackState)
+                    {
+                        case Com.Google.Android.Exoplayer2.Player.StateEnded:
+                            MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
+                            break;
+                        case Com.Google.Android.Exoplayer2.Player.StateIdle:
+                        case Com.Google.Android.Exoplayer2.Player.StateBuffering:
+                        case Com.Google.Android.Exoplayer2.Player.StateReady:
+                        default:
+                            break;
+                    }
                 }
             };
             Player.AddListener(PlayerEventListener);
@@ -171,10 +185,14 @@ namespace MediaManager.Platforms.Android.Media
 
         public async Task Play(IMediaItem mediaItem)
         {
+            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+
             MediaSource.Clear();
             MediaSource.AddMediaSource(mediaItem.ToMediaSource());
             Player.Prepare(MediaSource);
             await Play();
+
+            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
         public Task Play()

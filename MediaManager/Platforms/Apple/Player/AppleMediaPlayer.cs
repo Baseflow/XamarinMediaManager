@@ -13,7 +13,8 @@ namespace MediaManager.Platforms.Apple.Media
         private NSObject DidFinishPlayingObserver;
         private NSObject ItemFailedToPlayToEndTimeObserver;
         private NSObject ErrorObserver;
-        protected INotifyMediaManager MediaManager = CrossMediaManager.Current as INotifyMediaManager;
+
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
 
         public AppleMediaPlayer()
         {
@@ -24,16 +25,16 @@ namespace MediaManager.Platforms.Apple.Media
         {
             get
             {
-                if (this._player == null)
+                if (_player == null)
                 {
-                    this.Initialize();
+                    Initialize();
                 }
 
-                return this._player;
+                return _player;
             }
             set
             {
-                this._player = value;
+                _player = value;
             }
         }
 
@@ -73,17 +74,20 @@ namespace MediaManager.Platforms.Apple.Media
 
         private void DidErrorOcurred(NSNotification obj)
         {
-            throw new NotImplementedException();
+            var error = Player.CurrentItem.Error;
+            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, new NSErrorException(error), error.LocalizedDescription));
         }
 
         private async void DidFinishPlaying(NSNotification obj)
         {
-            var succesfullNext = await MediaManager.PlayNext();
+            MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
 
-            if (!succesfullNext)
-            {
+            //TODO: Android has its own queue and goes to next. Maybe use native apple queue
+            var succesfullNext = await MediaManager.PlayNext();
+            if(succesfullNext)
+                MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
+            else
                 State = MediaPlayerState.Stopped;
-            }
         }
 
         public Task Pause()
@@ -95,6 +99,8 @@ namespace MediaManager.Platforms.Apple.Media
 
         public Task Play(IMediaItem mediaItem)
         {
+            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+
             var item = mediaItem.GetPlayerItem();
 
             Player.ActionAtItemEnd = AVPlayerActionAtItemEnd.None;
@@ -102,6 +108,7 @@ namespace MediaManager.Platforms.Apple.Media
             Player.Play();
 
             State = MediaPlayerState.Playing;
+            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
             return Task.CompletedTask;
         }
 
