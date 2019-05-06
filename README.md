@@ -199,7 +199,8 @@ CrossMediaManager.Tizen.*
 ## **IMPORTANT**
 **Android:**
 
-* You must request `AccessWifiState`, `Internet`, `MediaContentControl` and `WakeLock` permissions
+* You must request `AccessWifiState`, `Internet`, `ForegroundService` and `WakeLock` permissions
+* Your app must target Android SDK v28 or higher
 
 **iOS:**
 
@@ -211,12 +212,3 @@ CrossMediaManager.Tizen.*
 **Tizen:**
 
 * You must request `http://tizen.org/privilege/internet`, `http://tizen.org/privilege/mediastorage`, and `http://tizen.org/privilege/externalstorage` privileges
-
-## Contributors
-* [martijn00](https://github.com/martijn00)
-* [modplug](https://github.com/modplug)
-* [jmartine2](https://github.com/jmartine2)
-* [SimonSimCity](https://github.com/SimonSimCity)
-* [fela98](https://github.com/fela98)
-* [bubavanhalen](https://github.com/bubavanhalen)
-* [rookiejava](https://github.com/rookiejava)
