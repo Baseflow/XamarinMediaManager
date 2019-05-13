@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using MediaManager.Media;
-using MediaManager.Playback;
-using MediaManager.Queue;
-using MediaManager.Volume;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using MediaManager.Playback;
 
 namespace MediaManager.Forms.Xaml
 {
-
     public class PlayExtension : MediaExtensionBase
     {
+        public PlayExtension()
+            : base()
+        {
+        }
+
         protected override bool CanExecute()
         {
             return MediaManager.State == MediaPlayerState.Paused ||

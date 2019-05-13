@@ -11,7 +11,7 @@ namespace MediaManager.Forms.Xaml
         protected IMediaManager MediaManager { get; }
         private Command _command { get; }
 
-        public MediaExtensionBase()
+        protected MediaExtensionBase()
         {
             MediaManager = CrossMediaManager.Current;
             _command = new Command(Execute, CanExecute);

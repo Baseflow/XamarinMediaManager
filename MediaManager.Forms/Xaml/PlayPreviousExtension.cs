@@ -3,6 +3,7 @@
     public class PlayPreviousExtension : MediaExtensionBase
     {
         public PlayPreviousExtension()
+            : base()
         {
             MediaManager.MediaQueue.CollectionChanged += (s, e) => RaiseCanExecuteChanged();
         }

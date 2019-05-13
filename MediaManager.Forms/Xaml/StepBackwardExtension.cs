@@ -2,6 +2,11 @@
 {
     public class StepBackwardExtension : MediaExtensionBase
     {
+        public StepBackwardExtension()
+            : base()
+        {
+        }
+
         protected override void Execute() =>
             MediaManager.StepBackward();
     }
