@@ -88,7 +88,9 @@ namespace MediaManager.Platforms.Android.MediaSession
             };
             NotificationListener.OnNotificationCancelledImpl = (notificationId) =>
             {
+                //TODO: in new exoplayer use StopForeground(false) or use dismissedByUser
                 StopForeground(true);
+                StopSelf();
             };
 
             MediaManager.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
