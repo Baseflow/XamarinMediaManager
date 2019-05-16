@@ -40,6 +40,18 @@ namespace MediaManager
         public abstract IMediaExtractor MediaExtractor { get; set; }
         public abstract IVolumeManager VolumeManager { get; set; }
 
+        private INotificationManager _notificationManager;
+        public INotificationManager NotificationManager {
+            get
+            {
+                if (_notificationManager == null)
+                    _notificationManager = new NotificationManager();
+
+                return _notificationManager;
+            }
+            set => SetProperty(ref _notificationManager, value);
+        }
+
         public Timer Timer { get; } = new Timer(1000);
 
         private TimeSpan _stepSize = TimeSpan.FromSeconds(10);

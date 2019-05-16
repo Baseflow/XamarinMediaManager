@@ -49,7 +49,9 @@ namespace MediaManager.Platforms.Android.MediaSession
 
             PrepareMediaSession();
             PrepareMediaPlayer();
-            PrepareNotificationManager();
+
+            if(MediaManager.NotificationManager.Enabled)
+                PrepareNotificationManager();
         }
 
         protected virtual void PrepareMediaSession()
@@ -100,17 +102,23 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.SetNotificationListener(NotificationListener);
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
             PlayerNotificationManager.SetPlayer(MediaManager.AndroidMediaPlayer.Player);
+
+            PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.NotificationManager.ShowPlayPauseControls);
+            PlayerNotificationManager.SetUseNavigationActions(MediaManager.NotificationManager.ShowNavigationControls);
         }
 
         private void MediaQueue_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (MediaManager.MediaQueue.Count > 1)
+            if (PlayerNotificationManager != null)
             {
-                PlayerNotificationManager?.SetUseNavigationActions(true);
-            }
-            else
-            {
-                PlayerNotificationManager?.SetUseNavigationActions(false);
+                if (MediaManager.NotificationManager.ShowNavigationControls && MediaManager.MediaQueue.Count > 1)
+                {
+                    PlayerNotificationManager?.SetUseNavigationActions(true);
+                }
+                else
+                {
+                    PlayerNotificationManager?.SetUseNavigationActions(false);
+                }
             }
         }
 

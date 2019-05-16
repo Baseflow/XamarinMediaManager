@@ -4,6 +4,7 @@ using MediaManager.Playback;
 
 namespace MediaManager
 {
+    //TODO: Maybe make methods internal instead and call directly.
     public interface INotifyMediaManager : IMediaManager
     {
         Timer Timer { get; }

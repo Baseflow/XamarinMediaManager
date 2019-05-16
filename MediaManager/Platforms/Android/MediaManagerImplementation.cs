@@ -13,7 +13,6 @@ using MediaManager.Platforms.Android.Playback;
 using MediaManager.Playback;
 using MediaManager.Queue;
 using MediaManager.Volume;
-using NotificationManager = MediaManager.Platforms.Android.NotificationManager;
 
 [assembly: UsesPermission(Android.Manifest.Permission.Internet)]
 [assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)]
@@ -66,21 +65,6 @@ namespace MediaManager
         }
 
         public AndroidMediaPlayer AndroidMediaPlayer => (AndroidMediaPlayer)MediaPlayer;
-
-        private INotificationManager _notificationManager;
-        public virtual INotificationManager NotificationManager
-        {
-            get
-            {
-                if (_notificationManager == null)
-                    _notificationManager = new NotificationManager();
-                return _notificationManager;
-            }
-            set
-            {
-                _notificationManager = value;
-            }
-        }
 
         private IVolumeManager _volumeManager;
         public override IVolumeManager VolumeManager
