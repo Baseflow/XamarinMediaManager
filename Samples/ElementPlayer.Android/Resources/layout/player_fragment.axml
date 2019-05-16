@@ -89,44 +89,56 @@
         android:layout_alignParentBottom="true"
         android:paddingBottom="24dp"
         android:paddingTop="24dp">
-        <ImageButton
-            android:src="@drawable/baseline_repeat_24"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/imageButton_next"
-            android:id="@+id/imageButton_repeat"
-            android:layout_centerVertical="true"
-            local:MvxBind="Click ToggleRepeatCommand"/>
-        <ImageButton
-            android:src="@drawable/baseline_skip_next_24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/imageButton_playpause"
-            android:id="@+id/imageButton_next"
-            android:layout_centerVertical="true"
-            local:MvxBind="Click PlayNextCommand"/>
-        <ImageButton
-            android:src="@drawable/baseline_play_arrow_24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton_playpause"
-            android:layout_centerInParent="true"
-            local:MvxBind="Click PlayPauseCommand"/>
-        <ImageButton
-            android:src="@drawable/baseline_skip_previous_24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/imageButton_playpause"
-            android:id="@+id/imageButton_previous"
-            android:layout_centerVertical="true"
-            local:MvxBind="Click PlayPreviousCommand"/>
-        <ImageButton
-            android:src="@drawable/baseline_shuffle_24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/imageButton_previous"
-            android:id="@+id/imageButton_shuffle"
-            android:layout_centerVertical="true"
-            local:MvxBind="Click ToggleShuffleCommand"/>
+            android:layout_centerInParent="true">
+            <ImageButton
+                android:src="@drawable/baseline_repeat_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/imageButton_next"
+                android:id="@+id/imageButton_repeat"
+                android:layout_centerVertical="true"
+                local:MvxBind="Click ToggleRepeatCommand"/>
+            <ImageButton
+                android:src="@drawable/baseline_skip_previous_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/imageButton_playpause"
+                android:id="@+id/imageButton_previous"
+                android:layout_centerVertical="true"
+                local:MvxBind="Click PlayPreviousCommand"/>
+            <ImageButton
+                android:src="@drawable/baseline_home_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton_playpause"
+                android:layout_centerInParent="true"
+                local:MvxBind="Click StopCommand"/>
+            <ImageButton
+                android:src="@drawable/baseline_play_arrow_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton_playpause"
+                android:layout_centerInParent="true"
+                local:MvxBind="Click PlayPauseCommand"/>
+            <ImageButton
+                android:src="@drawable/baseline_skip_next_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/imageButton_playpause"
+                android:id="@+id/imageButton_next"
+                android:layout_centerVertical="true"
+                local:MvxBind="Click PlayNextCommand"/>
+            <ImageButton
+                android:src="@drawable/baseline_shuffle_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/imageButton_previous"
+                android:id="@+id/imageButton_shuffle"
+                android:layout_centerVertical="true"
+                local:MvxBind="Click ToggleShuffleCommand"/>
+        </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

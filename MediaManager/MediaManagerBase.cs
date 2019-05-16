@@ -168,7 +168,17 @@ namespace MediaManager
         internal void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
         internal void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
         internal void OnPlayingChanged(object sender, PlayingChangedEventArgs e) => PlayingChanged?.Invoke(sender, e);
-        internal void OnStateChanged(object sender, StateChangedEventArgs e) => StateChanged?.Invoke(sender, e);
+
+        private MediaPlayerState internalState = MediaPlayerState.Stopped;
+        internal void OnStateChanged(object sender, StateChangedEventArgs e)
+        {
+            if (e.State != internalState)
+            {
+                internalState = e.State;
+                StateChanged?.Invoke(sender, e);
+            }
+        }
+
         internal void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

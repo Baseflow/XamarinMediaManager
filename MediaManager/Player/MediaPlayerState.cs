@@ -2,11 +2,11 @@
 {
     public enum MediaPlayerState
     {
-        Playing,
-        Paused,
         Stopped,
         Loading,
         Buffering,
+        Playing,
+        Paused,
         Failed
     }
 }

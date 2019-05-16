@@ -7,7 +7,7 @@ namespace MediaManager.Platforms.Android.Playback
     {
         public static MediaPlayerState ToMediaPlayerState(this PlaybackStateCompat playbackState)
         {
-            return ToMediaPlayerState(playbackState.State);
+            return ToMediaPlayerState(playbackState?.State ?? PlaybackStateCompat.StateStopped);
         }
 
         public static MediaPlayerState ToMediaPlayerState(this int playbackState)

@@ -18,11 +18,13 @@ namespace ElementPlayer.Core.ViewModels
             PlayPreviousCommand = new MvxAsyncCommand(MediaManager.PlayPrevious);
             ToggleShuffleCommand = new MvxCommand(MediaManager.ToggleShuffle);
             ToggleRepeatCommand = new MvxCommand(MediaManager.ToggleRepeat);
-            StepForwardCommand = new MvxCommand(async () => await MediaManager.StepForward());
-            StepBackwardCommand = new MvxCommand(async () => await MediaManager.StepBackward());
+            StepForwardCommand = new MvxAsyncCommand(async () => await MediaManager.StepForward());
+            StepBackwardCommand = new MvxAsyncCommand(async () => await MediaManager.StepBackward());
+            StopCommand = new MvxAsyncCommand(async () => await MediaManager.Stop());
 
             MediaManager.PlayingChanged += MediaManager_PlayingChanged;
             MediaManager.PositionChanged += Current_PositionChanged;
+            mediaManager.StateChanged += MediaManager_StateChanged;
         }
 
         public IMediaItem MediaItemToPlay;
@@ -40,6 +42,8 @@ namespace ElementPlayer.Core.ViewModels
         public override string Title => "Player";
 
         public readonly IMediaManager MediaManager;
+
+        public IMvxAsyncCommand StopCommand { get; }
         public IMvxAsyncCommand PlayPauseCommand { get; }
         public IMvxAsyncCommand PlayNextCommand { get; }
         public IMvxAsyncCommand PlayPreviousCommand { get; }
@@ -77,7 +81,7 @@ namespace ElementPlayer.Core.ViewModels
             Log.Debug($"Media item changed, new item title: {e.MediaItem.Title};");
         }
 
-        private void Current_StatusChanged(object sender, StateChangedEventArgs e)
+        private void MediaManager_StateChanged(object sender, StateChangedEventArgs e)
         {
             Log.Debug($"Status changed: {System.Enum.GetName(typeof(MediaPlayerState), e.State)};");
         }
