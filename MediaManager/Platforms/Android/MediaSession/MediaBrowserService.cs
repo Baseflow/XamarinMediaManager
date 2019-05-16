@@ -95,8 +95,6 @@ namespace MediaManager.Platforms.Android.MediaSession
                 StopSelf();
             };
 
-            MediaManager.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
-
             PlayerNotificationManager.SetFastForwardIncrementMs((long)MediaManager.StepSize.TotalMilliseconds);
             PlayerNotificationManager.SetRewindIncrementMs((long)MediaManager.StepSize.TotalMilliseconds);
             PlayerNotificationManager.SetNotificationListener(NotificationListener);
@@ -105,10 +103,14 @@ namespace MediaManager.Platforms.Android.MediaSession
 
             PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.NotificationManager.ShowPlayPauseControls);
             PlayerNotificationManager.SetUseNavigationActions(MediaManager.NotificationManager.ShowNavigationControls);
+
+            MediaManager.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
         }
 
         private void MediaQueue_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            //TODO: Call PlayerNotificationManager.Invalidate(); on exoplayer 2.9.6 when metadata is updated
+
             if (PlayerNotificationManager != null)
             {
                 if (MediaManager.NotificationManager.ShowNavigationControls && MediaManager.MediaQueue.Count > 1)
@@ -135,6 +137,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
             // Service is being killed, so make sure we release our resources
             PlayerNotificationManager.SetPlayer(null);
+            PlayerNotificationManager.Dispose();
             MediaManager.MediaPlayer.Dispose();
             MediaManager.MediaPlayer = null;
             MediaSession.Release();
