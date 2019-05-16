@@ -43,7 +43,7 @@ namespace MediaManager.Platforms.Tizen.Media
             throw new NotImplementedException();
         }
 
-        public Task Seek(TimeSpan position)
+        public Task SeekTo(TimeSpan position)
         {
             throw new NotImplementedException();
         }

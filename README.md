@@ -204,7 +204,9 @@ CrossMediaManager.Tizen.*
 
 **iOS:**
 
-* In order for the audio to contiunue to play in the background you have to add the Audio and Airplay Background mode to your Info.plist
+* In order for the audio to contiunue to play in the background you have to add the Audio, Airplay and Picture in Picture Background mode to your Info.plist
+
+
 * If you want to enable RemoteControl features, you will have to override `UIApplication.RemoteControlReceived(UIEvent)` and forward the event to the `MediaManagerImplementation.MediaRemoteControl.RemoteControlReceived(UIEvent)` method. See the sample application for more details.
 * If you are playing audio from a http resource you have to take care of [ATS](https://developer.xamarin.com/guides/ios/platform_features/introduction_to_ios9/ats/).
 * If you want to display a artwork/cover that is embedded into an MP3 file, make sure that you use ID3 v2.3 (not v2.4).

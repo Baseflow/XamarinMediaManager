@@ -16,7 +16,6 @@ namespace MediaManager.Platforms.Android.MediaSession
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Android;
 
-        protected PendingIntent SessionActivityPendingIntent { get; private set; }
         protected MediaSessionCompat MediaSession { get; set; }
         protected MediaDescriptionAdapter MediaDescriptionAdapter { get; set; }
         protected PlayerNotificationManager PlayerNotificationManager { get; set; }
@@ -39,14 +38,6 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
             base.OnCreate();
 
-            Intent sessionIntent;
-            // Build a PendingIntent that can be used to launch the UI.
-            if (MediaManager.GetContext() is Activity activity)
-                sessionIntent = new Intent(this, activity.GetType());
-            else
-                sessionIntent = PackageManager.GetLaunchIntentForPackage(PackageName);
-            SessionActivityPendingIntent = PendingIntent.GetActivity(this, 0, sessionIntent, 0);
-
             PrepareMediaSession();
             PrepareMediaPlayer();
 
@@ -57,7 +48,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         protected virtual void PrepareMediaSession()
         {
             MediaSession = new MediaSessionCompat(this, nameof(MediaBrowserService));
-            MediaSession.SetSessionActivity(SessionActivityPendingIntent);
+            MediaSession.SetSessionActivity(MediaManager.SessionActivityPendingIntent);
             MediaSession.Active = true;
 
             SessionToken = MediaSession.SessionToken;
@@ -74,7 +65,7 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         protected virtual void PrepareNotificationManager()
         {
-            MediaDescriptionAdapter = new MediaDescriptionAdapter(SessionActivityPendingIntent);
+            MediaDescriptionAdapter = new MediaDescriptionAdapter();
             PlayerNotificationManager = Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.CreateWithNotificationChannel(
                 this,
                 ChannelId,
@@ -104,10 +95,10 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.NotificationManager.ShowPlayPauseControls);
             PlayerNotificationManager.SetUseNavigationActions(MediaManager.NotificationManager.ShowNavigationControls);
 
-            MediaManager.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
+            MediaManager.MediaQueue.QueueChanged += MediaQueue_QueueChanged;
         }
 
-        private void MediaQueue_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void MediaQueue_QueueChanged(object sender, Queue.QueueChangedEventArgs e)
         {
             //TODO: Call PlayerNotificationManager.Invalidate(); on exoplayer 2.9.6 when metadata is updated
 
@@ -136,6 +127,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         public override void OnDestroy()
         {
             // Service is being killed, so make sure we release our resources
+            MediaManager.MediaQueue.QueueChanged -= MediaQueue_QueueChanged;
             PlayerNotificationManager.SetPlayer(null);
             PlayerNotificationManager.Dispose();
             MediaManager.MediaPlayer.Dispose();

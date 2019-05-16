@@ -7,6 +7,7 @@ using AVFoundation;
 using MediaManager.Media;
 using MediaManager.Platforms.Apple;
 using MediaManager.Platforms.Apple.Media;
+using MediaManager.Platforms.Apple.Notifications;
 using MediaManager.Playback;
 using MediaManager.Queue;
 using MediaManager.Volume;
@@ -26,10 +27,7 @@ namespace MediaManager
                 }
                 return _mediaPlayer;
             }
-            set
-            {
-                _mediaPlayer = value;
-            }
+            set => SetProperty(ref _mediaPlayer, value);
         }
 
         public AppleMediaPlayer AppleMediaPlayer => (AppleMediaPlayer)MediaPlayer;
@@ -45,10 +43,7 @@ namespace MediaManager
                 }
                 return _mediaExtractor;
             }
-            set
-            {
-                _mediaExtractor = value;
-            }
+            set => SetProperty(ref _mediaExtractor, value);
         }
 
         private IVolumeManager _volumeManager;
@@ -60,10 +55,20 @@ namespace MediaManager
                     _volumeManager = new VolumeManager(AppleMediaPlayer.Player);
                 return _volumeManager;
             }
-            set
+            set => SetProperty(ref _volumeManager, value);
+        }
+
+        private INotificationManager _notificationManager;
+        public override INotificationManager NotificationManager
+        {
+            get
             {
-                _volumeManager = value;
+                if (_notificationManager == null)
+                    _notificationManager = new NotificationManager();
+
+                return _notificationManager;
             }
+            set => SetProperty(ref _notificationManager, value);
         }
 
         public override MediaPlayerState State
@@ -195,18 +200,17 @@ namespace MediaManager
 
         public override Task Play()
         {
-            this.MediaPlayer.Play();
-            return Task.CompletedTask;
+            return MediaPlayer.Play();
         }
 
         public override Task SeekTo(TimeSpan position)
         {
-            return this.MediaPlayer.Seek(position);
+            return MediaPlayer.SeekTo(position);
         }
 
         public override Task Stop()
         {
-            return this.MediaPlayer.Stop();
+            return MediaPlayer.Stop();
         }
 
         public override RepeatMode RepeatMode

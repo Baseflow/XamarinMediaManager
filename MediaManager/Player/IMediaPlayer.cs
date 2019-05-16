@@ -46,7 +46,7 @@ namespace MediaManager
         /// <summary>
         /// Changes position to the specified number of milliseconds from zero
         /// </summary>
-        Task Seek(TimeSpan position);
+        Task SeekTo(TimeSpan position);
 
         /// <summary>
         /// Reading the current status of the player

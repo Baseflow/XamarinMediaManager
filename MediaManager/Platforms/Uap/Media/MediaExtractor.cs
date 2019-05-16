@@ -9,11 +9,11 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace MediaManager.Platforms.Uap
 {
-    public class UapMediaExtractor : IMediaExtractor
+    public class MediaExtractor : IMediaExtractor
     {
         protected Dictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
 
-        public UapMediaExtractor()
+        public MediaExtractor()
         {
         }
 

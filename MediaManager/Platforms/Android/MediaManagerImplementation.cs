@@ -27,7 +27,32 @@ namespace MediaManager
         {
         }
 
-        public Context Context { get; set; } = Application.Context;
+        private Context _context = Application.Context;
+        public Context Context {
+            get => _context;
+            set => SetProperty(ref _context, value);
+        }
+
+        private PendingIntent _sessionActivityPendingIntent;
+        public PendingIntent SessionActivityPendingIntent
+        {
+            get
+            {
+                if (_sessionActivityPendingIntent == null)
+                {
+                    Intent sessionIntent;
+                    // Build a PendingIntent that can be used to launch the UI.
+                    if (Context is Activity activity)
+                        sessionIntent = new Intent(Context, activity.GetType());
+                    else
+                        sessionIntent = Context.PackageManager.GetLaunchIntentForPackage(Context.PackageName);
+                    _sessionActivityPendingIntent = PendingIntent.GetActivity(Context, 0, sessionIntent, 0);
+
+                }
+                return _sessionActivityPendingIntent;
+            }
+            set => SetProperty(ref _sessionActivityPendingIntent, value);
+        }
 
         public override void Init()
         {
@@ -43,10 +68,7 @@ namespace MediaManager
                     _mediaBrowserManager = new MediaBrowserManager();
                 return _mediaBrowserManager;
             }
-            set
-            {
-                _mediaBrowserManager = value;
-            }
+            set => SetProperty(ref _mediaBrowserManager, value);
         }
 
         private IMediaPlayer _mediaPlayer;
@@ -58,10 +80,7 @@ namespace MediaManager
                     _mediaPlayer = new AndroidMediaPlayer();
                 return _mediaPlayer;
             }
-            set
-            {
-                _mediaPlayer = value;
-            }
+            set => SetProperty(ref _mediaPlayer, value);
         }
 
         public AndroidMediaPlayer AndroidMediaPlayer => (AndroidMediaPlayer)MediaPlayer;
@@ -75,10 +94,7 @@ namespace MediaManager
                     _volumeManager = new VolumeManager(this);
                 return _volumeManager;
             }
-            set
-            {
-                _volumeManager = value;
-            }
+            set => SetProperty(ref _volumeManager, value);
         }
 
         private IMediaExtractor _mediaExtractor;
@@ -90,10 +106,21 @@ namespace MediaManager
                     _mediaExtractor = new MediaExtractor();
                 return _mediaExtractor;
             }
-            set
+            set => SetProperty(ref _mediaExtractor, value);
+        }
+
+
+        private INotificationManager _notificationManager;
+        public override INotificationManager NotificationManager
+        {
+            get
             {
-                _mediaExtractor = value;
+                if (_notificationManager == null)
+                    _notificationManager = new MediaManager.Platforms.Android.Notifications.NotificationManager();
+
+                return _notificationManager;
             }
+            set => SetProperty(ref _notificationManager, value);
         }
 
         public override TimeSpan Position => TimeSpan.FromMilliseconds(MediaBrowserManager?.MediaController.PlaybackState?.Position ?? 0);

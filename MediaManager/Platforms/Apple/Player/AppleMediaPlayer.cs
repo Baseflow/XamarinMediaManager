@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AVFoundation;
 using CoreMedia;
@@ -13,7 +14,7 @@ namespace MediaManager.Platforms.Apple.Media
         private NSObject DidFinishPlayingObserver;
         private NSObject ItemFailedToPlayToEndTimeObserver;
         private NSObject ErrorObserver;
-
+        private NSObject PlaybackStalledObserver;
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
 
         public AppleMediaPlayer()
@@ -61,6 +62,7 @@ namespace MediaManager.Platforms.Apple.Media
             DidFinishPlayingObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification, DidFinishPlaying);
             ItemFailedToPlayToEndTimeObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.ItemFailedToPlayToEndTimeNotification, DidErrorOcurred);
             ErrorObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.NewErrorLogEntryNotification, DidErrorOcurred);
+            PlaybackStalledObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.PlaybackStalledNotification, DidErrorOcurred);
 
             // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
             MediaManager.BufferingChanged += (sender, e) =>
@@ -119,7 +121,7 @@ namespace MediaManager.Platforms.Apple.Media
             return Task.CompletedTask;
         }
 
-        public async Task Seek(TimeSpan position)
+        public async Task SeekTo(TimeSpan position)
         {
             await Player.SeekAsync(CMTime.FromSeconds(position.TotalSeconds, 1));
         }
@@ -132,5 +134,17 @@ namespace MediaManager.Platforms.Apple.Media
         }
 
         public RepeatMode RepeatMode { get; set; } = RepeatMode.Off;
+
+        protected override void Dispose(bool disposing)
+        {
+            NSNotificationCenter.DefaultCenter.RemoveObservers(new List<NSObject>(){
+                DidFinishPlayingObserver,
+                ItemFailedToPlayToEndTimeObserver,
+                ErrorObserver,
+                PlaybackStalledObserver
+            });
+
+            base.Dispose(disposing);
+        }
     }
 }

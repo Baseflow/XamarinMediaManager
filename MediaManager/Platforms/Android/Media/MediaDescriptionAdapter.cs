@@ -11,12 +11,10 @@ namespace MediaManager.Platforms.Android.Media
 {
     public class MediaDescriptionAdapter : Java.Lang.Object, PlayerNotificationManager.IMediaDescriptionAdapter
     {
-        protected PendingIntent SessionActivityPendingIntent;
-        protected IMediaManager MediaManager = CrossMediaManager.Current;
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Android;
 
-        public MediaDescriptionAdapter(PendingIntent sessionActivityPendingIntent)
+        public MediaDescriptionAdapter()
         {
-            SessionActivityPendingIntent = sessionActivityPendingIntent;
         }
 
         protected MediaDescriptionAdapter(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
@@ -25,7 +23,7 @@ namespace MediaManager.Platforms.Android.Media
 
         public PendingIntent CreateCurrentContentIntent(IPlayer player)
         {
-            return SessionActivityPendingIntent;
+            return MediaManager.SessionActivityPendingIntent;
         }
 
         public string GetCurrentContentText(IPlayer player)

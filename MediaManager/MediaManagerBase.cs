@@ -12,7 +12,7 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class MediaManagerBase : IMediaManager, INotifyMediaManager
+    public abstract class MediaManagerBase : IMediaManager
     {
         public MediaManagerBase()
         {
@@ -22,35 +22,6 @@ namespace MediaManager
         }
 
         public bool IsInitialized { get; protected set; }
-
-        private IMediaQueue _mediaQueue;
-        public virtual IMediaQueue MediaQueue
-        {
-            get
-            {
-                if (_mediaQueue == null)
-                    _mediaQueue = new MediaQueue();
-
-                return _mediaQueue;
-            }
-            set => SetProperty(ref _mediaQueue, value);
-        }
-
-        public abstract IMediaPlayer MediaPlayer { get; set; }
-        public abstract IMediaExtractor MediaExtractor { get; set; }
-        public abstract IVolumeManager VolumeManager { get; set; }
-
-        private INotificationManager _notificationManager;
-        public INotificationManager NotificationManager {
-            get
-            {
-                if (_notificationManager == null)
-                    _notificationManager = new NotificationManager();
-
-                return _notificationManager;
-            }
-            set => SetProperty(ref _notificationManager, value);
-        }
 
         public Timer Timer { get; } = new Timer(1000);
 
@@ -68,6 +39,25 @@ namespace MediaManager
             set => SetProperty(ref _requestHeaders, value);
         }
 
+        private IMediaQueue _mediaQueue;
+        public virtual IMediaQueue MediaQueue
+        {
+            get
+            {
+                if (_mediaQueue == null)
+                    _mediaQueue = new MediaQueue();
+
+                return _mediaQueue;
+            }
+            set => SetProperty(ref _mediaQueue, value);
+        }
+
+        public abstract void Init();
+        public abstract IMediaPlayer MediaPlayer { get; set; }
+        public abstract IMediaExtractor MediaExtractor { get; set; }
+        public abstract IVolumeManager VolumeManager { get; set; }
+        public abstract INotificationManager NotificationManager { get; set; }
+
         public abstract MediaPlayerState State { get; }
         public abstract TimeSpan Position { get; }
         public abstract TimeSpan Duration { get; }
@@ -81,6 +71,12 @@ namespace MediaManager
         public abstract Task<IMediaItem> Play(string uri);
         public abstract Task Play(IEnumerable<IMediaItem> items);
         public abstract Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items);
+        public abstract Task<IMediaItem> Play(FileInfo file);
+        public abstract Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo);
+        public abstract Task Play();
+        public abstract Task Stop();
+        public abstract Task SeekTo(TimeSpan position);
+
         public virtual Task<IMediaItem> AddMediaItemsToQueue(IEnumerable<IMediaItem> items, bool clearQueue = false)
         {
             if (clearQueue)
@@ -95,9 +91,7 @@ namespace MediaManager
 
             return Task.FromResult(MediaQueue.Current);
         }
-        public abstract Task<IMediaItem> Play(FileInfo file);
-        public abstract Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo);
-        public abstract Task Play();
+
         public virtual async Task<bool> PlayNext()
         {
             // If we repeat just the single media item, we do that first
@@ -144,8 +138,6 @@ namespace MediaManager
             return false;
         }
 
-        public abstract Task SeekTo(TimeSpan position);
-
         public virtual Task StepBackward()
         {
             var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.TotalSeconds) ? 0 : ((Position.TotalSeconds < StepSize.TotalSeconds) ? 0 : Position.TotalSeconds - StepSize.TotalSeconds)));
@@ -160,8 +152,6 @@ namespace MediaManager
             return seekTo;
         }
 
-        public abstract Task Stop();
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event StateChangedEventHandler StateChanged;
@@ -173,13 +163,13 @@ namespace MediaManager
         public event MediaItemChangedEventHandler MediaItemChanged;
         public event MediaItemFailedEventHandler MediaItemFailed;
 
-        public void OnBufferingChanged(object sender, BufferingChangedEventArgs e) => BufferingChanged?.Invoke(sender, e);
-        public void OnMediaItemChanged(object sender, MediaItemEventArgs e) => MediaItemChanged?.Invoke(sender, e);
-        public void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
-        public void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
-        public void OnPlayingChanged(object sender, PlayingChangedEventArgs e) => PlayingChanged?.Invoke(sender, e);
-        public void OnStateChanged(object sender, StateChangedEventArgs e) => StateChanged?.Invoke(sender, e);
-        public void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
+        internal void OnBufferingChanged(object sender, BufferingChangedEventArgs e) => BufferingChanged?.Invoke(sender, e);
+        internal void OnMediaItemChanged(object sender, MediaItemEventArgs e) => MediaItemChanged?.Invoke(sender, e);
+        internal void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
+        internal void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
+        internal void OnPlayingChanged(object sender, PlayingChangedEventArgs e) => PlayingChanged?.Invoke(sender, e);
+        internal void OnStateChanged(object sender, StateChangedEventArgs e) => StateChanged?.Invoke(sender, e);
+        internal void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -219,7 +209,5 @@ namespace MediaManager
                 OnBufferingChanged(this, new BufferingChangedEventArgs(Buffered));
             }
         }
-
-        public abstract void Init();
     }
 }

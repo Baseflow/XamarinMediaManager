@@ -35,6 +35,17 @@ namespace MediaManager.Platforms.Android.Media
 
         protected Context Context => CrossMediaManager.Android.Context;
 
+        public MediaPlayerState State
+        {
+            get
+            {
+                if (MediaSession == null || !MediaSession.Active)
+                    return MediaPlayerState.Stopped;
+
+                return MediaSession.Controller.PlaybackState.ToMediaPlayerState();
+            }
+        }
+
         protected string UserAgent { get; set; }
         protected DefaultHttpDataSourceFactory HttpDataSourceFactory { get; set; }
         public static DefaultDataSourceFactory DataSourceFactory { get; set; }
@@ -60,17 +71,6 @@ namespace MediaManager.Platforms.Android.Media
         public PlayerView PlayerView { get; set; }
 
         public MediaSessionCompat MediaSession { get; set; }
-
-        public MediaPlayerState State
-        {
-            get
-            {
-                if (MediaSession == null || !MediaSession.Active)
-                    return MediaPlayerState.Stopped;
-
-                return MediaSession.Controller.PlaybackState.ToMediaPlayerState();
-            }
-        }
 
         public TimeSpan Position => TimeSpan.FromTicks(Player.CurrentPosition);
 
@@ -145,9 +145,13 @@ namespace MediaManager.Platforms.Android.Media
                 },
                 OnTracksChangedImpl = (trackGroups, trackSelections) =>
                 {
+                    var mediaItem = MediaManager.MediaQueue.Current;
+                    BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+
                     MediaManager.MediaQueue.CurrentIndex = Player.CurrentWindowIndex;
-                    MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
-                    //TODO: Update metadata of item here
+                    MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(mediaItem));
+                    
+                    AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
                 },
                 OnPlayerStateChangedImpl = (bool playWhenReady, int playbackState) => {
                     switch (playbackState)
@@ -197,30 +201,43 @@ namespace MediaManager.Platforms.Android.Media
 
         public Task Play()
         {
+            if (Player == null)
+                return Task.CompletedTask;
+
             Player.PlayWhenReady = true;
             return Task.CompletedTask;
         }
 
         public Task Pause()
         {
+            if (Player == null)
+                return Task.CompletedTask;
+
             Player.Stop();
             return Task.CompletedTask;
         }
 
-        public Task Seek(TimeSpan position)
+        public Task SeekTo(TimeSpan position)
         {
+            if (Player == null)
+                return Task.CompletedTask;
+
             Player.SeekTo(position.Milliseconds);
             return Task.CompletedTask;
         }
 
         public Task Stop()
         {
+            if (Player == null)
+                return Task.CompletedTask;
+
             Player.Stop();
             return Task.CompletedTask;
         }
 
         protected override void Dispose(bool disposing)
         {
+            Player.RemoveListener(PlayerEventListener);
             Player.Release();
             Player = null;
 

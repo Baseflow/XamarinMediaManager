@@ -26,6 +26,7 @@ namespace MediaManager
         public override float Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override RepeatMode RepeatMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override ShuffleMode ShuffleMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override INotificationManager NotificationManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public override void Init()
         {

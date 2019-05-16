@@ -146,6 +146,7 @@ namespace MediaManager.Queue
                 OnQueueEnded(this, new QueueEndedEventArgs());
 
             QueueChanged?.Invoke(s, e);
+            MediaManager.NotificationManager.UpdateNotification();
         }
     }
 }
