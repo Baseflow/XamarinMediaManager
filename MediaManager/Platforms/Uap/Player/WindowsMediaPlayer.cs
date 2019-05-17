@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Platforms.Uap.Player;
+using MediaManager.Platforms.Uap.Video;
 using MediaManager.Playback;
+using MediaManager.Video;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
@@ -10,7 +12,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace MediaManager.Platforms.Uap.Media
 {
-    public class WindowsMediaPlayer : IMediaPlayer<MediaPlayer, MediaPlayerElement>
+    public class WindowsMediaPlayer : IMediaPlayer<MediaPlayer, VideoView>
     {
         public WindowsMediaPlayer()
         {
@@ -19,7 +21,9 @@ namespace MediaManager.Platforms.Uap.Media
 
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Windows;
 
-        public MediaPlayerElement PlayerView { get; set; }
+        public VideoView PlayerView { get; set; }
+        public IVideoView VideoView => PlayerView;
+
         public MediaPlayer Player { get; set; }
 
         public Playback.MediaPlayerState State => Player.PlaybackSession.PlaybackState.ToMediaPlayerState();

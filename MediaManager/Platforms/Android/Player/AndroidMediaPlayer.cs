@@ -15,11 +15,13 @@ using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
 using MediaManager.Media;
 using MediaManager.Platforms.Android.Playback;
+using MediaManager.Platforms.Android.Video;
 using MediaManager.Playback;
+using MediaManager.Video;
 
 namespace MediaManager.Platforms.Android.Media
 {
-    public class AndroidMediaPlayer : Java.Lang.Object, IMediaPlayer<SimpleExoPlayer, PlayerView>
+    public class AndroidMediaPlayer : Java.Lang.Object, IMediaPlayer<SimpleExoPlayer, VideoView>
     {
         public AndroidMediaPlayer()
         {
@@ -68,7 +70,8 @@ namespace MediaManager.Platforms.Android.Media
         protected RatingCallback RatingCallback { get; set; }
 
         public SimpleExoPlayer Player { get; set; }
-        public PlayerView PlayerView { get; set; }
+        public VideoView PlayerView { get; set; }
+        public IVideoView VideoView => PlayerView;
 
         public MediaSessionCompat MediaSession { get; set; }
 

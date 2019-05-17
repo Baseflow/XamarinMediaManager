@@ -18,6 +18,7 @@ namespace MediaManager.Platforms.Ios.Video
             set
             {
                 _playerViewController = value;
+                _playerViewController.View.Frame = Frame;
                 AddSubview(value.View);
             }
         }

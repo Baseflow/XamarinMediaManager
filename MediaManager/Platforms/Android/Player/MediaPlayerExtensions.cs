@@ -9,14 +9,14 @@ namespace MediaManager
     {
         public static void SetPlayerView(this IMediaPlayer mediaPlayer, VideoView videoView)
         {
-            if (mediaPlayer is IMediaPlayer<SimpleExoPlayer, PlayerView> videoPlayer)
+            if (mediaPlayer is IMediaPlayer<SimpleExoPlayer, VideoView> videoPlayer)
             {
                 videoPlayer.PlayerView = videoView;
                 videoView.RequestFocus();
                 videoView.Player = videoPlayer.Player;
             }
             else
-                throw new ArgumentException("MediaPlayer needs to be of type IMediaPlayer<SimpleExoPlayer> to use this extension", nameof(mediaPlayer));
+                throw new ArgumentException($"MediaPlayer needs to be of type {nameof(IMediaPlayer<SimpleExoPlayer, VideoView>)} to use this extension", nameof(IMediaPlayer<SimpleExoPlayer, VideoView>));
         }
     }
 }

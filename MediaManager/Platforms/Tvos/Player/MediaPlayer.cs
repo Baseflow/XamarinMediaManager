@@ -3,13 +3,15 @@ using AVFoundation;
 using AVKit;
 using Foundation;
 using MediaManager.Platforms.Apple.Media;
+using MediaManager.Platforms.Tvos.Video;
+using MediaManager.Video;
 
 namespace MediaManager.Platforms.Tvos.Media
 {
-    public class MediaPlayer : AppleMediaPlayer
+    public class MediaPlayer : AppleMediaPlayer, IMediaPlayer<AVPlayer, VideoView>
     {
-        //TODO: Make possible to hook into
-        AVPlayerViewController aVPlayerViewController;
+        public VideoView PlayerView { get; set; }
+        public override IVideoView VideoView => PlayerView;
 
         public override void Initialize()
         {

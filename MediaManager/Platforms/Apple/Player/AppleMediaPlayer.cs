@@ -6,6 +6,7 @@ using CoreMedia;
 using Foundation;
 using MediaManager.Media;
 using MediaManager.Playback;
+using MediaManager.Video;
 
 namespace MediaManager.Platforms.Apple.Media
 {
@@ -20,6 +21,8 @@ namespace MediaManager.Platforms.Apple.Media
         public AppleMediaPlayer()
         {
         }
+
+        public abstract IVideoView VideoView { get; }
 
         private AVPlayer _player;
         public AVPlayer Player

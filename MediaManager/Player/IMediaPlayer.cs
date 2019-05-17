@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Playback;
+using MediaManager.Video;
 
 namespace MediaManager
 {
@@ -9,7 +10,7 @@ namespace MediaManager
 
     public delegate void AfterPlayingEventHandler(object sender, MediaPlayerEventArgs e);
 
-    public interface IMediaPlayer<TPlayer, TPlayerView> : IMediaPlayer<TPlayer> where TPlayer : class where TPlayerView : class
+    public interface IMediaPlayer<TPlayer, TPlayerView> : IMediaPlayer<TPlayer> where TPlayer : class where TPlayerView : class, IVideoView
     {
         TPlayerView PlayerView { get; set; }
     }
@@ -21,6 +22,8 @@ namespace MediaManager
 
     public interface IMediaPlayer : IDisposable
     {
+        IVideoView VideoView { get; }
+
         void Initialize();
 
         /// <summary>

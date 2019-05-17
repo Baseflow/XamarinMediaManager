@@ -42,7 +42,7 @@ namespace MediaManager.Forms
 
         private static void OnAspectModeChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
-            CrossMediaManager.Current.MediaPlayer.GetPlayerView().VideoAspect = ((VideoAspectMode)newvalue);
+            CrossMediaManager.Current.MediaPlayer.VideoView.VideoAspect = ((VideoAspectMode)newvalue);
         }
 
         private static void OnSourceChanged(BindableObject bindable, object oldvalue, object newvalue)
