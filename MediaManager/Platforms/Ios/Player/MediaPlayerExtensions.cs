@@ -10,10 +10,9 @@ namespace MediaManager
         {
             if (mediaPlayer is IMediaPlayer<AVPlayer, VideoView> videoPlayer)
             {
-                /*var layer = AVPlayerLayer.FromPlayer(videoPlayer.Player);
-                layer.Frame = videoView.Frame;
-                videoView.PlayerLayer = layer;*/
-                videoView.Player = videoPlayer.Player;
+                var playerViewController = new AVKit.AVPlayerViewController();
+                playerViewController.Player = videoPlayer.Player;
+                videoView.PlayerViewController = playerViewController;
                 videoPlayer.PlayerView = videoView;
             }
             else

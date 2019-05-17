@@ -9,8 +9,19 @@ using UIKit;
 namespace MediaManager.Platforms.Ios.Video
 {
     [DesignTimeVisible(true)]
-    public partial class VideoView : AVPlayerViewController, IVideoView
+    public partial class VideoView : UIView, IVideoView
     {
+        private AVPlayerViewController _playerViewController;
+        public AVPlayerViewController PlayerViewController
+        {
+            get => _playerViewController;
+            set
+            {
+                _playerViewController = value;
+                AddSubview(value.View);
+            }
+        }
+
         public VideoView()
         {
         }
@@ -32,7 +43,7 @@ namespace MediaManager.Platforms.Ios.Video
         {
             get
             {
-                switch (VideoGravity)
+                switch (PlayerViewController.VideoGravity)
                 {
                     case AVLayerVideoGravity.ResizeAspect:
                         return VideoAspectMode.None;
@@ -50,24 +61,24 @@ namespace MediaManager.Platforms.Ios.Video
                 switch (value)
                 {
                     case VideoAspectMode.None:
-                        VideoGravity = AVLayerVideoGravity.ResizeAspect;
+                        PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspect;
                         break;
                     case VideoAspectMode.AspectFit:
-                        VideoGravity = AVLayerVideoGravity.Resize;
+                        PlayerViewController.VideoGravity = AVLayerVideoGravity.Resize;
                         break;
                     case VideoAspectMode.AspectFill:
-                        VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
+                        PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
                         break;
                     default:
-                        VideoGravity = AVLayerVideoGravity.ResizeAspect;
+                        PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspect;
                         break;
                 }
             }
         }
 
         public bool ShowControls {
-            get => ShowsPlaybackControls;
-            set => ShowsPlaybackControls = value;
+            get => PlayerViewController.ShowsPlaybackControls;
+            set => PlayerViewController.ShowsPlaybackControls = value;
         }
     }
 }

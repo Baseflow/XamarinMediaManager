@@ -28,7 +28,7 @@ namespace MediaManager.Forms.Platforms.iOS
                 {
                     _videoView = new MediaManager.Platforms.Ios.Video.VideoView();
 
-                    SetNativeControl(_videoView.View);
+                    SetNativeControl(_videoView);
                     CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
                 }
             }
