@@ -5,6 +5,8 @@ using Foundation;
 using MediaManager.Platforms.Apple.Media;
 using MediaManager.Platforms.Ios.Video;
 using MediaManager.Video;
+using MediaPlayer;
+using UIKit;
 
 namespace MediaManager.Platforms.Ios.Media
 {
@@ -28,10 +30,29 @@ namespace MediaManager.Platforms.Ios.Media
             catch
             {
             }
+
+            InvokeOnMainThread(() => {
+                UIApplication.SharedApplication.BeginReceivingRemoteControlEvents();
+            });
+
+            var commandCenter = MPRemoteCommandCenter.Shared;
+            commandCenter.TogglePlayPauseCommand.Enabled = true;
+            commandCenter.TogglePlayPauseCommand.AddTarget(TogglePlayPauseCommand);
+        }
+
+        private MPRemoteCommandHandlerStatus TogglePlayPauseCommand(MPRemoteCommandEvent arg)
+        {
+            MediaManager.PlayPause();
+            return MPRemoteCommandHandlerStatus.Success;
         }
 
         protected override void Dispose(bool disposing)
         {
+            InvokeOnMainThread(() =>
+            {
+                UIApplication.SharedApplication.EndReceivingRemoteControlEvents();
+            });
+
             var audioSession = AVAudioSession.SharedInstance();
             audioSession.SetActive(false);
             base.Dispose(disposing);
