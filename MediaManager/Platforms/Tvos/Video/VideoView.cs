@@ -6,7 +6,7 @@ using Foundation;
 using MediaManager.Video;
 using UIKit;
 
-namespace MediaManager.Platforms.Ios.Video
+namespace MediaManager.Platforms.Tvos.Video
 {
     [DesignTimeVisible(true)]
     public partial class VideoView : AVPlayerViewController, IVideoView
@@ -65,7 +65,8 @@ namespace MediaManager.Platforms.Ios.Video
             }
         }
 
-        public bool ShowControls {
+        public bool ShowControls
+        {
             get => ShowsPlaybackControls;
             set => ShowsPlaybackControls = value;
         }

@@ -52,7 +52,7 @@ namespace MediaManager
             get
             {
                 if (_volumeManager == null)
-                    _volumeManager = new VolumeManager(AppleMediaPlayer.Player);
+                    _volumeManager = new VolumeManager();
                 return _volumeManager;
             }
             set => SetProperty(ref _volumeManager, value);
@@ -83,7 +83,7 @@ namespace MediaManager
         {
             get
             {
-                if (AppleMediaPlayer.Player.CurrentItem == null)
+                if (AppleMediaPlayer?.Player?.CurrentItem == null)
                 {
                     return TimeSpan.Zero;
                 }
@@ -95,7 +95,7 @@ namespace MediaManager
         {
             get
             {
-                if (AppleMediaPlayer.Player.CurrentItem == null)
+                if (AppleMediaPlayer?.Player?.CurrentItem == null)
                 {
                     return TimeSpan.Zero;
                 }
@@ -112,7 +112,7 @@ namespace MediaManager
             get
             {
                 var buffered = TimeSpan.Zero;
-                if (AppleMediaPlayer.Player.CurrentItem != null)
+                if (AppleMediaPlayer?.Player?.CurrentItem != null)
                 {
                     buffered =
                         TimeSpan.FromSeconds(
@@ -128,13 +128,13 @@ namespace MediaManager
         {
             get
             {
-                if (AppleMediaPlayer.Player != null)
+                if (AppleMediaPlayer?.Player != null)
                     return AppleMediaPlayer.Player.Rate;
                 return 0.0f;
             }
             set
             {
-                if (AppleMediaPlayer.Player != null)
+                if (AppleMediaPlayer?.Player != null)
                     AppleMediaPlayer.Player.Rate = value;
             }
         }
@@ -147,8 +147,7 @@ namespace MediaManager
 
         public override Task Pause()
         {
-            this.MediaPlayer.Pause();
-            return Task.CompletedTask;
+            return MediaPlayer.Pause();
         }
 
         public override async Task Play(IMediaItem mediaItem)
@@ -156,7 +155,6 @@ namespace MediaManager
             var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
 
             await MediaPlayer.Play(mediaItemToPlay);
-            return;
         }
 
         public override async Task<IMediaItem> Play(string uri)
@@ -177,7 +175,7 @@ namespace MediaManager
 
         public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
         {
-            List<IMediaItem> mediaItems = new List<IMediaItem>();
+            var mediaItems = new List<IMediaItem>();
             foreach (var uri in items)
             {
                 mediaItems.Add(await MediaExtractor.CreateMediaItem(uri));

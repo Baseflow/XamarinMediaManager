@@ -6,10 +6,11 @@ using MediaManager.Playback;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
+using Windows.UI.Xaml.Controls;
 
 namespace MediaManager.Platforms.Uap.Media
 {
-    public class WindowsMediaPlayer : IMediaPlayer<MediaPlayer, MediaPlayerSurface>
+    public class WindowsMediaPlayer : IMediaPlayer<MediaPlayer, MediaPlayerElement>
     {
         public WindowsMediaPlayer()
         {
@@ -18,7 +19,7 @@ namespace MediaManager.Platforms.Uap.Media
 
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Windows;
 
-        public MediaPlayerSurface PlayerView { get; set; }
+        public MediaPlayerElement PlayerView { get; set; }
         public MediaPlayer Player { get; set; }
 
         public Playback.MediaPlayerState State => Player.PlaybackSession.PlaybackState.ToMediaPlayerState();

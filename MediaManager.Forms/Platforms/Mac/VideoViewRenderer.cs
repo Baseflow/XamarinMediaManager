@@ -8,9 +8,9 @@ using Xamarin.Forms.Platform.MacOS;
 namespace MediaManager.Forms.Platforms.Mac
 {
     [Preserve(AllMembers = true)]
-    public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Mac.Video.VideoSurface>
+    public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Mac.Video.VideoView>
     {
-        private MediaManager.Platforms.Mac.Video.VideoSurface _videoView;
+        private MediaManager.Platforms.Mac.Video.VideoView _videoView;
 
         public static void Init()
         {
@@ -20,11 +20,14 @@ namespace MediaManager.Forms.Platforms.Mac
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> e)
         {
             base.OnElementChanged(e);
-            if (Control == null)
+            if (e.NewElement != null)
             {
-                _videoView = new MediaManager.Platforms.Mac.Video.VideoSurface(Control);
-                SetNativeControl(_videoView);
-                CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
+                if (Control == null)
+                {
+                    _videoView = new MediaManager.Platforms.Mac.Video.VideoView();
+                    SetNativeControl(_videoView);
+                    CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
+                }
             }
         }
     }

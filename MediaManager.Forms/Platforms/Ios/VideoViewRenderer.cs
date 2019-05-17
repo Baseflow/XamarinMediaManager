@@ -1,6 +1,7 @@
 ﻿using System;
 using Foundation;
 using MediaManager.Forms.Platforms.iOS;
+using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
@@ -8,7 +9,7 @@ using Xamarin.Forms.Platform.iOS;
 namespace MediaManager.Forms.Platforms.iOS
 {
     [Preserve(AllMembers = true)]
-    public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Ios.Video.VideoView>
+    public class VideoViewRenderer : ViewRenderer<VideoView, UIView>
     {
         private MediaManager.Platforms.Ios.Video.VideoView _videoView;
 
@@ -20,11 +21,16 @@ namespace MediaManager.Forms.Platforms.iOS
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> e)
         {
             base.OnElementChanged(e);
-            if (Control == null)
+
+            if (e.NewElement != null)
             {
-                _videoView = new MediaManager.Platforms.Ios.Video.VideoView();
-                SetNativeControl(_videoView);
-                CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
+                if (Control == null)
+                {
+                    _videoView = new MediaManager.Platforms.Ios.Video.VideoView();
+
+                    SetNativeControl(_videoView.View);
+                    CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
+                }
             }
         }
     }

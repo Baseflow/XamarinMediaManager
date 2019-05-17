@@ -24,11 +24,14 @@ namespace MediaManager.Forms.Platforms.Android
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> e)
         {
             base.OnElementChanged(e);
-            if (Control == null)
+            if (e.NewElement != null)
             {
-                _videoView = new MediaManager.Platforms.Android.Video.VideoView(Context);
-                SetNativeControl(_videoView);
-                CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
+                if (Control == null)
+                {
+                    _videoView = new MediaManager.Platforms.Android.Video.VideoView(Context);
+                    SetNativeControl(_videoView);
+                    CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
+                }
             }
         }
 

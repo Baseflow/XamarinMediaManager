@@ -65,5 +65,10 @@ namespace MediaManager.Platforms.Android.Video
                 }
             }
         }
+
+        public bool ShowControls {
+            get => UseController;
+            set => UseController = value;
+        }
     }
 }

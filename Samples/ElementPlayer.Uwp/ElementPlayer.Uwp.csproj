@@ -152,7 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.8</Version>
+      <Version>6.1.9</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross">
       <Version>6.2.3</Version>

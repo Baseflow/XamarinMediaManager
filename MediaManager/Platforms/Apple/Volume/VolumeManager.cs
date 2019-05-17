@@ -5,18 +5,18 @@ namespace MediaManager.Platforms.Apple
 {
     public class VolumeManager : IVolumeManager
     {
-        protected AVPlayer _player;
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
+        protected AVPlayer Player => MediaManager.AppleMediaPlayer.Player;
 
-        public VolumeManager(AVPlayer player)
+        public VolumeManager()
         {
-            _player = player;
         }
 
         public int CurrentVolume
         {
             get
             {
-                int.TryParse((_player.Volume * 100).ToString(), out var vol);
+                int.TryParse((Player.Volume * 100).ToString(), out var vol);
                 return vol;
             }
             set
@@ -28,7 +28,7 @@ namespace MediaManager.Platforms.Apple
 
                 float vol = value;
                 if (value > 0) float.TryParse((value / 100.0).ToString(), out vol);
-                _player.Volume = vol;
+                Player.Volume = vol;
 
                 VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(value, Muted));
             }
@@ -49,11 +49,11 @@ namespace MediaManager.Platforms.Apple
 
         public bool Muted
         {
-            get => _player?.Muted ?? false;
+            get => Player?.Muted ?? false;
             set
             {
-                _player.Muted = value;
-                int.TryParse((_player.Volume * 100).ToString(), out var vol);
+                Player.Muted = value;
+                int.TryParse((Player.Volume * 100).ToString(), out var vol);
                 VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(vol, value));
             }
         }
