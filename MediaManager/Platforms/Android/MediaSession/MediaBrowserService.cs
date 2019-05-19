@@ -39,7 +39,6 @@ namespace MediaManager.Platforms.Android.MediaSession
             base.OnCreate();
 
             PrepareMediaSession();
-            PrepareMediaPlayer();
 
             if(MediaManager.NotificationManager.Enabled)
                 PrepareNotificationManager();
@@ -55,12 +54,8 @@ namespace MediaManager.Platforms.Android.MediaSession
 
             MediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
                                    MediaSessionCompat.FlagHandlesTransportControls);
-        }
 
-        protected virtual void PrepareMediaPlayer()
-        {
             MediaManager.AndroidMediaPlayer.MediaSession = MediaSession;
-            MediaManager.MediaPlayer.Initialize();
         }
 
         protected virtual void PrepareNotificationManager()

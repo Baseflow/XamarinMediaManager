@@ -69,7 +69,19 @@ namespace MediaManager.Platforms.Android.Media
         protected PlayerEventListener PlayerEventListener { get; set; }
         protected RatingCallback RatingCallback { get; set; }
 
-        public SimpleExoPlayer Player { get; set; }
+        private SimpleExoPlayer _player;
+        public SimpleExoPlayer Player
+        {
+            get
+            {
+                if (_player == null)
+                    Init();
+                return _player;
+            }
+
+            set => _player = value;
+        }
+
         public VideoView PlayerView { get; set; }
         public IVideoView VideoView => PlayerView;
 
@@ -96,7 +108,7 @@ namespace MediaManager.Platforms.Android.Media
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;
 
-        public virtual void Initialize()
+        protected virtual void Init()
         {
             if (Player != null)
                 return;
@@ -153,10 +165,11 @@ namespace MediaManager.Platforms.Android.Media
 
                     MediaManager.MediaQueue.CurrentIndex = Player.CurrentWindowIndex;
                     MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(mediaItem));
-                    
+
                     AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
                 },
-                OnPlayerStateChangedImpl = (bool playWhenReady, int playbackState) => {
+                OnPlayerStateChangedImpl = (bool playWhenReady, int playbackState) =>
+                {
                     switch (playbackState)
                     {
                         case Com.Google.Android.Exoplayer2.Player.StateEnded:

@@ -29,6 +29,8 @@ namespace MediaManager.Platforms.Apple.Media
         {
             get
             {
+                if (_player == null)
+                    Init();
                 return _player;
             }
             set
@@ -51,7 +53,7 @@ namespace MediaManager.Platforms.Apple.Media
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;
 
-        public virtual void Initialize()
+        protected virtual void Init()
         {
             if (Player != null)
                 return;

@@ -141,7 +141,6 @@ namespace MediaManager
 
         public override void Init()
         {
-            MediaPlayer.Initialize();
             IsInitialized = true;
         }
 

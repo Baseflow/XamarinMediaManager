@@ -24,7 +24,7 @@ namespace MediaManager
     {
         IVideoView VideoView { get; }
 
-        void Initialize();
+        //void Initialize();
 
         /// <summary>
         /// Adds MediaFile to the Queue and starts playing
