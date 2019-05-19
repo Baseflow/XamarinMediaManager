@@ -55,9 +55,6 @@ namespace MediaManager.Platforms.Apple.Media
 
         protected virtual void Init()
         {
-            if (Player != null)
-                return;
-
             Player = new AVPlayer();
 
             _state = MediaPlayerState.Stopped;

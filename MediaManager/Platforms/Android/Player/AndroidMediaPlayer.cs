@@ -110,9 +110,6 @@ namespace MediaManager.Platforms.Android.Media
 
         protected virtual void Init()
         {
-            if (Player != null)
-                return;
-
             if (MediaSession == null)
                 throw new ArgumentNullException(nameof(MediaSession));
 
