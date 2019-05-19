@@ -22,8 +22,7 @@ namespace MediaManager.Platforms.Ios.Media
             try
             {
                 audioSession.SetCategory(AVAudioSession.CategoryPlayback);
-                NSError activationError = null;
-                audioSession.SetActive(true, out activationError);
+                audioSession.SetActive(true, out NSError activationError);
                 if (activationError != null)
                     Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
             }

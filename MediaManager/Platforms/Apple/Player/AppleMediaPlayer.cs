@@ -29,11 +29,6 @@ namespace MediaManager.Platforms.Apple.Media
         {
             get
             {
-                if (_player == null)
-                {
-                    Initialize();
-                }
-
                 return _player;
             }
             set
@@ -58,6 +53,9 @@ namespace MediaManager.Platforms.Apple.Media
 
         public virtual void Initialize()
         {
+            if (Player != null)
+                return;
+
             Player = new AVPlayer();
 
             _state = MediaPlayerState.Stopped;

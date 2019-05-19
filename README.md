@@ -204,7 +204,7 @@ CrossMediaManager.Tizen.*
 
 **iOS:**
 
-* In order for the audio to contiunue to play in the background you have to add the Audio, Airplay and Picture in Picture Background mode to your Info.plist
+* In order for the audio to contiunue to play in the background you have to add the 'Audio, Airplay and Picture in Picture Background mode' and 'Background fetch' to your Info.plist
 
 
 * If you want to enable RemoteControl features, you will have to override `UIApplication.RemoteControlReceived(UIEvent)` and forward the event to the `MediaManagerImplementation.MediaRemoteControl.RemoteControlReceived(UIEvent)` method. See the sample application for more details.
