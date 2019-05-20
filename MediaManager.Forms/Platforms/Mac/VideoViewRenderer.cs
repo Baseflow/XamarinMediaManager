@@ -24,9 +24,10 @@ namespace MediaManager.Forms.Platforms.Mac
             {
                 if (Control == null)
                 {
+                    //TODO: maybe pass in the NSView to the videoview here
                     _videoView = new MediaManager.Platforms.Mac.Video.VideoView();
-                    SetNativeControl(_videoView);
                     CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
+                    SetNativeControl(_videoView);
                 }
             }
         }

@@ -26,10 +26,10 @@ namespace MediaManager.Forms.Platforms.iOS
             {
                 if (Control == null)
                 {
+                    //TODO: maybe pass in the UIView to the videoview here
                     _videoView = new MediaManager.Platforms.Ios.Video.VideoView();
-
-                    SetNativeControl(_videoView);
                     CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
+                    SetNativeControl(_videoView);
                 }
             }
         }

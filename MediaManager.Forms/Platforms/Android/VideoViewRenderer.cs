@@ -29,18 +29,21 @@ namespace MediaManager.Forms.Platforms.Android
                 if (Control == null)
                 {
                     _videoView = new MediaManager.Platforms.Android.Video.VideoView(Context);
-                    SetNativeControl(_videoView);
                     CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
+                    SetNativeControl(_videoView);
                 }
             }
         }
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            var p = _videoView.LayoutParameters;
-            p.Height = heightMeasureSpec;
-            p.Width = widthMeasureSpec;
-            _videoView.LayoutParameters = p;
+            if (_videoView != null)
+            {
+                var p = _videoView.LayoutParameters;
+                p.Height = heightMeasureSpec;
+                p.Width = widthMeasureSpec;
+                _videoView.LayoutParameters = p;
+            }
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }

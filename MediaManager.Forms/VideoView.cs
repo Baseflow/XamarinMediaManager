@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MediaManager.Media;
 using MediaManager.Video;
 using Xamarin.Forms;
@@ -7,6 +8,8 @@ namespace MediaManager.Forms
 {
     public class VideoView : View
     {
+        protected static IVideoView PlayerView => CrossMediaManager.Current.MediaPlayer?.VideoView;
+
         /// <summary>
         ///     Sets the aspect mode of the current video view
         /// </summary>
@@ -22,15 +25,24 @@ namespace MediaManager.Forms
         /// </summary>
         public static readonly BindableProperty SourceProperty =
             BindableProperty.Create(nameof(VideoView),
-                typeof(string),
+                typeof(object),
                 typeof(VideoView),
                 "",
                 propertyChanged: OnSourceChanged);
 
-        //TODO: change to object so it can also take IMediaItem
-        public string Source
+        /// <summary>
+        ///     Sets the aspect mode of the current video view
+        /// </summary>
+        public static readonly BindableProperty ShowControlsProperty =
+            BindableProperty.Create(nameof(VideoView),
+                typeof(bool),
+                typeof(VideoView),
+                true,
+                propertyChanged: OnShowControlsChanged);
+
+        public object Source
         {
-            get { return (string)GetValue(SourceProperty); }
+            get { return (object)GetValue(SourceProperty); }
             set { SetValue(SourceProperty, value); }
         }
 
@@ -40,14 +52,27 @@ namespace MediaManager.Forms
             set { SetValue(AspectModeProperty, value); }
         }
 
-        private static void OnAspectModeChanged(BindableObject bindable, object oldvalue, object newvalue)
+        public bool ShowControls
         {
-            CrossMediaManager.Current.MediaPlayer.VideoView.VideoAspect = ((VideoAspectMode)newvalue);
+            get { return (bool)GetValue(AspectModeProperty); }
+            set { SetValue(AspectModeProperty, value); }
         }
 
-        private static void OnSourceChanged(BindableObject bindable, object oldvalue, object newvalue)
+        private static void OnShowControlsChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            switch (newvalue)
+            if(PlayerView != null)
+                PlayerView.ShowControls = (bool)newValue;
+        }
+
+        private static void OnAspectModeChanged(BindableObject bindable, object oldvalue, object newValue)
+        {
+            if (PlayerView != null)
+                PlayerView.VideoAspect = (VideoAspectMode)newValue;
+        }
+
+        private static void OnSourceChanged(BindableObject bindable, object oldvalue, object newValue)
+        {
+            switch (newValue)
             {
                 case string url:
                     CrossMediaManager.Current.Play(url);
