@@ -14,12 +14,20 @@ namespace MediaManager.Platforms.Tvos.Video
         private AVPlayerViewController _playerViewController;
         public AVPlayerViewController PlayerViewController
         {
-            get => _playerViewController;
+            get
+            {
+                if (_playerViewController == null)
+                {
+                    PlayerViewController = new AVPlayerViewController();
+                }
+                return _playerViewController;
+            }
+
             set
             {
                 _playerViewController = value;
                 _playerViewController.View.Frame = Frame;
-                AddSubview(value.View);
+                AddSubview(_playerViewController.View);
             }
         }
 

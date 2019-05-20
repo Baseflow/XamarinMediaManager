@@ -103,7 +103,7 @@ namespace MediaManager.Platforms.Apple.Media
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
-            var item = mediaItem.GetPlayerItem();
+            var item = mediaItem.ToAVPlayerItem();
 
             Player.ActionAtItemEnd = AVPlayerActionAtItemEnd.None;
             Player.ReplaceCurrentItemWithPlayerItem(item);

@@ -11,7 +11,7 @@ namespace MediaManager.Platforms.Apple.Media
     {
         public static Dictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
 
-        public static AVPlayerItem GetPlayerItem(this IMediaItem mediaItem)
+        public static AVPlayerItem ToAVPlayerItem(this IMediaItem mediaItem)
         {
             AVAsset asset;
 
