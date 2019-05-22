@@ -208,6 +208,11 @@ CrossMediaManager.Tizen.*
 * If you are playing audio from a http resource you have to take care of [ATS](https://developer.xamarin.com/guides/ios/platform_features/introduction_to_ios9/ats/).
 * If you want to display a artwork/cover that is embedded into an MP3 file, make sure that you use ID3 v2.3 (not v2.4).
 
+**UWP:**
+
+* In the Package.appxmanifest under capabilities you need to select: "Background Media Playback", "Internet"
+* Optionally add "Music Library" and "Videos Library" as well if you use that
+
 **Tizen:**
 
 * You must request `http://tizen.org/privilege/internet`, `http://tizen.org/privilege/mediastorage`, and `http://tizen.org/privilege/externalstorage` privileges

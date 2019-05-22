@@ -1,8 +1,6 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ElementPlayer.Forms.Services;
-using ElementPlayer.Forms.Views;
 
 namespace ElementPlayer.Forms
 {
@@ -12,9 +10,6 @@ namespace ElementPlayer.Forms
         public App()
         {
             InitializeComponent();
-
-            DependencyService.Register<MockDataStore>();
-            MainPage = new MainPage();
         }
 
         protected override void OnStart()
