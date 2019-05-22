@@ -8,15 +8,10 @@ using Xamarin.Forms.Platform.iOS;
 [assembly: ExportRenderer(typeof(MediaManager.Forms.VideoView), typeof(VideoViewRenderer))]
 namespace MediaManager.Forms.Platforms.iOS
 {
-    [Preserve(AllMembers = true)]
+    [Foundation.Preserve(AllMembers = true)]
     public class VideoViewRenderer : ViewRenderer<VideoView, UIView>
     {
         private MediaManager.Platforms.Ios.Video.VideoView _videoView;
-
-        public static void Init()
-        {
-            var temp = DateTime.Now;
-        }
 
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> e)
         {

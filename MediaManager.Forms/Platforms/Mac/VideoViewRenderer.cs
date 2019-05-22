@@ -7,15 +7,10 @@ using Xamarin.Forms.Platform.MacOS;
 [assembly: ExportRenderer(typeof(MediaManager.Forms.VideoView), typeof(VideoViewRenderer))]
 namespace MediaManager.Forms.Platforms.Mac
 {
-    [Preserve(AllMembers = true)]
+    [Foundation.Preserve(AllMembers = true)]
     public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Mac.Video.VideoView>
     {
         private MediaManager.Platforms.Mac.Video.VideoView _videoView;
-
-        public static void Init()
-        {
-            var temp = DateTime.Now;
-        }
 
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> e)
         {

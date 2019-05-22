@@ -8,17 +8,13 @@ using Xamarin.Forms.Platform.Android;
 [assembly: ExportRenderer(typeof(VideoView), typeof(VideoViewRenderer))]
 namespace MediaManager.Forms.Platforms.Android
 {
+    [global::Android.Runtime.Preserve(AllMembers = true)]
     public class VideoViewRenderer : Xamarin.Forms.Platform.Android.AppCompat.ViewRenderer<VideoView, MediaManager.Platforms.Android.Video.VideoView>
     {
         private MediaManager.Platforms.Android.Video.VideoView _videoView;
 
         public VideoViewRenderer(Context context) : base(context)
         {
-        }
-
-        public static void Init()
-        {
-            var temp = DateTime.Now;
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> e)
