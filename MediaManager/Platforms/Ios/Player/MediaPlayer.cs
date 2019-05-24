@@ -34,43 +34,53 @@ namespace MediaManager.Platforms.Ios.Media
                 UIApplication.SharedApplication.BeginReceivingRemoteControlEvents();
             });
 
+            //TODO: Move stuff to NotificationManager so controls can be updated when changed
+            if (!MediaManager.NotificationManager.Enabled)
+                return;
+
             var commandCenter = MPRemoteCommandCenter.Shared;
 
-            commandCenter.TogglePlayPauseCommand.Enabled = true;
-            commandCenter.TogglePlayPauseCommand.AddTarget(PlayPauseCommand);
+            if (MediaManager.NotificationManager.ShowPlayPauseControls)
+            {
+                commandCenter.TogglePlayPauseCommand.Enabled = true;
+                commandCenter.TogglePlayPauseCommand.AddTarget(PlayPauseCommand);
 
-            commandCenter.PlayCommand.Enabled = true;
-            commandCenter.PlayCommand.AddTarget(PlayCommand);
+                commandCenter.PlayCommand.Enabled = true;
+                commandCenter.PlayCommand.AddTarget(PlayCommand);
 
-            commandCenter.ChangeRepeatModeCommand.Enabled = true;
-            commandCenter.ChangeRepeatModeCommand.AddTarget(RepeatCommand);
+                commandCenter.PauseCommand.Enabled = true;
+                commandCenter.PauseCommand.AddTarget(PauseCommand);
 
-            commandCenter.ChangeShuffleModeCommand.Enabled = true;
-            commandCenter.ChangeShuffleModeCommand.AddTarget(ShuffleCommand);
+                commandCenter.StopCommand.Enabled = true;
+                commandCenter.StopCommand.AddTarget(StopCommand);
+            }
 
-            commandCenter.NextTrackCommand.Enabled = true;
-            commandCenter.NextTrackCommand.AddTarget(NextCommand);
+            if (MediaManager.NotificationManager.ShowNavigationControls)
+            {
+                commandCenter.NextTrackCommand.Enabled = true;
+                commandCenter.NextTrackCommand.AddTarget(NextCommand);
 
-            commandCenter.PauseCommand.Enabled = true;
-            commandCenter.PauseCommand.AddTarget(PauseCommand);
+                commandCenter.PreviousTrackCommand.Enabled = true;
+                commandCenter.PreviousTrackCommand.AddTarget(PreviousCommand);
 
-            commandCenter.PreviousTrackCommand.Enabled = true;
-            commandCenter.PreviousTrackCommand.AddTarget(PreviousCommand);
+                commandCenter.SeekBackwardCommand.Enabled = true;
+                commandCenter.SeekBackwardCommand.AddTarget(SeekBackwardCommand);
 
-            commandCenter.SeekBackwardCommand.Enabled = true;
-            commandCenter.SeekBackwardCommand.AddTarget(SeekBackwardCommand);
+                commandCenter.SeekForwardCommand.Enabled = true;
+                commandCenter.SeekForwardCommand.AddTarget(SeekForwardCommand);
 
-            commandCenter.SeekForwardCommand.Enabled = true;
-            commandCenter.SeekForwardCommand.AddTarget(SeekForwardCommand);
+                commandCenter.SkipBackwardCommand.Enabled = true;
+                commandCenter.SkipBackwardCommand.AddTarget(SkipBackwardCommand);
 
-            commandCenter.SkipBackwardCommand.Enabled = true;
-            commandCenter.SkipBackwardCommand.AddTarget(SkipBackwardCommand);
+                commandCenter.SkipForwardCommand.Enabled = true;
+                commandCenter.SkipForwardCommand.AddTarget(SkipForwardCommand);
 
-            commandCenter.SkipForwardCommand.Enabled = true;
-            commandCenter.SkipForwardCommand.AddTarget(SkipForwardCommand);
+                commandCenter.ChangeRepeatModeCommand.Enabled = true;
+                commandCenter.ChangeRepeatModeCommand.AddTarget(RepeatCommand);
 
-            commandCenter.StopCommand.Enabled = true;
-            commandCenter.StopCommand.AddTarget(StopCommand);
+                commandCenter.ChangeShuffleModeCommand.Enabled = true;
+                commandCenter.ChangeShuffleModeCommand.AddTarget(ShuffleCommand);
+            }
         }
 
         private MPRemoteCommandHandlerStatus SkipBackwardCommand(MPRemoteCommandEvent arg)

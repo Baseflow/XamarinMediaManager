@@ -89,5 +89,5 @@
     <Compile Include="Platforms\Tizen\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
-  
+
 </Project>

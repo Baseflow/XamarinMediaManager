@@ -16,6 +16,7 @@ namespace MediaManager.Platforms.Apple.Media
         private NSObject ItemFailedToPlayToEndTimeObserver;
         private NSObject ErrorObserver;
         private NSObject PlaybackStalledObserver;
+
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
 
         public AppleMediaPlayer()

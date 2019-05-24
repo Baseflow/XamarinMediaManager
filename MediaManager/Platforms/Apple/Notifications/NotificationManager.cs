@@ -12,7 +12,7 @@ namespace MediaManager.Platforms.Apple.Notifications
         {
             var mediaItem = MediaManager.MediaQueue.Current;
 
-            if (mediaItem == null)
+            if (mediaItem == null || !this.Enabled)
             {
                 MPNowPlayingInfoCenter.DefaultCenter.NowPlaying = null;
                 return;
