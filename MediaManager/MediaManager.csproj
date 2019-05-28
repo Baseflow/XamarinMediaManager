@@ -18,6 +18,10 @@
     <Description>Cross platform Xamarin plugin to play and control Audio and Video</Description>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
+    <GenerateLibraryLayout>true</GenerateLibraryLayout>
+  </PropertyGroup>
   
   <ItemGroup>
     <Compile Remove="Platforms\**\*.cs" />

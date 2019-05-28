@@ -13,20 +13,31 @@ namespace MediaManager.Forms.Platforms.iOS
     {
         private MediaManager.Platforms.Ios.Video.VideoView _videoView;
 
-        protected override void OnElementChanged(ElementChangedEventArgs<VideoView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
-            base.OnElementChanged(e);
+            base.OnElementChanged(args);
 
-            if (e.NewElement != null)
+            if (args.NewElement != null)
             {
                 if (Control == null)
                 {
                     //TODO: maybe pass in the UIView to the videoview here
                     _videoView = new MediaManager.Platforms.Ios.Video.VideoView();
+
+                    //TODO: find a better way to set properties on load
+                    _videoView.ShowControls = args.NewElement.ShowControls;
+                    _videoView.VideoAspect = args.NewElement.VideoAspect;
+
                     CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
                     SetNativeControl(_videoView);
                 }
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _videoView = null;
+            base.Dispose(disposing);
         }
     }
 }

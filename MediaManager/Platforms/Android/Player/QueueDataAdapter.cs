@@ -17,7 +17,7 @@ namespace MediaManager.Platforms.Android.Media
         public QueueDataAdapter(ConcatenatingMediaSource mediaSource)
         {
             _mediaSource = mediaSource;
-            _mediaManager.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
+            //_mediaManager.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
         }
 
         protected QueueDataAdapter(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
@@ -44,7 +44,8 @@ namespace MediaManager.Platforms.Android.Media
         {
             _mediaManager.MediaQueue.RemoveAt(index);
         }
-
+        //TODO: Find out if queue also need to get picked up on changes. Maybe when people add items directly to the queue while playing already.
+        /*
         private void MediaQueue_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -96,6 +97,6 @@ namespace MediaManager.Platforms.Android.Media
                     _mediaSource.Clear();
                     break;
             }
-        }
+        }*/
     }
 }

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvx:MvxContentPage
+    xmlns:mvx="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms" 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:ElementPlayer.Core.ViewModels;assembly=ElementPlayer.Core"
+    xmlns:mm="clr-namespace:MediaManager.Forms;assembly=MediaManager.Forms"
+    x:Class="ElementPlayer.Forms.UI.Pages.PlayerPage" 
+    x:TypeArguments="viewModels:PlayerViewModel">
+    <ContentPage.Content>
+        <StackLayout>
+            <mm:VideoView VerticalOptions="FillAndExpand" ShowControls="False" />
+        </StackLayout>
+    </ContentPage.Content>
+</mvx:MvxContentPage>

@@ -48,7 +48,7 @@
 	<string>ElementPlayer.iOS</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoads</key>
+		<key>NSAllowsArbitraryLoadsInMedia</key>
 		<true/>
 	</dict>
 	<key>UIBackgroundModes</key>

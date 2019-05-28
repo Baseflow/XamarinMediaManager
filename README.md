@@ -157,8 +157,29 @@ event PositionChangedEventHandler PositionChanged;
 
 ## Xamarin.Forms
 
+Adding a `VideoView` to a Page in Forms is easy as this:
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mm="clr-namespace:MediaManager.Forms;assembly=MediaManager.Forms"
+    x:Class="YourClassName" >
+    <ContentPage.Content>
+        <StackLayout>
+            <mm:VideoView VerticalOptions="FillAndExpand" Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" ShowControls="False" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
+```
+
+You can even use the normal `Play(object)` method and not set source. When you navigate to the view that contains the `VideoView`, the player will automatically attach to the view.
+
+If you want a Page that contains a player you can open the `VideoPage`.
+
 ```csharp
-await CrossMediaManager.Current.*
+Navigation.PushAsync(new MediaManager.Forms.VideoPage());
 ```
 
 ## Platform specific features
@@ -181,7 +202,7 @@ await CrossMediaManager.Current.*
 You can also directly access the native media player if you need it!
 ```csharp
 //Access ExoPlayer on Android
-CrossMediaManager.Android.NativeMediaPlayer.Player.VideoDecoderCounters
+CrossMediaManager.Android.MediaPlayer.Player.VideoDecoderCounters
 CrossMediaManager.Android.*
 //iOS, MacOS or tvOS
 CrossMediaManager.Apple.*
@@ -205,7 +226,27 @@ CrossMediaManager.Tizen.*
 **iOS:**
 
 * In order for the audio to contiunue to play in the background you have to add the 'Audio, Airplay and Picture in Picture Background mode' and 'Background fetch' to your Info.plist
-* If you are playing audio from a http resource you have to take care of [ATS](https://developer.xamarin.com/guides/ios/platform_features/introduction_to_ios9/ats/).
+
+```xml
+<key>UIBackgroundModes</key>
+<array>
+	<string>audio</string>
+	<string>fetch</string>
+</array>
+```
+
+* If you are playing audio from a http resource you have to take care of [ATS](https://developer.xamarin.com/guides/ios/platform_features/introduction_to_ios9/ats/). Optionally you can disable this for playing media. Add the following to your info.plist:
+
+```xml
+<key>NSAppTransportSecurity</key>
+<dict>
+	<key>NSAllowsArbitraryLoadsInMedia</key>
+	<true/>
+</dict>
+```
+
+If you want to disable more you could add: `NSAllowsLocalNetworking` or even `NSAllowsArbitraryLoads` to disable all checks.
+
 * If you want to display a artwork/cover that is embedded into an MP3 file, make sure that you use ID3 v2.3 (not v2.4).
 
 **UWP:**

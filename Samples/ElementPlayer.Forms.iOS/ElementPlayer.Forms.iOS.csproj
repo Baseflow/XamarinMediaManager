@@ -64,6 +64,7 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <None Include="Entitlements.plist" />
@@ -144,6 +145,14 @@
     <ProjectReference Include="..\..\MediaManager.Forms\MediaManager.Forms.csproj">
       <Project>{a1f6d7d2-d6d3-4ff2-87e7-d0cef41d0653}</Project>
       <Name>MediaManager.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MediaManager\MediaManager.csproj">
+      <Project>{aba3225c-7219-4472-ba3e-cfc3d9c06675}</Project>
+      <Name>MediaManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ElementPlayer.Core\ElementPlayer.Core.csproj">
+      <Project>{d4fba2b6-2057-412d-a391-0d1bf0e04e12}</Project>
+      <Name>ElementPlayer.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\ElementPlayer.Forms.UI\ElementPlayer.Forms.UI.csproj">
       <Project>{68AA36D7-1D43-4FCD-9BC2-798CBC0CDF08}</Project>

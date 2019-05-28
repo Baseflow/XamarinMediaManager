@@ -4,10 +4,10 @@ using Xamarin.Forms.Xaml;
 
 namespace ElementPlayer.Forms
 {
-    public partial class App : Application
+    public partial class FormsApp : Application
     {
 
-        public App()
+        public FormsApp()
         {
             InitializeComponent();
         }

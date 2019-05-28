@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Queue;
 
@@ -7,6 +9,27 @@ namespace MediaManager
 {
     public static partial class MediaManagerExtensions
     {
+        public static async Task Play(this IMediaManager mediaManager, object mediaSource)
+        {
+            switch (mediaSource)
+            {
+                case string url:
+                    await CrossMediaManager.Current.Play(url);
+                    break;
+                case IEnumerable<string> urls:
+                    await CrossMediaManager.Current.Play(urls);
+                    break;
+                case IMediaItem mediaItem:
+                    await CrossMediaManager.Current.Play(mediaItem);
+                    break;
+                case IEnumerable<IMediaItem> mediaItems:
+                    await CrossMediaManager.Current.Play(mediaItems);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public static Task PlayPreviousOrSeekToStart(this IMediaManager mediaManager)
         {
             if (mediaManager.Position < TimeSpan.FromSeconds(3))

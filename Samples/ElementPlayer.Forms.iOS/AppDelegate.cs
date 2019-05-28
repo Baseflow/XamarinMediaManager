@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using MvvmCross.Forms.Platforms.Ios.Core;
 using UIKit;
 
 namespace ElementPlayer.Forms.iOS
@@ -11,7 +12,7 @@ namespace ElementPlayer.Forms.iOS
     // User Interface of the application, as well as listening (and optionally responding) to 
     // application events from iOS.
     [Register("AppDelegate")]
-    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    public partial class AppDelegate : MvxFormsApplicationDelegate<MvxFormsIosSetup<Core.App, FormsApp>, Core.App, FormsApp>
     {
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
@@ -22,8 +23,8 @@ namespace ElementPlayer.Forms.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+            UINavigationBar.Appearance.BarTintColor = UIColor.FromRGB(65, 105, 225);
+            UINavigationBar.Appearance.TintColor = UIColor.FromRGB(255, 255, 255);
 
             return base.FinishedLaunching(app, options);
         }

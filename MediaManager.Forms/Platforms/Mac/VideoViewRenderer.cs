@@ -12,19 +12,30 @@ namespace MediaManager.Forms.Platforms.Mac
     {
         private MediaManager.Platforms.Mac.Video.VideoView _videoView;
 
-        protected override void OnElementChanged(ElementChangedEventArgs<VideoView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
-            base.OnElementChanged(e);
-            if (e.NewElement != null)
+            base.OnElementChanged(args);
+            if (args.NewElement != null)
             {
                 if (Control == null)
                 {
                     //TODO: maybe pass in the NSView to the videoview here
                     _videoView = new MediaManager.Platforms.Mac.Video.VideoView();
+
+                    //TODO: find a better way to set properties on load
+                    _videoView.ShowControls = args.NewElement.ShowControls;
+                    _videoView.VideoAspect = args.NewElement.VideoAspect;
+
                     CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
                     SetNativeControl(_videoView);
                 }
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _videoView = null;
+            base.Dispose(disposing);
         }
     }
 }

@@ -17,14 +17,19 @@ namespace MediaManager.Forms.Platforms.Android
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<VideoView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
-            base.OnElementChanged(e);
-            if (e.NewElement != null)
+            base.OnElementChanged(args);
+            if (args.NewElement != null)
             {
                 if (Control == null)
                 {
                     _videoView = new MediaManager.Platforms.Android.Video.VideoView(Context);
+
+                    //TODO: find a better way to set properties on load
+                    _videoView.ShowControls = args.NewElement.ShowControls;
+                    _videoView.VideoAspect = args.NewElement.VideoAspect;
+
                     CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
                     SetNativeControl(_videoView);
                 }
@@ -41,6 +46,12 @@ namespace MediaManager.Forms.Platforms.Android
                 _videoView.LayoutParameters = p;
             }
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _videoView = null;
+            base.Dispose(disposing);
         }
     }
 }

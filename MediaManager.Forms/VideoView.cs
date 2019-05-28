@@ -13,12 +13,12 @@ namespace MediaManager.Forms
         /// <summary>
         ///     Sets the aspect mode of the current video view
         /// </summary>
-        public static readonly BindableProperty AspectModeProperty =
+        public static readonly BindableProperty VideoAspectProperty =
             BindableProperty.Create(nameof(VideoView),
                 typeof(VideoAspectMode),
                 typeof(VideoView),
-                VideoAspectMode.AspectFill,
-                propertyChanged: OnAspectModeChanged);
+                VideoAspectMode.AspectFit,
+                propertyChanged: OnVideoAspectChanged);
 
         /// <summary>
         ///     Sets the aspect mode of the current video view
@@ -46,16 +46,16 @@ namespace MediaManager.Forms
             set { SetValue(SourceProperty, value); }
         }
 
-        public VideoAspectMode AspectMode
+        public VideoAspectMode VideoAspect
         {
-            get { return (VideoAspectMode)GetValue(AspectModeProperty); }
-            set { SetValue(AspectModeProperty, value); }
+            get { return (VideoAspectMode)GetValue(VideoAspectProperty); }
+            set { SetValue(VideoAspectProperty, value); }
         }
 
         public bool ShowControls
         {
-            get { return (bool)GetValue(AspectModeProperty); }
-            set { SetValue(AspectModeProperty, value); }
+            get { return (bool)GetValue(ShowControlsProperty); }
+            set { SetValue(ShowControlsProperty, value); }
         }
 
         private static void OnShowControlsChanged(BindableObject bindable, object oldValue, object newValue)
@@ -64,7 +64,7 @@ namespace MediaManager.Forms
                 PlayerView.ShowControls = (bool)newValue;
         }
 
-        private static void OnAspectModeChanged(BindableObject bindable, object oldvalue, object newValue)
+        private static void OnVideoAspectChanged(BindableObject bindable, object oldvalue, object newValue)
         {
             if (PlayerView != null)
                 PlayerView.VideoAspect = (VideoAspectMode)newValue;
@@ -72,23 +72,7 @@ namespace MediaManager.Forms
 
         private static void OnSourceChanged(BindableObject bindable, object oldvalue, object newValue)
         {
-            switch (newValue)
-            {
-                case string url:
-                    CrossMediaManager.Current.Play(url);
-                    break;
-                case IEnumerable<string> urls:
-                    CrossMediaManager.Current.Play(urls);
-                    break;
-                case IMediaItem mediaItem:
-                    CrossMediaManager.Current.Play(mediaItem);
-                    break;
-                case IEnumerable<IMediaItem> mediaItems:
-                    CrossMediaManager.Current.Play(mediaItems);
-                    break;
-                default:
-                    break;
-            }
+            _ = CrossMediaManager.Current.Play(newValue);
         }
     }
 }

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvx:MvxContentPage
+    xmlns:mvx="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms"
+    xmlns:bind="clr-namespace:MvvmCross.Forms.Bindings;assembly=MvvmCross.Forms"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:ElementPlayer.Core.ViewModels;assembly=ElementPlayer.Core" 
+    x:Class="ElementPlayer.Forms.UI.Pages.HomePage" 
+    x:TypeArguments="viewModels:HomeViewModel">
+    <ContentPage.Content>
+        <mvx:MvxListView ItemsSource="{bind:MvxBind Items}" ItemClick="{bind:MvxBind ItemSelected}" SelectedItem="{bind:MvxBind ItemSelected}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <mvx:MvxViewCell>
+                        <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                            <Label Text="{Binding Title}" />
+                        </StackLayout>
+                    </mvx:MvxViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </mvx:MvxListView>
+    </ContentPage.Content>
+</mvx:MvxContentPage>

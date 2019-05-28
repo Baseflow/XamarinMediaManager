@@ -70,9 +70,11 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -108,6 +110,14 @@
     <ProjectReference Include="..\..\MediaManager.Forms\MediaManager.Forms.csproj">
       <Project>{a1f6d7d2-d6d3-4ff2-87e7-d0cef41d0653}</Project>
       <Name>MediaManager.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MediaManager\MediaManager.csproj">
+      <Project>{aba3225c-7219-4472-ba3e-cfc3d9c06675}</Project>
+      <Name>MediaManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ElementPlayer.Core\ElementPlayer.Core.csproj">
+      <Project>{d4fba2b6-2057-412d-a391-0d1bf0e04e12}</Project>
+      <Name>ElementPlayer.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\ElementPlayer.Forms.UI\ElementPlayer.Forms.UI.csproj">
       <Project>{1cef2991-9907-47ae-901d-c3421f037364}</Project>

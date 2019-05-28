@@ -161,6 +161,10 @@
       <Project>{aba3225c-7219-4472-ba3e-cfc3d9c06675}</Project>
       <Name>MediaManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ElementPlayer.Core\ElementPlayer.Core.csproj">
+      <Project>{d4fba2b6-2057-412d-a391-0d1bf0e04e12}</Project>
+      <Name>ElementPlayer.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ElementPlayer.Forms.UI\ElementPlayer.Forms.UI.csproj">
       <Project>{68AA36D7-1D43-4FCD-9BC2-798CBC0CDF08}</Project>
       <Name>ElementPlayer.Forms.UI</Name>

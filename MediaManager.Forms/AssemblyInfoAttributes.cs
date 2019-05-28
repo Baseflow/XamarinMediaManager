@@ -1,5 +1,8 @@
-﻿using Xamarin.Forms;
+﻿
+[assembly: Xamarin.Forms.Internals.Preserve(AllMembers = true)]
 
-[assembly: XmlnsPrefix("http://baseflow.com/xmm", "xmm")]
-[assembly: XmlnsDefinition("http://baseflow.com/xmm", nameof(MediaManager.Forms))]
-[assembly: XmlnsDefinition("http://baseflow.com/xmm", nameof(MediaManager.Forms.Xaml))]
+#if NETSTANDARD
+[assembly: Xamarin.Forms.XmlnsPrefix("http://baseflow.com/mediamanager", "mm")]
+[assembly: Xamarin.Forms.XmlnsDefinition("http://baseflow.com/mediamanager", "MediaManager.Forms")]
+[assembly: Xamarin.Forms.XmlnsDefinition("http://baseflow.com/mediamanager", nameof(MediaManager.Forms.Xaml))]
+#endif
