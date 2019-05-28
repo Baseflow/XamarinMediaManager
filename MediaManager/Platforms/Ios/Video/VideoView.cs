@@ -70,10 +70,10 @@ namespace MediaManager.Platforms.Ios.Video
                 switch (value)
                 {
                     case VideoAspectMode.None:
-                        PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspect;
+                        PlayerViewController.VideoGravity = AVLayerVideoGravity.Resize;
                         break;
                     case VideoAspectMode.AspectFit:
-                        PlayerViewController.VideoGravity = AVLayerVideoGravity.Resize;
+                        PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspect;
                         break;
                     case VideoAspectMode.AspectFill:
                         PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;

@@ -77,8 +77,8 @@ namespace MediaManager.Platforms.Apple.Media
 
         private void DidErrorOcurred(NSNotification obj)
         {
-            var error = Player.CurrentItem.Error;
-            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, new NSErrorException(error), error.LocalizedDescription));
+            var error = Player?.CurrentItem?.Error;
+            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue?.Current, new NSErrorException(error), error?.LocalizedDescription));
         }
 
         private async void DidFinishPlaying(NSNotification obj)
