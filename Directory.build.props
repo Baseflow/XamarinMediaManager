@@ -5,16 +5,16 @@
     <PackageProjectUrl>https://github.com/martijn00/XamarinMediaManager</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/martijn00/XamarinMediaManager/develop/icon_MediaManager.png</PackageIconUrl>
     <Authors>Martijn van Dijk</Authors>
-	<Owners>Martijn van Dijk</Owners>
+    <Owners>Martijn van Dijk</Owners>
     <PackageTags>xamarin, android, plugin, MediaManager, media, audio, video</PackageTags>
     <PackageReleaseNotes>https://github.com/martijn00/XamarinMediaManager</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-	<PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RepositoryUrl>https://github.com/martijn00/XamarinMediaManager</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
     <NeutralLanguage>en</NeutralLanguage>
-    <Version>0.6.2</Version>
+    <Version>0.6.3</Version>
 
     <LangVersion>latest</LangVersion>
     <NoWarn>$(NoWarn);1591;1701;1702;1705;VSX1000;NU1603</NoWarn>

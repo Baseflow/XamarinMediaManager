@@ -88,5 +88,10 @@ namespace MediaManager.Platforms.Uap
                 mediaItem.AlbumArt = bitmap;
             }
         }
+
+        public Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
+        {
+            return null;
+        }
     }
 }

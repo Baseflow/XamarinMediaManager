@@ -25,6 +25,7 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         public MediaBrowserManager()
         {
+            //TODO: call UnregisterCallback(MediaBrowserSubscriptionCallback) and MediaBrowser.Disconnect() somewhere
         }
 
         public bool Init()
@@ -77,8 +78,12 @@ namespace MediaManager.Platforms.Android.MediaSession
                     {
                         IsInitialized = false;
                         tcs.SetResult(IsInitialized);
+                    },
+                    OnConnectionSuspendedImpl = () =>
+                    {
+                        ;
                     }
-                };
+                    };
 
                 MediaBrowser = new MediaBrowserCompat(Context,
                     new ComponentName(

@@ -85,6 +85,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.SetRewindIncrementMs((long)MediaManager.StepSize.TotalMilliseconds);
             PlayerNotificationManager.SetNotificationListener(NotificationListener);
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
+            PlayerNotificationManager.SetOngoing(true);
             PlayerNotificationManager.SetPlayer(MediaManager.AndroidMediaPlayer.Player);
 
             PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.NotificationManager.ShowPlayPauseControls);
@@ -127,7 +128,9 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.Dispose();
             MediaManager.MediaPlayer.Dispose();
             MediaManager.MediaPlayer = null;
+            MediaSession.Active = false;
             MediaSession.Release();
+            MediaSession = null;
             StopForeground(true);
         }
 

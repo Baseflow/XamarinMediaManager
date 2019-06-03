@@ -65,7 +65,7 @@ namespace MediaManager.Platforms.Android
             return mediaItem;
         }
 
-        protected async Task<IMediaItem> ExtractMediaInfo(MediaMetadataRetriever mediaMetadataRetriever, IMediaItem mediaItem)
+        protected virtual async Task<IMediaItem> ExtractMediaInfo(MediaMetadataRetriever mediaMetadataRetriever, IMediaItem mediaItem)
         {
             if (string.IsNullOrEmpty(mediaItem.Album))
                 mediaItem.Album = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Album);
@@ -147,13 +147,13 @@ namespace MediaManager.Platforms.Android
             return mediaItem;
         }
 
-        public object GetMediaCover(IMediaItem mediaItem)
+        public Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
         {
             //TODO: move cover in here
             return null;
         }
 
-        protected Bitmap GetTrackCover(IMediaItem currentTrack)
+        protected virtual Bitmap GetTrackCover(IMediaItem currentTrack)
         {
             string albumFolder = GetCurrentSongFolder(currentTrack);
             if (albumFolder == null)
@@ -181,7 +181,7 @@ namespace MediaManager.Platforms.Android
             return bitmap ?? BitmapFactory.DecodeResource(Resources, Resource.Drawable.exo_notification_play);
         }
 
-        protected string TryGetAlbumArtPathByFilename(System.Uri baseUri, string filename)
+        protected virtual string TryGetAlbumArtPathByFilename(System.Uri baseUri, string filename)
         {
             System.Uri testUri = new System.Uri(baseUri, filename);
             string testPath = testUri.LocalPath;
@@ -191,7 +191,7 @@ namespace MediaManager.Platforms.Android
                 return null;
         }
 
-        protected string GetCurrentSongFolder(IMediaItem currentFile)
+        protected virtual string GetCurrentSongFolder(IMediaItem currentFile)
         {
             if (!new Uri(currentFile.MediaUri).IsFile)
                 return null;

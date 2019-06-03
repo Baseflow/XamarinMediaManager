@@ -49,7 +49,7 @@ Make sure to call Init() in all the native platforms on startup of your app.
 CrossMediaManager.Current.Init();
 ```
 
-Optionally provide the `Activity` on Android.
+Optionally provide the `Activity` on Android. This will also be used to bind the Android `Service` and will be used as `Intent` to launch from a notification.
 
 ```csharp
 public class MainActivity : AppCompatActivity
@@ -86,6 +86,19 @@ public IList<string> Mp3UrlList => new[]{
 
 await CrossMediaManager.Current.Play(Mp3UrlList);
 ```
+
+### Play a non standard format like HLS, Dash or SS
+
+MediaManager will try to make a guess which media type or format is used. Sometimes this will not be picked up or be wrong, but you can enforce it by setting it yourself like this:
+
+```csharp
+var item = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8");
+item.MediaType = MediaType.Hls;
+
+await CrossMediaManager.Current.Play(item);
+```
+
+By enforcing it there is still no guarantee that the native system actually is able to play the item. 
 
 ### Retrieve metadata for media
 

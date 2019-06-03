@@ -10,5 +10,7 @@ namespace MediaManager.Media
         Task<IMediaItem> CreateMediaItem(FileInfo file);
 
         Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem);
+
+        Task<object> RetrieveMediaItemArt(IMediaItem mediaItem);
     }
 }

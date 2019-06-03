@@ -82,5 +82,10 @@ namespace MediaManager.Platforms.Apple
 
             return url;
         }
+
+        public Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
+        {
+            return null;
+        }
     }
 }
