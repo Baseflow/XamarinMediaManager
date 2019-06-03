@@ -110,6 +110,17 @@ CrossMediaManager.Current.MediaQueue.Current.AlbumArt;
 CrossMediaManager.Current.MediaQueue.Current.*
 ```
 
+Since the metadata might not be available immediately you can subscribe for updates like this:
+
+```csharp
+var mediaItem = await CrossMediaManager.Current.Play("https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3");
+mediaItem.MetadataUpdated += (sender, args) => {
+	var title = args.MediaItem.Title;
+};
+```
+
+Alternatively you could also use the `PropertyChanged` event to see updates to the metadata.
+
 ### Add Video Player to the UI
 
 For android we need a videoview
@@ -148,6 +159,7 @@ await CrossMediaManager.Current.SeekTo(TimeSpan position);
 await CrossMediaManager.Current.PlayPrevious();
 await CrossMediaManager.Current.PlayNext();
 await CrossMediaManager.Current.PlayPreviousOrSeekToStart();
+await CrossMediaManager.Current.PlayQueueItem(mediaItem);
 ```
 
 ### Retrieve information

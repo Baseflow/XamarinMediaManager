@@ -16,7 +16,7 @@ namespace MediaManager.Media
         bool IsMetadataExtracted { get; set; }
 
         /// <summary>
-        /// Raised when MediaFile is updated
+        /// Raised when MediaItem is updated
         /// </summary>
         event MetadataUpdatedEventHandler MetadataUpdated;
 

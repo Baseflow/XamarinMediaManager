@@ -138,6 +138,15 @@ namespace MediaManager
             return false;
         }
 
+        public virtual async Task<bool> PlayQueueItem(IMediaItem mediaItem)
+        {
+            if (!MediaQueue.Contains(mediaItem))
+                return false;
+
+            await MediaPlayer.Play(mediaItem);
+            return true;
+        }
+
         public virtual Task StepBackward()
         {
             var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.TotalSeconds) ? 0 : ((Position.TotalSeconds < StepSize.TotalSeconds) ? 0 : Position.TotalSeconds - StepSize.TotalSeconds)));

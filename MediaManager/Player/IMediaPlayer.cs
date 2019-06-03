@@ -25,7 +25,7 @@ namespace MediaManager
         IVideoView VideoView { get; }
 
         /// <summary>
-        /// Adds MediaFile to the Queue and starts playing
+        /// Adds MediaItem to the Queue and starts playing
         /// </summary>
         Task Play(IMediaItem mediaItem);
 

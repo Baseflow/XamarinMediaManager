@@ -50,12 +50,12 @@ namespace MediaManager.Playback
         ShuffleMode ShuffleMode { get; set; }
 
         /// <summary>
-        /// Plays the current MediaFile
+        /// Plays the current MediaItem
         /// </summary>
         Task Play();
 
         /// <summary>
-        /// Pauses the current MediaFile
+        /// Pauses the current MediaItem
         /// </summary>
         Task Pause();
 
@@ -65,24 +65,31 @@ namespace MediaManager.Playback
         Task Stop();
 
         /// <summary>
-        /// Plays the previous MediaFile
+        /// Plays the previous MediaItem
         /// </summary>
-        /// <returns>Playing previous MediaFile was possible</returns>
+        /// <returns>Playing previous MediaItem was possible</returns>
         Task<bool> PlayPrevious();
 
         /// <summary>
-        /// Plays the next MediaFile
+        /// Plays the next MediaItem
         /// </summary>
-        /// <returns>Playing next MediaFile was possible</returns>
+        /// <returns>Playing next MediaItem was possible</returns>
         Task<bool> PlayNext();
 
         /// <summary>
-        /// Seeks forward a fixed amount of seconds of the current MediaFile
+        /// Will try to play a specific item from the Queue
+        /// </summary>
+        /// <param name="mediaItem"></param>
+        /// <returns>false when the item doesn't exist in the Queue</returns>
+        Task<bool> PlayQueueItem(IMediaItem mediaItem);
+
+        /// <summary>
+        /// Seeks forward a fixed amount of seconds of the current MediaItem
         /// </summary>
         Task StepForward();
 
         /// <summary>
-        /// Seeks backward a fixed amount of seconds of the current MediaFile
+        /// Seeks backward a fixed amount of seconds of the current MediaItem
         /// </summary>
         Task StepBackward();
 

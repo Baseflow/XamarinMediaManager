@@ -170,7 +170,7 @@ namespace MediaManager
 
         public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
         {
-            List<IMediaItem> mediaItems = new List<IMediaItem>();
+            var mediaItems = new List<IMediaItem>();
             foreach (var uri in items)
             {
                 mediaItems.Add(await MediaExtractor.CreateMediaItem(uri));
@@ -202,7 +202,7 @@ namespace MediaManager
 
         public override async Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
         {
-            List<IMediaItem> mediaItems = new List<IMediaItem>();
+            var mediaItems = new List<IMediaItem>();
             foreach (var file in directoryInfo.GetFiles())
             {
                 var mediaItem = await MediaExtractor.CreateMediaItem(file);
@@ -249,6 +249,15 @@ namespace MediaManager
 
             MediaBrowserManager.MediaController.GetTransportControls().SkipToPrevious();
 
+            return Task.FromResult(true);
+        }
+
+        public override Task<bool> PlayQueueItem(IMediaItem mediaItem)
+        {
+            if(!MediaQueue.Contains(mediaItem))
+                return Task.FromResult(false);
+
+            MediaBrowserManager.MediaController.GetTransportControls().SkipToQueueItem(MediaQueue.IndexOf(mediaItem));
             return Task.FromResult(true);
         }
 

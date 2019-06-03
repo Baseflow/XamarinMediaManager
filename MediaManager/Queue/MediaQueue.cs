@@ -78,7 +78,7 @@ namespace MediaManager.Queue
 
         public bool HasCurrent() => Count >= CurrentIndex;
 
-        public IMediaItem Current => Count > 0 ? this[CurrentIndex] : null;
+        public IMediaItem Current => Count > 0 ? this.ElementAtOrDefault(CurrentIndex) : null;
 
         private int _currentIndex = 0;
         public int CurrentIndex
@@ -142,7 +142,8 @@ namespace MediaManager.Queue
 
         internal void OnQueueChanged(object s, QueueChangedEventArgs e)
         {
-            if (this.LastOrDefault() == Current)
+            //TODO: Queue will only end when it is bigger than 1 because with 1 it would always be at the end right away.
+            if (Current != null && Count > 1 && this.LastOrDefault() == Current)
                 OnQueueEnded(this, new QueueEndedEventArgs());
 
             QueueChanged?.Invoke(s, e);
