@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.Content;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2.UI;
@@ -72,6 +73,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             NotificationListener = new NotificationListener();
             NotificationListener.OnNotificationStartedImpl = (notificationId, notification) =>
             {
+                ContextCompat.StartForegroundService(ApplicationContext, new Intent(ApplicationContext, Java.Lang.Class.FromType(typeof(MediaBrowserService))));
                 StartForeground(notificationId, notification);
             };
             NotificationListener.OnNotificationCancelledImpl = (notificationId) =>
