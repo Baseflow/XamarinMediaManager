@@ -38,6 +38,8 @@ namespace MediaManager
         public static MediaManagerImplementation Windows => (MediaManagerImplementation)Current;
 #elif TIZEN
         public static MediaManagerImplementation Tizen => (MediaManagerImplementation)Current;
+#elif WPF
+        public static MediaManagerImplementation Wpf => (MediaManagerImplementation)Current;
 #endif
 
         static IMediaManager CreateMediaManager()
