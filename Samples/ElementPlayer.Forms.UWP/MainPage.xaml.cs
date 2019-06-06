@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using MvvmCross.Forms.Platforms.Uap.Views;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -21,7 +22,7 @@ namespace ElementPlayer.Forms.UWP
         {
             this.InitializeComponent();
 
-            LoadApplication(new ElementPlayer.Forms.App());
+            //LoadApplication(new ElementPlayer.Forms.App());
         }
     }
 }
