@@ -16,7 +16,7 @@ namespace MediaManager.Platforms.Uap.Media
     {
         public WindowsMediaPlayer()
         {
-
+            Initialize();
         }
 
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Windows;
@@ -67,12 +67,15 @@ namespace MediaManager.Platforms.Uap.Media
 
         public async Task Play(IMediaItem mediaItem)
         {
+            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+
             var mediaPlaybackList = new MediaPlaybackList();
-            var mediaSource = await CreateMediaSource(mediaItem);
-            var item = new MediaPlaybackItem(mediaSource);
+            var item = new MediaPlaybackItem(mediaItem.ToMediaSource());
             mediaPlaybackList.Items.Add(item);
             Player.Source = mediaPlaybackList;
-            Player.Play();
+            await Play();
+
+            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
         public Task Play()
@@ -96,27 +99,6 @@ namespace MediaManager.Platforms.Uap.Media
         public void Dispose()
         {
             Player = null;
-        }
-
-        //TODO: Refactor this
-        private async Task<MediaSource> CreateMediaSource(IMediaItem mediaItem)
-        {
-            switch (mediaItem.MediaLocation)
-            {
-                case MediaLocation.Remote:
-                    return MediaSource.CreateFromUri(new Uri(mediaItem.MediaUri));
-                case MediaLocation.FileSystem:
-                    var du = Player.SystemMediaTransportControls.DisplayUpdater;
-                    var storageFile = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
-
-                    var playbackType = (mediaItem.MediaType == MediaType.Audio ? Windows.Media.MediaPlaybackType.Music : Windows.Media.MediaPlaybackType.Video);
-                    await du.CopyFromFileAsync(playbackType, storageFile);
-                    du.Update();
-
-                    return MediaSource.CreateFromStorageFile(storageFile);
-            }
-
-            return MediaSource.CreateFromUri(new Uri(mediaItem.MediaUri));
         }
     }
 }

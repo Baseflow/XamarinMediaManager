@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MediaManager.Forms.Platforms.Uap;
 using MediaManager.Platforms.Uap.Video;
+using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Xamarin.Forms.Platform.UWP;
 
@@ -25,9 +26,17 @@ namespace MediaManager.Forms.Platforms.Uap
                     _videoView.ShowControls = args.NewElement.ShowControls;
                     _videoView.VideoAspect = args.NewElement.VideoAspect;
 
+                    CrossMediaManager.Current.MediaPlayer.SetPlayerView(_videoView);
                     SetNativeControl(_videoView);
                 }
             }
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            _videoView.Height = availableSize.Height;
+            _videoView.Width = availableSize.Width;
+            return base.MeasureOverride(availableSize);
         }
 
         protected override void Dispose(bool disposing)

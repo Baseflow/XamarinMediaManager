@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Platforms.Uap;
@@ -76,59 +77,49 @@ namespace MediaManager
             set => SetProperty(ref _notificationManager, value);
         }
 
-        public override Playback.MediaPlayerState State => WindowsdMediaPlayer.Player.PlaybackSession.PlaybackState.ToMediaPlayerState();
+        public override Playback.MediaPlayerState State => WindowsdMediaPlayer?.Player?.PlaybackSession?.PlaybackState.ToMediaPlayerState() ?? Playback.MediaPlayerState.Stopped;
 
-        public override TimeSpan Position => WindowsdMediaPlayer.Player.PlaybackSession.Position;
+        public override TimeSpan Position => WindowsdMediaPlayer?.Player?.PlaybackSession?.Position ?? TimeSpan.Zero;
 
-        public override TimeSpan Duration => WindowsdMediaPlayer.Player.PlaybackSession.NaturalDuration;
+        public override TimeSpan Duration => WindowsdMediaPlayer?.Player?.PlaybackSession?.NaturalDuration ?? TimeSpan.Zero;
 
-        public override TimeSpan Buffered => TimeSpan.FromMilliseconds(WindowsdMediaPlayer.Player.PlaybackSession.BufferingProgress);
+        public override TimeSpan Buffered => TimeSpan.FromMilliseconds(WindowsdMediaPlayer?.Player?.PlaybackSession?.BufferingProgress ?? 0);
 
-        public override float Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override float Speed
+        {
+            get
+            {
+                if (WindowsdMediaPlayer?.Player?.PlaybackSession?.PlaybackRate == null)
+                    return 0.0f;
+                return ((float)WindowsdMediaPlayer.Player.PlaybackSession.PlaybackRate);
+            }
+            set
+            {
+                if(WindowsdMediaPlayer?.Player?.PlaybackSession?.PlaybackRate != null)
+                    WindowsdMediaPlayer.Player.PlaybackSession.PlaybackRate = value;
+            }
+        }
 
         public override RepeatMode RepeatMode {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
+            get => MediaPlayer.RepeatMode;
+            set => MediaPlayer.RepeatMode = value;
         }
+
         public override ShuffleMode ShuffleMode
         {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
+            get
+            {
+                return MediaQueue.ShuffleMode;
+            }
+            set
+            {
+                MediaQueue.ShuffleMode = value;
+            }
         }
 
         public override void Init()
         {
             IsInitialized = true;
-        }
-
-        public override Task Play(IMediaItem mediaItem)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<IMediaItem> Play(string uri)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task Play(IEnumerable<IMediaItem> items)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<IMediaItem> Play(FileInfo file)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
-        {
-            throw new NotImplementedException();
         }
 
         public override Task Play()
@@ -149,6 +140,46 @@ namespace MediaManager
         public override Task SeekTo(TimeSpan position)
         {
             return MediaPlayer.SeekTo(position);
+        }
+
+        public override Task Play(IMediaItem mediaItem)
+        {
+            return MediaPlayer.Play(mediaItem);
+        }
+
+        public override async Task<IMediaItem> Play(string uri)
+        {
+            var mediaItem = await MediaExtractor.CreateMediaItem(uri);
+            await MediaPlayer.Play(mediaItem);
+            return mediaItem;
+        }
+
+        public override async Task Play(IEnumerable<IMediaItem> items)
+        {
+            var mediaItem = await AddMediaItemsToQueue(items, true);
+            await MediaPlayer.Play(mediaItem);
+        }
+
+        public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
+        {
+            var mediaItems = new List<IMediaItem>();
+            foreach (var uri in items)
+            {
+                mediaItems.Add(await MediaExtractor.CreateMediaItem(uri));
+            }
+            var mediaItem = await AddMediaItemsToQueue(mediaItems, true);
+            await MediaPlayer.Play(mediaItem);
+            return mediaItems;
+        }
+
+        public override Task<IMediaItem> Play(FileInfo file)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
+        {
+            throw new NotImplementedException();
         }
     }
 }

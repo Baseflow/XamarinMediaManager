@@ -15,9 +15,9 @@ namespace MediaManager.Platforms.Ios.Media
         public VideoView PlayerView { get; set; }
         public override IVideoView VideoView => PlayerView;
 
-        protected override void Init()
+        protected override void Initialize()
         {
-            base.Init();
+            base.Initialize();
             var audioSession = AVAudioSession.SharedInstance();
             try
             {
