@@ -3,7 +3,7 @@
     <DefineConstants>$(DefineConstants);NETSTANDARD;PORTABLE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
-    <DefineConstants>$(DefineConstants);NET_461;XAML</DefineConstants>
+    <DefineConstants>$(DefineConstants);NET;WPF;XAML</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <DefineConstants>$(DefineConstants);NETFX_CORE;XAML;WINDOWS;WINDOWS_UWP</DefineConstants>
