@@ -25,38 +25,59 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         public MediaBrowserManager()
         {
-            //TODO: call UnregisterCallback(MediaBrowserSubscriptionCallback) and MediaBrowser.Disconnect() somewhere
         }
 
         public bool Init()
         {
             if (MediaBrowser == null)
             {
-                MediaControllerCallback = new MediaControllerCallback();
+                MediaControllerCallback = new MediaControllerCallback()
+                {
+                    OnMetadataChangedImpl = metadata =>
+                    {
+                        var test = metadata;
+                    },
+                    OnPlaybackStateChangedImpl = state =>
+                    {
+                        var mediaPlayerState = state.ToMediaPlayerState();
+                        if(mediaPlayerState == MediaPlayerState.Stopped)
+                        {
+                            //TODO: call UnregisterCallback(MediaBrowserSubscriptionCallback) and MediaBrowser.Disconnect() somewhere
+                            /*MediaBrowser.Unsubscribe(MediaBrowser.Root, MediaBrowserSubscriptionCallback);
+                            MediaBrowser.Disconnect();
+                            MediaController.UnregisterCallback(MediaControllerCallback);
+                            MediaController.Dispose();
+                            MediaController = null;
+                            IsInitialized = false;*/
+                        }
+                        MediaManager.OnStateChanged(this, new StateChangedEventArgs(mediaPlayerState));
+                    },
+                    OnSessionEventChangedImpl = (string @event, Bundle extras) =>
+                    {
+                        //Do nothing for now
+                    },
+                    OnSessionDestroyedImpl = () =>
+                    {
+                        //Do nothing for now
+                    },
+                    BinderDiedImpl = () =>
+                    {
+                        //Do nothing for now
+                    },
+                    OnSessionReadyImpl = () =>
+                    {
+                        //Do nothing for now
+                    }
+                };
                 MediaBrowserSubscriptionCallback = new MediaBrowserSubscriptionCallback();
 
                 // Connect a media browser just to get the media session token. There are other ways
                 // this can be done, for example by sharing the session token directly.
-                TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+                //TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
                 MediaBrowserConnectionCallback = new MediaBrowserConnectionCallback
                 {
                     OnConnectedImpl = () =>
                     {
-                        MediaControllerCallback.OnMetadataChangedImpl = metadata =>
-                        {
-                            var test = metadata;
-                        };
-
-                        MediaControllerCallback.OnPlaybackStateChangedImpl = state =>
-                        {
-                            MediaManager.OnStateChanged(this, new StateChangedEventArgs(state.ToMediaPlayerState()));
-                        };
-
-                        MediaControllerCallback.OnSessionEventChangedImpl = (string @event, Bundle extras) =>
-                        {
-                            //Do nothing for now
-                        };
-
                         MediaController = new MediaControllerCompat(Context, MediaBrowser.SessionToken);
                         MediaController.RegisterCallback(MediaControllerCallback);
 
@@ -71,19 +92,18 @@ namespace MediaManager.Platforms.Android.MediaSession
                         MediaBrowser.Subscribe(MediaBrowser.Root, MediaBrowserSubscriptionCallback);
 
                         IsInitialized = true;
-                        tcs.SetResult(IsInitialized);
+                        //tcs.SetResult(IsInitialized);
                     },
-
                     OnConnectionFailedImpl = () =>
                     {
                         IsInitialized = false;
-                        tcs.SetResult(IsInitialized);
+                        //tcs.SetResult(IsInitialized);
                     },
                     OnConnectionSuspendedImpl = () =>
                     {
-                        ;
+                        IsInitialized = false;
                     }
-                    };
+                };
 
                 MediaBrowser = new MediaBrowserCompat(Context,
                     new ComponentName(
@@ -100,72 +120,6 @@ namespace MediaManager.Platforms.Android.MediaSession
             }
 
             return IsInitialized;
-        }
-
-        //TODO: Maybe let the user call this
-        public async Task<bool> EnsureInitialized()
-        {
-            if (IsInitialized)
-                return true;
-
-            MediaControllerCallback = new MediaControllerCallback();
-            MediaBrowserSubscriptionCallback = new MediaBrowserSubscriptionCallback();
-
-            // Connect a media browser just to get the media session token. There are other ways
-            // this can be done, for example by sharing the session token directly.
-            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-            MediaBrowserConnectionCallback = new MediaBrowserConnectionCallback
-            {
-                OnConnectedImpl = () =>
-                {
-                    MediaControllerCallback.OnMetadataChangedImpl = metadata =>
-                    {
-                        var test = metadata;
-                    };
-
-                    MediaControllerCallback.OnPlaybackStateChangedImpl = state =>
-                    {
-                        MediaManager.OnStateChanged(this, new StateChangedEventArgs(state.ToMediaPlayerState()));
-                    };
-
-                    MediaControllerCallback.OnSessionEventChangedImpl = (string @event, Bundle extras) =>
-                    {
-                        //Do nothing for now
-                    };
-
-                    MediaController = new MediaControllerCompat(Context, MediaBrowser.SessionToken);
-                    MediaController.RegisterCallback(MediaControllerCallback);
-
-                    if (Context is Activity activity)
-                        MediaControllerCompat.SetMediaController(activity, MediaController);
-
-                    // Sync existing MediaSession state to the UI.
-                    // The first time these events are fired, the metadata and playbackstate are null. 
-                    MediaControllerCallback.OnMetadataChanged(MediaController.Metadata);
-                    MediaControllerCallback.OnPlaybackStateChanged(MediaController.PlaybackState);
-
-                    MediaBrowser.Subscribe(MediaBrowser.Root, MediaBrowserSubscriptionCallback);
-
-                    IsInitialized = true;
-                    tcs.SetResult(IsInitialized);
-                },
-
-                OnConnectionFailedImpl = () =>
-                {
-                    IsInitialized = false;
-                    tcs.SetResult(IsInitialized);
-                }
-            };
-
-            MediaBrowser = new MediaBrowserCompat(Context,
-                new ComponentName(
-                    Context,
-                    ServiceType),
-                    MediaBrowserConnectionCallback,
-                    null);
-
-            MediaBrowser.Connect();
-            return IsInitialized = await tcs.Task;
         }
     }
 }

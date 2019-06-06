@@ -125,14 +125,14 @@ namespace MediaManager.Platforms.Android.MediaSession
         public override void OnDestroy()
         {
             // Service is being killed, so make sure we release our resources
-            MediaManager.MediaQueue.QueueChanged -= MediaQueue_QueueChanged;
-            PlayerNotificationManager.SetPlayer(null);
-            PlayerNotificationManager.Dispose();
-            MediaManager.MediaPlayer.Dispose();
-            MediaManager.MediaPlayer = null;
+            //MediaManager.MediaQueue.QueueChanged -= MediaQueue_QueueChanged;
+            //PlayerNotificationManager.SetPlayer(null);
+            //PlayerNotificationManager.Dispose();
+            //MediaManager.MediaPlayer.Dispose();
+            //MediaManager.MediaPlayer = null;
             MediaSession.Active = false;
             MediaSession.Release();
-            MediaSession = null;
+            //MediaSession = null;
             StopForeground(true);
         }
 

@@ -110,7 +110,7 @@
                 android:layout_centerVertical="true"
                 local:MvxBind="Click PlayPreviousCommand"/>
             <ImageButton
-                android:src="@drawable/baseline_home_24"
+                android:src="@drawable/baseline_stop_24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageButton_playpause"

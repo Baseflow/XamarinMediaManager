@@ -31,8 +31,9 @@ namespace MediaManager.Platforms.Android.Playback
 
                 case PlaybackStateCompat.StateError:
                 case PlaybackStateCompat.StateStopped:
+                case PlaybackStateCompat.StateNone:
                     return MediaPlayerState.Stopped;
-
+                
                 default:
                     return MediaPlayerState.Stopped;
             }
