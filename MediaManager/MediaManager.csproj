@@ -41,6 +41,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'!='netstandard2.0'">
