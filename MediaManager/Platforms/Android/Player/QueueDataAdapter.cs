@@ -11,7 +11,7 @@ namespace MediaManager.Platforms.Android.Media
 {
     public class QueueDataAdapter : Java.Lang.Object, TimelineQueueEditor.IQueueDataAdapter
     {
-        private IMediaManager _mediaManager = CrossMediaManager.Current;
+        protected IMediaManager _mediaManager = CrossMediaManager.Android;
         private ConcatenatingMediaSource _mediaSource;
 
         public QueueDataAdapter(ConcatenatingMediaSource mediaSource)

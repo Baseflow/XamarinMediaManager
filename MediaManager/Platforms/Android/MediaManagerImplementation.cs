@@ -270,6 +270,7 @@ namespace MediaManager
         public override Task Stop()
         {
             MediaBrowserManager.MediaController.GetTransportControls().Stop();
+            (NotificationManager as MediaManager.Platforms.Android.Notifications.NotificationManager).Player = null;
             return Task.CompletedTask;
         }
 

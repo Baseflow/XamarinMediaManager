@@ -185,6 +185,7 @@ namespace MediaManager
             {
                 internalState = e.State;
                 StateChanged?.Invoke(sender, e);
+                NotificationManager.UpdateNotification();
             }
         }
 

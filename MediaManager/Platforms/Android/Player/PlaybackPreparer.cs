@@ -11,9 +11,9 @@ namespace MediaManager.Platforms.Android.Media
 {
     public class MediaSessionConnectorPlaybackPreparer : Java.Lang.Object, MediaSessionConnector.IPlaybackPreparer
     {
-        private IExoPlayer _player;
-        private ConcatenatingMediaSource _mediaSource;
-        private IMediaManager _mediaManager = CrossMediaManager.Current;
+        protected IExoPlayer _player;
+        protected ConcatenatingMediaSource _mediaSource;
+        protected IMediaManager _mediaManager = CrossMediaManager.Android;
 
         public MediaSessionConnectorPlaybackPreparer(IExoPlayer player, ConcatenatingMediaSource mediaSource)
         {

@@ -19,7 +19,10 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         protected MediaSessionCompat MediaSession { get; set; }
         protected MediaDescriptionAdapter MediaDescriptionAdapter { get; set; }
-        protected PlayerNotificationManager PlayerNotificationManager { get; set; }
+        protected PlayerNotificationManager PlayerNotificationManager {
+            get => (MediaManager.NotificationManager as Notifications.NotificationManager).PlayerNotificationManager;
+            set => (MediaManager.NotificationManager as Notifications.NotificationManager).PlayerNotificationManager = value;
+        }
         protected MediaControllerCompat MediaController { get; set; }
         protected MediaControllerCallback MediaControllerCallback { get; set; }
         protected NotificationListener NotificationListener { get; set; }
@@ -40,9 +43,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             base.OnCreate();
 
             PrepareMediaSession();
-
-            if(MediaManager.NotificationManager.Enabled)
-                PrepareNotificationManager();
+            PrepareNotificationManager();
         }
 
         protected virtual void PrepareMediaSession()
@@ -88,29 +89,8 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.SetNotificationListener(NotificationListener);
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
             PlayerNotificationManager.SetOngoing(true);
-            PlayerNotificationManager.SetPlayer(MediaManager.AndroidMediaPlayer.Player);
-
             PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.NotificationManager.ShowPlayPauseControls);
             PlayerNotificationManager.SetUseNavigationActions(MediaManager.NotificationManager.ShowNavigationControls);
-
-            MediaManager.MediaQueue.QueueChanged += MediaQueue_QueueChanged;
-        }
-
-        private void MediaQueue_QueueChanged(object sender, Queue.QueueChangedEventArgs e)
-        {
-            //TODO: Call PlayerNotificationManager.Invalidate(); on exoplayer 2.9.6 when metadata is updated
-
-            if (PlayerNotificationManager != null)
-            {
-                if (MediaManager.NotificationManager.ShowNavigationControls && MediaManager.MediaQueue.Count > 1)
-                {
-                    PlayerNotificationManager?.SetUseNavigationActions(true);
-                }
-                else
-                {
-                    PlayerNotificationManager?.SetUseNavigationActions(false);
-                }
-            }
         }
 
         public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)
@@ -125,7 +105,6 @@ namespace MediaManager.Platforms.Android.MediaSession
         public override void OnDestroy()
         {
             // Service is being killed, so make sure we release our resources
-            //MediaManager.MediaQueue.QueueChanged -= MediaQueue_QueueChanged;
             //PlayerNotificationManager.SetPlayer(null);
             //PlayerNotificationManager.Dispose();
             //MediaManager.MediaPlayer.Dispose();
