@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Android.App;
+using Android.Support.V4.Content;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.UI;
 using MediaManager.Platforms.Android.Media;
@@ -24,7 +25,7 @@ namespace MediaManager.Platforms.Android.Notifications
             set
             {
                 _player = value;
-                PlayerNotificationManager.SetPlayer(_player);
+                PlayerNotificationManager?.SetPlayer(_player);
             }
         }
 
@@ -51,7 +52,7 @@ namespace MediaManager.Platforms.Android.Notifications
             set
             {
                 base.ShowPlayPauseControls = value;
-                PlayerNotificationManager.SetUsePlayPauseActions(ShowPlayPauseControls);
+                PlayerNotificationManager?.SetUsePlayPauseActions(ShowPlayPauseControls);
             }
         }
 
@@ -61,7 +62,7 @@ namespace MediaManager.Platforms.Android.Notifications
             set
             {
                 base.ShowNavigationControls = value;
-                PlayerNotificationManager.SetUseNavigationActions(ShowNavigationControls);
+                PlayerNotificationManager?.SetUseNavigationActions(ShowNavigationControls);
             }
         }
 

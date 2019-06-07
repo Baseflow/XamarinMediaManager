@@ -6,6 +6,7 @@ using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 using Com.Google.Android.Exoplayer2.Source;
+using Java.Lang;
 
 namespace MediaManager.Platforms.Android.Media
 {
@@ -46,10 +47,13 @@ namespace MediaManager.Platforms.Android.Media
         public void OnPrepare()
         {
             _mediaSource.Clear();
-            foreach (var mediaItem in _mediaManager.MediaQueue)
-            {
-                _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
-            }
+
+            //TODO: Thread.Sleep hack to get it working. Seems fixed in 2.9.6 https://github.com/google/ExoPlayer/issues/5464
+            Thread.Sleep(200);
+
+            var mediaItems = _mediaManager.MediaQueue.Select(x => x.ToMediaSource()).ToList();
+            _mediaSource.AddMediaSources(mediaItems);
+
             _player.Prepare(_mediaSource);
 
             //Only in case of Prepare set PlayWhenReady to true because we use this to load in the whole queue

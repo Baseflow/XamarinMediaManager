@@ -91,6 +91,10 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.SetOngoing(true);
             PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.NotificationManager.ShowPlayPauseControls);
             PlayerNotificationManager.SetUseNavigationActions(MediaManager.NotificationManager.ShowNavigationControls);
+
+            //Must be called to start the connection
+            (MediaManager.NotificationManager as Notifications.NotificationManager).Player = MediaManager.AndroidMediaPlayer.Player;
+            //PlayerNotificationManager.SetPlayer(MediaManager.AndroidMediaPlayer.Player);
         }
 
         public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)
