@@ -23,8 +23,8 @@
 |Xamarin.Mac|Yes|3.0+|AVPlayer|
 |Xamarin.tvOS|Yes|10.0+|AVPlayer|
 |Tizen|Yes|4.0+|MediaPlayer|
-|Windows 10 UWP|Yes|10+|MediaElement|
-|Windows WPF|No|
+|Windows 10 UWP|Yes|10+|MediaPlayer|
+|Windows WPF|Yes|4.7.1+|MediaPlayer|
 
 ## Installation
 
@@ -87,18 +87,71 @@ public IList<string> Mp3UrlList => new[]{
 await CrossMediaManager.Current.Play(Mp3UrlList);
 ```
 
-### Play a non standard format like HLS, Dash or SS
-
-MediaManager will try to make a guess which media type or format is used. Sometimes this will not be picked up or be wrong, but you can enforce it by setting it yourself like this:
+### Other play possibilities
 
 ```csharp
-var item = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8");
-item.MediaType = MediaType.Hls;
-
-await CrossMediaManager.Current.Play(item);
+Task Play(IMediaItem mediaItem);
+Task<IMediaItem> Play(string uri);
+Task Play(IEnumerable<IMediaItem> items);
+Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items);
+Task<IMediaItem> Play(FileInfo file);
+Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo);
 ```
 
-By enforcing it there is still no guarantee that the native system actually is able to play the item. 
+### Control the player 
+
+```csharp
+await CrossMediaManager.Current.Play();
+await CrossMediaManager.Current.Pause();
+await CrossMediaManager.Current.PlayPause();
+await CrossMediaManager.Current.Stop();
+
+await CrossMediaManager.Current.StepForward();
+await CrossMediaManager.Current.StepBackward();
+
+await CrossMediaManager.Current.SeekToStart();
+await CrossMediaManager.Current.SeekTo(TimeSpan position);
+```
+
+### Control the Queue
+
+```csharp
+await CrossMediaManager.Current.PlayPrevious();
+await CrossMediaManager.Current.PlayNext();
+await CrossMediaManager.Current.PlayPreviousOrSeekToStart();
+await CrossMediaManager.Current.PlayQueueItem(IMediaItem mediaItem);
+
+void ToggleRepeat();
+void ToggleShuffle();
+```
+
+### Retrieve and set information
+
+```csharp
+Dictionary<string, string> RequestHeaders { get; set; }
+TimeSpan StepSize { get; set; }
+MediaPlayerState State { get; }
+TimeSpan Position { get; }
+TimeSpan Duration { get; }
+TimeSpan Buffered { get; }
+float Speed { get; set; }
+RepeatMode RepeatMode { get; set; }
+ShuffleMode ShuffleMode { get; set; }
+bool IsPlaying();
+bool IsBuffering();
+```
+
+### Hook into events
+
+```csharp
+event StateChangedEventHandler StateChanged;
+event PlayingChangedEventHandler PlayingChanged;
+event BufferingChangedEventHandler BufferingChanged;
+event PositionChangedEventHandler PositionChanged;
+event MediaItemFinishedEventHandler MediaItemFinished;
+event MediaItemChangedEventHandler MediaItemChanged;
+event MediaItemFailedEventHandler MediaItemFailed;
+```
 
 ### Retrieve metadata for media
 
@@ -123,66 +176,41 @@ Alternatively you could also use the `PropertyChanged` event to see updates to t
 
 ### Add Video Player to the UI
 
-For android we need a videoview
-```csharp
-playerView = view.FindViewById<VideoView>(Resource.Id.exoplayerview_activity_video);
+**On Xamarin.Forms the video view will automatically be attached to the player.**
+
+For android we need a `VideoView` in the axml layout.
+```xml
+<mediamanager.platforms.android.video.VideoView
+	android:id="@+id/your_videoview"
+	android:layout_width="match_parent"
+	android:layout_height="300dp" />
 ```
 
-For iOS we need to add a VideoView either in code, or in a Xib or Storyboard.
+Then find the view in code:
+```csharp
+playerView = view.FindViewById<VideoView>(Resource.Id.your_videoview);
+```
+
+For iOS, MacOS or tvOS we need to add a `VideoView` either in code, or in a Xib or Storyboard.
 ```csharp
 var playerView = new VideoView();
 View.AddSubview(playerView);
 ```
 
-Then for both android and iOS we have to add the player view to the mediaplayer
+Then for all platforms we have to add the player view to the `MediaPlayer`
 ```csharp
 CrossMediaManager.Current.MediaPlayer.SetPlayerView(playerView);
-```
-
-### Control the player 
-
-```csharp
-await CrossMediaManager.Current.Play();
-await CrossMediaManager.Current.Pause();
-await CrossMediaManager.Current.Stop();
-
-await CrossMediaManager.Current.StepForward();
-await CrossMediaManager.Current.StepBackward();
-
-await CrossMediaManager.Current.SeekToStart();
-await CrossMediaManager.Current.SeekTo(TimeSpan position);
-```
-
-### Control the Queue
-
-```csharp
-await CrossMediaManager.Current.PlayPrevious();
-await CrossMediaManager.Current.PlayNext();
-await CrossMediaManager.Current.PlayPreviousOrSeekToStart();
-await CrossMediaManager.Current.PlayQueueItem(mediaItem);
-```
-
-### Retrieve information
-
-```csharp
-CrossMediaManager.Current.MediaPlayer.State == MediaPlayerState.Playing;
-```
-
-### Hook into events
-
-```csharp
-event StateChangedEventHandler StateChanged;
-event PlayingChangedEventHandler PlayingChanged;
-event BufferingChangedEventHandler BufferingChanged;
-event MediaItemFinishedEventHandler MediaItemFinished;
-event MediaItemChangedEventHandler MediaItemChanged;
-event MediaItemFailedEventHandler MediaItemFailed;
-event PositionChangedEventHandler PositionChanged;
 ```
 
 ## Xamarin.Forms
 
 Adding a `VideoView` to a Page in Forms is easy as this:
+
+```xml
+<mm:VideoView VerticalOptions="FillAndExpand" Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" />
+```
+
+Your Xamarin.Forms page could look like this:
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -207,27 +235,39 @@ If you want a Page that contains a player you can open the `VideoPage`.
 Navigation.PushAsync(new MediaManager.Forms.VideoPage());
 ```
 
+### Play a non standard format like HLS, Dash or SS
+
+MediaManager will try to make a guess which media type or format is used. Sometimes this will not be picked up or be wrong, but you can enforce it by setting it yourself like this:
+
+```csharp
+var item = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8");
+item.MediaType = MediaType.Hls;
+
+await CrossMediaManager.Current.Play(item);
+```
+
+By enforcing it there is still no guarantee that the native system actually is able to play the item. 
+
 ## Platform specific features
 
-|Feature|Android|iOS, Mac, tvOS|UWP|Tizen|
-| ------------------- | :-----------: | :------------------: | :------------------: |:------------------: |
-|Audio|x|x|x|x|
-|Video|x|x|x|x|
-|Queue|x|x|x|x|
-|Notifications|x|x|x|x|
-|Volume|x|x|x|x|
-|Media Extraction|x|x|x|x|
+|Feature|Android|iOS, Mac, tvOS|UWP|Tizen|WPF
+| ------------------- | :-----------: | :------------------: | :------------------: |:------------------: |:------------------: |
+|Audio|x|x|x|x|x|
+|Video|x|x|x|x|x|
+|Queue|x|x|x|x|x|
+|Notifications|x|x|x|x|x|
+|Volume|x|x|x|x|x|
+|Media Extraction|x|x|x|x|x|
 |HLS|x|x|||
 |DASH|x||||
 |SmoothStreaming|x||||
 |ChromeCast|x||||
 |Airplay||x|||
-|Xamarin.Forms|x|x|x||
+|Xamarin.Forms|x|x|x||x|
 
-You can also directly access the native media player if you need it!
+You can also directly access the native platform implementation if you need it!
 ```csharp
-//Access ExoPlayer on Android
-CrossMediaManager.Android.MediaPlayer.Player.VideoDecoderCounters
+//Android
 CrossMediaManager.Android.*
 //iOS, MacOS or tvOS
 CrossMediaManager.Apple.*
@@ -235,12 +275,9 @@ CrossMediaManager.Apple.*
 CrossMediaManager.Windows.*
 //Tizen
 CrossMediaManager.Tizen.*
+//WPF
+CrossMediaManager.Wpf.*
 ```
-
-## Building the source code
-
-* On Windows you need Visual Studio 2019 with the latest Xamarin, .NET Core and UWP installed.
-* On Visual Studio for Mac 2019 multi-target is not supported. Therefor you need to compile from command line on a Mac. Simple go to the folder where the source code is and run: `msbuild MediaManager.sln /t:rebuild /p:Configuration=Release`
 
 ## **IMPORTANT**
 **Android:**
@@ -282,3 +319,8 @@ If you want to disable more you could add: `NSAllowsLocalNetworking` or even `NS
 **Tizen:**
 
 * You must request `http://tizen.org/privilege/internet`, `http://tizen.org/privilege/mediastorage`, and `http://tizen.org/privilege/externalstorage` privileges
+
+## Building the source code
+
+* On Windows you need Visual Studio 2019 with the latest Xamarin, .NET Core and UWP installed.
+* On Visual Studio for Mac 2019 multi-target is not supported. Therefor you need to compile from command line on a Mac. Simple go to the folder where the source code is and run: `msbuild MediaManager.sln /t:rebuild /p:Configuration=Release`
