@@ -155,7 +155,7 @@
       <Name>ElementPlayer.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\ElementPlayer.Forms.UI\ElementPlayer.Forms.UI.csproj">
-      <Project>{68AA36D7-1D43-4FCD-9BC2-798CBC0CDF08}</Project>
+      <Project>{1CEF2991-9907-47AE-901D-C3421F037364}</Project>
       <Name>ElementPlayer.Forms.UI</Name>
     </ProjectReference>
   </ItemGroup>

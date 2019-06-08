@@ -10,10 +10,7 @@ namespace MediaManager
         {
             if (mediaPlayer is IMediaPlayer<AVPlayer, VideoView> videoPlayer)
             {
-                var layer = AVPlayerLayer.FromPlayer(videoPlayer.Player);
-                layer.Frame = videoView.Frame;
-                layer.VideoGravity = AVLayerVideoGravity.ResizeAspect;
-                videoView.Layer.AddSublayer(layer);
+                videoView.Player = videoPlayer.Player;
                 videoPlayer.PlayerView = videoView;
             }
             else
