@@ -33,6 +33,13 @@ namespace MediaManager
             set => SetProperty(ref _context, value);
         }
 
+        private int _notificationIconResource = Resource.Drawable.exo_notification_play;
+        public int NotificationIconResource
+        {
+            get => _notificationIconResource;
+            set => SetProperty(ref _notificationIconResource, value);
+        }
+
         private PendingIntent _sessionActivityPendingIntent;
         public PendingIntent SessionActivityPendingIntent
         {

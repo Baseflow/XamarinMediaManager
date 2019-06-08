@@ -11,8 +11,9 @@ namespace MediaManager.Platforms.Android
 {
     public class MediaExtractor : IMediaExtractor
     {
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Android;
         protected Resources Resources => Resources.System;
-        protected Dictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
+        protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
 
         public MediaExtractor()
         {
@@ -178,7 +179,7 @@ namespace MediaManager.Platforms.Android
             }
 
             Bitmap bitmap = BitmapFactory.DecodeFile(albumArtPath);
-            return bitmap ?? BitmapFactory.DecodeResource(Resources, Resource.Drawable.exo_notification_play);
+            return bitmap ?? BitmapFactory.DecodeResource(Resources, MediaManager.NotificationIconResource);
         }
 
         protected virtual string TryGetAlbumArtPathByFilename(System.Uri baseUri, string filename)
