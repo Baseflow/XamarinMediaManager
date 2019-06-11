@@ -17,7 +17,7 @@ namespace MediaManager.Platforms.Android.MediaSession
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Android;
 
-        protected MediaSessionCompat MediaSession { get; set; }
+        //protected MediaSessionCompat MediaSession { get; set; }
         protected MediaDescriptionAdapter MediaDescriptionAdapter { get; set; }
         protected PlayerNotificationManager PlayerNotificationManager {
             get => (MediaManager.NotificationManager as Notifications.NotificationManager).PlayerNotificationManager;
@@ -48,16 +48,16 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         protected virtual void PrepareMediaSession()
         {
-            MediaSession = new MediaSessionCompat(this, nameof(MediaBrowserService));
-            MediaSession.SetSessionActivity(MediaManager.SessionActivityPendingIntent);
-            MediaSession.Active = true;
+            MediaManager.MediaSession = new MediaSessionCompat(this, nameof(MediaBrowserService));
+            MediaManager.MediaSession.SetSessionActivity(MediaManager.SessionActivityPendingIntent);
+            MediaManager.MediaSession.Active = true;
 
-            SessionToken = MediaSession.SessionToken;
+            SessionToken = MediaManager.MediaSession.SessionToken;
 
-            MediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
+            MediaManager.MediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
                                    MediaSessionCompat.FlagHandlesTransportControls);
 
-            MediaManager.AndroidMediaPlayer.MediaSession = MediaSession;
+            //MediaManager.AndroidMediaPlayer.MediaSession = MediaSession;
         }
 
         protected virtual void PrepareNotificationManager()
@@ -101,7 +101,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
             if (startIntent != null)
             {
-                MediaButtonReceiver.HandleIntent(MediaSession, startIntent);
+                MediaButtonReceiver.HandleIntent(MediaManager.MediaSession, startIntent);
             }
             return StartCommandResult.Sticky;
         }
@@ -113,8 +113,8 @@ namespace MediaManager.Platforms.Android.MediaSession
             //PlayerNotificationManager.Dispose();
             //MediaManager.MediaPlayer.Dispose();
             //MediaManager.MediaPlayer = null;
-            MediaSession.Active = false;
-            MediaSession.Release();
+            MediaManager.MediaSession.Active = false;
+            MediaManager.MediaSession.Release();
             //MediaSession = null;
             StopForeground(true);
         }

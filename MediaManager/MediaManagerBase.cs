@@ -58,7 +58,19 @@ namespace MediaManager
         public abstract IVolumeManager VolumeManager { get; set; }
         public abstract INotificationManager NotificationManager { get; set; }
 
-        public abstract MediaPlayerState State { get; }
+        private MediaPlayerState _state = MediaPlayerState.Stopped;
+        public virtual MediaPlayerState State
+        {
+            get {
+                return _state;
+            }
+            internal set
+            {
+                if(SetProperty(ref _state, value))
+                    OnStateChanged(this, new StateChangedEventArgs(State));
+            }
+        }
+
         public abstract TimeSpan Position { get; }
         public abstract TimeSpan Duration { get; }
         public abstract TimeSpan Buffered { get; }

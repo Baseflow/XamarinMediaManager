@@ -5,6 +5,7 @@ using AVFoundation;
 using CoreMedia;
 using Foundation;
 using MediaManager.Media;
+using MediaManager.Platforms.Apple.Playback;
 using MediaManager.Playback;
 using MediaManager.Video;
 
@@ -41,6 +42,9 @@ namespace MediaManager.Platforms.Apple.Media
         }
 
         private MediaPlayerState _state;
+        private object rateToken;
+        private object timeControlStatusToken;
+
         public MediaPlayerState State
         {
             get { return _state; }
@@ -56,6 +60,7 @@ namespace MediaManager.Platforms.Apple.Media
 
         protected virtual void Initialize()
         {
+            //TODO: Move to AVQueuePlayer
             Player = new AVPlayer();
 
             _state = MediaPlayerState.Stopped;
@@ -65,6 +70,10 @@ namespace MediaManager.Platforms.Apple.Media
             ErrorObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.NewErrorLogEntryNotification, DidErrorOcurred);
             PlaybackStalledObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.PlaybackStalledNotification, DidErrorOcurred);
 
+            var options = NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New;
+            rateToken = Player.AddObserver("rate", options, RateChanged);
+            timeControlStatusToken = Player.AddObserver("timeControlStatus", options, TimeControlStatusChanged);
+
             // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
             MediaManager.BufferingChanged += (sender, e) =>
             {
@@ -73,6 +82,15 @@ namespace MediaManager.Platforms.Apple.Media
                     (State == MediaPlayerState.Playing))
                     Player.Play();
             };
+        }
+
+        private void RateChanged(NSObservedChange obj)
+        {
+        }
+
+        private void TimeControlStatusChanged(NSObservedChange obj)
+        {
+            MediaManager.State = Player.TimeControlStatus.ToMediaPlayerState();
         }
 
         private void DidErrorOcurred(NSNotification obj)

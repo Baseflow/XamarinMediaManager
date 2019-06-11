@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Support.V4.Media.Session;
 using MediaManager.Media;
 using MediaManager.Platforms.Android;
 using MediaManager.Platforms.Android.Media;
@@ -28,9 +29,14 @@ namespace MediaManager
         }
 
         private Context _context = Application.Context;
-        public Context Context {
+        public Context Context
+        {
             get => _context;
-            set => SetProperty(ref _context, value);
+            set
+            {
+                if (SetProperty(ref _context, value))
+                    SessionActivityPendingIntent = BuildSessionActivityPendingIntent();
+            }
         }
 
         private int _notificationIconResource = Resource.Drawable.exo_notification_play;
@@ -40,6 +46,13 @@ namespace MediaManager
             set => SetProperty(ref _notificationIconResource, value);
         }
 
+        private MediaSessionCompat _mediaSession;
+        public MediaSessionCompat MediaSession
+        {
+            get => _mediaSession;
+            set => SetProperty(ref _mediaSession, value);
+        }
+
         private PendingIntent _sessionActivityPendingIntent;
         public PendingIntent SessionActivityPendingIntent
         {
@@ -47,18 +60,22 @@ namespace MediaManager
             {
                 if (_sessionActivityPendingIntent == null)
                 {
-                    Intent sessionIntent;
-                    // Build a PendingIntent that can be used to launch the UI.
-                    if (Context is Activity activity)
-                        sessionIntent = new Intent(Context, activity.GetType());
-                    else
-                        sessionIntent = Context.PackageManager.GetLaunchIntentForPackage(Context.PackageName);
-                    _sessionActivityPendingIntent = PendingIntent.GetActivity(Context, 0, sessionIntent, 0);
-
+                    _sessionActivityPendingIntent = BuildSessionActivityPendingIntent();
                 }
                 return _sessionActivityPendingIntent;
             }
             set => SetProperty(ref _sessionActivityPendingIntent, value);
+        }
+
+        public PendingIntent BuildSessionActivityPendingIntent()
+        {
+            Intent sessionIntent;
+            // Build a PendingIntent that can be used to launch the UI.
+            if (Context is Activity activity)
+                sessionIntent = new Intent(Context, activity.GetType());
+            else
+                sessionIntent = Context.PackageManager.GetLaunchIntentForPackage(Context.PackageName);
+            return PendingIntent.GetActivity(Context, 0, sessionIntent, 0);
         }
 
         public override void Init()

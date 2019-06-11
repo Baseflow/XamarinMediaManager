@@ -14,6 +14,7 @@ using Com.Google.Android.Exoplayer2.UI;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
 using MediaManager.Media;
+using MediaManager.Platforms.Android.MediaSession;
 using MediaManager.Platforms.Android.Playback;
 using MediaManager.Platforms.Android.Video;
 using MediaManager.Playback;
@@ -75,7 +76,7 @@ namespace MediaManager.Platforms.Android.Media
             get
             {
                 if (_player == null)
-                    Init();
+                    Initialize();
                 return _player;
             }
 
@@ -85,7 +86,7 @@ namespace MediaManager.Platforms.Android.Media
         public VideoView PlayerView { get; set; }
         public IVideoView VideoView => PlayerView;
 
-        public MediaSessionCompat MediaSession { get; set; }
+        public MediaSessionCompat MediaSession => MediaManager.MediaSession;
 
         public TimeSpan Position => TimeSpan.FromTicks(Player.CurrentPosition);
 
@@ -108,10 +109,10 @@ namespace MediaManager.Platforms.Android.Media
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;
 
-        protected virtual void Init()
+        protected virtual void Initialize()
         {
             if (MediaSession == null)
-                throw new ArgumentNullException(nameof(MediaSession));
+                throw new ArgumentNullException(nameof(MediaSession), $"{nameof(MediaSession)} cannot be null. Make sure the {nameof(MediaBrowserService)} sets it up");
 
             if (RequestHeaders?.Count > 0 && RequestHeaders.TryGetValue("User-Agent", out string userAgent))
                 UserAgent = userAgent;
@@ -214,36 +215,24 @@ namespace MediaManager.Platforms.Android.Media
 
         public Task Play()
         {
-            if (Player == null)
-                return Task.CompletedTask;
-
             Player.PlayWhenReady = true;
             return Task.CompletedTask;
         }
 
         public Task Pause()
         {
-            if (Player == null)
-                return Task.CompletedTask;
-
             Player.Stop();
             return Task.CompletedTask;
         }
 
         public Task SeekTo(TimeSpan position)
         {
-            if (Player == null)
-                return Task.CompletedTask;
-
             Player.SeekTo(position.Milliseconds);
             return Task.CompletedTask;
         }
 
         public Task Stop()
         {
-            if (Player == null)
-                return Task.CompletedTask;
-
             Player.Stop();
             return Task.CompletedTask;
         }

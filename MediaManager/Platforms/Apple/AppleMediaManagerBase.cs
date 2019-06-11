@@ -8,6 +8,7 @@ using MediaManager.Media;
 using MediaManager.Platforms.Apple;
 using MediaManager.Platforms.Apple.Media;
 using MediaManager.Platforms.Apple.Notifications;
+using MediaManager.Platforms.Apple.Playback;
 using MediaManager.Playback;
 using MediaManager.Queue;
 using MediaManager.Volume;
@@ -75,7 +76,7 @@ namespace MediaManager
         {
             get
             {
-                return MediaPlayer.State;
+                return AppleMediaPlayer.Player.TimeControlStatus.ToMediaPlayerState();
             }
         }
 

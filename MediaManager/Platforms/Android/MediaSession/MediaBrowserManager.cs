@@ -35,22 +35,21 @@ namespace MediaManager.Platforms.Android.MediaSession
                 {
                     OnMetadataChangedImpl = metadata =>
                     {
-                        var test = metadata;
+                        //var test = metadata;
                     },
                     OnPlaybackStateChangedImpl = state =>
                     {
-                        var mediaPlayerState = state.ToMediaPlayerState();
-                        if(mediaPlayerState == MediaPlayerState.Stopped)
+                        MediaManager.State = state.ToMediaPlayerState();
+                        /*if(MediaManager.State == MediaPlayerState.Stopped)
                         {
                             //TODO: call UnregisterCallback(MediaBrowserSubscriptionCallback) and MediaBrowser.Disconnect() somewhere
-                            /*MediaBrowser.Unsubscribe(MediaBrowser.Root, MediaBrowserSubscriptionCallback);
+                            MediaBrowser.Unsubscribe(MediaBrowser.Root, MediaBrowserSubscriptionCallback);
                             MediaBrowser.Disconnect();
                             MediaController.UnregisterCallback(MediaControllerCallback);
                             MediaController.Dispose();
                             MediaController = null;
-                            IsInitialized = false;*/
-                        }
-                        MediaManager.OnStateChanged(this, new StateChangedEventArgs(mediaPlayerState));
+                            IsInitialized = false;
+                        }*/
                     },
                     OnSessionEventChangedImpl = (string @event, Bundle extras) =>
                     {
