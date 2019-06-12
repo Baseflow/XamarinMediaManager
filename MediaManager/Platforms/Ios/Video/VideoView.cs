@@ -26,8 +26,11 @@ namespace MediaManager.Platforms.Ios.Video
             set
             {
                 _playerViewController = value;
-                _playerViewController.View.Frame = Frame;
-                AddSubview(_playerViewController.View);
+                if (_playerViewController != null)
+                {
+                    _playerViewController.View.Frame = Frame;
+                    AddSubview(_playerViewController.View);
+                }
             }
         }
 
@@ -88,6 +91,14 @@ namespace MediaManager.Platforms.Ios.Video
         public bool ShowControls {
             get => PlayerViewController.ShowsPlaybackControls;
             set => PlayerViewController.ShowsPlaybackControls = value;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            //Cleanup sublayars because otherwise video doesn't work a second time
+            PlayerViewController.View.Layer.Sublayers = null;
+            PlayerViewController = null;
+            base.Dispose(disposing);
         }
     }
 }

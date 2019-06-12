@@ -84,6 +84,13 @@ namespace MediaManager.Playback
         Task<bool> PlayQueueItem(IMediaItem mediaItem);
 
         /// <summary>
+        /// Will try to play a specific item from the Queue
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        Task<bool> PlayQueueItem(int index);
+
+        /// <summary>
         /// Seeks forward a fixed amount of seconds of the current MediaItem
         /// </summary>
         Task StepForward();

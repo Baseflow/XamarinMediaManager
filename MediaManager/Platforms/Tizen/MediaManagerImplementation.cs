@@ -15,7 +15,7 @@ namespace MediaManager
         public override IMediaExtractor MediaExtractor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IVolumeManager VolumeManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public override MediaPlayerState State => throw new NotImplementedException();
+        //public override MediaPlayerState State => throw new NotImplementedException();
 
         public override TimeSpan Position => throw new NotImplementedException();
 

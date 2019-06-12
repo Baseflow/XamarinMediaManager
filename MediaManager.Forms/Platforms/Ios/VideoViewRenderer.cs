@@ -36,6 +36,11 @@ namespace MediaManager.Forms.Platforms.iOS
 
         protected override void Dispose(bool disposing)
         {
+            //_videoView.PlayerViewController.RemoveFromParentViewController();
+            //_videoView.PlayerViewController.Dispose();
+            //_videoView.PlayerViewController = null;
+            //CrossMediaManager.Apple.MediaPlayer.
+            //_videoView.Dispose();
             _videoView = null;
             base.Dispose(disposing);
         }

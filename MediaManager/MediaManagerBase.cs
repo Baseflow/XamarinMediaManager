@@ -9,6 +9,7 @@ using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Queue;
 using MediaManager.Volume;
+using System.Linq;
 
 namespace MediaManager
 {
@@ -33,7 +34,7 @@ namespace MediaManager
         }
 
         private Dictionary<string, string> _requestHeaders = new Dictionary<string, string>();
-        public Dictionary<string, string> RequestHeaders
+        public virtual Dictionary<string, string> RequestHeaders
         {
             get => _requestHeaders;
             set => SetProperty(ref _requestHeaders, value);
@@ -59,7 +60,7 @@ namespace MediaManager
         public abstract INotificationManager NotificationManager { get; set; }
 
         private MediaPlayerState _state = MediaPlayerState.Stopped;
-        public virtual MediaPlayerState State
+        public MediaPlayerState State
         {
             get {
                 return _state;
@@ -159,6 +160,16 @@ namespace MediaManager
             return true;
         }
 
+        public virtual async Task<bool> PlayQueueItem(int index)
+        {
+            var mediaItem = MediaQueue.ElementAtOrDefault(index);
+            if(mediaItem == null)
+                return false;
+
+            await MediaPlayer.Play(mediaItem);
+            return true;
+        }
+
         public virtual Task StepBackward()
         {
             var seekTo = this.SeekTo(TimeSpan.FromSeconds(Double.IsNaN(Position.TotalSeconds) ? 0 : ((Position.TotalSeconds < StepSize.TotalSeconds) ? 0 : Position.TotalSeconds - StepSize.TotalSeconds)));
@@ -190,15 +201,15 @@ namespace MediaManager
         internal void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
         internal void OnPlayingChanged(object sender, PlayingChangedEventArgs e) => PlayingChanged?.Invoke(sender, e);
 
-        private MediaPlayerState internalState = MediaPlayerState.Stopped;
+        //private MediaPlayerState internalState = MediaPlayerState.Stopped;
         internal void OnStateChanged(object sender, StateChangedEventArgs e)
         {
-            if (e.State != internalState)
-            {
-                internalState = e.State;
+            //if (e.State != internalState)
+            ///{
+                //internalState = e.State;
                 StateChanged?.Invoke(sender, e);
-                NotificationManager.UpdateNotification();
-            }
+                NotificationManager?.UpdateNotification();
+            //}
         }
 
         internal void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);

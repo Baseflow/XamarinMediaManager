@@ -15,7 +15,7 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVPlayer>, new()
+    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer>, new()
     {
         private IMediaPlayer _mediaPlayer;
         public override IMediaPlayer MediaPlayer
@@ -72,13 +72,13 @@ namespace MediaManager
             set => SetProperty(ref _notificationManager, value);
         }
 
-        public override MediaPlayerState State
+        /*public override MediaPlayerState State
         {
             get
             {
                 return AppleMediaPlayer.Player.TimeControlStatus.ToMediaPlayerState();
             }
-        }
+        }*/
 
         public override TimeSpan Position
         {

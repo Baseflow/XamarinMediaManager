@@ -9,7 +9,7 @@
     x:TypeArguments="viewModels:PlayerViewModel">
     <ContentPage.Content>
         <StackLayout>
-            <mm:VideoView VerticalOptions="FillAndExpand" ShowControls="False" />
+            <mm:VideoView VerticalOptions="FillAndExpand" ShowControls="True" />
         </StackLayout>
     </ContentPage.Content>
 </mvx:MvxContentPage>

@@ -6,7 +6,7 @@ namespace MediaManager.Platforms.Apple
     public class VolumeManager : IVolumeManager
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
-        protected AVPlayer Player => MediaManager.AppleMediaPlayer.Player;
+        protected AVQueuePlayer Player => MediaManager.AppleMediaPlayer.Player;
 
         public VolumeManager()
         {

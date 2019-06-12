@@ -52,7 +52,7 @@ namespace MediaManager
         /// <summary>
         /// Reading the current status of the player
         /// </summary>
-        MediaPlayerState State { get; }
+        //MediaPlayerState State { get; }
 
         /// <summary>
         /// Setting or getting whether we are in the repeat state

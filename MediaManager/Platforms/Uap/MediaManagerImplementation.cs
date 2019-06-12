@@ -77,7 +77,7 @@ namespace MediaManager
             set => SetProperty(ref _notificationManager, value);
         }
 
-        public override Playback.MediaPlayerState State => WindowsMediaPlayer?.Player?.PlaybackSession?.PlaybackState.ToMediaPlayerState() ?? Playback.MediaPlayerState.Stopped;
+        //public override Playback.MediaPlayerState State => WindowsMediaPlayer?.Player?.PlaybackSession?.PlaybackState.ToMediaPlayerState() ?? Playback.MediaPlayerState.Stopped;
 
         public override TimeSpan Position => WindowsMediaPlayer?.Player?.PlaybackSession?.Position ?? TimeSpan.Zero;
 

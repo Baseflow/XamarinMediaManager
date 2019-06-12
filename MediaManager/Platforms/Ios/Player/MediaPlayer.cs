@@ -10,7 +10,7 @@ using UIKit;
 
 namespace MediaManager.Platforms.Ios.Media
 {
-    public class MediaPlayer : AppleMediaPlayer, IMediaPlayer<AVPlayer, VideoView>
+    public class MediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer, VideoView>
     {
         public VideoView PlayerView { get; set; }
         public override IVideoView VideoView => PlayerView;
