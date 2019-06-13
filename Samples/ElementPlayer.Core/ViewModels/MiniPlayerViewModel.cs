@@ -17,7 +17,6 @@ namespace ElementPlayer.Core.ViewModels
             MediaManager = mediaManager;
             PlayPauseCommand = new MvxAsyncCommand(MediaManager.PlayPause);
 
-            MediaManager.PlayingChanged += MediaManager_PlayingChanged;
             MediaManager.PositionChanged += Current_PositionChanged;
         }
 
@@ -26,11 +25,6 @@ namespace ElementPlayer.Core.ViewModels
         public override void Prepare(IMediaItem mediaItem)
         {
             MediaItemToPlay = mediaItem;
-        }
-
-        private void MediaManager_PlayingChanged(object sender, PlayingChangedEventArgs e)
-        {
-            RaiseAllPropertiesChanged();
         }
 
         public override string Title => "Player";
@@ -74,11 +68,6 @@ namespace ElementPlayer.Core.ViewModels
         private void Current_BufferingChanged(object sender, BufferingChangedEventArgs e)
         {
             Log.Debug($"Total buffered time is {e.Buffered};");
-        }
-
-        private void Current_PlayingChanged(object sender, PlayingChangedEventArgs e)
-        {
-            Log.Debug($"Total played is {e.Position} of {e.Duration};");
         }
 
         private void Current_PositionChanged(object sender, PositionChangedEventArgs e)

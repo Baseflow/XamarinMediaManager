@@ -62,19 +62,27 @@ namespace MediaManager
         private MediaPlayerState _state = MediaPlayerState.Stopped;
         public MediaPlayerState State
         {
-            get {
-                return _state;
-            }
+            get => _state;
             internal set
             {
-                if(SetProperty(ref _state, value))
+                if (SetProperty(ref _state, value))
                     OnStateChanged(this, new StateChangedEventArgs(State));
             }
         }
 
         public abstract TimeSpan Position { get; }
         public abstract TimeSpan Duration { get; }
-        public abstract TimeSpan Buffered { get; }
+
+        private TimeSpan _buffered;
+        public TimeSpan Buffered {
+            get => _buffered;
+            internal set
+            {
+                if(SetProperty(ref _buffered, value))
+                    OnBufferingChanged(this, new BufferingChangedEventArgs(Buffered));
+            }
+        }
+
         public abstract float Speed { get; set; }
         public abstract RepeatMode RepeatMode { get; set; }
         public abstract ShuffleMode ShuffleMode { get; set; }
@@ -187,7 +195,6 @@ namespace MediaManager
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event StateChangedEventHandler StateChanged;
-        public event PlayingChangedEventHandler PlayingChanged;
         public event BufferingChangedEventHandler BufferingChanged;
         public event PositionChangedEventHandler PositionChanged;
 
@@ -199,20 +206,13 @@ namespace MediaManager
         internal void OnMediaItemChanged(object sender, MediaItemEventArgs e) => MediaItemChanged?.Invoke(sender, e);
         internal void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
         internal void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
-        internal void OnPlayingChanged(object sender, PlayingChangedEventArgs e) => PlayingChanged?.Invoke(sender, e);
+        internal void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
 
-        //private MediaPlayerState internalState = MediaPlayerState.Stopped;
         internal void OnStateChanged(object sender, StateChangedEventArgs e)
         {
-            //if (e.State != internalState)
-            ///{
-                //internalState = e.State;
-                StateChanged?.Invoke(sender, e);
-                NotificationManager?.UpdateNotification();
-            //}
+            StateChanged?.Invoke(sender, e);
+            NotificationManager?.UpdateNotification();
         }
-
-        internal void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -231,7 +231,7 @@ namespace MediaManager
             return true;
         }
 
-        private TimeSpan PreviousPosition = new TimeSpan();
+        protected TimeSpan PreviousPosition = new TimeSpan();
 
         protected virtual void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -243,14 +243,10 @@ namespace MediaManager
                 PreviousPosition = Position;
                 OnPositionChanged(this, new PositionChangedEventArgs(Position));
             }
-            if (this.IsPlaying())
-            {
-                OnPlayingChanged(this, new PlayingChangedEventArgs(Position, Duration));
-            }
-            if (this.IsBuffering())
+            /*if (this.IsBuffering())
             {
                 OnBufferingChanged(this, new BufferingChangedEventArgs(Buffered));
-            }
+            }*/
         }
     }
 }

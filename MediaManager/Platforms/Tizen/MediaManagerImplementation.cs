@@ -21,8 +21,6 @@ namespace MediaManager
 
         public override TimeSpan Duration => throw new NotImplementedException();
 
-        public override TimeSpan Buffered => throw new NotImplementedException();
-
         public override float Speed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override RepeatMode RepeatMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override ShuffleMode ShuffleMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

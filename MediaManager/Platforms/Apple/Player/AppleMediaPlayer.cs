@@ -14,10 +14,10 @@ namespace MediaManager.Platforms.Apple.Media
 {
     public abstract class AppleMediaPlayer : NSObject, IMediaPlayer<AVQueuePlayer>
     {
-        private NSObject DidFinishPlayingObserver;
-        private NSObject ItemFailedToPlayToEndTimeObserver;
-        private NSObject ErrorObserver;
-        private NSObject PlaybackStalledObserver;
+        private NSObject didFinishPlayingObserver;
+        private NSObject itemFailedToPlayToEndTimeObserver;
+        private NSObject errorObserver;
+        private NSObject playbackStalledObserver;
 
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
 
@@ -71,10 +71,10 @@ namespace MediaManager.Platforms.Apple.Media
 
             //_state = MediaPlayerState.Stopped;
 
-            DidFinishPlayingObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification, DidFinishPlaying);
-            ItemFailedToPlayToEndTimeObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.ItemFailedToPlayToEndTimeNotification, DidErrorOcurred);
-            ErrorObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.NewErrorLogEntryNotification, DidErrorOcurred);
-            PlaybackStalledObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.PlaybackStalledNotification, DidErrorOcurred);
+            didFinishPlayingObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification, DidFinishPlaying);
+            itemFailedToPlayToEndTimeObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.ItemFailedToPlayToEndTimeNotification, DidErrorOcurred);
+            errorObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.NewErrorLogEntryNotification, DidErrorOcurred);
+            playbackStalledObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.PlaybackStalledNotification, DidErrorOcurred);
 
             var options = NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New;
             rateToken = Player.AddObserver("rate", options, RateChanged);
@@ -85,41 +85,40 @@ namespace MediaManager.Platforms.Apple.Media
             playbackLikelyToKeepUpToken = Player.AddObserver("currentItem.playbackLikelyToKeepUp", options, PlaybackLikelyToKeepUpChanged);
             playbackBufferFullToken = Player.AddObserver("currentItem.playbackBufferFull", options, PlaybackBufferFullChanged);
             playbackBufferEmptyToken = Player.AddObserver("currentItem.playbackBufferEmpty", options, PlaybackBufferEmptyChanged);
-
-            // Watch the buffering status. If it changes, we may have to resume because the playing stopped because of bad network-conditions.
-            /*MediaManager.BufferingChanged += (sender, e) =>
-            {
-                // If the player is ready to play, it's paused and the status is still on PLAYING, go on!
-                if ((Player.Status == AVPlayerStatus.ReadyToPlay) && (Player.Rate == 0.0f) &&
-                    (State == MediaPlayerState.Playing))
-                    Player.Play();
-            };*/
         }
 
         private void StatusChanged(NSObservedChange obj)
         {
             MediaManager.State = Player.Status.ToMediaPlayerState();
-            var state = Player.TimeControlStatus.ToMediaPlayerState();
         }
 
         private void PlaybackBufferEmptyChanged(NSObservedChange obj)
         {
-
         }
 
         private void PlaybackBufferFullChanged(NSObservedChange obj)
         {
-
         }
 
         private void PlaybackLikelyToKeepUpChanged(NSObservedChange obj)
         {
-
         }
 
         private void ReasonForWaitingToPlayChanged(NSObservedChange obj)
         {
-
+            var reason = Player.ReasonForWaitingToPlay;
+            if(reason == null)
+            {
+            }
+            else if(reason == AVPlayer.WaitingToMinimizeStallsReason)
+            {
+            }
+            else if(reason == AVPlayer.WaitingWhileEvaluatingBufferingRateReason)
+            {
+            }
+            else if (reason == AVPlayer.WaitingWithNoItemToPlayReason)
+            {
+            }
         }
 
         private void LoadedTimeRangesChanged(NSObservedChange obj)
@@ -132,21 +131,19 @@ namespace MediaManager.Platforms.Apple.Media
                         Player.CurrentItem.LoadedTimeRanges.Select(
                             tr => tr.CMTimeRangeValue.Start.Seconds + tr.CMTimeRangeValue.Duration.Seconds).Max());
 
-                MediaManager.OnBufferingChanged(this, new BufferingChangedEventArgs(buffered));
+                MediaManager.Buffered = buffered;
             }
         }
 
         private void RateChanged(NSObservedChange obj)
         {
-
+            //TODO: Maybe set the rate from here
         }
 
         private void TimeControlStatusChanged(NSObservedChange obj)
         {
             if(Player.Status != AVPlayerStatus.Unknown)
                 MediaManager.State = Player.TimeControlStatus.ToMediaPlayerState();
-
-            //var state = Player.Status.ToMediaPlayerState();
         }
 
         private void DidErrorOcurred(NSNotification obj)
@@ -170,7 +167,6 @@ namespace MediaManager.Platforms.Apple.Media
         public Task Pause()
         {
             Player.Pause();
-            //State = MediaPlayerState.Stopped;
             return Task.CompletedTask;
         }
 
@@ -184,7 +180,6 @@ namespace MediaManager.Platforms.Apple.Media
             Player.ReplaceCurrentItemWithPlayerItem(item);
             Player.Play();
 
-            //State = MediaPlayerState.Playing;
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
             return Task.CompletedTask;
         }
@@ -192,7 +187,6 @@ namespace MediaManager.Platforms.Apple.Media
         public Task Play()
         {
             Player.Play();
-            //State = MediaPlayerState.Playing;
             return Task.CompletedTask;
         }
 
@@ -201,11 +195,11 @@ namespace MediaManager.Platforms.Apple.Media
             await Player.SeekAsync(CMTime.FromSeconds(position.TotalSeconds, 1));
         }
 
-        public Task Stop()
+        public async Task Stop()
         {
             Player.Pause();
-            //State = MediaPlayerState.Stopped;
-            return Task.CompletedTask;
+            await SeekTo(TimeSpan.Zero);
+            MediaManager.State = MediaPlayerState.Stopped;
         }
 
         public RepeatMode RepeatMode { get; set; } = RepeatMode.Off;
@@ -213,11 +207,19 @@ namespace MediaManager.Platforms.Apple.Media
         protected override void Dispose(bool disposing)
         {
             NSNotificationCenter.DefaultCenter.RemoveObservers(new List<NSObject>(){
-                DidFinishPlayingObserver,
-                ItemFailedToPlayToEndTimeObserver,
-                ErrorObserver,
-                PlaybackStalledObserver
+                didFinishPlayingObserver,
+                itemFailedToPlayToEndTimeObserver,
+                errorObserver,
+                playbackStalledObserver
             });
+
+            rateToken?.Dispose();
+            timeControlStatusToken?.Dispose();
+            reasonForWaitingToPlayToken?.Dispose();
+            playbackLikelyToKeepUpToken?.Dispose();
+            loadedTimeRangesToken?.Dispose();
+            playbackBufferFullToken?.Dispose();
+            playbackBufferEmptyToken?.Dispose();
 
             base.Dispose(disposing);
         }

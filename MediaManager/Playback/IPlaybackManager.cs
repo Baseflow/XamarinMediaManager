@@ -7,9 +7,9 @@ using MediaManager.Queue;
 namespace MediaManager.Playback
 {
     public delegate void StateChangedEventHandler(object sender, StateChangedEventArgs e);
-    public delegate void PlayingChangedEventHandler(object sender, PlayingChangedEventArgs e);
     public delegate void BufferingChangedEventHandler(object sender, BufferingChangedEventArgs e);
     public delegate void PositionChangedEventHandler(object sender, PositionChangedEventArgs e);
+
     public delegate void MediaItemFinishedEventHandler(object sender, MediaItemEventArgs e);
     public delegate void MediaItemChangedEventHandler(object sender, MediaItemEventArgs e);
     public delegate void MediaItemFailedEventHandler(object sender, MediaItemFailedEventArgs e);
@@ -107,8 +107,6 @@ namespace MediaManager.Playback
         Task SeekTo(TimeSpan position);
 
         event StateChangedEventHandler StateChanged;
-
-        event PlayingChangedEventHandler PlayingChanged;
 
         event BufferingChangedEventHandler BufferingChanged;
 

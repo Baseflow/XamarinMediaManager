@@ -79,7 +79,7 @@ namespace MediaManager
 
         public override TimeSpan Duration => NetMediaPlayer?.Player?.NaturalDuration.TimeSpan ?? TimeSpan.Zero;
 
-        public override TimeSpan Buffered => TimeSpan.FromMilliseconds(NetMediaPlayer?.Player?.BufferingProgress ?? 0);
+        //public override TimeSpan Buffered => TimeSpan.FromMilliseconds(NetMediaPlayer?.Player?.BufferingProgress ?? 0);
 
         public override float Speed
         {

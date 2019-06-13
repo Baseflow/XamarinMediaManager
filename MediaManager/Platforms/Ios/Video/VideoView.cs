@@ -96,6 +96,7 @@ namespace MediaManager.Platforms.Ios.Video
         protected override void Dispose(bool disposing)
         {
             //Cleanup sublayars because otherwise video doesn't work a second time
+            //PlayerViewController.RemoveFromParentViewController();
             PlayerViewController.View.Layer.Sublayers = null;
             PlayerViewController = null;
             base.Dispose(disposing);

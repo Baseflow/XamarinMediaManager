@@ -108,23 +108,6 @@ namespace MediaManager
             }
         }
 
-        public override TimeSpan Buffered
-        {
-            get
-            {
-                var buffered = TimeSpan.Zero;
-                if (AppleMediaPlayer?.Player?.CurrentItem != null)
-                {
-                    buffered =
-                        TimeSpan.FromSeconds(
-                            AppleMediaPlayer.Player.CurrentItem.LoadedTimeRanges.Select(
-                                tr => tr.CMTimeRangeValue.Start.Seconds + tr.CMTimeRangeValue.Duration.Seconds).Max());
-                }
-
-                return buffered;
-            }
-        }
-
         public override float Speed
         {
             get

@@ -83,7 +83,7 @@ namespace MediaManager
 
         public override TimeSpan Duration => WindowsMediaPlayer?.Player?.PlaybackSession?.NaturalDuration ?? TimeSpan.Zero;
 
-        public override TimeSpan Buffered => TimeSpan.FromMilliseconds(WindowsMediaPlayer?.Player?.PlaybackSession?.BufferingProgress ?? 0);
+        //public override TimeSpan Buffered => TimeSpan.FromMilliseconds(WindowsMediaPlayer?.Player?.PlaybackSession?.BufferingProgress ?? 0);
 
         public override float Speed
         {
