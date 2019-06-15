@@ -148,6 +148,7 @@ namespace MediaManager.Platforms.Apple.Media
 
         private void DidErrorOcurred(NSNotification obj)
         {
+            //TODO: Error should not be null after this or it will crash.
             var error = Player?.CurrentItem?.Error;
             MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue?.Current, new NSErrorException(error), error?.LocalizedDescription));
         }
