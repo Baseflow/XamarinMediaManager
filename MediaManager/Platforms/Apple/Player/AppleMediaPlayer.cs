@@ -43,7 +43,7 @@ namespace MediaManager.Platforms.Apple.Media
         }
         
         private IDisposable rateToken;
-        private object statusToken;
+        private IDisposable statusToken;
         private IDisposable timeControlStatusToken;
         private IDisposable loadedTimeRangesToken;
         private IDisposable reasonForWaitingToPlayToken;
@@ -51,25 +51,12 @@ namespace MediaManager.Platforms.Apple.Media
         private IDisposable playbackBufferFullToken;
         private IDisposable playbackBufferEmptyToken;
 
-        /*private MediaPlayerState _state;
-        public MediaPlayerState State
-        {
-            get { return _state; }
-            private set
-            {
-                _state = value;
-                MediaManager.OnStateChanged(this, new StateChangedEventArgs(_state));
-            }
-        }*/
-
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;
 
         protected virtual void Initialize()
         {
             Player = new AVQueuePlayer();
-
-            //_state = MediaPlayerState.Stopped;
 
             didFinishPlayingObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.DidPlayToEndTimeNotification, DidFinishPlaying);
             itemFailedToPlayToEndTimeObserver = NSNotificationCenter.DefaultCenter.AddObserver(AVPlayerItem.ItemFailedToPlayToEndTimeNotification, DidErrorOcurred);
@@ -149,7 +136,7 @@ namespace MediaManager.Platforms.Apple.Media
         private void DidErrorOcurred(NSNotification obj)
         {
             //TODO: Error should not be null after this or it will crash.
-            var error = Player?.CurrentItem?.Error;
+            var error = Player?.CurrentItem?.Error ?? new NSError();
             MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue?.Current, new NSErrorException(error), error?.LocalizedDescription));
         }
 
@@ -215,6 +202,7 @@ namespace MediaManager.Platforms.Apple.Media
             });
 
             rateToken?.Dispose();
+            statusToken?.Dispose();
             timeControlStatusToken?.Dispose();
             reasonForWaitingToPlayToken?.Dispose();
             playbackLikelyToKeepUpToken?.Dispose();

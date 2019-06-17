@@ -8,11 +8,11 @@ using Tizen.Multimedia;
 
 namespace MediaManager.Platforms.Tizen.Media
 {
-    public class MediaPlayer : IMediaPlayer<Player, VideoView>
+    public class TizenMediaPlayer : IMediaPlayer<Player, VideoView>
     {
         public Player Player { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public MediaPlayerState State => throw new NotImplementedException();
+        //public MediaPlayerState State => throw new NotImplementedException();
 
         public VideoView PlayerView { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public RepeatMode RepeatMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

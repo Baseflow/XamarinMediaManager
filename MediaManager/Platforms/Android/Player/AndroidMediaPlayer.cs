@@ -38,17 +38,6 @@ namespace MediaManager.Platforms.Android.Media
 
         protected Context Context => CrossMediaManager.Android.Context;
 
-        public MediaPlayerState State
-        {
-            get
-            {
-                if (MediaSession == null || !MediaSession.Active)
-                    return MediaPlayerState.Stopped;
-
-                return MediaSession.Controller.PlaybackState.ToMediaPlayerState();
-            }
-        }
-
         protected string UserAgent { get; set; }
         protected DefaultHttpDataSourceFactory HttpDataSourceFactory { get; set; }
         public static DefaultDataSourceFactory DataSourceFactory { get; set; }
@@ -87,12 +76,6 @@ namespace MediaManager.Platforms.Android.Media
         public IVideoView VideoView => PlayerView;
 
         public MediaSessionCompat MediaSession => MediaManager.MediaSession;
-
-        public TimeSpan Position => TimeSpan.FromTicks(Player.CurrentPosition);
-
-        public TimeSpan Duration => TimeSpan.FromTicks(Player.Duration);
-
-        public TimeSpan Buffered => TimeSpan.FromTicks(Player.BufferedPosition);
 
         public RepeatMode RepeatMode
         {
@@ -175,10 +158,16 @@ namespace MediaManager.Platforms.Android.Media
                             break;
                         case Com.Google.Android.Exoplayer2.Player.StateIdle:
                         case Com.Google.Android.Exoplayer2.Player.StateBuffering:
+                            //MediaManager.Buffered = TimeSpan.FromMilliseconds(Player.BufferedPosition);
+                            break;
                         case Com.Google.Android.Exoplayer2.Player.StateReady:
                         default:
                             break;
                     }
+                },
+                OnLoadingChangedImpl = (bool isLoading) =>
+                {
+                    MediaManager.Buffered = TimeSpan.FromMilliseconds(Player.BufferedPosition);
                 }
             };
             Player.AddListener(PlayerEventListener);

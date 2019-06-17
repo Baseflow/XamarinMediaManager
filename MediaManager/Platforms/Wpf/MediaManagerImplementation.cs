@@ -73,13 +73,9 @@ namespace MediaManager
             set => SetProperty(ref _notificationManager, value);
         }
 
-        //public override Playback.MediaPlayerState State => Playback.MediaPlayerState.Stopped;
-
         public override TimeSpan Position => NetMediaPlayer?.Player?.Position ?? TimeSpan.Zero;
 
         public override TimeSpan Duration => NetMediaPlayer?.Player?.NaturalDuration.TimeSpan ?? TimeSpan.Zero;
-
-        //public override TimeSpan Buffered => TimeSpan.FromMilliseconds(NetMediaPlayer?.Player?.BufferingProgress ?? 0);
 
         public override float Speed
         {

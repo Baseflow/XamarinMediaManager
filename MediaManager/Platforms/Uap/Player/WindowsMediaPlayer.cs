@@ -16,7 +16,6 @@ namespace MediaManager.Platforms.Uap.Media
     {
         public WindowsMediaPlayer()
         {
-            Initialize();
         }
 
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Windows;
@@ -24,9 +23,20 @@ namespace MediaManager.Platforms.Uap.Media
         public VideoView PlayerView { get; set; }
         public IVideoView VideoView => PlayerView;
 
-        public MediaPlayer Player { get; set; }
-
-        public Playback.MediaPlayerState State => Player.PlaybackSession.PlaybackState.ToMediaPlayerState();
+        private MediaPlayer _player;
+        public MediaPlayer Player
+        {
+            get
+            {
+                if (_player == null)
+                    Initialize();
+                return _player;
+            }
+            set
+            {
+                _player = value;
+            }
+        }
 
         public RepeatMode RepeatMode { get; set; }
 
@@ -35,18 +45,21 @@ namespace MediaManager.Platforms.Uap.Media
 
         public void Initialize()
         {
-            if (Player != null)
-                return;
-
             Player = new MediaPlayer();
             Player.MediaEnded += Player_MediaEnded;
             Player.MediaFailed += Player_MediaFailed;
+            Player.PlaybackSession.BufferingProgressChanged += PlaybackSession_BufferingProgressChanged;
             Player.PlaybackSession.PlaybackStateChanged += PlaybackSession_PlaybackStateChanged;
+        }
+
+        private void PlaybackSession_BufferingProgressChanged(MediaPlaybackSession sender, object args)
+        {
+            MediaManager.Buffered = TimeSpan.FromMilliseconds(sender.BufferingProgress);
         }
 
         private void PlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
         {
-            MediaManager.OnStateChanged(this, new StateChangedEventArgs(sender.PlaybackState.ToMediaPlayerState()));
+            MediaManager.State = sender.PlaybackState.ToMediaPlayerState();
         }
 
         private void Player_MediaFailed(MediaPlayer sender, MediaPlayerFailedEventArgs args)
@@ -90,14 +103,19 @@ namespace MediaManager.Platforms.Uap.Media
             return Task.CompletedTask;
         }
 
-        public Task Stop()
+        public async Task Stop()
         {
             Player.Pause();
-            return Task.CompletedTask;
+            await SeekTo(TimeSpan.Zero);
+            MediaManager.State = Playback.MediaPlayerState.Stopped;
         }
 
         public void Dispose()
         {
+            Player.MediaEnded -= Player_MediaEnded;
+            Player.MediaFailed -= Player_MediaFailed;
+            Player.PlaybackSession.PlaybackStateChanged -= PlaybackSession_PlaybackStateChanged;
+            Player.Dispose();
             Player = null;
         }
     }

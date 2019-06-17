@@ -14,7 +14,6 @@ namespace MediaManager.Platforms.Wpf.Player
     {
         public WpfMediaPlayer()
         {
-            Initialize();
         }
 
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Wpf;
@@ -22,10 +21,20 @@ namespace MediaManager.Platforms.Wpf.Player
         public VideoView PlayerView { get; set; }
         public IVideoView VideoView => PlayerView;
 
-        public MediaPlayer Player { get; set; }
-
-        public Playback.MediaPlayerState State => MediaPlayerState.Stopped;
-
+        private MediaPlayer _player;
+        public MediaPlayer Player
+        {
+            get
+            {
+                if (_player == null)
+                    Initialize();
+                return _player;
+            }
+            set
+            {
+                _player = value;
+            }
+        }
         public RepeatMode RepeatMode { get; set; }
 
         public event BeforePlayingEventHandler BeforePlaying;
@@ -33,10 +42,36 @@ namespace MediaManager.Platforms.Wpf.Player
 
         public void Initialize()
         {
-            if (Player != null)
-                return;
-
             Player = new MediaPlayer();
+            Player.MediaEnded += Player_MediaEnded;
+            Player.MediaOpened += Player_MediaOpened;
+            Player.BufferingStarted += Player_BufferingStarted;
+            Player.BufferingEnded += Player_BufferingEnded;
+            Player.MediaFailed += Player_MediaFailed;
+        }
+
+        private void Player_MediaFailed(object sender, ExceptionEventArgs e)
+        {
+            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, e.ErrorException, e.ErrorException.Message));
+        }
+
+        private void Player_BufferingEnded(object sender, EventArgs e)
+        {
+            MediaManager.Buffered = TimeSpan.FromMilliseconds(Player.BufferingProgress);
+        }
+
+        private void Player_BufferingStarted(object sender, EventArgs e)
+        {
+            MediaManager.Buffered = TimeSpan.FromMilliseconds(Player.BufferingProgress);
+        }
+
+        private void Player_MediaOpened(object sender, EventArgs e)
+        {
+        }
+
+        private void Player_MediaEnded(object sender, EventArgs e)
+        {
+            MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
         }
 
         public Task Pause()
@@ -75,6 +110,11 @@ namespace MediaManager.Platforms.Wpf.Player
 
         public void Dispose()
         {
+            Player.MediaEnded -= Player_MediaEnded;
+            Player.MediaOpened -= Player_MediaOpened;
+            Player.BufferingStarted -= Player_BufferingStarted;
+            Player.BufferingEnded -= Player_BufferingEnded;
+            Player.MediaFailed -= Player_MediaFailed;
             Player = null;
         }
     }

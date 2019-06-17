@@ -243,10 +243,6 @@ namespace MediaManager
                 PreviousPosition = Position;
                 OnPositionChanged(this, new PositionChangedEventArgs(Position));
             }
-            /*if (this.IsBuffering())
-            {
-                OnBufferingChanged(this, new BufferingChangedEventArgs(Buffered));
-            }*/
         }
     }
 }

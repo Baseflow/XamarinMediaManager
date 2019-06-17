@@ -50,11 +50,6 @@ namespace MediaManager
         Task SeekTo(TimeSpan position);
 
         /// <summary>
-        /// Reading the current status of the player
-        /// </summary>
-        //MediaPlayerState State { get; }
-
-        /// <summary>
         /// Setting or getting whether we are in the repeat state
         /// </summary>
         RepeatMode RepeatMode { get; set; }

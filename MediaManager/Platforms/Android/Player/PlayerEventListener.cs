@@ -18,7 +18,6 @@ namespace MediaManager.Platforms.Android.Media
 
         protected PlayerEventListener(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
         {
-
         }
 
         public Action<TrackGroupArray, TrackSelectionArray> OnTracksChangedImpl { get; set; }
