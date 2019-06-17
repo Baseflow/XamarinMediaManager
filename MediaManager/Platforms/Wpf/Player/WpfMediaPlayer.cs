@@ -18,8 +18,21 @@ namespace MediaManager.Platforms.Wpf.Player
 
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Wpf;
 
-        public VideoView PlayerView { get; set; }
-        public IVideoView VideoView => PlayerView;
+        public VideoView PlayerView => VideoView as VideoView;
+
+        private IVideoView _videoView;
+        public IVideoView VideoView
+        {
+            get => _videoView;
+            set
+            {
+                _videoView = value;
+                if (PlayerView != null)
+                {
+                    PlayerView.PlayerView = this.PlayerView.PlayerView;
+                }
+            }
+        }
 
         private MediaPlayer _player;
         public MediaPlayer Player

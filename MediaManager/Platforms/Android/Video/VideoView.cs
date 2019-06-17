@@ -74,7 +74,7 @@ namespace MediaManager.Platforms.Android.Video
 
         protected override void Dispose(bool disposing)
         {
-            (CrossMediaManager.Android.MediaPlayer as IMediaPlayer<SimpleExoPlayer, VideoView>).PlayerView = null;
+            CrossMediaManager.Android.MediaPlayer.VideoView = null;
             base.Dispose(disposing);
         }
     }

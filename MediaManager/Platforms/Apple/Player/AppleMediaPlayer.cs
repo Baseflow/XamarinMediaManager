@@ -25,7 +25,7 @@ namespace MediaManager.Platforms.Apple.Media
         {
         }
 
-        public abstract IVideoView VideoView { get; }
+        public abstract IVideoView VideoView { get; set; }
 
         private AVQueuePlayer _player;
         public AVQueuePlayer Player

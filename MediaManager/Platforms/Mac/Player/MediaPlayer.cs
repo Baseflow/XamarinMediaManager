@@ -8,8 +8,20 @@ namespace MediaManager.Platforms.Mac.Media
 {
     public class MediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer, VideoView>
     {
-        public VideoView PlayerView { get; set; }
+        public VideoView PlayerView => VideoView as VideoView;
 
-        public override IVideoView VideoView => PlayerView;
+        private IVideoView _videoView;
+        public override IVideoView VideoView
+        {
+            get => _videoView;
+            set
+            {
+                _videoView = value;
+                if (PlayerView != null)
+                {
+                    PlayerView.Player = Player;
+                }
+            }
+        }
     }
 }

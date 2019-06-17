@@ -60,6 +60,7 @@ namespace MediaManager.Platforms.Android.Media
         protected RatingCallback RatingCallback { get; set; }
 
         private SimpleExoPlayer _player;
+
         public SimpleExoPlayer Player
         {
             get
@@ -72,8 +73,22 @@ namespace MediaManager.Platforms.Android.Media
             set => _player = value;
         }
 
-        public VideoView PlayerView { get; set; }
-        public IVideoView VideoView => PlayerView;
+        public VideoView PlayerView => VideoView as VideoView;
+
+        private IVideoView _videoView;
+        public IVideoView VideoView
+        {
+            get => _videoView;
+            set
+            {
+                _videoView = value;
+                if (PlayerView != null)
+                {
+                    PlayerView.RequestFocus();
+                    PlayerView.Player = Player;
+                }
+            }
+        }
 
         public MediaSessionCompat MediaSession => MediaManager.MediaSession;
 

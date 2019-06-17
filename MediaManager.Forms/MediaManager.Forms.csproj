@@ -38,6 +38,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
     <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="3.6.0.344457" />
   </ItemGroup>
 

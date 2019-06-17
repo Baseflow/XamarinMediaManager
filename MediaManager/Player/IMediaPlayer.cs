@@ -12,7 +12,7 @@ namespace MediaManager
 
     public interface IMediaPlayer<TPlayer, TPlayerView> : IMediaPlayer<TPlayer> where TPlayer : class where TPlayerView : class, IVideoView
     {
-        TPlayerView PlayerView { get; set; }
+        TPlayerView PlayerView { get; }
     }
 
     public interface IMediaPlayer<TPlayer> : IMediaPlayer where TPlayer : class
@@ -22,7 +22,7 @@ namespace MediaManager
 
     public interface IMediaPlayer : IDisposable
     {
-        IVideoView VideoView { get; }
+        IVideoView VideoView { get; set; }
 
         /// <summary>
         /// Adds MediaItem to the Queue and starts playing

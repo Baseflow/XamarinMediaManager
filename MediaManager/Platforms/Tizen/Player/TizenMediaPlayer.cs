@@ -14,10 +14,10 @@ namespace MediaManager.Platforms.Tizen.Media
 
         //public MediaPlayerState State => throw new NotImplementedException();
 
-        public VideoView PlayerView { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public VideoView PlayerView => VideoView as VideoView;
         public RepeatMode RepeatMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public IVideoView VideoView => throw new NotImplementedException();
+        public IVideoView VideoView { get; set; }
 
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;

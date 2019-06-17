@@ -199,7 +199,7 @@ View.AddSubview(playerView);
 
 Then for all platforms we have to add the player view to the `MediaPlayer`
 ```csharp
-CrossMediaManager.Current.MediaPlayer.SetPlayerView(playerView);
+CrossMediaManager.Current.MediaPlayer.VideoView = playerView;
 ```
 
 ## Xamarin.Forms

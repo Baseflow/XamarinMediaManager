@@ -12,8 +12,21 @@ namespace MediaManager.Platforms.Ios.Media
 {
     public class MediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer, VideoView>
     {
-        public VideoView PlayerView { get; set; }
-        public override IVideoView VideoView => PlayerView;
+        public VideoView PlayerView => VideoView as VideoView;
+
+        private IVideoView _videoView;
+        public override IVideoView VideoView
+        {
+            get => _videoView;
+            set
+            {
+                _videoView = value;
+                if (PlayerView != null)
+                {
+                    PlayerView.PlayerViewController.Player = Player;
+                }
+            }
+        }
 
         protected override void Initialize()
         {
