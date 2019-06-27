@@ -22,6 +22,10 @@ namespace MediaManager
 
     public interface IMediaPlayer : IDisposable
     {
+
+        //TODO: Maybe introduce a source property to find the current playing item
+        //IMediaItem Source { get; internal set; }
+
         IVideoView VideoView { get; set; }
 
         /// <summary>

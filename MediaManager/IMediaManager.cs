@@ -8,6 +8,11 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
+    public interface IMediaManager<TPlayer> : IMediaManager where TPlayer : class
+    {
+        TPlayer Player { get; }
+    }
+
     public interface IMediaManager : IPlaybackManager
     {
         IMediaPlayer MediaPlayer { get; set; }
