@@ -5,7 +5,7 @@
         public static string GetTitle(this IMediaItem mediaItem)
         {
             if (!string.IsNullOrEmpty(mediaItem.DisplayTitle))
-                return mediaItem.Title;
+                return mediaItem.DisplayTitle;
             else if (!string.IsNullOrEmpty(mediaItem.Title))
                 return mediaItem.Title;
             else
