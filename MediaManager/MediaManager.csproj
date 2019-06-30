@@ -98,4 +98,10 @@
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Platforms\Uap\Video\VideoView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
 </Project>

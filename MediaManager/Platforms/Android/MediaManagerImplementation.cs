@@ -151,7 +151,8 @@ namespace MediaManager
 
         public override TimeSpan Duration => MediaBrowserManager?.MediaController.Metadata?.ToMediaItem().Duration ?? TimeSpan.Zero;
 
-        public override float Speed {
+        public override float Speed
+        {
             get => MediaBrowserManager?.MediaController.PlaybackState?.PlaybackSpeed ?? 0;
             set => throw new NotImplementedException();
         }
@@ -164,7 +165,7 @@ namespace MediaManager
 
         public override Task Play()
         {
-            if(!this.IsPlaying())
+            if (!this.IsPlaying() && this.State != MediaPlayerState.Paused)
                 MediaBrowserManager.MediaController.GetTransportControls().Prepare();
 
             MediaBrowserManager.MediaController.GetTransportControls().Play();
@@ -274,7 +275,7 @@ namespace MediaManager
 
         public override Task<bool> PlayQueueItem(IMediaItem mediaItem)
         {
-            if(!MediaQueue.Contains(mediaItem))
+            if (!MediaQueue.Contains(mediaItem))
                 return Task.FromResult(false);
 
             MediaBrowserManager.MediaController.GetTransportControls().SkipToQueueItem(MediaQueue.IndexOf(mediaItem));
