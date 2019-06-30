@@ -29,7 +29,7 @@ namespace MediaManager
         }
 
         private Context _context = Application.Context;
-        public Context Context
+        public virtual Context Context
         {
             get => _context;
             set
@@ -54,7 +54,7 @@ namespace MediaManager
         }
 
         private PendingIntent _sessionActivityPendingIntent;
-        public PendingIntent SessionActivityPendingIntent
+        public virtual PendingIntent SessionActivityPendingIntent
         {
             get
             {
@@ -67,7 +67,7 @@ namespace MediaManager
             set => SetProperty(ref _sessionActivityPendingIntent, value);
         }
 
-        public PendingIntent BuildSessionActivityPendingIntent()
+        public virtual PendingIntent BuildSessionActivityPendingIntent()
         {
             Intent sessionIntent;
             // Build a PendingIntent that can be used to launch the UI.

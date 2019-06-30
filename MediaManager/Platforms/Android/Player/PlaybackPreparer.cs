@@ -14,7 +14,7 @@ namespace MediaManager.Platforms.Android.Media
     {
         protected IExoPlayer _player;
         protected ConcatenatingMediaSource _mediaSource;
-        protected IMediaManager _mediaManager = CrossMediaManager.Android;
+        protected IMediaManager MediaManager = CrossMediaManager.Android;
 
         public MediaSessionConnectorPlaybackPreparer(IExoPlayer player, ConcatenatingMediaSource mediaSource)
         {
@@ -51,7 +51,7 @@ namespace MediaManager.Platforms.Android.Media
             //TODO: Thread.Sleep hack to get it working. Seems fixed in 2.9.6 https://github.com/google/ExoPlayer/issues/5464
             Thread.Sleep(200);
 
-            var mediaItems = _mediaManager.MediaQueue.Select(x => x.ToMediaSource()).ToList();
+            var mediaItems = MediaManager.MediaQueue.Select(x => x.ToMediaSource()).ToList();
             _mediaSource.AddMediaSources(mediaItems);
 
             _player.Prepare(_mediaSource);
@@ -64,10 +64,10 @@ namespace MediaManager.Platforms.Android.Media
         {
             _mediaSource.Clear();
             int windowIndex = 0;
-            foreach (var mediaItem in _mediaManager.MediaQueue)
+            foreach (var mediaItem in MediaManager.MediaQueue)
             {
                 if (mediaItem.MediaId == mediaId)
-                    windowIndex = _mediaManager.MediaQueue.IndexOf(mediaItem);
+                    windowIndex = MediaManager.MediaQueue.IndexOf(mediaItem);
 
                 _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }
@@ -78,7 +78,7 @@ namespace MediaManager.Platforms.Android.Media
         public void OnPrepareFromSearch(string searchTerm, Bundle p1)
         {
             _mediaSource.Clear();
-            foreach (var mediaItem in _mediaManager.MediaQueue.Where(x => x.Title == searchTerm))
+            foreach (var mediaItem in MediaManager.MediaQueue.Where(x => x.Title == searchTerm))
             {
                 _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }
@@ -89,11 +89,11 @@ namespace MediaManager.Platforms.Android.Media
         {
             _mediaSource.Clear();
             int windowIndex = 0;
-            foreach (var mediaItem in _mediaManager.MediaQueue)
+            foreach (var mediaItem in MediaManager.MediaQueue)
             {
                 var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
                 if (uri.Equals(mediaUri))
-                    windowIndex = _mediaManager.MediaQueue.IndexOf(mediaItem);
+                    windowIndex = MediaManager.MediaQueue.IndexOf(mediaItem);
 
                 _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }

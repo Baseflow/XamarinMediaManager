@@ -14,39 +14,47 @@ namespace MediaManager.Platforms.Android.Media
     {
         public static IMediaSource ToMediaSource(this IMediaItem mediaItem)
         {
+            var mediaDescription = mediaItem.ToMediaDescription();
+            return ToMediaSource(mediaDescription, mediaItem.MediaType);
+        }
+
+        public static IMediaSource ToMediaSource(this MediaDescriptionCompat mediaDescription, MediaType mediaType)
+        {
             if (AndroidMediaPlayer.DataSourceFactory == null)
                 throw new ArgumentNullException(nameof(AndroidMediaPlayer.DataSourceFactory));
 
             IMediaSource mediaSource;
-            switch (mediaItem.MediaType)
+            var mediaUri = mediaDescription.MediaUri;
+
+            switch (mediaType)
             {
                 default:
                 case MediaType.Default:
                     mediaSource = new ExtractorMediaSource.Factory(AndroidMediaPlayer.DataSourceFactory)
-                        .SetTag(mediaItem.ToMediaDescription())
-                        .CreateMediaSource(global::Android.Net.Uri.Parse(mediaItem.MediaUri));
+                        .SetTag(mediaDescription)
+                        .CreateMediaSource(mediaUri);
                     break;
                 case MediaType.Dash:
                     if (AndroidMediaPlayer.DashChunkSourceFactory == null)
                         throw new ArgumentNullException(nameof(AndroidMediaPlayer.DashChunkSourceFactory));
 
                     mediaSource = new DashMediaSource.Factory(AndroidMediaPlayer.DashChunkSourceFactory, AndroidMediaPlayer.DataSourceFactory)
-                        .SetTag(mediaItem.ToMediaDescription())
-                        .CreateMediaSource(global::Android.Net.Uri.Parse(mediaItem.MediaUri));
+                        .SetTag(mediaDescription)
+                        .CreateMediaSource(mediaUri);
                     break;
                 case MediaType.Hls:
                     mediaSource = new HlsMediaSource.Factory(AndroidMediaPlayer.DataSourceFactory)
                         .SetAllowChunklessPreparation(true)
-                        .SetTag(mediaItem.ToMediaDescription())
-                        .CreateMediaSource(global::Android.Net.Uri.Parse(mediaItem.MediaUri));
+                        .SetTag(mediaDescription)
+                        .CreateMediaSource(mediaUri);
                     break;
                 case MediaType.SmoothStreaming:
                     if (AndroidMediaPlayer.SsChunkSourceFactory == null)
                         throw new ArgumentNullException(nameof(AndroidMediaPlayer.SsChunkSourceFactory));
 
                     mediaSource = new SsMediaSource.Factory(AndroidMediaPlayer.SsChunkSourceFactory, AndroidMediaPlayer.DataSourceFactory)
-                        .SetTag(mediaItem.ToMediaDescription())
-                        .CreateMediaSource(global::Android.Net.Uri.Parse(mediaItem.MediaUri));
+                        .SetTag(mediaDescription)
+                        .CreateMediaSource(mediaUri);
                     break;
             }
 
@@ -61,18 +69,25 @@ namespace MediaManager.Platforms.Android.Media
                 .SetTitle(item?.GetTitle())
                 .SetSubtitle(item?.GetContentTitle())
                 .SetDescription(item?.DisplayDescription)
-                .SetExtras(item?.Extras as Bundle)
-                .SetIconBitmap(item?.GetCover())
-                .SetIconUri(!string.IsNullOrEmpty(item?.DisplayIconUri) ? global::Android.Net.Uri.Parse(item?.DisplayIconUri) : null)
-                .Build();
+                .SetExtras(item?.Extras as Bundle);
+                 
+            //It should be better to only set the uri to prevent loading images into memory
+            if(!string.IsNullOrEmpty(item?.DisplayIconUri))
+                description.SetIconUri(global::Android.Net.Uri.Parse(item?.DisplayIconUri));
+            else
+            {
+                var cover = item?.GetCover();
+                if(cover != null)
+                    description.SetIconBitmap(cover);
+            }
 
-            return description;
+            return description.Build();
         }
 
         public static MediaBrowserCompat.MediaItem ToMediaBrowserMediaItem(this IMediaItem item)
         {
-            var media = new MediaBrowserCompat.MediaItem(ToMediaDescription(item), MediaBrowserCompat.MediaItem.FlagPlayable);
-            return media;
+            var mediaItem = new MediaBrowserCompat.MediaItem(ToMediaDescription(item), MediaBrowserCompat.MediaItem.FlagPlayable);
+            return mediaItem;
         }
 
         public static IMediaItem ToMediaItem(this MediaDescriptionCompat mediaDescription)
@@ -153,6 +168,7 @@ namespace MediaManager.Platforms.Android.Media
             return item;
         }
 
+        //TODO: Move to Extractor
         public static Bitmap GetCover(this IMediaItem mediaItem)
         {
             if (mediaItem.AlbumArt is Bitmap bitmap)

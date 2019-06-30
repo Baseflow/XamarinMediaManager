@@ -18,7 +18,8 @@ namespace MediaManager.Platforms.Android.Media
 
         public IMediaSource CreateMediaSource(MediaDescriptionCompat description)
         {
-            return description?.ToMediaItem()?.ToMediaSource();
+            //TODO: We should be able to know the type here
+            return description?.ToMediaSource(MediaManager.Media.MediaType.Default);
         }
     }
 }

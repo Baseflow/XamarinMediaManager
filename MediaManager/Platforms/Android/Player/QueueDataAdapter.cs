@@ -11,8 +11,8 @@ namespace MediaManager.Platforms.Android.Media
 {
     public class QueueDataAdapter : Java.Lang.Object, TimelineQueueEditor.IQueueDataAdapter
     {
-        protected IMediaManager _mediaManager = CrossMediaManager.Android;
-        private ConcatenatingMediaSource _mediaSource;
+        protected IMediaManager MediaManager = CrossMediaManager.Android;
+        protected ConcatenatingMediaSource _mediaSource;
 
         public QueueDataAdapter(ConcatenatingMediaSource mediaSource)
         {
@@ -26,23 +26,23 @@ namespace MediaManager.Platforms.Android.Media
 
         public void Add(int index, MediaDescriptionCompat description)
         {
-            _mediaManager.MediaQueue.Insert(index, description.ToMediaItem());
+            MediaManager.MediaQueue.Insert(index, description.ToMediaItem());
         }
 
         public MediaDescriptionCompat GetMediaDescription(int index)
         {
-            return _mediaManager.MediaQueue.ElementAtOrDefault(index)?.ToMediaDescription();
+            return MediaManager.MediaQueue.ElementAtOrDefault(index)?.ToMediaDescription();
         }
 
         public void Move(int oldIndex, int newIndex)
         {
-            if (_mediaManager.MediaQueue is ObservableCollection<IMediaItem> observableCollection)
+            if (MediaManager.MediaQueue is ObservableCollection<IMediaItem> observableCollection)
                 observableCollection.Move(oldIndex, newIndex);
         }
 
         public void Remove(int index)
         {
-            _mediaManager.MediaQueue.RemoveAt(index);
+            MediaManager.MediaQueue.RemoveAt(index);
         }
         //TODO: Find out if queue also need to get picked up on changes. Maybe when people add items directly to the queue while playing already.
         /*
