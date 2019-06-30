@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\MediaManager.Reactive\MediaManager.Reactive.csproj" />
     <ProjectReference Include="..\..\MediaManager\MediaManager.csproj" />
   </ItemGroup>
 

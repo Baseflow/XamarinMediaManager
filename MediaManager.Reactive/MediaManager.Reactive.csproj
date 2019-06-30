@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup Condition=" '$(TargetsToBuild)' == 'All' ">
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;MonoAndroid90;tizen40;uap10.0.16299;net471</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;MonoAndroid90;tizen40</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard2.0</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetsToBuild)' != 'All' ">
@@ -12,15 +12,14 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyName>MediaManager.Forms</AssemblyName>
-    <RootNamespace>MediaManager.Forms</RootNamespace>
-    <PackageId>Plugin.MediaManager.Forms</PackageId>
-    <Description>Cross platform Xamarin plugin to play and control Audio and Video. This adds Xamarin.Forms specific features</Description>
+    <AssemblyName>MediaManager.Reactive</AssemblyName>
+    <RootNamespace>MediaManager.Reactive</RootNamespace>
+    <PackageId>Plugin.MediaManager.Reactive</PackageId>
+    <Description>Reactive extensions for MediaManager</Description>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" />
     <Compile Remove="Platforms\**\*.cs" />
     <None Include="Platforms\**\*.cs" />
     <None Include="Resources\*.cs" />
@@ -35,11 +34,6 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
     <Compile Include="Platforms\Net\**\*.cs" />
     <Compile Include="Platforms\Wpf\**\*.cs" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Xaml" />
-    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="3.6.0.344457" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'!='netstandard2.0'">
@@ -79,17 +73,15 @@
     <Compile Include="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
     <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
-    <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.1" />
-    <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.1" />
-    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.1" />
-    <PackageReference Include="Xamarin.Android.Support.v7.CardView" Version="28.0.0.1" />
-    <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="28.0.0.1" />
-    <PackageReference Include="Xamarin.Build.Download" Version="0.4.11" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('tizen')) ">
     <Compile Include="Platforms\Tizen\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" Version="4.1.5" />
   </ItemGroup>
   
   <ItemGroup>
