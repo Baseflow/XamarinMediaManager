@@ -65,7 +65,7 @@ namespace ElementPlayer.Core.ViewModels
             Log.Debug($"Status changed: {System.Enum.GetName(typeof(MediaPlayerState), e.State)};");
         }
 
-        private void Current_BufferingChanged(object sender, BufferingChangedEventArgs e)
+        private void Current_BufferingChanged(object sender, BufferedChangedEventArgs e)
         {
             Log.Debug($"Total buffered time is {e.Buffered};");
         }

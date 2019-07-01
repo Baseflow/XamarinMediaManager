@@ -7,7 +7,7 @@ using MediaManager.Queue;
 namespace MediaManager.Playback
 {
     public delegate void StateChangedEventHandler(object sender, StateChangedEventArgs e);
-    public delegate void BufferingChangedEventHandler(object sender, BufferingChangedEventArgs e);
+    public delegate void BufferedChangedEventHandler(object sender, BufferedChangedEventArgs e);
     public delegate void PositionChangedEventHandler(object sender, PositionChangedEventArgs e);
 
     public delegate void MediaItemFinishedEventHandler(object sender, MediaItemEventArgs e);
@@ -108,7 +108,7 @@ namespace MediaManager.Playback
 
         event StateChangedEventHandler StateChanged;
 
-        event BufferingChangedEventHandler BufferingChanged;
+        event BufferedChangedEventHandler BufferedChanged;
 
         event PositionChangedEventHandler PositionChanged;
 

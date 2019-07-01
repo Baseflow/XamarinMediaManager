@@ -146,7 +146,7 @@ bool IsBuffering();
 ```csharp
 event StateChangedEventHandler StateChanged;
 event PlayingChangedEventHandler PlayingChanged;
-event BufferingChangedEventHandler BufferingChanged;
+event BufferedChangedEventHandler BufferedChanged;
 event PositionChangedEventHandler PositionChanged;
 event MediaItemFinishedEventHandler MediaItemFinished;
 event MediaItemChangedEventHandler MediaItemChanged;
@@ -202,39 +202,6 @@ Then for all platforms we have to add the player view to the `MediaPlayer`
 CrossMediaManager.Current.MediaPlayer.VideoView = playerView;
 ```
 
-## Xamarin.Forms
-
-Adding a `VideoView` to a Page in Forms is easy as this:
-
-```xml
-<mm:VideoView VerticalOptions="FillAndExpand" Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" />
-```
-
-Your Xamarin.Forms page could look like this:
-
-```xml
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:mm="clr-namespace:MediaManager.Forms;assembly=MediaManager.Forms"
-    x:Class="YourClassName" >
-    <ContentPage.Content>
-        <StackLayout>
-            <mm:VideoView VerticalOptions="FillAndExpand" Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" ShowControls="False" />
-        </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
-```
-
-You can even use the normal `Play(object)` method and not set source. When you navigate to the view that contains the `VideoView`, the player will automatically attach to the view.
-
-If you want a Page that contains a player you can open the `VideoPage`.
-
-```csharp
-Navigation.PushAsync(new MediaManager.Forms.VideoPage());
-```
-
 ### Play a non standard format like HLS, Dash or SS
 
 MediaManager will try to make a guess which media type or format is used. Sometimes this will not be picked up or be wrong, but you can enforce it by setting it yourself like this:
@@ -277,6 +244,49 @@ CrossMediaManager.Windows.*
 CrossMediaManager.Tizen.*
 //WPF
 CrossMediaManager.Wpf.*
+```
+
+## Xamarin.Forms
+
+Adding a `VideoView` to a Page in Forms is easy as this:
+
+```xml
+<mm:VideoView VerticalOptions="FillAndExpand" Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" />
+```
+
+Your Xamarin.Forms page could look like this:
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mm="clr-namespace:MediaManager.Forms;assembly=MediaManager.Forms"
+    x:Class="YourClassName" >
+    <ContentPage.Content>
+        <StackLayout>
+            <mm:VideoView VerticalOptions="FillAndExpand" Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" ShowControls="False" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
+```
+
+You can even use the normal `Play(object)` method and not set source. When you navigate to the view that contains the `VideoView`, the player will automatically attach to the view.
+
+If you want a Page that contains a player you can open the `VideoPage`.
+
+```csharp
+Navigation.PushAsync(new MediaManager.Forms.VideoPage());
+```
+
+## Reactive extensions
+
+Add the [Reactive NuGet package](https://www.nuget.org/packages/Plugin.MediaManager.Reactive/) to all the projects you want to use it in.
+
+Usage:
+
+```csharp
+CrossMediaManager.Current.Reactive().*
 ```
 
 ## **IMPORTANT**

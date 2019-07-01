@@ -15,7 +15,7 @@ namespace MediaManager.Forms
 
         public VideoView()
         {
-            MediaManager.BufferingChanged += MediaManager_BufferingChanged;
+            MediaManager.BufferedChanged += MediaManager_BufferedChanged;
             MediaManager.PositionChanged += MediaManager_PositionChanged;
             MediaManager.StateChanged += MediaManager_StateChanged;
             MediaManager.PropertyChanged += MediaManager_PropertyChanged;
@@ -50,7 +50,7 @@ namespace MediaManager.Forms
             Position = e.Position;
         }
 
-        private void MediaManager_BufferingChanged(object sender, BufferingChangedEventArgs e)
+        private void MediaManager_BufferedChanged(object sender, BufferedChangedEventArgs e)
         {
             Buffered = e.Buffered;
         }
@@ -177,7 +177,7 @@ namespace MediaManager.Forms
 
         public void Dispose()
         {
-            MediaManager.BufferingChanged -= MediaManager_BufferingChanged;
+            MediaManager.BufferedChanged -= MediaManager_BufferedChanged;
             MediaManager.PositionChanged -= MediaManager_PositionChanged;
             MediaManager.StateChanged -= MediaManager_StateChanged;
             MediaManager.PropertyChanged -= MediaManager_PropertyChanged;

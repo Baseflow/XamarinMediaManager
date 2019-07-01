@@ -77,7 +77,7 @@ namespace MediaManager
             internal set
             {
                 if (SetProperty(ref _buffered, value))
-                    OnBufferingChanged(this, new BufferingChangedEventArgs(Buffered));
+                    OnBufferedChanged(this, new BufferedChangedEventArgs(Buffered));
             }
         }
 
@@ -195,14 +195,14 @@ namespace MediaManager
         public event PropertyChangedEventHandler PropertyChanged;
 
         public event StateChangedEventHandler StateChanged;
-        public event BufferingChangedEventHandler BufferingChanged;
+        public event BufferedChangedEventHandler BufferedChanged;
         public event PositionChangedEventHandler PositionChanged;
 
         public event MediaItemFinishedEventHandler MediaItemFinished;
         public event MediaItemChangedEventHandler MediaItemChanged;
         public event MediaItemFailedEventHandler MediaItemFailed;
 
-        internal void OnBufferingChanged(object sender, BufferingChangedEventArgs e) => BufferingChanged?.Invoke(sender, e);
+        internal void OnBufferedChanged(object sender, BufferedChangedEventArgs e) => BufferedChanged?.Invoke(sender, e);
         internal void OnMediaItemChanged(object sender, MediaItemEventArgs e) => MediaItemChanged?.Invoke(sender, e);
         internal void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
         internal void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
