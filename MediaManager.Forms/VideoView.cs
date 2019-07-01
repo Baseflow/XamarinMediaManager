@@ -1,55 +1,130 @@
 ﻿using System;
 using System.Collections.Generic;
 using MediaManager.Media;
+using MediaManager.Playback;
+using MediaManager.Queue;
 using MediaManager.Video;
 using Xamarin.Forms;
 
 namespace MediaManager.Forms
 {
-    public class VideoView : View
+    public class VideoView : View, IDisposable
     {
-        protected static IVideoView PlayerView => CrossMediaManager.Current.MediaPlayer?.VideoView;
+        protected static IMediaManager MediaManager => CrossMediaManager.Current;
+        protected static IVideoView PlayerView => MediaManager.MediaPlayer.VideoView;
 
-        /// <summary>
-        ///     Sets the aspect mode of the current video view
-        /// </summary>
-        public static readonly BindableProperty VideoAspectProperty =
-            BindableProperty.Create(nameof(VideoView),
-                typeof(VideoAspectMode),
-                typeof(VideoView),
-                VideoAspectMode.AspectFit,
-                propertyChanged: OnVideoAspectChanged);
-
-        /// <summary>
-        ///     Sets the aspect mode of the current video view
-        /// </summary>
-        public static readonly BindableProperty SourceProperty =
-            BindableProperty.Create(nameof(VideoView),
-                typeof(object),
-                typeof(VideoView),
-                "",
-                propertyChanged: OnSourceChanged);
-
-        /// <summary>
-        ///     Sets the aspect mode of the current video view
-        /// </summary>
-        public static readonly BindableProperty ShowControlsProperty =
-            BindableProperty.Create(nameof(VideoView),
-                typeof(bool),
-                typeof(VideoView),
-                true,
-                propertyChanged: OnShowControlsChanged);
-
-        public object Source
+        public VideoView()
         {
-            get { return (object)GetValue(SourceProperty); }
-            set { SetValue(SourceProperty, value); }
+            MediaManager.BufferingChanged += MediaManager_BufferingChanged;
+            MediaManager.PositionChanged += MediaManager_PositionChanged;
+            MediaManager.StateChanged += MediaManager_StateChanged;
+            MediaManager.PropertyChanged += MediaManager_PropertyChanged;
+            MediaManager.MediaItemChanged += MediaManager_MediaItemChanged;
         }
+
+        private void MediaManager_MediaItemChanged(object sender, MediaItemEventArgs e)
+        {
+            //TODO: Set source again on change
+        }
+
+        private void MediaManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                //TODO: This seems not to be triggered
+                case nameof(MediaManager.Duration):
+                    Duration = MediaManager.Duration;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void MediaManager_StateChanged(object sender, StateChangedEventArgs e)
+        {
+            State = e.State;
+        }
+
+        private void MediaManager_PositionChanged(object sender, PositionChangedEventArgs e)
+        {
+            Position = e.Position;
+        }
+
+        private void MediaManager_BufferingChanged(object sender, BufferingChangedEventArgs e)
+        {
+            Buffered = e.Buffered;
+        }
+
+        public static readonly BindableProperty VideoAspectProperty =
+            BindableProperty.Create(nameof(VideoAspect), typeof(VideoAspectMode), typeof(VideoView), VideoAspectMode.AspectFit, propertyChanged: OnVideoAspectPropertyChanged);
+
+        /*public static readonly BindableProperty AutoPlayProperty =
+            BindableProperty.Create(nameof(AutoPlay), typeof(bool), typeof(VideoView), true);*/
+
+        public static readonly BindableProperty BufferedProperty =
+            BindableProperty.Create(nameof(Buffered), typeof(TimeSpan), typeof(VideoView), TimeSpan.Zero, defaultValueCreator: x => MediaManager.Buffered);
+
+        public static readonly BindableProperty StateProperty =
+            BindableProperty.Create(nameof(State), typeof(MediaPlayerState), typeof(VideoView), MediaPlayerState.Stopped, defaultValueCreator: x => MediaManager.State);
+
+        public static readonly BindableProperty DurationProperty =
+            BindableProperty.Create(nameof(Duration), typeof(TimeSpan), typeof(VideoView), null, defaultValueCreator: x => MediaManager.Duration);
+
+        public static readonly BindableProperty PositionProperty =
+            BindableProperty.Create(nameof(Position), typeof(TimeSpan), typeof(VideoView), TimeSpan.Zero, defaultValueCreator: x => MediaManager.Position);
+
+        public static readonly BindableProperty ShowControlsProperty =
+            BindableProperty.Create(nameof(ShowControls), typeof(bool), typeof(VideoView), false, propertyChanged: OnShowControlsPropertyChanged);
+
+        public static readonly BindableProperty SourceProperty =
+            BindableProperty.Create(nameof(Source), typeof(object), typeof(VideoView), propertyChanged: OnSourcePropertyChanged);
+
+        public static readonly BindableProperty RepeatProperty =
+            BindableProperty.Create(nameof(Repeat), typeof(RepeatMode), typeof(VideoView), RepeatMode.Off, propertyChanged: OnRepeatPropertyChanged, defaultValueCreator: x => MediaManager.RepeatMode);
+
+        public static readonly BindableProperty ShuffleProperty =
+            BindableProperty.Create(nameof(Shuffle), typeof(ShuffleMode), typeof(VideoView), ShuffleMode.Off, propertyChanged: OnShufflePropertyChanged, defaultValueCreator: x => MediaManager.ShuffleMode);
 
         public VideoAspectMode VideoAspect
         {
-            get { return (VideoAspectMode)GetValue(VideoAspectProperty); }
-            set { SetValue(VideoAspectProperty, value); }
+            get => (VideoAspectMode)GetValue(VideoAspectProperty);
+            set => SetValue(VideoAspectProperty, value);
+        }
+
+        public RepeatMode Repeat
+        {
+            get => (RepeatMode)GetValue(RepeatProperty);
+            set => SetValue(RepeatProperty, value);
+        }
+
+        public ShuffleMode Shuffle
+        {
+            get => (ShuffleMode)GetValue(ShuffleProperty);
+            set => SetValue(ShuffleProperty, value);
+        }
+
+        /*public bool AutoPlay
+        {
+            get { return (bool)GetValue(AutoPlayProperty); }
+            set { SetValue(AutoPlayProperty, value); }
+        }*/
+
+        public TimeSpan Buffered
+        {
+            get { return (TimeSpan)GetValue(BufferedProperty); }
+            internal set { SetValue(BufferedProperty, value); }
+        }
+
+        public MediaPlayerState State
+        {
+            get { return (MediaPlayerState)GetValue(StateProperty); }
+            internal set { SetValue(StateProperty, value); }
+        }
+
+        public TimeSpan Duration
+        {
+            get { return (TimeSpan)GetValue(DurationProperty); }
+            internal set { SetValue(DurationProperty, value); }
         }
 
         public bool ShowControls
@@ -58,21 +133,55 @@ namespace MediaManager.Forms
             set { SetValue(ShowControlsProperty, value); }
         }
 
-        private static void OnShowControlsChanged(BindableObject bindable, object oldValue, object newValue)
+        public TimeSpan Position
+        {
+            get { return (TimeSpan)GetValue(PositionProperty); }
+            internal set
+            {
+                SetValue(PositionProperty, value);
+            }
+        }
+
+        public object Source
+        {
+            get { return (object)GetValue(SourceProperty); }
+            set { SetValue(SourceProperty, value); }
+        }
+
+        private static async void OnSourcePropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+        {
+            await CrossMediaManager.Current.Play(newvalue);
+        }
+
+        private static void OnShowControlsPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             if(PlayerView != null)
                 PlayerView.ShowControls = (bool)newValue;
         }
 
-        private static void OnVideoAspectChanged(BindableObject bindable, object oldvalue, object newValue)
+        private static void OnVideoAspectPropertyChanged(BindableObject bindable, object oldvalue, object newValue)
         {
             if (PlayerView != null)
                 PlayerView.VideoAspect = (VideoAspectMode)newValue;
         }
 
-        private static void OnSourceChanged(BindableObject bindable, object oldvalue, object newValue)
+        private static void OnRepeatPropertyChanged(BindableObject bindable, object oldvalue, object newValue)
         {
-            _ = CrossMediaManager.Current.Play(newValue);
+            MediaManager.RepeatMode = (RepeatMode)newValue;
+        }
+
+        private static void OnShufflePropertyChanged(BindableObject bindable, object oldvalue, object newValue)
+        {
+            MediaManager.ShuffleMode = (ShuffleMode)newValue;
+        }
+
+        public void Dispose()
+        {
+            MediaManager.BufferingChanged -= MediaManager_BufferingChanged;
+            MediaManager.PositionChanged -= MediaManager_PositionChanged;
+            MediaManager.StateChanged -= MediaManager_StateChanged;
+            MediaManager.PropertyChanged -= MediaManager_PropertyChanged;
+            MediaManager.MediaItemChanged -= MediaManager_MediaItemChanged;
         }
     }
 }

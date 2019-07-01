@@ -34,6 +34,10 @@ namespace MediaManager.Forms.Platforms.Android
                     SetNativeControl(_videoView);
                 }
             }
+            if (args.OldElement != null)
+            {
+                args.OldElement.Dispose();
+            }
         }
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
@@ -50,6 +54,9 @@ namespace MediaManager.Forms.Platforms.Android
 
         protected override void Dispose(bool disposing)
         {
+            //On Android we need to call this manually it seems, since args.OldElement is never filled
+            Element?.Dispose();
+
             _videoView = null;
             base.Dispose(disposing);
         }

@@ -16,6 +16,7 @@ namespace MediaManager.Forms.Platforms.Uap
 
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
+            base.OnElementChanged(args);
             if (args.NewElement != null)
             {
                 if (Control == null)
@@ -29,6 +30,10 @@ namespace MediaManager.Forms.Platforms.Uap
                     CrossMediaManager.Current.MediaPlayer.VideoView = _videoView;
                     SetNativeControl(_videoView);
                 }
+            }
+            if (args.OldElement != null)
+            {
+                args.OldElement.Dispose();
             }
         }
 

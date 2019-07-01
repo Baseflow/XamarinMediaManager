@@ -30,6 +30,10 @@ namespace MediaManager.Forms.Platforms.Mac
                     SetNativeControl(_videoView);
                 }
             }
+            if (args.OldElement != null)
+            {
+                args.OldElement.Dispose();
+            }
         }
 
         protected override void Dispose(bool disposing)

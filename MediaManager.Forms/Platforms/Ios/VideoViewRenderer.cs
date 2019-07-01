@@ -16,7 +16,6 @@ namespace MediaManager.Forms.Platforms.iOS
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
             base.OnElementChanged(args);
-
             if (args.NewElement != null)
             {
                 if (Control == null)
@@ -32,15 +31,14 @@ namespace MediaManager.Forms.Platforms.iOS
                     SetNativeControl(_videoView);
                 }
             }
+            if (args.OldElement != null)
+            {
+                args.OldElement.Dispose();
+            }
         }
 
         protected override void Dispose(bool disposing)
         {
-            //_videoView.PlayerViewController.RemoveFromParentViewController();
-            //_videoView.PlayerViewController.Dispose();
-            //_videoView.PlayerViewController = null;
-            //CrossMediaManager.Apple.MediaPlayer.
-            //_videoView.Dispose();
             _videoView = null;
             base.Dispose(disposing);
         }
