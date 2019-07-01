@@ -9,7 +9,7 @@ namespace MediaManager.Platforms.Wpf.Video
 {
     public class VideoView : UserControl, IVideoView
     {
-        private MediaElement _playerView;
+        /*private MediaElement _playerView;
         public MediaElement PlayerView
         {
             get
@@ -25,14 +25,21 @@ namespace MediaManager.Platforms.Wpf.Video
                 _playerView = value;
                 Content = _playerView;
             }
+        }*/
+
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Wpf;
+
+        public VideoView()
+        {
+            Content = MediaManager.WpfMediaPlayer.Player;
         }
 
-        public VideoAspectMode VideoAspect { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool ShowControls { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public VideoAspectMode VideoAspect { get; set; }
+        public bool ShowControls { get; set; }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+
         }
     }
 }

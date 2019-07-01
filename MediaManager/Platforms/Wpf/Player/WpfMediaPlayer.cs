@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media;
 using MediaManager.Media;
 using MediaManager.Platforms.Wpf.Video;
@@ -10,7 +11,7 @@ using MediaManager.Video;
 
 namespace MediaManager.Platforms.Wpf.Player
 {
-    public class WpfMediaPlayer : IMediaPlayer<MediaPlayer, VideoView>
+    public class WpfMediaPlayer : IMediaPlayer<MediaElement, VideoView>
     {
         public WpfMediaPlayer()
         {
@@ -27,15 +28,11 @@ namespace MediaManager.Platforms.Wpf.Player
             set
             {
                 _videoView = value;
-                if (PlayerView != null)
-                {
-                    PlayerView.PlayerView = this.PlayerView.PlayerView;
-                }
             }
         }
 
-        private MediaPlayer _player;
-        public MediaPlayer Player
+        private MediaElement _player;
+        public MediaElement Player
         {
             get
             {
@@ -55,7 +52,12 @@ namespace MediaManager.Platforms.Wpf.Player
 
         public void Initialize()
         {
-            Player = new MediaPlayer();
+            Player = new MediaElement();
+            Player.LoadedBehavior = MediaState.Play;
+            Player.UnloadedBehavior = MediaState.Manual;
+            Player.Volume = 1;
+            Player.IsMuted = false;
+
             Player.MediaEnded += Player_MediaEnded;
             Player.MediaOpened += Player_MediaOpened;
             Player.BufferingStarted += Player_BufferingStarted;
@@ -63,7 +65,7 @@ namespace MediaManager.Platforms.Wpf.Player
             Player.MediaFailed += Player_MediaFailed;
         }
 
-        private void Player_MediaFailed(object sender, ExceptionEventArgs e)
+        private void Player_MediaFailed(object sender, System.Windows.ExceptionRoutedEventArgs e)
         {
             MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, e.ErrorException, e.ErrorException.Message));
         }
@@ -96,10 +98,15 @@ namespace MediaManager.Platforms.Wpf.Player
         public async Task Play(IMediaItem mediaItem)
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
-
-            Player.Open(new Uri(mediaItem.MediaUri));
-            await Play();
-
+            try
+            {
+                Player.Source = new Uri(mediaItem.MediaUri);
+                await Play();
+            }
+            catch (Exception ex)
+            {
+                MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, ex, ex.Message));
+            }
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 

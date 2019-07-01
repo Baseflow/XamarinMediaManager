@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using MvvmCross.Core;
+using MvvmCross.Forms.Platforms.Wpf.Core;
+//using MvvmCross.Platforms.Wpf.Views;
 
 namespace ElementPlayer.Forms.Wpf
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : MvvmCross.Platforms.Wpf.Views.MvxApplication
     {
+        protected override void RegisterSetup()
+        {
+            this.RegisterSetupType<MvxFormsWpfSetup<Core.App, FormsApp>>();
+        }
     }
 }

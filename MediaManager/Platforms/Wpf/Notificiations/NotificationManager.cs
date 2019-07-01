@@ -4,15 +4,11 @@ using System.Text;
 
 namespace MediaManager.Platforms.Wpf.Notificiations
 {
-    public class NotificationManager : INotificationManager
+    public class NotificationManager : NotificationManagerBase
     {
-        public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool ShowPlayPauseControls { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool ShowNavigationControls { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public void UpdateNotification()
+        public override void UpdateNotification()
         {
-            throw new NotImplementedException();
+            ;
         }
     }
 }

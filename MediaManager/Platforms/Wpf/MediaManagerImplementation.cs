@@ -33,7 +33,7 @@ namespace MediaManager
             set => SetProperty(ref _mediaPlayer, value);
         }
 
-        public WpfMediaPlayer NetMediaPlayer => (WpfMediaPlayer)MediaPlayer;
+        public WpfMediaPlayer WpfMediaPlayer => (WpfMediaPlayer)MediaPlayer;
 
         private IVolumeManager _volumeManager;
         public override IVolumeManager VolumeManager
@@ -73,9 +73,9 @@ namespace MediaManager
             set => SetProperty(ref _notificationManager, value);
         }
 
-        public override TimeSpan Position => NetMediaPlayer?.Player?.Position ?? TimeSpan.Zero;
+        public override TimeSpan Position => WpfMediaPlayer?.Player?.Position ?? TimeSpan.Zero;
 
-        public override TimeSpan Duration => NetMediaPlayer?.Player?.NaturalDuration.TimeSpan ?? TimeSpan.Zero;
+        public override TimeSpan Duration => WpfMediaPlayer?.Player?.NaturalDuration.TimeSpan ?? TimeSpan.Zero;
 
         public override float Speed
         {

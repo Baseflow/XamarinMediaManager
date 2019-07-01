@@ -7,9 +7,9 @@ namespace MediaManager.Platforms.Wpf.Volume
 {
     public class VolumeManager : IVolumeManager
     {
-        public int CurrentVolume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int MaxVolume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool Muted { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int CurrentVolume { get; set; }
+        public int MaxVolume { get; set ; }
+        public bool Muted { get; set; }
 
         public event VolumeChangedEventHandler VolumeChanged;
     }
