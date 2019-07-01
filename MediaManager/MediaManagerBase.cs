@@ -70,19 +70,19 @@ namespace MediaManager
             }
         }
 
-        public abstract TimeSpan Position { get; }
-        public abstract TimeSpan Duration { get; }
-
         private TimeSpan _buffered;
-        public TimeSpan Buffered {
+        public TimeSpan Buffered
+        {
             get => _buffered;
             internal set
             {
-                if(SetProperty(ref _buffered, value))
+                if (SetProperty(ref _buffered, value))
                     OnBufferingChanged(this, new BufferingChangedEventArgs(Buffered));
             }
         }
 
+        public abstract TimeSpan Position { get; }
+        public abstract TimeSpan Duration { get; }
         public abstract float Speed { get; set; }
         public abstract RepeatMode RepeatMode { get; set; }
         public abstract ShuffleMode ShuffleMode { get; set; }

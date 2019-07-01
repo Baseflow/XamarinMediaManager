@@ -50,7 +50,7 @@ namespace MediaManager
 
         public static bool IsStopped(this IMediaManager mediaManager)
         {
-            return mediaManager.State == MediaPlayerState.Stopped;
+            return mediaManager.State == MediaPlayerState.Stopped || mediaManager.State == MediaPlayerState.Failed;
         }
 
         public static Task PlayPause(this IMediaManager mediaManager)

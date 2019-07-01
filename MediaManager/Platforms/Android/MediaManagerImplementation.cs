@@ -164,7 +164,7 @@ namespace MediaManager
 
         public override Task Play()
         {
-            if(!this.IsPlaying())
+            if(this.IsStopped())
                 MediaBrowserManager.MediaController.GetTransportControls().Prepare();
 
             MediaBrowserManager.MediaController.GetTransportControls().Play();
