@@ -16,6 +16,11 @@ namespace MediaManager.Forms.Platforms.iOS
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
             base.OnElementChanged(args);
+
+            if (args.OldElement != null)
+            {
+                args.OldElement.Dispose();
+            }
             if (args.NewElement != null)
             {
                 if (Control == null)
@@ -30,10 +35,6 @@ namespace MediaManager.Forms.Platforms.iOS
                     CrossMediaManager.Current.MediaPlayer.VideoView = _videoView;
                     SetNativeControl(_videoView);
                 }
-            }
-            if (args.OldElement != null)
-            {
-                args.OldElement.Dispose();
             }
         }
 
