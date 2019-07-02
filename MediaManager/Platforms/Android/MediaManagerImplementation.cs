@@ -96,6 +96,18 @@ namespace MediaManager
             set => SetProperty(ref _mediaBrowserManager, value);
         }
 
+        public override TimeSpan StepSize
+        {
+            get => base.StepSize;
+            set
+            {
+                base.StepSize = value;
+                var playerNotificationManager = (NotificationManager as MediaManager.Platforms.Android.Notifications.NotificationManager)?.PlayerNotificationManager;
+                playerNotificationManager?.SetFastForwardIncrementMs((long)value.TotalMilliseconds);
+                playerNotificationManager?.SetRewindIncrementMs((long)value.TotalMilliseconds);
+            }
+        }
+
         private IMediaPlayer _mediaPlayer;
         public override IMediaPlayer MediaPlayer
         {

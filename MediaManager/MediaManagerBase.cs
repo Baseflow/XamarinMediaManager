@@ -27,7 +27,7 @@ namespace MediaManager
         public Timer Timer { get; } = new Timer(1000);
 
         private TimeSpan _stepSize = TimeSpan.FromSeconds(10);
-        public TimeSpan StepSize
+        public virtual TimeSpan StepSize
         {
             get => _stepSize;
             set => SetProperty(ref _stepSize, value);
