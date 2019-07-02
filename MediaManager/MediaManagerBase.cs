@@ -24,7 +24,7 @@ namespace MediaManager
 
         public bool IsInitialized { get; protected set; }
 
-        public Timer Timer { get; } = new Timer(1000);
+        public Timer Timer { get; protected set; } = new Timer(1000);
 
         private TimeSpan _stepSize = TimeSpan.FromSeconds(10);
         public virtual TimeSpan StepSize
@@ -211,6 +211,10 @@ namespace MediaManager
         internal void OnStateChanged(object sender, StateChangedEventArgs e)
         {
             StateChanged?.Invoke(sender, e);
+
+            //TODO: Find a better way to trigger some changes.
+            OnPropertyChanged(nameof(Duration));
+
             NotificationManager?.UpdateNotification();
         }
 
@@ -241,6 +245,7 @@ namespace MediaManager
             if (PreviousPosition != Position)
             {
                 PreviousPosition = Position;
+                //OnPropertyChanged(nameof(Position));
                 OnPositionChanged(this, new PositionChangedEventArgs(Position));
             }
         }
