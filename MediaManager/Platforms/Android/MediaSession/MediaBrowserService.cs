@@ -29,6 +29,8 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         public readonly string ChannelId = "audio_channel";
         public readonly int ForegroundNotificationId = 1;
+        public bool IsForeground = false;
+
 
         public MediaBrowserService()
         {
@@ -44,6 +46,20 @@ namespace MediaManager.Platforms.Android.MediaSession
 
             PrepareMediaSession();
             PrepareNotificationManager();
+
+            /*MediaManager.AndroidMediaPlayer.PlayerEventListener.OnPlayerStateChangedImpl = (bool playWhenReady, int playbackState) =>
+            {
+                if (playWhenReady && !IsForeground)
+                {
+                    //TODO: Start the service again.
+                    //StartForeground()
+                }
+                else if (!playWhenReady && IsForeground)
+                {
+                    StopForeground(false);
+                    IsForeground = false;
+                }
+            };*/
         }
 
         protected virtual void PrepareMediaSession()
@@ -56,8 +72,6 @@ namespace MediaManager.Platforms.Android.MediaSession
 
             MediaManager.MediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons |
                                    MediaSessionCompat.FlagHandlesTransportControls);
-
-            //MediaManager.AndroidMediaPlayer.MediaSession = MediaSession;
         }
 
         protected virtual void PrepareNotificationManager()
@@ -76,24 +90,26 @@ namespace MediaManager.Platforms.Android.MediaSession
             {
                 ContextCompat.StartForegroundService(ApplicationContext, new Intent(ApplicationContext, Java.Lang.Class.FromType(typeof(MediaBrowserService))));
                 StartForeground(notificationId, notification);
+                IsForeground = true;
             };
             NotificationListener.OnNotificationCancelledImpl = (notificationId) =>
             {
                 //TODO: in new exoplayer use StopForeground(false) or use dismissedByUser
                 StopForeground(true);
                 StopSelf();
+                IsForeground = false;
             };
 
             PlayerNotificationManager.SetFastForwardIncrementMs((long)MediaManager.StepSize.TotalMilliseconds);
             PlayerNotificationManager.SetRewindIncrementMs((long)MediaManager.StepSize.TotalMilliseconds);
             PlayerNotificationManager.SetNotificationListener(NotificationListener);
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
-            PlayerNotificationManager.SetOngoing(true);
+            PlayerNotificationManager.SetOngoing(false);
             PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.NotificationManager.ShowPlayPauseControls);
             PlayerNotificationManager.SetUseNavigationActions(MediaManager.NotificationManager.ShowNavigationControls);
 
             //Must be called to start the connection
-            (MediaManager.NotificationManager as Notifications.NotificationManager).Player = MediaManager.AndroidMediaPlayer.Player;
+            (MediaManager.NotificationManager as Notifications.NotificationManager).Player = MediaManager.Player;
             //PlayerNotificationManager.SetPlayer(MediaManager.AndroidMediaPlayer.Player);
         }
 
@@ -117,6 +133,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             MediaManager.MediaSession.Release();
             //MediaSession = null;
             StopForeground(true);
+            IsForeground = false;
         }
 
         public override BrowserRoot OnGetRoot(string clientPackageName, int clientUid, Bundle rootHints)

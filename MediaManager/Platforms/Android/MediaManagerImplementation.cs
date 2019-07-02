@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Support.V4.Media.Session;
+using Com.Google.Android.Exoplayer2;
 using MediaManager.Media;
 using MediaManager.Platforms.Android;
 using MediaManager.Platforms.Android.Media;
@@ -22,7 +23,7 @@ using MediaManager.Volume;
 namespace MediaManager
 {
     [global::Android.Runtime.Preserve(AllMembers = true)]
-    public class MediaManagerImplementation : MediaManagerBase
+    public class MediaManagerImplementation : MediaManagerBase, IMediaManager<SimpleExoPlayer>
     {
         public MediaManagerImplementation()
         {
@@ -108,6 +109,7 @@ namespace MediaManager
         }
 
         public AndroidMediaPlayer AndroidMediaPlayer => (AndroidMediaPlayer)MediaPlayer;
+        public SimpleExoPlayer Player => AndroidMediaPlayer.Player;
 
         private IVolumeManager _volumeManager;
         public override IVolumeManager VolumeManager

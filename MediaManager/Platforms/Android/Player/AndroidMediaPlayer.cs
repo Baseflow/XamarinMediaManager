@@ -56,7 +56,7 @@ namespace MediaManager.Platforms.Android.Media
         protected QueueEditorMediaSourceFactory MediaSourceFactory { get; set; }
         protected TimelineQueueEditor TimelineQueueEditor { get; set; }
         protected MediaSessionConnectorPlaybackPreparer PlaybackPreparer { get; set; }
-        protected PlayerEventListener PlayerEventListener { get; set; }
+        public PlayerEventListener PlayerEventListener { get; set; }
         protected RatingCallback RatingCallback { get; set; }
 
         private SimpleExoPlayer _player;

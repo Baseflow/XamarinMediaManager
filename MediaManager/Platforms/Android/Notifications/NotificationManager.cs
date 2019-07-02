@@ -13,6 +13,11 @@ namespace MediaManager.Platforms.Android.Notifications
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Android;
 
+        public NotificationManager()
+        {
+
+        }
+
         public PlayerNotificationManager PlayerNotificationManager { get; set; }
 
         private IPlayer _player;
@@ -27,10 +32,6 @@ namespace MediaManager.Platforms.Android.Notifications
                 _player = value;
                 PlayerNotificationManager?.SetPlayer(_player);
             }
-        }
-
-        public NotificationManager()
-        {
         }
 
         public override bool Enabled
