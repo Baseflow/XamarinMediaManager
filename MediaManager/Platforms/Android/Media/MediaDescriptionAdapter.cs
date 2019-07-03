@@ -11,7 +11,7 @@ namespace MediaManager.Platforms.Android.Media
 {
     public class MediaDescriptionAdapter : Java.Lang.Object, PlayerNotificationManager.IMediaDescriptionAdapter
     {
-        protected MediaManagerImplementation MediaManager = CrossMediaManager.Android;
+        protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
 
         public MediaDescriptionAdapter()
         {

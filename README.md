@@ -295,6 +295,8 @@ CrossMediaManager.Current.Reactive().*
 * You must request `AccessWifiState`, `Internet`, `ForegroundService` and `WakeLock` permissions
 * Your app must target Android SDK v28 or higher
 
+ExoPlayer 2.9.6 and higher use Java 8. You need to set the Dex tool to D8 `<AndroidDexTool>d8</AndroidDexTool>`
+
 **iOS:**
 
 * In order for the audio to contiunue to play in the background you have to add the 'Audio, Airplay and Picture in Picture Background mode' and 'Background fetch' to your Info.plist

@@ -11,7 +11,7 @@ namespace MediaManager.Platforms.Android.Notifications
 {
     public class NotificationManager : NotificationManagerBase
     {
-        protected MediaManagerImplementation MediaManager = CrossMediaManager.Android;
+        protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
 
         public NotificationManager()
         {
@@ -83,7 +83,7 @@ namespace MediaManager.Platforms.Android.Notifications
                 {
                     PlayerNotificationManager.SetUseNavigationActions(false);
                 }
-                //TODO: Call PlayerNotificationManager.Invalidate(); on exoplayer 2.9.6 when metadata is updated
+                PlayerNotificationManager.Invalidate();
             }
         }
     }

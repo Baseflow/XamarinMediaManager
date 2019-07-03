@@ -11,7 +11,7 @@ namespace MediaManager.Platforms.Android
 {
     public class MediaExtractor : IMediaExtractor
     {
-        protected MediaManagerImplementation MediaManager = CrossMediaManager.Android;
+        protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
         protected Resources Resources => Resources.System;
         protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
 

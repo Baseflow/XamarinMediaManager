@@ -5,28 +5,26 @@ namespace MediaManager.Platforms.Android
 {
     public class VolumeManager : IVolumeManager //VolumeProviderCompat.Callback
     {
-        private MediaManagerImplementation _mediaManagerImplementation;
-        private MediaControllerCompat _mediaController => _mediaManagerImplementation.MediaBrowserManager.MediaController;
+        protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
+        protected MediaControllerCompat MediaController => MediaManager.MediaBrowserManager.MediaController;
 
-        //TODO: Probably inject another class
-        public VolumeManager(MediaManagerImplementation mediaManagerImplementation)
+        public VolumeManager()
         {
-            _mediaManagerImplementation = mediaManagerImplementation;
         }
 
         public int CurrentVolume
         {
-            get => _mediaController.GetPlaybackInfo().CurrentVolume;
+            get => MediaController.GetPlaybackInfo().CurrentVolume;
             set
             {
-                _mediaController.SetVolumeTo(value, 0);
+                MediaController.SetVolumeTo(value, 0);
                 VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(value, Muted));
             }
         }
 
         public int MaxVolume
         {
-            get => _mediaController.GetPlaybackInfo().MaxVolume;
+            get => MediaController.GetPlaybackInfo().MaxVolume;
             set
             {
                 if (CurrentVolume > value)

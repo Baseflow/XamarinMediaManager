@@ -11,7 +11,7 @@ namespace MediaManager.Platforms.Android.Media
     public class QueueNavigator : TimelineQueueNavigator
     {
         protected MediaSessionCompat _mediaSession;
-        protected IMediaManager MediaManager = CrossMediaManager.Android;
+        protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
 
         public QueueNavigator(MediaSessionCompat mediaSession) : base(mediaSession)
         {

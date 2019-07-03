@@ -32,17 +32,17 @@ namespace MediaManager.Platforms.Android.Media
         {
         }
 
-        protected MediaManagerImplementation MediaManager = CrossMediaManager.Android;
+        protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
 
         protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
 
-        protected Context Context => CrossMediaManager.Android.Context;
+        protected Context Context => MediaManager.Context;
 
         protected string UserAgent { get; set; }
         protected DefaultHttpDataSourceFactory HttpDataSourceFactory { get; set; }
-        public static DefaultDataSourceFactory DataSourceFactory { get; set; }
-        public static DefaultDashChunkSource.Factory DashChunkSourceFactory { get; set; }
-        public static DefaultSsChunkSource.Factory SsChunkSourceFactory { get; set; }
+        public IDataSourceFactory DataSourceFactory { get; set; }
+        public DefaultDashChunkSource.Factory DashChunkSourceFactory { get; set; }
+        public DefaultSsChunkSource.Factory SsChunkSourceFactory { get; set; }
 
         protected DefaultBandwidthMeter BandwidthMeter { get; set; }
         protected AdaptiveTrackSelection.Factory TrackSelectionFactory { get; set; }
@@ -116,7 +116,7 @@ namespace MediaManager.Platforms.Android.Media
                 UserAgent = userAgent;
             else
                 UserAgent = Util.GetUserAgent(Context, Context.PackageName);
-
+            
             HttpDataSourceFactory = new DefaultHttpDataSourceFactory(UserAgent);
 
             if (RequestHeaders?.Count > 0)
@@ -127,26 +127,20 @@ namespace MediaManager.Platforms.Android.Media
                 }
             }
 
-            DataSourceFactory = new DefaultDataSourceFactory(Context, null, HttpDataSourceFactory);
+            MediaSource = new ConcatenatingMediaSource();
+
+            DataSourceFactory = new DefaultDataSourceFactory(Context, HttpDataSourceFactory);
             DashChunkSourceFactory = new DefaultDashChunkSource.Factory(DataSourceFactory);
             SsChunkSourceFactory = new DefaultSsChunkSource.Factory(DataSourceFactory);
 
-            BandwidthMeter = new DefaultBandwidthMeter();
-            TrackSelectionFactory = new AdaptiveTrackSelection.Factory(BandwidthMeter);
-            TrackSelector = new DefaultTrackSelector(TrackSelectionFactory);
-            MediaSource = new ConcatenatingMediaSource();
-
-            Player = ExoPlayerFactory.NewSimpleInstance(Context, TrackSelector);
+            Player = ExoPlayerFactory.NewSimpleInstance(Context);
 
             var audioAttributes = new Com.Google.Android.Exoplayer2.Audio.AudioAttributes.Builder()
              .SetUsage(C.UsageMedia)
              .SetContentType(C.ContentTypeMusic)
              .Build();
 
-            Player.AudioAttributes = audioAttributes;
-
-            //TODO: Use this in 2.9.0
-            //Player.SetAudioAttributes(audioAttributes, true);
+            Player.SetAudioAttributes(audioAttributes, true);
 
             PlayerEventListener = new PlayerEventListener()
             {

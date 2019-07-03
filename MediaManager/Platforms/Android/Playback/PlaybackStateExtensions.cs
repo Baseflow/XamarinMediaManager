@@ -29,33 +29,16 @@ namespace MediaManager.Platforms.Android.Playback
                 case PlaybackStateCompat.StateBuffering:
                     return MediaPlayerState.Buffering;
 
+                case PlaybackStateCompat.StateNone:
+                    return MediaPlayerState.Loading;
+
                 case PlaybackStateCompat.StateError:
                 case PlaybackStateCompat.StateStopped:
-                case PlaybackStateCompat.StateNone:
                     return MediaPlayerState.Stopped;
                 
                 default:
                     return MediaPlayerState.Stopped;
             }
         }
-
-        /*public TimeSpan Position
-        {
-            get
-            {
-                long currentPosition = state.Position;
-
-                if (Status == MediaPlayerState.Playing)
-                {
-                    // Calculate the elapsed time between the last position update and now and unless
-                    // paused, we can assume (delta * speed) + current position is approximately the
-                    // latest position. This ensure that we do not repeatedly call the getPlaybackState()
-                    // on MediaControllerCompat.
-                    long timeDelta = SystemClock.ElapsedRealtime() - state.LastPositionUpdateTime;
-                    currentPosition += (long)(timeDelta * state.PlaybackSpeed);
-                }
-                return TimeSpan.FromMilliseconds(currentPosition);
-            }
-        }*/
     }
 }

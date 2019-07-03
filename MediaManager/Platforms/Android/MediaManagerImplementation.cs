@@ -134,7 +134,7 @@ namespace MediaManager
             get
             {
                 if (_volumeManager == null)
-                    _volumeManager = new VolumeManager(this);
+                    _volumeManager = new VolumeManager();
                 return _volumeManager;
             }
             set => SetProperty(ref _volumeManager, value);
