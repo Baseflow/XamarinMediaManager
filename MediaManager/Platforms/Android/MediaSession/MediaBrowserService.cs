@@ -68,6 +68,7 @@ namespace MediaManager.Platforms.Android.MediaSession
                     if(!IsForeground)
                     {
                         ContextCompat.StartForegroundService(MediaManager.Context, new Intent(MediaManager.Context, Java.Lang.Class.FromType(typeof(MediaBrowserService))));
+                        PlayerNotificationManager.SetOngoing(true);
                         //StartForeground(ForegroundNotificationId, _notification);
                         IsForeground = true;
                     }
@@ -76,8 +77,7 @@ namespace MediaManager.Platforms.Android.MediaSession
                     if (IsForeground)
                     {
                         StopForeground(false);
-                        //var playerNotificationManager = (CrossMediaManager.Android.NotificationManager as MediaManager.Platforms.Android.Notifications.NotificationManager).PlayerNotificationManager;
-                        //playerNotificationManager.SetOngoing(false);
+                        PlayerNotificationManager.SetOngoing(false);
                         //NotificationManagerCompat.From(this).Notify(ForegroundNotificationId, _notification);
                         IsForeground = false;
                     }
