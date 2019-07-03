@@ -166,12 +166,12 @@ namespace MediaManager
             set => SetProperty(ref _notificationManager, value);
         }
 
-        public override TimeSpan Position => TimeSpan.FromMilliseconds(MediaBrowserManager?.MediaController.PlaybackState?.Position ?? 0);
+        public override TimeSpan Position => TimeSpan.FromMilliseconds(MediaBrowserManager?.MediaController?.PlaybackState?.Position ?? 0);
 
-        public override TimeSpan Duration => MediaBrowserManager?.MediaController.Metadata?.ToMediaItem().Duration ?? TimeSpan.Zero;
+        public override TimeSpan Duration => MediaBrowserManager?.MediaController?.Metadata?.ToMediaItem()?.Duration ?? TimeSpan.Zero;
 
         public override float Speed {
-            get => MediaBrowserManager?.MediaController.PlaybackState?.PlaybackSpeed ?? 0;
+            get => MediaBrowserManager?.MediaController?.PlaybackState?.PlaybackSpeed ?? 0;
             set => throw new NotImplementedException();
         }
 

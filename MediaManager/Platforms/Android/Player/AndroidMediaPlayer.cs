@@ -182,7 +182,8 @@ namespace MediaManager.Platforms.Android.Media
                 },
                 OnLoadingChangedImpl = (bool isLoading) =>
                 {
-                    MediaManager.Buffered = TimeSpan.FromMilliseconds(Player.BufferedPosition);
+                    if(isLoading)
+                        MediaManager.Buffered = TimeSpan.FromMilliseconds(Player.BufferedPosition);
                 }
             };
             Player.AddListener(PlayerEventListener);

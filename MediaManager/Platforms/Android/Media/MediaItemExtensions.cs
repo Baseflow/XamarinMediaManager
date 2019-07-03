@@ -131,7 +131,11 @@ namespace MediaManager.Platforms.Android.Media
 
         public static IMediaItem ToMediaItem(this MediaMetadataCompat mediaMetadata)
         {
-            var item = new MediaItem(mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyMediaUri));
+            var url = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyMediaUri);
+            if (string.IsNullOrEmpty(url))
+                return null;
+
+            var item = new MediaItem(url);
             item.Advertisement = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyAdvertisement);
             item.Album = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyAlbum);
             item.AlbumArt = mediaMetadata.GetBitmap(MediaMetadataCompat.MetadataKeyAlbumArt);
