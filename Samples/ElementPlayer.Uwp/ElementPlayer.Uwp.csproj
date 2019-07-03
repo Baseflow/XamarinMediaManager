@@ -155,7 +155,7 @@
       <Version>6.1.9</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross">
-      <Version>6.3.0</Version>
+      <Version>6.3.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

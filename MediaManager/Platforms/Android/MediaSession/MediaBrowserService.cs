@@ -17,8 +17,6 @@ namespace MediaManager.Platforms.Android.MediaSession
     public class MediaBrowserService : MediaBrowserServiceCompat
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Android;
-
-        //protected MediaSessionCompat MediaSession { get; set; }
         protected MediaDescriptionAdapter MediaDescriptionAdapter { get; set; }
         protected PlayerNotificationManager PlayerNotificationManager {
             get => (MediaManager.NotificationManager as Notifications.NotificationManager).PlayerNotificationManager;
@@ -156,12 +154,9 @@ namespace MediaManager.Platforms.Android.MediaSession
             // Service is being killed, so make sure we release our resources
             //PlayerNotificationManager.SetPlayer(null);
             //PlayerNotificationManager.Dispose();
-            //MediaManager.MediaPlayer.Dispose();
-            //MediaManager.MediaPlayer = null;
             MediaManager.StateChanged -= MediaManager_StateChanged;
             MediaManager.MediaSession.Active = false;
             MediaManager.MediaSession.Release();
-            //MediaSession = null;
             StopForeground(true);
             IsForeground = false;
         }

@@ -116,7 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MvvmCross.Forms">
-      <Version>6.3.0</Version>
+      <Version>6.3.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
