@@ -40,5 +40,10 @@ namespace MediaManager.Platforms.Android.Media
         {
             return MediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetCover();
         }
+
+        public string GetCurrentSubText(IPlayer player)
+        {
+            return MediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetSubText();
+        }
     }
 }

@@ -25,5 +25,13 @@
             else
                 return "";
         }
+
+        public static string GetSubText(this IMediaItem mediaItem)
+        {
+            if (!string.IsNullOrEmpty(mediaItem.Album))
+                return mediaItem.Album;
+            else
+                return "";
+        }
     }
 }
