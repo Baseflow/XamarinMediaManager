@@ -22,8 +22,8 @@ namespace MediaManager.Platforms.Android.MediaSession
             get => (MediaManager.NotificationManager as Notifications.NotificationManager).PlayerNotificationManager;
             set => (MediaManager.NotificationManager as Notifications.NotificationManager).PlayerNotificationManager = value;
         }
-        protected MediaControllerCompat MediaController { get; set; }
-        protected MediaControllerCallback MediaControllerCallback { get; set; }
+        protected MediaControllerCompat MediaController => MediaManager.MediaBrowserManager.MediaController;
+
         protected NotificationListener NotificationListener { get; set; }
 
         public readonly string ChannelId = "audio_channel";
@@ -55,7 +55,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             {
                 case global::MediaManager.Playback.MediaPlayerState.Failed:
                 case global::MediaManager.Playback.MediaPlayerState.Stopped:
-                    if (IsForeground)
+                    if (IsForeground && MediaController.PlaybackState.State == PlaybackStateCompat.StateStopped)
                     {
                         StopForeground(true);
                         StopSelf();
@@ -69,6 +69,9 @@ namespace MediaManager.Platforms.Android.MediaSession
                     {
                         ContextCompat.StartForegroundService(MediaManager.Context, new Intent(MediaManager.Context, Java.Lang.Class.FromType(typeof(MediaBrowserService))));
                         PlayerNotificationManager.SetOngoing(true);
+                        PlayerNotificationManager.Invalidate();
+
+                        //TODO: This might need to be called: https://stackoverflow.com/questions/44425584/context-startforegroundservice-did-not-then-call-service-startforeground
                         //StartForeground(ForegroundNotificationId, _notification);
                         IsForeground = true;
                     }
@@ -78,7 +81,6 @@ namespace MediaManager.Platforms.Android.MediaSession
                     {
                         StopForeground(false);
                         PlayerNotificationManager.SetOngoing(false);
-                        //NotificationManagerCompat.From(this).Notify(ForegroundNotificationId, _notification);
                         IsForeground = false;
                     }
                     break;
