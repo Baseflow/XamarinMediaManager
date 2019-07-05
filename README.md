@@ -219,18 +219,18 @@ By enforcing it there is still no guarantee that the native system actually is a
 
 |Feature|Android|iOS, Mac, tvOS|UWP|Tizen|WPF
 | ------------------- | :-----------: | :------------------: | :------------------: |:------------------: |:------------------: |
-|Audio|x|x|x|x|x|
-|Video|x|x|x|x|x|
-|Queue|x|x|x|x|x|
-|Notifications|x|x|x|x|x|
-|Volume|x|x|x|x|x|
-|Media Extraction|x|x|x|x|x|
-|HLS|x|x|||
-|DASH|x||||
-|SmoothStreaming|x||||
-|ChromeCast|x||||
-|Airplay||x|||
-|Xamarin.Forms|x|x|x||x|
+|Audio|✓|✓|✓|✓|✓|
+|Video|✓|✓|✓|✓|✓|
+|Queue|✓|✓|✓|✓|✓|
+|Notifications|✓|✓|✓|✓|✓|
+|Volume|✓|✓|✓|✓|✓|
+|Media Extraction|✓|✓|✓|✓|✓|
+|HLS|✓|✓|||
+|DASH|✓||||
+|SmoothStreaming|✓||||
+|ChromeCast|✓||||
+|Airplay||✓|||
+|Xamarin.Forms|✓|✓|✓||✓|
 
 You can also directly access the native platform implementation if you need it!
 ```csharp
