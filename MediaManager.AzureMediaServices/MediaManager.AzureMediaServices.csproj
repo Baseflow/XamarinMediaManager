@@ -92,11 +92,7 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <Reference Include="netstandard" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Update="AzureMediaServices.cs">
-      <SubType></SubType>
-    </Compile>
-  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="windowsazure.mediaservices" Version="4.2.0" />
   </ItemGroup>

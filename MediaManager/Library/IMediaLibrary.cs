@@ -6,8 +6,8 @@ namespace MediaManager.Library
 {
     public interface IMediaLibrary
     {
-        Task<List<MediaItem>> GetItems();
-        Task<MediaItem> GetItem(string mediaId);
-        Task<MediaItem> SaveItem(MediaItem mediaItem);
+        Task<IEnumerable<IMediaItem>> GetItems();
+        Task<IMediaItem> GetItem(string mediaId);
+        Task<IMediaItem> SaveItem(IMediaItem mediaItem);
     }
 }

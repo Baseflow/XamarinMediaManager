@@ -12,20 +12,14 @@ namespace MediaManager.AzureMediaServices
 {
     class AzureMediaServices
     {
-        #region Constant Fields
         const string encoderPreset = "Content Adaptive Multiple Bitrate MP4";
         readonly CloudMediaContext _cloudMediaContext;
-        #endregion
 
-
-        #region Constructors
         public AzureMediaServices(string tenantId, string clientId, string clientSecret, string azureMediaServiceEndpoint)
         {
             _cloudMediaContext = GetCloudMediaContext(tenantId, clientId, clientSecret, azureMediaServiceEndpoint);
         }
-        #endregion
 
-        #region Methods
         public async Task<IAsset> EncodeToAdaptiveBitrateMP4Set(IAsset asset, string outputAssetName, CancellationToken cancellationToken)
         {
             const string processorName = "Media Encoder Standard";
@@ -145,6 +139,5 @@ namespace MediaManager.AzureMediaServices
 
             return manifestUrl;
         }
-        #endregion
     }
 }

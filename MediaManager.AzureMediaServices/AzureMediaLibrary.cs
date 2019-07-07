@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using MediaManager.Library;
 using MediaManager.Media;
@@ -16,18 +15,22 @@ namespace MediaManager.AzureMediaServices
             azureMediaServices = new AzureMediaServices(tenantId, clientId, clientSecret, azureMediaServiceEndpoint);
         }
 
-        public Task<MediaItem> GetItem(string mediaId)
+        public Task<IMediaItem> GetItem(string mediaId)
         {
             var items = azureMediaServices.GetAsset(mediaId);
 
+            throw new NotImplementedException();
+
         }
 
-        public Task<List<MediaItem>> GetItems()
+        public Task<IEnumerable<IMediaItem>> GetItems()
         {
             var assets = azureMediaServices.GetAssets();
+
+            throw new NotImplementedException();
         }
 
-        public Task<MediaItem> SaveItem(MediaItem mediaItem)
+        public Task<IMediaItem> SaveItem(IMediaItem mediaItem)
         {
             throw new NotImplementedException();
         }
