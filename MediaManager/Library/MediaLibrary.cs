@@ -7,17 +7,17 @@ namespace MediaManager.Library
 {
     public class MediaLibrary : IMediaLibrary
     {
-        public Task<MediaItem> GetItem(string mediaId)
+        public Task<IMediaItem> GetItem(string mediaId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<MediaItem>> GetItems()
+        public Task<IEnumerable<IMediaItem>> GetItems()
         {
             throw new NotImplementedException();
         }
 
-        public Task<MediaItem> SaveItem(MediaItem mediaItem)
+        public Task<IMediaItem> SaveItem(IMediaItem mediaItem)
         {
             throw new NotImplementedException();
         }

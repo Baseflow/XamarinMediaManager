@@ -1,38 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
-using MediaManager.Library;
-using MediaManager.Media;
+using MediaManager.AzureMediaServices.Models;
+using Microsoft.WindowsAzure.MediaServices.Client;
 
 namespace MediaManager.AzureMediaServices
 {
-    public class AzureMediaLibrary : IMediaLibrary
+    public class AzureMediaLibrary
     {
-        readonly AzureMediaServices azureMediaServices;
+        readonly AzureMediaService _azureMediaService;
 
-        public AzureMediaLibrary(string tenantId, string clientId, string clientSecret, string azureMediaServiceEndpoint)
+        public AzureMediaLibrary(string azureMediaServiceTenantId, string azureMediaServiceClientId, string azureMediaServiceClientSecret, Uri azureMediaServiceEndpoint, string azureMediaServiceCdnProfileName = "", string azureMediaServiceCdnEndpointName = "")
         {
-            azureMediaServices = new AzureMediaServices(tenantId, clientId, clientSecret, azureMediaServiceEndpoint);
+            _azureMediaService = new AzureMediaService(azureMediaServiceTenantId, azureMediaServiceClientId, azureMediaServiceClientSecret, azureMediaServiceEndpoint, azureMediaServiceCdnProfileName, azureMediaServiceCdnEndpointName);
         }
 
-        public Task<IMediaItem> GetItem(string mediaId)
+        public async Task<AzureMediaServiceItem> PublishMP4(AzureMediaServiceItem azureMediaServiceItem, CancellationToken cancellationToken)
         {
-            var items = azureMediaServices.GetAsset(mediaId);
+            IAsset unencodedAsset = null;
+            IAsset encodedAsset = null;
 
-            throw new NotImplementedException();
+            try
+            {
+                var currentTime = DateTimeOffset.UtcNow;
+                azureMediaServiceItem.PublishedAt = currentTime;
 
-        }
+                cancellationToken.ThrowIfCancellationRequested();
+                unencodedAsset = await _azureMediaService.CreateAssetAndUploadSingleFile(AssetCreationOptions.None, azureMediaServiceItem.Title, $"{azureMediaServiceItem.MediaId}_{currentTime}.mp4", azureMediaServiceItem.Media, cancellationToken).ConfigureAwait(false);
 
-        public Task<IEnumerable<IMediaItem>> GetItems()
-        {
-            var assets = azureMediaServices.GetAssets();
+                azureMediaServiceItem.MediaServicesAssetId = unencodedAsset.Id;
+                azureMediaServiceItem.MediaAssetUri = unencodedAsset.Uri;
 
-            throw new NotImplementedException();
-        }
+                cancellationToken.ThrowIfCancellationRequested();
+                encodedAsset = await _azureMediaService.EncodeToAdaptiveBitrateMP4Set(unencodedAsset, azureMediaServiceItem.Title, cancellationToken).ConfigureAwait(false);
 
-        public Task<IMediaItem> SaveItem(IMediaItem mediaItem)
-        {
-            throw new NotImplementedException();
+                azureMediaServiceItem.AzureMediaServiceFileName = encodedAsset.Name;
+                azureMediaServiceItem.MediaServicesAssetId = encodedAsset.Id;
+                azureMediaServiceItem.MediaAssetUri = encodedAsset.Uri;
+
+                cancellationToken.ThrowIfCancellationRequested();
+                await _azureMediaService.CreateStreamingEndpoint().ConfigureAwait(false);
+
+                cancellationToken.ThrowIfCancellationRequested();
+                var locator = await _azureMediaService.PublishMedia(encodedAsset, azureMediaServiceItem.ExpiryDate.Subtract(DateTimeOffset.UtcNow)).ConfigureAwait(false);
+
+                var (manifestUri, hlsUri, mpegDashUri) = _azureMediaService.BuildStreamingURLs(encodedAsset, locator);
+
+                azureMediaServiceItem.BlobStorageMediaUrl = $"{azureMediaServiceItem.MediaAssetUri}/{_azureMediaService.GetMP4FileName(encodedAsset)}";
+                azureMediaServiceItem.ManifestUrl = manifestUri;
+                azureMediaServiceItem.HLSUrl = hlsUri;
+                azureMediaServiceItem.MPEGDashUrl = mpegDashUri;
+
+                return azureMediaServiceItem;
+            }
+            catch
+            {
+                await Task.WhenAll(unencodedAsset?.DeleteAsync(false) ?? Task.CompletedTask,
+                                    encodedAsset?.DeleteAsync(false) ?? Task.CompletedTask).ConfigureAwait(false);
+                throw;
+            }
+            finally
+            {
+                await (unencodedAsset?.DeleteAsync(false) ?? Task.CompletedTask).ConfigureAwait(false);
+            }
         }
     }
 }

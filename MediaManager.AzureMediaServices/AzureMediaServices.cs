@@ -10,18 +10,28 @@ using Microsoft.WindowsAzure.MediaServices.Client.Live;
 
 namespace MediaManager.AzureMediaServices
 {
-    class AzureMediaServices
+    class AzureMediaService
     {
-        const string encoderPreset = "Content Adaptive Multiple Bitrate MP4";
+        readonly string _azureMediaServiceCdnProfileName, _azureMediaServiceCdnEndpointName;
         readonly CloudMediaContext _cloudMediaContext;
 
-        public AzureMediaServices(string tenantId, string clientId, string clientSecret, string azureMediaServiceEndpoint)
+        public AzureMediaService(string tenantId, string clientId, string clientSecret, Uri azureMediaServiceEndpoint, string azureMediaServiceCdnProfileName = "", string azureMediaServiceCdnEndpointName = "")
         {
+            if (string.IsNullOrWhiteSpace(azureMediaServiceCdnProfileName))
+                azureMediaServiceCdnProfileName = "MediaManagerCDNProfile";
+
+            if (string.IsNullOrWhiteSpace(azureMediaServiceCdnEndpointName))
+                azureMediaServiceCdnEndpointName = "MediaManagerCDNEndpoint";
+
+            _azureMediaServiceCdnProfileName = azureMediaServiceCdnProfileName;
+            _azureMediaServiceCdnEndpointName = azureMediaServiceCdnEndpointName;
+
             _cloudMediaContext = GetCloudMediaContext(tenantId, clientId, clientSecret, azureMediaServiceEndpoint);
         }
 
         public async Task<IAsset> EncodeToAdaptiveBitrateMP4Set(IAsset asset, string outputAssetName, CancellationToken cancellationToken)
         {
+            const string encoderPreset = "Content Adaptive Multiple Bitrate MP4";
             const string processorName = "Media Encoder Standard";
 
             var job = _cloudMediaContext.Jobs.Create($"{processorName} Job");
@@ -39,25 +49,34 @@ namespace MediaManager.AzureMediaServices
         }
 
         public string GetMP4FileName(IAsset asset) =>
-            Uri.EscapeDataString(asset.AssetFiles.Where(x => x.Name.ToLower().EndsWith(".mp4", StringComparison.Ordinal)).FirstOrDefault()?.Name)?.ToString();
+            Uri.EscapeDataString(asset.AssetFiles.Where(x => x.Name.EndsWith(".mp4", StringComparison.OrdinalIgnoreCase)).FirstOrDefault()?.Name)?.ToString();
 
-        public void CreateStreamingEndpoint(string cdnProfileName, string cdnStreamingEndpointName)
+        public async Task<IStreamingEndpoint> CreateStreamingEndpoint()
         {
-            if (_cloudMediaContext.StreamingEndpoints.Where(x => x.CdnProfile.Equals(cdnProfileName)).Count() <= 0)
+            IStreamingEndpoint streamingEndpoint;
+
+            if (!_cloudMediaContext.StreamingEndpoints.Any(x => x.CdnProfile.Equals(_azureMediaServiceCdnProfileName)))
             {
-                var streamingEndpointOptions = new StreamingEndpointCreationOptions(cdnStreamingEndpointName, 1)
+                var streamingEndpointOptions = new StreamingEndpointCreationOptions(_azureMediaServiceCdnEndpointName, 1)
                 {
                     StreamingEndpointVersion = new Version("2.0"),
                     CdnEnabled = true,
-                    CdnProfile = cdnProfileName,
-                    CdnProvider = CdnProviderType.StandardAkamai,
+                    CdnProfile = _azureMediaServiceCdnProfileName,
+                    CdnProvider = CdnProviderType.StandardAkamai
                 };
 
-                _cloudMediaContext.StreamingEndpoints.Create(streamingEndpointOptions);
+                streamingEndpoint = await _cloudMediaContext.StreamingEndpoints.CreateAsync(streamingEndpointOptions).ConfigureAwait(false);
+            }
+            else
+            {
+                streamingEndpoint = _cloudMediaContext.StreamingEndpoints.First(x => x.Name.Equals(_azureMediaServiceCdnEndpointName));
             }
 
-            if (_cloudMediaContext.StreamingEndpoints.FirstOrDefault()?.State is StreamingEndpointState.Stopped)
-                _cloudMediaContext.StreamingEndpoints.First().Start();
+
+            if (streamingEndpoint.State is StreamingEndpointState.Stopped)
+                await streamingEndpoint.StartAsync().ConfigureAwait(false);
+
+            return streamingEndpoint;
         }
 
         public Task<ILocator> PublishMedia(IAsset asset, TimeSpan publishTimeSpan)
@@ -74,11 +93,11 @@ namespace MediaManager.AzureMediaServices
                                                 DateTime.UtcNow.AddMinutes(-5));
         }
 
-        public (string manifestUri, string hlsUri, string mpegDashUri) BuildStreamingURLs(IAsset asset, ILocator locator, string cdnStreamingEndpointName)
+        public (string manifestUri, string hlsUri, string mpegDashUri) BuildStreamingURLs(IAsset asset, ILocator locator)
         {
             var manifestFile = asset.AssetFiles.Where(x => x.Name.ToLower().EndsWith(".ism", StringComparison.Ordinal)).FirstOrDefault();
 
-            var manifestUrl = GetStreamingManifestUrl(locator, manifestFile, cdnStreamingEndpointName);
+            var manifestUrl = GetStreamingManifestUrl(locator, manifestFile, _azureMediaServiceCdnEndpointName);
 
             var hlsUrl = $"{manifestUrl}(format=m3u8-aapl)";
             var dashUrl = $"{manifestUrl}(format=mpd-time-csf)";
@@ -87,7 +106,7 @@ namespace MediaManager.AzureMediaServices
         }
 
 
-        public async Task<IAsset> CreateAssetAndUploadSingleFile(AssetCreationOptions assetCreationOptions, string mediaTitle, string fileName, byte[] mediaFile, CancellationToken token)
+        public async Task<IAsset> CreateAssetAndUploadSingleFile(AssetCreationOptions assetCreationOptions, string mediaTitle, string fileName, Stream mediaStream, CancellationToken token)
         {
             var inputAsset = await _cloudMediaContext.Assets.CreateAsync(mediaTitle, assetCreationOptions, token).ConfigureAwait(false);
 
@@ -95,8 +114,7 @@ namespace MediaManager.AzureMediaServices
 
             return await Task.Run(() =>
             {
-                using (var memoryStream = new MemoryStream(mediaFile))
-                    assetFile.Upload(memoryStream);
+                assetFile.Upload(mediaStream);
 
                 return inputAsset;
             }).ConfigureAwait(false);
@@ -106,7 +124,7 @@ namespace MediaManager.AzureMediaServices
 
         public IAsset GetAsset(string id) => GetAssets().First(x => x.Id.Equals(id));
 
-        CloudMediaContext GetCloudMediaContext(string tenantId, string clientId, string clientSecret, string mediaServiceEndpoint)
+        CloudMediaContext GetCloudMediaContext(string tenantId, string clientId, string clientSecret, Uri mediaServiceEndpoint)
         {
             var tokenCredentials = new AzureAdTokenCredentials(tenantId,
                                                                 new AzureAdClientSymmetricKey(clientId, clientSecret),
@@ -114,7 +132,7 @@ namespace MediaManager.AzureMediaServices
 
             var tokenProvider = new AzureAdTokenProvider(tokenCredentials);
 
-            return new CloudMediaContext(new Uri(mediaServiceEndpoint), tokenProvider);
+            return new CloudMediaContext(mediaServiceEndpoint, tokenProvider);
         }
 
         IMediaProcessor GetLatestMediaProcessorByName(string mediaProcessorName)
@@ -122,7 +140,6 @@ namespace MediaManager.AzureMediaServices
             var processor = _cloudMediaContext
                                 .MediaProcessors
                                 .Where(p => p.Name.Equals(mediaProcessorName))
-                                .ToList()
                                 .OrderBy(p => new Version(p.Version))
                                 .LastOrDefault();
 
