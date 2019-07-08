@@ -93,14 +93,14 @@ namespace MediaManager.AzureMediaServices
                                                 DateTime.UtcNow.AddMinutes(-5));
         }
 
-        public (string manifestUri, string hlsUri, string mpegDashUri) BuildStreamingURLs(IAsset asset, ILocator locator)
+        public (Uri manifestUri, Uri hlsUri, Uri mpegDashUri) BuildStreamingURLs(IAsset asset, ILocator locator)
         {
             var manifestFile = asset.AssetFiles.Where(x => x.Name.ToLower().EndsWith(".ism", StringComparison.Ordinal)).FirstOrDefault();
 
-            var manifestUrl = GetStreamingManifestUrl(locator, manifestFile, _azureMediaServiceCdnEndpointName);
+            var manifestUrl = new Uri(GetStreamingManifestUrl(locator, manifestFile, _azureMediaServiceCdnEndpointName));
 
-            var hlsUrl = $"{manifestUrl}(format=m3u8-aapl)";
-            var dashUrl = $"{manifestUrl}(format=mpd-time-csf)";
+            var hlsUrl = new Uri($"{manifestUrl}(format=m3u8-aapl)");
+            var dashUrl = new Uri($"{manifestUrl}(format=mpd-time-csf)");
 
             return (manifestUrl, hlsUrl, dashUrl);
         }

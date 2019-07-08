@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using MediaManager.AzureMediaServices.Models;
@@ -15,43 +16,37 @@ namespace MediaManager.AzureMediaServices
             _azureMediaService = new AzureMediaService(azureMediaServiceTenantId, azureMediaServiceClientId, azureMediaServiceClientSecret, azureMediaServiceEndpoint, azureMediaServiceCdnProfileName, azureMediaServiceCdnEndpointName);
         }
 
-        public async Task<AzureMediaServiceItem> PublishMP4(AzureMediaServiceItem azureMediaServiceItem, CancellationToken cancellationToken)
+        public async Task<AzureMediaServiceItem> PublishMP4(string title, Stream mp4, DateTimeOffset expiryDate, CancellationToken cancellationToken)
         {
             IAsset unencodedAsset = null;
             IAsset encodedAsset = null;
 
             try
             {
-                var currentTime = DateTimeOffset.UtcNow;
-                azureMediaServiceItem.PublishedAt = currentTime;
+                var id = Guid.NewGuid().ToString();
+                var publishedAt = DateTimeOffset.UtcNow;
 
                 cancellationToken.ThrowIfCancellationRequested();
-                unencodedAsset = await _azureMediaService.CreateAssetAndUploadSingleFile(AssetCreationOptions.None, azureMediaServiceItem.Title, $"{azureMediaServiceItem.MediaId}_{currentTime}.mp4", azureMediaServiceItem.Media, cancellationToken).ConfigureAwait(false);
-
-                azureMediaServiceItem.MediaServicesAssetId = unencodedAsset.Id;
-                azureMediaServiceItem.MediaAssetUri = unencodedAsset.Uri;
+                unencodedAsset = await _azureMediaService.CreateAssetAndUploadSingleFile(AssetCreationOptions.None, title, $"{id}_{publishedAt}.mp4", mp4, cancellationToken).ConfigureAwait(false);
 
                 cancellationToken.ThrowIfCancellationRequested();
-                encodedAsset = await _azureMediaService.EncodeToAdaptiveBitrateMP4Set(unencodedAsset, azureMediaServiceItem.Title, cancellationToken).ConfigureAwait(false);
+                encodedAsset = await _azureMediaService.EncodeToAdaptiveBitrateMP4Set(unencodedAsset, title, cancellationToken).ConfigureAwait(false);
 
-                azureMediaServiceItem.AzureMediaServiceFileName = encodedAsset.Name;
-                azureMediaServiceItem.MediaServicesAssetId = encodedAsset.Id;
-                azureMediaServiceItem.MediaAssetUri = encodedAsset.Uri;
+                var azureMediaServiceFileName = encodedAsset.Name;
+                var mediaServicesAssetId = encodedAsset.Id;
+                var mediaAssetUri = encodedAsset.Uri;
 
                 cancellationToken.ThrowIfCancellationRequested();
                 await _azureMediaService.CreateStreamingEndpoint().ConfigureAwait(false);
 
                 cancellationToken.ThrowIfCancellationRequested();
-                var locator = await _azureMediaService.PublishMedia(encodedAsset, azureMediaServiceItem.ExpiryDate.Subtract(DateTimeOffset.UtcNow)).ConfigureAwait(false);
+                var locator = await _azureMediaService.PublishMedia(encodedAsset, expiryDate.Subtract(DateTimeOffset.UtcNow)).ConfigureAwait(false);
 
                 var (manifestUri, hlsUri, mpegDashUri) = _azureMediaService.BuildStreamingURLs(encodedAsset, locator);
 
-                azureMediaServiceItem.BlobStorageMediaUrl = $"{azureMediaServiceItem.MediaAssetUri}/{_azureMediaService.GetMP4FileName(encodedAsset)}";
-                azureMediaServiceItem.ManifestUrl = manifestUri;
-                azureMediaServiceItem.HLSUrl = hlsUri;
-                azureMediaServiceItem.MPEGDashUrl = mpegDashUri;
+                var blobStorageMediaUrl = $"{mediaAssetUri}/{_azureMediaService.GetMP4FileName(encodedAsset)}";
 
-                return azureMediaServiceItem;
+                return new AzureMediaServiceItem(blobStorageMediaUrl, expiryDate, azureMediaServiceFileName, hlsUri, id, manifestUri, mediaAssetUri, mediaServicesAssetId, mpegDashUri, publishedAt, title);
             }
             catch
             {

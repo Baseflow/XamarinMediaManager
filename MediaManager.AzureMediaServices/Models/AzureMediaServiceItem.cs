@@ -1,45 +1,22 @@
 ﻿using System;
-using System.IO;
 
 namespace MediaManager.AzureMediaServices.Models
 {
     public class AzureMediaServiceItem
     {
-        public AzureMediaServiceItem(string title, Stream media, string mediaId, DateTimeOffset expiryDate)
-        {
-            ExpiryDate = expiryDate;
-            MediaId = mediaId;
-            Title = title;
-            Media = media;
-        }
+        public AzureMediaServiceItem(string blobStorageMediaUrl, DateTimeOffset expiryDate, string fileName, Uri hlsUri, string id, Uri manifestUri, Uri mediaAssetUri, string mediaServicesAssetId, Uri mpegDashUri, DateTimeOffset publishedAt, string title) =>
+            (BlobStorageMediaUrl, ExpiryDate, FileName, HLSUri, Id, ManifestUri, MediaAssetUri, MediaServicesAssetId, MPEGDashUri, PublishedAt, Title) = (blobStorageMediaUrl, expiryDate, fileName, hlsUri, id, manifestUri, mediaAssetUri, mediaServicesAssetId, mpegDashUri, publishedAt, title);
 
-        public AzureMediaServiceItem(string title, Stream media, string mediaId) : this(title, media, mediaId, DateTimeOffset.MaxValue)
-        {
-            if (string.IsNullOrWhiteSpace(mediaId))
-                throw new ArgumentException($"{nameof(mediaId)} cannot be null or white space", nameof(mediaId));
-        }
-
-        public AzureMediaServiceItem(string title, Stream media) : this(title, media, Guid.NewGuid().ToString())
-        {
-            if (string.IsNullOrWhiteSpace(title))
-                throw new ArgumentException($"{nameof(title)} cannot be null or white space", nameof(title));
-
-            if (media.Length <= 0)
-                throw new ArgumentException($"{nameof(media)} cannot be empty", nameof(media));
-        }
-
-        public Stream Media { get; }
-        public string MediaId { get; }
-        public string Title { get; }
+        public string BlobStorageMediaUrl { get; }
         public DateTimeOffset ExpiryDate { get; }
-
-        public string MediaServicesAssetId { get; set; }
-        public Uri MediaAssetUri { get; set; }
-        public string AzureMediaServiceFileName { get; set; }
-        public DateTimeOffset PublishedAt { get; set; }
-        public string ManifestUrl { get; set; }
-        public string HLSUrl { get; set; }
-        public string MPEGDashUrl { get; set; }
-        public string BlobStorageMediaUrl { get; set; }
+        public string FileName { get; }
+        public Uri HLSUri { get; }
+        public string Id { get; }
+        public Uri ManifestUri { get; }
+        public Uri MediaAssetUri { get; }
+        public string MediaServicesAssetId { get; }
+        public Uri MPEGDashUri { get; }
+        public DateTimeOffset PublishedAt { get; }
+        public string Title { get; }
     }
 }
