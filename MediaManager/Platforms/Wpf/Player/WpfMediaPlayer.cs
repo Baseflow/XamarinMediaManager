@@ -60,9 +60,9 @@ namespace MediaManager.Platforms.Wpf.Player
 
             Player.MediaEnded += Player_MediaEnded;
             Player.MediaOpened += Player_MediaOpened;
+            Player.MediaFailed += Player_MediaFailed;
             Player.BufferingStarted += Player_BufferingStarted;
             Player.BufferingEnded += Player_BufferingEnded;
-            Player.MediaFailed += Player_MediaFailed;
         }
 
         private void Player_MediaFailed(object sender, System.Windows.ExceptionRoutedEventArgs e)
@@ -132,9 +132,9 @@ namespace MediaManager.Platforms.Wpf.Player
         {
             Player.MediaEnded -= Player_MediaEnded;
             Player.MediaOpened -= Player_MediaOpened;
+            Player.MediaFailed -= Player_MediaFailed;
             Player.BufferingStarted -= Player_BufferingStarted;
             Player.BufferingEnded -= Player_BufferingEnded;
-            Player.MediaFailed -= Player_MediaFailed;
             Player = null;
         }
     }

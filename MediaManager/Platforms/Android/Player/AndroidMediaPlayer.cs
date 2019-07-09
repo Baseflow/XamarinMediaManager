@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Runtime;
@@ -60,7 +61,6 @@ namespace MediaManager.Platforms.Android.Media
         protected RatingCallback RatingCallback { get; set; }
 
         private SimpleExoPlayer _player;
-
         public SimpleExoPlayer Player
         {
             get
@@ -89,6 +89,8 @@ namespace MediaManager.Platforms.Android.Media
                 }
             }
         }
+
+        protected int lastWindowIndex = 0;
 
         public MediaSessionCompat MediaSession => MediaManager.MediaSession;
 
@@ -144,8 +146,15 @@ namespace MediaManager.Platforms.Android.Media
 
             PlayerEventListener = new PlayerEventListener()
             {
-                OnPlayerErrorImpl = (exception) =>
+                OnPlayerErrorImpl = (ExoPlaybackException exception) =>
                 {
+                    switch (exception.Type)  
+                    {
+                        case ExoPlaybackException.TypeRenderer:
+                        case ExoPlaybackException.TypeSource:
+                        case ExoPlaybackException.TypeUnexpected:
+                            break;
+                    }
                     MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, exception, exception.Message));
                 },
                 OnTracksChangedImpl = (trackGroups, trackSelections) =>
@@ -163,7 +172,8 @@ namespace MediaManager.Platforms.Android.Media
                     switch (playbackState)
                     {
                         case Com.Google.Android.Exoplayer2.Player.StateEnded:
-                            MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
+                            //TODO: Maybe this means now the whole list is finished?
+                            //MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
                             break;
                         case Com.Google.Android.Exoplayer2.Player.StateIdle:
                         case Com.Google.Android.Exoplayer2.Player.StateBuffering:
@@ -171,6 +181,37 @@ namespace MediaManager.Platforms.Android.Media
                             break;
                         case Com.Google.Android.Exoplayer2.Player.StateReady:
                         default:
+                            break;
+                    }
+                },
+                OnPositionDiscontinuityImpl = (int reason) => {
+                    switch (reason)
+                    {
+                        case Com.Google.Android.Exoplayer2.Player.DiscontinuityReasonAdInsertion:
+                        case Com.Google.Android.Exoplayer2.Player.DiscontinuityReasonSeek:
+                        case Com.Google.Android.Exoplayer2.Player.DiscontinuityReasonSeekAdjustment:
+                            break;
+                        case Com.Google.Android.Exoplayer2.Player.DiscontinuityReasonPeriodTransition:
+                            var currentWindowIndex = Player.CurrentWindowIndex;
+                            /*if (lastWindowIndex == currentWindowIndex - 1)
+                            {
+                                // skipped to next
+                            }
+                            else if (lastWindowIndex == currentWindowIndex + 1)
+                            {
+                                // skipped to previous
+                            }
+                            else
+                            {
+                                // jumped more than one window index
+                            }*/
+                            if (currentWindowIndex != lastWindowIndex)
+                            {
+                                MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.ElementAtOrDefault(lastWindowIndex)));
+                                lastWindowIndex = currentWindowIndex;
+                            }
+                            break;
+                        case Com.Google.Android.Exoplayer2.Player.DiscontinuityReasonInternal:
                             break;
                     }
                 },
@@ -238,9 +279,12 @@ namespace MediaManager.Platforms.Android.Media
 
         protected override void Dispose(bool disposing)
         {
-            Player.RemoveListener(PlayerEventListener);
-            Player.Release();
-            Player = null;
+            if(Player != null)
+            {
+                Player.RemoveListener(PlayerEventListener);
+                Player.Release();
+                Player = null;
+            }
 
             base.Dispose(disposing);
         }

@@ -93,18 +93,6 @@ namespace MediaManager.Platforms.Android.Media
 
         public void OnPositionDiscontinuity(int reason)
         {
-            switch (reason)
-            {
-                case Player.DiscontinuityReasonAdInsertion:
-                case Player.DiscontinuityReasonSeek:
-                case Player.DiscontinuityReasonSeekAdjustment:
-                    break;
-                case Player.DiscontinuityReasonPeriodTransition:
-                    //player.OnMediaItemFinished();
-                    break;
-                case Player.DiscontinuityReasonInternal:
-                    break;
-            }
             OnPositionDiscontinuityImpl?.Invoke(reason);
         }
 

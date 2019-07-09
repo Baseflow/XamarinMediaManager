@@ -12,7 +12,7 @@ using MediaManager.Platforms.Android.Media;
 
 namespace MediaManager.Platforms.Android.MediaSession
 {
-    [Service(Exported = true)]
+    [Service(Exported = true, Enabled = true)]
     [IntentFilter(new[] { global::Android.Service.Media.MediaBrowserService.ServiceInterface })]
     public class MediaBrowserService : MediaBrowserServiceCompat
     {
@@ -67,9 +67,9 @@ namespace MediaManager.Platforms.Android.MediaSession
                 case global::MediaManager.Playback.MediaPlayerState.Playing:
                     if(!IsForeground)
                     {
-                        ContextCompat.StartForegroundService(MediaManager.Context, new Intent(MediaManager.Context, Java.Lang.Class.FromType(typeof(MediaBrowserService))));
-                        PlayerNotificationManager.SetOngoing(true);
-                        PlayerNotificationManager.Invalidate();
+                        //ContextCompat.StartForegroundService(MediaManager.Context, new Intent(MediaManager.Context, Java.Lang.Class.FromType(typeof(MediaBrowserService))));
+                        PlayerNotificationManager?.SetOngoing(true);
+                        PlayerNotificationManager?.Invalidate();
 
                         //TODO: This might need to be called: https://stackoverflow.com/questions/44425584/context-startforegroundservice-did-not-then-call-service-startforeground
                         //StartForeground(ForegroundNotificationId, _notification);
@@ -80,7 +80,7 @@ namespace MediaManager.Platforms.Android.MediaSession
                     if (IsForeground)
                     {
                         StopForeground(false);
-                        PlayerNotificationManager.SetOngoing(false);
+                        PlayerNotificationManager?.SetOngoing(false);
                         IsForeground = false;
                     }
                     break;
@@ -149,6 +149,12 @@ namespace MediaManager.Platforms.Android.MediaSession
                 MediaButtonReceiver.HandleIntent(MediaManager.MediaSession, startIntent);
             }
             return StartCommandResult.Sticky;
+        }
+
+        public override void OnTaskRemoved(Intent rootIntent)
+        {
+            base.OnTaskRemoved(rootIntent);
+            MediaManager.Stop();
         }
 
         public override void OnDestroy()

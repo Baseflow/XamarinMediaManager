@@ -64,6 +64,12 @@ namespace MediaManager.Platforms.Uap.Media
             Player.MediaFailed += Player_MediaFailed;
             Player.PlaybackSession.BufferingProgressChanged += PlaybackSession_BufferingProgressChanged;
             Player.PlaybackSession.PlaybackStateChanged += PlaybackSession_PlaybackStateChanged;
+            Player.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
+        }
+
+        private void PlaybackSession_PositionChanged(MediaPlaybackSession sender, object args)
+        {
+            //TODO: Maybe use this?
         }
 
         private void PlaybackSession_BufferingProgressChanged(MediaPlaybackSession sender, object args)
@@ -128,7 +134,9 @@ namespace MediaManager.Platforms.Uap.Media
         {
             Player.MediaEnded -= Player_MediaEnded;
             Player.MediaFailed -= Player_MediaFailed;
+            Player.PlaybackSession.BufferingProgressChanged -= PlaybackSession_BufferingProgressChanged;
             Player.PlaybackSession.PlaybackStateChanged -= PlaybackSession_PlaybackStateChanged;
+            Player.PlaybackSession.PositionChanged -= PlaybackSession_PositionChanged;
             Player.Dispose();
             Player = null;
         }
