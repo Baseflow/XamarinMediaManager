@@ -6,8 +6,9 @@ namespace MediaManager
     {
         public static void Init(this IMediaManager mediaManager, Context context)
         {
-            ((MediaManagerImplementation)mediaManager).Context = context;
-            mediaManager.Init();
+            var androidMediaManager = ((MediaManagerImplementation)mediaManager);
+            androidMediaManager.Context = context;
+            androidMediaManager.Init();
         }
     }
 }

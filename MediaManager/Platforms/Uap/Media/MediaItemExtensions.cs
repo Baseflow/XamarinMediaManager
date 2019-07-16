@@ -28,6 +28,7 @@ namespace MediaManager.Platforms.Uap.Media
                     return MediaSource.CreateFromStorageFile(storageFile);
             }*/
 
+            //TODO: Get Metadata from MediaSource
             return MediaSource.CreateFromUri(new Uri(mediaItem.MediaUri));
         }
     }

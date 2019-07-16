@@ -45,7 +45,6 @@ namespace MediaManager.Platforms.Wpf.Player
                 _player = value;
             }
         }
-        public RepeatMode RepeatMode { get; set; }
 
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;

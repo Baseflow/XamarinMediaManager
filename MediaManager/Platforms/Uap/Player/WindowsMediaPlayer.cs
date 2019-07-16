@@ -52,14 +52,26 @@ namespace MediaManager.Platforms.Uap.Media
             }
         }
 
-        public RepeatMode RepeatMode { get; set; }
-
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;
+
+        private MediaPlaybackList _mediaPlaybackList;
+        public MediaPlaybackList MediaPlaybackList
+        {
+            get
+            {
+                if(_mediaPlaybackList == null)
+                    _mediaPlaybackList = new MediaPlaybackList();
+                return _mediaPlaybackList;
+            }
+            private set => _mediaPlaybackList = value;
+        }
 
         public void Initialize()
         {
             Player = new MediaPlayer();
+            Player.AudioCategory = MediaPlayerAudioCategory.Media;
+
             Player.MediaEnded += Player_MediaEnded;
             Player.MediaFailed += Player_MediaFailed;
             Player.PlaybackSession.BufferingProgressChanged += PlaybackSession_BufferingProgressChanged;
@@ -102,10 +114,13 @@ namespace MediaManager.Platforms.Uap.Media
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
-            var mediaPlaybackList = new MediaPlaybackList();
             var item = new MediaPlaybackItem(mediaItem.ToMediaSource());
-            mediaPlaybackList.Items.Add(item);
-            Player.Source = mediaPlaybackList;
+
+            //TODO: Fill MediaPlaybackList with full queue
+            MediaPlaybackList.Items.Clear();
+            MediaPlaybackList.Items.Add(item);
+            Player.Source = MediaPlaybackList;
+
             await Play();
 
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));

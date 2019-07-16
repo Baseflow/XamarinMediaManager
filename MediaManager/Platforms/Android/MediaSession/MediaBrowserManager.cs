@@ -11,9 +11,11 @@ namespace MediaManager.Platforms.Android.MediaSession
 {
     public class MediaBrowserManager
     {
+        private TaskCompletionSource<bool> _tcs;
+
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
 
-        public MediaControllerCompat MediaController { get; set; }
+        //public MediaControllerCompat MediaController { get; set; }
         protected MediaBrowserCompat MediaBrowser { get; set; }
         protected MediaBrowserConnectionCallback MediaBrowserConnectionCallback { get; set; }
         protected MediaControllerCallback MediaControllerCallback { get; set; }
@@ -27,8 +29,13 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
         }
 
-        public bool Init()
+        public async Task<bool> Init()
         {
+            if (_tcs?.Task != null)
+                return await _tcs.Task;
+
+            _tcs = new TaskCompletionSource<bool>();
+
             if (MediaBrowser == null)
             {
                 MediaControllerCallback = new MediaControllerCallback()
@@ -77,26 +84,26 @@ namespace MediaManager.Platforms.Android.MediaSession
                 {
                     OnConnectedImpl = () =>
                     {
-                        MediaController = new MediaControllerCompat(Context, MediaBrowser.SessionToken);
-                        MediaController.RegisterCallback(MediaControllerCallback);
+                        var mediaController = MediaManager.MediaController = new MediaControllerCompat(Context, MediaBrowser.SessionToken);
+                        mediaController.RegisterCallback(MediaControllerCallback);
 
                         if (Context is Activity activity)
-                            MediaControllerCompat.SetMediaController(activity, MediaController);
+                            MediaControllerCompat.SetMediaController(activity, mediaController);
 
                         // Sync existing MediaSession state to the UI.
                         // The first time these events are fired, the metadata and playbackstate are null. 
-                        MediaControllerCallback.OnMetadataChanged(MediaController.Metadata);
-                        MediaControllerCallback.OnPlaybackStateChanged(MediaController.PlaybackState);
+                        MediaControllerCallback.OnMetadataChanged(mediaController.Metadata);
+                        MediaControllerCallback.OnPlaybackStateChanged(mediaController.PlaybackState);
 
                         MediaBrowser.Subscribe(MediaBrowser.Root, MediaBrowserSubscriptionCallback);
 
                         IsInitialized = true;
-                        //tcs.SetResult(IsInitialized);
+                        _tcs.SetResult(IsInitialized);
                     },
                     OnConnectionFailedImpl = () =>
                     {
                         IsInitialized = false;
-                        //tcs.SetResult(IsInitialized);
+                        _tcs.SetResult(IsInitialized);
                     },
                     OnConnectionSuspendedImpl = () =>
                     {
@@ -115,10 +122,9 @@ namespace MediaManager.Platforms.Android.MediaSession
             if (!IsInitialized)
             {
                 MediaBrowser.Connect();
-                IsInitialized = true;
             }
 
-            return IsInitialized;
+            return await _tcs.Task;
         }
     }
 }

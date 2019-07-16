@@ -41,7 +41,7 @@ namespace MediaManager.Platforms.Android.Notifications
             {
                 base.Enabled = value;
                 if (Enabled)
-                    Player = MediaManager.AndroidMediaPlayer.Player;
+                    Player = MediaManager.Player;
                 else
                     Player = null;
             }
@@ -73,7 +73,7 @@ namespace MediaManager.Platforms.Android.Notifications
             if (PlayerNotificationManager != null)
             {
                 if (Enabled && Player == null && !MediaManager.IsStopped())
-                    Player = MediaManager.AndroidMediaPlayer.Player;
+                    Player = MediaManager.Player;
 
                 if (ShowNavigationControls && MediaManager.MediaQueue.Count > 1)
                 {

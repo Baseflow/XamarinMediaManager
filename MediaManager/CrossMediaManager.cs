@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace MediaManager
 {
     /// <summary>
     /// Cross MediaManager
     /// </summary>
+    [DebuggerStepThrough]
     public static class CrossMediaManager
     {
         static Lazy<IMediaManager> implementation = new Lazy<IMediaManager>(() => CreateMediaManager(), System.Threading.LazyThreadSafetyMode.PublicationOnly);

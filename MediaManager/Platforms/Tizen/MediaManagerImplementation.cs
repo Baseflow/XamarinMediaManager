@@ -6,10 +6,11 @@ using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Queue;
 using MediaManager.Volume;
+using Tizen.Multimedia;
 
 namespace MediaManager
 {
-    public class MediaManagerImplementation : MediaManagerBase //<MediaPlayer, Player>
+    public class MediaManagerImplementation : MediaManagerBase, IMediaManager<Player>
     {
         public override IMediaPlayer MediaPlayer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override IMediaExtractor MediaExtractor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -26,10 +27,7 @@ namespace MediaManager
         public override ShuffleMode ShuffleMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override INotificationManager NotificationManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public override void Init()
-        {
-            throw new NotImplementedException();
-        }
+        public Player Player => throw new NotImplementedException();
 
         public override Task Pause()
         {

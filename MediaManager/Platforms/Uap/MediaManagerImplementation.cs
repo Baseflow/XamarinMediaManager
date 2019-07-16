@@ -18,7 +18,7 @@ using Windows.Storage;
 
 namespace MediaManager
 {
-    public class MediaManagerImplementation : MediaManagerBase
+    public class MediaManagerImplementation : MediaManagerBase, IMediaManager<MediaPlayer>
     {
         public MediaManagerImplementation()
         {
@@ -38,6 +38,8 @@ namespace MediaManager
         }
 
         public WindowsMediaPlayer WindowsMediaPlayer => (WindowsMediaPlayer)MediaPlayer;
+
+        public MediaPlayer Player => WindowsMediaPlayer.Player;
 
         private IVolumeManager _volumeManager;
         public override IVolumeManager VolumeManager
@@ -96,9 +98,28 @@ namespace MediaManager
             }
         }
 
-        public override RepeatMode RepeatMode {
-            get => MediaPlayer.RepeatMode;
-            set => MediaPlayer.RepeatMode = value;
+        public override RepeatMode RepeatMode
+        {
+            get
+            {
+                if (Player.IsLoopingEnabled)
+                    return RepeatMode.All;
+                else
+                    return RepeatMode.Off;
+            }
+            set
+            {
+                switch (value)
+                {
+                    case RepeatMode.Off:
+                        Player.IsLoopingEnabled = false;
+                        break;
+                    case RepeatMode.One:
+                    case RepeatMode.All:
+                        Player.IsLoopingEnabled = true;
+                        break;
+                }
+            }
         }
 
         public override ShuffleMode ShuffleMode
@@ -111,11 +132,6 @@ namespace MediaManager
             {
                 MediaQueue.ShuffleMode = value;
             }
-        }
-
-        public override void Init()
-        {
-            IsInitialized = true;
         }
 
         public override Task Play()

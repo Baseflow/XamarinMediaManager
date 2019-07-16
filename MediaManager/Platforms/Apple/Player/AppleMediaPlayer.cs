@@ -190,8 +190,6 @@ namespace MediaManager.Platforms.Apple.Media
             MediaManager.State = MediaPlayerState.Stopped;
         }
 
-        public RepeatMode RepeatMode { get; set; } = RepeatMode.Off;
-
         protected override void Dispose(bool disposing)
         {
             NSNotificationCenter.DefaultCenter.RemoveObservers(new List<NSObject>(){

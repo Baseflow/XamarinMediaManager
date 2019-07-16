@@ -15,7 +15,7 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer>, new()
+    public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase, IMediaManager<AVQueuePlayer> where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer>, new()
     {
         private IMediaPlayer _mediaPlayer;
         public override IMediaPlayer MediaPlayer
@@ -32,6 +32,8 @@ namespace MediaManager
         }
 
         public AppleMediaPlayer AppleMediaPlayer => (AppleMediaPlayer)MediaPlayer;
+
+        public AVQueuePlayer Player => ((AppleMediaPlayer)MediaPlayer).Player;
 
         private IMediaExtractor _mediaExtractor;
         public override IMediaExtractor MediaExtractor
@@ -72,23 +74,15 @@ namespace MediaManager
             set => SetProperty(ref _notificationManager, value);
         }
 
-        /*public override MediaPlayerState State
-        {
-            get
-            {
-                return AppleMediaPlayer.Player.TimeControlStatus.ToMediaPlayerState();
-            }
-        }*/
-
         public override TimeSpan Position
         {
             get
             {
-                if (AppleMediaPlayer?.Player?.CurrentItem == null)
+                if (Player?.CurrentItem == null)
                 {
                     return TimeSpan.Zero;
                 }
-                return TimeSpan.FromSeconds(AppleMediaPlayer.Player.CurrentTime.Seconds);
+                return TimeSpan.FromSeconds(Player.CurrentTime.Seconds);
             }
         }
 
@@ -100,11 +94,11 @@ namespace MediaManager
                 {
                     return TimeSpan.Zero;
                 }
-                if (double.IsNaN(AppleMediaPlayer.Player.CurrentItem.Duration.Seconds))
+                if (double.IsNaN(Player.CurrentItem.Duration.Seconds))
                 {
                     return TimeSpan.Zero;
                 }
-                return TimeSpan.FromSeconds(AppleMediaPlayer.Player.CurrentItem.Duration.Seconds);
+                return TimeSpan.FromSeconds(Player.CurrentItem.Duration.Seconds);
             }
         }
 
@@ -113,19 +107,14 @@ namespace MediaManager
             get
             {
                 if (AppleMediaPlayer?.Player != null)
-                    return AppleMediaPlayer.Player.Rate;
+                    return Player.Rate;
                 return 0.0f;
             }
             set
             {
                 if (AppleMediaPlayer?.Player != null)
-                    AppleMediaPlayer.Player.Rate = value;
+                    Player.Rate = value;
             }
-        }
-
-        public override void Init()
-        {
-            IsInitialized = true;
         }
 
         public override Task Pause()
@@ -194,15 +183,28 @@ namespace MediaManager
             return MediaPlayer.Stop();
         }
 
+        private AVPlayerLooper _looper;
         public override RepeatMode RepeatMode
         {
             get
             {
-                return MediaPlayer.RepeatMode;
+                return _looper != null ? RepeatMode.One : RepeatMode.All;
             }
             set
             {
-                MediaPlayer.RepeatMode = value;
+                switch (value)
+                {
+                    case RepeatMode.Off:
+                        _looper = null;
+                        break;
+                    case RepeatMode.One:
+                    case RepeatMode.All:
+                        _looper = AVPlayerLooper.FromPlayer(Player, Player.CurrentItem);
+                        break;
+                    default:
+                        break;
+                }
+                //MediaPlayer.RepeatMode = value;
             }
         }
 

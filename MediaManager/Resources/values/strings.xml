@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
-  <string name="download_notification_channel_name">Downloads</string>
+  <!--<string name="download_notification_channel_name">Downloads</string>-->
 </resources>

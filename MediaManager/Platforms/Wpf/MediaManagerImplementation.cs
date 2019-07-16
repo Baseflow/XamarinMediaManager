@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using MediaManager.Media;
 using MediaManager.Platforms.Wpf.Media;
 using MediaManager.Platforms.Wpf.Notificiations;
@@ -14,7 +15,7 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public class MediaManagerImplementation : MediaManagerBase
+    public class MediaManagerImplementation : MediaManagerBase, IMediaManager<MediaElement>
     {
         public MediaManagerImplementation()
         {
@@ -34,6 +35,7 @@ namespace MediaManager
         }
 
         public WpfMediaPlayer WpfMediaPlayer => (WpfMediaPlayer)MediaPlayer;
+        public MediaElement Player => WpfMediaPlayer.Player;
 
         private IVolumeManager _volumeManager;
         public override IVolumeManager VolumeManager
@@ -88,11 +90,7 @@ namespace MediaManager
             }
         }
 
-        public override RepeatMode RepeatMode
-        {
-            get => MediaPlayer.RepeatMode;
-            set => MediaPlayer.RepeatMode = value;
-        }
+        public override RepeatMode RepeatMode { get; set; }
 
         public override ShuffleMode ShuffleMode
         {
@@ -104,11 +102,6 @@ namespace MediaManager
             {
                 MediaQueue.ShuffleMode = value;
             }
-        }
-
-        public override void Init()
-        {
-            IsInitialized = true;
         }
 
         public override Task Play()

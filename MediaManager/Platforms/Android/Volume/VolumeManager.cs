@@ -6,7 +6,7 @@ namespace MediaManager.Platforms.Android
     public class VolumeManager : IVolumeManager //VolumeProviderCompat.Callback
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
-        protected MediaControllerCompat MediaController => MediaManager.MediaBrowserManager.MediaController;
+        protected MediaControllerCompat MediaController => MediaManager.MediaController;
 
         public VolumeManager()
         {

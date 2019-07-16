@@ -56,7 +56,7 @@ namespace MediaManager
         /// <summary>
         /// Setting or getting whether we are in the repeat state
         /// </summary>
-        RepeatMode RepeatMode { get; set; }
+        //RepeatMode RepeatMode { get; set; }
 
         event BeforePlayingEventHandler BeforePlaying;
 

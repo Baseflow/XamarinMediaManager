@@ -48,9 +48,6 @@ namespace MediaManager.Platforms.Android.Media
         {
             _mediaSource.Clear();
 
-            //TODO: Thread.Sleep hack to get it working. Seems fixed in 2.9.6 https://github.com/google/ExoPlayer/issues/5464
-            //Thread.Sleep(200);
-
             var mediaItems = MediaManager.MediaQueue.Select(x => x.ToMediaSource()).ToList();
             _mediaSource.AddMediaSources(mediaItems);
 

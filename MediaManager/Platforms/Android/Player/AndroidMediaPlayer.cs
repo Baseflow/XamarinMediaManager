@@ -85,7 +85,10 @@ namespace MediaManager.Platforms.Android.Media
                 if (PlayerView != null)
                 {
                     PlayerView.RequestFocus();
-                    PlayerView.Player = Player;
+
+                    //Use private field to prevent calling Initialize here
+                    if (_player != null)
+                        PlayerView.Player = Player;
                 }
             }
         }
@@ -93,18 +96,6 @@ namespace MediaManager.Platforms.Android.Media
         protected int lastWindowIndex = 0;
 
         public MediaSessionCompat MediaSession => MediaManager.MediaSession;
-
-        public RepeatMode RepeatMode
-        {
-            get
-            {
-                return (RepeatMode)Player.RepeatMode;
-            }
-            set
-            {
-                MediaManager.RepeatMode = value;
-            }
-        }
 
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;
@@ -172,8 +163,9 @@ namespace MediaManager.Platforms.Android.Media
                     switch (playbackState)
                     {
                         case Com.Google.Android.Exoplayer2.Player.StateEnded:
-                            //TODO: Maybe this means now the whole list is finished?
-                            //MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
+                            if(!Player.HasNext)
+                                MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
+                            //TODO: This means the whole list is finished. Should we fire an event?
                             break;
                         case Com.Google.Android.Exoplayer2.Player.StateIdle:
                         case Com.Google.Android.Exoplayer2.Player.StateBuffering:
@@ -239,6 +231,9 @@ namespace MediaManager.Platforms.Android.Media
 
             PlaybackPreparer = new MediaSessionConnectorPlaybackPreparer(Player, MediaSource);
             MediaSessionConnector.SetPlayer(Player, PlaybackPreparer, null);
+
+            if(PlayerView != null && PlayerView.Player == null)
+                PlayerView.Player = Player;
         }
 
         public async Task Play(IMediaItem mediaItem)
