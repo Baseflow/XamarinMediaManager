@@ -102,9 +102,6 @@ namespace MediaManager.Platforms.Android.Media
 
         protected virtual void Initialize()
         {
-            if (MediaSession == null)
-                throw new ArgumentNullException(nameof(MediaSession), $"{nameof(MediaSession)} cannot be null. Make sure the {nameof(MediaBrowserService)} sets it up");
-
             if (RequestHeaders?.Count > 0 && RequestHeaders.TryGetValue("User-Agent", out string userAgent))
                 UserAgent = userAgent;
             else
@@ -215,6 +212,17 @@ namespace MediaManager.Platforms.Android.Media
             };
             Player.AddListener(PlayerEventListener);
 
+            ConnectMediaSession();
+
+            if (PlayerView != null && PlayerView.Player == null)
+                PlayerView.Player = Player;
+        }
+
+        public virtual void ConnectMediaSession()
+        {
+            if (MediaSession == null)
+                throw new ArgumentNullException(nameof(MediaSession), $"{nameof(MediaSession)} cannot be null. Make sure the {nameof(MediaBrowserService)} sets it up");
+
             PlaybackController = new PlaybackController();
             MediaSessionConnector = new MediaSessionConnector(MediaSession, PlaybackController);
 
@@ -231,9 +239,6 @@ namespace MediaManager.Platforms.Android.Media
 
             PlaybackPreparer = new MediaSessionConnectorPlaybackPreparer(Player, MediaSource);
             MediaSessionConnector.SetPlayer(Player, PlaybackPreparer, null);
-
-            if(PlayerView != null && PlayerView.Player == null)
-                PlayerView.Player = Player;
         }
 
         public async Task Play(IMediaItem mediaItem)
