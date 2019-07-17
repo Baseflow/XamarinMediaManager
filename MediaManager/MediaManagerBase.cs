@@ -253,5 +253,11 @@ namespace MediaManager
                 OnPositionChanged(this, new PositionChangedEventArgs(Position));
             }
         }
+
+        public virtual void Dispose()
+        {
+            Timer.Elapsed -= Timer_Elapsed;
+            Timer.Dispose();
+        }
     }
 }

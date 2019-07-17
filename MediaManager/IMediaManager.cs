@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using MediaManager.Media;
@@ -13,7 +14,7 @@ namespace MediaManager
         TPlayer Player { get; }
     }
 
-    public interface IMediaManager : IPlaybackManager
+    public interface IMediaManager : IPlaybackManager, IDisposable
     {
         IMediaPlayer MediaPlayer { get; set; }
 
