@@ -70,20 +70,12 @@ Task("ResolveBuildTools")
     };
     
     var vsLatest = VSWhereLatest(vsWhereSettings);
-    if(vsLatest != null)
-    {
-        var tryPath = vsLatest.CombineWithFilePath("./MSBuild/15.0/Bin/MSBuild.exe");
-        if(FileExists(tryPath))
-            msBuildPath = tryPath;
-        else if(FileExists(tryPath = vsLatest.CombineWithFilePath("./MSBuild/Current/Bin/MSBuild.exe")))
-            msBuildPath = tryPath;
-    }
+    msBuildPath = (vsLatest == null)
+        ? null
+        : vsLatest.CombineWithFilePath("./MSBuild/15.0/Bin/MSBuild.exe");
 
-    if (FileExists(msBuildPath))
+    if (msBuildPath != null)
         Information("Found MSBuild at {0}", msBuildPath.ToString());
-    else
-        throw new InvalidOperationException("Could not locate MSBuild");
-
 });
 
 Task("Restore")
