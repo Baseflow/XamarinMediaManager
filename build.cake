@@ -1,8 +1,8 @@
-#tool nuget:?package=GitVersion.CommandLine
-#tool nuget:?package=vswhere
-#addin nuget:?package=Cake.Figlet&version=1.1.0
-#addin nuget:?package=Cake.Git&version=0.17.0
-#addin nuget:?package=Polly
+#tool nuget:?package=GitVersion.CommandLine&version=4.0.0
+#tool nuget:?package=vswhere&version=2.6.7
+#addin nuget:?package=Cake.Figlet&version=1.3.0
+#addin nuget:?package=Cake.Git&version=0.19.0
+#addin nuget:?package=Polly&version=7.1.0
 
 using Polly;
 
@@ -72,7 +72,7 @@ Task("ResolveBuildTools")
     var vsLatest = VSWhereLatest(vsWhereSettings);
     msBuildPath = (vsLatest == null)
         ? null
-        : vsLatest.CombineWithFilePath("./MSBuild/15.0/Bin/MSBuild.exe");
+        : vsLatest.CombineWithFilePath("./MSBuild/Current/Bin/MSBuild.exe");
 
     if (msBuildPath != null)
         Information("Found MSBuild at {0}", msBuildPath.ToString());
@@ -276,7 +276,7 @@ MSBuildSettings GetDefaultBuildSettings()
         ToolPath = msBuildPath,
         Verbosity = verbosity,
         ArgumentCustomization = args => args.Append("/m"),
-        ToolVersion = MSBuildToolVersion.VS2017
+        ToolVersion = MSBuildToolVersion.VS2019
     };
 
     return settings;
