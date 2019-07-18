@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using MediaManager.Media;
 using Windows.Media.Core;
 using Windows.Storage;
@@ -9,27 +8,17 @@ namespace MediaManager.Platforms.Uap.Media
 {
     public static class MediaItemExtensions
     {
-        public static MediaSource ToMediaSource(this IMediaItem mediaItem)
+        public static async Task<MediaSource> ToMediaSource(this IMediaItem mediaItem)
         {
-            /*
+            //TODO: Get Metadata from MediaSource
             switch (mediaItem.MediaLocation)
             {
-                case MediaLocation.Default:
-                case MediaLocation.Remote:
-                    return MediaSource.CreateFromUri(new Uri(mediaItem.MediaUri));
                 case MediaLocation.FileSystem:
-                    var du = Player.SystemMediaTransportControls.DisplayUpdater;
                     var storageFile = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
-
-                    var playbackType = (mediaItem.MediaType == MediaType.Audio ? Windows.Media.MediaPlaybackType.Music : Windows.Media.MediaPlaybackType.Video);
-                    await du.CopyFromFileAsync(playbackType, storageFile);
-                    du.Update();
-
                     return MediaSource.CreateFromStorageFile(storageFile);
-            }*/
-
-            //TODO: Get Metadata from MediaSource
-            return MediaSource.CreateFromUri(new Uri(mediaItem.MediaUri));
+                default:
+                    return MediaSource.CreateFromUri(new Uri(mediaItem.MediaUri));
+            }
         }
     }
 }
