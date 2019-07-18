@@ -16,8 +16,8 @@ namespace MediaManager.Platforms.Apple.Notifications
             set
             {
                 base.Enabled = value;
-                ShowPlayPauseControls = false;
-                ShowNavigationControls = false;
+                ShowPlayPauseControls = true;
+                ShowNavigationControls = true;
             }
         }
 
