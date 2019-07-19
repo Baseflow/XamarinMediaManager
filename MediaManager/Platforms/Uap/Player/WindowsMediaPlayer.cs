@@ -116,13 +116,17 @@ namespace MediaManager.Platforms.Uap.Media
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
-            var item = new MediaPlaybackItem(await mediaItem.ToMediaSource());
-
-            //TODO: Fill MediaPlaybackList with full queue
             MediaPlaybackList.Items.Clear();
-            MediaPlaybackList.Items.Add(item);
+            foreach (var mediaQueueItem in MediaManager.MediaQueue)
+            {
+                var mediaPlaybackItem = new MediaPlaybackItem(await mediaQueueItem.ToMediaSource());
+                MediaPlaybackList.Items.Add(mediaPlaybackItem);
+                if (mediaQueueItem == mediaItem)
+                {
+                    MediaPlaybackList.StartingItem = mediaPlaybackItem;
+                }
+            }
             Player.Source = MediaPlaybackList;
-
             await Play();
 
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
