@@ -98,7 +98,9 @@ namespace MediaManager
 
         public async Task EnsureInit()
         {
-            if (!IsInitialized && !(IsInitialized = await MediaBrowserManager.Init()))
+            IsInitialized = await MediaBrowserManager.Init();
+
+            if (!IsInitialized)
                 throw new Exception("Cannot Initialize MediaManager");
         }
 

@@ -40,7 +40,12 @@ namespace MediaManager
 
         public static bool IsPlaying(this IMediaManager mediaManager)
         {
-            return mediaManager.State == MediaPlayerState.Playing;
+            return mediaManager.State == MediaPlayerState.Playing || mediaManager.State == MediaPlayerState.Buffering;
+        }
+
+        public static bool IsPrepared(this IMediaManager mediaManager)
+        {
+            return mediaManager.State == MediaPlayerState.Playing || mediaManager.State == MediaPlayerState.Paused || mediaManager.State == MediaPlayerState.Buffering;
         }
 
         public static bool IsBuffering(this IMediaManager mediaManager)
