@@ -7,6 +7,11 @@ namespace MediaManager.Platforms.Apple.Notifications
 {
     public class NotificationManager : NotificationManagerBase
     {
+        public NotificationManager()
+        {
+            Enabled = true;
+        }
+        
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
         protected MPRemoteCommandCenter CommandCenter = MPRemoteCommandCenter.Shared;
 
@@ -16,8 +21,8 @@ namespace MediaManager.Platforms.Apple.Notifications
             set
             {
                 base.Enabled = value;
-                ShowPlayPauseControls = false;
-                ShowNavigationControls = false;
+                ShowPlayPauseControls = value;
+                ShowNavigationControls = value;
             }
         }
 
