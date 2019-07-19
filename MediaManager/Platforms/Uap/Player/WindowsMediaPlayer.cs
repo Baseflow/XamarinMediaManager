@@ -114,7 +114,7 @@ namespace MediaManager.Platforms.Uap.Media
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
-            var item = new MediaPlaybackItem(mediaItem.ToMediaSource());
+            var item = new MediaPlaybackItem(await mediaItem.ToMediaSource());
 
             //TODO: Fill MediaPlaybackList with full queue
             MediaPlaybackList.Items.Clear();
