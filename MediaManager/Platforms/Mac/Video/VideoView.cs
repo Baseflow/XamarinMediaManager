@@ -11,16 +11,21 @@ namespace MediaManager.Platforms.Mac.Video
 {
     public class VideoView : AVPlayerView, IVideoView
     {
+        protected MediaManagerImplementation MediaManager => CrossMediaManager.Apple;
+
         public VideoView()
         {
+            InitView();
         }
 
         public VideoView(NSCoder coder) : base(coder)
         {
+            InitView();
         }
 
         public VideoView(CGRect frameRect) : base(frameRect)
         {
+            InitView();
         }
 
         protected VideoView(NSObjectFlag t) : base(t)
@@ -29,6 +34,12 @@ namespace MediaManager.Platforms.Mac.Video
 
         protected internal VideoView(IntPtr handle) : base(handle)
         {
+        }
+
+        public virtual void InitView()
+        {
+            if (MediaManager.MediaPlayer.AutoAttachVideoView)
+                MediaManager.MediaPlayer.VideoView = this;
         }
 
         [Export("VideoAspect"), Browsable(true)]
@@ -54,6 +65,14 @@ namespace MediaManager.Platforms.Mac.Video
                 else
                     ControlsStyle = AVPlayerViewControlsStyle.None;
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (MediaManager.MediaPlayer.VideoView == this)
+                MediaManager.MediaPlayer.VideoView = null;
+
+            base.Dispose(disposing);
         }
     }
 }

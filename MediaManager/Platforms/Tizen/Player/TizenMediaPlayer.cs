@@ -17,6 +17,8 @@ namespace MediaManager.Platforms.Tizen.Media
         public VideoView PlayerView => VideoView as VideoView;
         public RepeatMode RepeatMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+        public bool AutoAttachVideoView { get; set; } = true;
+
         public IVideoView VideoView { get; set; }
 
         public event BeforePlayingEventHandler BeforePlaying;

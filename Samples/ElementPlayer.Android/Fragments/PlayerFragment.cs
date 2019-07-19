@@ -17,8 +17,8 @@ namespace ElementPlayer.Android.Fragments
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-            playerView = view.FindViewById<VideoView>(Resource.Id.exoplayerview_activity_video);
-            CrossMediaManager.Current.MediaPlayer.VideoView = playerView;
+            //playerView = view.FindViewById<VideoView>(Resource.Id.exoplayerview_activity_video);
+            //CrossMediaManager.Current.MediaPlayer.VideoView = playerView;
             //CrossMediaManager.Current.Play(ViewModel.MediaItemToPlay);
         }
     }

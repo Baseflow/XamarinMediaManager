@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using AVFoundation;
 using AVKit;
+using CoreGraphics;
 using Foundation;
 using MediaManager.Video;
 using UIKit;
@@ -11,6 +12,8 @@ namespace MediaManager.Platforms.Ios.Video
     [DesignTimeVisible(true)]
     public partial class VideoView : UIView, IVideoView
     {
+        protected MediaManagerImplementation MediaManager => CrossMediaManager.Apple;
+
         private AVPlayerViewController _playerViewController;
         public AVPlayerViewController PlayerViewController
         {
@@ -36,18 +39,31 @@ namespace MediaManager.Platforms.Ios.Video
 
         public VideoView()
         {
+            InitView();
         }
 
         public VideoView(NSCoder coder) : base(coder)
         {
+            InitView();
         }
 
-        public VideoView(IntPtr handle) : base(handle)
+        public VideoView(CGRect frame) : base(frame)
         {
+            InitView();
         }
 
         protected VideoView(NSObjectFlag t) : base(t)
         {
+        }
+
+        protected internal VideoView(IntPtr handle) : base(handle)
+        {
+        }
+
+        public virtual void InitView()
+        {
+            if (MediaManager.MediaPlayer.AutoAttachVideoView)
+                MediaManager.MediaPlayer.VideoView = this;
         }
 
         [Export("VideoAspect"), Browsable(true)]
@@ -95,10 +111,14 @@ namespace MediaManager.Platforms.Ios.Video
 
         protected override void Dispose(bool disposing)
         {
+            if (MediaManager.MediaPlayer.VideoView == this)
+                MediaManager.MediaPlayer.VideoView = null;
+
             //Cleanup sublayars because otherwise video doesn't work a second time
             //PlayerViewController.RemoveFromParentViewController();
             PlayerViewController.View.Layer.Sublayers = null;
             PlayerViewController = null;
+
             base.Dispose(disposing);
         }
     }

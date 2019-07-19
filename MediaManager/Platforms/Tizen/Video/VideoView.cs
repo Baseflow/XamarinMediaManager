@@ -17,5 +17,10 @@ namespace MediaManager.Platforms.Tizen.Video
         {
             throw new System.NotImplementedException();
         }
+
+        public void InitView()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -37,6 +37,8 @@ namespace MediaManager.Platforms.Android.Media
 
         protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
 
+        public bool AutoAttachVideoView { get; set; } = true;
+
         protected Context Context => MediaManager.Context;
 
         protected string UserAgent { get; set; }

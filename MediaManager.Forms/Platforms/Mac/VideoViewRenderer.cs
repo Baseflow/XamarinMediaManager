@@ -31,7 +31,6 @@ namespace MediaManager.Forms.Platforms.Mac
                     _videoView.ShowControls = args.NewElement.ShowControls;
                     _videoView.VideoAspect = args.NewElement.VideoAspect;
 
-                    CrossMediaManager.Current.MediaPlayer.VideoView = _videoView;
                     SetNativeControl(_videoView);
                 }
             }

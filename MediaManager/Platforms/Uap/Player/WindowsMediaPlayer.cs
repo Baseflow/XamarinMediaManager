@@ -20,6 +20,8 @@ namespace MediaManager.Platforms.Uap.Media
 
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Windows;
 
+        public bool AutoAttachVideoView { get; set; } = true;
+
         public VideoView PlayerView => VideoView as VideoView;
 
         private IVideoView _videoView;

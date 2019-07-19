@@ -19,6 +19,8 @@ namespace MediaManager.Platforms.Wpf.Player
 
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Wpf;
 
+        public bool AutoAttachVideoView { get; set; } = true;
+
         public VideoView PlayerView => VideoView as VideoView;
 
         private IVideoView _videoView;

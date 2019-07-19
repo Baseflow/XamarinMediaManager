@@ -9,6 +9,8 @@ namespace MediaManager.Platforms.Wpf.Video
 {
     public class VideoView : UserControl, IVideoView
     {
+        protected MediaManagerImplementation MediaManager => CrossMediaManager.Wpf;
+
         /*private MediaElement _playerView;
         public MediaElement PlayerView
         {
@@ -27,11 +29,16 @@ namespace MediaManager.Platforms.Wpf.Video
             }
         }*/
 
-        protected MediaManagerImplementation MediaManager = CrossMediaManager.Wpf;
-
         public VideoView()
         {
-            Content = MediaManager.WpfMediaPlayer.Player;
+            Content = MediaManager.Player;
+            InitView();
+        }
+
+        public virtual void InitView()
+        {
+            if (MediaManager.MediaPlayer.AutoAttachVideoView)
+                MediaManager.MediaPlayer.VideoView = this;
         }
 
         public VideoAspectMode VideoAspect { get; set; }
@@ -39,7 +46,8 @@ namespace MediaManager.Platforms.Wpf.Video
 
         public void Dispose()
         {
-
+            if (MediaManager.MediaPlayer.VideoView == this)
+                MediaManager.MediaPlayer.VideoView = null;
         }
     }
 }

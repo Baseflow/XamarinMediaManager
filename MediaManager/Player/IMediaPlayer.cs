@@ -28,6 +28,8 @@ namespace MediaManager
 
         IVideoView VideoView { get; set; }
 
+        bool AutoAttachVideoView { get; set; }
+
         /// <summary>
         /// Adds MediaItem to the Queue and starts playing
         /// </summary>
