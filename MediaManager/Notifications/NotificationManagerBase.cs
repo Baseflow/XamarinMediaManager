@@ -9,11 +9,13 @@ namespace MediaManager
         protected NotificationManagerBase()
         {
             Enabled = true;
+            ShowPlayPauseControls = true;
+            ShowNavigationControls = true;
         }
         
-        private bool _enabled = true;
-        private bool _showPlayPauseControls = true;
-        private bool _showNavigationControls = true;
+        private bool _enabled;
+        private bool _showPlayPauseControls;
+        private bool _showNavigationControls;
 
         public virtual bool Enabled
         {
