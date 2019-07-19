@@ -7,11 +7,6 @@ namespace MediaManager.Platforms.Apple.Notifications
 {
     public class NotificationManager : NotificationManagerBase
     {
-        public NotificationManager()
-        {
-            Enabled = true;
-        }
-    
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
         protected MPRemoteCommandCenter CommandCenter = MPRemoteCommandCenter.Shared;
 
