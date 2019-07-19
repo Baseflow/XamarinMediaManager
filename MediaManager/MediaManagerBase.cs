@@ -55,7 +55,6 @@ namespace MediaManager
 
         public virtual void Init()
         {
-            NotificationManager.Enabled = true;
             IsInitialized = true;
         }
 
