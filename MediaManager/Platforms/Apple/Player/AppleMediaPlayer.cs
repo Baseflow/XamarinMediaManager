@@ -14,11 +14,6 @@ namespace MediaManager.Platforms.Apple.Media
 {
     public abstract class AppleMediaPlayer : NSObject, IMediaPlayer<AVQueuePlayer>
     {
-        private NSObject didFinishPlayingObserver;
-        private NSObject itemFailedToPlayToEndTimeObserver;
-        private NSObject errorObserver;
-        private NSObject playbackStalledObserver;
-
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
 
         public AppleMediaPlayer()
@@ -43,7 +38,12 @@ namespace MediaManager.Platforms.Apple.Media
                 _player = value;
             }
         }
-        
+
+        private NSObject didFinishPlayingObserver;
+        private NSObject itemFailedToPlayToEndTimeObserver;
+        private NSObject errorObserver;
+        private NSObject playbackStalledObserver;
+
         private IDisposable rateToken;
         private IDisposable statusToken;
         private IDisposable timeControlStatusToken;
@@ -160,7 +160,7 @@ namespace MediaManager.Platforms.Apple.Media
             return Task.CompletedTask;
         }
 
-        public Task Play(IMediaItem mediaItem)
+        public async Task Play(IMediaItem mediaItem)
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
@@ -168,10 +168,9 @@ namespace MediaManager.Platforms.Apple.Media
 
             Player.ActionAtItemEnd = AVPlayerActionAtItemEnd.None;
             Player.ReplaceCurrentItemWithPlayerItem(item);
-            Player.Play();
+            await Play();
 
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
-            return Task.CompletedTask;
         }
 
         public Task Play()
