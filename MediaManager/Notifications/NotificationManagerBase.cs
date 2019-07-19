@@ -6,16 +6,9 @@ namespace MediaManager
 {
     public abstract class NotificationManagerBase : INotificationManager
     {
-        protected NotificationManagerBase()
-        {
-            Enabled = true;
-            ShowPlayPauseControls = true;
-            ShowNavigationControls = true;
-        }
-        
-        private bool _enabled;
-        private bool _showPlayPauseControls;
-        private bool _showNavigationControls;
+        private bool _enabled = true;
+        private bool _showPlayPauseControls = true;
+        private bool _showNavigationControls = true;
 
         public virtual bool Enabled
         {
