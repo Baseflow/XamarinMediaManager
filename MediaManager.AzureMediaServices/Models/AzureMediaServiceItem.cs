@@ -14,7 +14,7 @@ namespace MediaManager.AzureMediaServices.Models
         }
 
         public string MPEGDashUri => MediaUri + "(format=mpd-time-csf)";
-        public string HLSv3Uri => MediaUri + "(m3u8-aapl-v3)";
+        public string HLSv3Uri => MediaUri + "(format=m3u8-aapl-v3)";
         public string HLSv4Uri => MediaUri + "(format=m3u8-aapl)";
 
         public StreamingType DefaultStreamingType { get; set; }
