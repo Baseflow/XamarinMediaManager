@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using AVFoundation;
 using AVKit;
 using Foundation;
@@ -8,7 +9,7 @@ using MediaManager.Video;
 
 namespace MediaManager.Platforms.Tvos.Media
 {
-    public class MediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer, VideoView>
+    public class TvosMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer, VideoView>
     {
         public VideoView PlayerView => VideoView as VideoView;
 
