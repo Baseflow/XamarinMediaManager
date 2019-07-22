@@ -56,7 +56,7 @@ namespace MediaManager.Platforms.Android.Media
         protected QueueNavigator QueueNavigator { get; set; }
         protected ConcatenatingMediaSource MediaSource { get; set; }
         protected QueueDataAdapter QueueDataAdapter { get; set; }
-        protected QueueEditorMediaSourceFactory MediaSourceFactory { get; set; }
+        protected QueueMediaSourceFactory MediaSourceFactory { get; set; }
         protected TimelineQueueEditor TimelineQueueEditor { get; set; }
         protected MediaSessionConnectorPlaybackPreparer PlaybackPreparer { get; set; }
         public PlayerEventListener PlayerEventListener { get; set; }
@@ -236,7 +236,7 @@ namespace MediaManager.Platforms.Android.Media
             MediaSessionConnector.SetQueueNavigator(QueueNavigator);
 
             QueueDataAdapter = new QueueDataAdapter(MediaSource);
-            MediaSourceFactory = new QueueEditorMediaSourceFactory();
+            MediaSourceFactory = new QueueMediaSourceFactory();
             TimelineQueueEditor = new TimelineQueueEditor(MediaSession.Controller, MediaSource, QueueDataAdapter, MediaSourceFactory);
             MediaSessionConnector.SetQueueEditor(TimelineQueueEditor);
 

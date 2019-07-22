@@ -36,8 +36,7 @@ namespace MediaManager.Platforms.Android.Media
 
         public void Move(int oldIndex, int newIndex)
         {
-            if (MediaManager.MediaQueue is ObservableCollection<IMediaItem> observableCollection)
-                observableCollection.Move(oldIndex, newIndex);
+            MediaManager.MediaQueue.Move(oldIndex, newIndex);
         }
 
         public void Remove(int index)
