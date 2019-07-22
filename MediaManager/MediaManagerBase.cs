@@ -26,21 +26,21 @@ namespace MediaManager
 
         public Timer Timer { get; protected set; } = new Timer(1000);
 
-        private TimeSpan _stepSize = TimeSpan.FromSeconds(10);
+        protected TimeSpan _stepSize = TimeSpan.FromSeconds(10);
         public virtual TimeSpan StepSize
         {
             get => _stepSize;
             set => SetProperty(ref _stepSize, value);
         }
 
-        private Dictionary<string, string> _requestHeaders = new Dictionary<string, string>();
+        protected Dictionary<string, string> _requestHeaders = new Dictionary<string, string>();
         public virtual Dictionary<string, string> RequestHeaders
         {
             get => _requestHeaders;
             set => SetProperty(ref _requestHeaders, value);
         }
 
-        private IMediaQueue _mediaQueue;
+        protected IMediaQueue _mediaQueue;
         public virtual IMediaQueue MediaQueue
         {
             get
@@ -63,7 +63,7 @@ namespace MediaManager
         public abstract IVolumeManager VolumeManager { get; set; }
         public abstract INotificationManager NotificationManager { get; set; }
 
-        private MediaPlayerState _state = MediaPlayerState.Stopped;
+        protected MediaPlayerState _state = MediaPlayerState.Stopped;
         public MediaPlayerState State
         {
             get => _state;
@@ -74,7 +74,7 @@ namespace MediaManager
             }
         }
 
-        private TimeSpan _buffered;
+        protected TimeSpan _buffered;
         public TimeSpan Buffered
         {
             get => _buffered;

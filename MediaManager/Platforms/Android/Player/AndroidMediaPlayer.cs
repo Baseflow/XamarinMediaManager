@@ -110,14 +110,7 @@ namespace MediaManager.Platforms.Android.Media
                 UserAgent = Util.GetUserAgent(Context, Context.PackageName);
             
             HttpDataSourceFactory = new DefaultHttpDataSourceFactory(UserAgent);
-
-            if (RequestHeaders?.Count > 0)
-            {
-                foreach (var item in RequestHeaders)
-                {
-                    HttpDataSourceFactory.DefaultRequestProperties.Set(item.Key, item.Value);
-                }
-            }
+            UpdateRequestHeaders();
 
             MediaSource = new ConcatenatingMediaSource();
 
@@ -218,6 +211,17 @@ namespace MediaManager.Platforms.Android.Media
 
             if (PlayerView != null && PlayerView.Player == null)
                 PlayerView.Player = Player;
+        }
+
+        public virtual void UpdateRequestHeaders()
+        {
+            if (RequestHeaders?.Count > 0)
+            {
+                foreach (var item in RequestHeaders)
+                {
+                    HttpDataSourceFactory?.DefaultRequestProperties.Set(item.Key, item.Value);
+                }
+            }
         }
 
         public virtual void ConnectMediaSession()

@@ -91,6 +91,17 @@ namespace MediaManager
             return PendingIntent.GetActivity(Context, 0, sessionIntent, 0);
         }
 
+        public override Dictionary<string, string> RequestHeaders
+        {
+            get => base.RequestHeaders;
+            set
+            {
+                //On Android we need to update the headers on the player instead of per item.
+                if(SetProperty(ref _requestHeaders, value))
+                    AndroidMediaPlayer.UpdateRequestHeaders();
+            }
+        }
+
         public override void Init()
         {
             EnsureInit();
