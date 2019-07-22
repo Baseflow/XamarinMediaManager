@@ -114,11 +114,6 @@ namespace MediaManager.Platforms.Ios.Video
             if (MediaManager.MediaPlayer.VideoView == this)
                 MediaManager.MediaPlayer.VideoView = null;
 
-            //Cleanup sublayars because otherwise video doesn't work a second time
-            //PlayerViewController.RemoveFromParentViewController();
-            PlayerViewController.View.Layer.Sublayers = null;
-            PlayerViewController = null;
-
             base.Dispose(disposing);
         }
     }
