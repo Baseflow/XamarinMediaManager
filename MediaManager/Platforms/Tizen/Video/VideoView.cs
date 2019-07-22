@@ -6,21 +6,25 @@ namespace MediaManager.Platforms.Tizen.Video
 {
     public class VideoView : MediaView, IVideoView
     {
+        protected MediaManagerImplementation MediaManager => CrossMediaManager.Tizen;
+
         public VideoView(EvasObject parent) : base(parent)
         {
         }
 
-        public VideoAspectMode VideoAspect { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public bool ShowControls { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public virtual void InitView()
+        {
+            if (MediaManager.MediaPlayer.AutoAttachVideoView)
+                MediaManager.MediaPlayer.VideoView = this;
+        }
+
+        public VideoAspectMode VideoAspect { get; set; }
+        public bool ShowControls { get; set; }
 
         public void Dispose()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void InitView()
-        {
-            throw new System.NotImplementedException();
+            if (MediaManager.MediaPlayer.VideoView == this)
+                MediaManager.MediaPlayer.VideoView = null;
         }
     }
 }
