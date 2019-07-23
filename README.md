@@ -145,7 +145,6 @@ bool IsBuffering();
 
 ```csharp
 event StateChangedEventHandler StateChanged;
-event PlayingChangedEventHandler PlayingChanged;
 event BufferedChangedEventHandler BufferedChanged;
 event PositionChangedEventHandler PositionChanged;
 event MediaItemFinishedEventHandler MediaItemFinished;
