@@ -21,7 +21,7 @@ namespace MediaManager.Platforms.Ios.Video
             {
                 if(_playerViewController == null)
                 {
-                    PlayerViewController = new AVPlayerViewController();
+                    PlayerViewController = new PlayerViewController();
                 }
                 return _playerViewController;
             }
