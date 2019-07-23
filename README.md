@@ -175,7 +175,13 @@ Alternatively you could also use the `PropertyChanged` event to see updates to t
 
 ### Add Video Player to the UI
 
-**On Xamarin.Forms the video view will automatically be attached to the player.**
+**The video view will automatically be attached to the player. If you have multiple video views and you want to hook it up yourself do:**
+
+```csharp
+CrossMediaManager.Current.MediaPlayer.AutoAttachVideoView = false;
+```
+
+**After that you can manually add the video view like this:**
 
 For android we need a `VideoView` in the axml layout.
 ```xml
