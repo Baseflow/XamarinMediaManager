@@ -22,7 +22,6 @@ namespace ElementPlayer.iOS.Views
             CrossMediaManager.Current.Init();
 
             CrossMediaManager.Current.MediaPlayer.VideoView = vwPlayer;
-            CrossMediaManager.Current.Play(ViewModel.MediaItemToPlay);
 
             var set = this.CreateBindingSet<PlayerViewController, PlayerViewModel>();
             set.Bind(progressPlayer).To(vm => vm.FloatedPosition);
