@@ -2,7 +2,7 @@
 {
     public enum MediaLocation
     {
-        Default,
+        Unknown,
         Remote,
         FileSystem,
         Embedded

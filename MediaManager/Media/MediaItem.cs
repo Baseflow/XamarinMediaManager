@@ -48,7 +48,7 @@ namespace MediaManager.Media
 
         public string FileExtension { get; set; }
         public MediaType MediaType { get; set; } = MediaType.Default;
-        public MediaLocation MediaLocation { get; set; } = MediaLocation.Default;
+        public MediaLocation MediaLocation { get; set; }
 
         private bool _isMetadataExtracted = false;
         public bool IsMetadataExtracted
