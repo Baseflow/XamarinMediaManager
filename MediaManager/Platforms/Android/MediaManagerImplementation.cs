@@ -196,9 +196,14 @@ namespace MediaManager
 
         public override TimeSpan Duration => MediaController?.Metadata?.ToMediaItem()?.Duration ?? TimeSpan.Zero;
 
-        public override float Speed {
+        public override float Speed
+        {
             get => MediaController?.PlaybackState?.PlaybackSpeed ?? 0;
-            set => Player.PlaybackParameters.Speed = value;
+            set
+            {
+                var oldPlaybackParameters = Player.PlaybackParameters;
+                Player.PlaybackParameters = new PlaybackParameters(value, oldPlaybackParameters.Pitch);
+            }
         }
 
         public override async Task Pause()
