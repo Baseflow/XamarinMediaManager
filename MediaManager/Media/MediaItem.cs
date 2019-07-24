@@ -11,6 +11,15 @@ namespace MediaManager.Media
             if (string.IsNullOrEmpty(uri))
                 throw new ArgumentNullException(uri);
             MediaUri = uri;
+            MediaLocation = GetLocationType();
+        }
+
+        MediaLocation GetLocationType()
+        {
+            if (MediaUri.StartsWith("http")) return MediaLocation.Remote;
+            if (MediaUri.StartsWith("file") || MediaUri.StartsWith("/")) return MediaLocation.FileSystem;
+
+            return MediaLocation.Unknown;
         }
 
         public string Advertisement { get; set; }
@@ -48,7 +57,7 @@ namespace MediaManager.Media
 
         public string FileExtension { get; set; }
         public MediaType MediaType { get; set; } = MediaType.Default;
-        public MediaLocation MediaLocation { get; set; } = MediaLocation.Default;
+        public MediaLocation MediaLocation { get; set; }
 
         private bool _isMetadataExtracted = false;
         public bool IsMetadataExtracted

@@ -23,6 +23,17 @@ namespace MediaManager.Platforms.Apple.Media
                 NSUrl url = NSBundle.MainBundle.GetUrlForResource(filename, extension, directory);
                 asset = AVAsset.FromUrl(url);
             }
+            else if (mediaItem.MediaLocation == MediaLocation.FileSystem)
+            {
+                if (mediaItem.MediaUri.StartsWith("file:///"))
+                {
+                    asset = AVAsset.FromUrl(NSUrl.FromString(mediaItem.MediaUri));
+                }
+                else
+                {
+                    asset = AVAsset.FromUrl(NSUrl.FromFilename(mediaItem.MediaUri));
+                }
+            }
             else if (RequestHeaders != null && RequestHeaders.Any())
             {
                 asset = AVUrlAsset.Create(NSUrl.FromString(mediaItem.MediaUri), GetOptionsWithHeaders(RequestHeaders));

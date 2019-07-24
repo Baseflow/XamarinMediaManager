@@ -160,12 +160,17 @@ namespace MediaManager
 
         public override async Task<IMediaItem> Play(FileInfo file)
         {
-            throw new NotImplementedException();
+            var mediaItem = new MediaItem(file.FullName);
+            await Play(mediaItem);
+            return mediaItem;
         }
 
-        public override Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
+        public override async Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
         {
-            throw new NotImplementedException();
+            var fileInfos = directoryInfo.GetFiles("*", SearchOption.AllDirectories);
+            var mediaItems = fileInfos.Select(fileInfo => new MediaItem(fileInfo.FullName));
+            await Play(mediaItems);
+            return mediaItems;
         }
 
         public override Task Play()

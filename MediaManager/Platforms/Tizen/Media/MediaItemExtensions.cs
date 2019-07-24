@@ -16,7 +16,7 @@ namespace MediaManager.Platforms.Tizen.Media
                     return new MediaUriSource(mediaItem.MediaUri);
                 case MediaLocation.FileSystem:
                 case MediaLocation.Embedded:
-                case MediaLocation.Default:
+                case MediaLocation.Unknown:
                 default:
                     return new MediaUriSource(mediaItem.MediaUri);
             }
