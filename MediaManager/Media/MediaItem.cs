@@ -11,15 +11,6 @@ namespace MediaManager.Media
             if (string.IsNullOrEmpty(uri))
                 throw new ArgumentNullException(uri);
             MediaUri = uri;
-            MediaLocation = GetLocationType();
-        }
-
-        MediaLocation GetLocationType()
-        {
-            if (MediaUri.StartsWith("http")) return MediaLocation.Remote;
-            if (MediaUri.StartsWith("file") || MediaUri.StartsWith("/")) return MediaLocation.FileSystem;
-
-            return MediaLocation.Unknown;
         }
 
         public string Advertisement { get; set; }

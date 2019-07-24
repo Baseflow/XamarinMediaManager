@@ -21,17 +21,20 @@ namespace MediaManager.Platforms.Apple
         public virtual async Task<IMediaItem> CreateMediaItem(string url)
         {
             IMediaItem mediaItem = new MediaItem(url);
+            mediaItem.MediaLocation = GetMediaLocation(mediaItem);
             return await ExtractMetadata(mediaItem);
         }
 
         public virtual async Task<IMediaItem> CreateMediaItem(FileInfo file)
         {
             IMediaItem mediaItem = new MediaItem(file.FullName);
+            mediaItem.MediaLocation = GetMediaLocation(mediaItem);
             return await ExtractMetadata(mediaItem);
         }
 
         public virtual async Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem)
         {
+            mediaItem.MediaLocation = GetMediaLocation(mediaItem);
             return await ExtractMetadata(mediaItem);
         }
 
@@ -86,6 +89,14 @@ namespace MediaManager.Platforms.Apple
         public Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
         {
             return null;
+        }
+
+        public virtual MediaLocation GetMediaLocation(IMediaItem mediaItem)
+        {
+            if (mediaItem.MediaUri.StartsWith("http")) return MediaLocation.Remote;
+            if (mediaItem.MediaUri.StartsWith("file") || mediaItem.MediaUri.StartsWith("/")) return MediaLocation.FileSystem;
+
+            return MediaLocation.Unknown;
         }
     }
 }
