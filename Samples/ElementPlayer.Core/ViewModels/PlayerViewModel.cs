@@ -8,7 +8,7 @@ using MvvmCross.Navigation;
 
 namespace ElementPlayer.Core.ViewModels
 {
-    public class PlayerViewModel : BaseViewModel<IMediaItem>
+    public class PlayerViewModel : BaseViewModel
     {
         public PlayerViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService, IMediaManager mediaManager) : base(logProvider, navigationService)
         {
@@ -24,13 +24,6 @@ namespace ElementPlayer.Core.ViewModels
 
             MediaManager.PositionChanged += Current_PositionChanged;
             mediaManager.StateChanged += MediaManager_StateChanged;
-        }
-
-        public IMediaItem MediaItemToPlay;
-
-        public override void Prepare(IMediaItem mediaItem)
-        {
-            MediaItemToPlay = mediaItem;
         }
 
         public override string Title => "Player";

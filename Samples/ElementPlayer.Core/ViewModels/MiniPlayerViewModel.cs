@@ -8,7 +8,7 @@ using MvvmCross.Navigation;
 
 namespace ElementPlayer.Core.ViewModels
 {
-    public class MiniPlayerViewModel : BaseViewModel<IMediaItem>
+    public class MiniPlayerViewModel : BaseViewModel
     {
         public readonly IMediaManager MediaManager;
 
@@ -18,13 +18,6 @@ namespace ElementPlayer.Core.ViewModels
             PlayPauseCommand = new MvxAsyncCommand(MediaManager.PlayPause);
 
             MediaManager.PositionChanged += Current_PositionChanged;
-        }
-
-        public IMediaItem MediaItemToPlay;
-
-        public override void Prepare(IMediaItem mediaItem)
-        {
-            MediaItemToPlay = mediaItem;
         }
 
         public override string Title => "Player";

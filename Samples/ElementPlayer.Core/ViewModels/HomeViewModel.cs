@@ -68,7 +68,7 @@ namespace ElementPlayer.Core.ViewModels
         {
             MediaManager.MediaQueue.Clear();
 
-            await this.NavigationService.Navigate<PlayerViewModel, IMediaItem>(mediaItem);
+            await this.NavigationService.Navigate<PlayerViewModel>();
 
             await MediaManager.Play(mediaItem);
 
