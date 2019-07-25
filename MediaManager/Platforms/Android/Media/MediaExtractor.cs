@@ -37,7 +37,7 @@ namespace MediaManager.Platforms.Android
                     break;
             }
 
-            return await ExtractMediaInfo(metaRetriever, mediaItem);
+            return await ExtractMediaInfo(metaRetriever, mediaItem).ConfigureAwait(false);
         }
 
         protected virtual async Task<IMediaItem> ExtractMediaInfo(MediaMetadataRetriever mediaMetadataRetriever, IMediaItem mediaItem)

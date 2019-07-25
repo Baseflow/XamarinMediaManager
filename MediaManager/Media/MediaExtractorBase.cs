@@ -12,7 +12,7 @@ namespace MediaManager.Media
         {
             var mediaItem = new MediaItem(url);
             mediaItem.MediaLocation = GetMediaLocation(mediaItem);
-            return await ExtractMetadata(mediaItem);
+            return await ExtractMetadata(mediaItem).ConfigureAwait(false);
         }
 
         public virtual async Task<IMediaItem> CreateMediaItem(FileInfo file)
@@ -37,10 +37,17 @@ namespace MediaManager.Media
 
         public virtual MediaLocation GetMediaLocation(IMediaItem mediaItem)
         {
-            if (mediaItem.MediaUri.StartsWith("http")) return MediaLocation.Remote;
+            if (mediaItem.MediaUri.StartsWith("http")) 
+            { 
+                return MediaLocation.Remote; 
+            }
+
             if (mediaItem.MediaUri.StartsWith("file") 
                 || mediaItem.MediaUri.StartsWith("/") 
-                || (mediaItem.MediaUri.Length > 1 && mediaItem.MediaUri[1] == ':')) return MediaLocation.FileSystem;
+                || (mediaItem.MediaUri.Length > 1 && mediaItem.MediaUri[1] == ':')) 
+            { 
+                return MediaLocation.FileSystem;
+            }
 
             return MediaLocation.Unknown;
         }
