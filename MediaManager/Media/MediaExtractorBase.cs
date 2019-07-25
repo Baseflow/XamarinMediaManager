@@ -19,13 +19,13 @@ namespace MediaManager.Media
         {
             var mediaItem = new MediaItem(file.FullName);
             mediaItem.MediaLocation = GetMediaLocation(mediaItem);
-            return await ExtractMetadata(mediaItem);
+            return await ExtractMetadata(mediaItem).ConfigureAwait(false);
         }
 
         public virtual async Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem)
         {
             mediaItem.MediaLocation = GetMediaLocation(mediaItem);
-            return await ExtractMetadata(mediaItem);
+            return await ExtractMetadata(mediaItem).ConfigureAwait(false);
         }
 
         public virtual Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
