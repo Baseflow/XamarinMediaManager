@@ -40,7 +40,7 @@ namespace MediaManager.Media
             if (mediaItem.MediaUri.StartsWith("http")) return MediaLocation.Remote;
             if (mediaItem.MediaUri.StartsWith("file") 
                 || mediaItem.MediaUri.StartsWith("/") 
-                || mediaItem.MediaUri.Length > 1 && mediaItem.MediaUri[1] == ':') return MediaLocation.FileSystem;
+                || (mediaItem.MediaUri.Length > 1 && mediaItem.MediaUri[1] == ':')) return MediaLocation.FileSystem;
 
             return MediaLocation.Unknown;
         }
