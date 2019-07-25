@@ -154,14 +154,17 @@ namespace MediaManager
             return MediaPlayer.SeekTo(position);
         }
 
-        public override Task Play(IMediaItem mediaItem)
+        public override async Task Play(IMediaItem mediaItem)
         {
-            return MediaPlayer.Play(mediaItem);
+            mediaItem = await MediaExtractor.CreateMediaItem(mediaItem);
+            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
+            await MediaPlayer.Play(mediaItemToPlay);
         }
 
         public override async Task<IMediaItem> Play(string uri)
         {
             var mediaItem = await MediaExtractor.CreateMediaItem(uri);
+            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
             await MediaPlayer.Play(mediaItem);
             return mediaItem;
         }
@@ -184,14 +187,26 @@ namespace MediaManager
             return mediaItems;
         }
 
-        public override Task<IMediaItem> Play(FileInfo file)
+        public override async Task<IMediaItem> Play(FileInfo file)
         {
-            throw new NotImplementedException();
+            var mediaItem = await MediaExtractor.CreateMediaItem(file.FullName);
+            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
+            await MediaPlayer.Play(mediaItem);
+            return mediaItem;
         }
 
-        public override Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
+        public override async Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
         {
-            throw new NotImplementedException();
+            var mediaItems = new List<IMediaItem>();
+            foreach (var file in directoryInfo.GetFiles())
+            {
+                var mediaItem = await MediaExtractor.CreateMediaItem(file);
+                mediaItems.Add(mediaItem);
+            }
+
+            var mediaItemToPlay = await AddMediaItemsToQueue(mediaItems, true);
+            await MediaPlayer.Play(mediaItemToPlay);
+            return mediaItems;
         }
     }
 }

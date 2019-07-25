@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace MediaManager.Platforms.Uap
 {
-    public class MediaExtractor : IMediaExtractor
+    public class MediaExtractor : MediaExtractorBase, IMediaExtractor
     {
         protected Dictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
 
@@ -17,24 +17,7 @@ namespace MediaManager.Platforms.Uap
         {
         }
 
-        public virtual async Task<IMediaItem> CreateMediaItem(string url)
-        {
-            IMediaItem mediaItem = new MediaItem(url);
-            return await ExtractMetadata(mediaItem);
-        }
-
-        public virtual async Task<IMediaItem> CreateMediaItem(FileInfo file)
-        {
-            IMediaItem mediaItem = new MediaItem(file.FullName);
-            return await ExtractMetadata(mediaItem);
-        }
-
-        public virtual async Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem)
-        {
-            return await ExtractMetadata(mediaItem);
-        }
-
-        public async Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem)
+        public override async Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem)
         {
             // default title
             mediaItem.Title = System.IO.Path.GetFileNameWithoutExtension(mediaItem.MediaUri);
@@ -87,11 +70,6 @@ namespace MediaManager.Platforms.Uap
                 await bitmap.SetSourceAsync(thumbnail);
                 mediaItem.AlbumArt = bitmap;
             }
-        }
-
-        public Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
-        {
-            return null;
         }
     }
 }

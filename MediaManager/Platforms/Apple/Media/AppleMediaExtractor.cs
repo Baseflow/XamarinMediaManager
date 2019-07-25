@@ -10,7 +10,7 @@ using UIKit;
 
 namespace MediaManager.Platforms.Apple
 {
-    public class AppleMediaExtractor : IMediaExtractor
+    public class AppleMediaExtractor : MediaExtractorBase, IMediaExtractor
     {
         protected Dictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
 
@@ -18,27 +18,7 @@ namespace MediaManager.Platforms.Apple
         {
         }
 
-        public virtual async Task<IMediaItem> CreateMediaItem(string url)
-        {
-            IMediaItem mediaItem = new MediaItem(url);
-            mediaItem.MediaLocation = GetMediaLocation(mediaItem);
-            return await ExtractMetadata(mediaItem);
-        }
-
-        public virtual async Task<IMediaItem> CreateMediaItem(FileInfo file)
-        {
-            IMediaItem mediaItem = new MediaItem(file.FullName);
-            mediaItem.MediaLocation = GetMediaLocation(mediaItem);
-            return await ExtractMetadata(mediaItem);
-        }
-
-        public virtual async Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem)
-        {
-            mediaItem.MediaLocation = GetMediaLocation(mediaItem);
-            return await ExtractMetadata(mediaItem);
-        }
-
-        public async Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem)
+        public override async Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem)
         {
             var assetsToLoad = new List<string>
             {
@@ -84,19 +64,6 @@ namespace MediaManager.Platforms.Apple
             var url = isLocallyAvailable ? new NSUrl(mediaItem.MediaUri, false) : new NSUrl(mediaItem.MediaUri);
 
             return url;
-        }
-
-        public Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
-        {
-            return null;
-        }
-
-        public virtual MediaLocation GetMediaLocation(IMediaItem mediaItem)
-        {
-            if (mediaItem.MediaUri.StartsWith("http")) return MediaLocation.Remote;
-            if (mediaItem.MediaUri.StartsWith("file") || mediaItem.MediaUri.StartsWith("/")) return MediaLocation.FileSystem;
-
-            return MediaLocation.Unknown;
         }
     }
 }
