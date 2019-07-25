@@ -191,7 +191,7 @@ namespace MediaManager
         {
             var mediaItem = await MediaExtractor.CreateMediaItem(file.FullName);
             var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
-            await MediaPlayer.Play(mediaItem);
+            await MediaPlayer.Play(mediaItemToPlay);
             return mediaItem;
         }
 
