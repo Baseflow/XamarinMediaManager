@@ -156,8 +156,8 @@ namespace MediaManager
 
         public override async Task Play(IMediaItem mediaItem)
         {
-            mediaItem = await MediaExtractor.CreateMediaItem(mediaItem);
-            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
+            var extractedMediaItem = await MediaExtractor.CreateMediaItem(mediaItem);
+            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { extractedMediaItem }, true);
             await MediaPlayer.Play(mediaItemToPlay);
         }
 
@@ -165,7 +165,7 @@ namespace MediaManager
         {
             var mediaItem = await MediaExtractor.CreateMediaItem(uri);
             var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
-            await MediaPlayer.Play(mediaItem);
+            await MediaPlayer.Play(mediaItemToPlay);
             return mediaItem;
         }
 
