@@ -29,9 +29,6 @@ namespace MediaManager.Platforms.Android
                 case MediaLocation.FileSystem:
                     await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri);
                     break;
-
-                case MediaLocation.Remote:
-                case MediaLocation.Unknown:
                 default:
                     await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
                     break;
