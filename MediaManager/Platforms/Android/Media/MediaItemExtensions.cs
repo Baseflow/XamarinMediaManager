@@ -7,6 +7,7 @@ using Com.Google.Android.Exoplayer2.Source.Dash;
 using Com.Google.Android.Exoplayer2.Source.Hls;
 using Com.Google.Android.Exoplayer2.Source.Smoothstreaming;
 using MediaManager.Media;
+using MediaManager.Platforms.Android.Player;
 
 namespace MediaManager.Platforms.Android.Media
 {

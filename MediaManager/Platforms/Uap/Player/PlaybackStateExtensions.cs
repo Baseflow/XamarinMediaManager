@@ -4,6 +4,7 @@ using System.Text;
 using MediaManager.Playback;
 using Windows.Media.Playback;
 using MediaPlayerState = MediaManager.Player.MediaPlayerState;
+
 namespace MediaManager.Platforms.Uap.Player
 {
     public static class PlaybackStateExtensions

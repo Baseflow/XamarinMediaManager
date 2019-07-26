@@ -8,7 +8,7 @@ using MediaManager.Media;
 using UIKit;
 #endif
 
-namespace MediaManager.Platforms.Apple
+namespace MediaManager.Platforms.Apple.Media
 {
     public class AppleMediaExtractor : MediaExtractorBase, IMediaExtractor
     {

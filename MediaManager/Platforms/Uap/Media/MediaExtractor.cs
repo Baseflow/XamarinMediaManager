@@ -7,7 +7,7 @@ using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace MediaManager.Platforms.Uap
+namespace MediaManager.Platforms.Uap.Media
 {
     public class MediaExtractor : MediaExtractorBase, IMediaExtractor
     {

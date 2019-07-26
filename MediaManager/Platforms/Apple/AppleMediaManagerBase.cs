@@ -5,6 +5,8 @@ using MediaManager.Notifications;
 using MediaManager.Platforms.Apple;
 using MediaManager.Platforms.Apple.Media;
 using MediaManager.Platforms.Apple.Notifications;
+using MediaManager.Platforms.Apple.Player;
+using MediaManager.Platforms.Apple.Volume;
 using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Queue;

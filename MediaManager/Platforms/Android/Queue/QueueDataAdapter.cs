@@ -6,8 +6,9 @@ using Android.Support.V4.Media;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 using Com.Google.Android.Exoplayer2.Source;
 using MediaManager.Media;
+using MediaManager.Platforms.Android.Media;
 
-namespace MediaManager.Platforms.Android.Media
+namespace MediaManager.Platforms.Android.Queue
 {
     public class QueueDataAdapter : Java.Lang.Object, TimelineQueueEditor.IQueueDataAdapter
     {

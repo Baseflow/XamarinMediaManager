@@ -13,6 +13,8 @@ using MediaManager.Platforms.Android;
 using MediaManager.Platforms.Android.Media;
 using MediaManager.Platforms.Android.MediaSession;
 using MediaManager.Platforms.Android.Playback;
+using MediaManager.Platforms.Android.Player;
+using MediaManager.Platforms.Android.Volume;
 using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Queue;

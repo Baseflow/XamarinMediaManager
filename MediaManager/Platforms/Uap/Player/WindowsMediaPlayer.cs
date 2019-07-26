@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MediaManager.Media;
+using MediaManager.Platforms.Uap.Media;
 using MediaManager.Platforms.Uap.Player;
 using MediaManager.Platforms.Uap.Video;
 using MediaManager.Playback;
@@ -12,7 +13,7 @@ using Windows.Storage;
 using Windows.UI.Xaml.Controls;
 using MediaPlayerState = MediaManager.Player.MediaPlayerState;
 
-namespace MediaManager.Platforms.Uap.Media
+namespace MediaManager.Platforms.Uap.Player
 {
     public class WindowsMediaPlayer : IMediaPlayer<MediaPlayer, VideoView>
     {

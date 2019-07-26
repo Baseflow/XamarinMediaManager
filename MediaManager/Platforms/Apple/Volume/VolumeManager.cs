@@ -1,7 +1,7 @@
 ﻿using AVFoundation;
 using MediaManager.Volume;
 
-namespace MediaManager.Platforms.Apple
+namespace MediaManager.Platforms.Apple.Volume
 {
     public class VolumeManager : IVolumeManager
     {

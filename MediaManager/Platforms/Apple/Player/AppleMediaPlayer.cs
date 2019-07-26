@@ -11,7 +11,7 @@ using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Video;
 
-namespace MediaManager.Platforms.Apple.Media
+namespace MediaManager.Platforms.Apple.Player
 {
     public abstract class AppleMediaPlayer : NSObject, IMediaPlayer<AVQueuePlayer>
     {

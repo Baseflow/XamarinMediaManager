@@ -8,7 +8,7 @@ using Com.Google.Android.Exoplayer2.Metadata.Id3;
 using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
 
-namespace MediaManager.Platforms.Android.Media
+namespace MediaManager.Platforms.Android.Player
 {
     public class PlayerEventListener : Java.Lang.Object, IPlayerEventListener
     {

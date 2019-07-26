@@ -4,11 +4,12 @@ using AVFoundation;
 using AVKit;
 using Foundation;
 using MediaManager.Platforms.Apple.Media;
+using MediaManager.Platforms.Apple.Player;
 using MediaManager.Platforms.Tvos.Video;
 using MediaManager.Player;
 using MediaManager.Video;
 
-namespace MediaManager.Platforms.Tvos.Media
+namespace MediaManager.Platforms.Tvos.Player
 {
     public class TvosMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer, VideoView>
     {

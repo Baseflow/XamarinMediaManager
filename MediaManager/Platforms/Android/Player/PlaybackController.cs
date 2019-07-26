@@ -2,7 +2,7 @@
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 
-namespace MediaManager.Platforms.Android.Media
+namespace MediaManager.Platforms.Android.Player
 {
     public class PlaybackController : DefaultPlaybackController
     {

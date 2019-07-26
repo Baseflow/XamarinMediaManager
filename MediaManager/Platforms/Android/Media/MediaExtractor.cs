@@ -7,7 +7,7 @@ using Android.Graphics;
 using Android.Media;
 using MediaManager.Media;
 
-namespace MediaManager.Platforms.Android
+namespace MediaManager.Platforms.Android.Media
 {
     public class MediaExtractor : MediaExtractorBase, IMediaExtractor
     {

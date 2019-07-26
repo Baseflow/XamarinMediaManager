@@ -1,7 +1,7 @@
 ﻿using Android.Support.V4.Media.Session;
 using MediaManager.Volume;
 
-namespace MediaManager.Platforms.Android
+namespace MediaManager.Platforms.Android.Volume
 {
     public class VolumeManager : IVolumeManager //VolumeProviderCompat.Callback
     {

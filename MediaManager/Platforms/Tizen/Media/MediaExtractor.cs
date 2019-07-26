@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MediaManager.Media;
 using Tizen.Multimedia;
 
-namespace MediaManager.Platforms.Tizen
+namespace MediaManager.Platforms.Tizen.Media
 {
     public class MediaExtractor : MediaExtractorBase, IMediaExtractor
     {

@@ -15,14 +15,16 @@ using Com.Google.Android.Exoplayer2.UI;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
 using MediaManager.Media;
+using MediaManager.Platforms.Android.Media;
 using MediaManager.Platforms.Android.MediaSession;
 using MediaManager.Platforms.Android.Playback;
+using MediaManager.Platforms.Android.Queue;
 using MediaManager.Platforms.Android.Video;
 using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Video;
 
-namespace MediaManager.Platforms.Android.Media
+namespace MediaManager.Platforms.Android.Player
 {
     public class AndroidMediaPlayer : Java.Lang.Object, IMediaPlayer<SimpleExoPlayer, VideoView>
     {
