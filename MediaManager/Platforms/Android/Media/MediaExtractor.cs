@@ -9,7 +9,7 @@ using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android
 {
-    public class MediaExtractor : IMediaExtractor
+    public class MediaExtractor : MediaExtractorBase, IMediaExtractor
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
         protected Resources Resources => Resources.System;
@@ -19,51 +19,22 @@ namespace MediaManager.Platforms.Android
         {
         }
 
-        public virtual async Task<IMediaItem> CreateMediaItem(string url)
+        public override async Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem)
         {
-            IMediaItem mediaItem = new MediaItem(url);
-            try
-            {
-                var metaRetriever = new MediaMetadataRetriever();
-                await metaRetriever.SetDataSourceAsync(url, RequestHeaders);
-                mediaItem = await ExtractMediaInfo(metaRetriever, mediaItem);
-            }
-            catch (Exception)
-            {
-            }
-            return mediaItem;
-        }
+            var metaRetriever = new MediaMetadataRetriever();
 
-        public virtual async Task<IMediaItem> CreateMediaItem(FileInfo file)
-        {
-            IMediaItem mediaItem = new MediaItem(file.FullName);
-            try
+            switch (mediaItem.MediaLocation)
             {
-                var metaRetriever = new MediaMetadataRetriever();
+                case MediaLocation.Embedded:
+                case MediaLocation.FileSystem:
+                    await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri);
+                    break;
+                default:
+                    await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
+                    break;
+            }
 
-                var javaFile = new Java.IO.File(file.FullName);
-                var inputStream = new Java.IO.FileInputStream(javaFile);
-                await metaRetriever.SetDataSourceAsync(inputStream.FD);
-                mediaItem = await ExtractMediaInfo(metaRetriever, mediaItem);
-            }
-            catch (Exception)
-            {
-            }
-            return mediaItem;
-        }
-
-        public virtual async Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem)
-        {
-            try
-            {
-                var metaRetriever = new MediaMetadataRetriever();
-                await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
-                mediaItem = await ExtractMediaInfo(metaRetriever, mediaItem);
-            }
-            catch (Exception)
-            {
-            }
-            return mediaItem;
+            return await ExtractMediaInfo(metaRetriever, mediaItem).ConfigureAwait(false);
         }
 
         protected virtual async Task<IMediaItem> ExtractMediaInfo(MediaMetadataRetriever mediaMetadataRetriever, IMediaItem mediaItem)
@@ -146,12 +117,6 @@ namespace MediaManager.Platforms.Android
 
             mediaItem.IsMetadataExtracted = true;
             return mediaItem;
-        }
-
-        public Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
-        {
-            //TODO: move cover in here
-            return null;
         }
 
         protected virtual Bitmap GetTrackCover(IMediaItem currentTrack)

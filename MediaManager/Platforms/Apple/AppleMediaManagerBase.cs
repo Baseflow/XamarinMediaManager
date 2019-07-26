@@ -160,17 +160,24 @@ namespace MediaManager
 
         public override async Task<IMediaItem> Play(FileInfo file)
         {
-            var mediaItem = new MediaItem(file.FullName);
-            await Play(mediaItem);
+            var mediaItem = await MediaExtractor.CreateMediaItem(file.FullName);
+            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
+
+            await MediaPlayer.Play(mediaItemToPlay);
             return mediaItem;
         }
 
         public override async Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
         {
-            var fileInfos = directoryInfo.GetFiles("*", SearchOption.AllDirectories);
-            var mediaItems = fileInfos.Select(fileInfo => new MediaItem(fileInfo.FullName));
-            await Play(mediaItems);
-            return mediaItems;
+            var mediaItems = new List<IMediaItem>();
+            foreach (var file in directoryInfo.GetFiles())
+            {
+                var mediaItem = await MediaExtractor.CreateMediaItem(file);
+                mediaItems.Add(mediaItem);
+            }
+            var mediaItemToPlay = await AddMediaItemsToQueue(mediaItems, true);
+            await MediaPlayer.Play(mediaItemToPlay);
+            return MediaQueue;
         }
 
         public override Task Play()
