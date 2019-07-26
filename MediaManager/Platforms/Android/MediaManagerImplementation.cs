@@ -8,11 +8,13 @@ using Android.Content;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using MediaManager.Media;
+using MediaManager.Notifications;
 using MediaManager.Platforms.Android;
 using MediaManager.Platforms.Android.Media;
 using MediaManager.Platforms.Android.MediaSession;
 using MediaManager.Platforms.Android.Playback;
 using MediaManager.Playback;
+using MediaManager.Player;
 using MediaManager.Queue;
 using MediaManager.Volume;
 

@@ -52,8 +52,8 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
             switch (e.State)
             {
-                case global::MediaManager.Playback.MediaPlayerState.Failed:
-                case global::MediaManager.Playback.MediaPlayerState.Stopped:
+                case global::MediaManager.Player.MediaPlayerState.Failed:
+                case global::MediaManager.Player.MediaPlayerState.Stopped:
                     if (IsForeground && MediaController.PlaybackState.State == PlaybackStateCompat.StateNone)
                     {
                         //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundRemove);
@@ -62,9 +62,9 @@ namespace MediaManager.Platforms.Android.MediaSession
                         IsForeground = false;
                     }
                     break;
-                case global::MediaManager.Playback.MediaPlayerState.Loading:
-                case global::MediaManager.Playback.MediaPlayerState.Buffering:
-                case global::MediaManager.Playback.MediaPlayerState.Playing:
+                case global::MediaManager.Player.MediaPlayerState.Loading:
+                case global::MediaManager.Player.MediaPlayerState.Buffering:
+                case global::MediaManager.Player.MediaPlayerState.Playing:
                     if(!IsForeground)
                     {
                         PlayerNotificationManager?.SetOngoing(true);
@@ -73,7 +73,7 @@ namespace MediaManager.Platforms.Android.MediaSession
                         IsForeground = true;
                     }
                     break;
-                case global::MediaManager.Playback.MediaPlayerState.Paused:
+                case global::MediaManager.Player.MediaPlayerState.Paused:
                     if (IsForeground)
                     {
                         //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundDetach);

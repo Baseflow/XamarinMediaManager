@@ -5,6 +5,7 @@ using AVKit;
 using Foundation;
 using MediaManager.Platforms.Apple.Media;
 using MediaManager.Platforms.Tvos.Video;
+using MediaManager.Player;
 using MediaManager.Video;
 
 namespace MediaManager.Platforms.Tvos.Media

@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using MediaManager.Media;
+using MediaManager.Notifications;
 using MediaManager.Platforms.Tizen;
 using MediaManager.Platforms.Tizen.Media;
+using MediaManager.Platforms.Tizen.Player;
 using MediaManager.Platforms.Tizen.Volume;
 using MediaManager.Playback;
+using MediaManager.Player;
 using MediaManager.Queue;
 using MediaManager.Volume;
-using Tizen.Multimedia;
+using TizenPlayer = Tizen.Multimedia.Player;
 
 namespace MediaManager
 {
-    public class MediaManagerImplementation : MediaManagerBase, IMediaManager<Player>
+    public class MediaManagerImplementation : MediaManagerBase, IMediaManager<TizenPlayer>
     {
         public MediaManagerImplementation()
         {
@@ -32,7 +35,7 @@ namespace MediaManager
         }
 
         public TizenMediaPlayer TizenMediaPlayer => (TizenMediaPlayer)MediaPlayer;
-        public Player Player => TizenMediaPlayer.Player;
+        public TizenPlayer Player => TizenMediaPlayer.Player;
 
         private IVolumeManager _volumeManager;
         public override IVolumeManager VolumeManager

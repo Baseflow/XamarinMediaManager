@@ -4,11 +4,13 @@ using MediaManager.Media;
 using MediaManager.Platforms.Uap.Player;
 using MediaManager.Platforms.Uap.Video;
 using MediaManager.Playback;
+using MediaManager.Player;
 using MediaManager.Video;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
+using MediaPlayerState = MediaManager.Player.MediaPlayerState;
 
 namespace MediaManager.Platforms.Uap.Media
 {
@@ -148,7 +150,7 @@ namespace MediaManager.Platforms.Uap.Media
         {
             Player.Pause();
             await SeekTo(TimeSpan.Zero);
-            MediaManager.State = Playback.MediaPlayerState.Stopped;
+            MediaManager.State = MediaPlayerState.Stopped;
         }
 
         public void Dispose()

@@ -7,6 +7,7 @@ using System.Windows.Media;
 using MediaManager.Media;
 using MediaManager.Platforms.Wpf.Video;
 using MediaManager.Playback;
+using MediaManager.Player;
 using MediaManager.Video;
 
 namespace MediaManager.Platforms.Wpf.Player

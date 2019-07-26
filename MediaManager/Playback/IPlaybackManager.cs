@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using MediaManager.Media;
+using MediaManager.Player;
 using MediaManager.Queue;
 
 namespace MediaManager.Playback

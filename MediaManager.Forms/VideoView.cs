@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MediaManager.Media;
 using MediaManager.Playback;
+using MediaManager.Player;
 using MediaManager.Queue;
 using MediaManager.Video;
 using Xamarin.Forms;

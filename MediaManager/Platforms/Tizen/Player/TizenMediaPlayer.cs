@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MediaManager.Media;
+using MediaManager.Platforms.Tizen.Media;
 using MediaManager.Platforms.Tizen.Video;
 using MediaManager.Playback;
+using MediaManager.Player;
 using MediaManager.Video;
 using Tizen.Multimedia;
+using TizenPlayer = Tizen.Multimedia.Player;
 
-namespace MediaManager.Platforms.Tizen.Media
+namespace MediaManager.Platforms.Tizen.Player
 {
-    public class TizenMediaPlayer : IMediaPlayer<Player, VideoView>
+    public class TizenMediaPlayer : IMediaPlayer<TizenPlayer, VideoView>
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Tizen;
 
@@ -16,8 +19,8 @@ namespace MediaManager.Platforms.Tizen.Media
         {
         }
 
-        private Player _player;
-        public Player Player
+        private TizenPlayer _player;
+        public TizenPlayer Player
         {
             get
             {
@@ -33,7 +36,7 @@ namespace MediaManager.Platforms.Tizen.Media
 
         protected virtual void Initialize()
         {
-            Player = new Player();
+            Player = new TizenPlayer();
             Player.ErrorOccurred += Player_ErrorOccurred;
             Player.PlaybackInterrupted += Player_PlaybackInterrupted;
             Player.PlaybackCompleted += Player_PlaybackCompleted;

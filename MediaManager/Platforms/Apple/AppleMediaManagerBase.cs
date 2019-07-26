@@ -1,10 +1,12 @@
 ﻿using System;
 using AVFoundation;
 using MediaManager.Media;
+using MediaManager.Notifications;
 using MediaManager.Platforms.Apple;
 using MediaManager.Platforms.Apple.Media;
 using MediaManager.Platforms.Apple.Notifications;
 using MediaManager.Playback;
+using MediaManager.Player;
 using MediaManager.Queue;
 using MediaManager.Volume;
 

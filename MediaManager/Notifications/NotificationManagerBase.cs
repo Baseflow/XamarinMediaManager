@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MediaManager
+namespace MediaManager.Notifications
 {
     public abstract class NotificationManagerBase : INotificationManager
     {

@@ -10,6 +10,8 @@ using MediaManager.Playback;
 using MediaManager.Queue;
 using MediaManager.Volume;
 using System.Linq;
+using MediaManager.Player;
+using MediaManager.Notifications;
 
 namespace MediaManager
 {

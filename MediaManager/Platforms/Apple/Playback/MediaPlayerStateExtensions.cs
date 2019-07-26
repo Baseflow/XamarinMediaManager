@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AVFoundation;
 using MediaManager.Playback;
+using MediaManager.Player;
 
 namespace MediaManager.Platforms.Apple.Playback
 {

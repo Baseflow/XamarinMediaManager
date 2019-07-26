@@ -1,4 +1,5 @@
 ﻿using System;
+using MediaManager.Player;
 
 namespace MediaManager.Playback
 {

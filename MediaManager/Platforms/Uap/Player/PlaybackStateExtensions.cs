@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using System.Text;
 using MediaManager.Playback;
 using Windows.Media.Playback;
-
+using MediaPlayerState = MediaManager.Player.MediaPlayerState;
 namespace MediaManager.Platforms.Uap.Player
 {
     public static class PlaybackStateExtensions
     {
-        public static Playback.MediaPlayerState ToMediaPlayerState(this MediaPlaybackState playbackState)
+        public static MediaPlayerState ToMediaPlayerState(this MediaPlaybackState playbackState)
         {
             switch (playbackState)
             {
                 case MediaPlaybackState.None:
-                    return Playback.MediaPlayerState.Stopped;
+                    return MediaPlayerState.Stopped;
                 case MediaPlaybackState.Opening:
-                    return Playback.MediaPlayerState.Loading;
+                    return MediaPlayerState.Loading;
                 case MediaPlaybackState.Buffering:
-                    return Playback.MediaPlayerState.Buffering;
+                    return MediaPlayerState.Buffering;
                 case MediaPlaybackState.Playing:
-                    return Playback.MediaPlayerState.Playing;
+                    return MediaPlayerState.Playing;
                 case MediaPlaybackState.Paused:
-                    return Playback.MediaPlayerState.Paused;
+                    return MediaPlayerState.Paused;
                 default:
-                    return Playback.MediaPlayerState.Stopped;
+                    return MediaPlayerState.Stopped;
             }
         }
     }

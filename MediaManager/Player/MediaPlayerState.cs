@@ -1,4 +1,4 @@
-﻿namespace MediaManager.Playback
+﻿namespace MediaManager.Player
 {
     public enum MediaPlayerState
     {

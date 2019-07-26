@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MediaManager.Notifications;
 using MediaPlayer;
 
 namespace MediaManager.Platforms.Apple.Notifications

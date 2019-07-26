@@ -1,6 +1,7 @@
 ﻿using System;
+using MediaManager.Media;
 
-namespace MediaManager.Media
+namespace MediaManager.Player
 {
     public class MediaPlayerEventArgs : EventArgs
     {

@@ -19,6 +19,7 @@ using MediaManager.Platforms.Android.MediaSession;
 using MediaManager.Platforms.Android.Playback;
 using MediaManager.Platforms.Android.Video;
 using MediaManager.Playback;
+using MediaManager.Player;
 using MediaManager.Video;
 
 namespace MediaManager.Platforms.Android.Media

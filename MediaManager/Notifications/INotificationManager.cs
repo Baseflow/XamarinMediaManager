@@ -1,4 +1,4 @@
-﻿namespace MediaManager
+﻿namespace MediaManager.Notifications
 {
     public interface INotificationManager
     {

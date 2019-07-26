@@ -70,7 +70,8 @@ namespace ElementPlayer.Core.ViewModels
 
             await this.NavigationService.Navigate<PlayerViewModel>();
 
-            await MediaManager.Play(mediaItem);
+            //await MediaManager.Play(mediaItem);
+            await MediaManager.Play(Mp3UrlList);
 
             /*foreach (var item in Items.Except<string>(new[] { url }))
             {
