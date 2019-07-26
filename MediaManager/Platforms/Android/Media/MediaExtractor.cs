@@ -20,20 +20,28 @@ namespace MediaManager.Platforms.Android
 
         public override async Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem)
         {
-            var metaRetriever = new MediaMetadataRetriever();
-
-            switch (mediaItem.MediaLocation)
+            try
             {
-                case MediaLocation.Embedded:
-                case MediaLocation.FileSystem:
-                    await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri);
-                    break;
-                default:
-                    await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
-                    break;
-            }
+                var metaRetriever = new MediaMetadataRetriever();
 
-            return await ExtractMediaInfo(metaRetriever, mediaItem).ConfigureAwait(false);
+                switch (mediaItem.MediaLocation)
+                {
+                    case MediaLocation.Embedded:
+                    case MediaLocation.FileSystem:
+                        await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri);
+                        break;
+                    default:
+                        await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
+                        break;
+                }
+
+                return await ExtractMediaInfo(metaRetriever, mediaItem).ConfigureAwait(false);
+            }
+            catch
+            {
+                
+            }
+            return mediaItem;
         }
 
         protected virtual async Task<IMediaItem> ExtractMediaInfo(MediaMetadataRetriever mediaMetadataRetriever, IMediaItem mediaItem)
