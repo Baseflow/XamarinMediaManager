@@ -28,12 +28,16 @@ namespace MediaManager.Forms
             if (Source is string url)
             {
                 if (url != e.MediaItem.MediaUri)
+                {
                     Source = e.MediaItem.MediaUri;
+                }
             }
             else if (Source is IMediaItem)
             {
                 if (Source != e.MediaItem)
+                {
                     Source = e.MediaItem;
+                }
             }
         }
 
