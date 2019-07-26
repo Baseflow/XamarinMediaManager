@@ -11,8 +11,6 @@ namespace MediaManager.Platforms.Uap
 {
     public class MediaExtractor : MediaExtractorBase, IMediaExtractor
     {
-        protected Dictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
-
         public MediaExtractor()
         {
         }
@@ -70,6 +68,11 @@ namespace MediaManager.Platforms.Uap
                 await bitmap.SetSourceAsync(thumbnail);
                 mediaItem.AlbumArt = bitmap;
             }
+        }
+
+        public override Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
+        {
+            return null;
         }
     }
 }

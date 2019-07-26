@@ -8,18 +8,17 @@ namespace MediaManager.Media
 {
     public abstract class MediaExtractorBase : IMediaExtractor
     {
-        public virtual async Task<IMediaItem> CreateMediaItem(string url)
+        protected Dictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
+
+        public virtual Task<IMediaItem> CreateMediaItem(string url)
         {
             var mediaItem = new MediaItem(url);
-            mediaItem.MediaLocation = GetMediaLocation(mediaItem);
-            return await ExtractMetadata(mediaItem).ConfigureAwait(false);
+            return CreateMediaItem(mediaItem);
         }
 
-        public virtual async Task<IMediaItem> CreateMediaItem(FileInfo file)
+        public virtual Task<IMediaItem> CreateMediaItem(FileInfo file)
         {
-            var mediaItem = new MediaItem(file.FullName);
-            mediaItem.MediaLocation = GetMediaLocation(mediaItem);
-            return await ExtractMetadata(mediaItem).ConfigureAwait(false);
+            return CreateMediaItem(file.FullName);
         }
 
         public virtual async Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem)
@@ -28,23 +27,41 @@ namespace MediaManager.Media
             return await ExtractMetadata(mediaItem).ConfigureAwait(false);
         }
 
-        public virtual Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
-        {
-            return null;
-        }
+        public abstract Task<object> RetrieveMediaItemArt(IMediaItem mediaItem);
 
         public abstract Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem);
 
+        public IList<string> RemotePrefixes { get; } = new List<string>() {
+            "http",
+            "udp",
+            "rtp"
+        };
+
+        public IList<string> FilePrefixes { get; } = new List<string>() {
+            "file",
+            "/"
+        };
+
         public virtual MediaLocation GetMediaLocation(IMediaItem mediaItem)
         {
-            if (mediaItem.MediaUri.StartsWith("http")) 
-            { 
-                return MediaLocation.Remote; 
+            var url = mediaItem.MediaUri.ToLower();
+            foreach (var item in RemotePrefixes)
+            {
+                if (url.StartsWith(item))
+                {
+                    return MediaLocation.Remote;
+                }
             }
 
-            if (mediaItem.MediaUri.StartsWith("file") 
-                || mediaItem.MediaUri.StartsWith("/") 
-                || (mediaItem.MediaUri.Length > 1 && mediaItem.MediaUri[1] == ':')) 
+            foreach (var item in FilePrefixes)
+            {
+                if (url.StartsWith(item))
+                {
+                    return MediaLocation.FileSystem;
+                }
+            }
+
+            if (url.Length > 1 && url[1] == ':')
             { 
                 return MediaLocation.FileSystem;
             }

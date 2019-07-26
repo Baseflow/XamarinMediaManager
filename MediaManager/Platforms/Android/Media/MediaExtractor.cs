@@ -13,7 +13,6 @@ namespace MediaManager.Platforms.Android
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
         protected Resources Resources => Resources.System;
-        protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
 
         public MediaExtractor()
         {
@@ -163,6 +162,11 @@ namespace MediaManager.Platforms.Android
                 return null;
 
             return System.IO.Path.GetDirectoryName(currentFile.MediaUri);
+        }
+
+        public override Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
+        {
+            return null;
         }
     }
 }

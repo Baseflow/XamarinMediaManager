@@ -12,8 +12,6 @@ namespace MediaManager.Platforms.Apple
 {
     public class AppleMediaExtractor : MediaExtractorBase, IMediaExtractor
     {
-        protected Dictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
-
         public AppleMediaExtractor()
         {
         }
@@ -64,6 +62,11 @@ namespace MediaManager.Platforms.Apple
             var url = isLocallyAvailable ? new NSUrl(mediaItem.MediaUri, false) : new NSUrl(mediaItem.MediaUri);
 
             return url;
+        }
+
+        public override Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
+        {
+            return null;
         }
     }
 }

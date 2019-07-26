@@ -7,35 +7,23 @@ using Tizen.Multimedia;
 
 namespace MediaManager.Platforms.Tizen
 {
-    public class MediaExtractor : IMediaExtractor
+    public class MediaExtractor : MediaExtractorBase, IMediaExtractor
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Tizen;
 
-        public Task<IMediaItem> CreateMediaItem(string url)
+        public override Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem)
         {
-            IMediaItem mediaItem = new MediaItem(url);
-
-            var extractor = new MetadataExtractor(url);
+            var extractor = new MetadataExtractor(mediaItem.MediaUri);
             SetMetadata(mediaItem, extractor);
             return Task.FromResult(mediaItem);
         }
 
-        public Task<IMediaItem> CreateMediaItem(FileInfo file)
+        public override Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
         {
             return null;
         }
 
-        public Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem)
-        {
-            return null;
-        }
-
-        public Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
-        {
-            return null;
-        }
-
-        private void SetMetadata(IMediaItem mediaItem, MetadataExtractor extractor)
+        protected virtual void SetMetadata(IMediaItem mediaItem, MetadataExtractor extractor)
         {
             Metadata metadata = extractor.GetMetadata();
             mediaItem.Title = metadata.Title;
@@ -59,7 +47,7 @@ namespace MediaManager.Platforms.Tizen
             }
         }
 
-        private void SetMetadata(IMediaItem mediaItem, StreamInfo streamInfo)
+        protected virtual void SetMetadata(IMediaItem mediaItem, StreamInfo streamInfo)
         {
             mediaItem.Title = streamInfo.GetMetadata(StreamMetadataKey.Title);
             mediaItem.Artist = streamInfo.GetMetadata(StreamMetadataKey.Artist);
