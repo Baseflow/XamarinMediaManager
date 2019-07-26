@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediaManager.Forms.Platforms.Wpf;
-using MediaManager.Platforms.Wpf.Video;
-using Xamarin.Forms;
+﻿using MediaManager.Forms.Platforms.Wpf;
 using Xamarin.Forms.Platform.WPF;
 
 [assembly: ExportRenderer(typeof(MediaManager.Forms.VideoView), typeof(VideoViewRenderer))]

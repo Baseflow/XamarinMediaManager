@@ -1,6 +1,4 @@
-﻿using System;
-using Foundation;
-using MediaManager.Forms.Platforms.Mac;
+﻿using MediaManager.Forms.Platforms.Mac;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
 

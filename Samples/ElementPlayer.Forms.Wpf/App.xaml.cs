@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using MvvmCross.Core;
+﻿using MvvmCross.Core;
 using MvvmCross.Forms.Platforms.Wpf.Core;
 //using MvvmCross.Platforms.Wpf.Views;
 

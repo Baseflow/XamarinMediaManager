@@ -73,14 +73,14 @@ namespace MediaManager.Platforms.Android.Media
                 .SetSubtitle(item?.GetContentTitle())
                 .SetDescription(item?.DisplayDescription)
                 .SetExtras(item?.Extras as Bundle);
-                 
+
             //It should be better to only set the uri to prevent loading images into memory
-            if(!string.IsNullOrEmpty(item?.DisplayIconUri))
+            if (!string.IsNullOrEmpty(item?.DisplayIconUri))
                 description.SetIconUri(global::Android.Net.Uri.Parse(item?.DisplayIconUri));
             else
             {
                 var cover = item?.GetCover();
-                if(cover != null)
+                if (cover != null)
                     description.SetIconBitmap(cover);
             }
 

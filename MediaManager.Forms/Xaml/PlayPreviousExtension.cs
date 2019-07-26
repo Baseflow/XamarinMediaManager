@@ -11,7 +11,7 @@
         protected override bool CanExecute() =>
             MediaManager.MediaQueue.CurrentIndex > 0;
 
-        protected override void Execute() => 
+        protected override void Execute() =>
             MediaManager.PlayPrevious();
     }
 }

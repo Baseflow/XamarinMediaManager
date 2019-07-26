@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MediaManager.Media
@@ -69,7 +67,7 @@ namespace MediaManager.Media
             }
 
             if (url.Length > 1 && url[1] == ':')
-            { 
+            {
                 return MediaLocation.FileSystem;
             }
 

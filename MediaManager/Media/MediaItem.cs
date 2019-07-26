@@ -18,144 +18,179 @@ namespace MediaManager.Media
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Advertisement {
+        public string Advertisement
+        {
             get => _advertisement;
             set => SetProperty(ref _advertisement, value);
         }
-        public string Album {
+        public string Album
+        {
             get => _album;
             set => SetProperty(ref _album, value);
         }
-        public object AlbumArt {
+        public object AlbumArt
+        {
             get => _albumArt;
             set => SetProperty(ref _albumArt, value);
         }
-        public string AlbumArtist {
+        public string AlbumArtist
+        {
             get => _albumArtist;
             set => SetProperty(ref _albumArtist, value);
         }
-        public string AlbumArtUri {
+        public string AlbumArtUri
+        {
             get => _albumArtUri;
             set => SetProperty(ref _albumArtUri, value);
         }
-        public object Art {
+        public object Art
+        {
             get => _art;
             set => SetProperty(ref _art, value);
         }
-        public string Artist {
+        public string Artist
+        {
             get => _artist;
             set => SetProperty(ref _artist, value);
         }
-        public string ArtUri {
+        public string ArtUri
+        {
             get => _artUri;
             set => SetProperty(ref _artUri, value);
         }
-        public string Author {
+        public string Author
+        {
             get => _author;
             set => SetProperty(ref _author, value);
         }
-        public BtFolderType BtFolderType {
+        public BtFolderType BtFolderType
+        {
             get => _btFolderType;
             set => SetProperty(ref _btFolderType, value);
         }
-        public string Compilation {
+        public string Compilation
+        {
             get => _compilation;
             set => SetProperty(ref _compilation, value);
         }
-        public string Composer {
+        public string Composer
+        {
             get => _composer;
             set => SetProperty(ref _composer, value);
         }
-        public string Date {
+        public string Date
+        {
             get => _date;
             set => SetProperty(ref _date, value);
         }
-        public int DiscNumber {
+        public int DiscNumber
+        {
             get => _discNumber;
             set => SetProperty(ref _discNumber, value);
         }
-        public string DisplayDescription {
+        public string DisplayDescription
+        {
             get => _displayDescription;
             set => SetProperty(ref _displayDescription, value);
         }
-        public object DisplayIcon {
+        public object DisplayIcon
+        {
             get => _displayIcon;
             set => SetProperty(ref _displayIcon, value);
         }
-        public string DisplayIconUri {
+        public string DisplayIconUri
+        {
             get => _displayIconUri;
             set => SetProperty(ref _displayIconUri, value);
         }
-        public string DisplaySubtitle {
+        public string DisplaySubtitle
+        {
             get => _displaySubtitle;
             set => SetProperty(ref _displaySubtitle, value);
         }
-        public string DisplayTitle {
+        public string DisplayTitle
+        {
             get => _displayTitle;
             set => SetProperty(ref _displayTitle, value);
         }
-        public DownloadStatus DownloadStatus {
+        public DownloadStatus DownloadStatus
+        {
             get => _downloadStatus;
             set => SetProperty(ref _downloadStatus, value);
         }
-        public TimeSpan Duration {
+        public TimeSpan Duration
+        {
             get => _duration;
             set => SetProperty(ref _duration, value);
         }
-        public object Extras {
+        public object Extras
+        {
             get => _extras;
             set => SetProperty(ref _extras, value);
         }
-        public string Genre {
+        public string Genre
+        {
             get => _genre;
             set => SetProperty(ref _genre, value);
         }
-        public string MediaId {
+        public string MediaId
+        {
             get => _mediaId;
             set => SetProperty(ref _mediaId, value);
         }
-        public string MediaUri {
+        public string MediaUri
+        {
             get => _mediaUri;
             set => SetProperty(ref _mediaUri, value);
         }
-        public int NumTracks {
+        public int NumTracks
+        {
             get => _numTracks;
             set => SetProperty(ref _numTracks, value);
         }
-        public object Rating {
+        public object Rating
+        {
             get => _rating;
             set => SetProperty(ref _rating, value);
         }
-        public string Title {
+        public string Title
+        {
             get => _title;
             set => SetProperty(ref _title, value);
         }
-        public int TrackNumber {
+        public int TrackNumber
+        {
             get => _trackNumber;
             set => SetProperty(ref _trackNumber, value);
         }
-        public object UserRating {
+        public object UserRating
+        {
             get => _userRating;
             set => SetProperty(ref _userRating, value);
         }
-        public string Writer {
+        public string Writer
+        {
             get => _writer;
             set => SetProperty(ref _writer, value);
         }
-        public int Year {
+        public int Year
+        {
             get => _year;
             set => SetProperty(ref _year, value);
         }
 
-        public string FileExtension {
+        public string FileExtension
+        {
             get => _fileExtension;
             set => SetProperty(ref _fileExtension, value);
         }
-        public MediaType MediaType {
+        public MediaType MediaType
+        {
             get => _mediaType;
             set => SetProperty(ref _mediaType, value);
         }
-        public MediaLocation MediaLocation {
+        public MediaLocation MediaLocation
+        {
             get => _mediaLocation;
             set => SetProperty(ref _mediaLocation, value);
         }

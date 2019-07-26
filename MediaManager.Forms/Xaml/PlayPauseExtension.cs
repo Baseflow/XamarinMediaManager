@@ -7,7 +7,7 @@
         {
         }
 
-        protected override void Execute() => 
+        protected override void Execute() =>
             MediaManager.PlayPause();
     }
 }

@@ -1,21 +1,18 @@
-﻿using System;
-
+﻿
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
-using MvvmCross.Forms.Platforms.Android.Views;
+using Android.Runtime;
 using MediaManager;
+using MvvmCross.Forms.Platforms.Android.Views;
 
 namespace ElementPlayer.Forms.Droid
 {
     [Activity(
-        Label = "ElementPlayer.Forms", 
-        Icon = "@mipmap/icon", 
-        Theme = "@style/MainTheme", 
-        MainLauncher = true, 
+        Label = "ElementPlayer.Forms",
+        Icon = "@mipmap/icon",
+        Theme = "@style/MainTheme",
+        MainLauncher = true,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : MvxFormsAppCompatActivity<Setup, Core.App, FormsApp>
     {

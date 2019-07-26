@@ -1,5 +1,4 @@
-﻿using System;
-using MediaManager.Media;
+﻿using MediaManager.Media;
 using Tizen.Multimedia;
 
 namespace MediaManager.Platforms.Tizen.Media
@@ -20,7 +19,7 @@ namespace MediaManager.Platforms.Tizen.Media
                 default:
                     return new MediaUriSource(mediaItem.MediaUri);
             }
-            
+
         }
     }
 }

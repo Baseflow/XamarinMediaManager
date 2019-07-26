@@ -9,7 +9,7 @@
 
         protected override bool CanExecute() => true;
 
-        protected override void Execute() => 
+        protected override void Execute() =>
             MediaManager.ToggleRepeat();
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using MediaManager.Media;
 using MediaManager.Notifications;
@@ -11,8 +8,6 @@ using MediaManager.Platforms.Wpf.Player;
 using MediaManager.Platforms.Wpf.Volume;
 using MediaManager.Playback;
 using MediaManager.Player;
-using MediaManager.Queue;
-using MediaManager.Video;
 using MediaManager.Volume;
 
 namespace MediaManager

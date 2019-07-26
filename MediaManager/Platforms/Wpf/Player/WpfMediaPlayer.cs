@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Media;
 using MediaManager.Media;
 using MediaManager.Platforms.Wpf.Video;
-using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Video;
 

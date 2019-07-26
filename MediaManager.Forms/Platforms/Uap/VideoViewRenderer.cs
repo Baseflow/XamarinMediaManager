@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediaManager.Forms.Platforms.Uap;
-using MediaManager.Platforms.Uap.Video;
+﻿using MediaManager.Forms.Platforms.Uap;
 using Windows.Foundation;
-using Windows.UI.Xaml.Controls;
 using Xamarin.Forms.Platform.UWP;
 
 [assembly: ExportRenderer(typeof(MediaManager.Forms.VideoView), typeof(VideoViewRenderer))]

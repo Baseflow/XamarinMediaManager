@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Input;
-using MediaManager.Playback;
 using MediaManager.Player;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -19,7 +18,7 @@ namespace MediaManager.Forms.Xaml
             MediaManager.StateChanged += (s, e) => RaiseCanExecuteChanged();
         }
 
-        protected virtual bool CanExecute() => 
+        protected virtual bool CanExecute() =>
             !IsLoadingOrFaulted();
 
         protected abstract void Execute();

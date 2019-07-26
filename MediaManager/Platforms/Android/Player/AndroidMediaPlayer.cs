@@ -11,16 +11,13 @@ using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Source.Dash;
 using Com.Google.Android.Exoplayer2.Source.Smoothstreaming;
 using Com.Google.Android.Exoplayer2.Trackselection;
-using Com.Google.Android.Exoplayer2.UI;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
 using MediaManager.Media;
 using MediaManager.Platforms.Android.Media;
 using MediaManager.Platforms.Android.MediaSession;
-using MediaManager.Platforms.Android.Playback;
 using MediaManager.Platforms.Android.Queue;
 using MediaManager.Platforms.Android.Video;
-using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Video;
 
@@ -111,7 +108,7 @@ namespace MediaManager.Platforms.Android.Player
                 UserAgent = userAgent;
             else
                 UserAgent = Util.GetUserAgent(Context, Context.PackageName);
-            
+
             HttpDataSourceFactory = new DefaultHttpDataSourceFactory(UserAgent);
             UpdateRequestHeaders();
 
@@ -134,7 +131,7 @@ namespace MediaManager.Platforms.Android.Player
             {
                 OnPlayerErrorImpl = (ExoPlaybackException exception) =>
                 {
-                    switch (exception.Type)  
+                    switch (exception.Type)
                     {
                         case ExoPlaybackException.TypeRenderer:
                         case ExoPlaybackException.TypeSource:
@@ -158,7 +155,7 @@ namespace MediaManager.Platforms.Android.Player
                     switch (playbackState)
                     {
                         case Com.Google.Android.Exoplayer2.Player.StateEnded:
-                            if(!Player.HasNext)
+                            if (!Player.HasNext)
                                 MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
                             //TODO: This means the whole list is finished. Should we fire an event?
                             break;
@@ -171,7 +168,8 @@ namespace MediaManager.Platforms.Android.Player
                             break;
                     }
                 },
-                OnPositionDiscontinuityImpl = (int reason) => {
+                OnPositionDiscontinuityImpl = (int reason) =>
+                {
                     switch (reason)
                     {
                         case Com.Google.Android.Exoplayer2.Player.DiscontinuityReasonAdInsertion:
@@ -204,7 +202,7 @@ namespace MediaManager.Platforms.Android.Player
                 },
                 OnLoadingChangedImpl = (bool isLoading) =>
                 {
-                    if(isLoading)
+                    if (isLoading)
                         MediaManager.Buffered = TimeSpan.FromMilliseconds(Player.BufferedPosition);
                 }
             };
@@ -288,7 +286,7 @@ namespace MediaManager.Platforms.Android.Player
 
         protected override void Dispose(bool disposing)
         {
-            if(Player != null)
+            if (Player != null)
             {
                 Player.RemoveListener(PlayerEventListener);
                 Player.Release();

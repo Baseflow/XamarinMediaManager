@@ -3,7 +3,6 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
@@ -18,7 +17,8 @@ namespace MediaManager.Platforms.Android.MediaSession
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
         protected MediaDescriptionAdapter MediaDescriptionAdapter { get; set; }
-        protected PlayerNotificationManager PlayerNotificationManager {
+        protected PlayerNotificationManager PlayerNotificationManager
+        {
             get => (MediaManager.NotificationManager as Notifications.NotificationManager).PlayerNotificationManager;
             set => (MediaManager.NotificationManager as Notifications.NotificationManager).PlayerNotificationManager = value;
         }
@@ -65,7 +65,7 @@ namespace MediaManager.Platforms.Android.MediaSession
                 case global::MediaManager.Player.MediaPlayerState.Loading:
                 case global::MediaManager.Player.MediaPlayerState.Buffering:
                 case global::MediaManager.Player.MediaPlayerState.Playing:
-                    if(!IsForeground)
+                    if (!IsForeground)
                     {
                         PlayerNotificationManager?.SetOngoing(true);
                         PlayerNotificationManager?.Invalidate();

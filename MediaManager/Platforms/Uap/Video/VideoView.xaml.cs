@@ -1,7 +1,4 @@
-﻿using System;
-using MediaManager.Video;
-using Windows.Foundation;
-using Windows.Foundation.Metadata;
+﻿using MediaManager.Video;
 using Windows.UI.Xaml.Controls;
 
 namespace MediaManager.Platforms.Uap.Video

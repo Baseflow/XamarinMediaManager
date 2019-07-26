@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using Android.Content.Res;
 using Android.Graphics;
@@ -39,7 +37,7 @@ namespace MediaManager.Platforms.Android.Media
             }
             catch
             {
-                
+
             }
             return mediaItem;
         }

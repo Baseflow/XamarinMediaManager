@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Notifications;
-using MediaManager.Platforms.Tizen;
 using MediaManager.Platforms.Tizen.Media;
 using MediaManager.Platforms.Tizen.Player;
 using MediaManager.Platforms.Tizen.Volume;
 using MediaManager.Playback;
 using MediaManager.Player;
-using MediaManager.Queue;
 using MediaManager.Volume;
 using TizenPlayer = Tizen.Multimedia.Player;
 

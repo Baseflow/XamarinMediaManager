@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Timers;
 using MediaManager.Media;
+using MediaManager.Notifications;
 using MediaManager.Playback;
+using MediaManager.Player;
 using MediaManager.Queue;
 using MediaManager.Volume;
-using System.Linq;
-using MediaManager.Player;
-using MediaManager.Notifications;
 
 namespace MediaManager
 {
@@ -264,7 +264,7 @@ namespace MediaManager
         public virtual async Task<bool> PlayQueueItem(int index)
         {
             var mediaItem = MediaQueue.ElementAtOrDefault(index);
-            if(mediaItem == null)
+            if (mediaItem == null)
                 return false;
 
             await MediaPlayer.Play(mediaItem);

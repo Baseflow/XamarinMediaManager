@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediaManager.Notifications;
+﻿using MediaManager.Notifications;
 using MediaPlayer;
 
 namespace MediaManager.Platforms.Apple.Notifications
@@ -12,7 +9,7 @@ namespace MediaManager.Platforms.Apple.Notifications
         {
             Enabled = true;
         }
-        
+
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
         protected MPRemoteCommandCenter CommandCenter = MPRemoteCommandCenter.Shared;
 
@@ -33,7 +30,7 @@ namespace MediaManager.Platforms.Apple.Notifications
             set
             {
                 base.ShowPlayPauseControls = value;
-                if(ShowPlayPauseControls)
+                if (ShowPlayPauseControls)
                 {
                     CommandCenter.TogglePlayPauseCommand.Enabled = true;
                     CommandCenter.TogglePlayPauseCommand.AddTarget(PlayPauseCommand);
@@ -66,7 +63,7 @@ namespace MediaManager.Platforms.Apple.Notifications
             set
             {
                 base.ShowNavigationControls = value;
-                if(ShowNavigationControls)
+                if (ShowNavigationControls)
                 {
                     CommandCenter.NextTrackCommand.Enabled = true;
                     CommandCenter.NextTrackCommand.AddTarget(NextCommand);

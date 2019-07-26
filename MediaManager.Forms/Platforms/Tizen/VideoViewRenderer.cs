@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediaManager.Forms.Platforms.Tizen;
-using MediaManager.Platforms.Tizen.Video;
-using Xamarin.Forms;
+﻿using MediaManager.Forms.Platforms.Tizen;
 using Xamarin.Forms.Platform.Tizen;
 
 [assembly: ExportRenderer(typeof(MediaManager.Forms.VideoView), typeof(VideoViewRenderer))]

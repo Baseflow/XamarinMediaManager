@@ -7,7 +7,6 @@ using CoreMedia;
 using Foundation;
 using MediaManager.Media;
 using MediaManager.Platforms.Apple.Playback;
-using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Video;
 
@@ -98,13 +97,13 @@ namespace MediaManager.Platforms.Apple.Player
         private void ReasonForWaitingToPlayChanged(NSObservedChange obj)
         {
             var reason = Player.ReasonForWaitingToPlay;
-            if(reason == null)
+            if (reason == null)
             {
             }
-            else if(reason == AVPlayer.WaitingToMinimizeStallsReason)
+            else if (reason == AVPlayer.WaitingToMinimizeStallsReason)
             {
             }
-            else if(reason == AVPlayer.WaitingWhileEvaluatingBufferingRateReason)
+            else if (reason == AVPlayer.WaitingWhileEvaluatingBufferingRateReason)
             {
             }
             else if (reason == AVPlayer.WaitingWithNoItemToPlayReason)
@@ -133,7 +132,7 @@ namespace MediaManager.Platforms.Apple.Player
 
         private void TimeControlStatusChanged(NSObservedChange obj)
         {
-            if(Player.Status != AVPlayerStatus.Unknown)
+            if (Player.Status != AVPlayerStatus.Unknown)
                 MediaManager.State = Player.TimeControlStatus.ToMediaPlayerState();
         }
 

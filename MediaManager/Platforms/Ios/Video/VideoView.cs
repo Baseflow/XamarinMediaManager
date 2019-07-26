@@ -19,7 +19,7 @@ namespace MediaManager.Platforms.Ios.Video
         {
             get
             {
-                if(_playerViewController == null)
+                if (_playerViewController == null)
                 {
                     PlayerViewController = new PlayerViewController();
                 }
@@ -104,7 +104,8 @@ namespace MediaManager.Platforms.Ios.Video
             }
         }
 
-        public bool ShowControls {
+        public bool ShowControls
+        {
             get => PlayerViewController.ShowsPlaybackControls;
             set => PlayerViewController.ShowsPlaybackControls = value;
         }

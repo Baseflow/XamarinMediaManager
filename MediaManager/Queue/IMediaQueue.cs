@@ -47,7 +47,7 @@ namespace MediaManager.Queue
         /// <summary>
         /// Get the current playing index the Queue
         /// </summary>
-        
+
         //TODO: Maybe rename to just Index
         int CurrentIndex { get; set; }
 

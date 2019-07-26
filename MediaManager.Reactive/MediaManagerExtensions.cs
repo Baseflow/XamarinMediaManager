@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediaManager.Reactive;
+﻿using MediaManager.Reactive;
 
 namespace MediaManager
 {
@@ -12,14 +9,14 @@ namespace MediaManager
         {
             get
             {
-                if(_reactive == null)
+                if (_reactive == null)
                     _reactive = new ReactiveExtensions();
                 return _reactive;
             }
         }
 
         //TODO: Find a nicer way to do this.
-        public static ReactiveExtensions Reactive (this IMediaManager mediaManager)
+        public static ReactiveExtensions Reactive(this IMediaManager mediaManager)
         {
             return reactive;
         }

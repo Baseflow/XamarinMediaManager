@@ -1,6 +1,4 @@
-﻿using AppKit;
-using AVFoundation;
-using MediaManager.Platforms.Apple.Media;
+﻿using AVFoundation;
 using MediaManager.Platforms.Apple.Player;
 using MediaManager.Platforms.Mac.Video;
 using MediaManager.Player;

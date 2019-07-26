@@ -8,10 +8,10 @@
             MediaManager.MediaQueue.CollectionChanged += (s, e) => RaiseCanExecuteChanged();
         }
 
-        protected override bool CanExecute() => 
+        protected override bool CanExecute() =>
             MediaManager.MediaQueue.CurrentIndex < MediaManager.MediaQueue.Count;
 
-        protected override void Execute() => 
+        protected override void Execute() =>
             MediaManager.PlayNext();
     }
 }

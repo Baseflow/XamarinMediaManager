@@ -1,5 +1,4 @@
-﻿using System;
-using Android.Content;
+﻿using Android.Content;
 using MediaManager.Forms;
 using MediaManager.Forms.Platforms.Android;
 using Xamarin.Forms;

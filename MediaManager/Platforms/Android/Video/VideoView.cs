@@ -2,7 +2,6 @@
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
-using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.UI;
 using MediaManager.Video;
 
@@ -78,14 +77,15 @@ namespace MediaManager.Platforms.Android.Video
             }
         }
 
-        public bool ShowControls {
+        public bool ShowControls
+        {
             get => UseController;
             set => UseController = value;
         }
 
         protected override void Dispose(bool disposing)
         {
-            if(MediaManager.MediaPlayer.VideoView == this)
+            if (MediaManager.MediaPlayer.VideoView == this)
                 MediaManager.MediaPlayer.VideoView = null;
 
             base.Dispose(disposing);

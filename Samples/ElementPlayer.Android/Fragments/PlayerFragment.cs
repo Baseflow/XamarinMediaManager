@@ -1,7 +1,6 @@
 ﻿using Android.OS;
 using Android.Views;
 using ElementPlayer.Core.ViewModels;
-using MediaManager;
 using MediaManager.Platforms.Android.Video;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 

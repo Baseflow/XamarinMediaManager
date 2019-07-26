@@ -1,5 +1,4 @@
-﻿using AppKit;
-using Foundation;
+﻿using Foundation;
 using MvvmCross.Forms.Platforms.Mac.Core;
 
 namespace ElementPlayer.Forms.Mac

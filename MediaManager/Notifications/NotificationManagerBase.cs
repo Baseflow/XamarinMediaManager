@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MediaManager.Notifications
+﻿namespace MediaManager.Notifications
 {
     public abstract class NotificationManagerBase : INotificationManager
     {

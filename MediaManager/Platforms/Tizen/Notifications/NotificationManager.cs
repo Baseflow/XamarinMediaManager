@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediaManager.Notifications;
+﻿using MediaManager.Notifications;
 
 namespace MediaManager.Platforms.Tizen.Notifications
 {
@@ -13,7 +10,7 @@ namespace MediaManager.Platforms.Tizen.Notifications
 
         public override void UpdateNotification()
         {
-            
+
         }
     }
 }

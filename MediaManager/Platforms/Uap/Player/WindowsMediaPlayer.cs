@@ -2,15 +2,10 @@
 using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Platforms.Uap.Media;
-using MediaManager.Platforms.Uap.Player;
 using MediaManager.Platforms.Uap.Video;
-using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Video;
-using Windows.Media.Core;
 using Windows.Media.Playback;
-using Windows.Storage;
-using Windows.UI.Xaml.Controls;
 using MediaPlayerState = MediaManager.Player.MediaPlayerState;
 
 namespace MediaManager.Platforms.Uap.Player
@@ -65,7 +60,7 @@ namespace MediaManager.Platforms.Uap.Player
         {
             get
             {
-                if(_mediaPlaybackList == null)
+                if (_mediaPlaybackList == null)
                     _mediaPlaybackList = new MediaPlaybackList();
                 return _mediaPlaybackList;
             }

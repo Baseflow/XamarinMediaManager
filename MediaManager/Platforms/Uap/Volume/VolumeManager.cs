@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediaManager.Volume;
+﻿using MediaManager.Volume;
 
 namespace MediaManager.Platforms.Uap.Volume
 {

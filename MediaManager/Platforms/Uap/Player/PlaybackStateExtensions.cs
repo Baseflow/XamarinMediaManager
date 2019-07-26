@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediaManager.Playback;
-using Windows.Media.Playback;
+﻿using Windows.Media.Playback;
 using MediaPlayerState = MediaManager.Player.MediaPlayerState;
 
 namespace MediaManager.Platforms.Uap.Player

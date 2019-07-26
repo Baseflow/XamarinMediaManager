@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
@@ -9,10 +8,8 @@ using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using MediaManager.Media;
 using MediaManager.Notifications;
-using MediaManager.Platforms.Android;
 using MediaManager.Platforms.Android.Media;
 using MediaManager.Platforms.Android.MediaSession;
-using MediaManager.Platforms.Android.Playback;
 using MediaManager.Platforms.Android.Player;
 using MediaManager.Platforms.Android.Volume;
 using MediaManager.Playback;
@@ -101,7 +98,7 @@ namespace MediaManager
             set
             {
                 //On Android we need to update the headers on the player instead of per item.
-                if(SetProperty(ref _requestHeaders, value))
+                if (SetProperty(ref _requestHeaders, value))
                     AndroidMediaPlayer.UpdateRequestHeaders();
             }
         }

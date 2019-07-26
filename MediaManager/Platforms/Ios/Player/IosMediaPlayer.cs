@@ -1,13 +1,10 @@
 ﻿using System;
 using AVFoundation;
-using AVKit;
 using Foundation;
-using MediaManager.Platforms.Apple.Media;
 using MediaManager.Platforms.Apple.Player;
 using MediaManager.Platforms.Ios.Video;
 using MediaManager.Player;
 using MediaManager.Video;
-using MediaPlayer;
 using UIKit;
 
 namespace MediaManager.Platforms.Ios.Player
@@ -45,7 +42,8 @@ namespace MediaManager.Platforms.Ios.Player
             {
             }
 
-            InvokeOnMainThread(() => {
+            InvokeOnMainThread(() =>
+            {
                 UIApplication.SharedApplication.BeginReceivingRemoteControlEvents();
             });
         }

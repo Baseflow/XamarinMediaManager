@@ -1,6 +1,4 @@
-﻿using System;
-using Foundation;
-using MediaManager.Forms.Platforms.iOS;
+﻿using MediaManager.Forms.Platforms.iOS;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;

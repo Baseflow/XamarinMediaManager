@@ -1,9 +1,7 @@
 ﻿
 using System;
 using AVFoundation;
-using AVKit;
 using Foundation;
-using MediaManager.Platforms.Apple.Media;
 using MediaManager.Platforms.Apple.Player;
 using MediaManager.Platforms.Tvos.Video;
 using MediaManager.Player;

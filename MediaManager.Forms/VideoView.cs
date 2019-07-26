@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Player;
@@ -26,7 +25,7 @@ namespace MediaManager.Forms
 
         private void MediaManager_MediaItemChanged(object sender, MediaItemEventArgs e)
         {
-            if(Source != e.MediaItem)
+            if (Source != e.MediaItem)
                 Source = e.MediaItem;
         }
 
@@ -197,7 +196,7 @@ namespace MediaManager.Forms
 
         private static void OnShowControlsPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            if(PlayerView != null)
+            if (PlayerView != null)
                 PlayerView.ShowControls = (bool)newValue;
         }
 

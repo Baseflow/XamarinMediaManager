@@ -1,5 +1,4 @@
-﻿using MediaManager.Playback;
-using MediaManager.Player;
+﻿using MediaManager.Player;
 
 namespace MediaManager.Forms.Xaml
 {
@@ -16,7 +15,7 @@ namespace MediaManager.Forms.Xaml
                 MediaManager.State == MediaPlayerState.Stopped;
         }
 
-        protected override void Execute() => 
+        protected override void Execute() =>
             MediaManager.Play();
     }
 }
