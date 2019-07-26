@@ -24,7 +24,7 @@ namespace MediaManager.Platforms.Tizen.Media
 
         protected virtual void SetMetadata(IMediaItem mediaItem, MetadataExtractor extractor)
         {
-            Metadata metadata = extractor.GetMetadata();
+            var metadata = extractor.GetMetadata();
             mediaItem.Title = metadata.Title;
             mediaItem.Artist = metadata.Artist;
             mediaItem.Album = metadata.Album;

@@ -3,7 +3,6 @@ using System.Linq;
 using Android.Graphics;
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
-using Com.Google.Android.Exoplayer2.Metadata;
 using Com.Google.Android.Exoplayer2.Metadata.Id3;
 using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
@@ -33,24 +32,24 @@ namespace MediaManager.Platforms.Android.Player
 
         public void OnTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections)
         {
-            for (int i = 0; i < trackGroups.Length; i++)
+            for (var i = 0; i < trackGroups.Length; i++)
             {
-                TrackGroup trackGroup = trackGroups.Get(i);
-                for (int j = 0; j < trackGroup.Length; j++)
+                var trackGroup = trackGroups.Get(i);
+                for (var j = 0; j < trackGroup.Length; j++)
                 {
-                    Metadata trackMetadata = trackGroup.GetFormat(j).Metadata;
+                    var trackMetadata = trackGroup.GetFormat(j).Metadata;
 
                     if (trackMetadata != null)
                     {
-                        for (int v = 0; v < trackMetadata.Length(); v++)
+                        for (var v = 0; v < trackMetadata.Length(); v++)
                         {
-                            Metadata.IEntry entry = trackMetadata.Get(v);
+                            var entry = trackMetadata.Get(v);
 
                             switch (entry)
                             {
                                 case ApicFrame apicFrame:
-                                    byte[] bitmapData = apicFrame.PictureData.ToArray();
-                                    Bitmap bitmap = BitmapFactory.DecodeByteArray(bitmapData, 0, bitmapData.Length);
+                                    var bitmapData = apicFrame.PictureData.ToArray();
+                                    var bitmap = BitmapFactory.DecodeByteArray(bitmapData, 0, bitmapData.Length);
                                     var test1 = apicFrame.MimeType;
                                     break;
                                 case BinaryFrame binaryFrame:

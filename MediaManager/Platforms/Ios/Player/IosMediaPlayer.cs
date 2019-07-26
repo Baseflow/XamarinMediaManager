@@ -1,6 +1,5 @@
 ﻿using System;
 using AVFoundation;
-using Foundation;
 using MediaManager.Platforms.Apple.Player;
 using MediaManager.Platforms.Ios.Video;
 using MediaManager.Player;
@@ -34,7 +33,7 @@ namespace MediaManager.Platforms.Ios.Player
             try
             {
                 audioSession.SetCategory(AVAudioSession.CategoryPlayback);
-                audioSession.SetActive(true, out NSError activationError);
+                audioSession.SetActive(true, out var activationError);
                 if (activationError != null)
                     Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
             }

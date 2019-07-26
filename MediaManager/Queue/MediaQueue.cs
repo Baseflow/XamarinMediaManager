@@ -121,7 +121,7 @@ namespace MediaManager.Queue
 
         private void CreateShuffledIndexes()
         {
-            Random rand = new Random();
+            var rand = new Random();
             var ints = Enumerable.Range(CurrentIndex + 1, Count - 1)
                 .Select(i => new Tuple<int, int>(rand.Next(Count), i))
                 .OrderBy(i => i.Item1)

@@ -57,7 +57,7 @@ namespace MediaManager.Platforms.Android.Media
                 mediaItem.Author = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Author);
 
             var trackNumber = mediaMetadataRetriever.ExtractMetadata(MetadataKey.CdTrackNumber);
-            if (!string.IsNullOrEmpty(trackNumber) && int.TryParse(trackNumber, out int trackNumberResult))
+            if (!string.IsNullOrEmpty(trackNumber) && int.TryParse(trackNumber, out var trackNumberResult))
                 mediaItem.TrackNumber = trackNumberResult;
 
             if (string.IsNullOrEmpty(mediaItem.Compilation))
@@ -70,18 +70,18 @@ namespace MediaManager.Platforms.Android.Media
                 mediaItem.Date = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Date);
 
             var discNumber = mediaMetadataRetriever.ExtractMetadata(MetadataKey.DiscNumber);
-            if (!string.IsNullOrEmpty(discNumber) && int.TryParse(discNumber, out int discNumberResult))
+            if (!string.IsNullOrEmpty(discNumber) && int.TryParse(discNumber, out var discNumberResult))
                 mediaItem.DiscNumber = discNumberResult;
 
             var duration = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Duration);
-            if (!string.IsNullOrEmpty(duration) && int.TryParse(duration, out int durationResult))
+            if (!string.IsNullOrEmpty(duration) && int.TryParse(duration, out var durationResult))
                 mediaItem.Duration = TimeSpan.FromMilliseconds(durationResult);
 
             if (string.IsNullOrEmpty(mediaItem.Genre))
                 mediaItem.Genre = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Genre);
 
             var numTracks = mediaMetadataRetriever.ExtractMetadata(MetadataKey.NumTracks);
-            if (!string.IsNullOrEmpty(numTracks) && int.TryParse(numTracks, out int numTracksResult))
+            if (!string.IsNullOrEmpty(numTracks) && int.TryParse(numTracks, out var numTracksResult))
                 mediaItem.NumTracks = numTracksResult;
 
             if (string.IsNullOrEmpty(mediaItem.Title))
@@ -91,7 +91,7 @@ namespace MediaManager.Platforms.Android.Media
                 mediaItem.Writer = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Writer);
 
             var year = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Year);
-            if (!string.IsNullOrEmpty(year) && int.TryParse(year, out int yearResult))
+            if (!string.IsNullOrEmpty(year) && int.TryParse(year, out var yearResult))
                 mediaItem.Year = yearResult;
 
             byte[] imageByteArray = null;
@@ -126,7 +126,7 @@ namespace MediaManager.Platforms.Android.Media
 
         protected virtual Bitmap GetTrackCover(IMediaItem currentTrack)
         {
-            string albumFolder = GetCurrentSongFolder(currentTrack);
+            var albumFolder = GetCurrentSongFolder(currentTrack);
             if (albumFolder == null)
                 return null;
 
@@ -135,7 +135,7 @@ namespace MediaManager.Platforms.Android.Media
                 albumFolder += "/";
             }
 
-            System.Uri baseUri = new System.Uri(albumFolder);
+            var baseUri = new System.Uri(albumFolder);
             var albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Folder.jpg");
             if (albumArtPath == null)
             {
@@ -148,14 +148,14 @@ namespace MediaManager.Platforms.Android.Media
                 }
             }
 
-            Bitmap bitmap = BitmapFactory.DecodeFile(albumArtPath);
+            var bitmap = BitmapFactory.DecodeFile(albumArtPath);
             return bitmap ?? BitmapFactory.DecodeResource(Resources, MediaManager.NotificationIconResource);
         }
 
         protected virtual string TryGetAlbumArtPathByFilename(System.Uri baseUri, string filename)
         {
-            System.Uri testUri = new System.Uri(baseUri, filename);
-            string testPath = testUri.LocalPath;
+            var testUri = new System.Uri(baseUri, filename);
+            var testPath = testUri.LocalPath;
             if (System.IO.File.Exists(testPath))
                 return testPath;
             else

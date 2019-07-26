@@ -104,7 +104,7 @@ namespace MediaManager.Platforms.Android.Player
 
         protected virtual void Initialize()
         {
-            if (RequestHeaders?.Count > 0 && RequestHeaders.TryGetValue("User-Agent", out string userAgent))
+            if (RequestHeaders?.Count > 0 && RequestHeaders.TryGetValue("User-Agent", out var userAgent))
                 UserAgent = userAgent;
             else
                 UserAgent = Util.GetUserAgent(Context, Context.PackageName);

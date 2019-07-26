@@ -17,10 +17,10 @@ namespace MediaManager.Platforms.Apple.Player
 
             if (mediaItem.MediaLocation == MediaLocation.Embedded)
             {
-                string directory = Path.GetDirectoryName(mediaItem.MediaUri);
-                string filename = Path.GetFileNameWithoutExtension(mediaItem.MediaUri);
-                string extension = Path.GetExtension(mediaItem.MediaUri).Substring(1);
-                NSUrl url = NSBundle.MainBundle.GetUrlForResource(filename, extension, directory);
+                var directory = Path.GetDirectoryName(mediaItem.MediaUri);
+                var filename = Path.GetFileNameWithoutExtension(mediaItem.MediaUri);
+                var extension = Path.GetExtension(mediaItem.MediaUri).Substring(1);
+                var url = NSBundle.MainBundle.GetUrlForResource(filename, extension, directory);
                 asset = AVAsset.FromUrl(url);
             }
             else if (mediaItem.MediaLocation == MediaLocation.FileSystem)

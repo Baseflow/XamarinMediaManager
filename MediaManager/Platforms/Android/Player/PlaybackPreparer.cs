@@ -60,7 +60,7 @@ namespace MediaManager.Platforms.Android.Player
         public void OnPrepareFromMediaId(string mediaId, Bundle p1)
         {
             _mediaSource.Clear();
-            int windowIndex = 0;
+            var windowIndex = 0;
             foreach (var mediaItem in MediaManager.MediaQueue)
             {
                 if (mediaItem.MediaId == mediaId)
@@ -85,7 +85,7 @@ namespace MediaManager.Platforms.Android.Player
         public void OnPrepareFromUri(global::Android.Net.Uri mediaUri, Bundle p1)
         {
             _mediaSource.Clear();
-            int windowIndex = 0;
+            var windowIndex = 0;
             foreach (var mediaItem in MediaManager.MediaQueue)
             {
                 var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
