@@ -25,8 +25,16 @@ namespace MediaManager.Forms
 
         private void MediaManager_MediaItemChanged(object sender, MediaItemEventArgs e)
         {
-            if (Source != e.MediaItem)
-                Source = e.MediaItem;
+            if (Source is string url)
+            {
+                if (url != e.MediaItem.MediaUri)
+                    Source = e.MediaItem.MediaUri;
+            }
+            else if (Source is IMediaItem)
+            {
+                if (Source != e.MediaItem)
+                    Source = e.MediaItem;
+            }
         }
 
         private void MediaManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
