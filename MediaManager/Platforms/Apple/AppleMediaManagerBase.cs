@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using AVFoundation;
 using MediaManager.Media;
 using MediaManager.Platforms.Apple;
 using MediaManager.Platforms.Apple.Media;
 using MediaManager.Platforms.Apple.Notifications;
-using MediaManager.Platforms.Apple.Playback;
 using MediaManager.Playback;
 using MediaManager.Queue;
 using MediaManager.Volume;
@@ -117,84 +112,6 @@ namespace MediaManager
             }
         }
 
-        public override Task Pause()
-        {
-            return MediaPlayer.Pause();
-        }
-
-        public override async Task Play(IMediaItem mediaItem)
-        {
-            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
-
-            await MediaPlayer.Play(mediaItemToPlay);
-        }
-
-        public override async Task<IMediaItem> Play(string uri)
-        {
-            var mediaItem = await MediaExtractor.CreateMediaItem(uri);
-            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
-
-            await MediaPlayer.Play(mediaItemToPlay);
-            return mediaItem;
-        }
-
-        public override async Task Play(IEnumerable<IMediaItem> items)
-        {
-            var mediaItemToPlay = await AddMediaItemsToQueue(items, true);
-
-            await MediaPlayer.Play(mediaItemToPlay);
-        }
-
-        public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
-        {
-            var mediaItems = new List<IMediaItem>();
-            foreach (var uri in items)
-            {
-                mediaItems.Add(await MediaExtractor.CreateMediaItem(uri));
-            }
-
-            var mediaItemToPlay = await AddMediaItemsToQueue(mediaItems, true);
-            await MediaPlayer.Play(mediaItemToPlay);
-            return MediaQueue;
-        }
-
-        public override async Task<IMediaItem> Play(FileInfo file)
-        {
-            var mediaItem = await MediaExtractor.CreateMediaItem(file.FullName);
-            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
-
-            await MediaPlayer.Play(mediaItemToPlay);
-            return mediaItem;
-        }
-
-        public override async Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
-        {
-            var mediaItems = new List<IMediaItem>();
-            foreach (var file in directoryInfo.GetFiles())
-            {
-                var mediaItem = await MediaExtractor.CreateMediaItem(file);
-                mediaItems.Add(mediaItem);
-            }
-            var mediaItemToPlay = await AddMediaItemsToQueue(mediaItems, true);
-            await MediaPlayer.Play(mediaItemToPlay);
-            return MediaQueue;
-        }
-
-        public override Task Play()
-        {
-            return MediaPlayer.Play();
-        }
-
-        public override Task SeekTo(TimeSpan position)
-        {
-            return MediaPlayer.SeekTo(position);
-        }
-
-        public override Task Stop()
-        {
-            return MediaPlayer.Stop();
-        }
-
         private AVPlayerLooper _looper;
         public override RepeatMode RepeatMode
         {
@@ -217,18 +134,6 @@ namespace MediaManager
                         break;
                 }
                 //MediaPlayer.RepeatMode = value;
-            }
-        }
-
-        public override ShuffleMode ShuffleMode
-        {
-            get
-            {
-                return MediaQueue.ShuffleMode;
-            }
-            set
-            {
-                MediaQueue.ShuffleMode = value;
             }
         }
     }

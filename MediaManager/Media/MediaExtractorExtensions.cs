@@ -11,7 +11,7 @@ namespace MediaManager.Media
             if (mediaItem.IsMetadataExtracted)
                 return mediaItem;
 
-            return mediaItem = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem(mediaItem);
+            return mediaItem = await CrossMediaManager.Current.MediaExtractor.UpdateMediaItem(mediaItem).ConfigureAwait(false);
         }
 
         public static async Task<IMediaItem[]> FetchMetaData(this IMediaQueue mediaQueue)

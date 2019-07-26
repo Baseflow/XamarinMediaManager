@@ -39,7 +39,7 @@ namespace MediaManager
         /// <summary>
         /// Plays a media item
         /// </summary>
-        Task Play(IMediaItem mediaItem);
+        Task<IMediaItem> Play(IMediaItem mediaItem);
 
         /// <summary>
         /// Plays an uri that can be both remote or local
@@ -53,7 +53,7 @@ namespace MediaManager
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        Task Play(IEnumerable<IMediaItem> items);
+        Task<IMediaItem> Play(IEnumerable<IMediaItem> items);
 
         /// <summary>
         /// Plays a list of uri's

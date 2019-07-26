@@ -13,7 +13,7 @@ namespace MediaManager.Media
         public virtual Task<IMediaItem> CreateMediaItem(string url)
         {
             var mediaItem = new MediaItem(url);
-            return CreateMediaItem(mediaItem);
+            return UpdateMediaItem(mediaItem);
         }
 
         public virtual Task<IMediaItem> CreateMediaItem(FileInfo file)
@@ -21,10 +21,15 @@ namespace MediaManager.Media
             return CreateMediaItem(file.FullName);
         }
 
-        public virtual async Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem)
+        public virtual async Task<IMediaItem> UpdateMediaItem(IMediaItem mediaItem)
         {
-            mediaItem.MediaLocation = GetMediaLocation(mediaItem);
-            return await ExtractMetadata(mediaItem).ConfigureAwait(false);
+            if (!mediaItem.IsMetadataExtracted)
+            {
+                mediaItem.MediaLocation = GetMediaLocation(mediaItem);
+                mediaItem = await ExtractMetadata(mediaItem).ConfigureAwait(false);
+            }
+
+            return mediaItem;
         }
 
         public abstract Task<object> RetrieveMediaItemArt(IMediaItem mediaItem);
@@ -39,7 +44,9 @@ namespace MediaManager.Media
 
         public IList<string> FilePrefixes { get; } = new List<string>() {
             "file",
-            "/"
+            "/",
+            "ms-appx",
+            "android.resource"
         };
 
         public virtual MediaLocation GetMediaLocation(IMediaItem mediaItem)

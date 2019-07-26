@@ -13,7 +13,9 @@ namespace MediaManager.Media
 
         Task<IMediaItem> CreateMediaItem(FileInfo file);
 
-        Task<IMediaItem> CreateMediaItem(IMediaItem mediaItem);
+        Task<IMediaItem> UpdateMediaItem(IMediaItem mediaItem);
+
+        Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem);
 
         Task<object> RetrieveMediaItemArt(IMediaItem mediaItem);
 

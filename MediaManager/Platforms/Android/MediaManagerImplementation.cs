@@ -206,10 +206,15 @@ namespace MediaManager
             }
         }
 
+        public override async Task PlayAsCurrent(IMediaItem mediaItem)
+        {
+            await EnsureInit();
+            MediaController.GetTransportControls().Prepare();
+        }
+
         public override async Task Pause()
         {
             await EnsureInit();
-
             MediaController.GetTransportControls().Pause();
         }
 
@@ -221,82 +226,6 @@ namespace MediaManager
                 MediaController.GetTransportControls().Prepare();
 
             MediaController.GetTransportControls().Play();
-        }
-
-        public override async Task<IMediaItem> Play(string uri)
-        {
-            await EnsureInit();
-
-            var mediaItem = await MediaExtractor.CreateMediaItem(uri);
-            await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
-
-            MediaController.GetTransportControls().Prepare();
-            return mediaItem;
-        }
-
-        public override async Task Play(IMediaItem mediaItem)
-        {
-            await EnsureInit();
-            await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
-
-            MediaController.GetTransportControls().Prepare();
-            return;
-        }
-
-        public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
-        {
-            await EnsureInit();
-
-            var mediaItems = new List<IMediaItem>();
-            foreach (var uri in items)
-            {
-                mediaItems.Add(await MediaExtractor.CreateMediaItem(uri));
-            }
-
-            await AddMediaItemsToQueue(mediaItems, true);
-
-            await MediaQueue.FirstOrDefault()?.FetchMetaData();
-            MediaController.GetTransportControls().Prepare();
-            return MediaQueue;
-        }
-
-        public override async Task Play(IEnumerable<IMediaItem> items)
-        {
-            await EnsureInit();
-
-            await AddMediaItemsToQueue(items, true);
-
-            MediaController.GetTransportControls().Prepare();
-            return;
-        }
-
-        public override async Task<IMediaItem> Play(FileInfo file)
-        {
-            await EnsureInit();
-
-            var mediaItem = await MediaExtractor.CreateMediaItem(file);
-            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
-
-            MediaController.GetTransportControls().Prepare();
-            return mediaItem;
-        }
-
-        public override async Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
-        {
-            await EnsureInit();
-
-            var mediaItems = new List<IMediaItem>();
-            foreach (var file in directoryInfo.GetFiles())
-            {
-                var mediaItem = await MediaExtractor.CreateMediaItem(file);
-                mediaItems.Add(mediaItem);
-            }
-
-            await AddMediaItemsToQueue(mediaItems, true);
-
-            await MediaQueue.FirstOrDefault()?.FetchMetaData();
-            MediaController.GetTransportControls().Prepare();
-            return MediaQueue;
         }
 
         public override async Task<bool> PlayNext()
@@ -350,10 +279,21 @@ namespace MediaManager
             return true;
         }
 
-        public override async Task SeekTo(TimeSpan position)
+        public override async Task<bool> PlayQueueItem(int index)
         {
             await EnsureInit();
 
+            var mediaItem = MediaQueue.ElementAtOrDefault(index);
+            if (mediaItem == null)
+                return false;
+
+            MediaController.GetTransportControls().SkipToQueueItem(index);
+            return true;
+        }
+
+        public override async Task SeekTo(TimeSpan position)
+        {
+            await EnsureInit();
             MediaController.GetTransportControls().SeekTo((long)position.TotalMilliseconds);
         }
 

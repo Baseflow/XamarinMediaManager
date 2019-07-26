@@ -72,92 +72,15 @@ namespace MediaManager
             set => SetProperty(ref _notificationManager, value);
         }
 
-        public override Task Pause()
-        {
-            return MediaPlayer.Pause();
-        }
-
-        public override async Task Play(IMediaItem mediaItem)
-        {
-            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
-
-            await MediaPlayer.Play(mediaItemToPlay);
-        }
-
-        public override async Task<IMediaItem> Play(string uri)
-        {
-            var mediaItem = await MediaExtractor.CreateMediaItem(uri);
-            var mediaItemToPlay = await AddMediaItemsToQueue(new List<IMediaItem> { mediaItem }, true);
-
-            await MediaPlayer.Play(mediaItemToPlay);
-            return mediaItem;
-        }
-
-        public override async Task Play(IEnumerable<IMediaItem> items)
-        {
-            var mediaItemToPlay = await AddMediaItemsToQueue(items, true);
-
-            await MediaPlayer.Play(mediaItemToPlay);
-        }
-
-        public override async Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items)
-        {
-            var mediaItems = new List<IMediaItem>();
-            foreach (var uri in items)
-            {
-                mediaItems.Add(await MediaExtractor.CreateMediaItem(uri));
-            }
-
-            var mediaItemToPlay = await AddMediaItemsToQueue(mediaItems, true);
-            await MediaPlayer.Play(mediaItemToPlay);
-            return MediaQueue;
-        }
-
-        public override async Task<IMediaItem> Play(FileInfo file)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task Play()
-        {
-            return MediaPlayer.Play();
-        }
-
-        public override Task SeekTo(TimeSpan position)
-        {
-            return MediaPlayer.SeekTo(position);
-        }
-
-        public override Task Stop()
-        {
-            return MediaPlayer.Stop();
-        }
-        public override RepeatMode RepeatMode
-        {
-            get; set;
-        }
-
-        public override ShuffleMode ShuffleMode
-        {
-            get
-            {
-                return MediaQueue.ShuffleMode;
-            }
-            set
-            {
-                MediaQueue.ShuffleMode = value;
-            }
-        }
-
         public override TimeSpan Position => TimeSpan.FromMilliseconds(Player.GetPlayPosition());
 
         public override TimeSpan Duration => TimeSpan.Zero;
 
         public override float Speed { get; set; }
+
+        public override RepeatMode RepeatMode
+        {
+            get; set;
+        }
     }
 }

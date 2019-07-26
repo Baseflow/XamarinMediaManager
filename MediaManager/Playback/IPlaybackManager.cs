@@ -49,6 +49,8 @@ namespace MediaManager.Playback
 
         ShuffleMode ShuffleMode { get; set; }
 
+        bool ClearQueueOnPlay { get; set; }
+
         /// <summary>
         /// Plays the current MediaItem
         /// </summary>
