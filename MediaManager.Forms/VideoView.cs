@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Player;
@@ -21,24 +22,20 @@ namespace MediaManager.Forms
             MediaManager.MediaItemChanged += MediaManager_MediaItemChanged;
 
             MediaManager.PropertyChanged += MediaManager_PropertyChanged;
+
+            MediaManager.MediaQueue.QueueChanged += MediaQueue_QueueChanged;
+        }
+
+        private void MediaQueue_QueueChanged(object sender, QueueChangedEventArgs e)
+        {
+            //var queue = MediaManager.MediaQueue.ToList();
+            //if (Source != queue)
+            //    Source = queue;
         }
 
         private void MediaManager_MediaItemChanged(object sender, MediaItemEventArgs e)
         {
-            if (Source is string url)
-            {
-                if (url != e.MediaItem.MediaUri)
-                {
-                    Source = e.MediaItem.MediaUri;
-                }
-            }
-            else if (Source is IMediaItem)
-            {
-                if (Source != e.MediaItem)
-                {
-                    Source = e.MediaItem;
-                }
-            }
+            Current = e.MediaItem;
         }
 
         private void MediaManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -92,6 +89,9 @@ namespace MediaManager.Forms
 
         public static readonly BindableProperty SourceProperty =
             BindableProperty.Create(nameof(Source), typeof(object), typeof(VideoView), propertyChanged: OnSourcePropertyChanged);
+
+        public static readonly BindableProperty CurrentProperty =
+            BindableProperty.Create(nameof(Current), typeof(IMediaItem), typeof(VideoView));
 
         public static readonly BindableProperty RepeatProperty =
             BindableProperty.Create(nameof(Repeat), typeof(RepeatMode), typeof(VideoView), RepeatMode.Off, propertyChanged: OnRepeatPropertyChanged, defaultValueCreator: x => MediaManager.RepeatMode);
@@ -162,10 +162,13 @@ namespace MediaManager.Forms
         public TimeSpan Position
         {
             get { return (TimeSpan)GetValue(PositionProperty); }
-            internal set
-            {
-                SetValue(PositionProperty, value);
-            }
+            internal set { SetValue(PositionProperty, value); }
+        }
+
+        public IMediaItem Current
+        {
+            get { return (IMediaItem)GetValue(CurrentProperty); }
+            internal set { SetValue(CurrentProperty, value); }
         }
 
         public object Source
@@ -198,9 +201,10 @@ namespace MediaManager.Forms
 
         private static async void OnSourcePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            //Prevent loop with MediaManager_MediaItemChanged
-            if (MediaManager.MediaQueue.Current == newValue)
-                return;
+            //Prevent loop with MediaQueue_QueueChanged
+            //var queue = MediaManager.MediaQueue.ToList();
+            //if (queue == newValue)
+            //    return;
 
             //TODO: Check for AutoPlay
             await CrossMediaManager.Current.Play(newValue);
@@ -236,6 +240,8 @@ namespace MediaManager.Forms
             MediaManager.MediaItemChanged -= MediaManager_MediaItemChanged;
 
             MediaManager.PropertyChanged -= MediaManager_PropertyChanged;
+
+            MediaManager.MediaQueue.QueueChanged -= MediaQueue_QueueChanged;
         }
     }
 }
