@@ -206,7 +206,6 @@ namespace MediaManager.Forms
             //if (queue == newValue)
             //    return;
 
-            //TODO: Check for AutoPlay
             await CrossMediaManager.Current.Play(newValue);
         }
 
