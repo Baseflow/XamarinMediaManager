@@ -72,18 +72,19 @@ namespace MediaManager
             set => SetProperty(ref _notificationManager, value);
         }
 
-        public override TimeSpan Position => WpfMediaPlayer?.Player?.Position ?? TimeSpan.Zero;
+        public override TimeSpan Position => Player?.Position ?? TimeSpan.Zero;
 
-        public override TimeSpan Duration => WpfMediaPlayer?.Player?.NaturalDuration.TimeSpan ?? TimeSpan.Zero;
+        public override TimeSpan Duration => Player?.NaturalDuration.TimeSpan ?? TimeSpan.Zero;
 
         public override float Speed
         {
             get
             {
-                return 0.0f;
+                return (float)Player.SpeedRatio;
             }
             set
             {
+                Player.SpeedRatio = value;
             }
         }
 

@@ -83,7 +83,7 @@ namespace MediaManager
             {
                 if (WindowsMediaPlayer?.Player?.PlaybackSession?.PlaybackRate == null)
                     return 0.0f;
-                return ((float)WindowsMediaPlayer.Player.PlaybackSession.PlaybackRate);
+                return (float)WindowsMediaPlayer.Player.PlaybackSession.PlaybackRate;
             }
             set
             {
