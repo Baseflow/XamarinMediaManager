@@ -4,6 +4,8 @@ namespace MediaManager.Platforms.Wpf.Volume
 {
     public class VolumeManager : IVolumeManager
     {
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Wpf;
+
         public int CurrentVolume { get; set; }
         public int MaxVolume { get; set; }
         public bool Muted { get; set; }
