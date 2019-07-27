@@ -22,7 +22,6 @@ namespace MediaManager.Playback
         /// </summary>
         TimeSpan StepSize { get; set; }
 
-
         /// <summary>
         /// Reading the current status of the player
         /// </summary>
@@ -44,13 +43,25 @@ namespace MediaManager.Playback
         /// </summary>
         TimeSpan Buffered { get; }
 
+        /// <summary>
+        /// The playback speed. Can be used to make the media play slower or faster
+        /// </summary>
         float Speed { get; set; }
 
         RepeatMode RepeatMode { get; set; }
 
         ShuffleMode ShuffleMode { get; set; }
 
+        /// <summary>
+        /// Indicates if the Queue should be cleared when calling Play(object);
+        /// </summary>
         bool ClearQueueOnPlay { get; set; }
+
+        /// <summary>
+        /// Indicates if the Player should start playing after calling Play(object);
+        /// Otherwise you need to call Play(); manually
+        /// </summary>
+        bool AutoPlay { get; set; }
 
         /// <summary>
         /// Plays the current MediaItem

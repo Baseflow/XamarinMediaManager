@@ -18,8 +18,8 @@ namespace ElementPlayer.Forms.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            TabLayoutResource = Resource.Layout.Tabbar;
-            ToolbarResource = Resource.Layout.Toolbar;
+            TabLayoutResource = Droid.Resource.Layout.Tabbar;
+            ToolbarResource = Droid.Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
 

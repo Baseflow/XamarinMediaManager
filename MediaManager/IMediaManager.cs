@@ -62,7 +62,7 @@ namespace MediaManager
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        Task<IEnumerable<IMediaItem>> Play(IEnumerable<string> items);
+        Task<IMediaItem> Play(IEnumerable<string> items);
 
         /// <summary>
         /// Plays a file from the local file system
@@ -76,6 +76,6 @@ namespace MediaManager
         /// </summary>
         /// <param name="directoryInfo"></param>
         /// <returns></returns>
-        Task<IEnumerable<IMediaItem>> Play(DirectoryInfo directoryInfo);
+        Task<IMediaItem> Play(DirectoryInfo directoryInfo);
     }
 }
