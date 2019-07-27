@@ -48,6 +48,8 @@ namespace MediaManager.Platforms.Android.Volume
             }
         }
 
+        public float Balance { get; set; }
+
         public event VolumeChangedEventHandler VolumeChanged;
     }
 }

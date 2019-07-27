@@ -8,6 +8,8 @@ namespace MediaManager.Platforms.Wpf.Volume
         public int MaxVolume { get; set; }
         public bool Muted { get; set; }
 
+        public float Balance { get; set; }
+
         public event VolumeChangedEventHandler VolumeChanged;
     }
 }

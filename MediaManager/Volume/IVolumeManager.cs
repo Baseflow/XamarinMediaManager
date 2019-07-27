@@ -21,6 +21,11 @@
         int MaxVolume { get; set; }
 
         /// <summary>
+        /// -1.0f (Left), 0.0f (Center), 1.0f (right)
+        /// </summary>
+        float Balance { get; set; }
+
+        /// <summary>
         /// True if the sound is Muted
         /// </summary>
         bool Muted { get; set; }

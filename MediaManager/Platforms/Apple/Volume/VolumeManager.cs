@@ -47,6 +47,8 @@ namespace MediaManager.Platforms.Apple.Volume
 
         public event VolumeChangedEventHandler VolumeChanged;
 
+        public float Balance { get; set; }
+
         public bool Muted
         {
             get => Player?.Muted ?? false;
