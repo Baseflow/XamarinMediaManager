@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace MediaManager.Media
@@ -14,6 +17,37 @@ namespace MediaManager.Media
             return UpdateMediaItem(mediaItem);
         }
 
+        public virtual async Task<IMediaItem> CreateMediaItem(string resourceName, Assembly assembly)
+        {
+            string path = null;
+            var resourceNames = assembly.GetManifestResourceNames();
+
+            var resourcePaths = resourceNames
+                .Where(x => x.EndsWith(resourceName, StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+
+            using (var stream = assembly.GetManifestResourceStream(resourcePaths.Single()))
+            {
+                if (stream != null)
+                {
+                    var tempDirectory = Path.Combine(Path.GetTempPath(), "EmbeddedResources");
+                    path = Path.Combine(tempDirectory, resourceName);
+
+                    if (!Directory.Exists(tempDirectory))
+                        Directory.CreateDirectory(tempDirectory);
+
+                    using (var tempFile = File.Create(path))
+                    {
+                        await stream.CopyToAsync(tempFile).ConfigureAwait(false);
+                    }
+                }
+            }
+
+            var mediaItem = new MediaItem(path);
+            mediaItem.MediaLocation = MediaLocation.Embedded;
+            return await UpdateMediaItem(mediaItem);
+        }
+
         public virtual Task<IMediaItem> CreateMediaItem(FileInfo file)
         {
             return CreateMediaItem(file.FullName);
@@ -23,7 +57,11 @@ namespace MediaManager.Media
         {
             if (!mediaItem.IsMetadataExtracted)
             {
-                mediaItem.MediaLocation = GetMediaLocation(mediaItem);
+                if (mediaItem.MediaLocation == MediaLocation.Unknown)
+                {
+                    mediaItem.MediaLocation = GetMediaLocation(mediaItem);
+                }
+
                 mediaItem = await ExtractMetadata(mediaItem).ConfigureAwait(false);
             }
 

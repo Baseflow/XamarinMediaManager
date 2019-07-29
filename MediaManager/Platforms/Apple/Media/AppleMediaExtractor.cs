@@ -56,7 +56,7 @@ namespace MediaManager.Platforms.Apple.Media
 
         public static NSUrl GetUrlFor(IMediaItem mediaItem)
         {
-            var isLocallyAvailable = mediaItem.MediaLocation == MediaLocation.FileSystem;
+            var isLocallyAvailable = (mediaItem.MediaLocation == MediaLocation.FileSystem) || (mediaItem.MediaLocation == MediaLocation.Embedded);
 
             var url = isLocallyAvailable ? new NSUrl(mediaItem.MediaUri, false) : new NSUrl(mediaItem.MediaUri);
 
