@@ -67,10 +67,10 @@ namespace MediaManager.Forms
         }
 
         public static readonly BindableProperty VideoAspectProperty =
-            BindableProperty.Create(nameof(VideoAspect), typeof(VideoAspectMode), typeof(VideoView), VideoAspectMode.AspectFit, propertyChanged: OnVideoAspectPropertyChanged);
+            BindableProperty.Create(nameof(VideoAspect), typeof(VideoAspectMode), typeof(VideoView), VideoAspectMode.AspectFit, propertyChanged: OnVideoAspectPropertyChanged, defaultValueCreator: x => MediaManager.MediaPlayer.VideoAspect);
 
         public static readonly BindableProperty AutoPlayProperty =
-            BindableProperty.Create(nameof(AutoPlay), typeof(bool), typeof(VideoView), true);
+            BindableProperty.Create(nameof(AutoPlay), typeof(bool), typeof(VideoView), true, defaultValueCreator: x => MediaManager.AutoPlay);
 
         public static readonly BindableProperty BufferedProperty =
             BindableProperty.Create(nameof(Buffered), typeof(TimeSpan), typeof(VideoView), TimeSpan.Zero, defaultValueCreator: x => MediaManager.Buffered);
@@ -85,7 +85,7 @@ namespace MediaManager.Forms
             BindableProperty.Create(nameof(Position), typeof(TimeSpan), typeof(VideoView), TimeSpan.Zero, defaultValueCreator: x => MediaManager.Position);
 
         public static readonly BindableProperty ShowControlsProperty =
-            BindableProperty.Create(nameof(ShowControls), typeof(bool), typeof(VideoView), false, propertyChanged: OnShowControlsPropertyChanged);
+            BindableProperty.Create(nameof(ShowControls), typeof(bool), typeof(VideoView), false, propertyChanged: OnShowControlsPropertyChanged, defaultValueCreator: x => MediaManager.MediaPlayer.ShowPlaybackControls);
 
         public static readonly BindableProperty SourceProperty =
             BindableProperty.Create(nameof(Source), typeof(object), typeof(VideoView), propertyChanged: OnSourcePropertyChanged);
@@ -100,10 +100,10 @@ namespace MediaManager.Forms
             BindableProperty.Create(nameof(Shuffle), typeof(ShuffleMode), typeof(VideoView), ShuffleMode.Off, propertyChanged: OnShufflePropertyChanged, defaultValueCreator: x => MediaManager.ShuffleMode);
 
         public static readonly BindableProperty VideoHeightProperty =
-            BindableProperty.Create(nameof(VideoHeight), typeof(int), typeof(VideoView));
+            BindableProperty.Create(nameof(VideoHeight), typeof(int), typeof(VideoView), defaultValueCreator: x => MediaManager.MediaPlayer.VideoHeight);
 
         public static readonly BindableProperty VideoWidthProperty =
-            BindableProperty.Create(nameof(VideoWidth), typeof(int), typeof(VideoView));
+            BindableProperty.Create(nameof(VideoWidth), typeof(int), typeof(VideoView), defaultValueCreator: x => MediaManager.MediaPlayer.VideoWidth);
 
         public static readonly BindableProperty VolumeProperty =
             BindableProperty.Create(nameof(Volume), typeof(int), typeof(VideoView), 1, defaultValueCreator: x => MediaManager.VolumeManager.CurrentVolume);

@@ -91,6 +91,7 @@ namespace MediaManager
         public abstract TimeSpan Duration { get; }
         public abstract float Speed { get; set; }
         public abstract RepeatMode RepeatMode { get; set; }
+        public abstract bool KeepScreenOn { get; set; }
 
         public virtual ShuffleMode ShuffleMode
         {

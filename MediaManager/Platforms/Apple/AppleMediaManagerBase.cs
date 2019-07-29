@@ -14,6 +14,10 @@ namespace MediaManager
 {
     public abstract class AppleMediaManagerBase<TMediaPlayer> : MediaManagerBase, IMediaManager<AVQueuePlayer> where TMediaPlayer : AppleMediaPlayer, IMediaPlayer<AVQueuePlayer>, new()
     {
+        public AppleMediaManagerBase()
+        {
+        }
+
         private IMediaPlayer _mediaPlayer;
         public override IMediaPlayer MediaPlayer
         {

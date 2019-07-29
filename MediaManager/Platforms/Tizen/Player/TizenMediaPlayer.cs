@@ -18,6 +18,12 @@ namespace MediaManager.Platforms.Tizen.Player
         {
         }
 
+        public VideoAspectMode VideoAspect { get; set; }
+        public bool ShowPlaybackControls { get; set; } = true;
+
+        public int VideoHeight => 0;
+        public int VideoWidth => 0;
+
         private TizenPlayer _player;
         public TizenPlayer Player
         {

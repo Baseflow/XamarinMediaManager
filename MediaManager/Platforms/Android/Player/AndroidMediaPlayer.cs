@@ -39,6 +39,12 @@ namespace MediaManager.Platforms.Android.Player
 
         public bool AutoAttachVideoView { get; set; } = true;
 
+        public VideoAspectMode VideoAspect { get; set; }
+        public bool ShowPlaybackControls { get; set; } = true;
+
+        public int VideoHeight => 0;
+        public int VideoWidth => 0;
+
         protected Context Context => MediaManager.Context;
 
         protected string UserAgent { get; set; }

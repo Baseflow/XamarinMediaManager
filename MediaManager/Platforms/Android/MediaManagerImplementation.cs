@@ -329,5 +329,18 @@ namespace MediaManager
                 MediaController?.GetTransportControls()?.SetShuffleMode((int)value);
             }
         }
+
+        public override bool KeepScreenOn
+        {
+            get
+            {
+                return AndroidMediaPlayer?.PlayerView?.KeepScreenOn ?? false;
+            }
+            set
+            {
+                if(AndroidMediaPlayer.PlayerView != null)
+                    AndroidMediaPlayer.PlayerView.KeepScreenOn = value;
+            }
+        }
     }
 }

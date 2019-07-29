@@ -29,6 +29,14 @@ namespace MediaManager.Player
 
         bool AutoAttachVideoView { get; set; }
 
+        VideoAspectMode VideoAspect { get; set; }
+
+        bool ShowPlaybackControls { get; set; }
+
+        int VideoHeight { get; }
+
+        int VideoWidth { get; }
+
         /// <summary>
         /// Adds MediaItem to the Queue and starts playing
         /// </summary>

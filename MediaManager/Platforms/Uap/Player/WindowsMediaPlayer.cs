@@ -20,6 +20,12 @@ namespace MediaManager.Platforms.Uap.Player
 
         public bool AutoAttachVideoView { get; set; } = true;
 
+        public VideoAspectMode VideoAspect { get; set; }
+        public bool ShowPlaybackControls { get; set; } = true;
+
+        public int VideoHeight => 0;
+        public int VideoWidth => 0;
+
         public VideoView PlayerView => VideoView as VideoView;
 
         private IVideoView _videoView;

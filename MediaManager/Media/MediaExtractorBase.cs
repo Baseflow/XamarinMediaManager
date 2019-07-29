@@ -44,6 +44,7 @@ namespace MediaManager.Media
             "file",
             "/",
             "ms-appx",
+            "ms-appdata",
             "android.resource"
         };
 

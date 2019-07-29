@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows.Controls;
 using MediaManager.Media;
 using MediaManager.Notifications;
@@ -89,5 +90,53 @@ namespace MediaManager
         }
 
         public override RepeatMode RepeatMode { get; set; }
+
+        protected bool _keepScreenOn;
+        public override bool KeepScreenOn
+        {
+            get
+            {
+                return _keepScreenOn;
+            }
+            set
+            {
+                if (SetProperty(ref _keepScreenOn, value))
+                {
+                    if (value)
+                        DisplayRequestActive();
+                    else
+                        DisplayRequestRelease();
+                }
+            }
+        }
+
+        private void DisplayRequestActive()
+        {
+            NativeMethods.SetThreadExecutionState(NativeMethods.EXECUTION_STATE.DISPLAY_REQUIRED | NativeMethods.EXECUTION_STATE.CONTINUOUS);
+        }
+
+        private void DisplayRequestRelease()
+        {
+            NativeMethods.SetThreadExecutionState(NativeMethods.EXECUTION_STATE.CONTINUOUS);
+        }
+
+        static class NativeMethods
+        {
+            [DllImport("Kernel32", SetLastError = true)]
+            internal static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE esFlags);
+
+            internal enum EXECUTION_STATE : uint
+            {
+                /// <summary>
+                /// Informs the system that the state being set should remain in effect until the next call that uses ES_CONTINUOUS and one of the other state flags is cleared.
+                /// </summary>
+                CONTINUOUS = 0x80000000,
+
+                /// <summary>
+                /// Forces the display to be on by resetting the display idle timer.
+                /// </summary>
+                DISPLAY_REQUIRED = 0x00000002,
+            }
+        }
     }
 }

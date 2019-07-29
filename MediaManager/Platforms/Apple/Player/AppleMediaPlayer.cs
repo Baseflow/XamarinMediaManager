@@ -22,6 +22,12 @@ namespace MediaManager.Platforms.Apple.Player
 
         public bool AutoAttachVideoView { get; set; } = true;
 
+        public VideoAspectMode VideoAspect { get; set; }
+        public bool ShowPlaybackControls { get; set; } = true;
+
+        public int VideoHeight => 0;
+        public int VideoWidth => 0;
+
         public abstract IVideoView VideoView { get; set; }
 
         private AVQueuePlayer _player;

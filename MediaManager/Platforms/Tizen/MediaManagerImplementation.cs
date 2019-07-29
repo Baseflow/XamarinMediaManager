@@ -78,7 +78,14 @@ namespace MediaManager
 
         public override RepeatMode RepeatMode
         {
-            get; set;
+            get;
+            set;
+        }
+
+        public override bool KeepScreenOn
+        {
+            get;
+            set;
         }
     }
 }

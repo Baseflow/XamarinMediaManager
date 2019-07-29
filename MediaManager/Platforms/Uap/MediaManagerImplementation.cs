@@ -9,6 +9,7 @@ using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Volume;
 using Windows.Media.Playback;
+using Windows.System.Display;
 
 namespace MediaManager
 {
@@ -112,6 +113,26 @@ namespace MediaManager
                     case RepeatMode.All:
                         Player.IsLoopingEnabled = true;
                         break;
+                }
+            }
+        }
+
+        protected DisplayRequest _displayRequest = new DisplayRequest();
+        protected bool _keepScreenOn;
+        public override bool KeepScreenOn
+        {
+            get
+            {
+                return _keepScreenOn;
+            }
+            set
+            {
+                if(SetProperty(ref _keepScreenOn, value))
+                {
+                    if (value)
+                        _displayRequest.RequestActive();
+                    else
+                        _displayRequest.RequestRelease();
                 }
             }
         }
