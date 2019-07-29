@@ -34,7 +34,9 @@ namespace MediaManager.Media
                     path = Path.Combine(tempDirectory, resourceName);
 
                     if (!Directory.Exists(tempDirectory))
+                    {
                         Directory.CreateDirectory(tempDirectory);
+                    }
 
                     using (var tempFile = File.Create(path))
                     {
@@ -45,7 +47,7 @@ namespace MediaManager.Media
 
             var mediaItem = new MediaItem(path);
             mediaItem.MediaLocation = MediaLocation.Embedded;
-            return await UpdateMediaItem(mediaItem);
+            return await UpdateMediaItem(mediaItem).ConfigureAwait(false);
         }
 
         public virtual Task<IMediaItem> CreateMediaItem(FileInfo file)
