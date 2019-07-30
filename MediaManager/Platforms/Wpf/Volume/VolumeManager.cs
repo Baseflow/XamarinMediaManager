@@ -8,7 +8,10 @@ namespace MediaManager.Platforms.Wpf.Volume
 
         public int CurrentVolume { get; set; }
         public int MaxVolume { get; set; }
-        public bool Muted { get; set; }
+        public bool Muted {
+            get => MediaManager.Player.IsMuted;
+            set => MediaManager.Player.IsMuted = value;
+        }
 
         public float Balance { get; set; }
 
