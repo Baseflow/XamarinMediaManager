@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Notifications;
@@ -49,6 +50,14 @@ namespace MediaManager
         /// <param name="uri"></param>
         /// <returns></returns>
         Task<IMediaItem> Play(string uri);
+
+        /// <summary>
+        /// Plays an embeded resource
+        /// </summary>
+        /// <param name="resourceName"></param>
+        /// <param name="assembly"></param>
+        /// <returns></returns>
+        Task<IMediaItem> Play(string resourceName, Assembly assembly);
 
         /// <summary>
         /// Plays a list of media items

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Timers;
@@ -138,6 +139,15 @@ namespace MediaManager
         public virtual async Task<IMediaItem> Play(string uri)
         {
             var mediaItem = await MediaExtractor.CreateMediaItem(uri).ConfigureAwait(false);
+            var mediaItemToPlay = await PrepareQueueForPlayback(mediaItem);
+
+            await PlayAsCurrent(mediaItemToPlay);
+            return mediaItem;
+        }
+
+        public virtual async Task<IMediaItem> Play(string resourceName, Assembly assembly)
+        {
+            var mediaItem = await MediaExtractor.CreateMediaItem(resourceName, assembly).ConfigureAwait(false);
             var mediaItemToPlay = await PrepareQueueForPlayback(mediaItem);
 
             await PlayAsCurrent(mediaItemToPlay);

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace MediaManager.Media
@@ -10,6 +11,8 @@ namespace MediaManager.Media
         IList<string> FilePrefixes { get; }
 
         Task<IMediaItem> CreateMediaItem(string url);
+
+        Task<IMediaItem> CreateMediaItem(string resourceName, Assembly assembly);
 
         Task<IMediaItem> CreateMediaItem(FileInfo file);
 
