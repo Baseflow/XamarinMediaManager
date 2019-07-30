@@ -19,12 +19,19 @@ namespace MediaManager.Media
 
         public virtual async Task<IMediaItem> CreateMediaItem(string resourceName, Assembly assembly)
         {
+            if (assembly == null)
+            {
+                if (!TryFindAssembly(resourceName, out assembly)) { return null; }
+            }
+
             string path = null;
             var resourceNames = assembly.GetManifestResourceNames();
 
             var resourcePaths = resourceNames
                 .Where(x => x.EndsWith(resourceName, StringComparison.OrdinalIgnoreCase))
                 .ToArray();
+
+            if (resourcePaths.Length<1) { return null; }
 
             using (var stream = assembly.GetManifestResourceStream(resourcePaths.Single()))
             {
@@ -113,6 +120,24 @@ namespace MediaManager.Media
             }
 
             return MediaLocation.Unknown;
+        }
+
+        private bool TryFindAssembly(string resourceName, out Assembly assembly)
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (Assembly item in assemblies)
+            {
+                var isResourceNameInAssembly = item.GetManifestResourceNames()
+                    .Any(x => x.EndsWith(resourceName, StringComparison.OrdinalIgnoreCase));
+                if (isResourceNameInAssembly)
+                {
+                    assembly = item;
+                    return true;
+                }
+            }
+
+            assembly = null;
+            return false;
         }
     }
 }
