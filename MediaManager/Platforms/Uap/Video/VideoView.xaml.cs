@@ -3,9 +3,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace MediaManager.Platforms.Uap.Video
 {
-    public partial class VideoView : UserControl, IVideoView
+    public sealed partial class VideoView : UserControl, IVideoView
     {
-        protected MediaManagerImplementation MediaManager => CrossMediaManager.Windows;
+        private MediaManagerImplementation MediaManager => CrossMediaManager.Windows;
 
         private MediaPlayerElement _playerView;
         public MediaPlayerElement PlayerView
@@ -32,7 +32,7 @@ namespace MediaManager.Platforms.Uap.Video
             InitView();
         }
 
-        public virtual void InitView()
+        public void InitView()
         {
             if (MediaManager.MediaPlayer.AutoAttachVideoView)
                 MediaManager.MediaPlayer.VideoView = this;
