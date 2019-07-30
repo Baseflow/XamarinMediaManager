@@ -21,7 +21,8 @@ namespace MediaManager.Media
         {
             if (assembly == null)
             {
-                if (!TryFindAssembly(resourceName, out assembly)) { return null; }
+                if (!TryFindAssembly(resourceName, out assembly))
+                    return null;
             }
 
             string path = null;
@@ -31,7 +32,8 @@ namespace MediaManager.Media
                 .Where(x => x.EndsWith(resourceName, StringComparison.OrdinalIgnoreCase))
                 .ToArray();
 
-            if (resourcePaths.Length<1) { return null; }
+            if (resourcePaths.Length < 1)
+                return null;
 
             using (var stream = assembly.GetManifestResourceStream(resourcePaths.Single()))
             {
@@ -122,7 +124,7 @@ namespace MediaManager.Media
             return MediaLocation.Unknown;
         }
 
-        private bool TryFindAssembly(string resourceName, out Assembly assembly)
+        protected virtual bool TryFindAssembly(string resourceName, out Assembly assembly)
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (Assembly item in assemblies)
