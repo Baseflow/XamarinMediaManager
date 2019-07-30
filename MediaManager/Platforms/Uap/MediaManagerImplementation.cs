@@ -117,7 +117,7 @@ namespace MediaManager
             }
         }
 
-        protected DisplayRequest _displayRequest = new DisplayRequest();
+        protected DisplayRequest _displayRequest;
         protected bool _keepScreenOn;
         public override bool KeepScreenOn
         {
@@ -129,6 +129,9 @@ namespace MediaManager
             {
                 if(SetProperty(ref _keepScreenOn, value))
                 {
+                    if (_displayRequest == null)
+                        _displayRequest = new DisplayRequest();
+
                     if (value)
                         _displayRequest.RequestActive();
                     else
