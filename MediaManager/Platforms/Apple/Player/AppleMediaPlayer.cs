@@ -155,9 +155,7 @@ namespace MediaManager.Platforms.Apple.Player
 
             //TODO: Android has its own queue and goes to next. Maybe use native apple queue
             var succesfullNext = await MediaManager.PlayNext();
-            if (succesfullNext)
-                MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
-            else
+            if (!succesfullNext)
                 await Stop();
         }
 
@@ -175,6 +173,7 @@ namespace MediaManager.Platforms.Apple.Player
 
             Player.ActionAtItemEnd = AVPlayerActionAtItemEnd.None;
             Player.ReplaceCurrentItemWithPlayerItem(item);
+            MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(mediaItem));
             await Play();
 
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
