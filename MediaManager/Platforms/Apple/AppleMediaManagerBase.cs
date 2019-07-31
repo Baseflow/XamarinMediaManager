@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AVFoundation;
 using MediaManager.Media;
 using MediaManager.Notifications;
@@ -16,6 +17,17 @@ namespace MediaManager
     {
         public AppleMediaManagerBase()
         {
+        }
+
+        public override async Task<bool> PlayNext()
+        {
+            var result = await base.PlayNext();
+            if (result) 
+            {
+                OnMediaItemChanged(this, new MediaItemEventArgs(MediaQueue.Current));
+            }
+
+            return result;
         }
 
         private IMediaPlayer _mediaPlayer;
