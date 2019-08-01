@@ -280,7 +280,7 @@ namespace MediaManager.Platforms.Android.Player
 
         public Task SeekTo(TimeSpan position)
         {
-            Player.SeekTo(position.Milliseconds);
+            Player.SeekTo((long)position.TotalMilliseconds);
             return Task.CompletedTask;
         }
 
