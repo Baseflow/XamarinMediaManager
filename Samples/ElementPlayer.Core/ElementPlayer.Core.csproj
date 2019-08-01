@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -16,9 +16,11 @@
     <PackageReference Include="MvvmCross" Version="6.3.1" />
     <PackageReference Include="MvvmCross.Plugin.Json" Version="6.3.1" />
     <PackageReference Include="MvvmCross.Plugin.Visibility" Version="6.3.1" />
+    <PackageReference Include="Xamarin.Forms" Version="4.1.0.581479" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\MediaManager.Forms\MediaManager.Forms.csproj" />
     <ProjectReference Include="..\..\MediaManager.Reactive\MediaManager.Reactive.csproj" />
     <ProjectReference Include="..\..\MediaManager\MediaManager.csproj" />
   </ItemGroup>
