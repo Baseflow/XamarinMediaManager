@@ -72,13 +72,13 @@ namespace MediaManager.Platforms.Apple.Media
             return null;
         }
 
-        public override object GetFrame(IMediaItem mediaItem, TimeSpan time)
+        public override Task<object> GetFrame(IMediaItem mediaItem, TimeSpan time)
         {
             var url = GetUrlFor(mediaItem);
             var imageGenerator = new AVAssetImageGenerator(AVAsset.FromUrl(url));
             imageGenerator.AppliesPreferredTrackTransform = true;
             var cgImage = imageGenerator.CopyCGImageAtTime(new CMTime((long)time.TotalMilliseconds, 1000000), out var actualTime, out var error);
-            return cgImage;
+            return Task.FromResult(cgImage as object);
         }
     }
 }

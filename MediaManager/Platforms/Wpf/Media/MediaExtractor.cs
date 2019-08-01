@@ -11,9 +11,9 @@ namespace MediaManager.Platforms.Wpf.Media
             return Task.FromResult(mediaItem);
         }
 
-        public override object GetFrame(IMediaItem mediaItem, TimeSpan time)
+        public override Task<object> GetFrame(IMediaItem mediaItem, TimeSpan time)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)

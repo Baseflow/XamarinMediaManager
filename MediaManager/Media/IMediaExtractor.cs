@@ -25,6 +25,6 @@ namespace MediaManager.Media
 
         MediaLocation GetMediaLocation(IMediaItem mediaItem);
 
-        object GetFrame(IMediaItem mediaItem, TimeSpan time);
+        Task<object> GetFrame(IMediaItem mediaItem, TimeSpan time);
     }
 }

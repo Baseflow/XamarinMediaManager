@@ -176,12 +176,33 @@ namespace MediaManager.Platforms.Android.Media
             return null;
         }
 
-        public override object GetFrame(IMediaItem mediaItem, TimeSpan time)
+        public override async Task<object> GetFrame(IMediaItem mediaItem, TimeSpan time)
         {
-            var retriever = new MediaMetadataRetriever();
-            retriever.SetDataSource(mediaItem.MediaUri, RequestHeaders);
-            var bitmap = retriever.GetFrameAtTime((long)time.TotalMilliseconds);
-            return bitmap;
+            try
+            {
+
+                var metaRetriever = new MediaMetadataRetriever();
+
+                switch (mediaItem.MediaLocation)
+                {
+                    case MediaLocation.Embedded:
+                    case MediaLocation.FileSystem:
+                        await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri);
+                        break;
+                    default:
+                        await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
+                        break;
+                }
+                var bitmap = metaRetriever.GetFrameAtTime((long)time.TotalMilliseconds);
+
+                metaRetriever.Release();
+                return bitmap;
+            }
+            catch
+            {
+
+            }
+            return null;
         }
     }
 }
