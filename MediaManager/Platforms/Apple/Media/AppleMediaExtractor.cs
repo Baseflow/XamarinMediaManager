@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AVFoundation;
+using CoreGraphics;
+using CoreMedia;
 using Foundation;
 using MediaManager.Media;
 #if __IOS__ || __TVOS__
@@ -51,6 +54,7 @@ namespace MediaManager.Platforms.Apple.Media
                 }
             }
 
+            
             return mediaItem;
         }
 
@@ -66,6 +70,15 @@ namespace MediaManager.Platforms.Apple.Media
         public override Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
         {
             return null;
+        }
+
+        public override object GetFrame(IMediaItem mediaItem, TimeSpan time)
+        {
+            var url = GetUrlFor(mediaItem);
+            var imageGenerator = new AVAssetImageGenerator(AVAsset.FromUrl(url));
+            imageGenerator.AppliesPreferredTrackTransform = true;
+            var cgImage = imageGenerator.CopyCGImageAtTime(new CMTime((long)time.TotalMilliseconds, 1000000), out var actualTime, out var error);
+            return cgImage;
         }
     }
 }

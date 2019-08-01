@@ -72,5 +72,10 @@ namespace MediaManager.Platforms.Uap.Media
         {
             return null;
         }
+
+        public override object GetFrame(IMediaItem mediaItem, TimeSpan time)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

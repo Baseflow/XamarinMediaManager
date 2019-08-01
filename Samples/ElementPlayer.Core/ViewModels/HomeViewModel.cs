@@ -70,7 +70,9 @@ namespace ElementPlayer.Core.ViewModels
 
             await this.NavigationService.Navigate<PlayerViewModel>();
 
-            await MediaManager.Play(mediaItem);
+            var item = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://file-examples.com/wp-content/uploads/2018/04/file_example_MOV_480_700kB.mov");
+            var image = CrossMediaManager.Current.MediaExtractor.GetFrame(item, new System.TimeSpan(0,0,2));
+            //await MediaManager.Play(mediaItem);
             //await MediaManager.Play(Mp3UrlList);
 
             /*foreach (var item in Items.Except<string>(new[] { url }))

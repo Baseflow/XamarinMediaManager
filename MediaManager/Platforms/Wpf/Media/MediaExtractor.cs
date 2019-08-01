@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MediaManager.Media;
 
 namespace MediaManager.Platforms.Wpf.Media
@@ -8,6 +9,11 @@ namespace MediaManager.Platforms.Wpf.Media
         public override Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem)
         {
             return Task.FromResult(mediaItem);
+        }
+
+        public override object GetFrame(IMediaItem mediaItem, TimeSpan time)
+        {
+            throw new NotImplementedException();
         }
 
         public override Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)

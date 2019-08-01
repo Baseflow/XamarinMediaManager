@@ -141,5 +141,7 @@ namespace MediaManager.Media
             assembly = null;
             return false;
         }
+
+        public abstract object GetFrame(IMediaItem mediaItem, TimeSpan time);
     }
 }
