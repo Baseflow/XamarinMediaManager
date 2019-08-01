@@ -13,5 +13,10 @@ namespace MediaManager.Forms.Platforms.Ios
         {
             return ImageSource.FromStream(() => new UIImage(cgImage).AsPNG().AsStream());
         }
+
+        public static ImageSource ToImageSource(this UIImage uIImage)
+        {
+            return ImageSource.FromStream(() => uIImage.AsPNG().AsStream());
+        }
     }
 }
