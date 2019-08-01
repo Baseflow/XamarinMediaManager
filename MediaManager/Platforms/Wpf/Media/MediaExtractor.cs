@@ -11,7 +11,7 @@ namespace MediaManager.Platforms.Wpf.Media
             return Task.FromResult(mediaItem);
         }
 
-        public override Task<object> GetFrame(IMediaItem mediaItem, TimeSpan time)
+        public override Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
         {
             return null;
         }

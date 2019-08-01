@@ -142,6 +142,6 @@ namespace MediaManager.Media
             return false;
         }
 
-        public abstract Task<object> GetFrame(IMediaItem mediaItem, TimeSpan time);
+        public abstract Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart);
     }
 }

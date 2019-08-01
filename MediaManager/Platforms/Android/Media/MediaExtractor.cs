@@ -176,7 +176,7 @@ namespace MediaManager.Platforms.Android.Media
             return null;
         }
 
-        public override async Task<object> GetFrame(IMediaItem mediaItem, TimeSpan time)
+        public override async Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
         {
             try
             {
@@ -193,7 +193,7 @@ namespace MediaManager.Platforms.Android.Media
                         await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
                         break;
                 }
-                var bitmap = metaRetriever.GetFrameAtTime((long)time.TotalMilliseconds);
+                var bitmap = metaRetriever.GetFrameAtTime((long)timeFromStart.TotalMilliseconds);
 
                 metaRetriever.Release();
                 return bitmap;
