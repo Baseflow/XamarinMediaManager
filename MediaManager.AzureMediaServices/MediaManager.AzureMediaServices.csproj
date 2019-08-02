@@ -112,4 +112,8 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('monoandroid')) ">
     <Reference Include="netstandard" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\MediaManager\MediaManager.csproj" />
+  </ItemGroup>
 </Project>

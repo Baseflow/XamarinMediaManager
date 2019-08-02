@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Content.Res;
 using Android.Graphics;
@@ -35,7 +36,7 @@ namespace MediaManager.Platforms.Android.Media
 
                 return await ExtractMediaInfo(metaRetriever, mediaItem).ConfigureAwait(false);
             }
-            catch
+            catch (Exception ex)
             {
 
             }
@@ -172,6 +173,35 @@ namespace MediaManager.Platforms.Android.Media
 
         public override Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
         {
+            return null;
+        }
+
+        public override async Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
+        {
+            try
+            {
+
+                var metaRetriever = new MediaMetadataRetriever();
+
+                switch (mediaItem.MediaLocation)
+                {
+                    case MediaLocation.Embedded:
+                    case MediaLocation.FileSystem:
+                        await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri);
+                        break;
+                    default:
+                        await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
+                        break;
+                }
+                var bitmap = metaRetriever.GetFrameAtTime((long)timeFromStart.TotalMilliseconds);
+
+                metaRetriever.Release();
+                return bitmap;
+            }
+            catch
+            {
+
+            }
             return null;
         }
     }

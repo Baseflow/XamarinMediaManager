@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Threading.Tasks;
 using MediaManager;
+using MediaManager.Forms;
 using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Player;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
+using Xamarin.Forms;
 
 namespace ElementPlayer.Core.ViewModels
 {
@@ -41,6 +44,19 @@ namespace ElementPlayer.Core.ViewModels
         public IMvxCommand StepBackwardCommand { get; }
 
         public IMediaItem Current => MediaManager.MediaQueue.Current;
+
+        private ImageSource _image;
+        public ImageSource Image {
+            get => _image;
+            set => SetProperty(ref _image, value);
+        }
+
+        public override async Task Initialize()
+        {
+            var item = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://file-examples.com/wp-content/uploads/2018/04/file_example_MOV_480_700kB.mov");
+            var image = await MediaManager.MediaExtractor.GetVideoFrame(item, TimeSpan.FromSeconds(5));
+            Image = image.ToImageSource();
+        }
 
         public string CurrentTitle => Current.GetTitle();
         public string CurrentSubtitle => Current.GetContentTitle();

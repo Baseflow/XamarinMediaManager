@@ -1,5 +1,5 @@
 ---------------------------------
-MediaManager for Xamarin.Forms
+MediaManager for Azure Media Services
 ---------------------------------
 
 

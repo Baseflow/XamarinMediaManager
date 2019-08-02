@@ -17,6 +17,11 @@ namespace MediaManager.Platforms.Tizen.Media
             return Task.FromResult(mediaItem);
         }
 
+        public override Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
+        {
+            return null;
+        }
+
         public override Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
         {
             return null;

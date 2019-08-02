@@ -1,9 +1,13 @@
-﻿using MediaManager.Media;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using MediaManager.Media;
 
 namespace MediaManager.Library
 {
     public interface IMediaLibrary
     {
-        IMediaList Items { get; set; }
+        Task<IEnumerable<IMediaItem>> GetItems();
+        Task<IMediaItem> GetItem(string mediaId);
+        Task<IMediaItem> SaveItem(IMediaItem mediaItem);
     }
 }

@@ -71,6 +71,7 @@ namespace MediaManager.Platforms.Wpf.Player
 
         private void Player_MediaFailed(object sender, System.Windows.ExceptionRoutedEventArgs e)
         {
+            MediaManager.State = MediaPlayerState.Failed;
             MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, e.ErrorException, e.ErrorException.Message));
         }
 
@@ -81,11 +82,13 @@ namespace MediaManager.Platforms.Wpf.Player
 
         private void Player_BufferingStarted(object sender, EventArgs e)
         {
+            MediaManager.State = MediaPlayerState.Buffering;
             MediaManager.Buffered = TimeSpan.FromMilliseconds(Player.BufferingProgress);
         }
 
         private void Player_MediaOpened(object sender, EventArgs e)
         {
+            MediaManager.State = MediaPlayerState.Playing;
         }
 
         private void Player_MediaEnded(object sender, EventArgs e)
@@ -96,6 +99,7 @@ namespace MediaManager.Platforms.Wpf.Player
         public Task Pause()
         {
             Player.Pause();
+            MediaManager.State = MediaPlayerState.Paused;
             return Task.CompletedTask;
         }
 
@@ -109,6 +113,7 @@ namespace MediaManager.Platforms.Wpf.Player
             }
             catch (Exception ex)
             {
+                MediaManager.State = MediaPlayerState.Failed;
                 MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, ex, ex.Message));
             }
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
@@ -117,6 +122,7 @@ namespace MediaManager.Platforms.Wpf.Player
         public Task Play()
         {
             Player.Play();
+            MediaManager.State = MediaPlayerState.Playing;
             return Task.CompletedTask;
         }
 
@@ -129,6 +135,7 @@ namespace MediaManager.Platforms.Wpf.Player
         public Task Stop()
         {
             Player.Pause();
+            MediaManager.State = MediaPlayerState.Stopped;
             return Task.CompletedTask;
         }
 

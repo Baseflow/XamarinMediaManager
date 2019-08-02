@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MediaManager.Media;
+using Windows.Media.Editing;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace MediaManager.Platforms.Uap.Media
@@ -71,6 +73,31 @@ namespace MediaManager.Platforms.Uap.Media
         public override Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
         {
             return null;
+        }
+
+        public override async Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
+        {
+            if (mediaItem.MediaLocation == MediaLocation.FileSystem)
+            {
+                var file = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
+                var thumbnail = await GetThumbnailAsync(file, timeFromStart);
+
+                BitmapImage bitmapImage = new BitmapImage();
+                InMemoryRandomAccessStream randomAccessStream = new InMemoryRandomAccessStream();
+                await RandomAccessStream.CopyAsync(thumbnail, randomAccessStream);
+                randomAccessStream.Seek(0);
+                bitmapImage.SetSource(randomAccessStream);
+                return bitmapImage;
+            }
+            return null;
+        }
+
+        public async Task<IInputStream> GetThumbnailAsync(StorageFile file, TimeSpan timeFromStart)
+        {
+            var mediaClip = await MediaClip.CreateFromFileAsync(file);
+            var mediaComposition = new MediaComposition();
+            mediaComposition.Clips.Add(mediaClip);
+            return await mediaComposition.GetThumbnailAsync(timeFromStart, 0, 0, VideoFramePrecision.NearestFrame);
         }
     }
 }

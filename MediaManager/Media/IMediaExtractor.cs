@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -23,5 +24,7 @@ namespace MediaManager.Media
         Task<object> RetrieveMediaItemArt(IMediaItem mediaItem);
 
         MediaLocation GetMediaLocation(IMediaItem mediaItem);
+
+        Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart);
     }
 }
