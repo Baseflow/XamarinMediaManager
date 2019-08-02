@@ -6,6 +6,14 @@ namespace MediaManager.Platforms.Ios.Video
     {
         protected static MediaManagerImplementation MediaManager => CrossMediaManager.Apple;
 
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+
+            if (MediaManager.MediaPlayer.AutoAttachVideoView)
+                MediaManager.MediaPlayer.VideoView = View.Superview as VideoView;
+        }
+
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
