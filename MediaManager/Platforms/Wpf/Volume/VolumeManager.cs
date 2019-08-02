@@ -2,19 +2,21 @@
 
 namespace MediaManager.Platforms.Wpf.Volume
 {
-    public class VolumeManager : IVolumeManager
+    public class VolumeManager : VolumeManagerBase, IVolumeManager
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Wpf;
 
-        public int CurrentVolume { get; set; }
-        public int MaxVolume { get; set; }
-        public bool Muted {
+        public override int CurrentVolume { get; set; }
+
+        public override int MaxVolume { get; set; }
+
+        public override bool Muted {
             get => MediaManager.Player.IsMuted;
             set => MediaManager.Player.IsMuted = value;
         }
 
-        public float Balance { get; set; }
+        public override float Balance { get; set; }
 
-        public event VolumeChangedEventHandler VolumeChanged;
+        public override event VolumeChangedEventHandler VolumeChanged;
     }
 }

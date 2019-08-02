@@ -1,8 +1,10 @@
-﻿namespace MediaManager.Volume
+﻿using System.ComponentModel;
+
+namespace MediaManager.Volume
 {
     public delegate void VolumeChangedEventHandler(object sender, VolumeChangedEventArgs e);
 
-    public interface IVolumeManager
+    public interface IVolumeManager : INotifyPropertyChanged
     {
         /// <summary>
         /// Raised when the volume changes

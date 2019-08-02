@@ -3,7 +3,7 @@ using MediaManager.Volume;
 
 namespace MediaManager.Platforms.Android.Volume
 {
-    public class VolumeManager : IVolumeManager //VolumeProviderCompat.Callback
+    public class VolumeManager : VolumeManagerBase, IVolumeManager //VolumeProviderCompat.Callback
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
         protected MediaControllerCompat MediaController => MediaManager.MediaController;
@@ -12,7 +12,9 @@ namespace MediaManager.Platforms.Android.Volume
         {
         }
 
-        public int CurrentVolume
+        public override event VolumeChangedEventHandler VolumeChanged;
+
+        public override int CurrentVolume
         {
             get => MediaController.GetPlaybackInfo().CurrentVolume;
             set
@@ -22,7 +24,7 @@ namespace MediaManager.Platforms.Android.Volume
             }
         }
 
-        public int MaxVolume
+        public override int MaxVolume
         {
             get => MediaController.GetPlaybackInfo().MaxVolume;
             set
@@ -36,7 +38,7 @@ namespace MediaManager.Platforms.Android.Volume
         }
 
         protected int preMutedVolume = 0;
-        public bool Muted
+        public override bool Muted
         {
             get => CurrentVolume == 0;
             set
@@ -53,8 +55,6 @@ namespace MediaManager.Platforms.Android.Volume
             }
         }
 
-        public float Balance { get; set; }
-
-        public event VolumeChangedEventHandler VolumeChanged;
+        public override float Balance { get; set; }
     }
 }

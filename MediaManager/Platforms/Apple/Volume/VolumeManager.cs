@@ -3,7 +3,7 @@ using MediaManager.Volume;
 
 namespace MediaManager.Platforms.Apple.Volume
 {
-    public class VolumeManager : IVolumeManager
+    public class VolumeManager : VolumeManagerBase, IVolumeManager
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
         protected AVQueuePlayer Player => MediaManager.Player;
@@ -12,7 +12,9 @@ namespace MediaManager.Platforms.Apple.Volume
         {
         }
 
-        public int CurrentVolume
+        public override event VolumeChangedEventHandler VolumeChanged;
+
+        public override int CurrentVolume
         {
             get
             {
@@ -35,7 +37,7 @@ namespace MediaManager.Platforms.Apple.Volume
         }
 
         private int _maxVolume = 100;
-        public int MaxVolume
+        public override int MaxVolume
         {
             get => _maxVolume;
             set
@@ -45,11 +47,9 @@ namespace MediaManager.Platforms.Apple.Volume
             }
         }
 
-        public event VolumeChangedEventHandler VolumeChanged;
+        public override float Balance { get; set; }
 
-        public float Balance { get; set; }
-
-        public bool Muted
+        public override bool Muted
         {
             get => Player?.Muted ?? false;
             set

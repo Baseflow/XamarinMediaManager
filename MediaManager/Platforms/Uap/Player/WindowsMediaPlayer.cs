@@ -78,11 +78,32 @@ namespace MediaManager.Platforms.Uap.Player
             Player = new MediaPlayer();
             Player.AudioCategory = MediaPlayerAudioCategory.Media;
 
+            Player.MediaOpened += Player_MediaOpened;
             Player.MediaEnded += Player_MediaEnded;
             Player.MediaFailed += Player_MediaFailed;
+
+            //Player.SourceChanged += MediaPlayer_SourceChanged;
+
             Player.PlaybackSession.BufferingProgressChanged += PlaybackSession_BufferingProgressChanged;
             Player.PlaybackSession.PlaybackStateChanged += PlaybackSession_PlaybackStateChanged;
             Player.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
+            Player.PlaybackSession.NaturalVideoSizeChanged += PlaybackSession_NaturalVideoSizeChanged;
+            Player.PlaybackSession.SeekCompleted += PlaybackSession_SeekCompleted;
+        }
+
+        private void Player_MediaOpened(MediaPlayer sender, object args)
+        {
+
+        }
+
+        private void PlaybackSession_SeekCompleted(MediaPlaybackSession sender, object args)
+        {
+            //TODO: Maybe use this?
+        }
+
+        private void PlaybackSession_NaturalVideoSizeChanged(MediaPlaybackSession sender, object args)
+        {
+            //VideoHeight = sender.NaturalVideoHeight;
         }
 
         private void PlaybackSession_PositionChanged(MediaPlaybackSession sender, object args)
@@ -157,11 +178,14 @@ namespace MediaManager.Platforms.Uap.Player
 
         public void Dispose()
         {
+            Player.MediaOpened -= Player_MediaOpened;
             Player.MediaEnded -= Player_MediaEnded;
             Player.MediaFailed -= Player_MediaFailed;
             Player.PlaybackSession.BufferingProgressChanged -= PlaybackSession_BufferingProgressChanged;
             Player.PlaybackSession.PlaybackStateChanged -= PlaybackSession_PlaybackStateChanged;
             Player.PlaybackSession.PositionChanged -= PlaybackSession_PositionChanged;
+            Player.PlaybackSession.NaturalVideoSizeChanged -= PlaybackSession_NaturalVideoSizeChanged;
+            Player.PlaybackSession.SeekCompleted -= PlaybackSession_SeekCompleted;
             Player.Dispose();
             Player = null;
         }

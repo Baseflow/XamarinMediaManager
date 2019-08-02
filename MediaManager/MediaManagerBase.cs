@@ -16,7 +16,7 @@ using MediaManager.Volume;
 
 namespace MediaManager
 {
-    public abstract class MediaManagerBase : IMediaManager
+    public abstract class MediaManagerBase : NotifyPropertyChangedBase, IMediaManager
     {
         public MediaManagerBase()
         {
@@ -298,8 +298,6 @@ namespace MediaManager
             return seekTo;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public event StateChangedEventHandler StateChanged;
         public event BufferedChangedEventHandler BufferedChanged;
         public event PositionChangedEventHandler PositionChanged;
@@ -328,23 +326,6 @@ namespace MediaManager
             OnPropertyChanged(nameof(Duration));
 
             NotificationManager?.UpdateNotification();
-        }
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(storage, value))
-            {
-                return false;
-            }
-
-            storage = value;
-            OnPropertyChanged(propertyName);
-            return true;
         }
 
         protected TimeSpan _previousPosition = new TimeSpan();

@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace MediaManager.Media
 {
-    public class MediaItem : IMediaItem
+    public class MediaItem : NotifyPropertyChangedBase, IMediaItem
     {
         public MediaItem(string uri)
         {
@@ -15,8 +15,6 @@ namespace MediaManager.Media
         }
 
         public event MetadataUpdatedEventHandler MetadataUpdated;
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public string Advertisement
         {
@@ -243,23 +241,6 @@ namespace MediaManager.Media
                 if (SetProperty(ref _isMetadataExtracted, value))
                     MetadataUpdated?.Invoke(this, new MetadataChangedEventArgs(this));
             }
-        }
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(storage, value))
-            {
-                return false;
-            }
-
-            storage = value;
-            OnPropertyChanged(propertyName);
-            return true;
         }
     }
 }

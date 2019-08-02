@@ -2,16 +2,15 @@
 
 namespace MediaManager.Platforms.Tizen.Volume
 {
-    public class VolumeManager : IVolumeManager
+    public class VolumeManager : VolumeManagerBase, IVolumeManager
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Tizen;
 
-        public int CurrentVolume { get; set; }
-        public int MaxVolume { get; set; }
-        public bool Muted { get; set; }
+        public override int CurrentVolume { get; set; }
+        public override int MaxVolume { get; set; }
+        public override float Balance { get; set; }
+        public override bool Muted { get; set; }
 
-        public float Balance { get; set; }
-
-        public event VolumeChangedEventHandler VolumeChanged;
+        public override event VolumeChangedEventHandler VolumeChanged;
     }
 }
