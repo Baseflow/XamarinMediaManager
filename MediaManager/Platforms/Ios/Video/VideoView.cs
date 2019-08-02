@@ -37,6 +37,16 @@ namespace MediaManager.Platforms.Ios.Video
             }
         }
 
+        public override void WillMoveToSuperview(UIView newsuper)
+        {
+            base.WillMoveToSuperview(newsuper);
+        }
+
+        public override void WillMoveToWindow(UIWindow window)
+        {
+            base.WillMoveToWindow(window);
+        }
+
         public VideoView()
         {
             InitView();
