@@ -308,8 +308,14 @@ namespace MediaManager
         public event MediaItemChangedEventHandler MediaItemChanged;
         public event MediaItemFailedEventHandler MediaItemFailed;
 
+        protected IMediaItem _currentSource;
+
         internal void OnBufferedChanged(object sender, BufferedChangedEventArgs e) => BufferedChanged?.Invoke(sender, e);
-        internal void OnMediaItemChanged(object sender, MediaItemEventArgs e) => MediaItemChanged?.Invoke(sender, e);
+        internal void OnMediaItemChanged(object sender, MediaItemEventArgs e)
+        {
+            if (SetProperty(ref _currentSource, e.MediaItem))
+                MediaItemChanged?.Invoke(sender, e);
+        }
         internal void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
         internal void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
         internal void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
