@@ -33,6 +33,7 @@ namespace MediaManager.Platforms.Ios.Video
                 {
                     _playerViewController.View.Frame = Frame;
                     AddSubview(_playerViewController.View);
+                    (Superview.NextResponder as UIViewController)?.AddChildViewController(_playerViewController);
                 }
             }
         }
