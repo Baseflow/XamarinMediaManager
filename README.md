@@ -297,10 +297,12 @@ CrossMediaManager.Current.Reactive().*
 ## **IMPORTANT**
 **Android:**
 
-* You must request `AccessWifiState`, `Internet`, `ForegroundService` and `WakeLock` permissions
+* This library will automatically request the following permissions: `AccessWifiState`, `AccessNetworkState`, `Internet`, `ForegroundService` and `WakeLock`. You do not need to add them to your AndroidManifest.
 * Your app must target Android SDK v28 or higher
-
-ExoPlayer 2.9.6 and higher use Java 8. You need to set the Dex tool to D8 `<AndroidDexTool>d8</AndroidDexTool>`
+* This library uses ExoPlayer for video playback. This requires that you enable the following
+* Dex tool to D8 `<AndroidDexTool>d8</AndroidDexTool>`
+* R8 Linker `<AndroidLinkTool>r8</AndroidLinkTool>`
+* Aapt2 build tools: `<AndroidUseAapt2>true</AndroidUseAapt2>`
 
 **iOS:**
 
