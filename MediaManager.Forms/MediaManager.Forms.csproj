@@ -119,7 +119,5 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.mac')) ">
     <Reference Include="netstandard" />
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('monoandroid')) ">
-    <Reference Include="netstandard" />
-  </ItemGroup>
+
 </Project>

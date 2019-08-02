@@ -19,7 +19,7 @@
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap')) And '$(OS)' == 'Windows_NT'">
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
   </PropertyGroup>
   
@@ -102,7 +102,7 @@
     <Compile Include="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
     <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.9.7" />    
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.9.7" />
     <!--<PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.9.7" />
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.9.7" />-->
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.9.7" />
@@ -116,4 +116,5 @@
     <Compile Include="Platforms\Tizen\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
+  
 </Project>
