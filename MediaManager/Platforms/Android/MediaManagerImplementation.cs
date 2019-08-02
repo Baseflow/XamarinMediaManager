@@ -21,6 +21,7 @@ using MediaManager.Volume;
 [assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)]
 [assembly: UsesPermission(Android.Manifest.Permission.AccessWifiState)]
 [assembly: UsesPermission(Android.Manifest.Permission.ForegroundService)]
+[assembly: UsesPermission(Android.Manifest.Permission.WakeLock)]
 namespace MediaManager
 {
     [global::Android.Runtime.Preserve(AllMembers = true)]
