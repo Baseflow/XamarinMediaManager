@@ -347,19 +347,23 @@ namespace MediaManager
             return true;
         }
 
-        protected TimeSpan PreviousPosition = new TimeSpan();
+        protected TimeSpan _previousPosition = new TimeSpan();
+        protected TimeSpan PreviousPosition
+        {
+            get => _previousPosition;
+            set
+            {
+                if (SetProperty(ref _previousPosition, value))
+                    OnPositionChanged(this, new PositionChangedEventArgs(Position));
+            }
+        }
 
         protected virtual void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (!IsInitialized)
                 return;
 
-            if (PreviousPosition != Position)
-            {
-                PreviousPosition = Position;
-                //OnPropertyChanged(nameof(Position));
-                OnPositionChanged(this, new PositionChangedEventArgs(Position));
-            }
+            PreviousPosition = Position;
         }
 
         public virtual void Dispose()
