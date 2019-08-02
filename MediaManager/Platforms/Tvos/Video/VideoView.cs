@@ -109,7 +109,7 @@ namespace MediaManager.Platforms.Tvos.Video
 
         protected override void Dispose(bool disposing)
         {
-            if (MediaManager.MediaPlayer.VideoView == this)
+            if (MediaManager.MediaPlayer.AutoAttachVideoView && MediaManager.MediaPlayer.VideoView == this)
                 MediaManager.MediaPlayer.VideoView = null;
 
             base.Dispose(disposing);

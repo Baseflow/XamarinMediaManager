@@ -18,7 +18,7 @@ namespace MediaManager.Platforms.Ios.Video
         {
             base.ViewWillDisappear(animated);
 
-            if (MediaManager.MediaPlayer.VideoView == View.Superview)
+            if (MediaManager.MediaPlayer.AutoAttachVideoView && MediaManager.MediaPlayer.VideoView == View.Superview)
             {
                 MediaManager.MediaPlayer.VideoView = null;
             }

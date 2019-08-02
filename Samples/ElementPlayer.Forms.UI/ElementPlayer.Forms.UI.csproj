@@ -25,6 +25,9 @@
     <Compile Update="FormsApp.xaml.cs">
       <DependentUpon>FormsApp.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Pages\BrowsePage.xaml.cs">
+      <DependentUpon>BrowsePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

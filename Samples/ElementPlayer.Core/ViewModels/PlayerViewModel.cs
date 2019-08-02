@@ -43,6 +43,10 @@ namespace ElementPlayer.Core.ViewModels
         public IMvxCommand StepForwardCommand { get; }
         public IMvxCommand StepBackwardCommand { get; }
 
+        private IMvxAsyncCommand _browseCommand;
+        public IMvxAsyncCommand BrowseCommand => _browseCommand ?? (_browseCommand = new MvxAsyncCommand(
+            () => NavigationService.Navigate<BrowseViewModel>()));
+
         public IMediaItem Current => MediaManager.MediaQueue.Current;
 
         private ImageSource _image;

@@ -5,13 +5,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:ElementPlayer.Core.ViewModels;assembly=ElementPlayer.Core"
     xmlns:mm="clr-namespace:MediaManager.Forms;assembly=MediaManager.Forms"
-    x:Class="ElementPlayer.Forms.UI.Pages.PlayerPage" 
-    x:TypeArguments="viewModels:PlayerViewModel">
+    x:Class="ElementPlayer.Forms.UI.Pages.BrowsePage" 
+    x:TypeArguments="viewModels:BrowseViewModel">
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
-            <Button Text="Browse" Command="{Binding BrowseCommand}" />
             <Image Source="{Binding Image}" HorizontalOptions="FillAndExpand" HeightRequest="200" />
-            <mm:VideoView VerticalOptions="FillAndExpand" ShowControls="True" />
         </StackLayout>
     </ContentPage.Content>
 </mvx:MvxContentPage>

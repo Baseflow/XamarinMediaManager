@@ -42,7 +42,7 @@ namespace MediaManager.Platforms.Wpf.Video
 
         public void Dispose()
         {
-            if (MediaManager.MediaPlayer.VideoView == this)
+            if (MediaManager.MediaPlayer.AutoAttachVideoView && MediaManager.MediaPlayer.VideoView == this)
                 MediaManager.MediaPlayer.VideoView = null;
         }
     }
