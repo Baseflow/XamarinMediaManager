@@ -6,6 +6,7 @@ namespace MediaManager.Platforms.Ios.Video
     {
         protected static MediaManagerImplementation MediaManager => CrossMediaManager.Apple;
 
+        //TODO: ViewWillAppear is not called
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
