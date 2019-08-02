@@ -14,6 +14,16 @@ namespace MediaManager.Platforms.Ios.Video
                 MediaManager.MediaPlayer.VideoView = View.Superview as VideoView;
         }
 
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+        }
+
+        public override void ViewDidLoad()
+        {
+            base.ViewDidLoad();
+        }
+
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
