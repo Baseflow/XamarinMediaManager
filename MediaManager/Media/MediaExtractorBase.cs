@@ -37,22 +37,17 @@ namespace MediaManager.Media
 
             using (var stream = assembly.GetManifestResourceStream(resourcePaths.Single()))
             {
-                if (stream != null)
-                {
-                    var tempDirectory = Path.Combine(Path.GetTempPath(), "EmbeddedResources");
-                    path = Path.Combine(tempDirectory, resourceName);
-
-                    if (!Directory.Exists(tempDirectory))
-                    {
-                        Directory.CreateDirectory(tempDirectory);
-                    }
-
-                    using (var tempFile = File.Create(path))
-                    {
-                        await stream.CopyToAsync(tempFile).ConfigureAwait(false);
-                    }
-                }
+                path = await CopyResourceStreamToFile(stream, "EmbeddedResources", resourceName).ConfigureAwait(false);
             }
+
+            var mediaItem = new MediaItem(path);
+            mediaItem.MediaLocation = MediaLocation.Embedded;
+            return await UpdateMediaItem(mediaItem).ConfigureAwait(false);
+        }
+
+        public virtual async Task<IMediaItem> CreateMediaItemFromNativeResource(string resourceName)
+        {
+            var path = await GetNativeResourcePath(resourceName).ConfigureAwait(false);
 
             var mediaItem = new MediaItem(path);
             mediaItem.MediaLocation = MediaLocation.Embedded;
@@ -77,6 +72,29 @@ namespace MediaManager.Media
             }
 
             return mediaItem;
+        }
+
+        protected virtual async Task<string> CopyResourceStreamToFile(Stream stream, string tempDirectoryName, string resourceName)
+        {
+            string path = null;
+
+            if (stream != null)
+            {
+                var tempDirectory = Path.Combine(Path.GetTempPath(), tempDirectoryName);
+                path = Path.Combine(tempDirectory, resourceName);
+
+                if (!Directory.Exists(tempDirectory))
+                {
+                    Directory.CreateDirectory(tempDirectory);
+                }
+
+                using (var tempFile = File.Create(path))
+                {
+                    await stream.CopyToAsync(tempFile).ConfigureAwait(false);
+                }
+            }
+
+            return path;
         }
 
         public abstract Task<object> RetrieveMediaItemArt(IMediaItem mediaItem);
@@ -143,5 +161,7 @@ namespace MediaManager.Media
         }
 
         public abstract Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart);
+
+        protected abstract Task<string> GetNativeResourcePath(string resourceName);
     }
 }

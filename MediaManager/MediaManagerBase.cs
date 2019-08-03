@@ -154,6 +154,15 @@ namespace MediaManager
             return mediaItem;
         }
 
+        public virtual async Task<IMediaItem> PlayFromResource(string resourceName)
+        {
+            var mediaItem = await MediaExtractor.CreateMediaItemFromNativeResource(resourceName).ConfigureAwait(false);
+            var mediaItemToPlay = await PrepareQueueForPlayback(mediaItem);
+
+            await PlayAsCurrent(mediaItemToPlay);
+            return mediaItem;
+        }
+
         public virtual async Task<IMediaItem> Play(IEnumerable<IMediaItem> items)
         {
             var mediaItemToPlay = await PrepareQueueForPlayback(items.ToArray());

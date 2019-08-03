@@ -204,5 +204,17 @@ namespace MediaManager.Platforms.Android.Media
             }
             return null;
         }
+
+        protected override async Task<string> GetNativeResourcePath(string resourceName)
+        {
+            string path = null;
+
+            using (var stream = MediaManager.Context.Assets.Open(resourceName))
+            {
+                path = await CopyResourceStreamToFile(stream, "AndroidResources", resourceName).ConfigureAwait(false);
+            }
+
+            return path;
+        }
     }
 }

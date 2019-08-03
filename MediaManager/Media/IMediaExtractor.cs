@@ -15,6 +15,8 @@ namespace MediaManager.Media
 
         Task<IMediaItem> CreateMediaItem(string resourceName, Assembly assembly);
 
+        Task<IMediaItem> CreateMediaItemFromNativeResource(string resourceName);
+
         Task<IMediaItem> CreateMediaItem(FileInfo file);
 
         Task<IMediaItem> UpdateMediaItem(IMediaItem mediaItem);

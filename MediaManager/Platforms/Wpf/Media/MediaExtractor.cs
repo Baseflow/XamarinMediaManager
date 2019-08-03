@@ -20,5 +20,10 @@ namespace MediaManager.Platforms.Wpf.Media
         {
             return null;
         }
+
+        protected override Task<string> GetNativeResourcePath(string resourceName)
+        {
+            return null;
+        }
     }
 }

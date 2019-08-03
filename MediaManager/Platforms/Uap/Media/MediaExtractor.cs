@@ -99,5 +99,10 @@ namespace MediaManager.Platforms.Uap.Media
             mediaComposition.Clips.Add(mediaClip);
             return await mediaComposition.GetThumbnailAsync(timeFromStart, 0, 0, VideoFramePrecision.NearestFrame);
         }
+
+        protected override Task<string> GetNativeResourcePath(string resourceName)
+        {
+            return null;
+        }
     }
 }
