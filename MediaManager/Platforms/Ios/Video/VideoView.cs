@@ -33,19 +33,9 @@ namespace MediaManager.Platforms.Ios.Video
                 {
                     _playerViewController.View.Frame = Frame;
                     AddSubview(_playerViewController.View);
-                    (Superview.NextResponder as UIViewController)?.AddChildViewController(_playerViewController);
+                    (Superview?.NextResponder as UIViewController)?.AddChildViewController(_playerViewController);
                 }
             }
-        }
-
-        public override void WillMoveToSuperview(UIView newsuper)
-        {
-            base.WillMoveToSuperview(newsuper);
-        }
-
-        public override void WillMoveToWindow(UIWindow window)
-        {
-            base.WillMoveToWindow(window);
         }
 
         public VideoView()

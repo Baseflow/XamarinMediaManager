@@ -10,8 +10,8 @@ namespace MediaManager.Platforms.Ios.Video
         {
             base.ViewWillAppear(animated);
 
-            if (MediaManager.MediaPlayer.AutoAttachVideoView)
-                MediaManager.MediaPlayer.VideoView = View.Superview as VideoView;
+            if (MediaManager.MediaPlayer.AutoAttachVideoView && View.Superview is VideoView videoView)
+                MediaManager.MediaPlayer.VideoView = videoView;
         }
 
         public override void ViewWillDisappear(bool animated)
