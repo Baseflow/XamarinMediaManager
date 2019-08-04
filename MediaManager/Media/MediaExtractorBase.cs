@@ -11,13 +11,30 @@ namespace MediaManager.Media
     {
         protected Dictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
 
+        public IList<string> RemotePrefixes { get; } = new List<string>() {
+            "http",
+            "udp",
+            "rtp"
+        };
+
+        public IList<string> FilePrefixes { get; } = new List<string>() {
+            "file",
+            "/",
+            "ms-appx",
+            "ms-appdata"
+        };
+
+        public IList<string> ResourcePrefixes { get; } = new List<string>() {
+            "android.resource"
+        };
+
         public virtual Task<IMediaItem> CreateMediaItem(string url)
         {
             var mediaItem = new MediaItem(url);
             return UpdateMediaItem(mediaItem);
         }
 
-        public virtual async Task<IMediaItem> CreateMediaItem(string resourceName, Assembly assembly)
+        public virtual async Task<IMediaItem> CreateMediaItemFromAssembly(string resourceName, Assembly assembly = null)
         {
             if (assembly == null)
             {
@@ -45,12 +62,12 @@ namespace MediaManager.Media
             return await UpdateMediaItem(mediaItem).ConfigureAwait(false);
         }
 
-        public virtual async Task<IMediaItem> CreateMediaItemFromNativeResource(string resourceName)
+        public virtual async Task<IMediaItem> CreateMediaItemFromResource(string resourceName)
         {
-            var path = await GetNativeResourcePath(resourceName).ConfigureAwait(false);
+            var path = await GetResourcePath(resourceName).ConfigureAwait(false);
 
             var mediaItem = new MediaItem(path);
-            mediaItem.MediaLocation = MediaLocation.Embedded;
+            mediaItem.MediaLocation = MediaLocation.Resource;
             return await UpdateMediaItem(mediaItem).ConfigureAwait(false);
         }
 
@@ -101,20 +118,6 @@ namespace MediaManager.Media
 
         public abstract Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem);
 
-        public IList<string> RemotePrefixes { get; } = new List<string>() {
-            "http",
-            "udp",
-            "rtp"
-        };
-
-        public IList<string> FilePrefixes { get; } = new List<string>() {
-            "file",
-            "/",
-            "ms-appx",
-            "ms-appdata",
-            "android.resource"
-        };
-
         public virtual MediaLocation GetMediaLocation(IMediaItem mediaItem)
         {
             var url = mediaItem.MediaUri.ToLower();
@@ -123,6 +126,14 @@ namespace MediaManager.Media
                 if (url.StartsWith(item))
                 {
                     return MediaLocation.Remote;
+                }
+            }
+
+            foreach (var item in ResourcePrefixes)
+            {
+                if (url.StartsWith(item))
+                {
+                    return MediaLocation.Resource;
                 }
             }
 
@@ -162,6 +173,6 @@ namespace MediaManager.Media
 
         public abstract Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart);
 
-        protected abstract Task<string> GetNativeResourcePath(string resourceName);
+        protected abstract Task<string> GetResourcePath(string resourceName);
     }
 }

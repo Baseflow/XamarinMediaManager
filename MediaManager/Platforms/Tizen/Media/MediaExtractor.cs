@@ -27,7 +27,7 @@ namespace MediaManager.Platforms.Tizen.Media
             return null;
         }
 
-        protected override Task<string> GetNativeResourcePath(string resourceName)
+        protected override Task<string> GetResourcePath(string resourceName)
         {
             return null;
         }

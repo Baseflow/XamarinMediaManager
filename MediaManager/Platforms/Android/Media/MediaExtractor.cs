@@ -180,7 +180,6 @@ namespace MediaManager.Platforms.Android.Media
         {
             try
             {
-
                 var metaRetriever = new MediaMetadataRetriever();
 
                 switch (mediaItem.MediaLocation)
@@ -205,7 +204,7 @@ namespace MediaManager.Platforms.Android.Media
             return null;
         }
 
-        protected override async Task<string> GetNativeResourcePath(string resourceName)
+        protected override async Task<string> GetResourcePath(string resourceName)
         {
             string path = null;
 

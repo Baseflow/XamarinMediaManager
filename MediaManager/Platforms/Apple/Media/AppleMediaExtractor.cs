@@ -82,7 +82,7 @@ namespace MediaManager.Platforms.Apple.Media
             return Task.FromResult(cgImage as object);
         }
 
-        protected override Task<string> GetNativeResourcePath(string resourceName)
+        protected override Task<string> GetResourcePath(string resourceName)
         {
             string path = null;
 

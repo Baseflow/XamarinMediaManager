@@ -145,9 +145,9 @@ namespace MediaManager
             return mediaItem;
         }
 
-        public virtual async Task<IMediaItem> Play(string resourceName, Assembly assembly)
+        public virtual async Task<IMediaItem> PlayFromAssembly(string resourceName, Assembly assembly = null)
         {
-            var mediaItem = await MediaExtractor.CreateMediaItem(resourceName, assembly).ConfigureAwait(false);
+            var mediaItem = await MediaExtractor.CreateMediaItemFromAssembly(resourceName, assembly).ConfigureAwait(false);
             var mediaItemToPlay = await PrepareQueueForPlayback(mediaItem);
 
             await PlayAsCurrent(mediaItemToPlay);
@@ -156,7 +156,7 @@ namespace MediaManager
 
         public virtual async Task<IMediaItem> PlayFromResource(string resourceName)
         {
-            var mediaItem = await MediaExtractor.CreateMediaItemFromNativeResource(resourceName).ConfigureAwait(false);
+            var mediaItem = await MediaExtractor.CreateMediaItemFromResource(resourceName).ConfigureAwait(false);
             var mediaItemToPlay = await PrepareQueueForPlayback(mediaItem);
 
             await PlayAsCurrent(mediaItemToPlay);

@@ -100,7 +100,7 @@ namespace MediaManager.Platforms.Uap.Media
             return await mediaComposition.GetThumbnailAsync(timeFromStart, 0, 0, VideoFramePrecision.NearestFrame);
         }
 
-        protected override Task<string> GetNativeResourcePath(string resourceName)
+        protected override Task<string> GetResourcePath(string resourceName)
         {
             return null;
         }
