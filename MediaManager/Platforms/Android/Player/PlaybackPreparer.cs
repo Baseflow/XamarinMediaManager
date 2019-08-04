@@ -54,7 +54,7 @@ namespace MediaManager.Platforms.Android.Player
             _player.Prepare(_mediaSource);
 
             //Only in case of Prepare set PlayWhenReady to true because we use this to load in the whole queue
-            if(MediaManager.AutoPlay)
+            if (MediaManager.AutoPlay)
                 _player.PlayWhenReady = true;
             else
                 _player.PlayWhenReady = false;

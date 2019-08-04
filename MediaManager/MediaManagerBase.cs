@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Timers;
 using MediaManager.Media;
@@ -199,7 +197,7 @@ namespace MediaManager
 
         public virtual async Task PlayAsCurrent(IMediaItem mediaItem)
         {
-            if(AutoPlay)
+            if (AutoPlay)
                 await MediaPlayer.Play(mediaItem);
         }
 

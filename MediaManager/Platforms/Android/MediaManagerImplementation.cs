@@ -339,7 +339,7 @@ namespace MediaManager
             }
             set
             {
-                if(AndroidMediaPlayer.PlayerView != null)
+                if (AndroidMediaPlayer.PlayerView != null)
                     AndroidMediaPlayer.PlayerView.KeepScreenOn = value;
             }
         }

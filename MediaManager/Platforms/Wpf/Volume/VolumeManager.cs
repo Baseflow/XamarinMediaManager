@@ -10,7 +10,8 @@ namespace MediaManager.Platforms.Wpf.Volume
 
         public override int MaxVolume { get; set; }
 
-        public override bool Muted {
+        public override bool Muted
+        {
             get => MediaManager.Player.IsMuted;
             set => MediaManager.Player.IsMuted = value;
         }

@@ -127,7 +127,7 @@ namespace MediaManager
             }
             set
             {
-                if(SetProperty(ref _keepScreenOn, value))
+                if (SetProperty(ref _keepScreenOn, value))
                 {
                     if (_displayRequest == null)
                         _displayRequest = new DisplayRequest();

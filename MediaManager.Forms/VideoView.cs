@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Player;

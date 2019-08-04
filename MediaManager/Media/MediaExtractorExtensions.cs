@@ -15,7 +15,7 @@ namespace MediaManager.Media
             return (mediaLocation == MediaLocation.Remote);
         }
 
-        public static bool IsLocal (this MediaLocation mediaLocation)
+        public static bool IsLocal(this MediaLocation mediaLocation)
         {
             return (mediaLocation == MediaLocation.FileSystem) || (mediaLocation == MediaLocation.Embedded) || (mediaLocation == MediaLocation.Resource);
         }

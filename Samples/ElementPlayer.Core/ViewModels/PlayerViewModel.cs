@@ -50,7 +50,8 @@ namespace ElementPlayer.Core.ViewModels
         public IMediaItem Current => MediaManager.MediaQueue.Current;
 
         private ImageSource _image;
-        public ImageSource Image {
+        public ImageSource Image
+        {
             get => _image;
             set => SetProperty(ref _image, value);
         }

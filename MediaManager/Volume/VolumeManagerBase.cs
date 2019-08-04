@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MediaManager.Volume
+﻿namespace MediaManager.Volume
 {
     public abstract class VolumeManagerBase : NotifyPropertyChangedBase, IVolumeManager
     {

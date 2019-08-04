@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
+using System.Threading.Tasks;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 using Xamarin.Forms;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace MediaManager.Forms.Platforms.Uap
 {
