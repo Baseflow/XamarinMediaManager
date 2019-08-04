@@ -69,9 +69,9 @@ namespace MediaManager
         /// <summary>
         /// Plays a list of media items
         /// </summary>
-        /// <param name="items"></param>
+        /// <param name="mediaItems"></param>
         /// <returns></returns>
-        Task<IMediaItem> Play(IEnumerable<IMediaItem> items);
+        Task<IMediaItem> Play(IEnumerable<IMediaItem> mediaItems);
 
         /// <summary>
         /// Plays a list of uri's

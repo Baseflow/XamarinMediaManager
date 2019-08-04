@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using MediaManager.Queue;
 
@@ -6,19 +8,38 @@ namespace MediaManager.Media
 {
     public static class MediaExtractorExtensions
     {
-        public static async Task<IMediaItem> FetchMetaData(this IMediaItem mediaItem)
+        private static IMediaExtractor MediaExtractor => CrossMediaManager.Current.MediaExtractor;
+
+        public static async Task<IEnumerable<IMediaItem>> CreateMediaItems(this IEnumerable<string> items)
+        {
+            var mediaItems = items.Select(i => MediaExtractor.CreateMediaItem(i));
+            return await Task.WhenAll(mediaItems).ConfigureAwait(false);
+        }
+
+        public static async Task<IEnumerable<IMediaItem>> CreateMediaItems(this IEnumerable<FileInfo> items)
+        {
+            var mediaItems = items.Select(i => MediaExtractor.CreateMediaItem(i));
+            return await Task.WhenAll(mediaItems).ConfigureAwait(false);
+        }
+
+        public static async Task<IMediaItem> UpdateMediaItem(this IMediaItem mediaItem)
         {
             if (mediaItem.IsMetadataExtracted)
                 return mediaItem;
 
-            return mediaItem = await CrossMediaManager.Current.MediaExtractor.UpdateMediaItem(mediaItem).ConfigureAwait(false);
+            return await MediaExtractor.UpdateMediaItem(mediaItem).ConfigureAwait(false);
         }
 
-        public static async Task<IMediaItem[]> FetchMetaData(this IMediaQueue mediaQueue)
+        public static async Task<IEnumerable<IMediaItem>> UpdateMediaItems(this IEnumerable<IMediaItem> items)
         {
-            var mediaItems = mediaQueue.Select(i => i.FetchMetaData());
+            var mediaItems = items.Select(i => i.UpdateMediaItem());
+            return await Task.WhenAll(mediaItems).ConfigureAwait(false);
+        }
 
-            return await Task.WhenAll(mediaItems);
+        public static async Task<IEnumerable<IMediaItem>> UpdateMediaItems(this IMediaQueue mediaQueue)
+        {
+            var mediaItems = mediaQueue.Select(i => i.UpdateMediaItem());
+            return await Task.WhenAll(mediaItems).ConfigureAwait(false);
         }
     }
 }

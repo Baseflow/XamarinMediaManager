@@ -34,6 +34,11 @@ namespace MediaManager.Media
             return UpdateMediaItem(mediaItem);
         }
 
+        public virtual Task<IMediaItem> CreateMediaItem(FileInfo file)
+        {
+            return CreateMediaItem(file.FullName);
+        }
+
         public virtual async Task<IMediaItem> CreateMediaItemFromAssembly(string resourceName, Assembly assembly = null)
         {
             if (assembly == null)
@@ -69,11 +74,6 @@ namespace MediaManager.Media
             var mediaItem = new MediaItem(path);
             mediaItem.MediaLocation = MediaLocation.Resource;
             return await UpdateMediaItem(mediaItem).ConfigureAwait(false);
-        }
-
-        public virtual Task<IMediaItem> CreateMediaItem(FileInfo file)
-        {
-            return CreateMediaItem(file.FullName);
         }
 
         public virtual async Task<IMediaItem> UpdateMediaItem(IMediaItem mediaItem)
