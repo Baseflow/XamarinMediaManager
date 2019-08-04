@@ -2,8 +2,8 @@
 {
     public enum DownloadStatus
     {
-        Downloaded,
+        NotDownloaded = 0,
         Downloading,
-        NotDownloaded
+        Downloaded
     }
 }

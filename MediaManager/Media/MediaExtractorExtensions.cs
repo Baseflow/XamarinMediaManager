@@ -10,6 +10,16 @@ namespace MediaManager.Media
     {
         private static IMediaExtractor MediaExtractor => CrossMediaManager.Current.MediaExtractor;
 
+        public static bool IsRemote(this MediaLocation mediaLocation)
+        {
+            return (mediaLocation == MediaLocation.Remote);
+        }
+
+        public static bool IsLocal (this MediaLocation mediaLocation)
+        {
+            return (mediaLocation == MediaLocation.FileSystem) || (mediaLocation == MediaLocation.Embedded) || (mediaLocation == MediaLocation.Resource);
+        }
+
         public static async Task<IEnumerable<IMediaItem>> CreateMediaItems(this IEnumerable<string> items)
         {
             var mediaItems = items.Select(i => MediaExtractor.CreateMediaItem(i));

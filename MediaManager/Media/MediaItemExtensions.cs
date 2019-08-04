@@ -30,6 +30,10 @@
         {
             if (!string.IsNullOrEmpty(mediaItem.Album))
                 return mediaItem.Album;
+            else if (!string.IsNullOrEmpty(mediaItem.Artist))
+                return mediaItem.Artist;
+            else if (!string.IsNullOrEmpty(mediaItem.AlbumArtist))
+                return mediaItem.AlbumArtist;
             else
                 return "";
         }

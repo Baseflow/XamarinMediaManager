@@ -15,7 +15,7 @@ namespace MediaManager.Platforms.Apple.Player
         {
             AVAsset asset;
 
-            if ((mediaItem.MediaLocation == MediaLocation.FileSystem) || (mediaItem.MediaLocation == MediaLocation.Embedded))
+            if (mediaItem.MediaLocation.IsLocal())
             {
                 if (mediaItem.MediaUri.StartsWith("file:///"))
                 {

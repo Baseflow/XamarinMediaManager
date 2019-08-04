@@ -2,7 +2,7 @@
 
 namespace MediaManager.Media
 {
-    public interface IMediaList : IList<IMediaItem>
+    public interface IPlaylist : IList<IMediaItem>
     {
         string Title { get; set; }
     }

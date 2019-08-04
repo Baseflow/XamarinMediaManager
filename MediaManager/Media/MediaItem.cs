@@ -194,7 +194,7 @@ namespace MediaManager.Media
         }
 
         private bool _isMetadataExtracted = false;
-        private MediaLocation _mediaLocation;
+        private MediaLocation _mediaLocation = MediaLocation.Unknown;
         private MediaType _mediaType = MediaType.Default;
         private string _fileExtension;
         private int _year;
