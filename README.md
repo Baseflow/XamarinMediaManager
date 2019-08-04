@@ -6,17 +6,28 @@
 * Playback status (Playing, Buffering, Loading, Paused, Progress)
 * Events for media handling to hook into
 
+## Status: 
+[![Build status](https://ci.appveyor.com/api/projects/status/be78iac0bl7q930i?svg=true)](https://ci.appveyor.com/project/martijn00/xamarinmediamanager)
+![GitHub tag](https://img.shields.io/github/tag/martijn00/XamarinMediaManager.svg)
+[![NuGet](https://img.shields.io/nuget/v/Plugin.MediaManager.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.MediaManager/)
+[![MyGet](https://img.shields.io/myget/martijn00/v/Plugin.MediaManager.svg)](https://www.myget.org/F/martijn00/api/v3/index.json)
+
 # Support
 
 * Feel free to open an issue. Make sure to use one of the templates!
 * Commercial support is available. Integration with your app or services, samples, feature request, etc. Email: [hello@baseflow.com](mailto:hello@baseflow.com)
 * Powered by: [baseflow.com](https://baseflow.com)
 
-## Status: 
-[![Build status](https://ci.appveyor.com/api/projects/status/be78iac0bl7q930i?svg=true)](https://ci.appveyor.com/project/martijn00/xamarinmediamanager)
-![GitHub tag](https://img.shields.io/github/tag/martijn00/XamarinMediaManager.svg)
-[![NuGet](https://img.shields.io/nuget/v/Plugin.MediaManager.svg?label=NuGet)](https://www.nuget.org/packages/Plugin.MediaManager/)
-[![MyGet](https://img.shields.io/myget/martijn00/v/Plugin.MediaManager.svg)](https://www.myget.org/F/martijn00/api/v3/index.json)
+## Installation
+
+Add the [NuGet package](https://www.nuget.org/packages/Plugin.MediaManager/) to all the projects you want to use it in.
+
+* In Visual Studio - Tools > NuGet Package Manager > Manage Packages for Solution
+* Select the Browse tab, search for MediaManager
+* Select Plugin.MediaManager
+* Install into each project within your solution
+
+More information on the [Xamarin Blog](https://blog.xamarin.com/play-audio-and-video-with-the-mediamanager-plugin-for-xamarin/ )
 
 **Platform Support**
 
@@ -31,17 +42,6 @@
 |Tizen|Yes|4.0+|MediaPlayer|
 |Windows 10 UWP|Yes|10+|MediaPlayer|
 |Windows WPF|Yes|4.7.1+|MediaPlayer|
-
-## Installation
-
-Add the [NuGet package](https://www.nuget.org/packages/Plugin.MediaManager/) to all the projects you want to use it in.
-
-* In Visual Studio - Tools > NuGet Package Manager > Manage Packages for Solution
-* Select the Browse tab, search for MediaManager
-* Select Plugin.MediaManager
-* Install into each project within your solution
-
-More information on the [Xamarin Blog](https://blog.xamarin.com/play-audio-and-video-with-the-mediamanager-plugin-for-xamarin/ )
 
 ## Usage
 
