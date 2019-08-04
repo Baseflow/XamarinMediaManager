@@ -6,6 +6,12 @@
 * Playback status (Playing, Buffering, Loading, Paused, Progress)
 * Events for media handling to hook into
 
+# Support
+
+* Feel free to open an issue. Make sure to use one of the templates!
+* Commercial support is available. Integration with your app or services, samples, feature request, etc. Email: [hello@baseflow.com](mailto:hello@baseflow.com)
+* Powered by: [baseflow.com](https://baseflow.com)
+
 ## Status: 
 [![Build status](https://ci.appveyor.com/api/projects/status/be78iac0bl7q930i?svg=true)](https://ci.appveyor.com/project/martijn00/xamarinmediamanager)
 ![GitHub tag](https://img.shields.io/github/tag/martijn00/XamarinMediaManager.svg)
