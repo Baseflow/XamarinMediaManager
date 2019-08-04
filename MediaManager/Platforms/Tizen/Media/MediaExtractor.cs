@@ -27,6 +27,11 @@ namespace MediaManager.Platforms.Tizen.Media
             return null;
         }
 
+        protected override Task<string> GetResourcePath(string resourceName)
+        {
+            return null;
+        }
+
         protected virtual void SetMetadata(IMediaItem mediaItem, MetadataExtractor extractor)
         {
             var metadata = extractor.GetMetadata();

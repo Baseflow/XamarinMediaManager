@@ -57,7 +57,14 @@ namespace MediaManager
         /// <param name="resourceName"></param>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        Task<IMediaItem> Play(string resourceName, Assembly assembly);
+        Task<IMediaItem> PlayFromAssembly(string resourceName, Assembly assembly = null);
+
+        /// <summary>
+        /// Plays a native resource
+        /// </summary>
+        /// <param name="resourceName"></param>
+        /// <returns></returns>
+        Task<IMediaItem> PlayFromResource(string resourceName);
 
         /// <summary>
         /// Plays a list of media items

@@ -9,11 +9,16 @@ namespace MediaManager.Media
     public interface IMediaExtractor
     {
         IList<string> RemotePrefixes { get; }
+
         IList<string> FilePrefixes { get; }
+
+        IList<string> ResourcePrefixes { get; }
 
         Task<IMediaItem> CreateMediaItem(string url);
 
-        Task<IMediaItem> CreateMediaItem(string resourceName, Assembly assembly);
+        Task<IMediaItem> CreateMediaItemFromAssembly(string resourceName, Assembly assembly = null);
+
+        Task<IMediaItem> CreateMediaItemFromResource(string resourceName);
 
         Task<IMediaItem> CreateMediaItem(FileInfo file);
 

@@ -5,6 +5,7 @@
         Unknown = 0,
         Remote,
         FileSystem,
-        Embedded
+        Embedded,
+        Resource
     }
 }

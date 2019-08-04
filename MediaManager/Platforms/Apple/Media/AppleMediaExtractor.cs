@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using AVFoundation;
 using CoreGraphics;
@@ -79,6 +80,18 @@ namespace MediaManager.Platforms.Apple.Media
             imageGenerator.AppliesPreferredTrackTransform = true;
             var cgImage = imageGenerator.CopyCGImageAtTime(new CMTime((long)timeFromStart.TotalMilliseconds, 1000000), out var actualTime, out var error);
             return Task.FromResult(cgImage as object);
+        }
+
+        protected override Task<string> GetResourcePath(string resourceName)
+        {
+            string path = null;
+
+            var filename = Path.GetFileNameWithoutExtension(resourceName);
+            var extension = Path.GetExtension(resourceName);
+
+            path = NSBundle.MainBundle.PathForResource(filename, extension);
+
+            return Task.FromResult(path);
         }
     }
 }
