@@ -25,8 +25,8 @@ namespace MediaManager.Platforms.Apple.Player
         public VideoAspectMode VideoAspect { get; set; }
         public bool ShowPlaybackControls { get; set; } = true;
 
-        public int VideoHeight => 0;
-        public int VideoWidth => 0;
+        public int VideoHeight => (int)Player.CurrentItem.PresentationSize.Width;
+        public int VideoWidth => (int)Player.CurrentItem.PresentationSize.Height;
 
         public abstract IVideoView VideoView { get; set; }
 
