@@ -307,6 +307,7 @@ namespace MediaManager
         public event MediaItemFinishedEventHandler MediaItemFinished;
         public event MediaItemChangedEventHandler MediaItemChanged;
         public event MediaItemFailedEventHandler MediaItemFailed;
+        public event VideoSizeChangedEventHandler VideoSizeChanged;
 
         protected IMediaItem _currentSource;
 
@@ -319,6 +320,8 @@ namespace MediaManager
         internal void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
         internal void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
         internal void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
+
+        internal void OnVideoSizeChanged(object sender, VideoSizeChangedEventArgs e) => VideoSizeChanged?.Invoke(sender, e);
 
         internal void OnStateChanged(object sender, StateChangedEventArgs e)
         {
