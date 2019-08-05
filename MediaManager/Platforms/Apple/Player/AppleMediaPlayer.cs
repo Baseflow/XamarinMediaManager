@@ -12,7 +12,7 @@ using MediaManager.Video;
 
 namespace MediaManager.Platforms.Apple.Player
 {
-    public abstract class AppleMediaPlayer : NSObject, IMediaPlayer<AVQueuePlayer>
+    public abstract class AppleMediaPlayer : IMediaPlayer<AVQueuePlayer>
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
 
@@ -210,7 +210,7 @@ namespace MediaManager.Platforms.Apple.Player
             MediaManager.State = MediaPlayerState.Stopped;
         }
 
-        protected override void Dispose(bool disposing)
+        public virtual void Dispose()
         {
             NSNotificationCenter.DefaultCenter.RemoveObservers(new List<NSObject>(){
                 didFinishPlayingObserver,
@@ -228,8 +228,6 @@ namespace MediaManager.Platforms.Apple.Player
             playbackBufferFullToken?.Dispose();
             playbackBufferEmptyToken?.Dispose();
             presentationSizeToken?.Dispose();
-
-            base.Dispose(disposing);
         }
     }
 }

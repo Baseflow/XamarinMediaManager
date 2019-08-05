@@ -23,16 +23,8 @@ using MediaManager.Video;
 
 namespace MediaManager.Platforms.Android.Player
 {
-    public class AndroidMediaPlayer : Java.Lang.Object, IMediaPlayer<SimpleExoPlayer, VideoView>
+    public class AndroidMediaPlayer : IMediaPlayer<SimpleExoPlayer, VideoView>
     {
-        public AndroidMediaPlayer()
-        {
-        }
-
-        protected AndroidMediaPlayer(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
-        {
-        }
-
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
 
         protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
@@ -296,7 +288,7 @@ namespace MediaManager.Platforms.Android.Player
             return Task.CompletedTask;
         }
 
-        protected override void Dispose(bool disposing)
+        public void Dispose()
         {
             if (Player != null)
             {
@@ -305,8 +297,6 @@ namespace MediaManager.Platforms.Android.Player
                 Player.Release();
                 Player = null;
             }
-
-            base.Dispose(disposing);
         }
     }
 }
