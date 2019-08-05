@@ -23,7 +23,7 @@ namespace MediaManager.Platforms.Uap.Player
         public VideoAspectMode VideoAspect { get; set; }
         public bool ShowPlaybackControls { get; set; } = true;
 
-        public int VideoHeight => (int)Player.PlaybackSession.NaturalVideoWidth;
+        public int VideoHeight => (int)Player.PlaybackSession.NaturalVideoHeight;
         public int VideoWidth => (int)Player.PlaybackSession.NaturalVideoWidth;
 
         public VideoView PlayerView => VideoView as VideoView;
