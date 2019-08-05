@@ -58,6 +58,7 @@ namespace MediaManager.Platforms.Apple.Player
         private IDisposable playbackLikelyToKeepUpToken;
         private IDisposable playbackBufferFullToken;
         private IDisposable playbackBufferEmptyToken;
+        private IDisposable presentationSizeToken;
 
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;
@@ -81,6 +82,18 @@ namespace MediaManager.Platforms.Apple.Player
             playbackLikelyToKeepUpToken = Player.AddObserver("currentItem.playbackLikelyToKeepUp", options, PlaybackLikelyToKeepUpChanged);
             playbackBufferFullToken = Player.AddObserver("currentItem.playbackBufferFull", options, PlaybackBufferFullChanged);
             playbackBufferEmptyToken = Player.AddObserver("currentItem.playbackBufferEmpty", options, PlaybackBufferEmptyChanged);
+            presentationSizeToken = Player.AddObserver("currentItem.presentationSize", options, PresentationSizeChanged);
+        }
+
+        private void PresentationSizeChanged(NSObservedChange obj)
+        {
+            if (Player.CurrentItem!=null && !Player.CurrentItem.PresentationSize.IsEmpty)
+            {
+                MediaManager.OnVideoSizeChanged(this,
+                    new MediaManager.Playback.VideoSizeChangedEventArgs(
+                        (int)Player.CurrentItem.PresentationSize.Width,
+                        (int)Player.CurrentItem.PresentationSize.Height));
+            }
         }
 
         private void StatusChanged(NSObservedChange obj)
@@ -214,6 +227,7 @@ namespace MediaManager.Platforms.Apple.Player
             loadedTimeRangesToken?.Dispose();
             playbackBufferFullToken?.Dispose();
             playbackBufferEmptyToken?.Dispose();
+            presentationSizeToken?.Dispose();
 
             base.Dispose(disposing);
         }
