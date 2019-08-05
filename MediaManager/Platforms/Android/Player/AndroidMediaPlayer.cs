@@ -42,8 +42,8 @@ namespace MediaManager.Platforms.Android.Player
         public VideoAspectMode VideoAspect { get; set; }
         public bool ShowPlaybackControls { get; set; } = true;
 
-        public int VideoHeight => 0;
-        public int VideoWidth => 0;
+        public int VideoHeight { get; internal set; } = 0;
+        public int VideoWidth { get; internal set; } = 0;
 
         protected Context Context => MediaManager.Context;
 
@@ -125,6 +125,7 @@ namespace MediaManager.Platforms.Android.Player
             SsChunkSourceFactory = new DefaultSsChunkSource.Factory(DataSourceFactory);
 
             Player = ExoPlayerFactory.NewSimpleInstance(Context);
+            Player.VideoSizeChanged += Player_VideoSizeChanged;
 
             var audioAttributes = new Com.Google.Android.Exoplayer2.Audio.AudioAttributes.Builder()
              .SetUsage(C.UsageMedia)
@@ -220,6 +221,12 @@ namespace MediaManager.Platforms.Android.Player
                 PlayerView.Player = Player;
         }
 
+        private void Player_VideoSizeChanged(object sender, Com.Google.Android.Exoplayer2.Video.VideoSizeChangedEventArgs e)
+        {
+            VideoWidth = e.Width;
+            VideoHeight = e.Height;
+        }
+
         public virtual void UpdateRequestHeaders()
         {
             if (RequestHeaders?.Count > 0)
@@ -294,6 +301,7 @@ namespace MediaManager.Platforms.Android.Player
         {
             if (Player != null)
             {
+                Player.VideoSizeChanged -= Player_VideoSizeChanged;
                 Player.RemoveListener(PlayerEventListener);
                 Player.Release();
                 Player = null;
