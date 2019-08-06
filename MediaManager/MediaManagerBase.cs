@@ -344,6 +344,17 @@ namespace MediaManager
             }
         }
 
+        public VideoSize _videoSize;
+        public VideoSize VideoSize 
+        { 
+            get => _videoSize;
+            set
+            {
+                if (SetProperty(ref _videoSize, value))
+                    OnVideoSizeChanged(this, new VideoSizeChangedEventArgs(VideoSize));
+            }
+        }
+
         protected virtual void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (!IsInitialized)

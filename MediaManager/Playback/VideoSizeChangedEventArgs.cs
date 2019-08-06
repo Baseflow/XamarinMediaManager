@@ -6,13 +6,11 @@ namespace MediaManager.Playback
 {
     public class VideoSizeChangedEventArgs : EventArgs
     {
-        public VideoSizeChangedEventArgs(int width, int height)
+        public VideoSizeChangedEventArgs(VideoSize size)
         {
-            Width = width;
-            Height = height;
+            Size = size;
         }
 
-        public int Width { get; }
-        public int Height { get; }
+        public VideoSize Size { get; }
     }
 }

@@ -47,7 +47,7 @@ namespace MediaManager.Platforms.Ios.Player
             });
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
             Player.InvokeOnMainThread(() =>
             {
@@ -56,7 +56,8 @@ namespace MediaManager.Platforms.Ios.Player
 
             var audioSession = AVAudioSession.SharedInstance();
             audioSession.SetActive(false);
-            base.Dispose();
+
+            base.Dispose(disposing);
         }
     }
 }

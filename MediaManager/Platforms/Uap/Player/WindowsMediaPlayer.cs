@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Platforms.Uap.Media;
 using MediaManager.Platforms.Uap.Video;
+using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Video;
 using Windows.Media.Playback;
@@ -10,7 +11,7 @@ using MediaPlayerState = MediaManager.Player.MediaPlayerState;
 
 namespace MediaManager.Platforms.Uap.Player
 {
-    public class WindowsMediaPlayer : IMediaPlayer<MediaPlayer, VideoView>
+    public class WindowsMediaPlayer : MediaPlayerBase, IMediaPlayer<MediaPlayer, VideoView>
     {
         public WindowsMediaPlayer()
         {
@@ -18,18 +19,10 @@ namespace MediaManager.Platforms.Uap.Player
 
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Windows;
 
-        public bool AutoAttachVideoView { get; set; } = true;
-
-        public VideoAspectMode VideoAspect { get; set; }
-        public bool ShowPlaybackControls { get; set; } = true;
-
-        public int VideoHeight => (int)Player.PlaybackSession.NaturalVideoHeight;
-        public int VideoWidth => (int)Player.PlaybackSession.NaturalVideoWidth;
-
         public VideoView PlayerView => VideoView as VideoView;
 
         private IVideoView _videoView;
-        public IVideoView VideoView
+        public new IVideoView VideoView
         {
             get => _videoView;
             set
@@ -103,7 +96,7 @@ namespace MediaManager.Platforms.Uap.Player
 
         private void PlaybackSession_NaturalVideoSizeChanged(MediaPlaybackSession sender, object args)
         {
-            //VideoHeight = sender.NaturalVideoHeight;
+            MediaManager.VideoSize = new VideoSize((int)sender.NaturalVideoWidth, (int)sender.NaturalVideoHeight);
         }
 
         private void PlaybackSession_PositionChanged(MediaPlaybackSession sender, object args)
@@ -131,13 +124,13 @@ namespace MediaManager.Platforms.Uap.Player
             MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
         }
 
-        public Task Pause()
+        public override Task Pause()
         {
             Player.Pause();
             return Task.CompletedTask;
         }
 
-        public async Task Play(IMediaItem mediaItem)
+        public override async Task Play(IMediaItem mediaItem)
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
@@ -154,29 +147,31 @@ namespace MediaManager.Platforms.Uap.Player
             Player.Source = MediaPlaybackList;
             await Play();
 
+            MediaManager.OnVideoSizeChanged(this, new VideoSizeChangedEventArgs(new VideoSize((int)Player.PlaybackSession.NaturalVideoWidth, (int)Player.PlaybackSession.NaturalVideoHeight)));
+
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
-        public Task Play()
+        public override Task Play()
         {
             Player.Play();
             return Task.CompletedTask;
         }
 
-        public Task SeekTo(TimeSpan position)
+        public override Task SeekTo(TimeSpan position)
         {
             Player.PlaybackSession.Position = position;
             return Task.CompletedTask;
         }
 
-        public async Task Stop()
+        public override async Task Stop()
         {
             Player.Pause();
             await SeekTo(TimeSpan.Zero);
             MediaManager.State = MediaPlayerState.Stopped;
         }
 
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
             Player.MediaOpened -= Player_MediaOpened;
             Player.MediaEnded -= Player_MediaEnded;

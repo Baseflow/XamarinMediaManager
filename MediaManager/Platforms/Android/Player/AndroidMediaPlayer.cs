@@ -20,22 +20,15 @@ using MediaManager.Platforms.Android.Queue;
 using MediaManager.Platforms.Android.Video;
 using MediaManager.Player;
 using MediaManager.Video;
+using MediaManager.Playback;
 
 namespace MediaManager.Platforms.Android.Player
 {
-    public class AndroidMediaPlayer : IMediaPlayer<SimpleExoPlayer, VideoView>
+    public class AndroidMediaPlayer : MediaPlayerBase, IMediaPlayer<SimpleExoPlayer, VideoView>
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
 
         protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
-
-        public bool AutoAttachVideoView { get; set; } = true;
-
-        public VideoAspectMode VideoAspect { get; set; }
-        public bool ShowPlaybackControls { get; set; } = true;
-
-        public int VideoHeight { get; internal set; } = 0;
-        public int VideoWidth { get; internal set; } = 0;
 
         protected Context Context => MediaManager.Context;
 
@@ -215,7 +208,7 @@ namespace MediaManager.Platforms.Android.Player
 
         private void Player_VideoSizeChanged(object sender, Com.Google.Android.Exoplayer2.Video.VideoSizeChangedEventArgs e)
         {
-            MediaManager.OnVideoSizeChanged(this, new MediaManager.Playback.VideoSizeChangedEventArgs(e.Width, e.Height));
+            MediaManager.VideoSize = new VideoSize(e.Width, e.Height);
         }
 
         public virtual void UpdateRequestHeaders()
@@ -252,7 +245,7 @@ namespace MediaManager.Platforms.Android.Player
             MediaSessionConnector.SetPlayer(Player, PlaybackPreparer, null);
         }
 
-        public async Task Play(IMediaItem mediaItem)
+        public override async Task Play(IMediaItem mediaItem)
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
@@ -264,31 +257,31 @@ namespace MediaManager.Platforms.Android.Player
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
-        public Task Play()
+        public override Task Play()
         {
             Player.PlayWhenReady = true;
             return Task.CompletedTask;
         }
 
-        public Task Pause()
+        public override Task Pause()
         {
             Player.Stop();
             return Task.CompletedTask;
         }
 
-        public Task SeekTo(TimeSpan position)
+        public override Task SeekTo(TimeSpan position)
         {
             Player.SeekTo((long)position.TotalMilliseconds);
             return Task.CompletedTask;
         }
 
-        public Task Stop()
+        public override Task Stop()
         {
             Player.Stop();
             return Task.CompletedTask;
         }
 
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
             if (Player != null)
             {

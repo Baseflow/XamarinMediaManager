@@ -7,12 +7,13 @@ using CoreMedia;
 using Foundation;
 using MediaManager.Media;
 using MediaManager.Platforms.Apple.Playback;
+using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Video;
 
 namespace MediaManager.Platforms.Apple.Player
 {
-    public abstract class AppleMediaPlayer : IMediaPlayer<AVQueuePlayer>
+    public abstract class AppleMediaPlayer : MediaPlayerBase, IMediaPlayer<AVQueuePlayer>
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
 
@@ -20,13 +21,8 @@ namespace MediaManager.Platforms.Apple.Player
         {
         }
 
-        public bool AutoAttachVideoView { get; set; } = true;
-
         public VideoAspectMode VideoAspect { get; set; }
         public bool ShowPlaybackControls { get; set; } = true;
-
-        public int VideoHeight => (int)Player.CurrentItem.PresentationSize.Height;
-        public int VideoWidth => (int)Player.CurrentItem.PresentationSize.Width;
 
         public abstract IVideoView VideoView { get; set; }
 
@@ -89,10 +85,7 @@ namespace MediaManager.Platforms.Apple.Player
         {
             if (Player.CurrentItem!=null && !Player.CurrentItem.PresentationSize.IsEmpty)
             {
-                MediaManager.OnVideoSizeChanged(this,
-                    new MediaManager.Playback.VideoSizeChangedEventArgs(
-                        (int)Player.CurrentItem.PresentationSize.Width,
-                        (int)Player.CurrentItem.PresentationSize.Height));
+                MediaManager.VideoSize = new VideoSize((int)Player.CurrentItem.PresentationSize.Width, (int)Player.CurrentItem.PresentationSize.Height);
             }
         }
 
@@ -172,13 +165,13 @@ namespace MediaManager.Platforms.Apple.Player
                 await Stop();
         }
 
-        public Task Pause()
+        public override Task Pause()
         {
             Player.Pause();
             return Task.CompletedTask;
         }
 
-        public async Task Play(IMediaItem mediaItem)
+        public override async Task Play(IMediaItem mediaItem)
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
@@ -192,25 +185,25 @@ namespace MediaManager.Platforms.Apple.Player
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
-        public Task Play()
+        public override Task Play()
         {
             Player.Play();
             return Task.CompletedTask;
         }
 
-        public async Task SeekTo(TimeSpan position)
+        public override async Task SeekTo(TimeSpan position)
         {
             await Player.SeekAsync(CMTime.FromSeconds(position.TotalSeconds, 1));
         }
 
-        public async Task Stop()
+        public override async Task Stop()
         {
             Player.Pause();
             await SeekTo(TimeSpan.Zero);
             MediaManager.State = MediaPlayerState.Stopped;
         }
 
-        public virtual void Dispose()
+        protected override void Dispose(bool disposing)
         {
             NSNotificationCenter.DefaultCenter.RemoveObservers(new List<NSObject>(){
                 didFinishPlayingObserver,

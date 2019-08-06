@@ -44,11 +44,12 @@ namespace MediaManager.Platforms.Tvos.Player
             }
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
             var audioSession = AVAudioSession.SharedInstance();
             audioSession.SetActive(false);
-            base.Dispose();
+
+            base.Dispose(disposing);
         }
     }
 }

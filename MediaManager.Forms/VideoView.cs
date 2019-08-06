@@ -99,10 +99,10 @@ namespace MediaManager.Forms
             BindableProperty.Create(nameof(Shuffle), typeof(ShuffleMode), typeof(VideoView), ShuffleMode.Off, propertyChanged: OnShufflePropertyChanged, defaultValueCreator: x => MediaManager.ShuffleMode);
 
         public static readonly BindableProperty VideoHeightProperty =
-            BindableProperty.Create(nameof(VideoHeight), typeof(int), typeof(VideoView), defaultValueCreator: x => MediaManager.MediaPlayer.VideoHeight);
+            BindableProperty.Create(nameof(VideoHeight), typeof(int), typeof(VideoView), defaultValueCreator: x => MediaManager.VideoSize.Height);
 
         public static readonly BindableProperty VideoWidthProperty =
-            BindableProperty.Create(nameof(VideoWidth), typeof(int), typeof(VideoView), defaultValueCreator: x => MediaManager.MediaPlayer.VideoWidth);
+            BindableProperty.Create(nameof(VideoWidth), typeof(int), typeof(VideoView), defaultValueCreator: x => MediaManager.VideoSize.Width);
 
         public static readonly BindableProperty VolumeProperty =
             BindableProperty.Create(nameof(Volume), typeof(int), typeof(VideoView), 1, defaultValueCreator: x => MediaManager.VolumeManager.CurrentVolume);
