@@ -22,7 +22,7 @@ namespace MediaManager.Platforms.Android.Media
             {
                 var metaRetriever = new MediaMetadataRetriever();
 
-                if(mediaItem.MediaLocation.IsLocal())
+                if (mediaItem.MediaLocation.IsLocal())
                     await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri);
                 else
                     await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
@@ -187,7 +187,7 @@ namespace MediaManager.Platforms.Android.Media
                 metaRetriever.Release();
                 return bitmap;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }

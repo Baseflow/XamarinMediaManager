@@ -1,6 +1,5 @@
-﻿﻿using System;
-﻿using Windows.Media.Playback;
-using MediaManager.Volume;
+﻿using MediaManager.Volume;
+using Windows.Media.Playback;
 
 namespace MediaManager.Platforms.Uap.Volume
 {

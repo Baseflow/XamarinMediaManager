@@ -76,7 +76,7 @@ namespace MediaManager.Platforms.Apple.Player
 
         private void PresentationSizeChanged(NSObservedChange obj)
         {
-            if (Player.CurrentItem!=null && !Player.CurrentItem.PresentationSize.IsEmpty)
+            if (Player.CurrentItem != null && !Player.CurrentItem.PresentationSize.IsEmpty)
             {
                 VideoWidth = (int)Player.CurrentItem.PresentationSize.Width;
                 VideoHeight = (int)Player.CurrentItem.PresentationSize.Height;

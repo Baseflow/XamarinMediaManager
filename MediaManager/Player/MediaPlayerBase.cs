@@ -24,9 +24,9 @@ namespace MediaManager.Player
         }
 
         private bool _showPlaybackControls;
-        public bool ShowPlaybackControls 
-        { 
-            get => _showPlaybackControls; 
+        public bool ShowPlaybackControls
+        {
+            get => _showPlaybackControls;
             set => SetProperty(ref _showPlaybackControls, value);
         }
 

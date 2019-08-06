@@ -109,7 +109,7 @@ namespace MediaManager.Media
                 {
                     mediaItem.MediaLocation = GetMediaLocation(mediaItem);
                 }
-                if(mediaItem.MediaType == MediaType.Default)
+                if (mediaItem.MediaType == MediaType.Default)
                 {
                     mediaItem.MediaType = GetMediaType(mediaItem);
                 }

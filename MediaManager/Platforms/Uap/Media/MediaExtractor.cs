@@ -77,7 +77,7 @@ namespace MediaManager.Platforms.Uap.Media
 
         public override async Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
         {
-            if(mediaItem.MediaLocation.IsLocal())
+            if (mediaItem.MediaLocation.IsLocal())
             {
                 var file = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
                 var thumbnail = await GetThumbnailAsync(file, timeFromStart);
