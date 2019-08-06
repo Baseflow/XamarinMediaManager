@@ -91,28 +91,9 @@ namespace MediaManager.Media
             return mediaItem;
         }
 
-        protected virtual async Task<string> CopyResourceStreamToFile(Stream stream, string tempDirectoryName, string resourceName)
-        {
-            string path = null;
+        public abstract Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart);
 
-            if (stream != null)
-            {
-                var tempDirectory = Path.Combine(Path.GetTempPath(), tempDirectoryName);
-                path = Path.Combine(tempDirectory, resourceName);
-
-                if (!Directory.Exists(tempDirectory))
-                {
-                    Directory.CreateDirectory(tempDirectory);
-                }
-
-                using (var tempFile = File.Create(path))
-                {
-                    await stream.CopyToAsync(tempFile).ConfigureAwait(false);
-                }
-            }
-
-            return path;
-        }
+        protected abstract Task<string> GetResourcePath(string resourceName);
 
         public abstract Task<object> RetrieveMediaItemArt(IMediaItem mediaItem);
 
@@ -153,6 +134,29 @@ namespace MediaManager.Media
             return MediaLocation.Unknown;
         }
 
+        protected virtual async Task<string> CopyResourceStreamToFile(Stream stream, string tempDirectoryName, string resourceName)
+        {
+            string path = null;
+
+            if (stream != null)
+            {
+                var tempDirectory = Path.Combine(Path.GetTempPath(), tempDirectoryName);
+                path = Path.Combine(tempDirectory, resourceName);
+
+                if (!Directory.Exists(tempDirectory))
+                {
+                    Directory.CreateDirectory(tempDirectory);
+                }
+
+                using (var tempFile = File.Create(path))
+                {
+                    await stream.CopyToAsync(tempFile).ConfigureAwait(false);
+                }
+            }
+
+            return path;
+        }
+
         protected virtual bool TryFindAssembly(string resourceName, out Assembly assembly)
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -170,9 +174,5 @@ namespace MediaManager.Media
             assembly = null;
             return false;
         }
-
-        public abstract Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart);
-
-        protected abstract Task<string> GetResourcePath(string resourceName);
     }
 }

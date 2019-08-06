@@ -11,14 +11,13 @@ namespace MediaManager.Platforms.Uap.Media
         public static async Task<MediaSource> ToMediaSource(this IMediaItem mediaItem)
         {
             //TODO: Get Metadata from MediaSource
-            switch (mediaItem.MediaLocation)
+            if (mediaItem.MediaLocation.IsLocal())
             {
-                case MediaLocation.FileSystem:
-                    var storageFile = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
-                    return MediaSource.CreateFromStorageFile(storageFile);
-                default:
-                    return MediaSource.CreateFromUri(new Uri(mediaItem.MediaUri));
+                var storageFile = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
+                return MediaSource.CreateFromStorageFile(storageFile);
             }
+            else
+                return MediaSource.CreateFromUri(new Uri(mediaItem.MediaUri));
         }
     }
 }

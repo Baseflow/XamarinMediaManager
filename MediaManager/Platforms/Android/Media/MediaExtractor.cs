@@ -22,22 +22,18 @@ namespace MediaManager.Platforms.Android.Media
             {
                 var metaRetriever = new MediaMetadataRetriever();
 
-                switch (mediaItem.MediaLocation)
-                {
-                    case MediaLocation.Embedded:
-                    case MediaLocation.FileSystem:
-                        await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri);
-                        break;
-                    default:
-                        await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
-                        break;
-                }
+                if(mediaItem.MediaLocation.IsLocal())
+                    await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri);
+                else
+                    await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
 
                 return await ExtractMediaInfo(metaRetriever, mediaItem).ConfigureAwait(false);
+
+                //TODO: Should we call metaRetriever.Release(); ?
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
             return mediaItem;
         }
@@ -181,24 +177,19 @@ namespace MediaManager.Platforms.Android.Media
             {
                 var metaRetriever = new MediaMetadataRetriever();
 
-                switch (mediaItem.MediaLocation)
-                {
-                    case MediaLocation.Embedded:
-                    case MediaLocation.FileSystem:
-                        await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri);
-                        break;
-                    default:
-                        await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
-                        break;
-                }
+                if (mediaItem.MediaLocation.IsLocal())
+                    await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri);
+                else
+                    await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
+
                 var bitmap = metaRetriever.GetFrameAtTime((long)timeFromStart.TotalMilliseconds);
 
                 metaRetriever.Release();
                 return bitmap;
             }
-            catch
+            catch(Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
             return null;
         }

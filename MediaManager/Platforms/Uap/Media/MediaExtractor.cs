@@ -20,7 +20,7 @@ namespace MediaManager.Platforms.Uap.Media
             // default title
             mediaItem.Title = System.IO.Path.GetFileNameWithoutExtension(mediaItem.MediaUri);
 
-            if (mediaItem.MediaLocation == MediaLocation.FileSystem)
+            if (mediaItem.MediaLocation.IsLocal())
             {
                 var file = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
 
@@ -77,7 +77,7 @@ namespace MediaManager.Platforms.Uap.Media
 
         public override async Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
         {
-            if (mediaItem.MediaLocation == MediaLocation.FileSystem)
+            if(mediaItem.MediaLocation.IsLocal())
             {
                 var file = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
                 var thumbnail = await GetThumbnailAsync(file, timeFromStart);
