@@ -31,7 +31,7 @@ namespace MediaManager.Platforms.Ios.Video
                 _playerViewController = value;
                 if (_playerViewController != null)
                 {
-                    _playerViewController.View.Frame = Frame;
+                    _playerViewController.View.Frame = Bounds;
                     AddSubview(_playerViewController.View);
                     (Superview?.NextResponder as UIViewController)?.AddChildViewController(_playerViewController);
                 }

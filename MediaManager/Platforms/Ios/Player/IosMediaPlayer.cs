@@ -41,7 +41,7 @@ namespace MediaManager.Platforms.Ios.Player
             {
             }
 
-            InvokeOnMainThread(() =>
+            Player.InvokeOnMainThread(() =>
             {
                 UIApplication.SharedApplication.BeginReceivingRemoteControlEvents();
             });
@@ -49,13 +49,14 @@ namespace MediaManager.Platforms.Ios.Player
 
         protected override void Dispose(bool disposing)
         {
-            InvokeOnMainThread(() =>
+            Player.InvokeOnMainThread(() =>
             {
                 UIApplication.SharedApplication.EndReceivingRemoteControlEvents();
             });
 
             var audioSession = AVAudioSession.SharedInstance();
             audioSession.SetActive(false);
+
             base.Dispose(disposing);
         }
     }

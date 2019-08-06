@@ -8,27 +8,16 @@ using Foundation;
 using MediaManager.Media;
 using MediaManager.Platforms.Apple.Playback;
 using MediaManager.Player;
-using MediaManager.Video;
 
 namespace MediaManager.Platforms.Apple.Player
 {
-    public abstract class AppleMediaPlayer : NSObject, IMediaPlayer<AVQueuePlayer>
+    public abstract class AppleMediaPlayer : MediaPlayerBase, IMediaPlayer<AVQueuePlayer>
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
 
         public AppleMediaPlayer()
         {
         }
-
-        public bool AutoAttachVideoView { get; set; } = true;
-
-        public VideoAspectMode VideoAspect { get; set; }
-        public bool ShowPlaybackControls { get; set; } = true;
-
-        public int VideoHeight => 0;
-        public int VideoWidth => 0;
-
-        public abstract IVideoView VideoView { get; set; }
 
         private AVQueuePlayer _player;
         public AVQueuePlayer Player
@@ -58,9 +47,10 @@ namespace MediaManager.Platforms.Apple.Player
         private IDisposable playbackLikelyToKeepUpToken;
         private IDisposable playbackBufferFullToken;
         private IDisposable playbackBufferEmptyToken;
+        private IDisposable presentationSizeToken;
 
-        public event BeforePlayingEventHandler BeforePlaying;
-        public event AfterPlayingEventHandler AfterPlaying;
+        public override event BeforePlayingEventHandler BeforePlaying;
+        public override event AfterPlayingEventHandler AfterPlaying;
 
         protected virtual void Initialize()
         {
@@ -81,6 +71,16 @@ namespace MediaManager.Platforms.Apple.Player
             playbackLikelyToKeepUpToken = Player.AddObserver("currentItem.playbackLikelyToKeepUp", options, PlaybackLikelyToKeepUpChanged);
             playbackBufferFullToken = Player.AddObserver("currentItem.playbackBufferFull", options, PlaybackBufferFullChanged);
             playbackBufferEmptyToken = Player.AddObserver("currentItem.playbackBufferEmpty", options, PlaybackBufferEmptyChanged);
+            presentationSizeToken = Player.AddObserver("currentItem.presentationSize", options, PresentationSizeChanged);
+        }
+
+        private void PresentationSizeChanged(NSObservedChange obj)
+        {
+            if (Player.CurrentItem!=null && !Player.CurrentItem.PresentationSize.IsEmpty)
+            {
+                VideoWidth = (int)Player.CurrentItem.PresentationSize.Width;
+                VideoHeight = (int)Player.CurrentItem.PresentationSize.Height;
+            }
         }
 
         private void StatusChanged(NSObservedChange obj)
@@ -159,13 +159,13 @@ namespace MediaManager.Platforms.Apple.Player
                 await Stop();
         }
 
-        public Task Pause()
+        public override Task Pause()
         {
             Player.Pause();
             return Task.CompletedTask;
         }
 
-        public async Task Play(IMediaItem mediaItem)
+        public override async Task Play(IMediaItem mediaItem)
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
@@ -179,18 +179,18 @@ namespace MediaManager.Platforms.Apple.Player
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
-        public Task Play()
+        public override Task Play()
         {
             Player.Play();
             return Task.CompletedTask;
         }
 
-        public async Task SeekTo(TimeSpan position)
+        public override async Task SeekTo(TimeSpan position)
         {
             await Player.SeekAsync(CMTime.FromSeconds(position.TotalSeconds, 1));
         }
 
-        public async Task Stop()
+        public override async Task Stop()
         {
             Player.Pause();
             await SeekTo(TimeSpan.Zero);
@@ -214,8 +214,7 @@ namespace MediaManager.Platforms.Apple.Player
             loadedTimeRangesToken?.Dispose();
             playbackBufferFullToken?.Dispose();
             playbackBufferEmptyToken?.Dispose();
-
-            base.Dispose(disposing);
+            presentationSizeToken?.Dispose();
         }
     }
 }

@@ -48,6 +48,7 @@ namespace MediaManager.Platforms.Tvos.Player
         {
             var audioSession = AVAudioSession.SharedInstance();
             audioSession.SetActive(false);
+
             base.Dispose(disposing);
         }
     }

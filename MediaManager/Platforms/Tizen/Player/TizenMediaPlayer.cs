@@ -10,19 +10,13 @@ using TizenPlayer = Tizen.Multimedia.Player;
 
 namespace MediaManager.Platforms.Tizen.Player
 {
-    public class TizenMediaPlayer : IMediaPlayer<TizenPlayer, VideoView>
+    public class TizenMediaPlayer : MediaPlayerBase, IMediaPlayer<TizenPlayer, VideoView>
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Tizen;
 
         public TizenMediaPlayer()
         {
         }
-
-        public VideoAspectMode VideoAspect { get; set; }
-        public bool ShowPlaybackControls { get; set; } = true;
-
-        public int VideoHeight => 0;
-        public int VideoWidth => 0;
 
         private TizenPlayer _player;
         public TizenPlayer Player
@@ -69,47 +63,45 @@ namespace MediaManager.Platforms.Tizen.Player
             MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, new Exception(e.ToString()), e.ToString()));
         }
 
-        public bool AutoAttachVideoView { get; set; } = true;
-
-        public IVideoView VideoView { get; set; }
+        public override IVideoView VideoView { get; set; }
 
         public VideoView PlayerView => VideoView as VideoView;
 
-        public event BeforePlayingEventHandler BeforePlaying;
-        public event AfterPlayingEventHandler AfterPlaying;
+        public override event BeforePlayingEventHandler BeforePlaying;
+        public override event AfterPlayingEventHandler AfterPlaying;
 
-        public Task Pause()
+        public override Task Pause()
         {
             Player.Pause();
             return Task.CompletedTask;
         }
 
-        public async Task Play(IMediaItem mediaItem)
+        public override async Task Play(IMediaItem mediaItem)
         {
             Player.SetSource(mediaItem.ToMediaSource());
             await Player.PrepareAsync();
             Player.Start();
         }
 
-        public Task Play()
+        public override Task Play()
         {
             Player.Start();
             return Task.CompletedTask;
         }
 
-        public async Task SeekTo(TimeSpan position)
+        public override async Task SeekTo(TimeSpan position)
         {
             //TODO: Probably not good
             await Player.SetPlayPositionAsync(Convert.ToInt32(position.TotalMilliseconds), false);
         }
 
-        public Task Stop()
+        public override Task Stop()
         {
             Player.Stop();
             return Task.CompletedTask;
         }
 
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
             Player.ErrorOccurred -= Player_ErrorOccurred;
             Player.PlaybackInterrupted -= Player_PlaybackInterrupted;
