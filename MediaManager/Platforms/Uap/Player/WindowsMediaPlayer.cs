@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Platforms.Uap.Media;
 using MediaManager.Platforms.Uap.Video;
-using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Video;
 using Windows.Media.Playback;
@@ -22,7 +21,7 @@ namespace MediaManager.Platforms.Uap.Player
         public VideoView PlayerView => VideoView as VideoView;
 
         private IVideoView _videoView;
-        public new IVideoView VideoView
+        public override IVideoView VideoView
         {
             get => _videoView;
             set
@@ -51,8 +50,8 @@ namespace MediaManager.Platforms.Uap.Player
             }
         }
 
-        public event BeforePlayingEventHandler BeforePlaying;
-        public event AfterPlayingEventHandler AfterPlaying;
+        public override event BeforePlayingEventHandler BeforePlaying;
+        public override event AfterPlayingEventHandler AfterPlaying;
 
         private MediaPlaybackList _mediaPlaybackList;
         public MediaPlaybackList MediaPlaybackList
@@ -96,7 +95,8 @@ namespace MediaManager.Platforms.Uap.Player
 
         private void PlaybackSession_NaturalVideoSizeChanged(MediaPlaybackSession sender, object args)
         {
-            MediaManager.VideoSize = new VideoSize((int)sender.NaturalVideoWidth, (int)sender.NaturalVideoHeight);
+            VideoHeight = (int)sender.NaturalVideoHeight;
+            VideoWidth = (int)sender.NaturalVideoWidth;
         }
 
         private void PlaybackSession_PositionChanged(MediaPlaybackSession sender, object args)
@@ -146,8 +146,6 @@ namespace MediaManager.Platforms.Uap.Player
             }
             Player.Source = MediaPlaybackList;
             await Play();
-
-            MediaManager.OnVideoSizeChanged(this, new VideoSizeChangedEventArgs(new VideoSize((int)Player.PlaybackSession.NaturalVideoWidth, (int)Player.PlaybackSession.NaturalVideoHeight)));
 
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }

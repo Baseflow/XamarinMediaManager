@@ -69,7 +69,7 @@ namespace MediaManager.Platforms.Android.Player
         public VideoView PlayerView => VideoView as VideoView;
 
         private IVideoView _videoView;
-        public IVideoView VideoView
+        public override IVideoView VideoView
         {
             get => _videoView;
             set
@@ -90,8 +90,8 @@ namespace MediaManager.Platforms.Android.Player
 
         public MediaSessionCompat MediaSession => MediaManager.MediaSession;
 
-        public event BeforePlayingEventHandler BeforePlaying;
-        public event AfterPlayingEventHandler AfterPlaying;
+        public override event BeforePlayingEventHandler BeforePlaying;
+        public override event AfterPlayingEventHandler AfterPlaying;
 
         protected virtual void Initialize()
         {
@@ -208,7 +208,8 @@ namespace MediaManager.Platforms.Android.Player
 
         private void Player_VideoSizeChanged(object sender, Com.Google.Android.Exoplayer2.Video.VideoSizeChangedEventArgs e)
         {
-            MediaManager.VideoSize = new VideoSize(e.Width, e.Height);
+            VideoWidth = e.Width;
+            VideoHeight = e.Height;
         }
 
         public virtual void UpdateRequestHeaders()

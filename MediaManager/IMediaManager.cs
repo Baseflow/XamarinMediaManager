@@ -37,8 +37,6 @@ namespace MediaManager
 
         IMediaQueue MediaQueue { get; set; }
 
-        VideoSize VideoSize { get; set; }
-
         void Init();
 
         /// <summary>

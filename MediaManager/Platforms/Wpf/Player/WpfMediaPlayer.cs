@@ -8,7 +8,7 @@ using MediaManager.Video;
 
 namespace MediaManager.Platforms.Wpf.Player
 {
-    public class WpfMediaPlayer : IMediaPlayer<MediaElement, VideoView>
+    public class WpfMediaPlayer : MediaPlayerBase, IMediaPlayer<MediaElement, VideoView>
     {
         public WpfMediaPlayer()
         {
@@ -16,12 +16,10 @@ namespace MediaManager.Platforms.Wpf.Player
 
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Wpf;
 
-        public bool AutoAttachVideoView { get; set; } = true;
-
         public VideoView PlayerView => VideoView as VideoView;
 
         private IVideoView _videoView;
-        public IVideoView VideoView
+        public override IVideoView VideoView
         {
             get => _videoView;
             set
@@ -45,14 +43,8 @@ namespace MediaManager.Platforms.Wpf.Player
             }
         }
 
-        public VideoAspectMode VideoAspect { get; set; }
-        public bool ShowPlaybackControls { get; set; } = true;
-
-        public int VideoHeight => 0;
-        public int VideoWidth => 0;
-
-        public event BeforePlayingEventHandler BeforePlaying;
-        public event AfterPlayingEventHandler AfterPlaying;
+        public override event BeforePlayingEventHandler BeforePlaying;
+        public override event AfterPlayingEventHandler AfterPlaying;
 
         public void Initialize()
         {
@@ -96,14 +88,14 @@ namespace MediaManager.Platforms.Wpf.Player
             MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
         }
 
-        public Task Pause()
+        public override Task Pause()
         {
             Player.Pause();
             MediaManager.State = MediaPlayerState.Paused;
             return Task.CompletedTask;
         }
 
-        public async Task Play(IMediaItem mediaItem)
+        public override async Task Play(IMediaItem mediaItem)
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
             try
@@ -119,27 +111,27 @@ namespace MediaManager.Platforms.Wpf.Player
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
-        public Task Play()
+        public override Task Play()
         {
             Player.Play();
             MediaManager.State = MediaPlayerState.Playing;
             return Task.CompletedTask;
         }
 
-        public Task SeekTo(TimeSpan position)
+        public override Task SeekTo(TimeSpan position)
         {
             Player.Position = position;
             return Task.CompletedTask;
         }
 
-        public Task Stop()
+        public override Task Stop()
         {
             Player.Pause();
             MediaManager.State = MediaPlayerState.Stopped;
             return Task.CompletedTask;
         }
 
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
             Player.MediaEnded -= Player_MediaEnded;
             Player.MediaOpened -= Player_MediaOpened;

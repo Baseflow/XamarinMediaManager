@@ -1,18 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using MediaManager.Media;
 using MediaManager.Video;
 
 namespace MediaManager.Player
 {
-    public abstract class MediaPlayerBase
+    public abstract class MediaPlayerBase : NotifyPropertyChangedBase, IMediaPlayer
     {
-        public IVideoView VideoView { get; set; }
-        public bool AutoAttachVideoView { get; set; } = true;
-        public VideoAspectMode VideoAspect { get; set; }
-        public bool ShowPlaybackControls { get; set; }
+        public abstract IVideoView VideoView { get; set; }
+        public virtual bool AutoAttachVideoView { get; set; } = true;
+        public virtual VideoAspectMode VideoAspect { get; set; }
+        public virtual bool ShowPlaybackControls { get; set; }
+
+        private int _videoWidth;
+        public int VideoWidth
+        {
+            get => _videoWidth;
+            set => SetProperty(ref _videoWidth, value);
+        }
+
+        private int _videoHeight;
+        public int VideoHeight
+        {
+            get => _videoHeight;
+            set => SetProperty(ref _videoHeight, value);
+        }
+
+        public float VideoAspectRatio => VideoHeight == 0 ? 0 : (float)VideoWidth/VideoHeight;
+
+        public abstract event BeforePlayingEventHandler BeforePlaying;
+        public abstract event AfterPlayingEventHandler AfterPlaying;
 
         public abstract Task Pause();
         public abstract Task Play(IMediaItem mediaItem);

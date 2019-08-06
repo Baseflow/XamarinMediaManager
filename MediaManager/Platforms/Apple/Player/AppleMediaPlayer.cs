@@ -21,11 +21,6 @@ namespace MediaManager.Platforms.Apple.Player
         {
         }
 
-        public VideoAspectMode VideoAspect { get; set; }
-        public bool ShowPlaybackControls { get; set; } = true;
-
-        public abstract IVideoView VideoView { get; set; }
-
         private AVQueuePlayer _player;
         public AVQueuePlayer Player
         {
@@ -56,8 +51,8 @@ namespace MediaManager.Platforms.Apple.Player
         private IDisposable playbackBufferEmptyToken;
         private IDisposable presentationSizeToken;
 
-        public event BeforePlayingEventHandler BeforePlaying;
-        public event AfterPlayingEventHandler AfterPlaying;
+        public override event BeforePlayingEventHandler BeforePlaying;
+        public override event AfterPlayingEventHandler AfterPlaying;
 
         protected virtual void Initialize()
         {
@@ -85,7 +80,8 @@ namespace MediaManager.Platforms.Apple.Player
         {
             if (Player.CurrentItem!=null && !Player.CurrentItem.PresentationSize.IsEmpty)
             {
-                MediaManager.VideoSize = new VideoSize((int)Player.CurrentItem.PresentationSize.Width, (int)Player.CurrentItem.PresentationSize.Height);
+                VideoWidth = (int)Player.CurrentItem.PresentationSize.Width;
+                VideoHeight = (int)Player.CurrentItem.PresentationSize.Height;
             }
         }
 

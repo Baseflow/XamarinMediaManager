@@ -15,8 +15,6 @@ namespace MediaManager.Playback
     public delegate void MediaItemChangedEventHandler(object sender, MediaItemEventArgs e);
     public delegate void MediaItemFailedEventHandler(object sender, MediaItemFailedEventArgs e);
 
-    public delegate void VideoSizeChangedEventHandler(object sender, VideoSizeChangedEventArgs e);
-
     public interface IPlaybackManager : INotifyPropertyChanged
     {
         /// <summary>
@@ -138,7 +136,5 @@ namespace MediaManager.Playback
         event MediaItemChangedEventHandler MediaItemChanged;
 
         event MediaItemFailedEventHandler MediaItemFailed;
-
-        event VideoSizeChangedEventHandler VideoSizeChanged;
     }
 }
