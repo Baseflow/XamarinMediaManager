@@ -28,6 +28,27 @@ namespace MediaManager.Media
             "android.resource"
         };
 
+        public IList<string> VideoSuffixes { get; } = new List<string>() {
+            ".mp4"
+        };
+
+        public IList<string> AudioSuffixes { get; } = new List<string>() {
+            ".mp3"
+        };
+
+        public IList<string> HlsSuffixes { get; } = new List<string>() {
+            ".m3u8"
+        };
+
+        public IList<string> SmoothStreamingSuffixes { get; } = new List<string>() {
+            ".ism",
+            ".ism/manifest"
+        };
+
+        public IList<string> DashSuffixes { get; } = new List<string>() {
+            ".mpd"
+        };
+
         public virtual Task<IMediaItem> CreateMediaItem(string url)
         {
             var mediaItem = new MediaItem(url);
@@ -62,8 +83,10 @@ namespace MediaManager.Media
                 path = await CopyResourceStreamToFile(stream, "EmbeddedResources", resourceName).ConfigureAwait(false);
             }
 
-            var mediaItem = new MediaItem(path);
-            mediaItem.MediaLocation = MediaLocation.Embedded;
+            var mediaItem = new MediaItem(path)
+            {
+                MediaLocation = MediaLocation.Embedded
+            };
             return await UpdateMediaItem(mediaItem).ConfigureAwait(false);
         }
 
@@ -71,8 +94,10 @@ namespace MediaManager.Media
         {
             var path = await GetResourcePath(resourceName).ConfigureAwait(false);
 
-            var mediaItem = new MediaItem(path);
-            mediaItem.MediaLocation = MediaLocation.Resource;
+            var mediaItem = new MediaItem(path)
+            {
+                MediaLocation = MediaLocation.Resource
+            };
             return await UpdateMediaItem(mediaItem).ConfigureAwait(false);
         }
 
@@ -83,6 +108,10 @@ namespace MediaManager.Media
                 if (mediaItem.MediaLocation == MediaLocation.Unknown)
                 {
                     mediaItem.MediaLocation = GetMediaLocation(mediaItem);
+                }
+                if(mediaItem.MediaType == MediaType.Default)
+                {
+                    mediaItem.MediaType = GetMediaType(mediaItem);
                 }
 
                 mediaItem = await ExtractMetadata(mediaItem).ConfigureAwait(false);
@@ -98,6 +127,43 @@ namespace MediaManager.Media
         public abstract Task<object> RetrieveMediaItemArt(IMediaItem mediaItem);
 
         public abstract Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem);
+
+        public virtual MediaType GetMediaType(IMediaItem mediaItem)
+        {
+            var url = mediaItem.MediaUri.ToLower();
+
+            foreach (var item in VideoSuffixes)
+            {
+                if (url.EndsWith(item))
+                    return MediaType.Video;
+            }
+
+            foreach (var item in AudioSuffixes)
+            {
+                if (url.EndsWith(item))
+                    return MediaType.Audio;
+            }
+
+            foreach (var item in HlsSuffixes)
+            {
+                if (url.EndsWith(item))
+                    return MediaType.Hls;
+            }
+
+            foreach (var item in DashSuffixes)
+            {
+                if (url.EndsWith(item))
+                    return MediaType.Dash;
+            }
+
+            foreach (var item in SmoothStreamingSuffixes)
+            {
+                if (url.EndsWith(item))
+                    return MediaType.SmoothStreaming;
+            }
+
+            return MediaType.Default;
+        }
 
         public virtual MediaLocation GetMediaLocation(IMediaItem mediaItem)
         {

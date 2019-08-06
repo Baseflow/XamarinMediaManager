@@ -53,6 +53,7 @@ namespace MediaManager.Queue
                 return CurrentIndex > 0;
             }
         }
+
         public IMediaItem PreviousItem
         {
             get
@@ -119,7 +120,7 @@ namespace MediaManager.Queue
             }
         }
 
-        private void CreateShuffledIndexes()
+        protected virtual void CreateShuffledIndexes()
         {
             var rand = new Random();
             var ints = Enumerable.Range(CurrentIndex + 1, Count - 1)

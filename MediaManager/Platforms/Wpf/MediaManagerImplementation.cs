@@ -110,12 +110,12 @@ namespace MediaManager
             }
         }
 
-        private void DisplayRequestActive()
+        protected void DisplayRequestActive()
         {
             NativeMethods.SetThreadExecutionState(NativeMethods.EXECUTION_STATE.DISPLAY_REQUIRED | NativeMethods.EXECUTION_STATE.CONTINUOUS);
         }
 
-        private void DisplayRequestRelease()
+        protected void DisplayRequestRelease()
         {
             NativeMethods.SetThreadExecutionState(NativeMethods.EXECUTION_STATE.CONTINUOUS);
         }
