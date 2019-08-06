@@ -15,10 +15,10 @@ namespace MediaManager.FFmpegMediaMetadataRetriever
             {
                 var metaRetriever = new MediaMetadataRetriever();
 
-                if (mediaItem.MediaLocation.IsLocal())
-                    metaRetriever.SetDataSource(mediaItem.MediaUri);
-                else
+                if (!mediaItem.MediaLocation.IsLocal() && RequestHeaders.Count > 0)
                     metaRetriever.SetDataSource(mediaItem.MediaUri, RequestHeaders);
+                else
+                    metaRetriever.SetDataSource(mediaItem.MediaUri);
 
                 if (string.IsNullOrEmpty(mediaItem.Album))
                     mediaItem.Album = metaRetriever.ExtractMetadata(MediaMetadataRetriever.MetadataKeyAlbum);
@@ -97,7 +97,7 @@ namespace MediaManager.FFmpegMediaMetadataRetriever
                 }
 
                 mediaItem.IsMetadataExtracted = true;
-                //TODO: Should we call metaRetriever.Release(); ?
+                metaRetriever.Release();
             }
             catch (Exception ex)
             {
@@ -112,10 +112,10 @@ namespace MediaManager.FFmpegMediaMetadataRetriever
             {
                 var metaRetriever = new MediaMetadataRetriever();
 
-                if (mediaItem.MediaLocation.IsLocal())
-                    metaRetriever.SetDataSource(mediaItem.MediaUri);
-                else
+                if (!mediaItem.MediaLocation.IsLocal() && RequestHeaders.Count > 0)
                     metaRetriever.SetDataSource(mediaItem.MediaUri, RequestHeaders);
+                else
+                    metaRetriever.SetDataSource(mediaItem.MediaUri);
 
                 var bitmap = metaRetriever.GetFrameAtTime((long)timeFromStart.TotalMilliseconds);
 
