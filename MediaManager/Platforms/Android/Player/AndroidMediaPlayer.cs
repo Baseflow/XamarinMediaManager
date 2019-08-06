@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Android.Content;
-using Android.Runtime;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
@@ -20,7 +19,6 @@ using MediaManager.Platforms.Android.Queue;
 using MediaManager.Platforms.Android.Video;
 using MediaManager.Player;
 using MediaManager.Video;
-using MediaManager.Playback;
 
 namespace MediaManager.Platforms.Android.Player
 {

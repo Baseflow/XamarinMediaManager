@@ -7,9 +7,7 @@ using CoreMedia;
 using Foundation;
 using MediaManager.Media;
 using MediaManager.Platforms.Apple.Playback;
-using MediaManager.Playback;
 using MediaManager.Player;
-using MediaManager.Video;
 
 namespace MediaManager.Platforms.Apple.Player
 {

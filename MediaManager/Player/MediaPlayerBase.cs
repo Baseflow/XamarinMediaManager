@@ -8,9 +8,27 @@ namespace MediaManager.Player
     public abstract class MediaPlayerBase : NotifyPropertyChangedBase, IMediaPlayer
     {
         public abstract IVideoView VideoView { get; set; }
-        public virtual bool AutoAttachVideoView { get; set; } = true;
-        public virtual VideoAspectMode VideoAspect { get; set; }
-        public virtual bool ShowPlaybackControls { get; set; }
+
+        private bool _autoAttachVideoView = true;
+        public bool AutoAttachVideoView
+        {
+            get => _autoAttachVideoView;
+            set => SetProperty(ref _autoAttachVideoView, value);
+        }
+
+        private VideoAspectMode _videoAspect;
+        public VideoAspectMode VideoAspect
+        {
+            get => _videoAspect;
+            set => SetProperty(ref _videoAspect, value);
+        }
+
+        private bool _showPlaybackControls;
+        public bool ShowPlaybackControls 
+        { 
+            get => _showPlaybackControls; 
+            set => SetProperty(ref _showPlaybackControls, value);
+        }
 
         private int _videoWidth;
         public int VideoWidth
@@ -20,13 +38,14 @@ namespace MediaManager.Player
         }
 
         private int _videoHeight;
+
         public int VideoHeight
         {
             get => _videoHeight;
             set => SetProperty(ref _videoHeight, value);
         }
 
-        public float VideoAspectRatio => VideoHeight == 0 ? 0 : (float)VideoWidth/VideoHeight;
+        public float VideoAspectRatio => VideoHeight == 0 ? 0 : (float)VideoWidth / VideoHeight;
 
         public abstract event BeforePlayingEventHandler BeforePlaying;
         public abstract event AfterPlayingEventHandler AfterPlaying;
