@@ -34,7 +34,7 @@ namespace MediaManager.Player
         public int VideoWidth
         {
             get => _videoWidth;
-            set => SetProperty(ref _videoWidth, value);
+            internal set => SetProperty(ref _videoWidth, value);
         }
 
         private int _videoHeight;
@@ -42,7 +42,7 @@ namespace MediaManager.Player
         public int VideoHeight
         {
             get => _videoHeight;
-            set => SetProperty(ref _videoHeight, value);
+            internal set => SetProperty(ref _videoHeight, value);
         }
 
         public float VideoAspectRatio => VideoHeight == 0 ? 0 : (float)VideoWidth / VideoHeight;

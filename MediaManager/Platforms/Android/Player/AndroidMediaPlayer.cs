@@ -25,10 +25,9 @@ namespace MediaManager.Platforms.Android.Player
     public class AndroidMediaPlayer : MediaPlayerBase, IMediaPlayer<SimpleExoPlayer, VideoView>
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
-
         protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
-
         protected Context Context => MediaManager.Context;
+        protected MediaSessionCompat MediaSession => MediaManager.MediaSession;
 
         protected string UserAgent { get; set; }
         protected DefaultHttpDataSourceFactory HttpDataSourceFactory { get; set; }
@@ -85,8 +84,6 @@ namespace MediaManager.Platforms.Android.Player
         }
 
         protected int lastWindowIndex = 0;
-
-        public MediaSessionCompat MediaSession => MediaManager.MediaSession;
 
         public override event BeforePlayingEventHandler BeforePlaying;
         public override event AfterPlayingEventHandler AfterPlaying;
@@ -180,6 +177,7 @@ namespace MediaManager.Platforms.Android.Player
                             {
                                 // jumped more than one window index
                             }*/
+                            //TODO: Use SetProperty for this
                             if (currentWindowIndex != lastWindowIndex)
                             {
                                 MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.ElementAtOrDefault(lastWindowIndex)));
