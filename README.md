@@ -342,6 +342,14 @@ Usage:
 CrossMediaManager.Current.Reactive().*
 ```
 
+## FFmpegMediaMetadataRetriever on Android
+
+If you want to use FFmpegMediaMetadataRetriever on Android to extract the metadata you can set to use this extension like this:
+
+```csharp
+CrossMediaManager.Android.MediaExtractor = new FFmpegMediaExtractor();
+```
+
 ## **IMPORTANT**
 **Android:**
 
