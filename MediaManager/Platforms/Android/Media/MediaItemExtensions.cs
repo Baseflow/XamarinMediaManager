@@ -32,6 +32,8 @@ namespace MediaManager.Platforms.Android.Media
             switch (mediaType)
             {
                 default:
+                case MediaType.Audio:
+                case MediaType.Video:
                 case MediaType.Default:
                     mediaSource = new ExtractorMediaSource.Factory(MediaManager.AndroidMediaPlayer.DataSourceFactory)
                         .SetTag(mediaDescription)
