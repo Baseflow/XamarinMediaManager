@@ -16,7 +16,7 @@ namespace MediaManager.Platforms.Wpf.Media
             return null;
         }
 
-        public override Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
+        public override Task<object> GetMediaItemImage(IMediaItem mediaItem)
         {
             return null;
         }
