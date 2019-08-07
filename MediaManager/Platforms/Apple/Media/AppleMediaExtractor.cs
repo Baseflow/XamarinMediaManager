@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -22,38 +23,56 @@ namespace MediaManager.Platforms.Apple.Media
         {
             var assetsToLoad = new List<string>
             {
+                AVMetadata.CommonKeyAlbumName,
                 AVMetadata.CommonKeyArtist,
+                AVMetadata.CommonKeyAuthor,
+                AVMetadata.CommonKeyCreationDate,
                 AVMetadata.CommonKeyTitle,
-                AVMetadata.CommonKeyArtwork
+                //AVMetadata.CommonKeyArtwork,
+                //AVMetadata.CommonKeyCopyrights,
+                //AVMetadata.CommonKeyDescription,
+                //AVMetadata.CommonKeyFormat,
+                //AVMetadata.CommonKeyLocation,
+                //AVMetadata.CommonKeyLanguage,
+                //AVMetadata.CommonKeyContributor,
+                //AVMetadata.CommonKeyCreator,
+                //AVMetadata.CommonKeyIdentifier,
+                //AVMetadata.CommonKeyLastModifiedDate,
+                //AVMetadata.CommonKeyMake,
+                //AVMetadata.CommonKeySoftware,
+                //AVMetadata.CommonKeyModel,
+                //AVMetadata.CommonKeyPublisher,
+                //AVMetadata.CommonKeyRelation,
+                //AVMetadata.CommonKeySource,
+                //AVMetadata.CommonKeySubject,
+                //AVMetadata.CommonKeyType
             };
 
             var url = GetUrlFor(mediaItem);
 
-            // Default title to filename
-            mediaItem.Title = url.LastPathComponent;
-
             var asset = AVAsset.FromUrl(url);
             await asset.LoadValuesTaskAsync(assetsToLoad.ToArray());
 
-            foreach (var avMetadataItem in asset.CommonMetadata)
-            {
-                if (avMetadataItem.CommonKey == AVMetadata.CommonKeyArtist)
-                {
-                    mediaItem.Artist = ((NSString)avMetadataItem.Value).ToString();
-                }
-                else if (avMetadataItem.CommonKey == AVMetadata.CommonKeyTitle)
-                {
-                    mediaItem.Title = ((NSString)avMetadataItem.Value).ToString();
-                }
-                else if (avMetadataItem.CommonKey == AVMetadata.CommonKeyArtwork)
-                {
-#if __IOS__ || __TVOS__
-                    var image = UIImage.LoadFromData(avMetadataItem.DataValue);
-                    mediaItem.AlbumArt = image;
-#endif
-                }
-            }
+            var metadataDict = asset.CommonMetadata.ToDictionary(t => t.CommonKey, t => t);
 
+            if (string.IsNullOrEmpty(mediaItem.Album))
+                mediaItem.Album = metadataDict.GetValueOrDefault(AVMetadata.CommonKeyAlbumName)?.Value.ToString();
+
+            if (string.IsNullOrEmpty(mediaItem.Artist))
+                mediaItem.Artist = metadataDict.GetValueOrDefault(AVMetadata.CommonKeyArtist)?.Value.ToString();
+
+            if (string.IsNullOrEmpty(mediaItem.Author))
+                mediaItem.Author = metadataDict.GetValueOrDefault(AVMetadata.CommonKeyAuthor)?.Value.ToString();
+
+            if (string.IsNullOrEmpty(mediaItem.Date))
+                mediaItem.Date = metadataDict.GetValueOrDefault(AVMetadata.CommonKeyCreationDate)?.Value.ToString();
+
+            if (string.IsNullOrEmpty(mediaItem.Title))
+                mediaItem.Title = metadataDict.GetValueOrDefault(AVMetadata.CommonKeyTitle)?.Value.ToString();
+
+            // Default title to filename
+            if (string.IsNullOrEmpty(mediaItem.Title))
+                mediaItem.Title = url.LastPathComponent;
 
             return mediaItem;
         }
@@ -67,8 +86,38 @@ namespace MediaManager.Platforms.Apple.Media
             return url;
         }
 
-        public override Task<object> RetrieveMediaItemArt(IMediaItem mediaItem)
+        public override async Task<object> GetMediaItemImage(IMediaItem mediaItem)
         {
+            if (!string.IsNullOrEmpty(mediaItem.ArtUri))
+            {
+#if __IOS__ || __TVOS__
+                var image = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(mediaItem.ArtUri)));
+                mediaItem.AlbumArt = image;
+
+                return image;
+#endif
+            }
+            else
+            {
+                var assetsToLoad = new List<string> 
+                { 
+                    AVMetadata.CommonKeyArtwork 
+                };
+
+                var url = GetUrlFor(mediaItem);
+                var asset = AVAsset.FromUrl(url);
+                await asset.LoadValuesTaskAsync(assetsToLoad.ToArray());
+
+                var metadataDict = asset.CommonMetadata.ToDictionary(t => t.CommonKey, t => t);
+
+#if __IOS__ || __TVOS__
+                var image = UIImage.LoadFromData(metadataDict.GetValueOrDefault(AVMetadata.CommonKeyArtwork)?.DataValue);
+                mediaItem.AlbumArt = image;
+
+                return image;
+#endif
+            }
+
             return null;
         }
 

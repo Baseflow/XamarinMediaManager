@@ -29,7 +29,7 @@ namespace MediaManager.Media
 
         Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem);
 
-        Task<object> RetrieveMediaItemArt(IMediaItem mediaItem);
+        Task<object> GetMediaItemImage(IMediaItem mediaItem);
 
         Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart);
 

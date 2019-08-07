@@ -115,6 +115,7 @@ namespace MediaManager.Media
                 }
 
                 mediaItem = await ExtractMetadata(mediaItem).ConfigureAwait(false);
+                mediaItem.IsMetadataExtracted = true;
             }
 
             return mediaItem;
@@ -124,7 +125,7 @@ namespace MediaManager.Media
 
         protected abstract Task<string> GetResourcePath(string resourceName);
 
-        public abstract Task<object> RetrieveMediaItemArt(IMediaItem mediaItem);
+        public abstract Task<object> GetMediaItemImage(IMediaItem mediaItem);
 
         public abstract Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem);
 
