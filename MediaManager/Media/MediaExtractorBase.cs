@@ -29,11 +29,11 @@ namespace MediaManager.Media
         };
 
         public IList<string> VideoSuffixes { get; } = new List<string>() {
-            ".mp4"
+            ".3gp", ".3g2", ".asf", ".wmv", ".avi", ".divx", ".evo", ".f4v", ".flv", ".mkv", ".mk3d", ".mp4", ".mpg", ".mpeg", ".m2p", ".ps", ".ts", ".m2ts", ".mxf", ".ogg", ".mov", ".qt", ".rmvb", ".vob", ".webm"
         };
 
         public IList<string> AudioSuffixes { get; } = new List<string>() {
-            ".mp3"
+            ".3gp", ".aa", ".aac", ".aax", ".act", ".aiff", ".amr", ".ape", ".au", ".awb", ".dct", ".dss", ".dvf", ".flac", ".gsm", ".iklax", ".ivs", ".m4a", ".m4b", ".m4p", ".mmf", ".mp3", ".mpc", ".msv", ".nmf", ".nsf", ".ogg", ".oga,", ".mogg", ".opus", ".ra", ".rm", ".raw", ".sln", ".tta", ".voc", ".vox", ".wav", ".wma", ".wv", ".webm", ".8svx"
         };
 
         public IList<string> HlsSuffixes { get; } = new List<string>() {
