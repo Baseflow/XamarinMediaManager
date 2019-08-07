@@ -161,6 +161,20 @@ namespace MediaManager
             return mediaItem;
         }
 
+        public virtual async Task<IMediaItem> Play(Stream stream, string cacheName)
+        {
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), cacheName);
+            var fileStream = File.Create(path);
+            await stream.CopyToAsync(fileStream);
+            fileStream.Close();
+
+            var mediaItem = await MediaExtractor.CreateMediaItem(path).ConfigureAwait(false);
+            var mediaItemToPlay = await PrepareQueueForPlayback(mediaItem);
+
+            await PlayAsCurrent(mediaItemToPlay);
+            return mediaItem;
+        }
+
         public virtual async Task<IMediaItem> Play(IEnumerable<IMediaItem> mediaItems)
         {
             var mediaItemToPlay = await PrepareQueueForPlayback(mediaItems);

@@ -93,5 +93,13 @@ namespace MediaManager
         /// <param name="directoryInfo"></param>
         /// <returns></returns>
         Task<IMediaItem> Play(DirectoryInfo directoryInfo);
+
+        /// <summary>
+        /// Plays media from a Stream. The cacheName name must be a valid media name, like: something.mp4
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="cacheName"></param>
+        /// <returns></returns>
+        Task<IMediaItem> Play(Stream stream, string cacheName);
     }
 }
