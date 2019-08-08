@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -101,7 +102,11 @@ namespace MediaManager.Media
             return await UpdateMediaItem(mediaItem).ConfigureAwait(false);
         }
 
-        public virtual async Task<IMediaItem> UpdateMediaItem(IMediaItem mediaItem)
+        BlockingCollection<IMediaItem> _mediaItemsToExtract = new BlockingCollection<IMediaItem>(new ConcurrentQueue<IMediaItem>());
+
+        Task _mediaItemsMonitor;
+
+        public virtual Task<IMediaItem> UpdateMediaItem(IMediaItem mediaItem)
         {
             if (!mediaItem.IsMetadataExtracted)
             {
@@ -114,11 +119,23 @@ namespace MediaManager.Media
                     mediaItem.MediaType = GetMediaType(mediaItem);
                 }
 
+                if (_mediaItemsMonitor == null)
+                    _mediaItemsMonitor = Task.Run(MonitorMediaItems);
+
+                _mediaItemsToExtract.Add(mediaItem);
+            }
+
+            return Task.FromResult(mediaItem);
+        }
+
+        private async Task MonitorMediaItems()
+        {
+            while (true)
+            {
+                IMediaItem mediaItem = _mediaItemsToExtract.Take();
                 mediaItem = await ExtractMetadata(mediaItem).ConfigureAwait(false);
                 mediaItem.IsMetadataExtracted = true;
             }
-
-            return mediaItem;
         }
 
         public abstract Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart);
