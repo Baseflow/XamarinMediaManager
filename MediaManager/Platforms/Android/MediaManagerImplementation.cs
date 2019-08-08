@@ -346,6 +346,9 @@ namespace MediaManager
 
         public async Task<bool> HandleIntent(Intent intent)
         {
+            if (intent == null)
+                return false;
+
             var action = intent.Action;
             var type = intent.Type;
 
@@ -355,8 +358,8 @@ namespace MediaManager
 
                 if (type.StartsWith("video/") || type.StartsWith("audio/"))
                 {
-                    var receiveUri = intent.GetParcelableExtra(Intent.ExtraStream) as global::Android.Net.Uri;
-                    path = receiveUri.ToString();
+                    var receivedUri = intent.GetParcelableExtra(Intent.ExtraStream) as global::Android.Net.Uri;
+                    path = receivedUri?.ToString();
                 }
                 if (!string.IsNullOrEmpty(path))
                 {
@@ -370,8 +373,8 @@ namespace MediaManager
 
                 if (type.StartsWith("video/") || type.StartsWith("audio/"))
                 {
-                    var receiveUris = intent.GetParcelableArrayListExtra(Intent.ExtraStream);
-                    mediaUrls = receiveUris.Cast<global::Android.Net.Uri>().Select(x => x.ToString());
+                    var receivedUris = intent.GetParcelableArrayListExtra(Intent.ExtraStream);
+                    mediaUrls = receivedUris.Cast<global::Android.Net.Uri>().Select(x => x?.ToString());
                 }
                 if (mediaUrls != null)
                 {
