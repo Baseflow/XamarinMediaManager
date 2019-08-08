@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
+using MediaManager.Library;
 
 namespace MediaManager.Media
 {
     public delegate void MetadataUpdatedEventHandler(object sender, MetadataChangedEventArgs e);
 
-    public interface IMediaItem : INotifyPropertyChanged
+    public interface IMediaItem : INotifyPropertyChanged, IContentItem
     {
         /// <summary>
         /// Gets or sets a value indicating whether [metadata extracted].
@@ -134,11 +135,6 @@ namespace MediaManager.Media
         /// The metadata key for a CharSequence or string typed value to retrieve the information about the genre of the media.
         /// </summary>
         string Genre { get; set; }
-
-        /// <summary>
-        /// The metadata key for a CharSequence or string typed value to retrieve the information about the media ID of the content.
-        /// </summary>
-        string MediaId { get; set; }
 
         /// <summary>
         /// The metadata key for a CharSequence or string typed value to retrieve the information about the Uri of the content.

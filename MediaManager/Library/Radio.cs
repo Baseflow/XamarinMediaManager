@@ -6,7 +6,7 @@ namespace MediaManager.Library
 {
     public class Radio : ObservableCollection<IMediaItem>, IRadio
     {
-        public string RadioId { get; set; } = Guid.NewGuid().ToString();
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Uri { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

@@ -69,7 +69,7 @@ namespace MediaManager.Platforms.Android.Media
         public static MediaDescriptionCompat ToMediaDescription(this IMediaItem item)
         {
             var description = new MediaDescriptionCompat.Builder()
-                .SetMediaId(item?.MediaId)
+                .SetMediaId(item?.Id.ToString())
                 .SetMediaUri(global::Android.Net.Uri.Parse(item?.MediaUri))
                 .SetTitle(item?.GetTitle())
                 .SetSubtitle(item?.GetContentTitle())
@@ -121,7 +121,7 @@ namespace MediaManager.Platforms.Android.Media
             //item.Duration = mediaDescription.
             item.Extras = mediaDescription.Extras;
             //item.Genre = mediaDescription.
-            item.MediaId = mediaDescription.MediaId;
+            item.Id = Guid.Parse(mediaDescription.MediaId);
             item.MediaUri = mediaDescription.MediaUri.ToString();
             //item.NumTracks = mediaDescription.
             //item.Rating = mediaDescription.
@@ -164,7 +164,7 @@ namespace MediaManager.Platforms.Android.Media
             item.Duration = TimeSpan.FromMilliseconds(Convert.ToInt32(mediaMetadata.GetLong(MediaMetadataCompat.MetadataKeyDuration)));
             //item.Extras = mediaMetadata.GetString(MediaMetadataCompat.extr);
             item.Genre = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyGenre);
-            item.MediaId = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyMediaId);
+            item.Id = Guid.Parse(mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyMediaId));
             item.MediaUri = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyMediaUri);
             item.NumTracks = Convert.ToInt32(mediaMetadata.GetLong(MediaMetadataCompat.MetadataKeyNumTracks));
             item.Rating = mediaMetadata.GetRating(MediaMetadataCompat.MetadataKeyRating);

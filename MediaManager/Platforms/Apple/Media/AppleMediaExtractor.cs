@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AVFoundation;
 using CoreMedia;
@@ -99,9 +99,9 @@ namespace MediaManager.Platforms.Apple.Media
             }
             else
             {
-                var assetsToLoad = new List<string> 
-                { 
-                    AVMetadata.CommonKeyArtwork 
+                var assetsToLoad = new List<string>
+                {
+                    AVMetadata.CommonKeyArtwork
                 };
 
                 var url = GetUrlFor(mediaItem);

@@ -66,7 +66,7 @@ namespace MediaManager.Platforms.Android.Player
             var windowIndex = 0;
             foreach (var mediaItem in MediaManager.MediaQueue)
             {
-                if (mediaItem.MediaId == mediaId)
+                if (mediaItem.Id.ToString() == mediaId)
                     windowIndex = MediaManager.MediaQueue.IndexOf(mediaItem);
 
                 _mediaSource.AddMediaSource(mediaItem.ToMediaSource());

@@ -3,10 +3,8 @@ using MediaManager.Media;
 
 namespace MediaManager.Library
 {
-    public interface IArtist
+    public interface IArtist : IContentItem
     {
-        string ArtistId { get; set; }
-
         string Name { get; set; }
 
         string Biography { get; set; }

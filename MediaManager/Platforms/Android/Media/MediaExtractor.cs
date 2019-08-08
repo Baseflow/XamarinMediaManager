@@ -143,7 +143,7 @@ namespace MediaManager.Platforms.Android.Media
                 try
                 {
                     var url = new Java.Net.URL(mediaItem.ArtUri);
-                    image = await Task.Run(()=> BitmapFactory.DecodeStreamAsync(url.OpenStream()));
+                    image = await Task.Run(() => BitmapFactory.DecodeStreamAsync(url.OpenStream()));
                 }
                 catch (Exception ex)
                 {

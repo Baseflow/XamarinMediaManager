@@ -13,6 +13,12 @@ namespace MediaManager.Media
 
         public event MetadataUpdatedEventHandler MetadataUpdated;
 
+        public Guid Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        }
+
         public string Advertisement
         {
             get => _advertisement;
@@ -128,11 +134,6 @@ namespace MediaManager.Media
             get => _genre;
             set => SetProperty(ref _genre, value);
         }
-        public string MediaId
-        {
-            get => _mediaId;
-            set => SetProperty(ref _mediaId, value);
-        }
         public string MediaUri
         {
             get => _mediaUri;
@@ -202,7 +203,7 @@ namespace MediaManager.Media
         private object _rating;
         private int _numTracks;
         private string _mediaUri;
-        private string _mediaId = Guid.NewGuid().ToString();
+        private Guid _id = Guid.NewGuid();
         private string _genre;
         private object _extras;
         private TimeSpan _duration;

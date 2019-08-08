@@ -6,11 +6,9 @@ using MediaManager.Media;
 
 namespace MediaManager.Library
 {
-    public interface IPlaylist : IList<IMediaItem>, INotifyCollectionChanged, INotifyPropertyChanged
+    public interface IPlaylist : IList<IMediaItem>, INotifyCollectionChanged, INotifyPropertyChanged, IContentItem
     {
         void Move(int oldIndex, int newIndex);
-
-        string PlaylistId { get; set; }
 
         string Uri { get; set; }
 
