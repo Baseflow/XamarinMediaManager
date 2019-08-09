@@ -16,6 +16,12 @@ namespace MediaManager.Player
             set => SetProperty(ref _autoAttachVideoView, value);
         }
 
+        protected virtual void UpdateVideoView()
+        {
+            UpdateVideoAspect(VideoAspect);
+            UpdateShowPlaybackControls(ShowPlaybackControls);
+        }
+
         protected VideoAspectMode _videoAspect;
         public virtual VideoAspectMode VideoAspect
         {
@@ -29,7 +35,7 @@ namespace MediaManager.Player
 
         public abstract void UpdateVideoAspect(VideoAspectMode videoAspectMode);
 
-        protected bool _showPlaybackControls;
+        protected bool _showPlaybackControls = false;
         public virtual bool ShowPlaybackControls
         {
             get => _showPlaybackControls;

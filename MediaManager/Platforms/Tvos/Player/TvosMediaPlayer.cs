@@ -23,6 +23,7 @@ namespace MediaManager.Platforms.Tvos.Player
                 if (PlayerView != null)
                 {
                     PlayerView.PlayerViewController.Player = Player;
+                    UpdateVideoView();
                 }
             }
         }

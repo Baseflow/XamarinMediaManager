@@ -31,6 +31,7 @@ namespace MediaManager.Platforms.Uap.Player
                 if (PlayerView != null)
                 {
                     PlayerView.PlayerView.SetMediaPlayer(Player);
+                    UpdateVideoView();
                 }
             }
         }

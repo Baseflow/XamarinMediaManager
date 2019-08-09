@@ -21,6 +21,7 @@ namespace MediaManager.Platforms.Mac.Player
                 if (PlayerView != null)
                 {
                     PlayerView.Player = Player;
+                    UpdateVideoView();
                 }
             }
         }

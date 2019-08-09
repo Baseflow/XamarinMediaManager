@@ -81,13 +81,15 @@ namespace MediaManager.Platforms.Android.Player
                     //Use private field to prevent calling Initialize here
                     if (_player != null)
                         PlayerView.Player = Player;
+
+                    UpdateVideoView();
                 }
             }
         }
 
         public object PlaceholderImage
         {
-            get => PlayerView.DefaultArtwork;
+            get => PlayerView?.DefaultArtwork;
             set
             {
                 if (PlayerView != null && value is global::Android.Graphics.Drawables.Drawable drawable)

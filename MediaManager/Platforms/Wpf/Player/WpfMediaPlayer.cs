@@ -26,6 +26,7 @@ namespace MediaManager.Platforms.Wpf.Player
             set
             {
                 _videoView = value;
+                UpdateVideoView();
             }
         }
 

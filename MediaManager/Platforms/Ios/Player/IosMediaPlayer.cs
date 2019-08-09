@@ -22,6 +22,7 @@ namespace MediaManager.Platforms.Ios.Player
                 if (PlayerView != null)
                 {
                     PlayerView.PlayerViewController.Player = Player;
+                    UpdateVideoView();
                 }
             }
         }
