@@ -8,7 +8,7 @@ using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android.Media
 {
-    public class ID3Provider : IMetadataProvider, IImageProvider, IVideoFrameProvider
+    public class ID3Provider : IMediaItemMetadataProvider, IMediaItemImageProvider, IMediaItemVideoFrameProvider
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
         protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;

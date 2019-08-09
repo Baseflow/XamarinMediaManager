@@ -30,6 +30,7 @@ namespace MediaManager
     {
         public MediaManagerImplementation()
         {
+            IsInitialized = false;
         }
 
         private Context _context = Application.Context;

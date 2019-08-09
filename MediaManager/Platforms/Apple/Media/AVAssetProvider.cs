@@ -13,7 +13,7 @@ using UIKit;
 
 namespace MediaManager.Platforms.Apple.Media
 {
-    public class AVAssetProvider : IMetadataProvider, IImageProvider, IVideoFrameProvider
+    public class AVAssetProvider : IMediaItemMetadataProvider, IMediaItemImageProvider, IMediaItemVideoFrameProvider
     {
         public AVAssetProvider()
         {

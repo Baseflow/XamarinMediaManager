@@ -1,6 +1,6 @@
 ﻿namespace MediaManager.Media
 {
-    public interface IProvider
+    public interface IMediaExtractorProvider
     {
     }
 }

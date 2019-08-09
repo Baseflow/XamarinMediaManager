@@ -14,7 +14,7 @@ namespace MediaManager.Platforms.Android.Media
         {
         }
 
-        public override IList<IProvider> CreateProviders()
+        public override IList<IMediaExtractorProvider> CreateProviders()
         {
             var providers = base.CreateProviders();
             providers.Add(new ID3Provider());

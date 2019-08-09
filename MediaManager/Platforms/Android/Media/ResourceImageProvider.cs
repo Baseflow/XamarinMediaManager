@@ -6,7 +6,7 @@ using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android.Media
 {
-    public class ResourceImageProvider : IImageProvider
+    public class ResourceImageProvider : IMediaItemImageProvider
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
         protected Resources Resources => Resources.System;

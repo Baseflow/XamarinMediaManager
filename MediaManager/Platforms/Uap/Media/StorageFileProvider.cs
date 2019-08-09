@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace MediaManager.Platforms.Uap.Media
 {
-    public class StorageFileProvider : IMetadataProvider, IImageProvider, IVideoFrameProvider
+    public class StorageFileProvider : IMediaItemMetadataProvider, IMediaItemImageProvider, IMediaItemVideoFrameProvider
     {
         public async Task<IMediaItem> ProvideMetadata(IMediaItem mediaItem)
         {

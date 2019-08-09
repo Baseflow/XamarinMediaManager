@@ -18,10 +18,10 @@ namespace MediaManager.Media
         IList<string> SmoothStreamingSuffixes { get; }
         IList<string> DashSuffixes { get; }
 
-        IList<IProvider> Providers { get; }
-        IEnumerable<IMetadataProvider> MetadataProviders { get; }
-        IEnumerable<IImageProvider> ImageProviders { get; }
-        IEnumerable<IVideoFrameProvider> VideoFrameProviders { get; }
+        IList<IMediaExtractorProvider> Providers { get; }
+        IEnumerable<IMediaItemMetadataProvider> MetadataProviders { get; }
+        IEnumerable<IMediaItemImageProvider> ImageProviders { get; }
+        IEnumerable<IMediaItemVideoFrameProvider> VideoFrameProviders { get; }
 
         Task<IMediaItem> CreateMediaItem(string url);
 

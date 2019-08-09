@@ -7,7 +7,7 @@ using Tizen.Multimedia;
 
 namespace MediaManager.Platforms.Tizen.Media
 {
-    public class MetadataExtractorProvider : IMetadataProvider, IImageProvider
+    public class MetadataExtractorProvider : IMediaItemMetadataProvider, IMediaItemImageProvider
     {
         public Task<IMediaItem> ProvideMetadata(IMediaItem mediaItem)
         {

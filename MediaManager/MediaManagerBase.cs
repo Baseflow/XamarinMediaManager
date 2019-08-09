@@ -24,7 +24,7 @@ namespace MediaManager
             Timer.Start();
         }
 
-        public bool IsInitialized { get; protected set; }
+        public bool IsInitialized { get; protected set; } = true;
 
         public Timer Timer { get; protected set; } = new Timer(1000);
 

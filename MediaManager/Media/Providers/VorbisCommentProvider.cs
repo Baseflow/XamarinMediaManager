@@ -3,7 +3,7 @@ using MediaManager.Library;
 
 namespace MediaManager.Media
 {
-    public class NfoMetadataProvider : IMetadataProvider
+    public class VorbisCommentProvider : IMediaItemMetadataProvider
     {
         public Task<IMediaItem> ProvideMetadata(IMediaItem mediaItem)
         {

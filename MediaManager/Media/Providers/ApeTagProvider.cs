@@ -3,7 +3,7 @@ using MediaManager.Library;
 
 namespace MediaManager.Media
 {
-    public class XmlMetadataProvider : IMetadataProvider
+    public class ApeTagProvider : IMediaItemMetadataProvider
     {
         public Task<IMediaItem> ProvideMetadata(IMediaItem mediaItem)
         {

@@ -50,8 +50,8 @@ namespace MediaManager.Media
             ".mpd"
         };
 
-        private IList<IProvider> _providers;
-        public IList<IProvider> Providers
+        private IList<IMediaExtractorProvider> _providers;
+        public IList<IMediaExtractorProvider> Providers
         {
             get
             {
@@ -62,13 +62,13 @@ namespace MediaManager.Media
             internal set => _providers = value;
         }
 
-        public IEnumerable<IMetadataProvider> MetadataProviders => Providers.OfType<IMetadataProvider>();
-        public IEnumerable<IImageProvider> ImageProviders => Providers.OfType<IImageProvider>();
-        public IEnumerable<IVideoFrameProvider> VideoFrameProviders => Providers.OfType<IVideoFrameProvider>();
+        public IEnumerable<IMediaItemMetadataProvider> MetadataProviders => Providers.OfType<IMediaItemMetadataProvider>();
+        public IEnumerable<IMediaItemImageProvider> ImageProviders => Providers.OfType<IMediaItemImageProvider>();
+        public IEnumerable<IMediaItemVideoFrameProvider> VideoFrameProviders => Providers.OfType<IMediaItemVideoFrameProvider>();
 
-        public virtual IList<IProvider> CreateProviders()
+        public virtual IList<IMediaExtractorProvider> CreateProviders()
         {
-            var providers = new List<IProvider>();
+            var providers = new List<IMediaExtractorProvider>();
             //providers.Add(new ApeTagProvider());
             //providers.Add(new NfoMetadataProvider());
             //providers.Add(new VorbisCommentProvider());

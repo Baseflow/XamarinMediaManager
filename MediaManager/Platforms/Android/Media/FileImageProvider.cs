@@ -6,7 +6,7 @@ using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android.Media
 {
-    public class FileImageProvider : IImageProvider
+    public class FileImageProvider : IMediaItemImageProvider
     {
         public Task<object> ProvideImage(IMediaItem mediaItem)
         {
