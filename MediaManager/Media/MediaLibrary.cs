@@ -84,15 +84,17 @@ namespace MediaManager.Media
         public async Task<IEnumerable<IMediaItem>> GetMediaÍtems(string search)
         {
             var mediaItems = new List<IMediaItem>();
+
+            IList<Task<IEnumerable<IMediaItem>>> tasks = new List<Task<IEnumerable<IMediaItem>>>();
             foreach (var provider in MediaItemProviders)
             {
-                var items = await provider.GetMediaÍtems(search);
-                if (items != null)
-                {
-                    mediaItems.AddRange(items);
-                }
+                tasks.Add(provider.GetMediaÍtems(search));
             }
-            return null;
+            foreach (var item in await Task.WhenAll(tasks))
+            {
+                mediaItems.AddRange(item);
+            }
+            return mediaItems;
         }
 
         public async Task<IPlaylist> GetPlaylist(Guid id)
