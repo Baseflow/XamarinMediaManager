@@ -350,6 +350,17 @@ If you want to use FFmpegMediaMetadataRetriever on Android to extract the metada
 CrossMediaManager.Android.MediaExtractor = new FFmpegMediaExtractor();
 ```
 
+## Intercept share requests from the native platform or other apps
+
+**Android:**
+```csharp
+//Add code to the OnCreate(Bundle savedInstanceState) of your MainActivity
+if(CrossMediaManager.Android.HandleIntent(Intent))
+{
+    //If true maybe do an action like opening a Player Page.
+}
+```
+
 ## **IMPORTANT**
 **Android:**
 

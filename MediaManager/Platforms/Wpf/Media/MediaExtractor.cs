@@ -1,24 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MediaManager.Media;
 
 namespace MediaManager.Platforms.Wpf.Media
 {
     public class MediaExtractor : MediaExtractorBase, IMediaExtractor
     {
-        public override Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem)
-        {
-            return Task.FromResult(mediaItem);
-        }
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Wpf;
 
-        public override Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
+        public MediaExtractor()
         {
-            return null;
-        }
-
-        public override Task<object> GetMediaItemImage(IMediaItem mediaItem)
-        {
-            return null;
         }
 
         protected override Task<string> GetResourcePath(string resourceName)

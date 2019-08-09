@@ -10,11 +10,11 @@ namespace MediaManager.Platforms.Wpf.Player
 {
     public class WpfMediaPlayer : MediaPlayerBase, IMediaPlayer<MediaElement, VideoView>
     {
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Wpf;
+
         public WpfMediaPlayer()
         {
         }
-
-        protected MediaManagerImplementation MediaManager = CrossMediaManager.Wpf;
 
         public VideoView PlayerView => VideoView as VideoView;
 

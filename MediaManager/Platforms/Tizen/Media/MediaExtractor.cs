@@ -1,8 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediaManager.Media;
-using Tizen.Multimedia;
 
 namespace MediaManager.Platforms.Tizen.Media
 {
@@ -10,21 +8,15 @@ namespace MediaManager.Platforms.Tizen.Media
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Tizen;
 
-        public override Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem)
+        public MediaExtractor()
         {
-            var extractor = new MetadataExtractor(mediaItem.MediaUri);
-            SetMetadata(mediaItem, extractor);
-            return Task.FromResult(mediaItem);
         }
 
-        public override Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
+        public override IList<IProvider> CreateProviders()
         {
-            return null;
-        }
-
-        public override Task<object> GetMediaItemImage(IMediaItem mediaItem)
-        {
-            return null;
+            var providers = base.CreateProviders();
+            providers.Add(new MetadataExtractorProvider());
+            return providers;
         }
 
         protected override Task<string> GetResourcePath(string resourceName)
@@ -32,30 +24,8 @@ namespace MediaManager.Platforms.Tizen.Media
             return null;
         }
 
-        protected virtual void SetMetadata(IMediaItem mediaItem, MetadataExtractor extractor)
-        {
-            var metadata = extractor.GetMetadata();
-            mediaItem.Title = metadata.Title;
-            mediaItem.Artist = metadata.Artist;
-            mediaItem.Album = metadata.Album;
-            mediaItem.AlbumArtist = metadata.AlbumArtist;
-            mediaItem.Author = metadata.Author;
-            mediaItem.Duration = TimeSpan.FromSeconds(metadata?.Duration ?? 0);
-            mediaItem.Genre = metadata.Genre;
-            if (int.TryParse(metadata.TrackNumber, out var year))
-            {
-                mediaItem.TrackNumber = year;
-                mediaItem.NumTracks = year;
-            }
-
-            var buffer = mediaItem.MediaType == MediaType.Video ? extractor.GetVideoThumbnail() : extractor.GetArtwork().Data;
-            if (buffer.Length > 0)
-            {
-                Stream st = new MemoryStream(buffer);
-                mediaItem.AlbumArt = st;
-            }
-        }
-
+        //TODO: Move to streaminfo provider
+        /*
         protected virtual void SetMetadata(IMediaItem mediaItem, StreamInfo streamInfo)
         {
             mediaItem.Title = streamInfo.GetMetadata(StreamMetadataKey.Title);
@@ -69,6 +39,6 @@ namespace MediaManager.Platforms.Tizen.Media
                 mediaItem.Year = Convert.ToInt32(year);
             }
             mediaItem.AlbumArt = streamInfo.GetAlbumArt();
-        }
+        }*/
     }
 }

@@ -50,6 +50,29 @@ namespace MediaManager.Media
             ".mpd"
         };
 
+        private IList<IProvider> _providers;
+        public IList<IProvider> Providers
+        {
+            get
+            {
+                if (_providers == null)
+                    return Providers = CreateProviders();
+                return _providers;
+            }
+            internal set => _providers = value;
+        }
+
+        public IEnumerable<IMetadataProvider> MetadataProviders => Providers.OfType<IMetadataProvider>();
+        public IEnumerable<IImageProvider> ImageProviders => Providers.OfType<IImageProvider>();
+        public IEnumerable<IVideoFrameProvider> VideoFrameProviders => Providers.OfType<IVideoFrameProvider>();
+
+        public virtual IList<IProvider> CreateProviders()
+        {
+            var providers = new List<IProvider>();
+            //TODO: Add some overall providers
+            return providers;
+        }
+
         public virtual Task<IMediaItem> CreateMediaItem(string url)
         {
             var mediaItem = new MediaItem(url);
@@ -133,18 +156,47 @@ namespace MediaManager.Media
             while (true)
             {
                 IMediaItem mediaItem = _mediaItemsToExtract.Take();
-                mediaItem = await ExtractMetadata(mediaItem).ConfigureAwait(false);
+                mediaItem = await GetMetadata(mediaItem).ConfigureAwait(false);
                 mediaItem.IsMetadataExtracted = true;
             }
         }
 
-        public abstract Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart);
+        public async Task<IMediaItem> GetMetadata(IMediaItem mediaItem)
+        {
+            foreach (var provider in MetadataProviders)
+            {
+                var item = await provider.ProvideMetadata(mediaItem).ConfigureAwait(false);
+                if (item != null)
+                    mediaItem = item;
+            }
+            return mediaItem;
+        }
+
+        public async Task<object> GetMediaImage(IMediaItem mediaItem)
+        {
+            object image = null;
+            foreach (var provider in ImageProviders)
+            {
+                image = await provider.ProvideImage(mediaItem);
+                if (image != null)
+                    return image;
+            }
+            return image;
+        }
+
+        public async Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
+        {
+            object image = null;
+            foreach (var provider in VideoFrameProviders)
+            {
+                image = await provider.ProvideVideoFrame(mediaItem, timeFromStart);
+                if (image != null)
+                    return image;
+            }
+            return image;
+        }
 
         protected abstract Task<string> GetResourcePath(string resourceName);
-
-        public abstract Task<object> GetMediaItemImage(IMediaItem mediaItem);
-
-        public abstract Task<IMediaItem> ExtractMetadata(IMediaItem mediaItem);
 
         public virtual MediaType GetMediaType(IMediaItem mediaItem)
         {
@@ -155,31 +207,26 @@ namespace MediaManager.Media
                 if (url.EndsWith(item))
                     return MediaType.Video;
             }
-
             foreach (var item in AudioSuffixes)
             {
                 if (url.EndsWith(item))
                     return MediaType.Audio;
             }
-
             foreach (var item in HlsSuffixes)
             {
                 if (url.EndsWith(item))
                     return MediaType.Hls;
             }
-
             foreach (var item in DashSuffixes)
             {
                 if (url.EndsWith(item))
                     return MediaType.Dash;
             }
-
             foreach (var item in SmoothStreamingSuffixes)
             {
                 if (url.EndsWith(item))
                     return MediaType.SmoothStreaming;
             }
-
             return MediaType.Default;
         }
 
@@ -193,7 +240,6 @@ namespace MediaManager.Media
                     return MediaLocation.Remote;
                 }
             }
-
             foreach (var item in ResourcePrefixes)
             {
                 if (url.StartsWith(item))
@@ -201,7 +247,6 @@ namespace MediaManager.Media
                     return MediaLocation.Resource;
                 }
             }
-
             foreach (var item in FilePrefixes)
             {
                 if (url.StartsWith(item))
@@ -214,7 +259,6 @@ namespace MediaManager.Media
             {
                 return MediaLocation.FileSystem;
             }
-
             return MediaLocation.Unknown;
         }
 
