@@ -25,11 +25,6 @@ namespace MediaManager.Forms.Platforms.iOS
                 {
                     //TODO: maybe pass in the UIView to the videoview here
                     _videoView = new MediaManager.Platforms.Ios.Video.VideoView();
-
-                    //TODO: find a better way to set properties on load
-                    _videoView.ShowControls = args.NewElement.ShowControls;
-                    _videoView.VideoAspect = args.NewElement.VideoAspect;
-
                     SetNativeControl(_videoView);
                 }
             }

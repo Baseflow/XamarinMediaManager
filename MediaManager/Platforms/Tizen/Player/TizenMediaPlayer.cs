@@ -34,6 +34,22 @@ namespace MediaManager.Platforms.Tizen.Player
             }
         }
 
+        public override void UpdateVideoAspect(VideoAspectMode videoAspectMode)
+        {
+            if (PlayerView == null)
+                return;
+
+            //TODO: Set on player
+        }
+
+        public override void UpdateShowPlaybackControls(bool showPlaybackControls)
+        {
+            if (PlayerView == null)
+                return;
+
+            //TODO
+        }
+
         protected virtual void Initialize()
         {
             Player = new TizenPlayer();

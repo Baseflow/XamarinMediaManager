@@ -21,11 +21,6 @@ namespace MediaManager.Forms.Platforms.Wpf
                 if (Control == null)
                 {
                     _videoView = new MediaManager.Platforms.Wpf.Video.VideoView();
-
-                    //TODO: find a better way to set properties on load
-                    _videoView.ShowControls = args.NewElement.ShowControls;
-                    _videoView.VideoAspect = args.NewElement.VideoAspect;
-
                     SetNativeControl(_videoView);
                 }
             }

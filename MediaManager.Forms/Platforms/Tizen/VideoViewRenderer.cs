@@ -21,11 +21,6 @@ namespace MediaManager.Forms.Platforms.Tizen
                 if (Control == null)
                 {
                     _videoView = new MediaManager.Platforms.Tizen.Video.VideoView(NativeView.Parent);
-
-                    //TODO: find a better way to set properties on load
-                    _videoView.ShowControls = args.NewElement.ShowControls;
-                    _videoView.VideoAspect = args.NewElement.VideoAspect;
-
                     SetNativeControl(_videoView);
                 }
             }

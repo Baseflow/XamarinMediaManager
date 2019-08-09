@@ -27,6 +27,38 @@ namespace MediaManager.Platforms.Tvos.Player
             }
         }
 
+        public override void UpdateVideoAspect(VideoAspectMode videoAspectMode)
+        {
+            if (PlayerView == null)
+                return;
+
+            var playerViewController = PlayerView.PlayerViewController;
+
+            switch (videoAspectMode)
+            {
+                case VideoAspectMode.None:
+                    playerViewController.VideoGravity = AVLayerVideoGravity.Resize;
+                    break;
+                case VideoAspectMode.AspectFit:
+                    playerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspect;
+                    break;
+                case VideoAspectMode.AspectFill:
+                    playerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
+                    break;
+                default:
+                    playerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspect;
+                    break;
+            }
+        }
+
+        public override void UpdateShowPlaybackControls(bool showPlaybackControls)
+        {
+            if (PlayerView == null)
+                return;
+
+            PlayerView.PlayerViewController.ShowsPlaybackControls = showPlaybackControls;
+        }
+
         protected override void Initialize()
         {
             base.Initialize();

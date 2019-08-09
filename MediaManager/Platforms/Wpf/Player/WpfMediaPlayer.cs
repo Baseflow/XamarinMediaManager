@@ -47,6 +47,38 @@ namespace MediaManager.Platforms.Wpf.Player
         public override event BeforePlayingEventHandler BeforePlaying;
         public override event AfterPlayingEventHandler AfterPlaying;
 
+        public override void UpdateVideoAspect(VideoAspectMode videoAspectMode)
+        {
+            if (PlayerView == null)
+                return;
+
+            var playerView = Player;
+
+            switch (videoAspectMode)
+            {
+                case VideoAspectMode.None:
+                    playerView.Stretch = System.Windows.Media.Stretch.None;
+                    break;
+                case VideoAspectMode.AspectFit:
+                    playerView.Stretch = System.Windows.Media.Stretch.UniformToFill;
+                    break;
+                case VideoAspectMode.AspectFill:
+                    playerView.Stretch = System.Windows.Media.Stretch.Fill;
+                    break;
+                default:
+                    playerView.Stretch = System.Windows.Media.Stretch.None;
+                    break;
+            }
+        }
+
+        public override void UpdateShowPlaybackControls(bool showPlaybackControls)
+        {
+            if (PlayerView == null)
+                return;
+
+            //Player. = showPlaybackControls;
+        }
+
         public void Initialize()
         {
             Player = new MediaElement();

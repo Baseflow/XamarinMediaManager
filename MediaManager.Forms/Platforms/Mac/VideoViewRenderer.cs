@@ -24,11 +24,6 @@ namespace MediaManager.Forms.Platforms.Mac
                 {
                     //TODO: maybe pass in the NSView to the videoview here
                     _videoView = new MediaManager.Platforms.Mac.Video.VideoView();
-
-                    //TODO: find a better way to set properties on load
-                    _videoView.ShowControls = args.NewElement.ShowControls;
-                    _videoView.VideoAspect = args.NewElement.VideoAspect;
-
                     SetNativeControl(_videoView);
                 }
             }

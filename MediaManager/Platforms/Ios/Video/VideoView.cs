@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using AVFoundation;
 using AVKit;
 using CoreGraphics;
 using Foundation;
@@ -65,50 +64,6 @@ namespace MediaManager.Platforms.Ios.Video
         {
             if (MediaManager.MediaPlayer.AutoAttachVideoView)
                 MediaManager.MediaPlayer.VideoView = this;
-        }
-
-        [Export("VideoAspect"), Browsable(true)]
-        public VideoAspectMode VideoAspect
-        {
-            get
-            {
-                switch (PlayerViewController.VideoGravity)
-                {
-                    case AVLayerVideoGravity.ResizeAspect:
-                        return VideoAspectMode.None;
-                    case AVLayerVideoGravity.ResizeAspectFill:
-                        return VideoAspectMode.AspectFill;
-                    case AVLayerVideoGravity.Resize:
-                        return VideoAspectMode.AspectFit;
-                    default:
-                        return VideoAspectMode.None;
-                }
-            }
-
-            set
-            {
-                switch (value)
-                {
-                    case VideoAspectMode.None:
-                        PlayerViewController.VideoGravity = AVLayerVideoGravity.Resize;
-                        break;
-                    case VideoAspectMode.AspectFit:
-                        PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspect;
-                        break;
-                    case VideoAspectMode.AspectFill:
-                        PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
-                        break;
-                    default:
-                        PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspect;
-                        break;
-                }
-            }
-        }
-
-        public bool ShowControls
-        {
-            get => PlayerViewController.ShowsPlaybackControls;
-            set => PlayerViewController.ShowsPlaybackControls = value;
         }
     }
 }

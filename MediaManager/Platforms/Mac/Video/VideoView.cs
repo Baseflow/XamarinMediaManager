@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using AVKit;
 using CoreGraphics;
 using Foundation;
@@ -38,31 +37,6 @@ namespace MediaManager.Platforms.Mac.Video
         {
             if (MediaManager.MediaPlayer.AutoAttachVideoView)
                 MediaManager.MediaPlayer.VideoView = this;
-        }
-
-        [Export("VideoAspect"), Browsable(true)]
-        public VideoAspectMode VideoAspect
-        {
-            get;
-            set;
-        }
-
-        public bool ShowControls
-        {
-            get
-            {
-                if (ControlsStyle == AVPlayerViewControlsStyle.Default)
-                    return true;
-                else
-                    return false;
-            }
-            set
-            {
-                if (value)
-                    ControlsStyle = AVPlayerViewControlsStyle.Default;
-                else
-                    ControlsStyle = AVPlayerViewControlsStyle.None;
-            }
         }
 
         protected override void Dispose(bool disposing)

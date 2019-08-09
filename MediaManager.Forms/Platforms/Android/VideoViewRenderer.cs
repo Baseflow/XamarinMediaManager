@@ -29,11 +29,6 @@ namespace MediaManager.Forms.Platforms.Android
                 if (Control == null)
                 {
                     _videoView = new MediaManager.Platforms.Android.Video.VideoView(Context);
-
-                    //TODO: find a better way to set properties on load
-                    _videoView.ShowControls = args.NewElement.ShowControls;
-                    _videoView.VideoAspect = args.NewElement.VideoAspect;
-
                     SetNativeControl(_videoView);
                 }
             }

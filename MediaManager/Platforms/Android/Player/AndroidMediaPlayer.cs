@@ -10,6 +10,7 @@ using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Source.Dash;
 using Com.Google.Android.Exoplayer2.Source.Smoothstreaming;
 using Com.Google.Android.Exoplayer2.Trackselection;
+using Com.Google.Android.Exoplayer2.UI;
 using Com.Google.Android.Exoplayer2.Upstream;
 using Com.Google.Android.Exoplayer2.Util;
 using MediaManager.Library;
@@ -82,6 +83,36 @@ namespace MediaManager.Platforms.Android.Player
                         PlayerView.Player = Player;
                 }
             }
+        }
+
+        public override void UpdateVideoAspect(VideoAspectMode videoAspectMode)
+        {
+            if (PlayerView == null)
+                return;
+
+            switch (videoAspectMode)
+            {
+                case VideoAspectMode.None:
+                    PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeZoom;
+                    break;
+                case VideoAspectMode.AspectFit:
+                    PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeFit;
+                    break;
+                case VideoAspectMode.AspectFill:
+                    PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeFill;
+                    break;
+                default:
+                    PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeZoom;
+                    break;
+            }
+        }
+
+        public override void UpdateShowPlaybackControls(bool showPlaybackControls)
+        {
+            if (PlayerView == null)
+                return;
+
+            PlayerView.UseController = showPlaybackControls;
         }
 
         protected int lastWindowIndex = 0;

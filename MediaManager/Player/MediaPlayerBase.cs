@@ -9,43 +9,55 @@ namespace MediaManager.Player
     {
         public abstract IVideoView VideoView { get; set; }
 
-        private bool _autoAttachVideoView = true;
-        public bool AutoAttachVideoView
+        protected bool _autoAttachVideoView = true;
+        public virtual bool AutoAttachVideoView
         {
             get => _autoAttachVideoView;
             set => SetProperty(ref _autoAttachVideoView, value);
         }
 
-        private VideoAspectMode _videoAspect;
-        public VideoAspectMode VideoAspect
+        protected VideoAspectMode _videoAspect;
+        public virtual VideoAspectMode VideoAspect
         {
             get => _videoAspect;
-            set => SetProperty(ref _videoAspect, value);
+            set
+            {
+                if (SetProperty(ref _videoAspect, value))
+                    UpdateVideoAspect(value);
+            }
         }
 
-        private bool _showPlaybackControls;
-        public bool ShowPlaybackControls
+        public abstract void UpdateVideoAspect(VideoAspectMode videoAspectMode);
+
+        protected bool _showPlaybackControls;
+        public virtual bool ShowPlaybackControls
         {
             get => _showPlaybackControls;
-            set => SetProperty(ref _showPlaybackControls, value);
+            set
+            {
+                if (SetProperty(ref _showPlaybackControls, value))
+                    UpdateShowPlaybackControls(value);
+            }
         }
 
-        private int _videoWidth;
-        public int VideoWidth
+        public abstract void UpdateShowPlaybackControls(bool showPlaybackControls);
+
+        protected int _videoWidth;
+        public virtual int VideoWidth
         {
             get => _videoWidth;
             internal set => SetProperty(ref _videoWidth, value);
         }
 
-        private int _videoHeight;
+        protected int _videoHeight;
 
-        public int VideoHeight
+        public virtual int VideoHeight
         {
             get => _videoHeight;
             internal set => SetProperty(ref _videoHeight, value);
         }
 
-        public float VideoAspectRatio => VideoHeight == 0 ? 0 : (float)VideoWidth / VideoHeight;
+        public virtual float VideoAspectRatio => VideoHeight == 0 ? 0 : (float)VideoWidth / VideoHeight;
 
         public abstract event BeforePlayingEventHandler BeforePlaying;
         public abstract event AfterPlayingEventHandler AfterPlaying;

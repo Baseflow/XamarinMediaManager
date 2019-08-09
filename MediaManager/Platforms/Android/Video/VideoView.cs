@@ -37,52 +37,6 @@ namespace MediaManager.Platforms.Android.Video
                 MediaManager.MediaPlayer.VideoView = this;
         }
 
-        public VideoAspectMode VideoAspect
-        {
-            get
-            {
-                switch (ResizeMode)
-                {
-                    case AspectRatioFrameLayout.ResizeModeFill:
-                        return VideoAspectMode.AspectFill;
-                    case AspectRatioFrameLayout.ResizeModeFit:
-                        return VideoAspectMode.AspectFit;
-                    case AspectRatioFrameLayout.ResizeModeFixedHeight:
-                        return VideoAspectMode.AspectFill;
-                    case AspectRatioFrameLayout.ResizeModeFixedWidth:
-                        return VideoAspectMode.AspectFill;
-                    case AspectRatioFrameLayout.ResizeModeZoom:
-                        return VideoAspectMode.None;
-                    default:
-                        return VideoAspectMode.None;
-                }
-            }
-            set
-            {
-                switch (value)
-                {
-                    case VideoAspectMode.None:
-                        ResizeMode = AspectRatioFrameLayout.ResizeModeZoom;
-                        break;
-                    case VideoAspectMode.AspectFit:
-                        ResizeMode = AspectRatioFrameLayout.ResizeModeFit;
-                        break;
-                    case VideoAspectMode.AspectFill:
-                        ResizeMode = AspectRatioFrameLayout.ResizeModeFill;
-                        break;
-                    default:
-                        ResizeMode = AspectRatioFrameLayout.ResizeModeZoom;
-                        break;
-                }
-            }
-        }
-
-        public bool ShowControls
-        {
-            get => UseController;
-            set => UseController = value;
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (MediaManager.MediaPlayer.AutoAttachVideoView && MediaManager.MediaPlayer.VideoView == this)

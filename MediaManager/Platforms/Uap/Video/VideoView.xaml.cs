@@ -38,18 +38,6 @@ namespace MediaManager.Platforms.Uap.Video
                 MediaManager.MediaPlayer.VideoView = this;
         }
 
-        public VideoAspectMode VideoAspect
-        {
-            get;
-            set;
-        }
-
-        public bool ShowControls
-        {
-            get => PlayerView.AreTransportControlsEnabled;
-            set => PlayerView.AreTransportControlsEnabled = value;
-        }
-
         public void Dispose()
         {
             if (MediaManager.MediaPlayer.AutoAttachVideoView && MediaManager.MediaPlayer.VideoView == this)

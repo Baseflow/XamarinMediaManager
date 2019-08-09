@@ -66,6 +66,38 @@ namespace MediaManager.Platforms.Uap.Player
             private set => _mediaPlaybackList = value;
         }
 
+        public override void UpdateVideoAspect(VideoAspectMode videoAspectMode)
+        {
+            if (PlayerView == null)
+                return;
+
+            var playerView = PlayerView.PlayerView;
+
+            switch (videoAspectMode)
+            {
+                case VideoAspectMode.None:
+                    playerView.Stretch = Windows.UI.Xaml.Media.Stretch.None;
+                    break;
+                case VideoAspectMode.AspectFit:
+                    playerView.Stretch = Windows.UI.Xaml.Media.Stretch.UniformToFill;
+                    break;
+                case VideoAspectMode.AspectFill:
+                    playerView.Stretch = Windows.UI.Xaml.Media.Stretch.Fill;
+                    break;
+                default:
+                    playerView.Stretch = Windows.UI.Xaml.Media.Stretch.None;
+                    break;
+            }
+        }
+
+        public override void UpdateShowPlaybackControls(bool showPlaybackControls)
+        {
+            if (PlayerView == null)
+                return;
+
+            PlayerView.PlayerView.AreTransportControlsEnabled = showPlaybackControls;
+        }
+
         public void Initialize()
         {
             Player = new MediaPlayer();

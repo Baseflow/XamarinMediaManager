@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using AVFoundation;
 using AVKit;
 using CoreGraphics;
 using Foundation;
@@ -21,7 +20,7 @@ namespace MediaManager.Platforms.Tvos.Video
             {
                 if (_playerViewController == null)
                 {
-                    PlayerViewController = new AVPlayerViewController();
+                    PlayerViewController = new PlayerViewController();
                 }
                 return _playerViewController;
             }
@@ -29,8 +28,12 @@ namespace MediaManager.Platforms.Tvos.Video
             set
             {
                 _playerViewController = value;
-                _playerViewController.View.Frame = Frame;
-                AddSubview(_playerViewController.View);
+                if (_playerViewController != null)
+                {
+                    _playerViewController.View.Frame = Bounds;
+                    AddSubview(_playerViewController.View);
+                    (Superview?.NextResponder as UIViewController)?.AddChildViewController(_playerViewController);
+                }
             }
         }
 
@@ -61,50 +64,6 @@ namespace MediaManager.Platforms.Tvos.Video
         {
             if (MediaManager.MediaPlayer.AutoAttachVideoView)
                 MediaManager.MediaPlayer.VideoView = this;
-        }
-
-        [Export("VideoAspect"), Browsable(true)]
-        public VideoAspectMode VideoAspect
-        {
-            get
-            {
-                switch (PlayerViewController.VideoGravity)
-                {
-                    case AVLayerVideoGravity.ResizeAspect:
-                        return VideoAspectMode.None;
-                    case AVLayerVideoGravity.ResizeAspectFill:
-                        return VideoAspectMode.AspectFill;
-                    case AVLayerVideoGravity.Resize:
-                        return VideoAspectMode.AspectFit;
-                    default:
-                        return VideoAspectMode.None;
-                }
-            }
-
-            set
-            {
-                switch (value)
-                {
-                    case VideoAspectMode.None:
-                        PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspect;
-                        break;
-                    case VideoAspectMode.AspectFit:
-                        PlayerViewController.VideoGravity = AVLayerVideoGravity.Resize;
-                        break;
-                    case VideoAspectMode.AspectFill:
-                        PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
-                        break;
-                    default:
-                        PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspect;
-                        break;
-                }
-            }
-        }
-
-        public bool ShowControls
-        {
-            get => PlayerViewController.ShowsPlaybackControls;
-            set => PlayerViewController.ShowsPlaybackControls = value;
         }
 
         protected override void Dispose(bool disposing)

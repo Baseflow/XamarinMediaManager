@@ -18,9 +18,6 @@ namespace MediaManager.Platforms.Tizen.Video
                 MediaManager.MediaPlayer.VideoView = this;
         }
 
-        public VideoAspectMode VideoAspect { get; set; }
-        public bool ShowControls { get; set; }
-
         public void Dispose()
         {
             if (MediaManager.MediaPlayer.VideoView == this)

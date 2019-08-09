@@ -7,24 +7,6 @@ namespace MediaManager.Platforms.Wpf.Video
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Wpf;
 
-        /*private MediaElement _playerView;
-        public MediaElement PlayerView
-        {
-            get
-            {
-                if (_playerView == null)
-                {
-                    _playerView = new MediaElement();
-                }
-                return _playerView;
-            }
-            set
-            {
-                _playerView = value;
-                Content = _playerView;
-            }
-        }*/
-
         public VideoView()
         {
             Content = MediaManager.Player;
@@ -36,9 +18,6 @@ namespace MediaManager.Platforms.Wpf.Video
             if (MediaManager.MediaPlayer.AutoAttachVideoView)
                 MediaManager.MediaPlayer.VideoView = this;
         }
-
-        public VideoAspectMode VideoAspect { get; set; }
-        public bool ShowControls { get; set; }
 
         public void Dispose()
         {
