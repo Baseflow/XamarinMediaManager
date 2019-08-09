@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using MediaManager.Media;
+using MediaManager.Library;
 using MediaManager.Video;
 
 namespace MediaManager.Player

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AVFoundation;
 using CoreMedia;
 using Foundation;
+using MediaManager.Library;
 using MediaManager.Media;
 #if __IOS__ || __TVOS__
 using UIKit;

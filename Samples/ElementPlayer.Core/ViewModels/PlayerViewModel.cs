@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediaManager;
 using MediaManager.Forms;
+using MediaManager.Library;
 using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Player;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MediaManager.Media
+namespace MediaManager.Library
 {
     public static class MediaItemExtensions
     {

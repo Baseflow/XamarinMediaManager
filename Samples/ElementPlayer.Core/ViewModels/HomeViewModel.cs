@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ElementPlayer.Core.Assets;
 using MediaManager;
-using MediaManager.Media;
+using MediaManager.Library;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;

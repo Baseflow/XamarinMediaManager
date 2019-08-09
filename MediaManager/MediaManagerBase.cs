@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
+using MediaManager.Library;
 using MediaManager.Media;
 using MediaManager.Notifications;
 using MediaManager.Playback;

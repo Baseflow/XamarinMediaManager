@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using MediaManager.Library;
 using MediaManager.Media;
 using MediaManager.Notifications;
 using MediaManager.Playback;

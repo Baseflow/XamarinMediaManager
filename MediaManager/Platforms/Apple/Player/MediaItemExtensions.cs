@@ -2,6 +2,7 @@
 using System.Linq;
 using AVFoundation;
 using Foundation;
+using MediaManager.Library;
 using MediaManager.Media;
 
 namespace MediaManager.Platforms.Apple.Player

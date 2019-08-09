@@ -1,6 +1,7 @@
 ﻿using System;
+using MediaManager.Media;
 
-namespace MediaManager.Media
+namespace MediaManager.Library
 {
     public class MediaItem : NotifyPropertyChangedBase, IMediaItem
     {

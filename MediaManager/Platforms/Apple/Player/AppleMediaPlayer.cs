@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AVFoundation;
 using CoreMedia;
 using Foundation;
+using MediaManager.Library;
 using MediaManager.Media;
 using MediaManager.Platforms.Apple.Playback;
 using MediaManager.Player;

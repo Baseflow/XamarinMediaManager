@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using MediaManager.Library;
 using MediaManager.Media;
 using MediaManager.Platforms.Wpf.Video;
 using MediaManager.Player;

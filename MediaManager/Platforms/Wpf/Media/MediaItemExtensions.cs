@@ -1,4 +1,4 @@
-﻿using MediaManager.Media;
+﻿using MediaManager.Library;
 
 namespace MediaManager.Platforms.Wpf.Media
 {

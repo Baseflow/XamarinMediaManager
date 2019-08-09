@@ -1,7 +1,7 @@
 ﻿using System;
-using MediaManager.Media;
+using MediaManager.Library;
 
-namespace MediaManager.AzureMediaServices.Models
+namespace MediaManager.AzureMediaServices.Library
 {
     public class AzureMediaServiceItem : MediaItem
     {

@@ -1,4 +1,4 @@
-﻿namespace MediaManager.Media
+﻿namespace MediaManager.Library
 {
     public enum DownloadStatus
     {

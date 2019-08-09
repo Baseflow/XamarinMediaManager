@@ -5,7 +5,7 @@ using Android.Graphics;
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.UI;
-using MediaManager.Media;
+using MediaManager.Library;
 
 namespace MediaManager.Platforms.Android.Media
 {

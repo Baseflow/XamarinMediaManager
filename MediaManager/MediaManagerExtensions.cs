@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using MediaManager.Media;
+using MediaManager.Library;
 using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Queue;

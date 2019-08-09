@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MediaManager.Library;
 using MediaManager.Queue;
 
 namespace MediaManager.Media

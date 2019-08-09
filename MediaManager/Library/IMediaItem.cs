@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using MediaManager.Library;
+using MediaManager.Media;
 
-namespace MediaManager.Media
+namespace MediaManager.Library
 {
     public delegate void MetadataUpdatedEventHandler(object sender, MetadataChangedEventArgs e);
 

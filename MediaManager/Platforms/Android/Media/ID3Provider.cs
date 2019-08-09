@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Graphics;
 using Android.Media;
+using MediaManager.Library;
 using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android.Media

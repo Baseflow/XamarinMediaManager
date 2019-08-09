@@ -6,6 +6,7 @@ using Android.App;
 using Android.Content;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
+using MediaManager.Library;
 using MediaManager.Media;
 using MediaManager.Notifications;
 using MediaManager.Platforms.Android.Media;

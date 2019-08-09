@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using MediaManager.Media;
 
 namespace MediaManager.Library
 {

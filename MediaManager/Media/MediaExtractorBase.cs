@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using MediaManager.Library;
 
 namespace MediaManager.Media
 {
@@ -68,7 +69,10 @@ namespace MediaManager.Media
         public virtual IList<IProvider> CreateProviders()
         {
             var providers = new List<IProvider>();
-            //TODO: Add some overall providers
+            //providers.Add(new ApeTagProvider());
+            //providers.Add(new NfoMetadataProvider());
+            //providers.Add(new VorbisCommentProvider());
+            //providers.Add(new XmlMetadataProvider());
             return providers;
         }
 

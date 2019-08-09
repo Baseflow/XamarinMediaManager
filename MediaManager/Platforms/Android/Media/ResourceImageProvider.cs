@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Android.Content.Res;
 using Android.Graphics;
+using MediaManager.Library;
 using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android.Media

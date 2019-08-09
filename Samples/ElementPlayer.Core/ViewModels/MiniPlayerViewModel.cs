@@ -1,5 +1,6 @@
 ﻿using System;
 using MediaManager;
+using MediaManager.Library;
 using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Player;

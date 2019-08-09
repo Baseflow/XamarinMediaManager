@@ -1,6 +1,6 @@
 ﻿using System;
 using Foundation;
-using MediaManager.Media;
+using MediaManager.Library;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using UIKit;

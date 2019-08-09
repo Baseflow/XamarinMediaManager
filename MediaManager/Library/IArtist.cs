@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using MediaManager.Media;
 
 namespace MediaManager.Library
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MediaManager.Library;
 using MediaManager.Media;
 using MediaManager.Platforms.Tizen.Media;
 using MediaManager.Platforms.Tizen.Video;

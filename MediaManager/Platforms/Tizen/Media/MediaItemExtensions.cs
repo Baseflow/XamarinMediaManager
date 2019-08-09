@@ -1,4 +1,4 @@
-﻿using MediaManager.Media;
+﻿using MediaManager.Library;
 using Tizen.Multimedia;
 
 namespace MediaManager.Platforms.Tizen.Media
