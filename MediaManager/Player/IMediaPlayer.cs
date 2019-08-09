@@ -28,6 +28,9 @@ namespace MediaManager.Player
 
         IVideoView VideoView { get; set; }
 
+        //TODO: See if we can make this cross platform
+        //object PlaceholderImage { get; set; }
+
         bool AutoAttachVideoView { get; set; }
 
         VideoAspectMode VideoAspect { get; set; }

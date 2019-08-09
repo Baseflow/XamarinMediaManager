@@ -85,6 +85,16 @@ namespace MediaManager.Platforms.Android.Player
             }
         }
 
+        public object PlaceholderImage
+        {
+            get => PlayerView.DefaultArtwork;
+            set
+            {
+                if (PlayerView != null && value is global::Android.Graphics.Drawables.Drawable drawable)
+                    PlayerView.DefaultArtwork = drawable;
+            }
+        }
+
         public override void UpdateVideoAspect(VideoAspectMode videoAspectMode)
         {
             if (PlayerView == null)
