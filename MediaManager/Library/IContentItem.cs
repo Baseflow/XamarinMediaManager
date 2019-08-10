@@ -4,6 +4,6 @@ namespace MediaManager.Library
 {
     public interface IContentItem
     {
-        Guid Id { get; set; }
+        string Id { get; set; }
     }
 }

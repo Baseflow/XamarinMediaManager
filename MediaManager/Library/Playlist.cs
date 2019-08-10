@@ -5,7 +5,7 @@ namespace MediaManager.Library
 {
     public class Playlist : ObservableCollection<IMediaItem>, IPlaylist
     {
-        private Guid _id = Guid.NewGuid();
+        private string _id = Guid.NewGuid().ToString();
         private string _uri;
         private string _title;
         private string _description;
@@ -20,7 +20,7 @@ namespace MediaManager.Library
         private SharingType _sharingType = SharingType.Public;
         private DownloadStatus _downloadStatus = DownloadStatus.NotDownloaded;
 
-        public Guid Id
+        public string Id
         {
             get => _id;
             set => _id = value;

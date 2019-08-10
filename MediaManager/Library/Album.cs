@@ -5,7 +5,7 @@ namespace MediaManager.Library
 {
     public class Album : List<IMediaItem>, IAlbum
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Title { get; set; }
         public string Description { get; set; }
         public string Tags { get; set; }

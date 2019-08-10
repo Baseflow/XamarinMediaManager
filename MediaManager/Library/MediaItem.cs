@@ -14,7 +14,7 @@ namespace MediaManager.Library
 
         public event MetadataUpdatedEventHandler MetadataUpdated;
 
-        public Guid Id
+        public string Id
         {
             get => _id;
             set => SetProperty(ref _id, value);
@@ -204,7 +204,7 @@ namespace MediaManager.Library
         private object _rating;
         private int _numTracks;
         private string _mediaUri;
-        private Guid _id = Guid.NewGuid();
+        private string _id = Guid.NewGuid().ToString();
         private string _genre;
         private object _extras;
         private TimeSpan _duration;
