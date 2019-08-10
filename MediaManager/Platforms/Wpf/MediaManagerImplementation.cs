@@ -75,7 +75,7 @@ namespace MediaManager
 
         public override TimeSpan Position => Player?.Position ?? TimeSpan.Zero;
 
-        public override TimeSpan Duration => Player?.NaturalDuration.TimeSpan ?? TimeSpan.Zero;
+        public override TimeSpan Duration => Player.NaturalDuration.HasTimeSpan ? Player.NaturalDuration.TimeSpan : TimeSpan.Zero;
 
         public override float Speed
         {
