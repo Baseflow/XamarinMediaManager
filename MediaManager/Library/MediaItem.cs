@@ -5,6 +5,10 @@ namespace MediaManager.Library
 {
     public class MediaItem : NotifyPropertyChangedBase, IMediaItem
     {
+        public MediaItem()
+        {
+        }
+
         public MediaItem(string uri)
         {
             if (string.IsNullOrEmpty(uri))
