@@ -5,6 +5,10 @@ namespace MediaManager.Library
 {
     public class Playlist : ObservableCollection<IMediaItem>, IPlaylist
     {
+        public Playlist()
+        {
+        }
+
         private string _id = Guid.NewGuid().ToString();
         private string _uri;
         private string _title;
