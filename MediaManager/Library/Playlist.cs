@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace MediaManager.Library
 {
@@ -81,7 +82,17 @@ namespace MediaManager.Library
         }
         public TimeSpan TotalTime
         {
-            get => _totalTime;
+            get
+            {
+                if (_totalTime == null)
+                {
+                    //Return the total of all media items when no value is set
+                    var totalTime = new TimeSpan();
+                    Items.Select(x => totalTime.Add(x.Duration));
+                    return totalTime;
+                }
+                return _totalTime;
+            }
             set => _totalTime = value;
         }
         public SharingType SharingType
