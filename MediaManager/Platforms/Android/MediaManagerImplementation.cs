@@ -346,7 +346,7 @@ namespace MediaManager
             }
         }
 
-        public async Task<bool> HandleIntent(Intent intent)
+        public virtual async Task<bool> PlayFromIntent(Intent intent)
         {
             if (intent == null)
                 return false;
@@ -354,7 +354,21 @@ namespace MediaManager
             var action = intent.Action;
             var type = intent.Type;
 
-            if (action == Intent.ActionSend)
+            if (action == Intent.ActionView)
+            {
+                string path = "";
+
+                if (type.StartsWith("video/") || type.StartsWith("audio/"))
+                {
+                    path = intent.DataString;
+                }
+                if (!string.IsNullOrEmpty(path))
+                {
+                    await Play(path);
+                    return true;
+                }
+            }
+            else if (action == Intent.ActionSend)
             {
                 string path = "";
 
