@@ -8,6 +8,7 @@ using Foundation;
 using MediaManager.Library;
 using MediaManager.Media;
 using MediaManager.Platforms.Apple.Playback;
+using MediaManager.Playback;
 using MediaManager.Player;
 
 namespace MediaManager.Platforms.Apple.Player
@@ -34,6 +35,17 @@ namespace MediaManager.Platforms.Apple.Player
                 _player = value;
             }
         }
+
+        #region RepeatMode
+
+        private RepeatMode _repeatMode;
+        public virtual RepeatMode RepeatMode
+        {
+            get => _repeatMode;
+            set => SetProperty(ref _repeatMode, value);
+        }
+
+        #endregion
 
         private NSObject didFinishPlayingObserver;
         private NSObject itemFailedToPlayToEndTimeObserver;
@@ -157,7 +169,19 @@ namespace MediaManager.Platforms.Apple.Player
             //TODO: Android has its own queue and goes to next. Maybe use native apple queue
             var succesfullNext = await MediaManager.PlayNext();
             if (!succesfullNext)
+            {
                 await Stop();
+            }
+            else if (RepeatMode == RepeatMode.All && MediaManager.MediaQueue.Any())
+            {
+                MediaManager.MediaQueue.CurrentIndex = 0;
+                await MediaManager.PlayQueueItem(MediaManager.MediaQueue.Current);
+            }
+            else if (RepeatMode == RepeatMode.One && MediaManager.MediaQueue.Any())
+            {
+                MediaManager.MediaQueue.CurrentIndex = MediaManager.MediaQueue.CurrentIndex - 1;
+                await MediaManager.PlayQueueItem(MediaManager.MediaQueue.Current);
+            }
         }
 
         public override Task Pause()

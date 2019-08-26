@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AVFoundation;
 using MediaManager.Media;
 using MediaManager.Notifications;
@@ -8,6 +9,7 @@ using MediaManager.Platforms.Apple.Player;
 using MediaManager.Platforms.Apple.Volume;
 using MediaManager.Playback;
 using MediaManager.Player;
+using MediaManager.Queue;
 using MediaManager.Volume;
 
 namespace MediaManager
@@ -118,28 +120,26 @@ namespace MediaManager
             }
         }
 
-        private AVPlayerLooper _looper;
         public override RepeatMode RepeatMode
         {
-            get
-            {
-                return _looper != null ? RepeatMode.One : RepeatMode.All;
-            }
+            get => AppleMediaPlayer.RepeatMode;
             set
             {
-                switch (value)
+                AppleMediaPlayer.RepeatMode = value;
+                OnPropertyChanged(nameof(RepeatMode));
+            }
+        }
+
+        public override ShuffleMode ShuffleMode
+        {
+            get => base.ShuffleMode;
+            set
+            {
+                if (base.ShuffleMode != value)
                 {
-                    case RepeatMode.Off:
-                        _looper = null;
-                        break;
-                    case RepeatMode.One:
-                    case RepeatMode.All:
-                        _looper = AVPlayerLooper.FromPlayer(Player, Player.CurrentItem);
-                        break;
-                    default:
-                        break;
+                    base.ShuffleMode = value;
+                    OnPropertyChanged(nameof(ShuffleMode));
                 }
-                //MediaPlayer.RepeatMode = value;
             }
         }
     }
