@@ -125,8 +125,11 @@ namespace MediaManager
             get => AppleMediaPlayer.RepeatMode;
             set
             {
-                AppleMediaPlayer.RepeatMode = value;
-                OnPropertyChanged(nameof(RepeatMode));
+                if (AppleMediaPlayer.RepeatMode != value)
+                {
+                    AppleMediaPlayer.RepeatMode = value;
+                    OnPropertyChanged(nameof(RepeatMode));
+                }
             }
         }
 
