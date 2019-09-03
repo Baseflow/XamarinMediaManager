@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using MediaManager.Library;
+﻿using MediaManager.Library;
 
 namespace MediaManager.Media
 {
-    public interface IArtistProvider : ILibraryProvider
+    public interface IArtistProvider : ILibraryProvider<IArtist>
     {
-        Task<IEnumerable<IArtist>> GetArtists();
-        Task<IArtist> GetArtist(Guid id);
-        Task AddOrUpdateArtist(IArtist artist);
     }
 }

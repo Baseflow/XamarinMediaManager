@@ -88,8 +88,8 @@ namespace MediaManager.Platforms.Uap.Media
                 var file = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
                 var thumbnail = await GetThumbnailAsync(file, timeFromStart);
 
-                BitmapImage bitmapImage = new BitmapImage();
-                InMemoryRandomAccessStream randomAccessStream = new InMemoryRandomAccessStream();
+                var bitmapImage = new BitmapImage();
+                var randomAccessStream = new InMemoryRandomAccessStream();
                 await RandomAccessStream.CopyAsync(thumbnail, randomAccessStream);
                 randomAccessStream.Seek(0);
                 bitmapImage.SetSource(randomAccessStream);

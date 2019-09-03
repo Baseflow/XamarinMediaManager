@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MediaManager.Library;
@@ -11,6 +10,9 @@ namespace MediaManager.Media
         public MediaLibrary()
         {
         }
+
+        //TODO: Implement to return always on first result find
+        public bool ReturnOnFirstResult { get; set; } = false;
 
         private IList<ILibraryProvider> _providers;
         public IList<ILibraryProvider> Providers
@@ -27,7 +29,6 @@ namespace MediaManager.Media
         public virtual IList<ILibraryProvider> CreateProviders()
         {
             var providers = new List<ILibraryProvider>();
-            //providers.Add(new PlaylistProvider());
             return providers;
         }
 
@@ -36,87 +37,65 @@ namespace MediaManager.Media
         public IEnumerable<IAlbumProvider> AlbumProviders => Providers.OfType<IAlbumProvider>();
         public IEnumerable<IMediaItemProvider> MediaItemProviders => Providers.OfType<IMediaItemProvider>();
 
-        public Task AddOrUpdateAlbum(IAlbum playlist)
+        public async Task<IEnumerable<TContentItem>> GetAll<TContentItem>() where TContentItem : IContentItem
         {
-            throw new NotImplementedException();
-        }
+            var items = new List<TContentItem>();
+            IList<Task<IEnumerable<TContentItem>>> tasks = new List<Task<IEnumerable<TContentItem>>>();
 
-        public Task AddOrUpdateArtist(IArtist artist)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task AddOrUpdateMediaItem(IMediaItem mediaItem)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task AddOrUpdatePlaylist(IPlaylist playlist)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IAlbum> GetAlbum(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<IAlbum>> GetAlbums()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IArtist> GetArtist(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<IArtist>> GetArtists()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IMediaItem> GetMediaItem(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<IMediaItem>> GetMediaÍtems(string search)
-        {
-            var mediaItems = new List<IMediaItem>();
-
-            IList<Task<IEnumerable<IMediaItem>>> tasks = new List<Task<IEnumerable<IMediaItem>>>();
-            foreach (var provider in MediaItemProviders)
+            foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
             {
-                tasks.Add(provider.GetMediaÍtems(search));
+                tasks.Add(provider.GetAll());
             }
             foreach (var item in await Task.WhenAll(tasks))
             {
-                mediaItems.AddRange(item);
+                items.AddRange(item);
             }
-            return mediaItems;
+
+            return items;
         }
 
-        public async Task<IPlaylist> GetPlaylist(Guid id)
+        public async Task<TContentItem> Get<TContentItem>(string id) where TContentItem : IContentItem
         {
-            foreach (var provider in PlaylistProviders)
+            foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
             {
-                var item = await provider.GetPlaylist(id);
+                var item = await provider.Get(id);
                 if (item != null)
                     return item;
             }
-            return null;
+            return default;
         }
 
-        public async Task<IEnumerable<IPlaylist>> GetPlaylists()
+        public async Task<bool> AddOrUpdate<TContentItem>(TContentItem item) where TContentItem : IContentItem
         {
-            foreach (var provider in PlaylistProviders)
+            foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
             {
-                var item = await provider.GetPlaylists();
-                if (item != null)
-                    return item;
+                var success = await provider.AddOrUpdate(item);
+                if (success)
+                    return success;
             }
-            return null;
+            return false;
+        }
+
+        public async Task<bool> Remove<TContentItem>(TContentItem item) where TContentItem : IContentItem
+        {
+            foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
+            {
+                var success = await provider.Remove(item);
+                if (success)
+                    return success;
+            }
+            return false;
+        }
+
+        public async Task<bool> RemoveAll<TContentItem>() where TContentItem : IContentItem
+        {
+            IList<Task<bool>> tasks = new List<Task<bool>>();
+            foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
+            {
+                tasks.Add(provider.RemoveAll());
+            }
+            var success = await Task.WhenAll(tasks);
+            return success.All(x => x == true);
         }
     }
 }

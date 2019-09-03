@@ -26,7 +26,8 @@ namespace MediaManager.Media
         };
 
         public IList<string> ResourcePrefixes { get; } = new List<string>() {
-            "android.resource"
+            "android.resource",
+            "raw"
         };
 
         public IList<string> VideoSuffixes { get; } = new List<string>() {
@@ -275,7 +276,7 @@ namespace MediaManager.Media
         protected virtual bool TryFindAssembly(string resourceName, out Assembly assembly)
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (Assembly item in assemblies)
+            foreach (var item in assemblies)
             {
                 var isResourceNameInAssembly = item.GetManifestResourceNames()
                     .Any(x => x.EndsWith(resourceName, StringComparison.OrdinalIgnoreCase));

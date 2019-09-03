@@ -10,9 +10,9 @@ namespace MediaManager.Forms.Platforms.Android
         {
             if (bitmap != null)
             {
-                MemoryStream stream = new MemoryStream();
+                var stream = new MemoryStream();
                 bitmap.Compress(Bitmap.CompressFormat.Png, 0, stream);
-                byte[] bitmapData = stream.ToArray();
+                var bitmapData = stream.ToArray();
                 return ImageSource.FromStream(() => new MemoryStream(bitmapData));
             }
             return null;

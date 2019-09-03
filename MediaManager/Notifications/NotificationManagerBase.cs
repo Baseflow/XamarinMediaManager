@@ -1,6 +1,6 @@
 ﻿namespace MediaManager.Notifications
 {
-    public abstract class NotificationManagerBase : INotificationManager
+    public abstract class NotificationManagerBase : NotifyPropertyChangedBase, INotificationManager
     {
         private bool _enabled = true;
         private bool _showPlayPauseControls = true;
@@ -11,8 +11,8 @@
             get => _enabled;
             set
             {
-                _enabled = value;
-                UpdateNotification();
+                if (SetProperty(ref _enabled, value))
+                    UpdateNotification();
             }
         }
 
@@ -21,8 +21,8 @@
             get => _showPlayPauseControls;
             set
             {
-                _showPlayPauseControls = value;
-                UpdateNotification();
+                if (SetProperty(ref _showPlayPauseControls, value))
+                    UpdateNotification();
             }
         }
 
@@ -31,8 +31,8 @@
             get => _showNavigationControls;
             set
             {
-                _showNavigationControls = value;
-                UpdateNotification();
+                if (SetProperty(ref _showNavigationControls, value))
+                    UpdateNotification();
             }
         }
 

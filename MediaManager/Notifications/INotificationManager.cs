@@ -1,6 +1,8 @@
-﻿namespace MediaManager.Notifications
+﻿using System.ComponentModel;
+
+namespace MediaManager.Notifications
 {
-    public interface INotificationManager
+    public interface INotificationManager : INotifyPropertyChanged
     {
         bool Enabled { get; set; }
         bool ShowPlayPauseControls { get; set; }

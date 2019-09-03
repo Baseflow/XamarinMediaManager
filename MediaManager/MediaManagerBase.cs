@@ -42,6 +42,19 @@ namespace MediaManager
             set => SetProperty(ref _requestHeaders, value);
         }
 
+        protected IMediaLibrary _library;
+        public virtual IMediaLibrary Library
+        {
+            get
+            {
+                if (_library == null)
+                    _library = new Media.MediaLibrary();
+
+                return _library;
+            }
+            set => SetProperty(ref _library, value);
+        }
+
         protected IMediaQueue _mediaQueue;
         public virtual IMediaQueue Queue
         {

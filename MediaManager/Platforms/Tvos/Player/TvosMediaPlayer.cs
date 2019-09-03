@@ -1,7 +1,6 @@
 ﻿
 using System;
 using AVFoundation;
-using Foundation;
 using MediaManager.Platforms.Apple.Player;
 using MediaManager.Platforms.Tvos.Video;
 using MediaManager.Player;
@@ -67,8 +66,7 @@ namespace MediaManager.Platforms.Tvos.Player
             try
             {
                 audioSession.SetCategory(AVAudioSession.CategoryPlayback);
-                NSError activationError = null;
-                audioSession.SetActive(true, out activationError);
+                audioSession.SetActive(true, out var activationError);
                 if (activationError != null)
                     Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
             }
