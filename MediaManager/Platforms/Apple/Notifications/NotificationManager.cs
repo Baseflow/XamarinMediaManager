@@ -112,7 +112,7 @@ namespace MediaManager.Platforms.Apple.Notifications
 
         public override void UpdateNotification()
         {
-            var mediaItem = MediaManager.MediaQueue.Current;
+            var mediaItem = MediaManager.Queue.Current;
 
             if (mediaItem == null || !Enabled)
             {
@@ -132,8 +132,8 @@ namespace MediaManager.Platforms.Apple.Notifications
                 Genre = mediaItem.Genre,
                 ElapsedPlaybackTime = MediaManager.Position.TotalSeconds,
                 PlaybackDuration = MediaManager.Duration.TotalSeconds,
-                PlaybackQueueIndex = MediaManager.MediaQueue.CurrentIndex,
-                PlaybackQueueCount = MediaManager.MediaQueue.Count
+                PlaybackQueueIndex = MediaManager.Queue.CurrentIndex,
+                PlaybackQueueCount = MediaManager.Queue.Count
             };
 
             if (MediaManager.IsPlaying())

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
 using MediaManager.Media;
 
 namespace MediaManager.Library
 {
     public delegate void MetadataUpdatedEventHandler(object sender, MetadataChangedEventArgs e);
 
-    public interface IMediaItem : INotifyPropertyChanged, IContentItem
+    public interface IMediaItem : IContentItem
     {
         /// <summary>
         /// Gets or sets a value indicating whether [metadata extracted].

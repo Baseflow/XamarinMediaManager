@@ -28,22 +28,22 @@ namespace MediaManager.Platforms.Android.Media
 
         public string GetCurrentContentText(IPlayer player)
         {
-            return MediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetTitle();
+            return MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetTitle();
         }
 
         public string GetCurrentContentTitle(IPlayer player)
         {
-            return MediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetContentTitle();
+            return MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetContentTitle();
         }
 
         public Bitmap GetCurrentLargeIcon(IPlayer player, PlayerNotificationManager.BitmapCallback callback)
         {
-            return MediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetCover();
+            return MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetCover();
         }
 
         public string GetCurrentSubText(IPlayer player)
         {
-            return MediaManager.MediaQueue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetSubText();
+            return MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetSubText();
         }
     }
 }

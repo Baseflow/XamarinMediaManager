@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MediaManager.Library
 {
-    public interface IAlbum : IList<IMediaItem>, IContentItem
+    public interface IAlbum : IContentItem
     {
         string Title { get; set; }
 
@@ -26,5 +26,7 @@ namespace MediaManager.Library
         string LabelName { get; set; }
 
         IList<IArtist> Artists { get; set; }
+
+        IList<IMediaItem> MediaItems { get; set; }
     }
 }

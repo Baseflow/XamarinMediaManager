@@ -43,7 +43,7 @@ namespace MediaManager
         }
 
         protected IMediaQueue _mediaQueue;
-        public virtual IMediaQueue MediaQueue
+        public virtual IMediaQueue Queue
         {
             get
             {
@@ -61,9 +61,9 @@ namespace MediaManager
         }
 
         public abstract IMediaPlayer MediaPlayer { get; set; }
-        public abstract IMediaExtractor MediaExtractor { get; set; }
-        public abstract IVolumeManager VolumeManager { get; set; }
-        public abstract INotificationManager NotificationManager { get; set; }
+        public abstract IMediaExtractor Extractor { get; set; }
+        public abstract IVolumeManager Volume { get; set; }
+        public abstract INotificationManager Notification { get; set; }
 
         protected MediaPlayerState _state = MediaPlayerState.Stopped;
         public MediaPlayerState State
@@ -97,11 +97,11 @@ namespace MediaManager
         {
             get
             {
-                return MediaQueue.ShuffleMode;
+                return Queue.ShuffleMode;
             }
             set
             {
-                MediaQueue.ShuffleMode = value;
+                Queue.ShuffleMode = value;
             }
         }
 
@@ -137,7 +137,7 @@ namespace MediaManager
 
         public virtual async Task<IMediaItem> Play(string uri)
         {
-            var mediaItem = await MediaExtractor.CreateMediaItem(uri).ConfigureAwait(false);
+            var mediaItem = await Extractor.CreateMediaItem(uri).ConfigureAwait(false);
             var mediaItemToPlay = await PrepareQueueForPlayback(mediaItem);
 
             await PlayAsCurrent(mediaItemToPlay);
@@ -146,7 +146,7 @@ namespace MediaManager
 
         public virtual async Task<IMediaItem> PlayFromAssembly(string resourceName, Assembly assembly = null)
         {
-            var mediaItem = await MediaExtractor.CreateMediaItemFromAssembly(resourceName, assembly).ConfigureAwait(false);
+            var mediaItem = await Extractor.CreateMediaItemFromAssembly(resourceName, assembly).ConfigureAwait(false);
             var mediaItemToPlay = await PrepareQueueForPlayback(mediaItem);
 
             await PlayAsCurrent(mediaItemToPlay);
@@ -155,7 +155,7 @@ namespace MediaManager
 
         public virtual async Task<IMediaItem> PlayFromResource(string resourceName)
         {
-            var mediaItem = await MediaExtractor.CreateMediaItemFromResource(resourceName).ConfigureAwait(false);
+            var mediaItem = await Extractor.CreateMediaItemFromResource(resourceName).ConfigureAwait(false);
             var mediaItemToPlay = await PrepareQueueForPlayback(mediaItem);
 
             await PlayAsCurrent(mediaItemToPlay);
@@ -169,7 +169,7 @@ namespace MediaManager
             await stream.CopyToAsync(fileStream);
             fileStream.Close();
 
-            var mediaItem = await MediaExtractor.CreateMediaItem(path).ConfigureAwait(false);
+            var mediaItem = await Extractor.CreateMediaItem(path).ConfigureAwait(false);
             var mediaItemToPlay = await PrepareQueueForPlayback(mediaItem);
 
             await PlayAsCurrent(mediaItemToPlay);
@@ -195,7 +195,7 @@ namespace MediaManager
 
         public virtual async Task<IMediaItem> Play(FileInfo file)
         {
-            var mediaItem = await MediaExtractor.CreateMediaItem(file).ConfigureAwait(false);
+            var mediaItem = await Extractor.CreateMediaItem(file).ConfigureAwait(false);
             var mediaItemToPlay = await PrepareQueueForPlayback(mediaItem);
 
             await PlayAsCurrent(mediaItemToPlay);
@@ -225,15 +225,15 @@ namespace MediaManager
         {
             if (ClearQueueOnPlay)
             {
-                MediaQueue.Clear();
+                Queue.Clear();
             }
 
             foreach (var item in mediaItems)
             {
-                MediaQueue.Add(item);
+                Queue.Add(item);
             }
 
-            return Task.FromResult(MediaQueue.Current);
+            return Task.FromResult(Queue.Current);
         }
 
         public virtual async Task<bool> PlayNext()
@@ -241,15 +241,15 @@ namespace MediaManager
             // If we repeat just the single media item, we do that first
             if (RepeatMode == RepeatMode.One)
             {
-                await MediaPlayer.Play(MediaQueue.Current);
+                await MediaPlayer.Play(Queue.Current);
                 return true;
             }
             else
             {
                 // Otherwise we try to play the next media item in the queue
-                if (MediaQueue.HasNext())
+                if (Queue.HasNext())
                 {
-                    await MediaPlayer.Play(MediaQueue.NextItem);
+                    await MediaPlayer.Play(Queue.NextItem);
                     return true;
                 }
                 else
@@ -258,10 +258,10 @@ namespace MediaManager
                     if (RepeatMode == RepeatMode.All)
                     {
                         // Go to the start of the queue again
-                        MediaQueue.CurrentIndex = 0;
-                        if (MediaQueue.HasCurrent())
+                        Queue.CurrentIndex = 0;
+                        if (Queue.HasCurrent())
                         {
-                            await MediaPlayer.Play(MediaQueue.Current);
+                            await MediaPlayer.Play(Queue.Current);
                             return true;
                         }
                     }
@@ -273,9 +273,9 @@ namespace MediaManager
 
         public virtual async Task<bool> PlayPrevious()
         {
-            if (MediaQueue.HasPrevious())
+            if (Queue.HasPrevious())
             {
-                await MediaPlayer.Play(MediaQueue.PreviousItem);
+                await MediaPlayer.Play(Queue.PreviousItem);
                 return true;
             }
 
@@ -284,7 +284,7 @@ namespace MediaManager
 
         public virtual async Task<bool> PlayQueueItem(IMediaItem mediaItem)
         {
-            if (!MediaQueue.Contains(mediaItem))
+            if (!Queue.Contains(mediaItem))
                 return false;
 
             await MediaPlayer.Play(mediaItem);
@@ -293,7 +293,7 @@ namespace MediaManager
 
         public virtual async Task<bool> PlayQueueItem(int index)
         {
-            var mediaItem = MediaQueue.ElementAtOrDefault(index);
+            var mediaItem = Queue.ElementAtOrDefault(index);
             if (mediaItem == null)
                 return false;
 
@@ -342,7 +342,7 @@ namespace MediaManager
             //TODO: Find a better way to trigger some changes.
             OnPropertyChanged(nameof(Duration));
 
-            NotificationManager?.UpdateNotification();
+            Notification?.UpdateNotification();
         }
 
         protected TimeSpan _previousPosition = new TimeSpan();

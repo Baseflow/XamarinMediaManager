@@ -25,22 +25,22 @@ namespace MediaManager.Platforms.Android.Queue
 
         public void Add(int index, MediaDescriptionCompat description)
         {
-            MediaManager.MediaQueue.Insert(index, description.ToMediaItem());
+            MediaManager.Queue.Insert(index, description.ToMediaItem());
         }
 
         public MediaDescriptionCompat GetMediaDescription(int index)
         {
-            return MediaManager.MediaQueue.ElementAtOrDefault(index)?.ToMediaDescription();
+            return MediaManager.Queue.ElementAtOrDefault(index)?.ToMediaDescription();
         }
 
         public void Move(int oldIndex, int newIndex)
         {
-            MediaManager.MediaQueue.Move(oldIndex, newIndex);
+            MediaManager.Queue.Move(oldIndex, newIndex);
         }
 
         public void Remove(int index)
         {
-            MediaManager.MediaQueue.RemoveAt(index);
+            MediaManager.Queue.RemoveAt(index);
         }
         //TODO: Find out if queue also need to get picked up on changes. Maybe when people add items directly to the queue while playing already.
         /*

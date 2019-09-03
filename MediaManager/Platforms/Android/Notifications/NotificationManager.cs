@@ -70,7 +70,7 @@ namespace MediaManager.Platforms.Android.Notifications
                 if (Enabled && Player == null && !MediaManager.IsStopped())
                     Player = MediaManager.Player;
 
-                if (ShowNavigationControls && MediaManager.MediaQueue.Count > 1)
+                if (ShowNavigationControls && MediaManager.Queue.Count > 1)
                 {
                     PlayerNotificationManager.SetUseNavigationActions(true);
                 }

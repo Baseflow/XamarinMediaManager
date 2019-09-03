@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
 
 namespace MediaManager.Library
 {
-    public interface IRadio : IList<IMediaItem>, INotifyCollectionChanged, INotifyPropertyChanged, IContentItem
+    public interface IRadio : IContentItem
     {
-        void Move(int oldIndex, int newIndex);
-
         string Uri { get; set; }
 
         string Title { get; set; }
@@ -30,5 +26,7 @@ namespace MediaManager.Library
         DateTime UpdatedAt { get; set; }
 
         SharingType SharingType { get; set; }
+
+        IList<IMediaItem> MediaItems { get; set; }
     }
 }

@@ -67,7 +67,7 @@ namespace MediaManager.Platforms.Tizen.Player
 
         private void Player_PlaybackCompleted(object sender, EventArgs e)
         {
-            MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
+            MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.Current));
         }
 
         private void Player_PlaybackInterrupted(object sender, PlaybackInterruptedEventArgs e)
@@ -77,7 +77,7 @@ namespace MediaManager.Platforms.Tizen.Player
 
         private void Player_ErrorOccurred(object sender, PlayerErrorOccurredEventArgs e)
         {
-            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, new Exception(e.ToString()), e.ToString()));
+            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue.Current, new Exception(e.ToString()), e.ToString()));
         }
 
         public override IVideoView VideoView { get; set; }

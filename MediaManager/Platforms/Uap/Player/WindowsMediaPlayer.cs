@@ -150,12 +150,12 @@ namespace MediaManager.Platforms.Uap.Player
 
         private void Player_MediaFailed(MediaPlayer sender, MediaPlayerFailedEventArgs args)
         {
-            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, new Exception(args.ErrorMessage), args.ErrorMessage));
+            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue.Current, new Exception(args.ErrorMessage), args.ErrorMessage));
         }
 
         private void Player_MediaEnded(MediaPlayer sender, object args)
         {
-            MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
+            MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.Current));
         }
 
         public override Task Pause()
@@ -169,7 +169,7 @@ namespace MediaManager.Platforms.Uap.Player
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
             MediaPlaybackList.Items.Clear();
-            foreach (var mediaQueueItem in MediaManager.MediaQueue)
+            foreach (var mediaQueueItem in MediaManager.Queue)
             {
                 var mediaPlaybackItem = new MediaPlaybackItem(await mediaQueueItem.ToMediaSource());
                 MediaPlaybackList.Items.Add(mediaPlaybackItem);

@@ -19,8 +19,8 @@ namespace MediaManager.Platforms.Android.MediaSession
         protected MediaDescriptionAdapter MediaDescriptionAdapter { get; set; }
         protected PlayerNotificationManager PlayerNotificationManager
         {
-            get => (MediaManager.NotificationManager as Notifications.NotificationManager).PlayerNotificationManager;
-            set => (MediaManager.NotificationManager as Notifications.NotificationManager).PlayerNotificationManager = value;
+            get => (MediaManager.Notification as Notifications.NotificationManager).PlayerNotificationManager;
+            set => (MediaManager.Notification as Notifications.NotificationManager).PlayerNotificationManager = value;
         }
         protected MediaControllerCompat MediaController => MediaManager.MediaController;
 
@@ -133,11 +133,11 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.SetNotificationListener(NotificationListener);
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
             PlayerNotificationManager.SetOngoing(true);
-            PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.NotificationManager.ShowPlayPauseControls);
-            PlayerNotificationManager.SetUseNavigationActions(MediaManager.NotificationManager.ShowNavigationControls);
+            PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.Notification.ShowPlayPauseControls);
+            PlayerNotificationManager.SetUseNavigationActions(MediaManager.Notification.ShowNavigationControls);
 
             //Must be called to start the connection
-            (MediaManager.NotificationManager as Notifications.NotificationManager).Player = MediaManager.Player;
+            (MediaManager.Notification as Notifications.NotificationManager).Player = MediaManager.Player;
             //PlayerNotificationManager.SetPlayer(MediaManager.AndroidMediaPlayer.Player);
         }
 
@@ -164,7 +164,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             StopForeground(true);
             MediaManager.StateChanged -= MediaManager_StateChanged;
 
-            (MediaManager.NotificationManager as Notifications.NotificationManager).Player = null;
+            (MediaManager.Notification as Notifications.NotificationManager).Player = null;
 
             MediaDescriptionAdapter.Dispose();
             MediaDescriptionAdapter = null;
@@ -196,7 +196,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
             var mediaItems = new JavaList<MediaBrowserCompat.MediaItem>();
 
-            foreach (var item in MediaManager.MediaQueue)
+            foreach (var item in MediaManager.Queue)
                 mediaItems.Add(item.ToMediaBrowserMediaItem());
 
             result.SendResult(mediaItems);

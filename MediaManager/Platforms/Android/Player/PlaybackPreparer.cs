@@ -48,7 +48,7 @@ namespace MediaManager.Platforms.Android.Player
         {
             _mediaSource.Clear();
 
-            var mediaItems = MediaManager.MediaQueue.Select(x => x.ToMediaSource()).ToList();
+            var mediaItems = MediaManager.Queue.Select(x => x.ToMediaSource()).ToList();
             _mediaSource.AddMediaSources(mediaItems);
 
             _player.Prepare(_mediaSource);
@@ -64,10 +64,10 @@ namespace MediaManager.Platforms.Android.Player
         {
             _mediaSource.Clear();
             var windowIndex = 0;
-            foreach (var mediaItem in MediaManager.MediaQueue)
+            foreach (var mediaItem in MediaManager.Queue)
             {
                 if (mediaItem.Id.ToString() == mediaId)
-                    windowIndex = MediaManager.MediaQueue.IndexOf(mediaItem);
+                    windowIndex = MediaManager.Queue.IndexOf(mediaItem);
 
                 _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }
@@ -78,7 +78,7 @@ namespace MediaManager.Platforms.Android.Player
         public void OnPrepareFromSearch(string searchTerm, Bundle p1)
         {
             _mediaSource.Clear();
-            foreach (var mediaItem in MediaManager.MediaQueue.Where(x => x.Title == searchTerm))
+            foreach (var mediaItem in MediaManager.Queue.Where(x => x.Title == searchTerm))
             {
                 _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }
@@ -89,11 +89,11 @@ namespace MediaManager.Platforms.Android.Player
         {
             _mediaSource.Clear();
             var windowIndex = 0;
-            foreach (var mediaItem in MediaManager.MediaQueue)
+            foreach (var mediaItem in MediaManager.Queue)
             {
                 var uri = global::Android.Net.Uri.Parse(mediaItem.MediaUri);
                 if (uri.Equals(mediaUri))
-                    windowIndex = MediaManager.MediaQueue.IndexOf(mediaItem);
+                    windowIndex = MediaManager.Queue.IndexOf(mediaItem);
 
                 _mediaSource.AddMediaSource(mediaItem.ToMediaSource());
             }

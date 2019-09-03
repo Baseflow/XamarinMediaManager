@@ -9,7 +9,7 @@ namespace MediaManager.Media
 {
     public static class MediaExtractorExtensions
     {
-        private static IMediaExtractor MediaExtractor => CrossMediaManager.Current.MediaExtractor;
+        private static IMediaExtractor MediaExtractor => CrossMediaManager.Current.Extractor;
 
         public static bool IsRemote(this MediaLocation mediaLocation)
         {

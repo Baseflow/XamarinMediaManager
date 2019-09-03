@@ -48,7 +48,7 @@ namespace ElementPlayer.Core.ViewModels
         public IMvxAsyncCommand BrowseCommand => _browseCommand ?? (_browseCommand = new MvxAsyncCommand(
             () => NavigationService.Navigate<BrowseViewModel>()));
 
-        public IMediaItem Current => MediaManager.MediaQueue.Current;
+        public IMediaItem Current => MediaManager.Queue.Current;
 
         private ImageSource _image;
         public ImageSource Image
@@ -59,8 +59,8 @@ namespace ElementPlayer.Core.ViewModels
 
         public override async Task Initialize()
         {
-            var item = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://file-examples.com/wp-content/uploads/2018/04/file_example_MOV_480_700kB.mov");
-            var image = await MediaManager.MediaExtractor.GetVideoFrame(item, TimeSpan.FromSeconds(5));
+            var item = await CrossMediaManager.Current.Extractor.CreateMediaItem("https://file-examples.com/wp-content/uploads/2018/04/file_example_MOV_480_700kB.mov");
+            var image = await MediaManager.Extractor.GetVideoFrame(item, TimeSpan.FromSeconds(5));
             Image = image.ToImageSource();
         }
 

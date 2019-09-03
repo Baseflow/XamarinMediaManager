@@ -22,7 +22,7 @@ namespace MediaManager.Forms
             MediaManager.StateChanged += MediaManager_StateChanged;
             MediaManager.MediaItemChanged += MediaManager_MediaItemChanged;
 
-            MediaManager.MediaQueue.QueueChanged += MediaQueue_QueueChanged;
+            MediaManager.Queue.QueueChanged += MediaQueue_QueueChanged;
 
             MediaManager.PropertyChanged += MediaManager_PropertyChanged;
             MediaManager.MediaPlayer.PropertyChanged += MediaPlayer_PropertyChanged;
@@ -140,7 +140,7 @@ namespace MediaManager.Forms
             BindableProperty.Create(nameof(VideoWidth), typeof(int), typeof(VideoView), defaultValueCreator: x => MediaManager.MediaPlayer.VideoWidth);
 
         public static readonly BindableProperty VolumeProperty =
-            BindableProperty.Create(nameof(Volume), typeof(int), typeof(VideoView), 1, propertyChanged: OnVolumePropertyChanged, defaultValueCreator: x => MediaManager.VolumeManager.CurrentVolume);
+            BindableProperty.Create(nameof(Volume), typeof(int), typeof(VideoView), 1, propertyChanged: OnVolumePropertyChanged, defaultValueCreator: x => MediaManager.Volume.CurrentVolume);
 
         public static readonly BindableProperty SpeedProperty =
             BindableProperty.Create(nameof(Speed), typeof(float), typeof(VideoView), 1.0f, propertyChanged: OnSpeedPropertyChanged, defaultValueCreator: x => MediaManager.Speed);
@@ -267,7 +267,7 @@ namespace MediaManager.Forms
 
         private static void OnVolumePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            MediaManager.VolumeManager.CurrentVolume = (int)newValue;
+            MediaManager.Volume.CurrentVolume = (int)newValue;
         }
 
         private static void OnSpeedPropertyChanged(BindableObject bindable, object oldValue, object newValue)
@@ -287,7 +287,7 @@ namespace MediaManager.Forms
             MediaManager.StateChanged -= MediaManager_StateChanged;
             MediaManager.MediaItemChanged -= MediaManager_MediaItemChanged;
 
-            MediaManager.MediaQueue.QueueChanged += MediaQueue_QueueChanged;
+            MediaManager.Queue.QueueChanged += MediaQueue_QueueChanged;
 
             MediaManager.PropertyChanged += MediaManager_PropertyChanged;
             MediaManager.MediaPlayer.PropertyChanged += MediaPlayer_PropertyChanged;

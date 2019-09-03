@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
 
 namespace MediaManager.Library
 {
-    public interface IPlaylist : IList<IMediaItem>, INotifyCollectionChanged, INotifyPropertyChanged, IContentItem
+    public interface IPlaylist : IContentItem
     {
-        void Move(int oldIndex, int newIndex);
-
         string Uri { get; set; }
 
         string Title { get; set; }
@@ -19,9 +15,9 @@ namespace MediaManager.Library
 
         string Genre { get; set; }
 
-        object Art { get; set; }
+        object Image { get; set; }
 
-        string ArtUri { get; set; }
+        string ImageUri { get; set; }
 
         object Rating { get; set; }
 
@@ -34,5 +30,7 @@ namespace MediaManager.Library
         SharingType SharingType { get; set; }
 
         DownloadStatus DownloadStatus { get; set; }
+
+        IList<IMediaItem> MediaItems { get; set; }
     }
 }

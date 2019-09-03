@@ -29,7 +29,7 @@ namespace MediaManager.Platforms.Android.Queue
 
         public override MediaDescriptionCompat GetMediaDescription(IPlayer player, int windowIndex)
         {
-            return MediaManager.MediaQueue.ElementAtOrDefault(windowIndex)?.ToMediaDescription();
+            return MediaManager.Queue.ElementAtOrDefault(windowIndex)?.ToMediaDescription();
         }
     }
 }

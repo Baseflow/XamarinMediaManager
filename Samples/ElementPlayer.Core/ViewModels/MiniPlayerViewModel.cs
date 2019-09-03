@@ -26,7 +26,7 @@ namespace ElementPlayer.Core.ViewModels
 
         public IMvxAsyncCommand PlayPauseCommand { get; }
 
-        public IMediaItem Current => MediaManager.MediaQueue.Current;
+        public IMediaItem Current => MediaManager.Queue.Current;
 
         public string CurrentTitle => Current.GetTitle();
         public string CurrentSubtitle => Current.GetContentTitle();

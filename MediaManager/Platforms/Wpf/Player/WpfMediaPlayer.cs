@@ -98,7 +98,7 @@ namespace MediaManager.Platforms.Wpf.Player
         private void Player_MediaFailed(object sender, System.Windows.ExceptionRoutedEventArgs e)
         {
             MediaManager.State = MediaPlayerState.Failed;
-            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, e.ErrorException, e.ErrorException.Message));
+            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue.Current, e.ErrorException, e.ErrorException.Message));
         }
 
         private void Player_BufferingEnded(object sender, EventArgs e)
@@ -119,7 +119,7 @@ namespace MediaManager.Platforms.Wpf.Player
 
         private void Player_MediaEnded(object sender, EventArgs e)
         {
-            MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
+            MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.Current));
         }
 
         public override Task Pause()
@@ -140,7 +140,7 @@ namespace MediaManager.Platforms.Wpf.Player
             catch (Exception ex)
             {
                 MediaManager.State = MediaPlayerState.Failed;
-                MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, ex, ex.Message));
+                MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue.Current, ex, ex.Message));
             }
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }

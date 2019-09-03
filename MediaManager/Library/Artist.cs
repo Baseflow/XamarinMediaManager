@@ -1,23 +1,74 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MediaManager.Library
 {
-    public class Artist : IArtist
+    public class Artist : ContentItem, IArtist
     {
         public Artist()
         {
         }
 
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string Name { get; set; }
-        public string Biography { get; set; }
-        public string Tags { get; set; }
-        public string Genre { get; set; }
-        public object Image { get; set; }
-        public string ImageUri { get; set; }
-        public object Rating { get; set; }
-        public IList<IAlbum> Albums { get; set; }
-        public IList<IMediaItem> TopTracks { get; set; }
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        private string _biography;
+        public string Biography
+        {
+            get => _biography;
+            set => SetProperty(ref _biography, value);
+        }
+
+        private string _tags;
+        public string Tags
+        {
+            get => _tags;
+            set => SetProperty(ref _tags, value);
+        }
+
+        private string _genre;
+        public string Genre
+        {
+            get => _genre;
+            set => SetProperty(ref _genre, value);
+        }
+
+        private object _image;
+        public object Image
+        {
+            get => _image;
+            set => SetProperty(ref _image, value);
+        }
+
+        private string _imageUri;
+        public string ImageUri
+        {
+            get => _imageUri;
+            set => SetProperty(ref _imageUri, value);
+        }
+
+        private object _rating;
+        public object Rating
+        {
+            get => _rating;
+            set => SetProperty(ref _rating, value);
+        }
+
+        private IList<IAlbum> _albums = new List<IAlbum>();
+        public IList<IAlbum> Albums
+        {
+            get => _albums;
+            set => SetProperty(ref _albums, value);
+        }
+
+        private IList<IMediaItem> _topTracks = new List<IMediaItem>();
+        public IList<IMediaItem> TopTracks
+        {
+            get => _topTracks;
+            set => SetProperty(ref _topTracks, value);
+        }
     }
 }

@@ -66,11 +66,11 @@ namespace ElementPlayer.Core.ViewModels
 
         private async Task SelectItem(IMediaItem mediaItem)
         {
-            MediaManager.MediaQueue.Clear();
+            MediaManager.Queue.Clear();
 
             await this.NavigationService.Navigate<PlayerViewModel>();
 
-            var item = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://file-examples.com/wp-content/uploads/2018/04/file_example_MOV_480_700kB.mov");
+            var item = await CrossMediaManager.Current.Extractor.CreateMediaItem("https://file-examples.com/wp-content/uploads/2018/04/file_example_MOV_480_700kB.mov");
             //var image = await CrossMediaManager.Current.MediaExtractor.GetVideoFrame(item, new System.TimeSpan(0,0,2));
 
             await MediaManager.Play(item);

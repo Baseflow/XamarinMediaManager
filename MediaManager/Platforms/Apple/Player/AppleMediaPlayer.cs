@@ -147,12 +147,12 @@ namespace MediaManager.Platforms.Apple.Player
         {
             //TODO: Error should not be null after this or it will crash.
             var error = Player?.CurrentItem?.Error ?? new NSError();
-            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue?.Current, new NSErrorException(error), error?.LocalizedDescription));
+            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue?.Current, new NSErrorException(error), error?.LocalizedDescription));
         }
 
         private async void DidFinishPlaying(NSNotification obj)
         {
-            MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
+            MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.Current));
 
             //TODO: Android has its own queue and goes to next. Maybe use native apple queue
             var succesfullNext = await MediaManager.PlayNext();

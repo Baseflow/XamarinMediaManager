@@ -3,7 +3,7 @@ using MediaManager.Media;
 
 namespace MediaManager.Library
 {
-    public class MediaItem : NotifyPropertyChangedBase, IMediaItem
+    public class MediaItem : ContentItem, IMediaItem
     {
         public MediaItem()
         {
@@ -18,178 +18,238 @@ namespace MediaManager.Library
 
         public event MetadataUpdatedEventHandler MetadataUpdated;
 
-        public string Id
-        {
-            get => _id;
-            set => SetProperty(ref _id, value);
-        }
-
+        private string _advertisement;
         public string Advertisement
         {
             get => _advertisement;
             set => SetProperty(ref _advertisement, value);
         }
+
+        private string _album;
         public string Album
         {
             get => _album;
             set => SetProperty(ref _album, value);
         }
+
+        private object _albumArt;
         public object AlbumArt
         {
             get => _albumArt;
             set => SetProperty(ref _albumArt, value);
         }
+
+        private string _albumArtist;
         public string AlbumArtist
         {
             get => _albumArtist;
             set => SetProperty(ref _albumArtist, value);
         }
+
+        private string _albumArtUri;
         public string AlbumArtUri
         {
             get => _albumArtUri;
             set => SetProperty(ref _albumArtUri, value);
         }
+
+        private object _art;
         public object Art
         {
             get => _art;
             set => SetProperty(ref _art, value);
         }
+
+        private string _artist;
         public string Artist
         {
             get => _artist;
             set => SetProperty(ref _artist, value);
         }
+
+        private string _artUri;
         public string ArtUri
         {
             get => _artUri;
             set => SetProperty(ref _artUri, value);
         }
+
+        private string _author;
         public string Author
         {
             get => _author;
             set => SetProperty(ref _author, value);
         }
+
+        private BtFolderType _btFolderType = BtFolderType.Mixed;
         public BtFolderType BtFolderType
         {
             get => _btFolderType;
             set => SetProperty(ref _btFolderType, value);
         }
+
+        private string _compilation;
         public string Compilation
         {
             get => _compilation;
             set => SetProperty(ref _compilation, value);
         }
+
+        private string _composer;
         public string Composer
         {
             get => _composer;
             set => SetProperty(ref _composer, value);
         }
+
+        private string _date;
         public string Date
         {
             get => _date;
             set => SetProperty(ref _date, value);
         }
+
+        private int _discNumber;
         public int DiscNumber
         {
             get => _discNumber;
             set => SetProperty(ref _discNumber, value);
         }
+
+        private string _displayDescription;
         public string DisplayDescription
         {
             get => _displayDescription;
             set => SetProperty(ref _displayDescription, value);
         }
+
+        private object _displayIcon;
         public object DisplayIcon
         {
             get => _displayIcon;
             set => SetProperty(ref _displayIcon, value);
         }
+
+        private string _displayIconUri;
         public string DisplayIconUri
         {
             get => _displayIconUri;
             set => SetProperty(ref _displayIconUri, value);
         }
+
+        private string _displaySubtitle;
         public string DisplaySubtitle
         {
             get => _displaySubtitle;
             set => SetProperty(ref _displaySubtitle, value);
         }
+
+        private string _displayTitle;
         public string DisplayTitle
         {
             get => _displayTitle;
             set => SetProperty(ref _displayTitle, value);
         }
+
+        private DownloadStatus _downloadStatus = DownloadStatus.NotDownloaded;
         public DownloadStatus DownloadStatus
         {
             get => _downloadStatus;
             set => SetProperty(ref _downloadStatus, value);
         }
+
+        private TimeSpan _duration;
         public TimeSpan Duration
         {
             get => _duration;
             set => SetProperty(ref _duration, value);
         }
+
+        private object _extras;
         public object Extras
         {
             get => _extras;
             set => SetProperty(ref _extras, value);
         }
+
+        private string _genre;
         public string Genre
         {
             get => _genre;
             set => SetProperty(ref _genre, value);
         }
+
+        private string _mediaUri;
         public string MediaUri
         {
             get => _mediaUri;
             set => SetProperty(ref _mediaUri, value);
         }
+
+        private int _numTracks;
         public int NumTracks
         {
             get => _numTracks;
             set => SetProperty(ref _numTracks, value);
         }
+
+        private object _rating;
         public object Rating
         {
             get => _rating;
             set => SetProperty(ref _rating, value);
         }
+
+        private string _title;
         public string Title
         {
             get => _title;
             set => SetProperty(ref _title, value);
         }
+
+        private int _trackNumber;
         public int TrackNumber
         {
             get => _trackNumber;
             set => SetProperty(ref _trackNumber, value);
         }
+
+        private object _userRating;
         public object UserRating
         {
             get => _userRating;
             set => SetProperty(ref _userRating, value);
         }
+
+        private string _writer;
         public string Writer
         {
             get => _writer;
             set => SetProperty(ref _writer, value);
         }
+
+        private int _year;
         public int Year
         {
             get => _year;
             set => SetProperty(ref _year, value);
         }
 
+        private string _fileExtension;
         public string FileExtension
         {
             get => _fileExtension;
             set => SetProperty(ref _fileExtension, value);
         }
+
+        private MediaType _mediaType = MediaType.Default;
         public MediaType MediaType
         {
             get => _mediaType;
             set => SetProperty(ref _mediaType, value);
         }
+
+        private MediaLocation _mediaLocation = MediaLocation.Unknown;
         public MediaLocation MediaLocation
         {
             get => _mediaLocation;
@@ -197,42 +257,6 @@ namespace MediaManager.Library
         }
 
         private bool _isMetadataExtracted = false;
-        private MediaLocation _mediaLocation = MediaLocation.Unknown;
-        private MediaType _mediaType = MediaType.Default;
-        private string _fileExtension;
-        private int _year;
-        private string _writer;
-        private object _userRating;
-        private int _trackNumber;
-        private string _title;
-        private object _rating;
-        private int _numTracks;
-        private string _mediaUri;
-        private string _id = Guid.NewGuid().ToString();
-        private string _genre;
-        private object _extras;
-        private TimeSpan _duration;
-        private DownloadStatus _downloadStatus = DownloadStatus.NotDownloaded;
-        private string _displayTitle;
-        private string _displaySubtitle;
-        private string _displayIconUri;
-        private object _displayIcon;
-        private string _displayDescription;
-        private int _discNumber;
-        private string _date;
-        private string _composer;
-        private string _compilation;
-        private BtFolderType _btFolderType = BtFolderType.Mixed;
-        private string _author;
-        private string _artUri;
-        private string _artist;
-        private object _art;
-        private string _albumArtUri;
-        private string _albumArtist;
-        private object _albumArt;
-        private string _album;
-        private string _advertisement;
-
         public bool IsMetadataExtracted
         {
             get

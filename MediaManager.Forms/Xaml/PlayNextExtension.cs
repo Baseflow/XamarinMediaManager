@@ -5,11 +5,11 @@
         public PlayNextExtension()
             : base()
         {
-            MediaManager.MediaQueue.CollectionChanged += (s, e) => RaiseCanExecuteChanged();
+            MediaManager.Queue.CollectionChanged += (s, e) => RaiseCanExecuteChanged();
         }
 
         protected override bool CanExecute() =>
-            MediaManager.MediaQueue.CurrentIndex < MediaManager.MediaQueue.Count;
+            MediaManager.Queue.CurrentIndex < MediaManager.Queue.Count;
 
         protected override void Execute() =>
             MediaManager.PlayNext();

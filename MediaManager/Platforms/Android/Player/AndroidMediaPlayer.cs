@@ -169,14 +169,14 @@ namespace MediaManager.Platforms.Android.Player
                         case ExoPlaybackException.TypeUnexpected:
                             break;
                     }
-                    MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.MediaQueue.Current, exception, exception.Message));
+                    MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue.Current, exception, exception.Message));
                 },
                 OnTracksChangedImpl = (trackGroups, trackSelections) =>
                 {
-                    var mediaItem = MediaManager.MediaQueue.Current;
+                    var mediaItem = MediaManager.Queue.Current;
                     BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
-                    MediaManager.MediaQueue.CurrentIndex = Player.CurrentWindowIndex;
+                    MediaManager.Queue.CurrentIndex = Player.CurrentWindowIndex;
                     MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(mediaItem));
 
                     AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
@@ -187,7 +187,7 @@ namespace MediaManager.Platforms.Android.Player
                     {
                         case Com.Google.Android.Exoplayer2.Player.StateEnded:
                             if (!Player.HasNext)
-                                MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.Current));
+                                MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.Current));
                             //TODO: This means the whole list is finished. Should we fire an event?
                             break;
                         case Com.Google.Android.Exoplayer2.Player.StateIdle:
@@ -224,7 +224,7 @@ namespace MediaManager.Platforms.Android.Player
                             //TODO: Use SetProperty for this
                             if (currentWindowIndex != lastWindowIndex)
                             {
-                                MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.MediaQueue.ElementAtOrDefault(lastWindowIndex)));
+                                MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.ElementAtOrDefault(lastWindowIndex)));
                                 lastWindowIndex = currentWindowIndex;
                             }
                             break;

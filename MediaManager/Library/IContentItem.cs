@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.ComponentModel;
 
 namespace MediaManager.Library
 {
-    public interface IContentItem
+    public interface IContentItem : INotifyPropertyChanged
     {
         string Id { get; set; }
     }

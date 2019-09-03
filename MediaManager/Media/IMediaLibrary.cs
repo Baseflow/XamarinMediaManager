@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using MediaManager.Media;
+﻿using System.Collections.Generic;
 
 namespace MediaManager.Media
 {
@@ -10,7 +7,7 @@ namespace MediaManager.Media
         IList<ILibraryProvider> Providers { get; }
 
         IEnumerable<IPlaylistProvider> PlaylistProviders { get; }
-        IEnumerable<IArtistProvider> ArtistProviders { get;}
+        IEnumerable<IArtistProvider> ArtistProviders { get; }
         IEnumerable<IAlbumProvider> AlbumProviders { get; }
         IEnumerable<IMediaItemProvider> MediaItemProviders { get; }
     }

@@ -30,13 +30,13 @@ namespace MediaManager
         /// </summary>
         Dictionary<string, string> RequestHeaders { get; set; }
 
-        INotificationManager NotificationManager { get; set; }
+        INotificationManager Notification { get; set; }
 
-        IMediaExtractor MediaExtractor { get; set; }
+        IVolumeManager Volume { get; set; }
 
-        IVolumeManager VolumeManager { get; set; }
+        IMediaExtractor Extractor { get; set; }
 
-        IMediaQueue MediaQueue { get; set; }
+        IMediaQueue Queue { get; set; }
 
         void Init();
 

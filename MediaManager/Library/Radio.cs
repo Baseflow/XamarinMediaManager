@@ -1,25 +1,98 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace MediaManager.Library
 {
-    public class Radio : ObservableCollection<IMediaItem>, IRadio
+    public class Radio : ContentItem, IRadio
     {
         public Radio()
         {
+            if (CreatedAt == null)
+                CreatedAt = DateTime.Now;
         }
 
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string Uri { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Tags { get; set; }
-        public string Genre { get; set; }
-        public object Image { get; set; }
-        public string ImageUri { get; set; }
-        public object Rating { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public SharingType SharingType { get; set; }
+        private string _uri;
+        public string Uri
+        {
+            get => _uri;
+            set => SetProperty(ref _uri, value);
+        }
+
+        private string _title;
+        public string Title
+        {
+            get => _title;
+            set => SetProperty(ref _title, value);
+        }
+
+        private string _description;
+        public string Description
+        {
+            get => _description;
+            set => SetProperty(ref _description, value);
+        }
+
+        private string _tags;
+        public string Tags
+        {
+            get => _tags;
+            set => SetProperty(ref _tags, value);
+        }
+
+        private string _genre;
+        public string Genre
+        {
+            get => _genre;
+            set => SetProperty(ref _genre, value);
+        }
+
+        private object _image;
+        public object Image
+        {
+            get => _image;
+            set => SetProperty(ref _image, value);
+        }
+
+        private string _imageUri;
+        public string ImageUri
+        {
+            get => _imageUri;
+            set => SetProperty(ref _imageUri, value);
+        }
+
+        private object _rating;
+        public object Rating
+        {
+            get => _rating;
+            set => SetProperty(ref _rating, value);
+        }
+
+        private DateTime _createdAt;
+        public DateTime CreatedAt
+        {
+            get => _createdAt;
+            set => SetProperty(ref _createdAt, value);
+        }
+
+        private DateTime _updatedAt;
+        public DateTime UpdatedAt
+        {
+            get => _updatedAt;
+            set => SetProperty(ref _updatedAt, value);
+        }
+
+        private SharingType _sharingType = SharingType.Public;
+        public SharingType SharingType
+        {
+            get => _sharingType;
+            set => SetProperty(ref _sharingType, value);
+        }
+
+        private IList<IMediaItem> _mediaItems = new List<IMediaItem>();
+        public IList<IMediaItem> MediaItems
+        {
+            get => _mediaItems;
+            set => SetProperty(ref _mediaItems, value);
+        }
     }
 }

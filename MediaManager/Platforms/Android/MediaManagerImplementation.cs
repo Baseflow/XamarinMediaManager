@@ -51,7 +51,7 @@ namespace MediaManager
             set
             {
                 SetProperty(ref _notificationIconResource, value);
-                var playerNotificationManager = (NotificationManager as MediaManager.Platforms.Android.Notifications.NotificationManager)?.PlayerNotificationManager;
+                var playerNotificationManager = (Notification as MediaManager.Platforms.Android.Notifications.NotificationManager)?.PlayerNotificationManager;
                 playerNotificationManager?.SetSmallIcon(_notificationIconResource);
             }
         }
@@ -137,7 +137,7 @@ namespace MediaManager
             set
             {
                 base.StepSize = value;
-                var playerNotificationManager = (NotificationManager as MediaManager.Platforms.Android.Notifications.NotificationManager)?.PlayerNotificationManager;
+                var playerNotificationManager = (Notification as MediaManager.Platforms.Android.Notifications.NotificationManager)?.PlayerNotificationManager;
                 playerNotificationManager?.SetFastForwardIncrementMs((long)value.TotalMilliseconds);
                 playerNotificationManager?.SetRewindIncrementMs((long)value.TotalMilliseconds);
             }
@@ -158,42 +158,42 @@ namespace MediaManager
         public AndroidMediaPlayer AndroidMediaPlayer => (AndroidMediaPlayer)MediaPlayer;
         public SimpleExoPlayer Player => AndroidMediaPlayer.Player;
 
-        private IVolumeManager _volumeManager;
-        public override IVolumeManager VolumeManager
+        private IVolumeManager _volume;
+        public override IVolumeManager Volume
         {
             get
             {
-                if (_volumeManager == null)
-                    _volumeManager = new VolumeManager();
-                return _volumeManager;
+                if (_volume == null)
+                    _volume = new VolumeManager();
+                return _volume;
             }
-            set => SetProperty(ref _volumeManager, value);
+            set => SetProperty(ref _volume, value);
         }
 
-        private IMediaExtractor _mediaExtractor;
-        public override IMediaExtractor MediaExtractor
+        private IMediaExtractor _extractor;
+        public override IMediaExtractor Extractor
         {
             get
             {
-                if (_mediaExtractor == null)
-                    _mediaExtractor = new MediaExtractor();
-                return _mediaExtractor;
+                if (_extractor == null)
+                    _extractor = new MediaExtractor();
+                return _extractor;
             }
-            set => SetProperty(ref _mediaExtractor, value);
+            set => SetProperty(ref _extractor, value);
         }
 
 
-        private INotificationManager _notificationManager;
-        public override INotificationManager NotificationManager
+        private INotificationManager _notification;
+        public override INotificationManager Notification
         {
             get
             {
-                if (_notificationManager == null)
-                    _notificationManager = new MediaManager.Platforms.Android.Notifications.NotificationManager();
+                if (_notification == null)
+                    _notification = new MediaManager.Platforms.Android.Notifications.NotificationManager();
 
-                return _notificationManager;
+                return _notification;
             }
-            set => SetProperty(ref _notificationManager, value);
+            set => SetProperty(ref _notification, value);
         }
 
         public override TimeSpan Position => TimeSpan.FromMilliseconds(MediaController?.PlaybackState?.Position ?? 0);
@@ -276,10 +276,10 @@ namespace MediaManager
         {
             await EnsureInit();
 
-            if (!MediaQueue.Contains(mediaItem))
+            if (!Queue.Contains(mediaItem))
                 return false;
 
-            MediaController.GetTransportControls().SkipToQueueItem(MediaQueue.IndexOf(mediaItem));
+            MediaController.GetTransportControls().SkipToQueueItem(Queue.IndexOf(mediaItem));
             return true;
         }
 
@@ -287,7 +287,7 @@ namespace MediaManager
         {
             await EnsureInit();
 
-            var mediaItem = MediaQueue.ElementAtOrDefault(index);
+            var mediaItem = Queue.ElementAtOrDefault(index);
             if (mediaItem == null)
                 return false;
 
@@ -306,7 +306,7 @@ namespace MediaManager
             await EnsureInit();
 
             MediaController.GetTransportControls().Stop();
-            (NotificationManager as MediaManager.Platforms.Android.Notifications.NotificationManager).Player = null;
+            (Notification as MediaManager.Platforms.Android.Notifications.NotificationManager).Player = null;
         }
 
         public override RepeatMode RepeatMode

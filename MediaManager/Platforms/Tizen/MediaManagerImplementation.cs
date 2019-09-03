@@ -32,42 +32,42 @@ namespace MediaManager
         public TizenMediaPlayer TizenMediaPlayer => (TizenMediaPlayer)MediaPlayer;
         public TizenPlayer Player => TizenMediaPlayer.Player;
 
-        private IVolumeManager _volumeManager;
-        public override IVolumeManager VolumeManager
+        private IVolumeManager _volume;
+        public override IVolumeManager Volume
         {
             get
             {
-                if (_volumeManager == null)
-                    _volumeManager = new VolumeManager();
-                return _volumeManager;
+                if (_volume == null)
+                    _volume = new VolumeManager();
+                return _volume;
             }
-            set => SetProperty(ref _volumeManager, value);
+            set => SetProperty(ref _volume, value);
         }
 
-        private IMediaExtractor _mediaExtractor;
-        public override IMediaExtractor MediaExtractor
+        private IMediaExtractor _extractor;
+        public override IMediaExtractor Extractor
         {
             get
             {
-                if (_mediaExtractor == null)
-                    _mediaExtractor = new MediaExtractor();
-                return _mediaExtractor;
+                if (_extractor == null)
+                    _extractor = new MediaExtractor();
+                return _extractor;
             }
-            set => SetProperty(ref _mediaExtractor, value);
+            set => SetProperty(ref _extractor, value);
         }
 
 
-        private INotificationManager _notificationManager;
-        public override INotificationManager NotificationManager
+        private INotificationManager _notification;
+        public override INotificationManager Notification
         {
             get
             {
-                if (_notificationManager == null)
-                    _notificationManager = new MediaManager.Platforms.Tizen.Notifications.NotificationManager();
+                if (_notification == null)
+                    _notification = new MediaManager.Platforms.Tizen.Notifications.NotificationManager();
 
-                return _notificationManager;
+                return _notification;
             }
-            set => SetProperty(ref _notificationManager, value);
+            set => SetProperty(ref _notification, value);
         }
 
         public override TimeSpan Position => TimeSpan.FromMilliseconds(Player.GetPlayPosition());
