@@ -21,5 +21,7 @@ namespace MediaManager.Library
         IList<IAlbum> Albums { get; set; }
 
         IList<IMediaItem> TopTracks { get; set; }
+
+        IList<IMediaItem> AllTracks { get; }
     }
 }

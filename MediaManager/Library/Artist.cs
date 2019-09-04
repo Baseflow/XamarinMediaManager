@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace MediaManager.Library
 {
@@ -70,5 +71,7 @@ namespace MediaManager.Library
             get => _topTracks;
             set => SetProperty(ref _topTracks, value);
         }
+
+        public virtual IList<IMediaItem> AllTracks => Albums?.SelectMany(x => x.MediaItems)?.ToList();
     }
 }

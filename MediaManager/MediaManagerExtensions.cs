@@ -27,6 +27,14 @@ namespace MediaManager
                     return await CrossMediaManager.Current.Play(fileInfo);
                 case DirectoryInfo directoryInfo:
                     return await CrossMediaManager.Current.Play(directoryInfo);
+                case IAlbum album:
+                    return await CrossMediaManager.Current.Play(album.MediaItems);
+                case IRadio radio:
+                    return await CrossMediaManager.Current.Play(radio.MediaItems);
+                case IPlaylist playlist:
+                    return await CrossMediaManager.Current.Play(playlist.MediaItems);
+                case IArtist artist:
+                    return await CrossMediaManager.Current.Play(artist.AllTracks);
                 default:
                     return null;
             }

@@ -83,7 +83,7 @@ namespace MediaManager.Library
         }
 
         private TimeSpan _totalTime;
-        public TimeSpan TotalTime
+        public virtual TimeSpan TotalTime
         {
             get
             {

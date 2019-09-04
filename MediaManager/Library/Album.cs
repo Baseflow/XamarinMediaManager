@@ -74,7 +74,7 @@ namespace MediaManager.Library
         }
 
         private TimeSpan _duration;
-        public TimeSpan Duration
+        public virtual TimeSpan Duration
         {
             get
             {
