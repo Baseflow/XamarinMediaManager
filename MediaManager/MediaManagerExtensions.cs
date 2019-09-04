@@ -11,6 +11,12 @@ namespace MediaManager
 {
     public static partial class MediaManagerExtensions
     {
+        /// <summary>
+        /// Tries to Play the mediaSource by checking the type. Returns null when unable to find a playable type
+        /// </summary>
+        /// <param name="mediaManager"></param>
+        /// <param name="mediaSource"></param>
+        /// <returns></returns>
         public static async Task<IMediaItem> Play(this IMediaManager mediaManager, object mediaSource)
         {
             switch (mediaSource)
