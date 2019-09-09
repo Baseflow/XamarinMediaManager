@@ -10,6 +10,6 @@ namespace MediaManager.Media
             MediaItem = mediaItem;
         }
 
-        public IMediaItem MediaItem { get; private set; }
+        public IMediaItem MediaItem { get; protected set; }
     }
 }

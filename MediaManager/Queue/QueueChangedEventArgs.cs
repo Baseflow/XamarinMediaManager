@@ -1,8 +1,12 @@
 ﻿using System;
+using MediaManager.Media;
 
 namespace MediaManager.Queue
 {
-    public class QueueChangedEventArgs : EventArgs
+    public class QueueChangedEventArgs : MediaItemEventArgs
     {
+        public QueueChangedEventArgs(Library.IMediaItem mediaItem) : base(mediaItem)
+        {
+        }
     }
 }

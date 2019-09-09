@@ -88,7 +88,7 @@ namespace MediaManager.Queue
             set
             {
                 if (_currentIndex != value)
-                    OnQueueChanged(this, new QueueChangedEventArgs());
+                    OnQueueChanged(this, new QueueChangedEventArgs(Current));
                 _currentIndex = value;
             }
         }
@@ -136,7 +136,7 @@ namespace MediaManager.Queue
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             base.OnCollectionChanged(e);
-            OnQueueChanged(this, new QueueChangedEventArgs());
+            OnQueueChanged(this, new QueueChangedEventArgs(Current));
         }
 
         internal void OnQueueEnded(object s, QueueEndedEventArgs e) => QueueEnded?.Invoke(s, e);

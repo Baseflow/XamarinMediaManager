@@ -1,17 +1,16 @@
 ﻿using System;
 using MediaManager.Library;
+using MediaManager.Media;
 
 namespace MediaManager.Player
 {
-    public class MediaPlayerEventArgs : EventArgs
+    public class MediaPlayerEventArgs : MediaItemEventArgs
     {
-        public MediaPlayerEventArgs(IMediaItem mediaItem, IMediaPlayer mediaPlayer)
+        public MediaPlayerEventArgs(IMediaItem mediaItem, IMediaPlayer mediaPlayer) : base(mediaItem)
         {
-            MediaItem = mediaItem;
             MediaPlayer = mediaPlayer;
         }
 
-        public IMediaItem MediaItem { get; private set; }
-        public IMediaPlayer MediaPlayer { get; private set; }
+        public IMediaPlayer MediaPlayer { get; protected set; }
     }
 }

@@ -17,6 +17,7 @@ namespace MediaManager.Media
 
         Task<IEnumerable<TContentItem>> GetAll<TContentItem>() where TContentItem : IContentItem;
         Task<TContentItem> Get<TContentItem>(string id) where TContentItem : IContentItem;
+        Task<bool> Exists<TContentItem>(string id) where TContentItem : IContentItem;
         Task<bool> AddOrUpdate<TContentItem>(TContentItem item) where TContentItem : IContentItem;
         Task<bool> Remove<TContentItem>(TContentItem item) where TContentItem : IContentItem;
         Task<bool> RemoveAll<TContentItem>() where TContentItem : IContentItem;

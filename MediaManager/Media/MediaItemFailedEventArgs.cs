@@ -5,13 +5,13 @@ namespace MediaManager.Media
 {
     public class MediaItemFailedEventArgs : MediaItemEventArgs
     {
-        public MediaItemFailedEventArgs(IMediaItem Item, Exception Exception, string Message) : base(Item)
+        public MediaItemFailedEventArgs(IMediaItem mediaItem, Exception exception, string message) : base(mediaItem)
         {
-            this.Exeption = Exception;
-            this.Message = Message;
+            Exeption = exception;
+            Message = message;
         }
 
-        public Exception Exeption { get; private set; }
-        public string Message { get; private set; }
+        public Exception Exeption { get; protected set; }
+        public string Message { get; protected set; }
     }
 }

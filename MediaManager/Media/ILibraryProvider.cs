@@ -12,6 +12,7 @@ namespace MediaManager.Media
     {
         Task<IEnumerable<TContentItem>> GetAll();
         Task<TContentItem> Get(string id);
+        Task<bool> Exists(string id);
         Task<bool> AddOrUpdate(TContentItem item);
         Task<bool> Remove(TContentItem item);
         Task<bool> RemoveAll();

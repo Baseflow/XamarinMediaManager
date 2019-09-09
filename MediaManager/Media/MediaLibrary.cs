@@ -97,5 +97,16 @@ namespace MediaManager.Media
             var success = await Task.WhenAll(tasks);
             return success.All(x => x == true);
         }
+
+        public async Task<bool> Exists<TContentItem>(string id) where TContentItem : IContentItem
+        {
+            foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
+            {
+                var success = await provider.Exists(id);
+                if (success)
+                    return success;
+            }
+            return false;
+        }
     }
 }
