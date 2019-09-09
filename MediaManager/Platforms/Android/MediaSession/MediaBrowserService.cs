@@ -135,6 +135,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.SetOngoing(true);
             PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.Notification.ShowPlayPauseControls);
             PlayerNotificationManager.SetUseNavigationActions(MediaManager.Notification.ShowNavigationControls);
+            PlayerNotificationManager.SetSmallIcon(MediaManager.NotificationIconResource);
 
             //Must be called to start the connection
             (MediaManager.Notification as Notifications.NotificationManager).Player = MediaManager.Player;

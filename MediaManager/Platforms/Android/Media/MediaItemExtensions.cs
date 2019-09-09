@@ -69,7 +69,7 @@ namespace MediaManager.Platforms.Android.Media
         public static MediaDescriptionCompat ToMediaDescription(this IMediaItem item)
         {
             var description = new MediaDescriptionCompat.Builder()
-                .SetMediaId(item?.Id.ToString())
+                .SetMediaId(item?.Id)
                 .SetMediaUri(global::Android.Net.Uri.Parse(item?.MediaUri))
                 .SetTitle(item?.GetTitle())
                 .SetSubtitle(item?.GetContentTitle())
@@ -77,13 +77,13 @@ namespace MediaManager.Platforms.Android.Media
                 .SetExtras(item?.Extras as Bundle);
 
             //It should be better to only set the uri to prevent loading images into memory
-            if (!string.IsNullOrEmpty(item?.DisplayIconUri))
-                description.SetIconUri(global::Android.Net.Uri.Parse(item?.DisplayIconUri));
+            if (!string.IsNullOrEmpty(item?.GetImageUri()))
+                description.SetIconUri(global::Android.Net.Uri.Parse(item?.GetImageUri()));
             else
             {
-                var cover = item?.GetCover();
-                if (cover != null)
-                    description.SetIconBitmap(cover);
+                var image = item?.GetImage() as Bitmap;
+                if (image != null)
+                    description.SetIconBitmap(image);
             }
 
             return description.Build();
@@ -143,12 +143,12 @@ namespace MediaManager.Platforms.Android.Media
             var item = new MediaItem(url);
             item.Advertisement = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyAdvertisement);
             item.Album = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyAlbum);
-            item.AlbumArt = mediaMetadata.GetBitmap(MediaMetadataCompat.MetadataKeyAlbumArt);
+            item.AlbumImage = mediaMetadata.GetBitmap(MediaMetadataCompat.MetadataKeyAlbumArt);
             item.AlbumArtist = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyAlbumArtist);
-            item.AlbumArtUri = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyAlbumArtUri);
-            item.Art = mediaMetadata.GetBitmap(MediaMetadataCompat.MetadataKeyArt);
+            item.AlbumImageUri = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyAlbumArtUri);
+            item.Image = mediaMetadata.GetBitmap(MediaMetadataCompat.MetadataKeyArt);
             item.Artist = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyArtist);
-            item.ArtUri = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyArtUri);
+            item.ImageUri = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyArtUri);
             item.Author = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyAuthor);
             //item.BtFolderType = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyBtFolderType);
             item.Compilation = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyCompilation);
@@ -175,40 +175,6 @@ namespace MediaManager.Platforms.Android.Media
             item.Year = Convert.ToInt32(mediaMetadata.GetLong(MediaMetadataCompat.MetadataKeyYear));
             item.IsMetadataExtracted = true;
             return item;
-        }
-
-        //TODO: Move to Extractor
-        public static Bitmap GetCover(this IMediaItem mediaItem)
-        {
-            if (mediaItem.AlbumArt is Bitmap bitmap)
-                return bitmap;
-            else if (mediaItem.Art is Bitmap artBitmap)
-                return artBitmap;
-            else if (!string.IsNullOrEmpty(mediaItem.ArtUri))
-            {
-                return GetImageBitmapFromUrl(mediaItem.ArtUri);
-            }
-            else if (!string.IsNullOrEmpty(mediaItem.AlbumArtUri))
-            {
-                return GetImageBitmapFromUrl(mediaItem.AlbumArtUri);
-            }
-            return null;
-        }
-
-        private static Bitmap GetImageBitmapFromUrl(string url)
-        {
-            Bitmap imageBitmap = null;
-
-            using (var webClient = new System.Net.WebClient())
-            {
-                var imageBytes = webClient.DownloadData(url);
-                if (imageBytes != null && imageBytes.Length > 0)
-                {
-                    imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-                }
-            }
-
-            return imageBitmap;
         }
     }
 }

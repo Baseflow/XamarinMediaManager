@@ -11,19 +11,28 @@ namespace MediaManager.Platforms.Android.Media
         public async Task<object> ProvideImage(IMediaItem mediaItem)
         {
             object image = null;
-            if (!string.IsNullOrEmpty(mediaItem.ArtUri))
+            try
             {
-                try
+                if (!string.IsNullOrEmpty(mediaItem.ImageUri))
                 {
-                    var url = new Java.Net.URL(mediaItem.ArtUri);
-                    image = await Task.Run(() => BitmapFactory.DecodeStreamAsync(url.OpenStream()));
+                    mediaItem.Image = image = await GetBitmapFromUrl(mediaItem.ImageUri).ConfigureAwait(false);
                 }
-                catch (Exception ex)
+                if (image == null && !string.IsNullOrEmpty(mediaItem.AlbumImageUri))
                 {
-                    Console.WriteLine(ex.Message);
+                    mediaItem.AlbumImage = image = await GetBitmapFromUrl(mediaItem.AlbumImageUri).ConfigureAwait(false);
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             return image;
+        }
+
+        protected virtual async Task<Bitmap> GetBitmapFromUrl(string uri)
+        {
+            var url = new Java.Net.URL(uri);
+            return await Task.Run(() => BitmapFactory.DecodeStreamAsync(url.OpenStream())).ConfigureAwait(false);
         }
     }
 }

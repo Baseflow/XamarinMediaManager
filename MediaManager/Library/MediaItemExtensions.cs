@@ -51,5 +51,25 @@ namespace MediaManager.Library
             else
                 return "";
         }
+
+        public static string GetImageUri(this IMediaItem mediaItem)
+        {
+            if (!string.IsNullOrEmpty(mediaItem.ImageUri))
+                return mediaItem.ImageUri;
+            else if (!string.IsNullOrEmpty(mediaItem.AlbumImageUri))
+                return mediaItem.AlbumImageUri;
+            else
+                return "";
+        }
+
+        public static object GetImage(this IMediaItem mediaItem)
+        {
+            if (mediaItem.Image != null)
+                return mediaItem.Image;
+            else if (mediaItem.AlbumImage != null)
+                return mediaItem.AlbumImage;
+            else
+                return null;
+        }
     }
 }

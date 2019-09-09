@@ -143,6 +143,7 @@ namespace MediaManager.Media
                 }
 
                 mediaItem = await GetMetadata(mediaItem).ConfigureAwait(false);
+                mediaItem.Image = await GetMediaImage(mediaItem).ConfigureAwait(false);
                 mediaItem.IsMetadataExtracted = true;
             }
 
@@ -163,11 +164,18 @@ namespace MediaManager.Media
         public async Task<object> GetMediaImage(IMediaItem mediaItem)
         {
             object image = null;
-            foreach (var provider in ImageProviders)
+
+            if (mediaItem.IsMetadataExtracted)
+                image = mediaItem.GetImage();
+
+            if (image == null)
             {
-                image = await provider.ProvideImage(mediaItem).ConfigureAwait(false);
-                if (image != null)
-                    return image;
+                foreach (var provider in ImageProviders)
+                {
+                    image = await provider.ProvideImage(mediaItem).ConfigureAwait(false);
+                    if (image != null)
+                        return image;
+                }
             }
             return image;
         }

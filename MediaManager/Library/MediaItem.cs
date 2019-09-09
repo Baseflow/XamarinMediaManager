@@ -33,7 +33,7 @@ namespace MediaManager.Library
         }
 
         private object _albumArt;
-        public object AlbumArt
+        public object AlbumImage
         {
             get => _albumArt;
             set => SetProperty(ref _albumArt, value);
@@ -47,14 +47,14 @@ namespace MediaManager.Library
         }
 
         private string _albumArtUri;
-        public string AlbumArtUri
+        public string AlbumImageUri
         {
             get => _albumArtUri;
             set => SetProperty(ref _albumArtUri, value);
         }
 
         private object _art;
-        public object Art
+        public object Image
         {
             get => _art;
             set => SetProperty(ref _art, value);
@@ -68,7 +68,7 @@ namespace MediaManager.Library
         }
 
         private string _artUri;
-        public string ArtUri
+        public string ImageUri
         {
             get => _artUri;
             set => SetProperty(ref _artUri, value);

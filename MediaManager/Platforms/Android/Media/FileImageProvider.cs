@@ -8,32 +8,40 @@ namespace MediaManager.Platforms.Android.Media
 {
     public class FileImageProvider : IMediaItemImageProvider
     {
-        public Task<object> ProvideImage(IMediaItem mediaItem)
+        public async Task<object> ProvideImage(IMediaItem mediaItem)
         {
-            var albumFolder = GetCurrentSongFolder(mediaItem);
-            if (albumFolder == null)
-                return null;
-
-            if (!albumFolder.EndsWith("/"))
+            object image = null;
+            try
             {
-                albumFolder += "/";
-            }
+                var albumFolder = GetCurrentSongFolder(mediaItem);
+                if (albumFolder == null)
+                    return null;
 
-            var baseUri = new System.Uri(albumFolder);
-            var albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Folder.jpg");
-            if (albumArtPath == null)
-            {
-                albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Cover.jpg");
+                if (!albumFolder.EndsWith("/"))
+                {
+                    albumFolder += "/";
+                }
+
+                var baseUri = new System.Uri(albumFolder);
+                var albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Folder.jpg");
                 if (albumArtPath == null)
                 {
-                    albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "AlbumArtSmall.jpg");
+                    albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "Cover.jpg");
                     if (albumArtPath == null)
-                        return null;
+                    {
+                        albumArtPath = TryGetAlbumArtPathByFilename(baseUri, "AlbumArtSmall.jpg");
+                        if (albumArtPath == null)
+                            return null;
+                    }
                 }
-            }
 
-            var bitmap = BitmapFactory.DecodeFile(albumArtPath);
-            return Task.FromResult(bitmap as object);
+                image = await BitmapFactory.DecodeFileAsync(albumArtPath).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return mediaItem.AlbumImage = image;
         }
 
         protected virtual string TryGetAlbumArtPathByFilename(System.Uri baseUri, string filename)

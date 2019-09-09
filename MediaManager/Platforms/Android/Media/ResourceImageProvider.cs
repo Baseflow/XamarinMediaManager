@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Android.Content.Res;
 using Android.Graphics;
 using MediaManager.Library;
@@ -11,28 +12,25 @@ namespace MediaManager.Platforms.Android.Media
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
         protected Resources Resources => Resources.System;
 
-        public Task<object> ProvideImage(IMediaItem mediaItem)
+        public async Task<object> ProvideImage(IMediaItem mediaItem)
         {
             object image = null;
             try
             {
                 var artId = int.MinValue;
-                int.TryParse(mediaItem.ArtUri, out artId);
+                int.TryParse(mediaItem.ImageUri, out artId);
 
                 if (artId == int.MinValue)
-                    int.TryParse(mediaItem.AlbumArtUri, out artId);
+                    int.TryParse(mediaItem.AlbumImageUri, out artId);
 
                 if (artId != int.MinValue)
-                    image = BitmapFactory.DecodeResource(Resources, artId);
-
-                //if(image == null)
-                //    image = BitmapFactory.DecodeResource(Resources, MediaManager.NotificationIconResource);
+                    image = await BitmapFactory.DecodeResourceAsync(Resources, artId).ConfigureAwait(false);
             }
-            catch
+            catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
-            return Task.FromResult(image);
+            return mediaItem.Image = image;
         }
     }
 }

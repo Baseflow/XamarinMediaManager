@@ -106,7 +106,7 @@ namespace MediaManager.Platforms.Android.Media
                 {
                     try
                     {
-                        image = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
+                        image = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length).ConfigureAwait(false);
                     }
                     catch (Java.Lang.OutOfMemoryError)
                     {
@@ -119,7 +119,7 @@ namespace MediaManager.Platforms.Android.Media
             {
                 Console.WriteLine(ex.Message);
             }
-            return image;
+            return mediaItem.Image = image;
         }
 
         public async Task<object> ProvideVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)

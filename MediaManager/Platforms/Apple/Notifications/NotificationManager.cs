@@ -146,7 +146,7 @@ namespace MediaManager.Platforms.Apple.Notifications
             }
 
 #if __IOS__ || __TVOS__
-            var cover = mediaItem.AlbumArt as UIKit.UIImage;
+            var cover = mediaItem.AlbumImage as UIKit.UIImage;
 
             if (cover != null)
             {

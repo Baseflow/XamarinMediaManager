@@ -4,16 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using AVFoundation;
 using CoreMedia;
-using Foundation;
 using MediaManager.Library;
 using MediaManager.Media;
-#if __IOS__ || __TVOS__
-using UIKit;
-#endif
 
 namespace MediaManager.Platforms.Apple.Media
 {
-    public class AVAssetProvider : IMediaItemMetadataProvider, IMediaItemImageProvider, IMediaItemVideoFrameProvider
+    public class AVAssetProvider : IMediaItemMetadataProvider, IMediaItemVideoFrameProvider
     {
         public AVAssetProvider()
         {
@@ -48,7 +44,7 @@ namespace MediaManager.Platforms.Apple.Media
                 //AVMetadata.CommonKeyType
             };
 
-            var url = GetUrlFor(mediaItem);
+            var url = mediaItem.GetNSUrl();
 
             var asset = AVAsset.FromUrl(url);
             await asset.LoadValuesTaskAsync(assetsToLoad.ToArray());
@@ -77,52 +73,9 @@ namespace MediaManager.Platforms.Apple.Media
             return mediaItem;
         }
 
-        protected NSUrl GetUrlFor(IMediaItem mediaItem)
-        {
-            var isLocallyAvailable = mediaItem.MediaLocation.IsLocal();
-
-            var url = isLocallyAvailable ? new NSUrl(mediaItem.MediaUri, false) : new NSUrl(mediaItem.MediaUri);
-
-            return url;
-        }
-
-        public async Task<object> ProvideImage(IMediaItem mediaItem)
-        {
-            if (!string.IsNullOrEmpty(mediaItem.ArtUri))
-            {
-#if __IOS__ || __TVOS__
-                var image = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(mediaItem.ArtUri)));
-                mediaItem.AlbumArt = image;
-
-                return image;
-#endif
-            }
-            else
-            {
-                var assetsToLoad = new List<string>
-                {
-                    AVMetadata.CommonKeyArtwork
-                };
-
-                var url = GetUrlFor(mediaItem);
-                var asset = AVAsset.FromUrl(url);
-                await asset.LoadValuesTaskAsync(assetsToLoad.ToArray());
-
-                var metadataDict = asset.CommonMetadata.ToDictionary(t => t.CommonKey, t => t);
-
-#if __IOS__ || __TVOS__
-                var image = UIImage.LoadFromData(metadataDict.GetValueOrDefault(AVMetadata.CommonKeyArtwork)?.DataValue);
-                mediaItem.AlbumArt = image;
-
-                return image;
-#endif
-            }
-            return null;
-        }
-
         public Task<object> ProvideVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
         {
-            var url = GetUrlFor(mediaItem);
+            var url = mediaItem.GetNSUrl();
             var imageGenerator = new AVAssetImageGenerator(AVAsset.FromUrl(url));
             imageGenerator.AppliesPreferredTrackTransform = true;
             var cgImage = imageGenerator.CopyCGImageAtTime(new CMTime((long)timeFromStart.TotalMilliseconds, 1000000), out var actualTime, out var error);

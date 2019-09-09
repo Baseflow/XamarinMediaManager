@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Graphics;
 using Android.Runtime;
@@ -38,7 +39,16 @@ namespace MediaManager.Platforms.Android.Media
 
         public Bitmap GetCurrentLargeIcon(IPlayer player, PlayerNotificationManager.BitmapCallback callback)
         {
-            return MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetCover();
+            var mediaItem = MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex);
+            if (mediaItem != null)
+            {
+                Task.Run(async () =>
+                {
+                    var image = await MediaManager.Extractor.GetMediaImage(mediaItem).ConfigureAwait(false) as Bitmap;
+                    callback.OnBitmap(image);
+                }).ConfigureAwait(false);
+            }
+            return null;
         }
 
         public string GetCurrentSubText(IPlayer player)
