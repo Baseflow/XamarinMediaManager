@@ -46,7 +46,7 @@ namespace MediaManager.Media
             {
                 tasks.Add(provider.GetAll());
             }
-            foreach (var item in await Task.WhenAll(tasks))
+            foreach (var item in await Task.WhenAll(tasks).ConfigureAwait(false))
             {
                 items.AddRange(item);
             }
@@ -58,7 +58,7 @@ namespace MediaManager.Media
         {
             foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
             {
-                var item = await provider.Get(id);
+                var item = await provider.Get(id).ConfigureAwait(false);
                 if (item != null)
                     return item;
             }
@@ -69,7 +69,7 @@ namespace MediaManager.Media
         {
             foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
             {
-                var success = await provider.AddOrUpdate(item);
+                var success = await provider.AddOrUpdate(item).ConfigureAwait(false);
                 if (success)
                     return success;
             }
@@ -80,7 +80,7 @@ namespace MediaManager.Media
         {
             foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
             {
-                var success = await provider.Remove(item);
+                var success = await provider.Remove(item).ConfigureAwait(false);
                 if (success)
                     return success;
             }
@@ -94,7 +94,7 @@ namespace MediaManager.Media
             {
                 tasks.Add(provider.RemoveAll());
             }
-            var success = await Task.WhenAll(tasks);
+            var success = await Task.WhenAll(tasks).ConfigureAwait(false);
             return success.All(x => x == true);
         }
 
@@ -102,7 +102,7 @@ namespace MediaManager.Media
         {
             foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
             {
-                var success = await provider.Exists(id);
+                var success = await provider.Exists(id).ConfigureAwait(false);
                 if (success)
                     return success;
             }

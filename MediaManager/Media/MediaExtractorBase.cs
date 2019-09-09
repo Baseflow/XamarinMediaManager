@@ -165,7 +165,7 @@ namespace MediaManager.Media
             object image = null;
             foreach (var provider in ImageProviders)
             {
-                image = await provider.ProvideImage(mediaItem);
+                image = await provider.ProvideImage(mediaItem).ConfigureAwait(false);
                 if (image != null)
                     return image;
             }
@@ -177,7 +177,7 @@ namespace MediaManager.Media
             object image = null;
             foreach (var provider in VideoFrameProviders)
             {
-                image = await provider.ProvideVideoFrame(mediaItem, timeFromStart);
+                image = await provider.ProvideVideoFrame(mediaItem, timeFromStart).ConfigureAwait(false);
                 if (image != null)
                     return image;
             }

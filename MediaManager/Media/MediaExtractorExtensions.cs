@@ -13,7 +13,7 @@ namespace MediaManager.Media
 
         public static bool IsRemote(this MediaLocation mediaLocation)
         {
-            return (mediaLocation == MediaLocation.Remote);
+            return mediaLocation == MediaLocation.Remote;
         }
 
         public static bool IsLocal(this MediaLocation mediaLocation)

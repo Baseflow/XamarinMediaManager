@@ -19,31 +19,41 @@ namespace MediaManager
         /// <returns></returns>
         public static async Task<IMediaItem> Play(this IMediaManager mediaManager, object mediaSource)
         {
+            IMediaItem mediaItem = null;
             switch (mediaSource)
             {
                 case string url:
-                    return await CrossMediaManager.Current.Play(url);
+                    mediaItem = await mediaManager.Play(url);
+                    break;
                 case IEnumerable<string> urls:
-                    return await CrossMediaManager.Current.Play(urls);
-                case IMediaItem mediaItem:
-                    return await CrossMediaManager.Current.Play(mediaItem);
+                    mediaItem = await mediaManager.Play(urls);
+                    break;
+                case IMediaItem media:
+                    mediaItem = await mediaManager.Play(media);
+                    break;
                 case IEnumerable<IMediaItem> mediaItems:
-                    return await CrossMediaManager.Current.Play(mediaItems);
+                    mediaItem = await mediaManager.Play(mediaItems);
+                    break;
                 case FileInfo fileInfo:
-                    return await CrossMediaManager.Current.Play(fileInfo);
+                    mediaItem = await mediaManager.Play(fileInfo);
+                    break;
                 case DirectoryInfo directoryInfo:
-                    return await CrossMediaManager.Current.Play(directoryInfo);
+                    mediaItem = await mediaManager.Play(directoryInfo);
+                    break;
                 case IAlbum album:
-                    return await CrossMediaManager.Current.Play(album.MediaItems);
+                    mediaItem = await mediaManager.Play(album.MediaItems);
+                    break;
                 case IRadio radio:
-                    return await CrossMediaManager.Current.Play(radio.MediaItems);
+                    mediaItem = await mediaManager.Play(radio.MediaItems);
+                    break;
                 case IPlaylist playlist:
-                    return await CrossMediaManager.Current.Play(playlist.MediaItems);
+                    mediaItem = await mediaManager.Play(playlist.MediaItems);
+                    break;
                 case IArtist artist:
-                    return await CrossMediaManager.Current.Play(artist.AllTracks);
-                default:
-                    return null;
+                    mediaItem = await mediaManager.Play(artist.AllTracks);
+                    break;
             }
+            return mediaItem;
         }
 
         public static Task PlayPreviousOrSeekToStart(this IMediaManager mediaManager)
