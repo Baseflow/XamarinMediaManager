@@ -1,9 +1,17 @@
 ﻿using System;
 namespace MediaManager.AzureMediaServices
 {
-    class InvalidAzureMediaServiceUriException : Exception
+    public class InvalidAzureMediaServiceUriException : Exception
     {
+        public InvalidAzureMediaServiceUriException() : base()
+        {
+        }
+
         public InvalidAzureMediaServiceUriException(string message) : base(message)
+        {
+        }
+
+        public InvalidAzureMediaServiceUriException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }

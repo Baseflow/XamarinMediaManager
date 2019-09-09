@@ -1,5 +1,4 @@
-﻿using System;
-using MediaManager.Media;
+﻿using MediaManager.Media;
 
 namespace MediaManager.Queue
 {

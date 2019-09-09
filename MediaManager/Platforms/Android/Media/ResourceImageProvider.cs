@@ -16,7 +16,7 @@ namespace MediaManager.Platforms.Android.Media
             object image = null;
             try
             {
-                int artId = int.MinValue;
+                var artId = int.MinValue;
                 int.TryParse(mediaItem.ArtUri, out artId);
 
                 if (artId == int.MinValue)

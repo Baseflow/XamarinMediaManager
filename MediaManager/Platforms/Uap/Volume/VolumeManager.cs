@@ -22,7 +22,7 @@ namespace MediaManager.Platforms.Uap.Volume
             get => FromNative(MediaPlayer.Volume);
             set
             {
-                int volume = value;
+                var volume = value;
                 volume = Clamp(volume, VolumeRangeMin, MaxVolume);
                 MediaPlayer.Volume = ToNative(volume);
                 VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(volume, Muted));

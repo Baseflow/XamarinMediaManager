@@ -17,7 +17,7 @@ namespace ElementPlayer.Android.Activities
         )]
     public class MainActivity : MvxAppCompatActivity<MainViewModel>
     {
-        BottomNavigationView bottomNavigation;
+        private BottomNavigationView bottomNavigation;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
