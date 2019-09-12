@@ -17,7 +17,7 @@ namespace MediaManager.Platforms.Android.Media
         {
             try
             {
-                var metaRetriever = await CreateMediaRetriever(mediaItem);
+                var metaRetriever = await CreateMediaRetriever(mediaItem).ConfigureAwait(false);
 
                 mediaItem = await ExtractMetadata(metaRetriever, mediaItem).ConfigureAwait(false);
 
@@ -90,7 +90,7 @@ namespace MediaManager.Platforms.Android.Media
             Bitmap image = null;
             try
             {
-                var metaRetriever = await CreateMediaRetriever(mediaItem);
+                var metaRetriever = await CreateMediaRetriever(mediaItem).ConfigureAwait(false);
 
                 byte[] imageByteArray = null;
                 try
@@ -127,7 +127,7 @@ namespace MediaManager.Platforms.Android.Media
             Bitmap image = null;
             try
             {
-                var metaRetriever = await CreateMediaRetriever(mediaItem);
+                var metaRetriever = await CreateMediaRetriever(mediaItem).ConfigureAwait(false);
 
                 image = metaRetriever.GetFrameAtTime((long)timeFromStart.TotalMilliseconds);
 
@@ -145,9 +145,9 @@ namespace MediaManager.Platforms.Android.Media
             var metaRetriever = new MediaMetadataRetriever();
 
             if (mediaItem.MediaLocation.IsLocal())
-                await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri);
+                await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri).ConfigureAwait(false);
             else
-                await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders);
+                await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders).ConfigureAwait(false);
 
             return metaRetriever;
         }
