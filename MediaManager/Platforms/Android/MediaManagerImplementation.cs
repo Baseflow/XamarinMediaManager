@@ -44,7 +44,7 @@ namespace MediaManager
             }
         }
 
-        private int _notificationIconResource = Resource.Drawable.exo_notification_play;
+        private int _notificationIconResource = Resource.Drawable.exo_notification_small_icon;
         public int NotificationIconResource
         {
             get => _notificationIconResource;
