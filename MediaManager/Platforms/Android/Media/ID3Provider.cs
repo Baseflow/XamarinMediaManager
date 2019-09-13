@@ -32,6 +32,9 @@ namespace MediaManager.Platforms.Android.Media
 
         protected virtual Task<IMediaItem> ExtractMetadata(MediaMetadataRetriever mediaMetadataRetriever, IMediaItem mediaItem)
         {
+            if (mediaMetadataRetriever == null)
+                return Task.FromResult(mediaItem);
+
             if (string.IsNullOrEmpty(mediaItem.Album))
                 mediaItem.Album = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Album);
 
@@ -143,11 +146,17 @@ namespace MediaManager.Platforms.Android.Media
         protected virtual async Task<MediaMetadataRetriever> CreateMediaRetriever(IMediaItem mediaItem)
         {
             var metaRetriever = new MediaMetadataRetriever();
-
-            if (mediaItem.MediaLocation.IsLocal())
-                await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri).ConfigureAwait(false);
-            else
-                await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders).ConfigureAwait(false);
+            try
+            {
+                if (mediaItem.MediaLocation.IsLocal())
+                    await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri).ConfigureAwait(false);
+                else
+                    await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             return metaRetriever;
         }

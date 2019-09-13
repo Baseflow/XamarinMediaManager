@@ -59,9 +59,9 @@ namespace ElementPlayer.Core.ViewModels
 
         public override async Task Initialize()
         {
-            var item = await CrossMediaManager.Current.Extractor.CreateMediaItem("https://file-examples.com/wp-content/uploads/2018/04/file_example_MOV_480_700kB.mov");
-            var image = await MediaManager.Extractor.GetVideoFrame(item, TimeSpan.FromSeconds(5));
-            Image = image.ToImageSource();
+            //var item = await CrossMediaManager.Current.Extractor.CreateMediaItem("https://file-examples.com/wp-content/uploads/2018/04/file_example_MOV_480_700kB.mov");
+            //var image = await MediaManager.Extractor.GetVideoFrame(item, TimeSpan.FromSeconds(5));
+            //Image = image.ToImageSource();
         }
 
         public string CurrentTitle => Current.GetTitle();
