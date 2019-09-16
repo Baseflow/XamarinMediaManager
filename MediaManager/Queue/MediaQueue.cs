@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using MediaManager.Library;
 
 namespace MediaManager.Queue
@@ -11,13 +13,18 @@ namespace MediaManager.Queue
     {
         protected IMediaManager MediaManager = CrossMediaManager.Current;
 
+        public MediaQueue()
+        {
+
+        }
+
         public event QueueEndedEventHandler QueueEnded;
 
         public event QueueChangedEventHandler QueueChanged;
 
         public string Title { get; set; }
 
-        public bool HasNext() => ShuffleMode == ShuffleMode.All ? _shuffledIndexes.Count() > _indexOfCurrentItemInShuffledIndexes + 1 : Count > CurrentIndex + 1;
+        public bool HasNext() => ShuffleMode == ShuffleMode.All ? _shuffledIndexes.Count > _indexOfCurrentItemInShuffledIndexes + 1 : Count > CurrentIndex + 1;
 
         public IMediaItem NextItem
         {
@@ -149,6 +156,18 @@ namespace MediaManager.Queue
 
             QueueChanged?.Invoke(s, e);
             MediaManager.Notification.UpdateNotification();
+        }
+
+        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(storage, value))
+            {
+                return false;
+            }
+
+            storage = value;
+            OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+            return true;
         }
     }
 }

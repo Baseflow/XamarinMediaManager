@@ -24,9 +24,16 @@ namespace MediaManager
             Timer.Start();
         }
 
-        public bool IsInitialized { get; protected set; } = true;
+        private bool _isInitialized = true;
+        public bool IsInitialized
+        {
+            get => _isInitialized;
+            protected set => SetProperty(ref _isInitialized, value);
+        }
 
-        public Timer Timer { get; protected set; } = new Timer(1000);
+        public Timer Timer { get; protected set; } = new Timer(TimerInterval);
+
+        public static double TimerInterval { get; set; } = 1000;
 
         protected TimeSpan _stepSize = TimeSpan.FromSeconds(10);
         public virtual TimeSpan StepSize
@@ -108,18 +115,37 @@ namespace MediaManager
 
         public virtual ShuffleMode ShuffleMode
         {
-            get
-            {
-                return Queue.ShuffleMode;
-            }
-            set
-            {
-                Queue.ShuffleMode = value;
-            }
+            get => Queue.ShuffleMode;
+            set => Queue.ShuffleMode = value;
         }
 
-        public bool ClearQueueOnPlay { get; set; } = true;
-        public bool AutoPlay { get; set; } = true;
+        private bool _clearQueueOnPlay = true;
+        public bool ClearQueueOnPlay
+        {
+            get => _clearQueueOnPlay;
+            set => SetProperty(ref _clearQueueOnPlay, value);
+        }
+
+        private bool _autoPlay = true;
+        public bool AutoPlay
+        {
+            get => _autoPlay;
+            set => SetProperty(ref _autoPlay, value);
+        }
+
+        private bool _retryPlayOnFailed = true;
+        public bool RetryPlayOnFailed
+        {
+            get => _retryPlayOnFailed;
+            set => SetProperty(ref _retryPlayOnFailed, value);
+        }
+
+        private bool _playNextOnFailed = true;
+        public bool PlayNextOnFailed
+        {
+            get => _playNextOnFailed;
+            set => SetProperty(ref _playNextOnFailed, value);
+        }
 
         public virtual Task Play()
         {
@@ -316,14 +342,14 @@ namespace MediaManager
 
         public virtual Task StepBackward()
         {
-            var seekTo = this.SeekTo(TimeSpan.FromSeconds(double.IsNaN(Position.TotalSeconds) ? 0 : ((Position.TotalSeconds < StepSize.TotalSeconds) ? 0 : Position.TotalSeconds - StepSize.TotalSeconds)));
+            var seekTo = SeekTo(TimeSpan.FromSeconds(double.IsNaN(Position.TotalSeconds) ? 0 : ((Position.TotalSeconds < StepSize.TotalSeconds) ? 0 : Position.TotalSeconds - StepSize.TotalSeconds)));
             Timer_Elapsed(null, null);
             return seekTo;
         }
 
         public virtual Task StepForward()
         {
-            var seekTo = this.SeekTo(TimeSpan.FromSeconds(double.IsNaN(Position.TotalSeconds) ? 0 : Position.TotalSeconds + StepSize.TotalSeconds));
+            var seekTo = SeekTo(TimeSpan.FromSeconds(double.IsNaN(Position.TotalSeconds) ? 0 : Position.TotalSeconds + StepSize.TotalSeconds));
             Timer_Elapsed(null, null);
             return seekTo;
         }

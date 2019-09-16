@@ -69,6 +69,10 @@ namespace MediaManager.Playback
         /// </summary>
         bool KeepScreenOn { get; set; }
 
+        bool RetryPlayOnFailed { get; set; }
+
+        bool PlayNextOnFailed { get; set; }
+
         /// <summary>
         /// Plays the current MediaItem
         /// </summary>

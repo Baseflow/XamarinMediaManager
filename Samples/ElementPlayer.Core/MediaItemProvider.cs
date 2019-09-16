@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ElementPlayer.Core.Assets;
-using MediaManager;
 using MediaManager.Library;
 using MediaManager.Media;
 
