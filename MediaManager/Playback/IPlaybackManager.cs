@@ -73,6 +73,8 @@ namespace MediaManager.Playback
 
         bool PlayNextOnFailed { get; set; }
 
+        int MaxRetryCount { get; set; }
+
         /// <summary>
         /// Plays the current MediaItem
         /// </summary>

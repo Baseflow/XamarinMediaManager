@@ -147,6 +147,13 @@ namespace MediaManager
             set => SetProperty(ref _playNextOnFailed, value);
         }
 
+        private int _maxRetryCount = 1;
+        public int MaxRetryCount
+        {
+            get => _maxRetryCount;
+            set => SetProperty(ref _maxRetryCount, value);
+        }
+
         public virtual Task Play()
         {
             return MediaPlayer.Play();
@@ -370,7 +377,25 @@ namespace MediaManager
             if (SetProperty(ref _currentSource, e.MediaItem))
                 MediaItemChanged?.Invoke(sender, e);
         }
-        internal void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
+
+        protected int RetryCount = 0;
+        internal async void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e)
+        {
+            MediaItemFailed?.Invoke(sender, e);
+
+            if (RetryPlayOnFailed && RetryCount < MaxRetryCount)
+            {
+                RetryCount++;
+                await Play();
+            }
+            else
+            {
+                RetryCount = 0;
+                if (PlayNextOnFailed)
+                    await PlayNext();
+            }
+        }
+
         internal void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
         internal void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
 
