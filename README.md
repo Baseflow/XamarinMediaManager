@@ -195,9 +195,9 @@ event MediaItemFailedEventHandler MediaItemFailed;
 Depending on the platform and the media item metadata will be extracted from ID3 data in the file.
 
 ```csharp
-CrossMediaManager.Current.MediaQueue.Current.Title;
-CrossMediaManager.Current.MediaQueue.Current.AlbumArt;
-CrossMediaManager.Current.MediaQueue.Current.*
+CrossMediaManager.Current.Queue.Current.Title;
+CrossMediaManager.Current.Queue.Current.AlbumArt;
+CrossMediaManager.Current.Queue.Current.*
 ```
 
 Since the metadata might not be available immediately you can subscribe for updates like this:
@@ -215,8 +215,8 @@ You can also get a single frame from a video:
 
 ```csharp
 string url = "https://something.com/something.mov";
-var mediaItem = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem(url);
-var image = await CrossMediaManager.Current.MediaExtractor.GetVideoFrame(mediaItem, TimeSpan.FromSeconds(1));
+var mediaItem = await CrossMediaManager.Current.Extractor.CreateMediaItem(url);
+var image = await CrossMediaManager.Current.Extractor.GetVideoFrame(mediaItem, TimeSpan.FromSeconds(1));
 ImageSource imageSource = image.ToImageSource();
 FormsImage.Source = imageSource;
 ```
@@ -260,7 +260,7 @@ CrossMediaManager.Current.MediaPlayer.VideoView = playerView;
 MediaManager will try to make a guess which media type or format is used. Sometimes this will not be picked up or be wrong, but you can enforce it by setting it yourself like this:
 
 ```csharp
-var item = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8");
+var item = await CrossMediaManager.Current.Extractor.CreateMediaItem("https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8");
 item.MediaType = MediaType.Hls;
 
 await CrossMediaManager.Current.Play(item);
@@ -347,7 +347,7 @@ CrossMediaManager.Current.Reactive().*
 If you want to use FFmpegMediaMetadataRetriever on Android to extract the metadata you can set to use this extension like this:
 
 ```csharp
-CrossMediaManager.Android.MediaExtractor = new FFmpegMediaExtractor();
+CrossMediaManager.Android.Extractor = new FFmpegMediaExtractor();
 ```
 
 ## Intercept share requests from the native platform or other apps
