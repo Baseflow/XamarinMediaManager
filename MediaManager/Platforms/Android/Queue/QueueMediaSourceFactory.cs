@@ -3,7 +3,6 @@ using Android.Runtime;
 using Android.Support.V4.Media;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 using Com.Google.Android.Exoplayer2.Source;
-using MediaManager.Library;
 using MediaManager.Platforms.Android.Media;
 
 namespace MediaManager.Platforms.Android.Queue
@@ -22,10 +21,9 @@ namespace MediaManager.Platforms.Android.Queue
 
         public IMediaSource CreateMediaSource(MediaDescriptionCompat description)
         {
-            //TODO: We should be able to know the type here
-            //MediaManager.MediaExtractor.GetMediaType()
-
-            return description?.ToMediaSource(MediaType.Default);
+            //TODO: We should be able to know the exact type here
+            var mediaType = MediaManager.Extractor.GetMediaType(description.ToMediaItem());
+            return description?.ToMediaSource(mediaType);
         }
     }
 }

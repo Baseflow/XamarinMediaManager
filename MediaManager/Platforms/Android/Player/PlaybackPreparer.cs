@@ -54,10 +54,7 @@ namespace MediaManager.Platforms.Android.Player
             _player.Prepare(_mediaSource);
 
             //Only in case of Prepare set PlayWhenReady to true because we use this to load in the whole queue
-            if (MediaManager.AutoPlay)
-                _player.PlayWhenReady = true;
-            else
-                _player.PlayWhenReady = false;
+            _player.PlayWhenReady = MediaManager.AutoPlay;
         }
 
         public void OnPrepareFromMediaId(string mediaId, Bundle p1)
@@ -66,7 +63,7 @@ namespace MediaManager.Platforms.Android.Player
             var windowIndex = 0;
             foreach (var mediaItem in MediaManager.Queue)
             {
-                if (mediaItem.Id.ToString() == mediaId)
+                if (mediaItem.Id == mediaId)
                     windowIndex = MediaManager.Queue.IndexOf(mediaItem);
 
                 _mediaSource.AddMediaSource(mediaItem.ToMediaSource());

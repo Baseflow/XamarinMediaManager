@@ -18,7 +18,7 @@ namespace MediaManager.Platforms.Ios.Player
             get => _videoView;
             set
             {
-                _videoView = value;
+                SetProperty(ref _videoView, value);
                 if (PlayerView != null)
                 {
                     PlayerView.PlayerViewController.Player = Player;

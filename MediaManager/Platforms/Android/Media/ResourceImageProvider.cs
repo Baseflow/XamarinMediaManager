@@ -18,7 +18,7 @@ namespace MediaManager.Platforms.Android.Media
             try
             {
                 var artId = int.MinValue;
-                if(!string.IsNullOrEmpty(mediaItem.ImageUri) && int.TryParse(mediaItem.ImageUri, out artId))
+                if (!string.IsNullOrEmpty(mediaItem.ImageUri) && int.TryParse(mediaItem.ImageUri, out artId))
                 { }
                 else if (!string.IsNullOrEmpty(mediaItem.AlbumImageUri) && artId == int.MinValue && int.TryParse(mediaItem.AlbumImageUri, out artId))
                 { }

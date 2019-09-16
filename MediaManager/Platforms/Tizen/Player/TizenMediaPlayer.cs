@@ -28,10 +28,7 @@ namespace MediaManager.Platforms.Tizen.Player
                     Initialize();
                 return _player;
             }
-            set
-            {
-                _player = value;
-            }
+            set => SetProperty(ref _player, value);
         }
 
         public override void UpdateVideoAspect(VideoAspectMode videoAspectMode)

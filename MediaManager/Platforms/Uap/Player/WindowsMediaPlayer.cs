@@ -27,7 +27,7 @@ namespace MediaManager.Platforms.Uap.Player
             get => _videoView;
             set
             {
-                _videoView = value;
+                SetProperty(ref _videoView, value);
                 if (PlayerView != null)
                 {
                     PlayerView.PlayerView.SetMediaPlayer(Player);
@@ -46,10 +46,7 @@ namespace MediaManager.Platforms.Uap.Player
                     Initialize();
                 return _player;
             }
-            set
-            {
-                _player = value;
-            }
+            set => SetProperty(ref _player, value);
         }
 
         public override event BeforePlayingEventHandler BeforePlaying;

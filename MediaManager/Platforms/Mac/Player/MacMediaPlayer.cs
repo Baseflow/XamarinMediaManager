@@ -17,7 +17,7 @@ namespace MediaManager.Platforms.Mac.Player
             get => _videoView;
             set
             {
-                _videoView = value;
+                SetProperty(ref _videoView, value);
                 if (PlayerView != null)
                 {
                     PlayerView.Player = Player;

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ElementPlayer.Core.Assets;
 using MediaManager;
 using MediaManager.Library;
 using MvvmCross.Commands;
@@ -24,37 +23,12 @@ namespace ElementPlayer.Core.ViewModels
         public IMvxAsyncCommand<IMediaItem> ItemSelected => new MvxAsyncCommand<IMediaItem>(SelectItem);
         //new MvxAsyncCommand<IMediaItem>(async (item) => await this.NavigationService.Navigate<PlayerViewModel, IMediaItem>(item));
 
-        public override Task Initialize()
+        public override async Task Initialize()
         {
-            var json = ExoPlayerSamples.GetEmbeddedResourceString("media.exolist.json");
-            var list = ExoPlayerSamples.FromJson(json);
-
-            foreach (var item in list)
-            {
-                foreach (var sample in item.Samples)
-                {
-                    if (!string.IsNullOrEmpty(sample.Uri))
-                    {
-                        var mediaItem = new MediaItem(sample.Uri)
-                        {
-                            Title = sample.Name,
-                            Album = item.Name,
-                            FileExtension = sample.Extension ?? ""
-                        };
-                        if (mediaItem.FileExtension == "mpd" || mediaItem.MediaUri.EndsWith(".mpd"))
-                            mediaItem.MediaType = MediaType.Dash;
-                        else if (mediaItem.FileExtension == "ism" || mediaItem.MediaUri.EndsWith(".ism"))
-                            mediaItem.MediaType = MediaType.SmoothStreaming;
-                        else if (mediaItem.FileExtension == "m3u8" || mediaItem.MediaUri.EndsWith(".m3u8"))
-                            mediaItem.MediaType = MediaType.Hls;
-
-                        Items.Add(mediaItem);
-                    }
-                }
-            }
-
-            return base.Initialize();
+            var items = await MediaManager.Library.GetAll<IMediaItem>().ConfigureAwait(false);
+            Items.ReplaceWith(items);
         }
+
         public IList<string> Mp3UrlList => new[]{
             "https://ia800806.us.archive.org/15/items/Mp3Playlist_555/AaronNeville-CrazyLove.mp3",
             "https://ia800605.us.archive.org/32/items/Mp3Playlist_555/CelineDion-IfICould.mp3",

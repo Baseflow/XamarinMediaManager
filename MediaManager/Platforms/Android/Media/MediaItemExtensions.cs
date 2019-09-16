@@ -31,7 +31,6 @@ namespace MediaManager.Platforms.Android.Media
 
             switch (mediaType)
             {
-                default:
                 case MediaType.Audio:
                 case MediaType.Video:
                 case MediaType.Default:
@@ -61,6 +60,8 @@ namespace MediaManager.Platforms.Android.Media
                         .SetTag(mediaDescription)
                         .CreateMediaSource(mediaUri);
                     break;
+                default:
+                    throw new ArgumentNullException(nameof(mediaType));
             }
 
             return mediaSource;
@@ -122,7 +123,7 @@ namespace MediaManager.Platforms.Android.Media
             item.Extras = mediaDescription.Extras;
             //item.Genre = mediaDescription.
             item.Id = mediaDescription.MediaId;
-            item.MediaUri = mediaDescription.MediaUri.ToString();
+            //item.MediaUri = mediaDescription.MediaUri.ToString();
             //item.NumTracks = mediaDescription.
             //item.Rating = mediaDescription.
             item.Title = mediaDescription.Title;
@@ -162,7 +163,7 @@ namespace MediaManager.Platforms.Android.Media
             item.DisplayTitle = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyDisplayTitle);
             item.DownloadStatus = mediaMetadata.GetLong(MediaMetadataCompat.MetadataKeyDownloadStatus) == 0 ? DownloadStatus.NotDownloaded : DownloadStatus.Downloaded;
             item.Duration = TimeSpan.FromMilliseconds(Convert.ToInt32(mediaMetadata.GetLong(MediaMetadataCompat.MetadataKeyDuration)));
-            //item.Extras = mediaMetadata.GetString(MediaMetadataCompat.extr);
+            item.Extras = mediaMetadata.Description?.Extras;
             item.Genre = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyGenre);
             item.Id = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyMediaId);
             item.MediaUri = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyMediaUri);

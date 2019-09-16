@@ -62,7 +62,7 @@ namespace MediaManager.Platforms.Android.Player
                 return _player;
             }
 
-            set => _player = value;
+            set => SetProperty(ref _player, value);
         }
 
         public VideoView PlayerView => VideoView as VideoView;
@@ -73,7 +73,7 @@ namespace MediaManager.Platforms.Android.Player
             get => _videoView;
             set
             {
-                _videoView = value;
+                SetProperty(ref _videoView, value);
                 if (PlayerView != null)
                 {
                     PlayerView.RequestFocus();

@@ -25,7 +25,7 @@ namespace MediaManager.Platforms.Wpf.Player
             get => _videoView;
             set
             {
-                _videoView = value;
+                SetProperty(ref _videoView, value);
                 UpdateVideoView();
             }
         }
@@ -39,10 +39,7 @@ namespace MediaManager.Platforms.Wpf.Player
                     Initialize();
                 return _player;
             }
-            set
-            {
-                _player = value;
-            }
+            set => SetProperty(ref _player, value);
         }
 
         public override event BeforePlayingEventHandler BeforePlaying;

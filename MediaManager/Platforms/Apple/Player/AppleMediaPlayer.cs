@@ -29,10 +29,7 @@ namespace MediaManager.Platforms.Apple.Player
                     Initialize();
                 return _player;
             }
-            set
-            {
-                _player = value;
-            }
+            set => SetProperty(ref _player, value);
         }
 
         private NSObject didFinishPlayingObserver;

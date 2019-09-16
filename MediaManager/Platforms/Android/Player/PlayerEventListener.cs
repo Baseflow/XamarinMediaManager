@@ -32,7 +32,7 @@ namespace MediaManager.Platforms.Android.Player
 
         public void OnTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections)
         {
-            for (var i = 0; i < trackGroups.Length; i++)
+            /*for (var i = 0; i < trackGroups.Length; i++)
             {
                 var trackGroup = trackGroups.Get(i);
                 for (var j = 0; j < trackGroup.Length; j++)
@@ -85,7 +85,7 @@ namespace MediaManager.Platforms.Android.Player
                         }
                     }
                 }
-            }
+            }*/
 
             OnTracksChangedImpl?.Invoke(trackGroups, trackSelections);
         }
