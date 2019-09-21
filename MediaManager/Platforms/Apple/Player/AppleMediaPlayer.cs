@@ -169,15 +169,15 @@ namespace MediaManager.Platforms.Apple.Player
             {
                 await Stop();
             }
-            else if (RepeatMode == RepeatMode.All && MediaManager.MediaQueue.Any())
+            else if (RepeatMode == RepeatMode.All && MediaManager.Queue.Any())
             {
-                MediaManager.MediaQueue.CurrentIndex = 0;
-                await MediaManager.PlayQueueItem(MediaManager.MediaQueue.Current);
+                MediaManager.Queue.CurrentIndex = 0;
+                await MediaManager.PlayQueueItem(MediaManager.Queue.Current);
             }
-            else if (RepeatMode == RepeatMode.One && MediaManager.MediaQueue.Any())
+            else if (RepeatMode == RepeatMode.One && MediaManager.Queue.Any())
             {
-                MediaManager.MediaQueue.CurrentIndex = MediaManager.MediaQueue.CurrentIndex - 1;
-                await MediaManager.PlayQueueItem(MediaManager.MediaQueue.Current);
+                MediaManager.Queue.CurrentIndex = MediaManager.Queue.CurrentIndex - 1;
+                await MediaManager.PlayQueueItem(MediaManager.Queue.Current);
             }
         }
 
