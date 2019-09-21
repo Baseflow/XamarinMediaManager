@@ -317,7 +317,8 @@ namespace MediaManager
             }
             set
             {
-                MediaController?.GetTransportControls()?.SetRepeatMode((int)value);
+                MediaSession.SetRepeatMode((int)value);
+                OnPropertyChanged();
             }
         }
 

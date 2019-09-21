@@ -158,6 +158,8 @@ namespace MediaManager.Platforms.Android.Player
 
             Player.SetAudioAttributes(audioAttributes, true);
 
+            MediaManager.PropertyChanged += MediaManager_PropertyChanged;
+
             PlayerEventListener = new PlayerEventListener()
             {
                 OnPlayerErrorImpl = (ExoPlaybackException exception) =>
@@ -243,7 +245,17 @@ namespace MediaManager.Platforms.Android.Player
             ConnectMediaSession();
 
             if (PlayerView != null && PlayerView.Player == null)
+            {
                 PlayerView.Player = Player;
+            }
+        }
+        private void MediaManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MediaManager.RepeatMode))
+            {
+                if (Player != null && MediaManager != null)
+                    Player.RepeatMode = (int)MediaManager.RepeatMode;
+            }
         }
 
         private void Player_VideoSizeChanged(object sender, Com.Google.Android.Exoplayer2.Video.VideoSizeChangedEventArgs e)
@@ -331,6 +343,9 @@ namespace MediaManager.Platforms.Android.Player
                 Player.Release();
                 Player = null;
             }
+
+            if (MediaManager != null)
+                MediaManager.PropertyChanged -= MediaManager_PropertyChanged;
         }
     }
 }
