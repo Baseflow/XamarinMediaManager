@@ -38,7 +38,6 @@ namespace MediaManager.Queue
         /// </summary>
         IMediaItem PreviousItem { get; }
 
-
         /// <summary>
         /// If the Queue has a track it can currently play
         /// </summary>

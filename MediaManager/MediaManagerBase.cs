@@ -284,55 +284,40 @@ namespace MediaManager
 
         public virtual async Task<bool> PlayNext()
         {
+            IMediaItem mediaItem = null;
             // If we repeat just the single media item, we do that first
             if (RepeatMode == RepeatMode.One)
             {
-                await MediaPlayer.Play(Queue.Current);
-                return true;
+                mediaItem = Queue.Current;
             }
-            else
+            else if (RepeatMode == RepeatMode.All && !Queue.HasNext())
             {
-                // Otherwise we try to play the next media item in the queue
-                if (Queue.HasNext())
-                {
-                    await MediaPlayer.Play(Queue.NextItem);
-                    return true;
-                }
-                else
-                {
-                    // If there is no next media item, but we repeat them all, we reset the current index and start playing it again
-                    if (RepeatMode == RepeatMode.All)
-                    {
-                        // Go to the start of the queue again
-                        Queue.CurrentIndex = 0;
-                        if (Queue.HasCurrent())
-                        {
-                            await MediaPlayer.Play(Queue.Current);
-                            return true;
-                        }
-                    }
-                }
+                mediaItem = Queue.First();
+            }
+            // Otherwise we try to play the next media item in the queue
+            else if (Queue.HasNext())
+            {
+                mediaItem = Queue.NextItem;
             }
 
-            return false;
+            return await PlayQueueItem(mediaItem);
         }
 
         public virtual async Task<bool> PlayPrevious()
         {
             if (Queue.HasPrevious())
             {
-                await MediaPlayer.Play(Queue.PreviousItem);
-                return true;
+                return await PlayQueueItem(Queue.PreviousItem);
             }
-
             return false;
         }
 
         public virtual async Task<bool> PlayQueueItem(IMediaItem mediaItem)
         {
-            if (!Queue.Contains(mediaItem))
+            if (mediaItem == null || !Queue.Contains(mediaItem))
                 return false;
 
+            Queue.CurrentIndex = Queue.IndexOf(mediaItem);
             await MediaPlayer.Play(mediaItem);
             return true;
         }
@@ -343,6 +328,7 @@ namespace MediaManager
             if (mediaItem == null)
                 return false;
 
+            Queue.CurrentIndex = index;
             await MediaPlayer.Play(mediaItem);
             return true;
         }

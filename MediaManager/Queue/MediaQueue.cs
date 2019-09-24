@@ -15,7 +15,14 @@ namespace MediaManager.Queue
 
         public MediaQueue()
         {
+        }
 
+        public MediaQueue(IEnumerable<IMediaItem> collection) : base(collection)
+        {
+        }
+
+        public MediaQueue(List<IMediaItem> list) : base(list)
+        {
         }
 
         public event QueueEndedEventHandler QueueEnded;
@@ -86,7 +93,11 @@ namespace MediaManager.Queue
 
         public bool HasCurrent() => Count >= CurrentIndex;
 
-        public IMediaItem Current => Count > 0 ? this.ElementAtOrDefault(CurrentIndex) : null;
+        public IMediaItem Current
+        {
+            get => Count > 0 ? this.ElementAtOrDefault(CurrentIndex) : null;
+            internal set => CurrentIndex = this.IndexOf(value);
+        }
 
         private int _currentIndex = 0;
         public int CurrentIndex
@@ -94,9 +105,8 @@ namespace MediaManager.Queue
             get => _currentIndex;
             set
             {
-                if (_currentIndex != value)
+                if (SetProperty(ref _currentIndex, value))
                     OnQueueChanged(this, new QueueChangedEventArgs(Current));
-                _currentIndex = value;
             }
         }
 
