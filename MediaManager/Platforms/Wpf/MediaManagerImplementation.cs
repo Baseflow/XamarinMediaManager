@@ -7,7 +7,6 @@ using MediaManager.Platforms.Wpf.Media;
 using MediaManager.Platforms.Wpf.Notificiations;
 using MediaManager.Platforms.Wpf.Player;
 using MediaManager.Platforms.Wpf.Volume;
-using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Volume;
 
@@ -88,8 +87,6 @@ namespace MediaManager
                 Player.SpeedRatio = value;
             }
         }
-
-        public override RepeatMode RepeatMode { get; set; }
 
         protected bool _keepScreenOn;
         public override bool KeepScreenOn

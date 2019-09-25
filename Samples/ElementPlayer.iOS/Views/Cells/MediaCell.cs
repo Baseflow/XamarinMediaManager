@@ -1,8 +1,8 @@
-﻿using System;
-using Foundation;
+﻿using Foundation;
 using MediaManager.Library;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
+using System;
 using UIKit;
 
 namespace ElementPlayer.iOS.Views.Cells

@@ -5,7 +5,7 @@
         public PlayPreviousExtension()
             : base()
         {
-            MediaManager.Queue.CollectionChanged += (s, e) => RaiseCanExecuteChanged();
+            MediaManager.Queue.QueueChanged += (s, e) => RaiseCanExecuteChanged();
         }
 
         protected override bool CanExecute() =>

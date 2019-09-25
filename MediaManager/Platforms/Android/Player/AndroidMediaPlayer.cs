@@ -175,13 +175,11 @@ namespace MediaManager.Platforms.Android.Player
                 },
                 OnTracksChangedImpl = (trackGroups, trackSelections) =>
                 {
-                    var mediaItem = MediaManager.Queue.Current;
-                    BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+                    BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(MediaManager.Queue.Current, this));
 
                     MediaManager.Queue.CurrentIndex = Player.CurrentWindowIndex;
-                    MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(mediaItem));
 
-                    AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+                    AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(MediaManager.Queue.Current, this));
                 },
                 OnPlayerStateChangedImpl = (bool playWhenReady, int playbackState) =>
                 {

@@ -110,13 +110,20 @@ namespace MediaManager
         public abstract TimeSpan Position { get; }
         public abstract TimeSpan Duration { get; }
         public abstract float Speed { get; set; }
-        public abstract RepeatMode RepeatMode { get; set; }
         public abstract bool KeepScreenOn { get; set; }
 
+        private RepeatMode _repeatMode = RepeatMode.Off;
+        public virtual RepeatMode RepeatMode
+        {
+            get => _repeatMode;
+            set => SetProperty(ref _repeatMode, value);
+        }
+
+        private ShuffleMode _shuffleMode = ShuffleMode.Off;
         public virtual ShuffleMode ShuffleMode
         {
-            get => Queue.ShuffleMode;
-            set => Queue.ShuffleMode = value;
+            get => _shuffleMode;
+            set => SetProperty(ref _shuffleMode, value);
         }
 
         private bool _clearQueueOnPlay = true;
@@ -290,14 +297,15 @@ namespace MediaManager
             {
                 mediaItem = Queue.Current;
             }
-            else if (RepeatMode == RepeatMode.All && !Queue.HasNext())
+            // If we repeat all and there is no next in the Queue, we go back to the first
+            else if (RepeatMode == RepeatMode.All && !Queue.HasNext)
             {
                 mediaItem = Queue.First();
             }
             // Otherwise we try to play the next media item in the queue
-            else if (Queue.HasNext())
+            else if (Queue.HasNext)
             {
-                mediaItem = Queue.NextItem;
+                mediaItem = Queue.Next;
             }
 
             return await PlayQueueItem(mediaItem);
@@ -305,9 +313,9 @@ namespace MediaManager
 
         public virtual async Task<bool> PlayPrevious()
         {
-            if (Queue.HasPrevious())
+            if (Queue.HasPrevious)
             {
-                return await PlayQueueItem(Queue.PreviousItem);
+                return await PlayQueueItem(Queue.Previous);
             }
             return false;
         }
