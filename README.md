@@ -18,6 +18,15 @@
 * Commercial support is available. Integration with your app or services, samples, feature request, etc. Email: [hello@baseflow.com](mailto:hello@baseflow.com)
 * Powered by: [baseflow.com](https://baseflow.com)
 
+# Wiki
+
+More documenatation and information is available on the [Wiki](https://github.com/martijn00/XamarinMediaManager/wiki)
+
+# Blogs
+
+* [Xamarin Blog](https://blog.xamarin.com/play-audio-and-video-with-the-mediamanager-plugin-for-xamarin/)
+* [Baseflow Blog](https://baseflow.com/blogs/mobile-video-matters/)
+
 ## Installation
 
 Add the [NuGet package](https://www.nuget.org/packages/Plugin.MediaManager/) to all the projects you want to use it in.
@@ -26,8 +35,6 @@ Add the [NuGet package](https://www.nuget.org/packages/Plugin.MediaManager/) to 
 * Select the Browse tab, search for MediaManager
 * Select Plugin.MediaManager
 * Install into each project within your solution
-
-More information on the [Xamarin Blog](https://blog.xamarin.com/play-audio-and-video-with-the-mediamanager-plugin-for-xamarin/ )
 
 **Platform Support**
 
@@ -41,7 +48,7 @@ More information on the [Xamarin Blog](https://blog.xamarin.com/play-audio-and-v
 |Xamarin.tvOS|Yes|10.0+|AVPlayer|
 |Tizen|Yes|4.0+|MediaPlayer|
 |Windows 10 UWP|Yes|10+|MediaPlayer|
-|Windows WPF|Yes|4.7.1+|MediaPlayer|
+|Windows WPF|Yes|4.7.2+|MediaPlayer|
 
 ## Usage
 
@@ -363,7 +370,7 @@ CrossMediaManager.Android.Extractor = new FFmpegMediaExtractor();
 **Android:**
 ```csharp
 //Add code to the OnCreate(Bundle savedInstanceState) of your MainActivity
-if(CrossMediaManager.Android.HandleIntent(Intent))
+if(await CrossMediaManager.Android.PlayFromIntent(Intent))
 {
     //If true maybe do an action like opening a Player Page.
 }
