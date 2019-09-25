@@ -110,6 +110,14 @@ Task<IMediaItem> PlayFromResource(string resourceName);
 * When playing from `Assembly` you need to add a media file to a assembly and set the build action to `Embedded resource`.
 * When playing from a `Resource` you should add your media file for example to the `Assets` or `raw` folder on Android, and the `Resources` folder on iOS.
 
+For example:
+
+```csharp
+await CrossMediaManager.Current.PlayFromAssembly("somefile.mp3", typeof(BaseViewModel).Assembly);
+await CrossMediaManager.Current.PlayFromResource("assets:///somefile.mp3");
+await CrossMediaManager.Android.PlayFromResource(Resource.Raw.somefile.ToString());
+```
+
 ### Control the player 
 
 ```csharp
