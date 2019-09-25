@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Content.Res;
+using Com.Google.Android.Exoplayer2.Upstream;
 using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android.Media
@@ -24,14 +26,41 @@ namespace MediaManager.Platforms.Android.Media
             return providers;
         }
 
-        protected override async Task<string> GetResourcePath(string resourceName)
+        protected override Task<string> GetResourcePath(string resourceName)
         {
             string path = null;
-            using (var stream = MediaManager.Context.Assets.Open(resourceName))
+            try
             {
-                path = await CopyResourceStreamToFile(stream, "AndroidResources", resourceName).ConfigureAwait(false);
+                if (int.TryParse(resourceName, out int resourceId))
+                {
+                    var rawDataSource = new RawResourceDataSource(MediaManager.Context);
+                    var uri = RawResourceDataSource.BuildRawResourceUri(resourceId);
+                    rawDataSource.Open(new DataSpec(uri));
+                    path = rawDataSource.Uri.ToString();
+                }
             }
-            return path;
+            catch (Exception ex)
+            {
+                path = null;
+                Console.WriteLine(ex.Message);
+            }
+            try
+            {
+                if (string.IsNullOrEmpty(path))
+                {
+                    var assetDataSource = new AssetDataSource(MediaManager.Context);
+                    var dataSpec = new DataSpec(global::Android.Net.Uri.Parse(resourceName));
+                    assetDataSource.Open(dataSpec);
+                    path = assetDataSource.Uri.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                path = null;
+                Console.WriteLine(ex.Message);
+            }
+
+            return Task.FromResult(path);
         }
     }
 }

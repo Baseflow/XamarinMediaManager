@@ -70,8 +70,9 @@ namespace MediaManager.Platforms.Ios.Player
                 if (activationError != null)
                     Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
             }
 
             Player.InvokeOnMainThread(() =>
