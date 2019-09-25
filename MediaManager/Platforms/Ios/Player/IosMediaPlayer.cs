@@ -69,6 +69,8 @@ namespace MediaManager.Platforms.Ios.Player
                 audioSession.SetActive(true, out var activationError);
                 if (activationError != null)
                     Console.WriteLine("Could not activate audio session {0}", activationError.LocalizedDescription);
+
+                AVAudioSession.Notifications.ObserveInterruption(ToneInterruptionListener);
             }
             catch (Exception ex)
             {
@@ -79,6 +81,22 @@ namespace MediaManager.Platforms.Ios.Player
             {
                 UIApplication.SharedApplication.BeginReceivingRemoteControlEvents();
             });
+        }
+
+        private async void ToneInterruptionListener(object sender, AVAudioSessionInterruptionEventArgs interruptArgs)
+        {
+            switch (interruptArgs.InterruptionType)
+            {
+                case AVAudioSessionInterruptionType.Began:
+                    await MediaManager.Pause();
+                    break;
+                case AVAudioSessionInterruptionType.Ended:
+                    if(interruptArgs.Option == AVAudioSessionInterruptionOptions.ShouldResume)
+                    {
+                        await MediaManager.Play();
+                    }
+                    break;
+            }
         }
 
         protected override void Dispose(bool disposing)
