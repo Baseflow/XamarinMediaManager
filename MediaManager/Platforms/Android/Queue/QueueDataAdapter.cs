@@ -90,7 +90,20 @@ namespace MediaManager.Platforms.Android.Queue
                         _mediaSource.RemoveMediaSource(e.OldStartingIndex);
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
-                    throw new ArgumentException("Replacing in MediaQueue not supported.");
+                    if (e.NewItems.Count > 1)
+                    {
+                        for (int i = 0; i > e.NewItems.Count; i++)
+                            _mediaSource.RemoveMediaSource(e.OldStartingIndex);
+                    }
+                    else
+                        _mediaSource.RemoveMediaSource(e.OldStartingIndex);
+
+                    for (int i = e.NewItems.Count - 1; i >= 0; i--)
+                    {
+                        var mediaItem = (IMediaItem)e.NewItems[i];
+                        _mediaSource.AddMediaSource(e.NewStartingIndex, mediaItem.ToMediaSource());
+                    }
+                    break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
                     _mediaSource.Clear();
                     break;
