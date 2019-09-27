@@ -217,6 +217,7 @@ namespace MediaManager
 
         public virtual async Task<IMediaItem> Play(Stream stream, string cacheName)
         {
+            //TODO: Probably better to do everything in memory. On Android use ByteArrayDataSource
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), cacheName);
             var fileStream = File.Create(path);
             await stream.CopyToAsync(fileStream);
