@@ -175,13 +175,11 @@ namespace MediaManager.Platforms.Android.Player
                 },
                 OnTracksChangedImpl = (trackGroups, trackSelections) =>
                 {
-                    var mediaItem = MediaManager.Queue.Current;
-                    BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+                    BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(MediaManager.Queue.Current, this));
 
                     MediaManager.Queue.CurrentIndex = Player.CurrentWindowIndex;
-                    MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(mediaItem));
 
-                    AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+                    AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(MediaManager.Queue.Current, this));
                 },
                 OnPlayerStateChangedImpl = (bool playWhenReady, int playbackState) =>
                 {
@@ -211,23 +209,9 @@ namespace MediaManager.Platforms.Android.Player
                             break;
                         case Com.Google.Android.Exoplayer2.Player.DiscontinuityReasonPeriodTransition:
                             var currentWindowIndex = Player.CurrentWindowIndex;
-                            /*if (lastWindowIndex == currentWindowIndex - 1)
+                            if (SetProperty(ref lastWindowIndex, currentWindowIndex))
                             {
-                                // skipped to next
-                            }
-                            else if (lastWindowIndex == currentWindowIndex + 1)
-                            {
-                                // skipped to previous
-                            }
-                            else
-                            {
-                                // jumped more than one window index
-                            }*/
-                            //TODO: Use SetProperty for this
-                            if (currentWindowIndex != lastWindowIndex)
-                            {
-                                MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.ElementAtOrDefault(lastWindowIndex)));
-                                lastWindowIndex = currentWindowIndex;
+                                MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.Current));
                             }
                             break;
                         case Com.Google.Android.Exoplayer2.Player.DiscontinuityReasonInternal:

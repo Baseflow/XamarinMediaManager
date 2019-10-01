@@ -1,10 +1,10 @@
-﻿using System;
-using ElementPlayer.Core.ViewModels;
+﻿using ElementPlayer.Core.ViewModels;
 using ElementPlayer.iOS.Views.Cells;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
+using System;
 
 namespace ElementPlayer.iOS.Views
 {

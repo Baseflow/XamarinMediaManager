@@ -1,4 +1,5 @@
-﻿using MvvmCross.Forms.Platforms.Wpf.Views;
+﻿using MediaManager;
+using MvvmCross.Forms.Platforms.Wpf.Views;
 
 namespace ElementPlayer.Forms.Wpf
 {
@@ -10,6 +11,7 @@ namespace ElementPlayer.Forms.Wpf
         public MainWindow()
         {
             InitializeComponent();
+            CrossMediaManager.Current.Init();
         }
     }
 }

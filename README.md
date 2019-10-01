@@ -18,6 +18,15 @@
 * Commercial support is available. Integration with your app or services, samples, feature request, etc. Email: [hello@baseflow.com](mailto:hello@baseflow.com)
 * Powered by: [baseflow.com](https://baseflow.com)
 
+# Wiki
+
+More documenatation and information is available on the [Wiki](https://github.com/martijn00/XamarinMediaManager/wiki)
+
+# Blogs
+
+* [Xamarin Blog](https://blog.xamarin.com/play-audio-and-video-with-the-mediamanager-plugin-for-xamarin/)
+* [Baseflow Blog](https://baseflow.com/blogs/mobile-video-matters/)
+
 ## Installation
 
 Add the [NuGet package](https://www.nuget.org/packages/Plugin.MediaManager/) to all the projects you want to use it in.
@@ -26,8 +35,6 @@ Add the [NuGet package](https://www.nuget.org/packages/Plugin.MediaManager/) to 
 * Select the Browse tab, search for MediaManager
 * Select Plugin.MediaManager
 * Install into each project within your solution
-
-More information on the [Xamarin Blog](https://blog.xamarin.com/play-audio-and-video-with-the-mediamanager-plugin-for-xamarin/ )
 
 **Platform Support**
 
@@ -41,7 +48,7 @@ More information on the [Xamarin Blog](https://blog.xamarin.com/play-audio-and-v
 |Xamarin.tvOS|Yes|10.0+|AVPlayer|
 |Tizen|Yes|4.0+|MediaPlayer|
 |Windows 10 UWP|Yes|10+|MediaPlayer|
-|Windows WPF|Yes|4.7.1+|MediaPlayer|
+|Windows WPF|Yes|4.7.2+|MediaPlayer|
 
 ## Usage
 
@@ -109,6 +116,14 @@ Task<IMediaItem> PlayFromResource(string resourceName);
 * Playing from a `File` can be done for example by using the `File` and `Directory` api's. You download a file from the internet and save it somewhere using these .NET api's.
 * When playing from `Assembly` you need to add a media file to a assembly and set the build action to `Embedded resource`.
 * When playing from a `Resource` you should add your media file for example to the `Assets` or `raw` folder on Android, and the `Resources` folder on iOS.
+
+For example:
+
+```csharp
+await CrossMediaManager.Current.PlayFromAssembly("somefile.mp3", typeof(BaseViewModel).Assembly);
+await CrossMediaManager.Current.PlayFromResource("assets:///somefile.mp3");
+await CrossMediaManager.Android.PlayFromResource(Resource.Raw.somefile.ToString());
+```
 
 ### Control the player 
 
@@ -195,9 +210,9 @@ event MediaItemFailedEventHandler MediaItemFailed;
 Depending on the platform and the media item metadata will be extracted from ID3 data in the file.
 
 ```csharp
-CrossMediaManager.Current.MediaQueue.Current.Title;
-CrossMediaManager.Current.MediaQueue.Current.AlbumArt;
-CrossMediaManager.Current.MediaQueue.Current.*
+CrossMediaManager.Current.Queue.Current.Title;
+CrossMediaManager.Current.Queue.Current.AlbumArt;
+CrossMediaManager.Current.Queue.Current.*
 ```
 
 Since the metadata might not be available immediately you can subscribe for updates like this:
@@ -215,8 +230,8 @@ You can also get a single frame from a video:
 
 ```csharp
 string url = "https://something.com/something.mov";
-var mediaItem = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem(url);
-var image = await CrossMediaManager.Current.MediaExtractor.GetVideoFrame(mediaItem, TimeSpan.FromSeconds(1));
+var mediaItem = await CrossMediaManager.Current.Extractor.CreateMediaItem(url);
+var image = await CrossMediaManager.Current.Extractor.GetVideoFrame(mediaItem, TimeSpan.FromSeconds(1));
 ImageSource imageSource = image.ToImageSource();
 FormsImage.Source = imageSource;
 ```
@@ -260,7 +275,7 @@ CrossMediaManager.Current.MediaPlayer.VideoView = playerView;
 MediaManager will try to make a guess which media type or format is used. Sometimes this will not be picked up or be wrong, but you can enforce it by setting it yourself like this:
 
 ```csharp
-var item = await CrossMediaManager.Current.MediaExtractor.CreateMediaItem("https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8");
+var item = await CrossMediaManager.Current.Extractor.CreateMediaItem("https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8");
 item.MediaType = MediaType.Hls;
 
 await CrossMediaManager.Current.Play(item);
@@ -347,7 +362,7 @@ CrossMediaManager.Current.Reactive().*
 If you want to use FFmpegMediaMetadataRetriever on Android to extract the metadata you can set to use this extension like this:
 
 ```csharp
-CrossMediaManager.Android.MediaExtractor = new FFmpegMediaExtractor();
+CrossMediaManager.Android.Extractor = new FFmpegMediaExtractor();
 ```
 
 ## Intercept share requests from the native platform or other apps
@@ -355,7 +370,7 @@ CrossMediaManager.Android.MediaExtractor = new FFmpegMediaExtractor();
 **Android:**
 ```csharp
 //Add code to the OnCreate(Bundle savedInstanceState) of your MainActivity
-if(CrossMediaManager.Android.HandleIntent(Intent))
+if(await CrossMediaManager.Android.PlayFromIntent(Intent))
 {
     //If true maybe do an action like opening a Player Page.
 }

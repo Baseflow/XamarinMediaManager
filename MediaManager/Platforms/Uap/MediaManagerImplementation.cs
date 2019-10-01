@@ -5,7 +5,6 @@ using MediaManager.Platforms.Uap.Media;
 using MediaManager.Platforms.Uap.Notifications;
 using MediaManager.Platforms.Uap.Player;
 using MediaManager.Platforms.Uap.Volume;
-using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Volume;
 using Windows.Media.Playback;
@@ -90,30 +89,6 @@ namespace MediaManager
             {
                 if (WindowsMediaPlayer?.Player?.PlaybackSession?.PlaybackRate != null)
                     WindowsMediaPlayer.Player.PlaybackSession.PlaybackRate = value;
-            }
-        }
-
-        public override RepeatMode RepeatMode
-        {
-            get
-            {
-                if (Player.IsLoopingEnabled)
-                    return RepeatMode.All;
-                else
-                    return RepeatMode.Off;
-            }
-            set
-            {
-                switch (value)
-                {
-                    case RepeatMode.Off:
-                        Player.IsLoopingEnabled = false;
-                        break;
-                    case RepeatMode.One:
-                    case RepeatMode.All:
-                        Player.IsLoopingEnabled = true;
-                        break;
-                }
             }
         }
 

@@ -4,6 +4,7 @@ using Android.Runtime;
 using Android.Support.V4.Media;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
 using Com.Google.Android.Exoplayer2.Source;
+using MediaManager.Library;
 using MediaManager.Platforms.Android.Media;
 
 namespace MediaManager.Platforms.Android.Queue
@@ -16,7 +17,7 @@ namespace MediaManager.Platforms.Android.Queue
         public QueueDataAdapter(ConcatenatingMediaSource mediaSource)
         {
             _mediaSource = mediaSource;
-            //_mediaManager.MediaQueue.CollectionChanged += MediaQueue_CollectionChanged;
+            MediaManager.Queue.MediaItems.CollectionChanged += MediaQueue_CollectionChanged;
         }
 
         protected QueueDataAdapter(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
@@ -42,14 +43,13 @@ namespace MediaManager.Platforms.Android.Queue
         {
             MediaManager.Queue.RemoveAt(index);
         }
-        //TODO: Find out if queue also need to get picked up on changes. Maybe when people add items directly to the queue while playing already.
-        /*
+
         private void MediaQueue_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
-                    if (_mediaSource.Size != _mediaManager.MediaQueue.Count)
+                    if (_mediaSource.Size != MediaManager.Queue.Count)
                     {
                         for (int i = e.NewItems.Count - 1; i >= 0; i--)
                         {
@@ -90,11 +90,24 @@ namespace MediaManager.Platforms.Android.Queue
                         _mediaSource.RemoveMediaSource(e.OldStartingIndex);
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
-                    throw new ArgumentException("Replacing in MediaQueue not supported.");
+                    if (e.NewItems.Count > 1)
+                    {
+                        for (int i = 0; i > e.NewItems.Count; i++)
+                            _mediaSource.RemoveMediaSource(e.OldStartingIndex);
+                    }
+                    else
+                        _mediaSource.RemoveMediaSource(e.OldStartingIndex);
+
+                    for (int i = e.NewItems.Count - 1; i >= 0; i--)
+                    {
+                        var mediaItem = (IMediaItem)e.NewItems[i];
+                        _mediaSource.AddMediaSource(e.NewStartingIndex, mediaItem.ToMediaSource());
+                    }
+                    break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
                     _mediaSource.Clear();
                     break;
             }
-        }*/
+        }
     }
 }

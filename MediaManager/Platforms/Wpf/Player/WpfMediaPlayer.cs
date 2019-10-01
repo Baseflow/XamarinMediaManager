@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using MediaManager.Library;
 using MediaManager.Media;
@@ -79,17 +80,22 @@ namespace MediaManager.Platforms.Wpf.Player
 
         public void Initialize()
         {
-            Player = new MediaElement();
-            Player.LoadedBehavior = MediaState.Play;
-            Player.UnloadedBehavior = MediaState.Manual;
-            Player.Volume = 1;
-            Player.IsMuted = false;
+            Application.Current.Dispatcher.Invoke((Action)delegate
+            {
+                Player = new MediaElement
+                {
+                    LoadedBehavior = MediaState.Play,
+                    UnloadedBehavior = MediaState.Manual,
+                    Volume = 1,
+                    IsMuted = false
+                };
 
-            Player.MediaEnded += Player_MediaEnded;
-            Player.MediaOpened += Player_MediaOpened;
-            Player.MediaFailed += Player_MediaFailed;
-            Player.BufferingStarted += Player_BufferingStarted;
-            Player.BufferingEnded += Player_BufferingEnded;
+                Player.MediaEnded += Player_MediaEnded;
+                Player.MediaOpened += Player_MediaOpened;
+                Player.MediaFailed += Player_MediaFailed;
+                Player.BufferingStarted += Player_BufferingStarted;
+                Player.BufferingEnded += Player_BufferingEnded;
+            });
         }
 
         private void Player_MediaFailed(object sender, System.Windows.ExceptionRoutedEventArgs e)

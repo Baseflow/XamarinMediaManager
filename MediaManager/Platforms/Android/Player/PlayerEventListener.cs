@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Linq;
-using Android.Graphics;
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
-using Com.Google.Android.Exoplayer2.Metadata.Id3;
 using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
 

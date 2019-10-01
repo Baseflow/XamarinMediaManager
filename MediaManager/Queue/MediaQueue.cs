@@ -1,39 +1,70 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using MediaManager.Library;
+using MediaManager.Media;
 
 namespace MediaManager.Queue
 {
-    public class MediaQueue : ObservableCollection<IMediaItem>, IMediaQueue
+    public class MediaQueue : NotifyPropertyChangedBase, IMediaQueue
     {
-        protected IMediaManager MediaManager = CrossMediaManager.Current;
+        protected MediaManagerBase MediaManager => CrossMediaManager.Current as MediaManagerBase;
+
+        public MediaQueue()
+        {
+            MediaItems.CollectionChanged += MediaItems_CollectionChanged;
+            MediaManager.PropertyChanged += MediaManager_PropertyChanged;
+        }
+
+        private int shuffleKey = int.MinValue;
+        private void MediaManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MediaManager.ShuffleMode))
+            {
+                if (MediaManager.ShuffleMode == ShuffleMode.All)
+                {
+                    shuffleKey = new Random().Next(int.MinValue + 1, int.MaxValue);
+                    MediaItems.Shuffle(shuffleKey);
+                }
+                else if (shuffleKey != int.MinValue)
+                {
+                    MediaItems.DeShuffle(shuffleKey);
+                    shuffleKey = int.MinValue;
+                }
+            }
+        }
+
+        private void MediaItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnQueueChanged(this, new QueueChangedEventArgs(Current));
+        }
 
         public event QueueEndedEventHandler QueueEnded;
 
         public event QueueChangedEventHandler QueueChanged;
 
-        public string Title { get; set; }
+        public ObservableCollection<IMediaItem> MediaItems { get; protected set; } = new ObservableCollection<IMediaItem>();
 
-        public bool HasNext() => ShuffleMode == ShuffleMode.All ? _shuffledIndexes.Count() > _indexOfCurrentItemInShuffledIndexes + 1 : Count > CurrentIndex + 1;
+        private string _title;
+        public string Title
+        {
+            get => _title;
+            set => SetProperty(ref _title, value);
+        }
 
-        public IMediaItem NextItem
+        public bool HasNext => MediaItems.Count > CurrentIndex + 1;
+
+        public IMediaItem Next
         {
             get
             {
-                if (HasNext())
+                if (HasNext)
                 {
-                    if (ShuffleMode == ShuffleMode.All)
-                    {
-                        CurrentIndex = _shuffledIndexes[_indexOfCurrentItemInShuffledIndexes + 1];
-                    }
-                    else
-                    {
-                        CurrentIndex++;
-                    }
-                    return Current;
+                    return this[CurrentIndex + 1];
                 }
                 else
                 {
@@ -42,33 +73,15 @@ namespace MediaManager.Queue
             }
         }
 
-        public bool HasPrevious()
-        {
-            if (ShuffleMode == ShuffleMode.All)
-            {
-                return _indexOfCurrentItemInShuffledIndexes > 0;
-            }
-            else
-            {
-                return CurrentIndex > 0;
-            }
-        }
+        public bool HasPrevious => CurrentIndex > 0;
 
-        public IMediaItem PreviousItem
+        public IMediaItem Previous
         {
             get
             {
-                if (HasPrevious())
+                if (HasPrevious)
                 {
-                    if (ShuffleMode == ShuffleMode.All)
-                    {
-                        CurrentIndex = _shuffledIndexes[_indexOfCurrentItemInShuffledIndexes - 1];
-                    }
-                    else
-                    {
-                        CurrentIndex--;
-                    }
-                    return Current;
+                    return this[CurrentIndex - 1];
                 }
                 else
                 {
@@ -77,9 +90,13 @@ namespace MediaManager.Queue
             }
         }
 
-        public bool HasCurrent() => Count >= CurrentIndex;
+        public bool HasCurrent => this.ElementAtOrDefault(CurrentIndex) != null;
 
-        public IMediaItem Current => Count > 0 ? this.ElementAtOrDefault(CurrentIndex) : null;
+        public IMediaItem Current
+        {
+            get => this.ElementAtOrDefault(CurrentIndex);
+            internal set => CurrentIndex = MediaItems.IndexOf(value);
+        }
 
         private int _currentIndex = 0;
         public int CurrentIndex
@@ -87,56 +104,12 @@ namespace MediaManager.Queue
             get => _currentIndex;
             set
             {
-                if (_currentIndex != value)
+                if (SetProperty(ref _currentIndex, value))
+                {
                     OnQueueChanged(this, new QueueChangedEventArgs(Current));
-                _currentIndex = value;
-            }
-        }
-
-        private ShuffleMode _shuffleMode;
-        private IList<int> _shuffledIndexes;
-
-        private int _indexOfCurrentItemInShuffledIndexes => _shuffledIndexes.Select((v, i) => new { originalIndex = v, index = i }).First(x => x.originalIndex == CurrentIndex).index;
-
-        public ShuffleMode ShuffleMode
-        {
-            get
-            {
-                return _shuffleMode;
-            }
-            set
-            {
-                _shuffleMode = value;
-                if (ShuffleMode == ShuffleMode.All)
-                {
-                    // Create a shuffled remainder of the queue
-                    CreateShuffledIndexes();
-                    CollectionChanged += (s, e) => CreateShuffledIndexes();
-                }
-                else
-                {
-                    CollectionChanged -= (s, e) => CreateShuffledIndexes();
+                    MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(Current));
                 }
             }
-        }
-
-        protected virtual void CreateShuffledIndexes()
-        {
-            var rand = new Random();
-            var ints = Enumerable.Range(CurrentIndex + 1, Count - 1)
-                .Select(i => new Tuple<int, int>(rand.Next(Count), i))
-                .OrderBy(i => i.Item1)
-                .Select(i => i.Item2)
-                .ToList();
-            // We always put the current index at the start of the list
-            ints.Insert(0, CurrentIndex);
-            _shuffledIndexes = ints;
-        }
-
-        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
-        {
-            base.OnCollectionChanged(e);
-            OnQueueChanged(this, new QueueChangedEventArgs(Current));
         }
 
         internal void OnQueueEnded(object s, QueueEndedEventArgs e) => QueueEnded?.Invoke(s, e);
@@ -144,11 +117,72 @@ namespace MediaManager.Queue
         internal void OnQueueChanged(object s, QueueChangedEventArgs e)
         {
             //TODO: Queue will only end when it is bigger than 1 because with 1 it would always be at the end right away.
-            if (Current != null && Count > 1 && this.LastOrDefault() == Current)
+            if (Current != null && Count > 1 && !HasNext)
                 OnQueueEnded(this, new QueueEndedEventArgs());
 
             QueueChanged?.Invoke(s, e);
-            MediaManager.Notification.UpdateNotification();
+            MediaManager?.Notification?.UpdateNotification();
+        }
+
+        public int Count => MediaItems.Count;
+
+        public bool IsReadOnly => false;
+
+        public IMediaItem this[int index] { get => MediaItems[index]; set => MediaItems[index] = value; }
+
+        public IEnumerator<IMediaItem> GetEnumerator()
+        {
+            return MediaItems.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return MediaItems.GetEnumerator();
+        }
+
+        public int IndexOf(IMediaItem item)
+        {
+            return MediaItems.IndexOf(item);
+        }
+
+        public void Insert(int index, IMediaItem item)
+        {
+            MediaItems.Insert(index, item);
+        }
+
+        public void RemoveAt(int index)
+        {
+            MediaItems.RemoveAt(index);
+        }
+
+        public void Add(IMediaItem item)
+        {
+            MediaItems.Add(item);
+        }
+
+        public void Clear()
+        {
+            MediaItems.Clear();
+        }
+
+        public bool Contains(IMediaItem item)
+        {
+            return MediaItems.Contains(item);
+        }
+
+        public void CopyTo(IMediaItem[] array, int arrayIndex)
+        {
+            MediaItems.CopyTo(array, arrayIndex);
+        }
+
+        public bool Remove(IMediaItem item)
+        {
+            return MediaItems.Remove(item);
+        }
+
+        public void Move(int oldIndex, int newIndex)
+        {
+            MediaItems.Move(oldIndex, newIndex);
         }
     }
 }

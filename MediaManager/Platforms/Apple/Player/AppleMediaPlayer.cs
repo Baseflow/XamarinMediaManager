@@ -169,16 +169,6 @@ namespace MediaManager.Platforms.Apple.Player
             {
                 await Stop();
             }
-            else if (RepeatMode == RepeatMode.All && MediaManager.Queue.Any())
-            {
-                MediaManager.Queue.CurrentIndex = 0;
-                await MediaManager.PlayQueueItem(MediaManager.Queue.Current);
-            }
-            else if (RepeatMode == RepeatMode.One && MediaManager.Queue.Any())
-            {
-                MediaManager.Queue.CurrentIndex = MediaManager.Queue.CurrentIndex - 1;
-                await MediaManager.PlayQueueItem(MediaManager.Queue.Current);
-            }
         }
 
         public override Task Pause()
@@ -195,7 +185,6 @@ namespace MediaManager.Platforms.Apple.Player
 
             Player.ActionAtItemEnd = AVPlayerActionAtItemEnd.None;
             Player.ReplaceCurrentItemWithPlayerItem(item);
-            MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(mediaItem));
             await Play();
 
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));

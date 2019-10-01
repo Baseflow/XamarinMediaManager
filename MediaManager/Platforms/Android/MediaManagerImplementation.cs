@@ -236,48 +236,47 @@ namespace MediaManager
         {
             await EnsureInit();
 
-            if (Player.NextWindowIndex == Player.CurrentWindowIndex)
+            // If we repeat just the single media item, we do that first
+            if (RepeatMode == RepeatMode.One)
             {
                 await SeekTo(TimeSpan.FromSeconds(0));
                 return true;
             }
-
-            if (Player.NextWindowIndex == -1)
+            // If we repeat all and there is no next in the Queue, we go back to the first
+            else if (RepeatMode == RepeatMode.All && !Queue.HasNext)
             {
-                return false;
+                var mediaItem = Queue.First();
+                return await PlayQueueItem(mediaItem);
             }
-
-            MediaController.GetTransportControls().SkipToNext();
-
-            return true;
+            // Otherwise we try to play the next media item in the queue
+            else if (Queue.HasNext)
+            {
+                MediaController.GetTransportControls().SkipToNext();
+                return true;
+            }
+            return false;
         }
 
         public override async Task<bool> PlayPrevious()
         {
             await EnsureInit();
 
-            if (Player.PreviousWindowIndex == Player.CurrentWindowIndex)
+            if (Queue.HasPrevious)
             {
-                await SeekTo(TimeSpan.FromSeconds(0));
+                MediaController.GetTransportControls().SkipToPrevious();
                 return true;
             }
-
-            if (Player.PreviousWindowIndex == -1)
-            {
-                return false;
-            }
-
-            MediaController.GetTransportControls().SkipToPrevious();
-
-            return true;
+            return false;
         }
 
         public override async Task<bool> PlayQueueItem(IMediaItem mediaItem)
         {
             await EnsureInit();
 
-            if (!Queue.Contains(mediaItem))
+            if (mediaItem == null || !Queue.Contains(mediaItem))
                 return false;
+
+            Queue.CurrentIndex = Queue.IndexOf(mediaItem);
 
             MediaController.GetTransportControls().SkipToQueueItem(Queue.IndexOf(mediaItem));
             return true;
@@ -290,6 +289,8 @@ namespace MediaManager
             var mediaItem = Queue.ElementAtOrDefault(index);
             if (mediaItem == null)
                 return false;
+
+            Queue.CurrentIndex = index;
 
             MediaController.GetTransportControls().SkipToQueueItem(index);
             return true;
@@ -313,10 +314,11 @@ namespace MediaManager
         {
             get
             {
-                return (RepeatMode)MediaController?.RepeatMode;
+                return base.RepeatMode;
             }
             set
             {
+                base.RepeatMode = value;
                 MediaController?.GetTransportControls()?.SetRepeatMode((int)value);
                 MediaSession.SetRepeatMode((int)value);
                 OnPropertyChanged();
@@ -327,11 +329,13 @@ namespace MediaManager
         {
             get
             {
-                return (ShuffleMode)MediaController?.ShuffleMode;
+                return base.ShuffleMode;
             }
             set
             {
+                base.ShuffleMode = value;
                 MediaController?.GetTransportControls()?.SetShuffleMode((int)value);
+                MediaSession?.SetShuffleMode((int)value);
             }
         }
 

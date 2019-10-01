@@ -69,7 +69,6 @@ namespace MediaManager.FFmpegMediaMetadataRetriever
                 //if (!string.IsNullOrEmpty(year) && int.TryParse(year, out var yearResult))
                 //    mediaItem.Year = yearResult;
 
-                mediaItem.IsMetadataExtracted = true;
                 metaRetriever.Release();
             }
             catch (Exception ex)
@@ -99,7 +98,7 @@ namespace MediaManager.FFmpegMediaMetadataRetriever
                 {
                     try
                     {
-                        image = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length);
+                        image = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length).ConfigureAwait(false);
                     }
                     catch (Java.Lang.OutOfMemoryError)
                     {
@@ -129,7 +128,7 @@ namespace MediaManager.FFmpegMediaMetadataRetriever
             {
                 Console.WriteLine(ex.Message);
             }
-            return null;
+            return Task.FromResult<object>(null);
         }
 
         protected virtual MediaMetadataRetriever CreateMediaRetriever(IMediaItem mediaItem)

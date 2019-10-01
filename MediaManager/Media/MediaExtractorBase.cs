@@ -27,7 +27,8 @@ namespace MediaManager.Media
 
         public IList<string> ResourcePrefixes { get; } = new List<string>() {
             "android.resource",
-            "raw"
+            "raw",
+            "assets"
         };
 
         public IList<string> VideoSuffixes { get; } = new List<string>() {

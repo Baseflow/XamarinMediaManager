@@ -24,9 +24,16 @@ namespace MediaManager
             Timer.Start();
         }
 
-        public bool IsInitialized { get; protected set; } = true;
+        private bool _isInitialized = true;
+        public bool IsInitialized
+        {
+            get => _isInitialized;
+            protected set => SetProperty(ref _isInitialized, value);
+        }
 
-        public Timer Timer { get; protected set; } = new Timer(1000);
+        public Timer Timer { get; protected set; } = new Timer(TimerInterval);
+
+        public static double TimerInterval { get; set; } = 1000;
 
         protected TimeSpan _stepSize = TimeSpan.FromSeconds(10);
         public virtual TimeSpan StepSize
@@ -103,23 +110,56 @@ namespace MediaManager
         public abstract TimeSpan Position { get; }
         public abstract TimeSpan Duration { get; }
         public abstract float Speed { get; set; }
-        public abstract RepeatMode RepeatMode { get; set; }
         public abstract bool KeepScreenOn { get; set; }
 
-        public virtual ShuffleMode ShuffleMode
+        private RepeatMode _repeatMode = RepeatMode.Off;
+        public virtual RepeatMode RepeatMode
         {
-            get
-            {
-                return Queue.ShuffleMode;
-            }
-            set
-            {
-                Queue.ShuffleMode = value;
-            }
+            get => _repeatMode;
+            set => SetProperty(ref _repeatMode, value);
         }
 
-        public bool ClearQueueOnPlay { get; set; } = true;
-        public bool AutoPlay { get; set; } = true;
+        private ShuffleMode _shuffleMode = ShuffleMode.Off;
+        public virtual ShuffleMode ShuffleMode
+        {
+            get => _shuffleMode;
+            set => SetProperty(ref _shuffleMode, value);
+        }
+
+        private bool _clearQueueOnPlay = true;
+        public bool ClearQueueOnPlay
+        {
+            get => _clearQueueOnPlay;
+            set => SetProperty(ref _clearQueueOnPlay, value);
+        }
+
+        private bool _autoPlay = true;
+        public bool AutoPlay
+        {
+            get => _autoPlay;
+            set => SetProperty(ref _autoPlay, value);
+        }
+
+        private bool _retryPlayOnFailed = true;
+        public bool RetryPlayOnFailed
+        {
+            get => _retryPlayOnFailed;
+            set => SetProperty(ref _retryPlayOnFailed, value);
+        }
+
+        private bool _playNextOnFailed = true;
+        public bool PlayNextOnFailed
+        {
+            get => _playNextOnFailed;
+            set => SetProperty(ref _playNextOnFailed, value);
+        }
+
+        private int _maxRetryCount = 1;
+        public int MaxRetryCount
+        {
+            get => _maxRetryCount;
+            set => SetProperty(ref _maxRetryCount, value);
+        }
 
         public virtual Task Play()
         {
@@ -177,6 +217,7 @@ namespace MediaManager
 
         public virtual async Task<IMediaItem> Play(Stream stream, string cacheName)
         {
+            //TODO: Probably better to do everything in memory. On Android use ByteArrayDataSource
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), cacheName);
             var fileStream = File.Create(path);
             await stream.CopyToAsync(fileStream);
@@ -251,55 +292,41 @@ namespace MediaManager
 
         public virtual async Task<bool> PlayNext()
         {
+            IMediaItem mediaItem = null;
             // If we repeat just the single media item, we do that first
             if (RepeatMode == RepeatMode.One)
             {
-                await MediaPlayer.Play(Queue.Current);
-                return true;
+                mediaItem = Queue.Current;
             }
-            else
+            // If we repeat all and there is no next in the Queue, we go back to the first
+            else if (RepeatMode == RepeatMode.All && !Queue.HasNext)
             {
-                // Otherwise we try to play the next media item in the queue
-                if (Queue.HasNext())
-                {
-                    await MediaPlayer.Play(Queue.NextItem);
-                    return true;
-                }
-                else
-                {
-                    // If there is no next media item, but we repeat them all, we reset the current index and start playing it again
-                    if (RepeatMode == RepeatMode.All)
-                    {
-                        // Go to the start of the queue again
-                        Queue.CurrentIndex = 0;
-                        if (Queue.HasCurrent())
-                        {
-                            await MediaPlayer.Play(Queue.Current);
-                            return true;
-                        }
-                    }
-                }
+                mediaItem = Queue.First();
+            }
+            // Otherwise we try to play the next media item in the queue
+            else if (Queue.HasNext)
+            {
+                mediaItem = Queue.Next;
             }
 
-            return false;
+            return await PlayQueueItem(mediaItem);
         }
 
         public virtual async Task<bool> PlayPrevious()
         {
-            if (Queue.HasPrevious())
+            if (Queue.HasPrevious)
             {
-                await MediaPlayer.Play(Queue.PreviousItem);
-                return true;
+                return await PlayQueueItem(Queue.Previous);
             }
-
             return false;
         }
 
         public virtual async Task<bool> PlayQueueItem(IMediaItem mediaItem)
         {
-            if (!Queue.Contains(mediaItem))
+            if (mediaItem == null || !Queue.Contains(mediaItem))
                 return false;
 
+            Queue.CurrentIndex = Queue.IndexOf(mediaItem);
             await MediaPlayer.Play(mediaItem);
             return true;
         }
@@ -310,20 +337,21 @@ namespace MediaManager
             if (mediaItem == null)
                 return false;
 
+            Queue.CurrentIndex = index;
             await MediaPlayer.Play(mediaItem);
             return true;
         }
 
         public virtual Task StepBackward()
         {
-            var seekTo = this.SeekTo(TimeSpan.FromSeconds(double.IsNaN(Position.TotalSeconds) ? 0 : ((Position.TotalSeconds < StepSize.TotalSeconds) ? 0 : Position.TotalSeconds - StepSize.TotalSeconds)));
+            var seekTo = SeekTo(TimeSpan.FromSeconds(double.IsNaN(Position.TotalSeconds) ? 0 : ((Position.TotalSeconds < StepSize.TotalSeconds) ? 0 : Position.TotalSeconds - StepSize.TotalSeconds)));
             Timer_Elapsed(null, null);
             return seekTo;
         }
 
         public virtual Task StepForward()
         {
-            var seekTo = this.SeekTo(TimeSpan.FromSeconds(double.IsNaN(Position.TotalSeconds) ? 0 : Position.TotalSeconds + StepSize.TotalSeconds));
+            var seekTo = SeekTo(TimeSpan.FromSeconds(double.IsNaN(Position.TotalSeconds) ? 0 : Position.TotalSeconds + StepSize.TotalSeconds));
             Timer_Elapsed(null, null);
             return seekTo;
         }
@@ -344,7 +372,25 @@ namespace MediaManager
             if (SetProperty(ref _currentSource, e.MediaItem))
                 MediaItemChanged?.Invoke(sender, e);
         }
-        internal void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e) => MediaItemFailed?.Invoke(sender, e);
+
+        protected int RetryCount = 0;
+        internal async void OnMediaItemFailed(object sender, MediaItemFailedEventArgs e)
+        {
+            MediaItemFailed?.Invoke(sender, e);
+
+            if (RetryPlayOnFailed && RetryCount < MaxRetryCount)
+            {
+                RetryCount++;
+                await Play();
+            }
+            else
+            {
+                RetryCount = 0;
+                if (PlayNextOnFailed)
+                    await PlayNext();
+            }
+        }
+
         internal void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
         internal void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
 

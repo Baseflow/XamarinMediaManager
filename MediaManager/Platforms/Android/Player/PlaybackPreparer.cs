@@ -46,11 +46,7 @@ namespace MediaManager.Platforms.Android.Player
 
         public void OnPrepare()
         {
-            _mediaSource.Clear();
-
-            var mediaItems = MediaManager.Queue.Select(x => x.ToMediaSource()).ToList();
-            _mediaSource.AddMediaSources(mediaItems);
-
+            // _mediaSource is filled through the QueueDataAdapter
             _player.Prepare(_mediaSource);
 
             //Only in case of Prepare set PlayWhenReady to true because we use this to load in the whole queue
