@@ -64,6 +64,32 @@ namespace MediaManager
                 return SeekToStart(mediaManager);
         }
 
+        static bool isPlayingRange;
+        static TimeSpan? toRange;
+
+        public static Task PlayRange(this IMediaManager mediaManager, TimeSpan from, TimeSpan to)
+        {
+            isPlayingRange = true;
+            toRange = to;
+            mediaManager.PositionChanged -= MediaManager_PositionChanged;
+            mediaManager.PositionChanged += MediaManager_PositionChanged;
+            mediaManager.SeekTo(from);
+            return mediaManager.Play();
+        }
+
+        private static void MediaManager_PositionChanged(object sender, PositionChangedEventArgs e)
+        {
+            if(isPlayingRange && e.Position >= toRange)
+            {
+                var mediaManager = ((IMediaManager)sender);
+                ((IMediaManager)sender).PositionChanged -= MediaManager_PositionChanged;
+                isPlayingRange = false;
+                toRange = null;
+                mediaManager.Pause();
+                
+            }
+        }
+
         public static bool IsPlaying(this IMediaManager mediaManager)
         {
             return mediaManager.State == MediaPlayerState.Playing || mediaManager.State == MediaPlayerState.Buffering;

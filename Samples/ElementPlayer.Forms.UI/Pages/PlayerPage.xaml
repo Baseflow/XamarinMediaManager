@@ -12,6 +12,7 @@
             <Button Text="Browse" Command="{Binding BrowseCommand}" />
             <Image Source="{Binding Image}" HorizontalOptions="FillAndExpand" HeightRequest="200" />
             <mm:VideoView VerticalOptions="FillAndExpand" ShowControls="False" />
+            <Button Text="Play Range" Command="{Binding PlayRangeCommand}" />
         </StackLayout>
     </ContentPage.Content>
 </mvx:MvxContentPage>
