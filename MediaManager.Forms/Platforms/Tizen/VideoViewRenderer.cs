@@ -1,4 +1,5 @@
 ﻿using MediaManager.Forms.Platforms.Tizen;
+using Xamarin.Forms;
 using Xamarin.Forms.Platform.Tizen;
 
 [assembly: ExportRenderer(typeof(MediaManager.Forms.VideoView), typeof(VideoViewRenderer))]
