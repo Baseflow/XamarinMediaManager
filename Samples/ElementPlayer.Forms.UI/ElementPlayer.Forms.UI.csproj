@@ -22,26 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="FormsApp.xaml.cs">
-      <DependentUpon>FormsApp.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\BrowsePage.xaml.cs">
-      <DependentUpon>BrowsePage.xaml</DependentUpon>
-    </Compile>
+    <Compile Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
+    <None Remove="Resources\**\*.json" />
+    <EmbeddedResource Include="Resources\**\*.json" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Update="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Pages\HomePage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\PlayerPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
+  
 </Project>

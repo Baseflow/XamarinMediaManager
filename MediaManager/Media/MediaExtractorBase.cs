@@ -134,6 +134,10 @@ namespace MediaManager.Media
         {
             if (!mediaItem.IsMetadataExtracted)
             {
+                if(string.IsNullOrEmpty(mediaItem.FileExtension))
+                {
+                    mediaItem.FileExtension = GetFileExtension(mediaItem);
+                }
                 if (mediaItem.MediaLocation == MediaLocation.Unknown)
                 {
                     mediaItem.MediaLocation = GetMediaLocation(mediaItem);
@@ -195,41 +199,50 @@ namespace MediaManager.Media
 
         protected abstract Task<string> GetResourcePath(string resourceName);
 
+        public virtual string GetFileExtension(IMediaItem mediaItem)
+        {
+            var url = mediaItem?.MediaUri?.ToLower();
+            var suffixes = VideoSuffixes.Union(AudioSuffixes).Union(HlsSuffixes).Union(DashSuffixes).Union(SmoothStreamingSuffixes);
+
+            //Try to find the best match
+            foreach (var item in suffixes)
+            {
+                if (url.EndsWith(item))
+                    return item;
+            }
+            //If no match available see if the url contains info
+            foreach (var item in suffixes)
+            {
+                if (url.Contains(item))
+                    return item;
+            }
+            return mediaItem?.FileExtension;
+        }
+
         public virtual MediaType GetMediaType(IMediaItem mediaItem)
         {
-            var url = mediaItem.MediaUri.ToLower();
+            var fileExtension = !string.IsNullOrEmpty(mediaItem?.FileExtension)
+                ? mediaItem.FileExtension
+                : GetFileExtension(mediaItem);
 
-            foreach (var item in VideoSuffixes)
-            {
-                if (url.EndsWith(item))
-                    return MediaType.Video;
-            }
-            foreach (var item in AudioSuffixes)
-            {
-                if (url.EndsWith(item))
-                    return MediaType.Audio;
-            }
-            foreach (var item in HlsSuffixes)
-            {
-                if (url.EndsWith(item))
-                    return MediaType.Hls;
-            }
-            foreach (var item in DashSuffixes)
-            {
-                if (url.EndsWith(item))
-                    return MediaType.Dash;
-            }
-            foreach (var item in SmoothStreamingSuffixes)
-            {
-                if (url.EndsWith(item))
-                    return MediaType.SmoothStreaming;
-            }
+            if(VideoSuffixes.Contains(fileExtension))
+                return MediaType.Video;
+            else if (AudioSuffixes.Contains(fileExtension))
+                return MediaType.Audio;
+            else if (HlsSuffixes.Contains(fileExtension))
+                return MediaType.Hls;
+            else if (DashSuffixes.Contains(fileExtension))
+                return MediaType.Dash;
+            else if (SmoothStreamingSuffixes.Contains(fileExtension))
+                return MediaType.SmoothStreaming;
+
             return MediaType.Default;
         }
 
         public virtual MediaLocation GetMediaLocation(IMediaItem mediaItem)
         {
-            var url = mediaItem.MediaUri.ToLower();
+            var url = mediaItem?.MediaUri?.ToLower();
+
             foreach (var item in RemotePrefixes)
             {
                 if (url.StartsWith(item))
