@@ -56,9 +56,11 @@ namespace MediaManager
             return mediaItem;
         }
 
-        public static Task PlayPreviousOrSeekToStart(this IMediaManager mediaManager)
+        public static Task PlayPreviousOrSeekToStart(this IMediaManager mediaManager, TimeSpan? timeSpan = null)
         {
-            if (mediaManager.Position < TimeSpan.FromSeconds(3))
+            timeSpan = timeSpan ?? TimeSpan.FromSeconds(3);
+
+            if (mediaManager.Position < timeSpan)
                 return mediaManager.PlayPrevious();
             else
                 return SeekToStart(mediaManager);
