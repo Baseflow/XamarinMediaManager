@@ -47,6 +47,14 @@ namespace MediaManager.Platforms.Tizen.Player
             //TODO
         }
 
+        public override void UpdateVideoPlaceholder(object value)
+        {
+            if (PlayerView == null)
+                return;
+
+            //TODO: Implement placeholder
+        }
+
         protected virtual void Initialize()
         {
             Player = new TizenPlayer();

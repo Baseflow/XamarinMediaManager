@@ -65,6 +65,19 @@ namespace MediaManager.Player
 
         public virtual float VideoAspectRatio => VideoHeight == 0 ? 0 : (float)VideoWidth / VideoHeight;
 
+        private object _videoPlaceholder;
+        public virtual object VideoPlaceholder
+        {
+            get => _videoPlaceholder;
+            set
+            {
+                if (SetProperty(ref _videoPlaceholder, value))
+                    UpdateVideoPlaceholder(value);
+            }
+        }
+
+        public abstract void UpdateVideoPlaceholder(object value);
+
         public abstract event BeforePlayingEventHandler BeforePlaying;
         public abstract event AfterPlayingEventHandler AfterPlaying;
 

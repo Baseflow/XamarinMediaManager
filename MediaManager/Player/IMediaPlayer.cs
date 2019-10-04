@@ -43,6 +43,8 @@ namespace MediaManager.Player
 
         float VideoAspectRatio { get; }
 
+        object VideoPlaceholder { get; set; }
+
         /// <summary>
         /// Adds MediaItem to the Queue and starts playing
         /// </summary>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Android.Content;
+using Android.Graphics.Drawables;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
@@ -87,16 +88,6 @@ namespace MediaManager.Platforms.Android.Player
             }
         }
 
-        public object PlaceholderImage
-        {
-            get => PlayerView?.DefaultArtwork;
-            set
-            {
-                if (PlayerView != null && value is global::Android.Graphics.Drawables.Drawable drawable)
-                    PlayerView.DefaultArtwork = drawable;
-            }
-        }
-
         public override void UpdateVideoAspect(VideoAspectMode videoAspectMode)
         {
             if (PlayerView == null)
@@ -125,6 +116,20 @@ namespace MediaManager.Platforms.Android.Player
                 return;
 
             PlayerView.UseController = showPlaybackControls;
+        }
+
+        public override void UpdateVideoPlaceholder(object value)
+        {
+            if (PlayerView == null)
+                return;
+
+            if (value is Drawable drawable)
+            {
+                PlayerView.UseArtwork = true;
+                PlayerView.DefaultArtwork = drawable;
+            }
+            else
+                PlayerView.UseArtwork = false;
         }
 
         protected int lastWindowIndex = 0;

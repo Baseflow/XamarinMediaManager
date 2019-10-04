@@ -59,6 +59,14 @@ namespace MediaManager.Platforms.Ios.Player
             PlayerView.PlayerViewController.ShowsPlaybackControls = showPlaybackControls;
         }
 
+        public override void UpdateVideoPlaceholder(object value)
+        {
+            if (PlayerView == null)
+                return;
+
+            //TODO: Implement placeholder
+        }
+
         protected override void Initialize()
         {
             base.Initialize();
