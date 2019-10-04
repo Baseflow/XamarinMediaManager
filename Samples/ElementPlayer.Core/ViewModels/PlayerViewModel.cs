@@ -42,11 +42,7 @@ namespace ElementPlayer.Core.ViewModels
         public IMvxCommand ToggleRepeatCommand { get; }
         public IMvxCommand StepForwardCommand { get; }
         public IMvxCommand StepBackwardCommand { get; }
-
-        IMvxCommand _playRangeCommand;
-        public IMvxCommand PlayRangeCommand => _playRangeCommand ?? (_playRangeCommand = new MvxCommand(
-            () => CrossMediaManager.Current.PlayRange(new TimeSpan(0, 0, 3), new TimeSpan(0, 0, 6))));
-
+        
         private IMvxAsyncCommand _browseCommand;
         public IMvxAsyncCommand BrowseCommand => _browseCommand ?? (_browseCommand = new MvxAsyncCommand(
             () => NavigationService.Navigate<BrowseViewModel>()));
