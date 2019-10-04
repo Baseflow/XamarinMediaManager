@@ -186,7 +186,7 @@ namespace MediaManager.Platforms.Apple.Player
 
         public override async Task SeekTo(TimeSpan position)
         {
-            await Player.SeekAsync(CMTime.FromSeconds(position.TotalSeconds, 1));
+            await Player.SeekAsync(CMTime.FromSeconds(position.TotalSeconds, Player.CurrentItem.Duration.TimeScale), CMTime.Zero, CMTime.Zero);
         }
 
         public override async Task Stop()
