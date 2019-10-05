@@ -58,5 +58,13 @@ namespace MediaManager.Platforms.Mac.Player
             else
                 PlayerView.ControlsStyle = AVPlayerViewControlsStyle.None;
         }
+
+        public override void UpdateVideoPlaceholder(object value)
+        {
+            if (PlayerView == null)
+                return;
+
+            //TODO: Implement placeholder
+        }
     }
 }

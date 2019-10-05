@@ -52,7 +52,7 @@ namespace MediaManager.Player
         public virtual int VideoWidth
         {
             get => _videoWidth;
-            internal set => SetProperty(ref _videoWidth, value);
+            internal set => SetProperty(ref _videoWidth, value, () => OnPropertyChanged(nameof(VideoAspectRatio)));
         }
 
         protected int _videoHeight;
@@ -60,10 +60,23 @@ namespace MediaManager.Player
         public virtual int VideoHeight
         {
             get => _videoHeight;
-            internal set => SetProperty(ref _videoHeight, value);
+            internal set => SetProperty(ref _videoHeight, value, () => OnPropertyChanged(nameof(VideoAspectRatio)));
         }
 
         public virtual float VideoAspectRatio => VideoHeight == 0 ? 0 : (float)VideoWidth / VideoHeight;
+
+        private object _videoPlaceholder;
+        public virtual object VideoPlaceholder
+        {
+            get => _videoPlaceholder;
+            set
+            {
+                if (SetProperty(ref _videoPlaceholder, value))
+                    UpdateVideoPlaceholder(value);
+            }
+        }
+
+        public abstract void UpdateVideoPlaceholder(object value);
 
         public abstract event BeforePlayingEventHandler BeforePlaying;
         public abstract event AfterPlayingEventHandler AfterPlaying;

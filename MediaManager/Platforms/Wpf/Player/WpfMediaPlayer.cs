@@ -78,6 +78,14 @@ namespace MediaManager.Platforms.Wpf.Player
             //Player. = showPlaybackControls;
         }
 
+        public override void UpdateVideoPlaceholder(object value)
+        {
+            if (PlayerView == null)
+                return;
+
+            //TODO: Implement placeholder
+        }
+
         public void Initialize()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate

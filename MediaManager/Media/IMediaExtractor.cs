@@ -42,5 +42,7 @@ namespace MediaManager.Media
         MediaLocation GetMediaLocation(IMediaItem mediaItem);
 
         MediaType GetMediaType(IMediaItem mediaItem);
+
+        string GetFileExtension(IMediaItem mediaItem);
     }
 }

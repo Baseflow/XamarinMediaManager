@@ -96,6 +96,14 @@ namespace MediaManager.Platforms.Uap.Player
             PlayerView.PlayerView.AreTransportControlsEnabled = showPlaybackControls;
         }
 
+        public override void UpdateVideoPlaceholder(object value)
+        {
+            if (PlayerView == null)
+                return;
+
+            //TODO: Implement placeholder
+        }
+
         public void Initialize()
         {
             Player = new MediaPlayer();

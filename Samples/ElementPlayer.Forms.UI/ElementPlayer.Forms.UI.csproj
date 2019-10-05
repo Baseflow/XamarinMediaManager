@@ -11,9 +11,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MvvmCross.Forms" Version="6.3.1" />
-    <PackageReference Include="Xamarin.Forms" Version="4.1.0.581479" />  
-    <PackageReference Include="Xamarin.Essentials" Version="1.3.0" />
+    <PackageReference Include="MvvmCross.Forms" Version="6.4.1" />
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.815419" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,26 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="FormsApp.xaml.cs">
-      <DependentUpon>FormsApp.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\BrowsePage.xaml.cs">
-      <DependentUpon>BrowsePage.xaml</DependentUpon>
-    </Compile>
+    <Compile Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
+    <None Remove="Resources\**\*.json" />
+    <EmbeddedResource Include="Resources\**\*.json" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Update="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Pages\HomePage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\PlayerPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
+  
 </Project>
