@@ -17,6 +17,7 @@
     <PackageId>Plugin.MediaManager</PackageId>
     <Description>Cross platform Xamarin plugin to play and control Audio and Video</Description>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.StartsWith('uap')) And '$(OS)' == 'Windows_NT'">
@@ -104,10 +105,10 @@
     <Compile Include="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
     <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.9.7" />
-    <!--<PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.9.7" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.9.7" />-->
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.9.7" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.9.8" />
+    <!--<PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.9.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.9.8" />-->
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.9.8" />
     <PackageReference Include="Xamarin.Build.Download" Version="0.4.11" PrivateAssets="All" />
   </ItemGroup>
 
