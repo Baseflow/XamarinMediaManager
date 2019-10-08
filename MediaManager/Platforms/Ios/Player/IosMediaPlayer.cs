@@ -64,7 +64,9 @@ namespace MediaManager.Platforms.Ios.Player
             if (PlayerView == null)
                 return;
 
-            //TODO: Implement placeholder
+            //TODO: Implement placeholder a better way?
+            if (value is UIView view)
+                PlayerView?.PlayerViewController?.ContentOverlayView?.AddSubview(view);
         }
 
         protected override void Initialize()

@@ -17,7 +17,6 @@
     <PackageId>Plugin.MediaManager</PackageId>
     <Description>Cross platform Xamarin plugin to play and control Audio and Video</Description>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
-    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.StartsWith('uap')) And '$(OS)' == 'Windows_NT'">
