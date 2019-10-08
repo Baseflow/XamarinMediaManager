@@ -101,7 +101,7 @@ namespace MediaManager.Platforms.Ios.Player
                     await MediaManager.Pause();
                     break;
                 case AVAudioSessionInterruptionType.Ended:
-                    if(interruptArgs.Option == AVAudioSessionInterruptionOptions.ShouldResume)
+                    if (interruptArgs.Option == AVAudioSessionInterruptionOptions.ShouldResume)
                     {
                         await MediaManager.Play();
                     }

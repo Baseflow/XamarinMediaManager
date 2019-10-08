@@ -1,6 +1,6 @@
-﻿using AppKit;
+﻿using System;
+using AppKit;
 using Foundation;
-using System;
 
 namespace ElementPlayer.Forms.Mac
 {
