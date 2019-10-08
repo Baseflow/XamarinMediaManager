@@ -7,7 +7,7 @@
     <Authors>Martijn van Dijk</Authors>
     <Owners>Martijn van Dijk</Owners>
     <PackageTags>xamarin, android, plugin, MediaManager, media, audio, video</PackageTags>
-    <PackageReleaseNotes>https://github.com/martijn00/XamarinMediaManager</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/martijn00/XamarinMediaManager/releases</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 
     <RepositoryUrl>https://github.com/martijn00/XamarinMediaManager</RepositoryUrl>
@@ -47,7 +47,6 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsLibraryProject)' == 'true'">
-    <!--<PackageReference Include="Microsoft.CSharp" Version="4.5.0" PrivateAssets="All" />-->
     <None Include="$(MSBuildThisFileDirectory)\LICENSE" Pack="true" PackagePath=""/>
   </ItemGroup>
 
