@@ -13,6 +13,7 @@ namespace MediaManager.Media
         IEnumerable<IPlaylistProvider> PlaylistProviders { get; }
         IEnumerable<IArtistProvider> ArtistProviders { get; }
         IEnumerable<IAlbumProvider> AlbumProviders { get; }
+        IEnumerable<IRadioProvider> RadioProviders { get; }
         IEnumerable<IMediaItemProvider> MediaItemProviders { get; }
 
         Task<IEnumerable<TContentItem>> GetAll<TContentItem>() where TContentItem : IContentItem;
