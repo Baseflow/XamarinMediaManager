@@ -134,7 +134,7 @@ namespace MediaManager.Media
         {
             if (!mediaItem.IsMetadataExtracted)
             {
-                if(string.IsNullOrEmpty(mediaItem.FileExtension))
+                if (string.IsNullOrEmpty(mediaItem.FileExtension))
                 {
                     mediaItem.FileExtension = GetFileExtension(mediaItem);
                 }
@@ -225,7 +225,7 @@ namespace MediaManager.Media
                 ? mediaItem.FileExtension
                 : GetFileExtension(mediaItem);
 
-            if(VideoSuffixes.Contains(fileExtension))
+            if (VideoSuffixes.Contains(fileExtension))
                 return MediaType.Video;
             else if (AudioSuffixes.Contains(fileExtension))
                 return MediaType.Audio;

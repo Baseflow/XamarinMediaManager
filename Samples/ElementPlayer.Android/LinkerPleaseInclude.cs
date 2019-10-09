@@ -1,12 +1,12 @@
-﻿using Android.App;
+﻿using System;
+using System.Collections.Specialized;
+using System.Windows.Input;
+using Android.App;
 using Android.Views;
 using Android.Widget;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
-using System;
-using System.Collections.Specialized;
-using System.Windows.Input;
 
 namespace ElementPlayer.Android
 {

@@ -35,6 +35,7 @@ namespace MediaManager.Media
         public IEnumerable<IPlaylistProvider> PlaylistProviders => Providers.OfType<IPlaylistProvider>();
         public IEnumerable<IArtistProvider> ArtistProviders => Providers.OfType<IArtistProvider>();
         public IEnumerable<IAlbumProvider> AlbumProviders => Providers.OfType<IAlbumProvider>();
+        public IEnumerable<IRadioProvider> RadioProviders => Providers.OfType<IRadioProvider>();
         public IEnumerable<IMediaItemProvider> MediaItemProviders => Providers.OfType<IMediaItemProvider>();
 
         public async Task<IEnumerable<TContentItem>> GetAll<TContentItem>() where TContentItem : IContentItem
