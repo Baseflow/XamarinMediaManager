@@ -44,8 +44,12 @@ namespace MediaManager.Forms
                 case nameof(MediaPlayer.VideoWidth):
                     VideoWidth = MediaPlayer.VideoWidth;
                     break;
+                case nameof(MediaPlayer.VideoPlaceholder):
+                    VideoPlaceholder = MediaPlayer.VideoPlaceholder.ToImageSource();
+                    break;
                 default:
                     break;
+
             }
         }
 
@@ -145,6 +149,9 @@ namespace MediaManager.Forms
         public static readonly BindableProperty SpeedProperty =
             BindableProperty.Create(nameof(Speed), typeof(float), typeof(VideoView), 1.0f, propertyChanged: OnSpeedPropertyChanged, defaultValueCreator: x => MediaManager.Speed);
 
+        public static readonly BindableProperty VideoPlaceholderProperty =
+            BindableProperty.Create(nameof(VideoPlaceholder), typeof(ImageSource), typeof(VideoView), null);
+
         public VideoAspectMode VideoAspect
         {
             get => (VideoAspectMode)GetValue(VideoAspectProperty);
@@ -235,6 +242,12 @@ namespace MediaManager.Forms
             set { SetValue(SpeedProperty, value); }
         }
 
+        public ImageSource VideoPlaceholder
+        {
+            get { return (ImageSource)GetValue(VideoPlaceholderProperty); }
+            set { SetValue(VideoPlaceholderProperty, value); }
+        }
+
         private static async void OnSourcePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             //Prevent loop with MediaQueue_QueueChanged
@@ -279,6 +292,13 @@ namespace MediaManager.Forms
         {
             MediaManager.AutoPlay = (bool)newValue;
         }
+
+        private static void OnVideoPlaceholderPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            MediaManager.MediaPlayer.VideoPlaceholder = (ImageSource)newValue;
+        }
+
+
 
         public void Dispose()
         {

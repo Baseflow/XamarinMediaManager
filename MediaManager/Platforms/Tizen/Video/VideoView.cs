@@ -12,6 +12,12 @@ namespace MediaManager.Platforms.Tizen.Video
         {
         }
 
+        public object VideoPlaceholder
+        {
+            get => MediaManager.MediaPlayer.VideoPlaceholder;
+            set => MediaManager.MediaPlayer.VideoPlaceholder = value;
+        }
+
         public virtual void InitView()
         {
             if (MediaManager.MediaPlayer.AutoAttachVideoView)

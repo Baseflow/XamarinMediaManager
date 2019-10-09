@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Content;
+using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
@@ -126,6 +127,11 @@ namespace MediaManager.Platforms.Android.Player
             {
                 PlayerView.UseArtwork = true;
                 PlayerView.DefaultArtwork = drawable;
+            }
+            else if (value is Bitmap bmp)
+            {
+                PlayerView.UseArtwork = true;
+                PlayerView.DefaultArtwork = new BitmapDrawable(Context.Resources, bmp);
             }
             else
                 PlayerView.UseArtwork = false;

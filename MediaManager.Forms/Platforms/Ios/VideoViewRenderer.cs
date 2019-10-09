@@ -11,7 +11,7 @@ namespace MediaManager.Forms.Platforms.iOS
     {
         private MediaManager.Platforms.Ios.Video.VideoView _videoView;
 
-        protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
+        protected override async void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
             base.OnElementChanged(args);
 
@@ -25,6 +25,10 @@ namespace MediaManager.Forms.Platforms.iOS
                 {
                     //TODO: maybe pass in the UIView to the videoview here
                     _videoView = new MediaManager.Platforms.Ios.Video.VideoView();
+                    if(args.NewElement.VideoPlaceholder != null)
+                    {
+                        _videoView.VideoPlaceholder = await args.NewElement.VideoPlaceholder.ToNative();
+                    }
                     SetNativeControl(_videoView);
                 }
             }

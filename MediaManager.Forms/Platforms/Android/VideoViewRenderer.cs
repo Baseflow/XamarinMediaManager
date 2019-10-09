@@ -16,7 +16,7 @@ namespace MediaManager.Forms.Platforms.Android
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
+        protected override async void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
             base.OnElementChanged(args);
 
@@ -29,6 +29,10 @@ namespace MediaManager.Forms.Platforms.Android
                 if (Control == null)
                 {
                     _videoView = new MediaManager.Platforms.Android.Video.VideoView(Context);
+                    if(args.NewElement.VideoPlaceholder != null)
+                    {
+                        _videoView.VideoPlaceholder = await args.NewElement.VideoPlaceholder.ToNative(Context);
+                    }
                     SetNativeControl(_videoView);
                 }
             }
@@ -36,11 +40,17 @@ namespace MediaManager.Forms.Platforms.Android
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            if (_videoView != null)
+            if (_videoView != null && widthMeasureSpec > -1 && heightMeasureSpec > -1)
             {
                 var p = _videoView.LayoutParameters;
-                p.Height = heightMeasureSpec;
-                p.Width = widthMeasureSpec;
+
+                if (p == null)
+                    p = new LayoutParams(widthMeasureSpec, heightMeasureSpec);
+                else
+                {
+                    p.Height = heightMeasureSpec;
+                    p.Width = widthMeasureSpec;
+                }
                 _videoView.LayoutParameters = p;
             }
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);

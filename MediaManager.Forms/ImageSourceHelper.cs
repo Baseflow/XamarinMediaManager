@@ -21,5 +21,18 @@ namespace MediaManager.Forms
 #endif
             return null;
         }
+
+#if ANDROID
+        public static async System.Threading.Tasks.Task<Android.Graphics.Bitmap> ToNative(this ImageSource source, Android.Content.Context context)
+        {
+            return await MediaManager.Forms.Platforms.Android.ImageSourceHelper.ToNative(source, context);
+        }
+#elif IOS
+        public static async System.Threading.Tasks.Task<UIKit.UIImage> ToNative(this ImageSource source)
+        {
+            return await MediaManager.Forms.Platforms.Ios.ImageSourceHelper.ToNative(source);
+        }
+#endif
+
     }
 }
