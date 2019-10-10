@@ -130,5 +130,15 @@ namespace MediaManager.Platforms.Tizen.Player
             Player.PlaybackCompleted -= Player_PlaybackCompleted;
             Player.BufferingProgressChanged -= Player_BufferingProgressChanged;
         }
+
+        public override Task Play(IMediaItem mediaItem, TimeSpan stopAt)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task Play(IMediaItem mediaItem, TimeSpan start, TimeSpan stopAt)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

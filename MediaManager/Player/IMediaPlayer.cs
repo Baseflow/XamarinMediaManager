@@ -51,6 +51,16 @@ namespace MediaManager.Player
         Task Play(IMediaItem mediaItem);
 
         /// <summary>
+        /// Adds MediaItem to the Queue, starts playing and stops at a specific time.
+        /// </summary>
+        Task Play(IMediaItem mediaItem, TimeSpan stopAt);
+
+        /// <summary>
+        /// Adds MediaItem to the Queue, starts playing at a given time and stops at a specific time.
+        /// </summary>
+        Task Play(IMediaItem mediaItem, TimeSpan start, TimeSpan stopAt);
+
+        /// <summary>
         /// Starts playing
         /// </summary>
         Task Play();

@@ -83,6 +83,8 @@ namespace MediaManager.Player
 
         public abstract Task Pause();
         public abstract Task Play(IMediaItem mediaItem);
+        public abstract Task Play(IMediaItem mediaItem, TimeSpan stopAt);
+        public abstract Task Play(IMediaItem mediaItem, TimeSpan start, TimeSpan stopAt);
         public abstract Task Play();
         public abstract Task SeekTo(TimeSpan position);
         public abstract Task Stop();

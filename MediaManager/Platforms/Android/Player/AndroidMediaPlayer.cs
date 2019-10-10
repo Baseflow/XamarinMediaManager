@@ -298,6 +298,30 @@ namespace MediaManager.Platforms.Android.Player
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
+        public override async Task Play(IMediaItem mediaItem, TimeSpan stopAt)
+        {
+            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+
+            MediaSource.Clear();
+            MediaSource.AddMediaSource(mediaItem.ToClippingMediaSource(stopAt));
+            Player.Prepare(MediaSource);
+            await Play();
+
+            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+        }
+
+        public override async Task Play(IMediaItem mediaItem, TimeSpan start, TimeSpan stopAt)
+        {
+            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+
+            MediaSource.Clear();
+            MediaSource.AddMediaSource(mediaItem.ToClippingMediaSource(start, stopAt));
+            Player.Prepare(MediaSource);
+            await Play();
+
+            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+        }
+
         public override Task Play()
         {
             Player.PlayWhenReady = true;
