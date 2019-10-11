@@ -29,8 +29,14 @@ namespace MediaManager.Forms.Platforms.Uap
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            _videoView.Height = availableSize.Height;
-            _videoView.Width = availableSize.Width;
+            if (_videoView != null)
+            {
+                _videoView.Height = availableSize.Height;
+                _videoView.Width = availableSize.Width;
+
+                _videoView.PlayerView.Height = availableSize.Height;
+                _videoView.PlayerView.Width = availableSize.Width;
+            }
             return base.MeasureOverride(availableSize);
         }
 
