@@ -143,9 +143,29 @@ namespace MediaManager.Platforms.Wpf.Player
         public override async Task Play(IMediaItem mediaItem)
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+
+            await Play(new Uri(mediaItem.MediaUri));
+
+            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+        }
+
+        public override async Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? stopAt = null)
+        {
+            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+
+            await Play(new Uri(mediaItem.MediaUri));
+
+            if (startAt != TimeSpan.Zero)
+                await SeekTo(startAt);
+
+            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+        }
+
+        public virtual async Task Play(Uri uri)
+        {
             try
             {
-                Player.Source = new Uri(mediaItem.MediaUri);
+                Player.Source = uri;
                 await Play();
             }
             catch (Exception ex)
@@ -153,7 +173,6 @@ namespace MediaManager.Platforms.Wpf.Player
                 MediaManager.State = MediaPlayerState.Failed;
                 MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue.Current, ex, ex.Message));
             }
-            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
         public override Task Play()

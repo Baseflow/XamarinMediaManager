@@ -28,12 +28,12 @@ namespace MediaManager.Platforms.Android.Media
             return new ClippingMediaSource(mediaSource, (long)stopAt.TotalMilliseconds * 1000);
         }
 
-        public static ClippingMediaSource ToClippingMediaSource(this IMediaItem mediaItem, TimeSpan start, TimeSpan stopAt)
+        public static ClippingMediaSource ToClippingMediaSource(this IMediaItem mediaItem, TimeSpan startAt, TimeSpan stopAt)
         {
             var mediaDescription = mediaItem.ToMediaDescription();
             var mediaSource = ToMediaSource(mediaDescription, mediaItem.MediaType);
-            //Clipping media sourc takes time values in microseconds
-            var startUs = start.Ticks / (TimeSpan.TicksPerMillisecond / 1000);
+            //Clipping media source takes time values in microseconds
+            var startUs = startAt.Ticks / (TimeSpan.TicksPerMillisecond / 1000);
             var endUs = stopAt.Ticks / (TimeSpan.TicksPerMillisecond / 1000);
             return new ClippingMediaSource(mediaSource, startUs, endUs);
         }

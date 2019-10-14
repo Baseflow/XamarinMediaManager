@@ -321,6 +321,7 @@ namespace MediaManager
                 base.RepeatMode = value;
                 MediaController?.GetTransportControls()?.SetRepeatMode((int)value);
                 MediaSession?.SetRepeatMode((int)value);
+                Player.RepeatMode = (int)value;
             }
         }
 

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
 using AVFoundation;
-using MediaManager.Library;
 using MediaManager.Platforms.Apple.Player;
 using MediaManager.Platforms.Ios.Video;
 using MediaManager.Player;

@@ -174,19 +174,45 @@ namespace MediaManager.Platforms.Uap.Player
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
             MediaPlaybackList.Items.Clear();
+
             foreach (var mediaQueueItem in MediaManager.Queue)
             {
-                var mediaPlaybackItem = new MediaPlaybackItem(await mediaQueueItem.ToMediaSource());
+                var mediaPlaybackItem = (await mediaQueueItem.ToMediaSource()).ToMediaPlaybackItem();
                 MediaPlaybackList.Items.Add(mediaPlaybackItem);
                 if (mediaQueueItem == mediaItem)
                 {
                     MediaPlaybackList.StartingItem = mediaPlaybackItem;
                 }
             }
-            Player.Source = MediaPlaybackList;
-            await Play();
+            await Play(MediaPlaybackList);
 
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+        }
+
+        public override async Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? stopAt = null)
+        {
+            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+
+            MediaPlaybackList.Items.Clear();
+
+            foreach (var mediaQueueItem in MediaManager.Queue)
+            {
+                var mediaPlaybackItem = (await mediaQueueItem.ToMediaSource()).ToMediaPlaybackItem(startAt, stopAt);
+                MediaPlaybackList.Items.Add(mediaPlaybackItem);
+                if (mediaQueueItem == mediaItem)
+                {
+                    MediaPlaybackList.StartingItem = mediaPlaybackItem;
+                }
+            }
+            await Play(MediaPlaybackList);
+
+            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+        }
+
+        public virtual async Task Play(IMediaPlaybackSource source)
+        {
+            Player.Source = source;
+            await Play();
         }
 
         public override Task Play()
