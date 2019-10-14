@@ -125,7 +125,6 @@ namespace MediaManager.Platforms.Android.Media
             //item.Artist = mediaDescription.
             //item.ArtUri = mediaDescription.
             //item.Author = mediaDescription.
-            //item.BtFolderType = mediaDescription.
             //item.Compilation = mediaDescription.
             //item.Composer = mediaDescription.
             //item.Date = mediaDescription.
@@ -168,12 +167,11 @@ namespace MediaManager.Platforms.Android.Media
             item.Artist = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyArtist);
             item.ImageUri = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyArtUri);
             item.Author = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyAuthor);
-            //item.BtFolderType = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyBtFolderType);
             item.Compilation = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyCompilation);
             item.Composer = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyComposer);
 
             var date = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyDate);
-            if(!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out var dateResult))
+            if (!string.IsNullOrEmpty(date) && DateTime.TryParse(date, out var dateResult))
                 item.Date = dateResult;
 
             item.DiscNumber = Convert.ToInt32(mediaMetadata.GetLong(MediaMetadataCompat.MetadataKeyDiscNumber));
