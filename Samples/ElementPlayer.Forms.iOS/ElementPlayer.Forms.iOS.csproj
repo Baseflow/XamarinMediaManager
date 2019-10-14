@@ -132,10 +132,18 @@
     <BundleResource Include="Resources\xamarin_logo%402x.png" />
     <BundleResource Include="Resources\xamarin_logo%403x.png" />
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
-    <ImageAsset Include="Assets.xcassets\xamarin_logo.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\xamarin_logo.imageset\xamarin_logo.png" />
-    <ImageAsset Include="Assets.xcassets\xamarin_logo.imageset\xamarin_logo%402x.png" />
-    <ImageAsset Include="Assets.xcassets\xamarin_logo.imageset\xamarin_logo%403x.png" />
+    <ImageAsset Include="Assets.xcassets\xamarin_logo.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\xamarin_logo.imageset\xamarin_logo.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\xamarin_logo.imageset\xamarin_logo%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\xamarin_logo.imageset\xamarin_logo%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

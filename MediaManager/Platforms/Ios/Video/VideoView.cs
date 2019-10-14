@@ -37,12 +37,6 @@ namespace MediaManager.Platforms.Ios.Video
             }
         }
 
-        public object VideoPlaceholder
-        {
-            get => MediaManager.MediaPlayer.VideoPlaceholder;
-            set => MediaManager.MediaPlayer.VideoPlaceholder = value;
-        }
-
         public VideoView()
         {
             InitView();

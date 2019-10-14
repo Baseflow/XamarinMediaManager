@@ -64,7 +64,6 @@ namespace MediaManager.Platforms.Ios.Player
             if (PlayerView == null)
                 return;
 
-            //TODO: Implement placeholder a better way?
             if (PlayerView?.PlayerViewController?.ContentOverlayView != null)
             {
                 if (value is UIImage image)
@@ -75,6 +74,8 @@ namespace MediaManager.Platforms.Ios.Player
                     view.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
                     PlayerView?.PlayerViewController?.ContentOverlayView.AddSubview(view);
                 }
+                else if(value is UIView view)
+                    PlayerView?.PlayerViewController?.ContentOverlayView.AddSubview(view);
             }
         }
 

@@ -72,6 +72,9 @@ namespace MediaManager.Forms
                 case nameof(MediaManager.Speed):
                     Speed = MediaManager.Speed;
                     break;
+                case nameof(MediaPlayer.VideoPlaceholder):
+                    VideoPlaceholder = MediaPlayer.VideoPlaceholder?.ToImageSource();
+                    break;
                 default:
                     break;
             }
@@ -150,7 +153,7 @@ namespace MediaManager.Forms
             BindableProperty.Create(nameof(Speed), typeof(float), typeof(VideoView), 1.0f, propertyChanged: OnSpeedPropertyChanged, defaultValueCreator: x => MediaManager.Speed);
 
         public static readonly BindableProperty VideoPlaceholderProperty =
-            BindableProperty.Create(nameof(VideoPlaceholder), typeof(ImageSource), typeof(VideoView), null);
+            BindableProperty.Create(nameof(VideoPlaceholder), typeof(ImageSource), typeof(VideoView), null, propertyChanged: OnVideoPlaceholderPropertyChanged, defaultValueCreator: x => MediaManager.MediaPlayer.VideoPlaceholder?.ToImageSource());
 
         public VideoAspectMode VideoAspect
         {
@@ -295,10 +298,8 @@ namespace MediaManager.Forms
 
         private static void OnVideoPlaceholderPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            MediaManager.MediaPlayer.VideoPlaceholder = (ImageSource)newValue;
+            MediaManager.MediaPlayer.VideoPlaceholder = newValue;
         }
-
-
 
         public void Dispose()
         {

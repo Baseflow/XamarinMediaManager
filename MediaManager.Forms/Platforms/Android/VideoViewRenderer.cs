@@ -16,7 +16,7 @@ namespace MediaManager.Forms.Platforms.Android
         {
         }
 
-        protected override async void OnElementChanged(ElementChangedEventArgs<VideoView> args)
+        protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
             base.OnElementChanged(args);
 
@@ -29,10 +29,6 @@ namespace MediaManager.Forms.Platforms.Android
                 if (Control == null)
                 {
                     _videoView = new MediaManager.Platforms.Android.Video.VideoView(Context);
-                    if(args.NewElement.VideoPlaceholder != null)
-                    {
-                        _videoView.VideoPlaceholder = await args.NewElement.VideoPlaceholder.ToNative(Context);
-                    }
                     SetNativeControl(_videoView);
                 }
             }
