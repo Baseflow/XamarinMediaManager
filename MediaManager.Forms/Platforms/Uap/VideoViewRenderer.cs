@@ -1,4 +1,5 @@
-﻿using MediaManager.Forms.Platforms.Uap;
+﻿using System;
+using MediaManager.Forms.Platforms.Uap;
 using Windows.Foundation;
 using Xamarin.Forms.Platform.UWP;
 
@@ -37,7 +38,14 @@ namespace MediaManager.Forms.Platforms.Uap
                 _videoView.PlayerView.Height = availableSize.Height;
                 _videoView.PlayerView.Width = availableSize.Width;
             }
-            return base.MeasureOverride(availableSize);
+            try
+            {
+                return base.MeasureOverride(availableSize);
+            }
+            catch (ArgumentException)
+            {
+                return DesiredSize;
+            }
         }
 
         protected override void Dispose(bool disposing)

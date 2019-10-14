@@ -24,7 +24,7 @@ namespace MediaManager.Forms
             if (imageHandler == null)
                 return null;
 
-            return await imageHandler.LoadImageAsync(source);
+            return await imageHandler.LoadImageAsync(source).ConfigureAwait(false);
         }
 
         public static IImageSourceHandler GetImageSourceHandler(this ImageSource source)

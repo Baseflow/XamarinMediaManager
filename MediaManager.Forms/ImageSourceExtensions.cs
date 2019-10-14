@@ -26,5 +26,12 @@ namespace MediaManager.Forms
 #endif
             return null;
         }
+
+#if TVOS
+        public static object ToNative(this ImageSource imageSource)
+        {
+            return imageSource;
+        }
+#endif
     }
 }

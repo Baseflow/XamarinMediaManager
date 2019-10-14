@@ -171,7 +171,7 @@ namespace MediaManager.Platforms.Android.Media
             //item.BtFolderType = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyBtFolderType);
             item.Compilation = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyCompilation);
             item.Composer = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyComposer);
-            item.Date = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyDate);
+            item.Date = DateTime.Parse(mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyDate));
             item.DiscNumber = Convert.ToInt32(mediaMetadata.GetLong(MediaMetadataCompat.MetadataKeyDiscNumber));
             item.DisplayDescription = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyDisplayDescription);
             item.DisplayIcon = mediaMetadata.GetBitmap(MediaMetadataCompat.MetadataKeyDisplayIcon);

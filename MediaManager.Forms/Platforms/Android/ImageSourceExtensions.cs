@@ -23,7 +23,7 @@ namespace MediaManager.Forms
 
         public static async Task<Bitmap> ToNative(this ImageSource source)
         {
-            return await source.ToNative(Android.App.Application.Context);
+            return await source.ToNative(Android.App.Application.Context).ConfigureAwait(false);
         }
 
         public static async Task<Bitmap> ToNative(this ImageSource source, Context context)
@@ -32,7 +32,7 @@ namespace MediaManager.Forms
             if (imageHandler == null)
                 return null;
 
-            return await imageHandler.LoadImageAsync(source, context);
+            return await imageHandler.LoadImageAsync(source, context).ConfigureAwait(false);
         }
 
         public static IImageSourceHandler GetImageSourceHandler(this ImageSource source)

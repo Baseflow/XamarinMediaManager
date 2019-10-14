@@ -146,6 +146,7 @@ namespace MediaManager.Media
                 {
                     mediaItem.MediaType = GetMediaType(mediaItem);
                 }
+                mediaItem.DownloadStatus = GetDownloadStatus(mediaItem);
 
                 mediaItem = await GetMetadata(mediaItem).ConfigureAwait(false);
                 mediaItem.Image = await GetMediaImage(mediaItem).ConfigureAwait(false);
@@ -270,6 +271,21 @@ namespace MediaManager.Media
                 return MediaLocation.FileSystem;
             }
             return MediaLocation.Unknown;
+        }
+
+        public virtual DownloadStatus GetDownloadStatus(IMediaItem mediaItem)
+        {
+            switch (mediaItem.MediaLocation)
+            {
+                case MediaLocation.Unknown:
+                case MediaLocation.Remote:
+                    return DownloadStatus.NotDownloaded;
+                case MediaLocation.FileSystem:
+                case MediaLocation.Embedded:
+                case MediaLocation.Resource:
+                default:
+                    return DownloadStatus.Downloaded;
+            }
         }
 
         protected virtual async Task<string> CopyResourceStreamToFile(Stream stream, string tempDirectoryName, string resourceName)

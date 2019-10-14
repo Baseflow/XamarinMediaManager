@@ -17,11 +17,11 @@ namespace MediaManager.Platforms.Android.Media
         {
             try
             {
-                var metaRetriever = await CreateMediaRetriever(mediaItem).ConfigureAwait(false);
+                var metadataRetriever = await CreateMediaRetriever(mediaItem).ConfigureAwait(false);
 
-                mediaItem = await ExtractMetadata(metaRetriever, mediaItem).ConfigureAwait(false);
+                mediaItem = await ExtractMetadata(metadataRetriever, mediaItem).ConfigureAwait(false);
 
-                metaRetriever.Release();
+                metadataRetriever.Release();
             }
             catch (Exception ex)
             {
@@ -30,58 +30,59 @@ namespace MediaManager.Platforms.Android.Media
             return mediaItem;
         }
 
-        protected virtual Task<IMediaItem> ExtractMetadata(MediaMetadataRetriever mediaMetadataRetriever, IMediaItem mediaItem)
+        protected virtual Task<IMediaItem> ExtractMetadata(MediaMetadataRetriever metadataRetriever, IMediaItem mediaItem)
         {
-            if (mediaMetadataRetriever == null)
+            if (metadataRetriever == null)
                 return Task.FromResult(mediaItem);
 
             if (string.IsNullOrEmpty(mediaItem.Album))
-                mediaItem.Album = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Album);
+                mediaItem.Album = metadataRetriever.ExtractMetadata(MetadataKey.Album);
 
             if (string.IsNullOrEmpty(mediaItem.AlbumArtist))
-                mediaItem.AlbumArtist = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Albumartist);
+                mediaItem.AlbumArtist = metadataRetriever.ExtractMetadata(MetadataKey.Albumartist);
 
             if (string.IsNullOrEmpty(mediaItem.Artist))
-                mediaItem.Artist = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Artist);
+                mediaItem.Artist = metadataRetriever.ExtractMetadata(MetadataKey.Artist);
 
             if (string.IsNullOrEmpty(mediaItem.Author))
-                mediaItem.Author = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Author);
+                mediaItem.Author = metadataRetriever.ExtractMetadata(MetadataKey.Author);
 
-            var trackNumber = mediaMetadataRetriever.ExtractMetadata(MetadataKey.CdTrackNumber);
+            var trackNumber = metadataRetriever.ExtractMetadata(MetadataKey.CdTrackNumber);
             if (!string.IsNullOrEmpty(trackNumber) && int.TryParse(trackNumber, out var trackNumberResult))
                 mediaItem.TrackNumber = trackNumberResult;
 
             if (string.IsNullOrEmpty(mediaItem.Compilation))
-                mediaItem.Compilation = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Compilation);
+                mediaItem.Compilation = metadataRetriever.ExtractMetadata(MetadataKey.Compilation);
 
             if (string.IsNullOrEmpty(mediaItem.Composer))
-                mediaItem.Composer = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Composer);
+                mediaItem.Composer = metadataRetriever.ExtractMetadata(MetadataKey.Composer);
 
-            if (string.IsNullOrEmpty(mediaItem.Date))
-                mediaItem.Date = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Date);
+            var date = metadataRetriever.ExtractMetadata(MetadataKey.Date);
+            if (mediaItem.Date == default && !string.IsNullOrEmpty(date) && DateTime.TryParse(date, out var dateResult))
+                mediaItem.Date = dateResult;
 
-            var discNumber = mediaMetadataRetriever.ExtractMetadata(MetadataKey.DiscNumber);
+            var discNumber = metadataRetriever.ExtractMetadata(MetadataKey.DiscNumber);
             if (!string.IsNullOrEmpty(discNumber) && int.TryParse(discNumber, out var discNumberResult))
                 mediaItem.DiscNumber = discNumberResult;
 
-            var duration = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Duration);
-            if (!string.IsNullOrEmpty(duration) && int.TryParse(duration, out var durationResult))
+            var duration = metadataRetriever.ExtractMetadata(MetadataKey.Duration);
+            if (mediaItem.Duration == default && !string.IsNullOrEmpty(duration) && int.TryParse(duration, out var durationResult))
                 mediaItem.Duration = TimeSpan.FromMilliseconds(durationResult);
 
             if (string.IsNullOrEmpty(mediaItem.Genre))
-                mediaItem.Genre = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Genre);
+                mediaItem.Genre = metadataRetriever.ExtractMetadata(MetadataKey.Genre);
 
-            var numTracks = mediaMetadataRetriever.ExtractMetadata(MetadataKey.NumTracks);
+            var numTracks = metadataRetriever.ExtractMetadata(MetadataKey.NumTracks);
             if (!string.IsNullOrEmpty(numTracks) && int.TryParse(numTracks, out var numTracksResult))
                 mediaItem.NumTracks = numTracksResult;
 
             if (string.IsNullOrEmpty(mediaItem.Title))
-                mediaItem.Title = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Title);
+                mediaItem.Title = metadataRetriever.ExtractMetadata(MetadataKey.Title);
 
             if (string.IsNullOrEmpty(mediaItem.Writer))
-                mediaItem.Writer = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Writer);
+                mediaItem.Writer = metadataRetriever.ExtractMetadata(MetadataKey.Writer);
 
-            var year = mediaMetadataRetriever.ExtractMetadata(MetadataKey.Year);
+            var year = metadataRetriever.ExtractMetadata(MetadataKey.Year);
             if (!string.IsNullOrEmpty(year) && int.TryParse(year, out var yearResult))
                 mediaItem.Year = yearResult;
 
@@ -93,12 +94,12 @@ namespace MediaManager.Platforms.Android.Media
             Bitmap image = null;
             try
             {
-                var metaRetriever = await CreateMediaRetriever(mediaItem).ConfigureAwait(false);
+                var metadataRetriever = await CreateMediaRetriever(mediaItem).ConfigureAwait(false);
 
                 byte[] imageByteArray = null;
                 try
                 {
-                    imageByteArray = metaRetriever.GetEmbeddedPicture();
+                    imageByteArray = metadataRetriever.GetEmbeddedPicture();
                 }
                 catch (Exception ex)
                 {
@@ -116,7 +117,7 @@ namespace MediaManager.Platforms.Android.Media
                     }
                 }
 
-                metaRetriever.Release();
+                metadataRetriever.Release();
             }
             catch (Exception ex)
             {
@@ -130,11 +131,11 @@ namespace MediaManager.Platforms.Android.Media
             Bitmap image = null;
             try
             {
-                var metaRetriever = await CreateMediaRetriever(mediaItem).ConfigureAwait(false);
+                var metadataRetriever = await CreateMediaRetriever(mediaItem).ConfigureAwait(false);
 
-                image = metaRetriever.GetFrameAtTime((long)timeFromStart.TotalMilliseconds);
+                image = metadataRetriever.GetFrameAtTime((long)timeFromStart.TotalMilliseconds);
 
-                metaRetriever.Release();
+                metadataRetriever.Release();
             }
             catch (Exception ex)
             {
@@ -145,20 +146,20 @@ namespace MediaManager.Platforms.Android.Media
 
         protected virtual async Task<MediaMetadataRetriever> CreateMediaRetriever(IMediaItem mediaItem)
         {
-            var metaRetriever = new MediaMetadataRetriever();
+            var metadataRetriever = new MediaMetadataRetriever();
             try
             {
                 if (mediaItem.MediaLocation.IsLocal())
-                    await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri).ConfigureAwait(false);
+                    await metadataRetriever.SetDataSourceAsync(mediaItem.MediaUri).ConfigureAwait(false);
                 else
-                    await metaRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders).ConfigureAwait(false);
+                    await metadataRetriever.SetDataSourceAsync(mediaItem.MediaUri, RequestHeaders).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
-            return metaRetriever;
+            return metadataRetriever;
         }
     }
 }

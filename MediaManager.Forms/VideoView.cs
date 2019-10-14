@@ -294,7 +294,10 @@ namespace MediaManager.Forms
 
         private static void OnVideoPlaceholderPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            MediaManager.MediaPlayer.VideoPlaceholder = newValue;
+#if !NETSTANDARD
+            if (newValue is ImageSource imageSource)
+                MediaManager.MediaPlayer.VideoPlaceholder = imageSource.ToNative();
+#endif
         }
 
         public void Dispose()

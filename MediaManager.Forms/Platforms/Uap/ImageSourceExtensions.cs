@@ -20,6 +20,15 @@ namespace MediaManager.Forms
             return ImageSource.FromStream(() => new MemoryStream(bitmapData));
         }
 
+        public static async Task<Windows.UI.Xaml.Media.ImageSource> ToNative(this ImageSource source)
+        {
+            var imageHandler = source.GetImageSourceHandler();
+            if (imageHandler == null)
+                return null;
+
+            return await imageHandler.LoadImageAsync(source).ConfigureAwait(false);
+        }
+
         public static IImageSourceHandler GetImageSourceHandler(this ImageSource source)
         {
             //check the specific source type and return the correct image source handler 

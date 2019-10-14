@@ -60,8 +60,9 @@ namespace MediaManager.Platforms.Apple.Media
             if (string.IsNullOrEmpty(mediaItem.Author))
                 mediaItem.Author = metadataDict.GetValueOrDefault(AVMetadata.CommonKeyAuthor)?.Value.ToString();
 
-            if (string.IsNullOrEmpty(mediaItem.Date))
-                mediaItem.Date = metadataDict.GetValueOrDefault(AVMetadata.CommonKeyCreationDate)?.Value.ToString();
+            var date = metadataDict.GetValueOrDefault(AVMetadata.CommonKeyCreationDate)?.Value.ToString();
+            if (mediaItem.Date == default && !string.IsNullOrEmpty(date) && DateTime.TryParse(date, out var dateResult))
+                mediaItem.Date = dateResult;
 
             if (string.IsNullOrEmpty(mediaItem.Title))
                 mediaItem.Title = metadataDict.GetValueOrDefault(AVMetadata.CommonKeyTitle)?.Value.ToString();

@@ -44,5 +44,7 @@ namespace MediaManager.Media
         MediaType GetMediaType(IMediaItem mediaItem);
 
         string GetFileExtension(IMediaItem mediaItem);
+
+        DownloadStatus GetDownloadStatus(IMediaItem mediaItem);
     }
 }

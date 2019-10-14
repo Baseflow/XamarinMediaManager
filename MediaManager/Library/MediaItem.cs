@@ -81,13 +81,6 @@ namespace MediaManager.Library
             set => SetProperty(ref _author, value);
         }
 
-        private BtFolderType _btFolderType = BtFolderType.Mixed;
-        public BtFolderType BtFolderType
-        {
-            get => _btFolderType;
-            set => SetProperty(ref _btFolderType, value);
-        }
-
         private string _compilation;
         public string Compilation
         {
@@ -102,8 +95,8 @@ namespace MediaManager.Library
             set => SetProperty(ref _composer, value);
         }
 
-        private string _date;
-        public string Date
+        private DateTime _date;
+        public DateTime Date
         {
             get => _date;
             set => SetProperty(ref _date, value);

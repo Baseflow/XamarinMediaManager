@@ -65,12 +65,6 @@ namespace MediaManager.Library
         /// </summary>
         string Author { get; set; }
 
-        //TODO: Probably remove this one
-        /// <summary>
-        /// The metadata for a int typed value to retrieve the information about the bluetooth folder type of the media specified in the section 6.10.2.2 of the Bluetooth AVRCP 1.5.
-        /// </summary>
-        BtFolderType BtFolderType { get; set; }
-
         /// <summary>
         /// The metadata for a CharSequence or string typed value to retrieve the information about the compilation status of the media.
         /// </summary>
@@ -81,11 +75,10 @@ namespace MediaManager.Library
         /// </summary>
         string Composer { get; set; }
 
-        //TODO: Make it a DateTime
         /// <summary>
         /// The metadata for a CharSequence or string typed value to retrieve the information about the date the media was created or published.
         /// </summary>
-        string Date { get; set; }
+        DateTime Date { get; set; }
 
         /// <summary>
         /// The metadata for a int typed value to retrieve the information about the disc number for the media's original source.
@@ -113,7 +106,7 @@ namespace MediaManager.Library
         DownloadStatus DownloadStatus { get; set; }
 
         /// <summary>
-        /// The metadata for a int typed value to retrieve the information about the duration of the media in ms.
+        /// The metadata for a int typed value to retrieve the information about the duration of the media.
         /// </summary>
         TimeSpan Duration { get; set; }
 
