@@ -32,10 +32,13 @@ namespace MediaManager.Platforms.Apple.Player
             set => SetProperty(ref _player, value);
         }
 
+        public int TimeScale { get; set; } = 60;
+
         private NSObject didFinishPlayingObserver;
         private NSObject itemFailedToPlayToEndTimeObserver;
         private NSObject errorObserver;
         private NSObject playbackStalledObserver;
+        private NSObject playbackTimeObserver;
 
         private IDisposable rateToken;
         private IDisposable statusToken;
@@ -168,14 +171,43 @@ namespace MediaManager.Platforms.Apple.Player
         public override async Task Play(IMediaItem mediaItem)
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            await Play(mediaItem.ToAVPlayerItem());
+            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+        }
 
-            var item = mediaItem.ToAVPlayerItem();
+        public override async Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? stopAt = null)
+        {
+            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
-            Player.ActionAtItemEnd = AVPlayerActionAtItemEnd.None;
-            Player.ReplaceCurrentItemWithPlayerItem(item);
-            await Play();
+            if (stopAt is TimeSpan endTime)
+            {
+                var values = new NSValue[]
+                {
+                NSValue.FromCMTime(CMTime.FromSeconds(endTime.TotalSeconds, TimeScale))
+                };
+
+                playbackTimeObserver = Player.AddBoundaryTimeObserver(values, null, OnPlayerBoundaryReached);
+            }
+
+            await Play(mediaItem.ToAVPlayerItem());
+
+            if (startAt != TimeSpan.Zero)
+                await SeekTo(startAt);
 
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+        }
+
+        protected virtual async void OnPlayerBoundaryReached()
+        {
+            await Pause();
+            Player.RemoveTimeObserver(playbackTimeObserver);
+        }
+
+        public virtual async Task Play(AVPlayerItem playerItem)
+        {
+            Player.ActionAtItemEnd = AVPlayerActionAtItemEnd.None;
+            Player.ReplaceCurrentItemWithPlayerItem(playerItem);
+            await Play();
         }
 
         public override Task Play()
@@ -186,7 +218,12 @@ namespace MediaManager.Platforms.Apple.Player
 
         public override async Task SeekTo(TimeSpan position)
         {
-            await Player.SeekAsync(CMTime.FromSeconds(position.TotalSeconds, Player.CurrentItem.Duration.TimeScale), CMTime.Zero, CMTime.Zero);
+            var scale = TimeScale;
+
+            if (Player?.CurrentItem?.Duration != CMTime.Indefinite)
+                scale = Player.CurrentItem.Duration.TimeScale;
+
+            await Player.SeekAsync(CMTime.FromSeconds(position.TotalSeconds, scale), CMTime.Zero, CMTime.Zero);
         }
 
         public override async Task Stop()
@@ -204,6 +241,9 @@ namespace MediaManager.Platforms.Apple.Player
                 errorObserver,
                 playbackStalledObserver
             });
+
+            if (playbackTimeObserver != null)
+                Player.RemoveTimeObserver(playbackTimeObserver);
 
             rateToken?.Dispose();
             statusToken?.Dispose();

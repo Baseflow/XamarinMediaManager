@@ -46,9 +46,15 @@ namespace MediaManager.Player
         object VideoPlaceholder { get; set; }
 
         /// <summary>
-        /// Adds MediaItem to the Queue and starts playing
+        /// Starts playing the MediaItem
         /// </summary>
         Task Play(IMediaItem mediaItem);
+
+        /// <summary>
+        /// Starts playing the MediaItem at a given time and stops at a specific time.
+        /// Use TimeSpan.Zero for startAt to start at beginning of the MediaItem
+        /// </summary>
+        Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? stopAt = null);
 
         /// <summary>
         /// Starts playing

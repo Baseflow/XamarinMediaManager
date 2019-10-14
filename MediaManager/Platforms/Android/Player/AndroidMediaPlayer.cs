@@ -162,8 +162,6 @@ namespace MediaManager.Platforms.Android.Player
 
             Player.SetAudioAttributes(audioAttributes, true);
 
-            MediaManager.PropertyChanged += MediaManager_PropertyChanged;
-
             PlayerEventListener = new PlayerEventListener()
             {
                 OnPlayerErrorImpl = (ExoPlaybackException exception) =>
@@ -237,14 +235,6 @@ namespace MediaManager.Platforms.Android.Player
                 PlayerView.Player = Player;
             }
         }
-        private void MediaManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(MediaManager.RepeatMode))
-            {
-                if (Player != null && MediaManager != null)
-                    Player.RepeatMode = (int)MediaManager.RepeatMode;
-            }
-        }
 
         private void Player_VideoSizeChanged(object sender, Com.Google.Android.Exoplayer2.Video.VideoSizeChangedEventArgs e)
         {
@@ -289,13 +279,37 @@ namespace MediaManager.Platforms.Android.Player
         public override async Task Play(IMediaItem mediaItem)
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            await Play(mediaItem.ToMediaSource());
+            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+        }
 
-            MediaSource.Clear();
-            MediaSource.AddMediaSource(mediaItem.ToMediaSource());
-            Player.Prepare(MediaSource);
-            await Play();
+        public override async Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? stopAt = null)
+        {
+            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+
+            IMediaSource mediaSource = null;
+            if (stopAt is TimeSpan endTime)
+            {
+                if (startAt != TimeSpan.Zero)
+                    mediaSource = mediaItem.ToClippingMediaSource(startAt, endTime);
+                else
+                    mediaSource = mediaItem.ToClippingMediaSource(endTime);
+            }
+
+            await Play(mediaSource);
+
+            if (startAt != TimeSpan.Zero && !(stopAt is TimeSpan))
+                await SeekTo(startAt);
 
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+        }
+
+        public virtual async Task Play(IMediaSource mediaSource)
+        {
+            MediaSource.Clear();
+            MediaSource.AddMediaSource(mediaSource);
+            Player.Prepare(MediaSource);
+            await Play();
         }
 
         public override Task Play()
@@ -331,9 +345,6 @@ namespace MediaManager.Platforms.Android.Player
                 Player.Release();
                 Player = null;
             }
-
-            if (MediaManager != null)
-                MediaManager.PropertyChanged -= MediaManager_PropertyChanged;
         }
     }
 }

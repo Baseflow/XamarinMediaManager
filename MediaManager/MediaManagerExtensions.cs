@@ -56,6 +56,15 @@ namespace MediaManager
             return mediaItem;
         }
 
+        public static async Task<IMediaItem> Play(this IMediaManager mediaManager, IMediaItem mediaItem, TimeSpan startAt, TimeSpan? stopAt = null)
+        {
+            if (mediaManager is MediaManagerBase mediaManagerBase)
+                mediaItem = await mediaManagerBase.PrepareQueueForPlayback(mediaItem);
+
+            await mediaManager.MediaPlayer.Play(mediaItem, startAt, stopAt);
+            return mediaItem;
+        }
+
         public static Task PlayPreviousOrSeekToStart(this IMediaManager mediaManager, TimeSpan? timeSpan = null)
         {
             timeSpan = timeSpan ?? TimeSpan.FromSeconds(3);

@@ -21,6 +21,23 @@ namespace MediaManager.Platforms.Android.Media
             return ToMediaSource(mediaDescription, mediaItem.MediaType);
         }
 
+        public static ClippingMediaSource ToClippingMediaSource(this IMediaItem mediaItem, TimeSpan stopAt)
+        {
+            var mediaDescription = mediaItem.ToMediaDescription();
+            var mediaSource = ToMediaSource(mediaDescription, mediaItem.MediaType);
+            return new ClippingMediaSource(mediaSource, (long)stopAt.TotalMilliseconds * 1000);
+        }
+
+        public static ClippingMediaSource ToClippingMediaSource(this IMediaItem mediaItem, TimeSpan startAt, TimeSpan stopAt)
+        {
+            var mediaDescription = mediaItem.ToMediaDescription();
+            var mediaSource = ToMediaSource(mediaDescription, mediaItem.MediaType);
+            //Clipping media source takes time values in microseconds
+            var startUs = startAt.Ticks / (TimeSpan.TicksPerMillisecond / 1000);
+            var endUs = stopAt.Ticks / (TimeSpan.TicksPerMillisecond / 1000);
+            return new ClippingMediaSource(mediaSource, startUs, endUs);
+        }
+
         public static IMediaSource ToMediaSource(this MediaDescriptionCompat mediaDescription, MediaType mediaType)
         {
             if (MediaManager.AndroidMediaPlayer.DataSourceFactory == null)
