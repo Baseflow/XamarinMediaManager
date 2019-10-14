@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace MediaManager.Forms
 {
@@ -28,9 +29,9 @@ namespace MediaManager.Forms
         }
 
 #if TVOS
-        public static object ToNative(this ImageSource imageSource)
+        public static Task<object> ToNative(this ImageSource imageSource)
         {
-            return imageSource;
+            return null;
         }
 #endif
     }

@@ -292,11 +292,11 @@ namespace MediaManager.Forms
             MediaManager.AutoPlay = (bool)newValue;
         }
 
-        private static void OnVideoPlaceholderPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        private static async void OnVideoPlaceholderPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
 #if !NETSTANDARD
             if (newValue is ImageSource imageSource)
-                MediaManager.MediaPlayer.VideoPlaceholder = imageSource.ToNative();
+                MediaManager.MediaPlayer.VideoPlaceholder = await imageSource.ToNative().ConfigureAwait(false);
 #endif
         }
 
