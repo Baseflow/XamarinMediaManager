@@ -123,18 +123,24 @@ namespace MediaManager.Platforms.Android.Player
             if (PlayerView == null)
                 return;
 
-            if (value is Drawable drawable)
+            using (var h = new global::Android.OS.Handler(Player.ApplicationLooper))
             {
-                PlayerView.UseArtwork = true;
-                PlayerView.DefaultArtwork = drawable;
+                h.Post(() => {
+                    // invoked on UI thread
+                    if (value is Drawable drawable)
+                    {
+                        PlayerView.UseArtwork = true;
+                        PlayerView.DefaultArtwork = drawable;
+                    }
+                    else if (value is Bitmap bmp)
+                    {
+                        PlayerView.UseArtwork = true;
+                        PlayerView.DefaultArtwork = new BitmapDrawable(Context.Resources, bmp);
+                    }
+                    else
+                        PlayerView.UseArtwork = false;
+                });
             }
-            else if (value is Bitmap bmp)
-            {
-                PlayerView.UseArtwork = true;
-                PlayerView.DefaultArtwork = new BitmapDrawable(Context.Resources, bmp);
-            }
-            else
-                PlayerView.UseArtwork = false;
         }
 
         protected int lastWindowIndex = 0;

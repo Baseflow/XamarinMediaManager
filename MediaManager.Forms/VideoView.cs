@@ -45,7 +45,8 @@ namespace MediaManager.Forms
                     VideoWidth = MediaPlayer.VideoWidth;
                     break;
                 case nameof(MediaPlayer.VideoPlaceholder):
-                    VideoPlaceholder = MediaPlayer.VideoPlaceholder?.ToImageSource();
+                    if(MediaPlayer.VideoPlaceholder is ImageSource imageSource)
+                        VideoPlaceholder = imageSource;
                     break;
                 default:
                     break;
