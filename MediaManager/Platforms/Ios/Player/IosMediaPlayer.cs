@@ -74,7 +74,7 @@ namespace MediaManager.Platforms.Ios.Player
                     view.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
                     PlayerView?.PlayerViewController?.ContentOverlayView.AddSubview(view);
                 }
-                else if(value is UIView view)
+                else if (value is UIView view)
                     PlayerView?.PlayerViewController?.ContentOverlayView.AddSubview(view);
             }
         }

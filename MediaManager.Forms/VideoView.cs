@@ -45,11 +45,10 @@ namespace MediaManager.Forms
                     VideoWidth = MediaPlayer.VideoWidth;
                     break;
                 case nameof(MediaPlayer.VideoPlaceholder):
-                    VideoPlaceholder = MediaPlayer.VideoPlaceholder.ToImageSource();
+                    VideoPlaceholder = MediaPlayer.VideoPlaceholder?.ToImageSource();
                     break;
                 default:
                     break;
-
             }
         }
 
@@ -71,9 +70,6 @@ namespace MediaManager.Forms
                     break;
                 case nameof(MediaManager.Speed):
                     Speed = MediaManager.Speed;
-                    break;
-                case nameof(MediaPlayer.VideoPlaceholder):
-                    VideoPlaceholder = MediaPlayer.VideoPlaceholder?.ToImageSource();
                     break;
                 default:
                     break;
