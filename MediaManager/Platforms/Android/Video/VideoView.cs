@@ -37,6 +37,7 @@ namespace MediaManager.Platforms.Android.Video
                 MediaManager.MediaPlayer.VideoView = this;
         }
 
+
         protected override void Dispose(bool disposing)
         {
             if (MediaManager.MediaPlayer.AutoAttachVideoView && MediaManager.MediaPlayer.VideoView == this)
