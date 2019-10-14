@@ -68,11 +68,15 @@ namespace MediaManager.Platforms.Ios.Player
             {
                 if (value is UIImage image)
                 {
-                    var view = new UIImageView(image);
-                    view.ClipsToBounds = true;
-                    view.ContentMode = UIViewContentMode.ScaleAspectFit;
-                    view.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
-                    PlayerView?.PlayerViewController?.ContentOverlayView.AddSubview(view);
+                    // Needs to be on the UI thread
+                    Player.InvokeOnMainThread(() =>
+                    {
+                        var view = new UIImageView(image);
+                        view.ClipsToBounds = true;
+                        view.ContentMode = UIViewContentMode.ScaleAspectFit;
+                        view.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
+                        PlayerView?.PlayerViewController?.ContentOverlayView.AddSubview(view);
+                    });
                 }
                 else if (value is UIView view)
                     PlayerView?.PlayerViewController?.ContentOverlayView.AddSubview(view);
