@@ -1,8 +1,8 @@
-#tool nuget:?package=GitVersion.CommandLine&version=4.0.0
-#tool nuget:?package=vswhere&version=2.6.7
-#addin nuget:?package=Cake.Figlet&version=1.3.0
-#addin nuget:?package=Cake.Git&version=0.19.0
-#addin nuget:?package=Polly&version=7.1.0
+#tool nuget:?package=GitVersion.CommandLine&version=5.0.1
+#tool nuget:?package=vswhere&version=2.7.1
+#addin nuget:?package=Cake.Figlet&version=1.3.1
+#addin nuget:?package=Cake.Git&version=0.21.0
+#addin nuget:?package=Polly&version=7.1.1
 
 using Polly;
 
@@ -10,6 +10,7 @@ var solutionName = "MediaManager";
 var repoName = "martijn00/XamarinMediaManager";
 var sln = new FilePath("./" + solutionName + ".sln");
 var outputDir = new DirectoryPath("./artifacts");
+var gitVersionLog = new FilePath("./artifacts/gitversion.log");
 var nuspecDir = new DirectoryPath("./nuspec");
 var nugetPackagesDir = new DirectoryPath("./nuget/packages");
 var target = Argument("target", "Default");
@@ -20,10 +21,13 @@ var verbosity = Verbosity.Minimal;
 var isRunningOnAppVeyor = AppVeyor.IsRunningOnAppVeyor;
 GitVersion versionInfo = null;
 
-Setup(context => {
-    versionInfo = context.GitVersion(new GitVersionSettings {
+Setup(context => 
+{
+    versionInfo = context.GitVersion(new GitVersionSettings 
+	{
         UpdateAssemblyInfo = true,
-        OutputType = GitVersionOutput.Json
+        OutputType = GitVersionOutput.Json,
+        LogFilePath = gitVersionLog.MakeAbsolute(context.Environment)
     });
 
     if (isRunningOnAppVeyor)
