@@ -245,7 +245,7 @@ Task("PublishPackages")
         var nugetSourceSettings = new NuGetSourcesSettings
         {
             UserName = "Martijn00",
-            Password = nugetApiKey,
+            Password = githubToken,
             IsSensitiveSource = true
         };
 
