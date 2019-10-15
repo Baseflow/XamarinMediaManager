@@ -1,4 +1,5 @@
-﻿using MediaManager.Forms.Platforms.Wpf;
+﻿using System.Windows.Media;
+using MediaManager.Forms.Platforms.Wpf;
 using Xamarin.Forms.Platform.WPF;
 
 [assembly: ExportRenderer(typeof(MediaManager.Forms.VideoView), typeof(VideoViewRenderer))]
@@ -10,8 +11,6 @@ namespace MediaManager.Forms.Platforms.Wpf
 
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
-            base.OnElementChanged(args);
-
             if (args.OldElement != null)
             {
                 args.OldElement.Dispose();
@@ -24,6 +23,15 @@ namespace MediaManager.Forms.Platforms.Wpf
                     SetNativeControl(_videoView);
                 }
             }
+
+            base.OnElementChanged(args);
+        }
+
+        protected override void UpdateBackground()
+        {
+            base.UpdateBackground();
+            if (Control != null)
+                Control.Background = new SolidColorBrush(Element.BackgroundColor.ToMediaColor());
         }
 
         protected override void Dispose(bool disposing)

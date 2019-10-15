@@ -1,6 +1,7 @@
 ﻿using System;
 using MediaManager.Forms.Platforms.Uap;
 using Windows.Foundation;
+using Windows.UI.Xaml.Media;
 using Xamarin.Forms.Platform.UWP;
 
 [assembly: ExportRenderer(typeof(MediaManager.Forms.VideoView), typeof(VideoViewRenderer))]
@@ -46,6 +47,13 @@ namespace MediaManager.Forms.Platforms.Uap
             {
                 return DesiredSize;
             }
+        }
+
+        protected override void UpdateBackgroundColor()
+        {
+            base.UpdateBackgroundColor();
+            if (Control != null)
+                Control.Background = new SolidColorBrush(Element.BackgroundColor.ToWindowsColor());
         }
 
         protected override void Dispose(bool disposing)

@@ -11,8 +11,6 @@ namespace MediaManager.Forms.Platforms.Tizen
 
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
-            base.OnElementChanged(args);
-
             if (args.OldElement != null)
             {
                 args.OldElement.Dispose();
@@ -25,6 +23,15 @@ namespace MediaManager.Forms.Platforms.Tizen
                     SetNativeControl(_videoView);
                 }
             }
+
+            base.OnElementChanged(args);
+        }
+
+        protected override void UpdateBackgroundColor(bool initialize)
+        {
+            base.UpdateBackgroundColor(initialize);
+            if (Control != null)
+                Control.Color = Element.BackgroundColor.ToNative();
         }
 
         protected override void Dispose(bool disposing)

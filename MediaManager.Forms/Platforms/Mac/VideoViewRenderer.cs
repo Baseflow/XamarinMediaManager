@@ -12,8 +12,6 @@ namespace MediaManager.Forms.Platforms.Mac
 
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
-            base.OnElementChanged(args);
-
             if (args.OldElement != null)
             {
                 args.OldElement.Dispose();
@@ -27,6 +25,15 @@ namespace MediaManager.Forms.Platforms.Mac
                     SetNativeControl(_videoView);
                 }
             }
+
+            base.OnElementChanged(args);
+        }
+
+        protected override void SetBackgroundColor(Color color)
+        {
+            base.SetBackgroundColor(color);
+            if (Control?.Layer != null)
+                Control.Layer.BackgroundColor = color.ToCGColor();
         }
 
         protected override void Dispose(bool disposing)
