@@ -411,7 +411,7 @@ bool IsRepository(string repoName)
 {
     if (isRunningOnAppVeyor)
     {
-        var buildEnvRepoName = AppVeyor.Environment.Repository.RepoName;
+        var buildEnvRepoName = AppVeyor.Environment.Repository.Name;
         Information("Checking repo name: {0} against build repo name: {1}", repoName, buildEnvRepoName);
         return StringComparer.OrdinalIgnoreCase.Equals(repoName, buildEnvRepoName);
     }
