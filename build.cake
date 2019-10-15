@@ -225,14 +225,14 @@ Task("PublishPackages")
     .WithCriteria(() => !string.IsNullOrEmpty(nugetApiKey))
     .WithCriteria(() => shouldPublishPackages)
     .IsDependentOn("CopyPackages")
-    .IsDependentOn("SignPackages")
+    //.IsDependentOn("SignPackages")
     .Does (() =>
 {
-    if (!didSignPackages)
-    {
-        Warning("Packages were not signed. Not publishing packages");
-        return;
-    }
+    //if (!didSignPackages)
+    //{
+    //    Warning("Packages were not signed. Not publishing packages");
+    //    return;
+    //}
 
     var nugetPushSettings = new NuGetPushSettings
     {
