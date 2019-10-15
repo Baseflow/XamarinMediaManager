@@ -71,7 +71,10 @@ namespace MediaManager.Platforms.Ios.Player
                     // Needs to be on the UI thread
                     Player.InvokeOnMainThread(() =>
                     {
-                        var view = new UIImageView(image);
+                        var view = new UIImageView(image)
+                        {
+                            Frame = PlayerView.PlayerViewController.ContentOverlayView.Frame
+                        };
                         view.ClipsToBounds = true;
                         view.ContentMode = UIViewContentMode.ScaleAspectFit;
                         view.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
