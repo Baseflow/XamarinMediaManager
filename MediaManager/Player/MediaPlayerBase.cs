@@ -20,6 +20,7 @@ namespace MediaManager.Player
         {
             UpdateVideoAspect(VideoAspect);
             UpdateShowPlaybackControls(ShowPlaybackControls);
+            UpdateVideoPlaceholder(VideoPlaceholder);
         }
 
         protected VideoAspectMode _videoAspect;

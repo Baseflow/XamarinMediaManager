@@ -11,7 +11,7 @@
         <StackLayout Orientation="Vertical">
             <Button Text="Browse" Command="{Binding BrowseCommand}" />
             <Image Source="{Binding Image}" HorizontalOptions="FillAndExpand" HeightRequest="200" />
-            <mm:VideoView VerticalOptions="FillAndExpand" ShowControls="False" VideoPlaceholder="xamarin_logo" />
+            <mm:VideoView VerticalOptions="FillAndExpand" ShowControls="False" VideoPlaceholder="xamarin_logo.png" />
         </StackLayout>
     </ContentPage.Content>
 </mvx:MvxContentPage>

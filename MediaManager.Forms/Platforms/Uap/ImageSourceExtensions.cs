@@ -10,14 +10,20 @@ namespace MediaManager.Forms
 {
     public static partial class ImageSourceExtensions
     {
-        public static async Task<ImageSource> ToImageSource(this BitmapImage bitmapImage)
+        public static ImageSource ToImageSource(this BitmapImage bitmapImage)
         {
-            IRandomAccessStreamReference random = RandomAccessStreamReference.CreateFromUri(bitmapImage.UriSour‌​ce);
-            var decoder = await Windows.Graphics.Imaging.BitmapDecoder.CreateAsync(await random.OpenReadAsync());
-            var pixelData = await decoder.GetPixelDataAsync();
-            var bitmapData = pixelData.DetachPixelData();
+            /*TaskCompletionSource<byte[]> tcs = new TaskCompletionSource<byte[]>();
+            Task.Run(async () => {
+                IRandomAccessStreamReference random = RandomAccessStreamReference.CreateFromUri(bitmapImage.UriSour‌​ce);
+                var decoder = await Windows.Graphics.Imaging.BitmapDecoder.CreateAsync(await random.OpenReadAsync());
+                var pixelData = await decoder.GetPixelDataAsync();
+                var bitmapData = pixelData.DetachPixelData();
+                tcs.SetResult(bitmapData);
+            });
+            var bitmap = tcs.Task.GetAwaiter().GetResult();
+            return ImageSource.FromStream(() => new MemoryStream(bitmap));*/
 
-            return ImageSource.FromStream(() => new MemoryStream(bitmapData));
+            return ImageSource.FromUri(bitmapImage.UriSource);
         }
 
         public static async Task<Windows.UI.Xaml.Media.ImageSource> ToNative(this ImageSource source)

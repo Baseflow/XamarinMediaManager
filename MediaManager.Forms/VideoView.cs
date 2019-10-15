@@ -45,7 +45,7 @@ namespace MediaManager.Forms
                     VideoWidth = MediaPlayer.VideoWidth;
                     break;
                 case nameof(MediaPlayer.VideoPlaceholder):
-                    if(MediaPlayer.VideoPlaceholder is ImageSource imageSource)
+                    if (MediaPlayer.VideoPlaceholder is ImageSource imageSource)
                         VideoPlaceholder = imageSource;
                     break;
                 default:
@@ -296,7 +296,7 @@ namespace MediaManager.Forms
         private static async void OnVideoPlaceholderPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
 #if !NETSTANDARD
-            if (newValue is ImageSource imageSource)
+            if (newValue is Xamarin.Forms.ImageSource imageSource)
                 MediaManager.MediaPlayer.VideoPlaceholder = await imageSource.ToNative().ConfigureAwait(false);
 #endif
         }

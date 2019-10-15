@@ -7,6 +7,7 @@ using MediaManager.Platforms.Uap.Video;
 using MediaManager.Player;
 using MediaManager.Video;
 using Windows.Media.Playback;
+using Windows.UI.Xaml.Media;
 using MediaPlayerState = MediaManager.Player.MediaPlayerState;
 
 namespace MediaManager.Platforms.Uap.Player
@@ -98,10 +99,11 @@ namespace MediaManager.Platforms.Uap.Player
 
         public override void UpdateVideoPlaceholder(object value)
         {
-            if (PlayerView == null)
+            if (PlayerView?.PlayerView == null)
                 return;
 
-            //TODO: Implement placeholder
+            if (value is ImageSource imageSource)
+                PlayerView.PlayerView.PosterSource = imageSource;
         }
 
         public void Initialize()
