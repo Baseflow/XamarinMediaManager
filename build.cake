@@ -18,6 +18,19 @@ var configuration = Argument("configuration", "Release");
 var verbosityArg = Argument("verbosity", "Minimal");
 var verbosity = Verbosity.Minimal;
 
+var signingSecret = EnvironmentVariable("SIGNING_SECRET");
+var signingUser = EnvironmentVariable("SIGNING_USER");
+var didSignPackages = false;
+
+var nugetSource = Argument("package_source", "");
+var nugetApiKey = Argument("package_apikey", "");
+
+var githubToken = Argument("github_token", "");
+var githubTokenEnv = EnvironmentVariable("CHANGELOG_GITHUB_TOKEN");
+var sinceTag = Argument("since_tag", "");
+
+var shouldPublishPackages = false;
+
 var isRunningOnAppVeyor = AppVeyor.IsRunningOnAppVeyor;
 GitVersion versionInfo = null;
 
@@ -32,9 +45,9 @@ Setup(context =>
 
     if (isRunningOnAppVeyor)
     {
-        var buildNumber = AppVeyor.Environment.Build.Number;
-        AppVeyor.UpdateBuildVersion(versionInfo.InformationalVersion
-            + "-" + buildNumber);
+		var buildNumber = versionInfo.InformationalVersion + "-" + AppVeyor.Environment.Build.Number;
+        buildNumber = buildNumber.Replace("/", "-");
+        AppVeyor.UpdateBuildVersion(buildNumber);
     }
 
     var cakeVersion = typeof(ICakeContext).Assembly.GetName().Version.ToString();
@@ -45,9 +58,10 @@ Setup(context =>
         configuration,
         target,
         cakeVersion);
+		
+	shouldPublishPackages = ShouldPushNugetPackages(versionInfo.BranchName, nugetSource);
 
-    Debug("Will push NuGet packages {0}", 
-        ShouldPushNugetPackages(versionInfo.BranchName));
+    Information("Will push NuGet packages {0}", shouldPublishPackages);
 
     verbosity = (Verbosity) Enum.Parse(typeof(Verbosity), verbosityArg, true);
 });
@@ -106,8 +120,6 @@ Task("Build")
     .Does(() =>  {
 
     var settings = GetDefaultBuildSettings()
-        .WithProperty("DebugSymbols", "True")
-        .WithProperty("DebugType", "Embedded")
         .WithProperty("Version", versionInfo.SemVer)
         .WithProperty("PackageVersion", versionInfo.SemVer)
         .WithProperty("InformationalVersion", versionInfo.InformationalVersion)
@@ -128,7 +140,7 @@ Task("UnitTest")
 
     var settings = new DotNetCoreTestSettings
     {
-        Configuration = "Release",
+        Configuration = configuration,
         NoBuild = true
     };
 
