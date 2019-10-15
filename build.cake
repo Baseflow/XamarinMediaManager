@@ -22,10 +22,10 @@ var signingSecret = EnvironmentVariable("SIGNING_SECRET");
 var signingUser = EnvironmentVariable("SIGNING_USER");
 var didSignPackages = false;
 
-var nugetSource = Argument("package_source", "");
-var nugetApiKey = Argument("package_apikey", "");
+var nugetSource = EnvironmentVariable("NUGET_SOURCE");
+var nugetApiKey = EnvironmentVariable("NUGET_APIKEY");
 
-var githubToken = Argument("github_token", "");
+var githubToken = EnvironmentVariable("GITHUB_TOKEN");
 var githubTokenEnv = EnvironmentVariable("CHANGELOG_GITHUB_TOKEN");
 var sinceTag = Argument("since_tag", "");
 
