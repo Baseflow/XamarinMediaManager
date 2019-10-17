@@ -6,7 +6,6 @@ using Android.Graphics;
 using Android.Runtime;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.UI;
-using MediaManager.Library;
 
 namespace MediaManager.Platforms.Android.Media
 {
@@ -29,18 +28,23 @@ namespace MediaManager.Platforms.Android.Media
 
         public string GetCurrentContentText(IPlayer player)
         {
-            return MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetTitle();
+            return MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex)?.DisplayTitle;
         }
 
         public string GetCurrentContentTitle(IPlayer player)
         {
-            return MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetContentTitle();
+            return MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex)?.DisplaySubtitle;
+        }
+
+        public string GetCurrentSubText(IPlayer player)
+        {
+            return MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex)?.DisplayDescription;
         }
 
         public Bitmap GetCurrentLargeIcon(IPlayer player, PlayerNotificationManager.BitmapCallback callback)
         {
             var mediaItem = MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex);
-            if (mediaItem != null)
+            if (mediaItem != null && mediaItem.DisplayImage == null)
             {
                 Task.Run(async () =>
                 {
@@ -48,12 +52,7 @@ namespace MediaManager.Platforms.Android.Media
                     callback.OnBitmap(image);
                 }).ConfigureAwait(false);
             }
-            return null;
-        }
-
-        public string GetCurrentSubText(IPlayer player)
-        {
-            return MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex)?.GetSubText();
+            return mediaItem?.DisplayImage as Bitmap;
         }
     }
 }

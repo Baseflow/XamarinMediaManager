@@ -85,6 +85,10 @@ namespace MediaManager.Library
         /// </summary>
         int DiscNumber { get; set; }
 
+        object DisplayImage { get; set; }
+
+        string DisplayImageUri { get; set; }
+
         /// <summary>
         /// The metadata for a CharSequence or string typed value to retrieve the information about the description that is suitable for display to the user.
         /// </summary>
@@ -165,6 +169,11 @@ namespace MediaManager.Library
         /// This may not be available for every item
         /// </summary>
         string FileExtension { get; set; }
+
+        /// <summary>
+        /// The name of the media file
+        /// </summary>
+        string FileName { get; set; }
 
         /// <summary>
         /// The type of the media item

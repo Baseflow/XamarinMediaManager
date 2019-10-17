@@ -89,17 +89,17 @@ namespace MediaManager.Platforms.Android.Media
             var description = new MediaDescriptionCompat.Builder()
                 .SetMediaId(item?.Id)
                 .SetMediaUri(global::Android.Net.Uri.Parse(item?.MediaUri))
-                .SetTitle(item?.GetTitle())
-                .SetSubtitle(item?.GetContentTitle())
+                .SetTitle(item?.DisplayTitle)
+                .SetSubtitle(item?.DisplaySubtitle)
                 .SetDescription(item?.DisplayDescription)
                 .SetExtras(item?.Extras as Bundle);
 
             //It should be better to only set the uri to prevent loading images into memory
-            if (!string.IsNullOrEmpty(item?.GetImageUri()))
-                description.SetIconUri(global::Android.Net.Uri.Parse(item?.GetImageUri()));
+            if (!string.IsNullOrEmpty(item?.DisplayImageUri))
+                description.SetIconUri(global::Android.Net.Uri.Parse(item?.DisplayImageUri));
             else
             {
-                var image = item?.GetImage() as Bitmap;
+                var image = item?.DisplayImage as Bitmap;
                 if (image != null)
                     description.SetIconBitmap(image);
             }
@@ -130,8 +130,8 @@ namespace MediaManager.Platforms.Android.Media
             //item.Date = mediaDescription.
             //item.DiscNumber = mediaDescription.
             //item.DisplayDescription = mediaDescription.
-            item.DisplayIcon = mediaDescription.IconBitmap;
-            item.DisplayIconUri = mediaDescription.IconUri.ToString();
+            item.DisplayImage = mediaDescription.IconBitmap;
+            item.DisplayImageUri = mediaDescription.IconUri.ToString();
             item.DisplaySubtitle = mediaDescription.Subtitle;
             item.DisplayTitle = mediaDescription.Title;
             //item.DownloadStatus = mediaDescription.
@@ -176,8 +176,8 @@ namespace MediaManager.Platforms.Android.Media
 
             item.DiscNumber = Convert.ToInt32(mediaMetadata.GetLong(MediaMetadataCompat.MetadataKeyDiscNumber));
             item.DisplayDescription = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyDisplayDescription);
-            item.DisplayIcon = mediaMetadata.GetBitmap(MediaMetadataCompat.MetadataKeyDisplayIcon);
-            item.DisplayIconUri = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyDisplayIconUri);
+            item.DisplayImage = mediaMetadata.GetBitmap(MediaMetadataCompat.MetadataKeyDisplayIcon);
+            item.DisplayImageUri = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyDisplayIconUri);
             item.DisplaySubtitle = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyDisplaySubtitle);
             item.DisplayTitle = mediaMetadata.GetString(MediaMetadataCompat.MetadataKeyDisplayTitle);
             item.DownloadStatus = mediaMetadata.GetLong(MediaMetadataCompat.MetadataKeyDownloadStatus) == 0 ? DownloadStatus.NotDownloaded : DownloadStatus.Downloaded;

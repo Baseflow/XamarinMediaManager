@@ -15,7 +15,7 @@
     <RepositoryType>git</RepositoryType>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
     <NeutralLanguage>en</NeutralLanguage>
-    <Version>0.8.16</Version>
+    <Version>0.8.17</Version>
     <Platform>AnyCPU</Platform>
 
     <LangVersion>7.3</LangVersion>

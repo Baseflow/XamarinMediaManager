@@ -23,7 +23,7 @@ namespace MediaManager.Library
             else if (!string.IsNullOrEmpty(mediaItem.Title))
                 return mediaItem.Title;
             else
-                return "";
+                return string.Empty;
         }
 
         public static string GetContentTitle(this IMediaItem mediaItem)
@@ -37,7 +37,7 @@ namespace MediaManager.Library
             else if (!string.IsNullOrEmpty(mediaItem.Album))
                 return mediaItem.Album;
             else
-                return "";
+                return string.Empty;
         }
 
         public static string GetSubText(this IMediaItem mediaItem)
@@ -49,27 +49,7 @@ namespace MediaManager.Library
             else if (!string.IsNullOrEmpty(mediaItem.AlbumArtist))
                 return mediaItem.AlbumArtist;
             else
-                return "";
-        }
-
-        public static string GetImageUri(this IMediaItem mediaItem)
-        {
-            if (!string.IsNullOrEmpty(mediaItem.ImageUri))
-                return mediaItem.ImageUri;
-            else if (!string.IsNullOrEmpty(mediaItem.AlbumImageUri))
-                return mediaItem.AlbumImageUri;
-            else
-                return "";
-        }
-
-        public static object GetImage(this IMediaItem mediaItem)
-        {
-            if (mediaItem.Image != null)
-                return mediaItem.Image;
-            else if (mediaItem.AlbumImage != null)
-                return mediaItem.AlbumImage;
-            else
-                return null;
+                return string.Empty;
         }
     }
 }

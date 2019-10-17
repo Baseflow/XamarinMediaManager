@@ -132,22 +132,29 @@ namespace MediaManager.Media
 
         public virtual async Task<IMediaItem> UpdateMediaItem(IMediaItem mediaItem)
         {
+            if (string.IsNullOrEmpty(mediaItem.FileName))
+            {
+                mediaItem.FileName = GetFileName(mediaItem);
+            }
+            if (string.IsNullOrEmpty(mediaItem.FileExtension))
+            {
+                mediaItem.FileExtension = GetFileExtension(mediaItem);
+            }
+            if (mediaItem.MediaLocation == MediaLocation.Unknown)
+            {
+                mediaItem.MediaLocation = GetMediaLocation(mediaItem);
+            }
+            if (mediaItem.MediaType == MediaType.Default)
+            {
+                mediaItem.MediaType = GetMediaType(mediaItem);
+            }
+            if (mediaItem.DownloadStatus == DownloadStatus.Unknown)
+            {
+                mediaItem.DownloadStatus = GetDownloadStatus(mediaItem);
+            }
+
             if (!mediaItem.IsMetadataExtracted)
             {
-                if (string.IsNullOrEmpty(mediaItem.FileExtension))
-                {
-                    mediaItem.FileExtension = GetFileExtension(mediaItem);
-                }
-                if (mediaItem.MediaLocation == MediaLocation.Unknown)
-                {
-                    mediaItem.MediaLocation = GetMediaLocation(mediaItem);
-                }
-                if (mediaItem.MediaType == MediaType.Default)
-                {
-                    mediaItem.MediaType = GetMediaType(mediaItem);
-                }
-                mediaItem.DownloadStatus = GetDownloadStatus(mediaItem);
-
                 mediaItem = await GetMetadata(mediaItem).ConfigureAwait(false);
                 mediaItem.Image = await GetMediaImage(mediaItem).ConfigureAwait(false);
                 mediaItem.IsMetadataExtracted = true;
@@ -172,7 +179,7 @@ namespace MediaManager.Media
             object image = null;
 
             if (mediaItem.IsMetadataExtracted)
-                image = mediaItem.GetImage();
+                image = mediaItem.DisplayImage;
 
             if (image == null)
             {
@@ -200,21 +207,42 @@ namespace MediaManager.Media
 
         protected abstract Task<string> GetResourcePath(string resourceName);
 
+        public virtual string GetFileName(IMediaItem mediaItem)
+        {
+            if (string.IsNullOrEmpty(mediaItem?.MediaUri))
+                return string.Empty;
+
+            string url;
+            if (!Uri.TryCreate(mediaItem.MediaUri, UriKind.Absolute, out var uri))
+                uri = new Uri(mediaItem.MediaUri);
+
+            url = Path.GetFileName(uri.LocalPath);
+            if (string.IsNullOrEmpty(url))
+                url = uri.Segments.LastOrDefault();
+
+            return url;
+        }
+
         public virtual string GetFileExtension(IMediaItem mediaItem)
         {
             var url = mediaItem?.MediaUri?.ToLower();
+            var fileName = mediaItem?.FileName;
+
+            if (string.IsNullOrEmpty(url) && string.IsNullOrEmpty(fileName))
+                return string.Empty;
+
             var suffixes = VideoSuffixes.Union(AudioSuffixes).Union(HlsSuffixes).Union(DashSuffixes).Union(SmoothStreamingSuffixes);
 
             //Try to find the best match
             foreach (var item in suffixes)
             {
-                if (url.EndsWith(item))
+                if (fileName.EndsWith(item) || url.EndsWith(item))
                     return item;
             }
             //If no match available see if the url contains info
             foreach (var item in suffixes)
             {
-                if (url.Contains(item))
+                if (fileName.Contains(item) || url.Contains(item))
                     return item;
             }
             return mediaItem?.FileExtension;
@@ -278,6 +306,7 @@ namespace MediaManager.Media
             switch (mediaItem.MediaLocation)
             {
                 case MediaLocation.Unknown:
+                    return DownloadStatus.Unknown;
                 case MediaLocation.Remote:
                     return DownloadStatus.NotDownloaded;
                 case MediaLocation.FileSystem:

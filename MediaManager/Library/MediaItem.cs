@@ -109,42 +109,101 @@ namespace MediaManager.Library
             set => SetProperty(ref _discNumber, value);
         }
 
-        private string _displayDescription;
-        public string DisplayDescription
+        private object _displayImage;
+        public object DisplayImage
         {
-            get => _displayDescription;
-            set => SetProperty(ref _displayDescription, value);
+            get
+            {
+                if (_displayImage != null)
+                    return _displayImage;
+                if (Image != null)
+                    return Image;
+                else if (AlbumImage != null)
+                    return AlbumImage;
+                else
+                    return null;
+            }
+
+            set => SetProperty(ref _displayImage, value);
         }
 
-        private object _displayIcon;
-        public object DisplayIcon
+        private string _displayImageUri;
+        public string DisplayImageUri
         {
-            get => _displayIcon;
-            set => SetProperty(ref _displayIcon, value);
-        }
+            get
+            {
+                if (!string.IsNullOrEmpty(_displayImageUri))
+                    return _displayImageUri;
+                if (!string.IsNullOrEmpty(ImageUri))
+                    return ImageUri;
+                else if (!string.IsNullOrEmpty(AlbumImageUri))
+                    return AlbumImageUri;
+                else
+                    return string.Empty;
+            }
 
-        private string _displayIconUri;
-        public string DisplayIconUri
-        {
-            get => _displayIconUri;
-            set => SetProperty(ref _displayIconUri, value);
-        }
-
-        private string _displaySubtitle;
-        public string DisplaySubtitle
-        {
-            get => _displaySubtitle;
-            set => SetProperty(ref _displaySubtitle, value);
+            set => SetProperty(ref _displayImageUri, value);
         }
 
         private string _displayTitle;
         public string DisplayTitle
         {
-            get => _displayTitle;
+            get
+            {
+                if (!string.IsNullOrEmpty(_displayTitle))
+                    return _displayTitle;
+                else if (!string.IsNullOrEmpty(Title))
+                    return Title;
+                else if (!string.IsNullOrEmpty(FileName))
+                    return FileName;
+                else
+                    return string.Empty;
+            }
+
             set => SetProperty(ref _displayTitle, value);
         }
 
-        private DownloadStatus _downloadStatus = DownloadStatus.NotDownloaded;
+        private string _displaySubtitle;
+        public string DisplaySubtitle
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_displaySubtitle))
+                    return _displaySubtitle;
+                else if (!string.IsNullOrEmpty(Artist))
+                    return Artist;
+                else if (!string.IsNullOrEmpty(AlbumArtist))
+                    return AlbumArtist;
+                else if (!string.IsNullOrEmpty(Album))
+                    return Album;
+                else
+                    return string.Empty;
+            }
+
+            set => SetProperty(ref _displaySubtitle, value);
+        }
+
+        private string _displayDescription;
+        public string DisplayDescription
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_displayDescription))
+                    return _displayDescription;
+                else if (!string.IsNullOrEmpty(Album))
+                    return Album;
+                else if (!string.IsNullOrEmpty(Artist))
+                    return Artist;
+                else if (!string.IsNullOrEmpty(AlbumArtist))
+                    return AlbumArtist;
+                else
+                    return string.Empty;
+            }
+
+            set => SetProperty(ref _displayDescription, value);
+        }
+
+        private DownloadStatus _downloadStatus = DownloadStatus.Unknown;
         public DownloadStatus DownloadStatus
         {
             get => _downloadStatus;
@@ -233,6 +292,13 @@ namespace MediaManager.Library
         {
             get => _fileExtension;
             set => SetProperty(ref _fileExtension, value);
+        }
+
+        private string _fileName;
+        public string FileName
+        {
+            get => _fileName;
+            set => SetProperty(ref _fileName, value);
         }
 
         private MediaType _mediaType = MediaType.Default;

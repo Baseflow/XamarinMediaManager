@@ -63,8 +63,8 @@ namespace ElementPlayer.Core.ViewModels
             //Image = image.ToImageSource();
         }
 
-        public string CurrentTitle => Current.GetTitle();
-        public string CurrentSubtitle => Current.GetContentTitle();
+        public string CurrentTitle => Current.DisplayTitle;
+        public string CurrentSubtitle => Current.DisplaySubtitle;
 
         public int Buffered => Convert.ToInt32(MediaManager.Buffered.TotalSeconds);
         public int Duration => Convert.ToInt32(MediaManager.Duration.TotalSeconds);

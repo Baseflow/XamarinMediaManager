@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ElementPlayer.Core.Assets;
+using MediaManager;
 using MediaManager.Library;
 using MediaManager.Media;
 
@@ -37,8 +38,9 @@ namespace ElementPlayer.Core
                 {
                     if (!string.IsNullOrEmpty(sample.Uri))
                     {
-                        //var mediaItem = await CrossMediaManager.Current.Extractor.CreateMediaItem(sample.Uri).ConfigureAwait(false);
-                        var mediaItem = new MediaItem(sample.Uri);
+                        IMediaItem mediaItem = new MediaItem(sample.Uri) { IsMetadataExtracted = true };
+                        mediaItem = await CrossMediaManager.Current.Extractor.UpdateMediaItem(mediaItem).ConfigureAwait(false);
+                        //var mediaItem = new MediaItem(sample.Uri);
                         mediaItem.Title = sample.Name;
                         mediaItem.Album = item.Name;
                         mediaItem.FileExtension = sample.Extension;
