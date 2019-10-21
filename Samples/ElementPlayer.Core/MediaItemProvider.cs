@@ -10,6 +10,8 @@ namespace ElementPlayer.Core
 {
     public class MediaItemProvider : IMediaItemProvider
     {
+        public bool Enabled { get; set; } = true;
+
         public Task<bool> AddOrUpdate(IMediaItem item)
         {
             throw new NotImplementedException();

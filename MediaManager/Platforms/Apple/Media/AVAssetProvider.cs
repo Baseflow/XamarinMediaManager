@@ -9,7 +9,7 @@ using MediaManager.Media;
 
 namespace MediaManager.Platforms.Apple.Media
 {
-    public class AVAssetProvider : IMediaItemMetadataProvider, IMediaItemVideoFrameProvider
+    public class AVAssetProvider : MediaExtractorProviderBase, IMediaItemMetadataProvider, IMediaItemVideoFrameProvider
     {
         public AVAssetProvider()
         {
@@ -47,7 +47,7 @@ namespace MediaManager.Platforms.Apple.Media
             var url = mediaItem.GetNSUrl();
 
             var asset = AVAsset.FromUrl(url);
-            await asset.LoadValuesTaskAsync(assetsToLoad.ToArray());
+            await asset.LoadValuesTaskAsync(assetsToLoad.ToArray()).ConfigureAwait(false);
 
             var metadataDict = asset.CommonMetadata.ToDictionary(t => t.CommonKey, t => t);
 

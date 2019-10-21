@@ -8,7 +8,7 @@ using MediaMetadataRetriever = Wseemann.Media.FFmpegMediaMetadataRetriever;
 
 namespace MediaManager.FFmpegMediaMetadataRetriever
 {
-    public class FFmpegMetadataProvider : IMediaItemMetadataProvider, IMediaItemImageProvider, IMediaItemVideoFrameProvider
+    public class FFmpegMetadataProvider : MediaExtractorProviderBase, IMediaItemMetadataProvider, IMediaItemImageProvider, IMediaItemVideoFrameProvider
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
         protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;

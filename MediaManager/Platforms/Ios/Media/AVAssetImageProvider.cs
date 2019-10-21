@@ -11,7 +11,7 @@ using UIKit;
 
 namespace MediaManager.Platforms.Ios.Media
 {
-    public class AVAssetImageProvider : IMediaItemImageProvider
+    public class AVAssetImageProvider : MediaExtractorProviderBase, IMediaItemImageProvider
     {
         public async Task<object> ProvideImage(IMediaItem mediaItem)
         {
@@ -35,7 +35,7 @@ namespace MediaManager.Platforms.Ios.Media
 
                     var url = mediaItem.GetNSUrl();
                     var asset = AVAsset.FromUrl(url);
-                    await asset.LoadValuesTaskAsync(assetsToLoad.ToArray());
+                    await asset.LoadValuesTaskAsync(assetsToLoad.ToArray()).ConfigureAwait(false);
 
                     var metadataDict = asset.CommonMetadata.ToDictionary(t => t.CommonKey, t => t);
 

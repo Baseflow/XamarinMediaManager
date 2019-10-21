@@ -6,6 +6,7 @@ namespace MediaManager.Media
 {
     public interface ILibraryProvider
     {
+        bool Enabled { get; set; }
     }
 
     public interface ILibraryProvider<TContentItem> : ILibraryProvider where TContentItem : IContentItem

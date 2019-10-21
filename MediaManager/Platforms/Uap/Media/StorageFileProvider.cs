@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace MediaManager.Platforms.Uap.Media
 {
-    public class StorageFileProvider : IMediaItemMetadataProvider, IMediaItemImageProvider, IMediaItemVideoFrameProvider
+    public class StorageFileProvider : MediaExtractorProviderBase, IMediaItemMetadataProvider, IMediaItemImageProvider, IMediaItemVideoFrameProvider
     {
         public async Task<IMediaItem> ProvideMetadata(IMediaItem mediaItem)
         {
@@ -21,11 +21,11 @@ namespace MediaManager.Platforms.Uap.Media
                 switch (mediaItem.MediaType)
                 {
                     case MediaType.Audio:
-                        await SetAudioInfo(file, mediaItem);
+                        await SetAudioInfo(file, mediaItem).ConfigureAwait(false);
                         break;
 
                     case MediaType.Video:
-                        await SetVideoInfo(file, mediaItem);
+                        await SetVideoInfo(file, mediaItem).ConfigureAwait(false);
                         break;
                 }
             }
@@ -86,7 +86,7 @@ namespace MediaManager.Platforms.Uap.Media
             if (mediaItem.MediaLocation.IsLocal())
             {
                 var file = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
-                var thumbnail = await GetThumbnailAsync(file, timeFromStart);
+                var thumbnail = await GetThumbnailAsync(file, timeFromStart).ConfigureAwait(false);
 
                 var bitmapImage = new BitmapImage();
                 var randomAccessStream = new InMemoryRandomAccessStream();

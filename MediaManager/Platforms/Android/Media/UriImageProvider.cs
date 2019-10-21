@@ -6,7 +6,7 @@ using MediaManager.Media;
 
 namespace MediaManager.Platforms.Android.Media
 {
-    public class UriImageProvider : IMediaItemImageProvider
+    public class UriImageProvider : MediaExtractorProviderBase, IMediaItemImageProvider
     {
         public async Task<object> ProvideImage(IMediaItem mediaItem)
         {

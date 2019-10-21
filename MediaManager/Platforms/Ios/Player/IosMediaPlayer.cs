@@ -110,7 +110,7 @@ namespace MediaManager.Platforms.Ios.Player
             });
         }
 
-        private async void ToneInterruptionListener(object sender, AVAudioSessionInterruptionEventArgs interruptArgs)
+        protected virtual async void ToneInterruptionListener(object sender, AVAudioSessionInterruptionEventArgs interruptArgs)
         {
             switch (interruptArgs.InterruptionType)
             {

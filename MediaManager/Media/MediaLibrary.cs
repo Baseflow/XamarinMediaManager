@@ -43,7 +43,7 @@ namespace MediaManager.Media
             var items = new List<TContentItem>();
             IList<Task<IEnumerable<TContentItem>>> tasks = new List<Task<IEnumerable<TContentItem>>>();
 
-            foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
+            foreach (var provider in Providers.Where(x => x.Enabled).OfType<ILibraryProvider<TContentItem>>())
             {
                 tasks.Add(provider.GetAll());
             }
@@ -57,7 +57,7 @@ namespace MediaManager.Media
 
         public async Task<TContentItem> Get<TContentItem>(string id) where TContentItem : IContentItem
         {
-            foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
+            foreach (var provider in Providers.Where(x => x.Enabled).OfType<ILibraryProvider<TContentItem>>())
             {
                 var item = await provider.Get(id).ConfigureAwait(false);
                 if (item != null)
@@ -68,7 +68,7 @@ namespace MediaManager.Media
 
         public async Task<bool> AddOrUpdate<TContentItem>(TContentItem item) where TContentItem : IContentItem
         {
-            foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
+            foreach (var provider in Providers.Where(x => x.Enabled).OfType<ILibraryProvider<TContentItem>>())
             {
                 var success = await provider.AddOrUpdate(item).ConfigureAwait(false);
                 if (success)
@@ -79,7 +79,7 @@ namespace MediaManager.Media
 
         public async Task<bool> Remove<TContentItem>(TContentItem item) where TContentItem : IContentItem
         {
-            foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
+            foreach (var provider in Providers.Where(x => x.Enabled).OfType<ILibraryProvider<TContentItem>>())
             {
                 var success = await provider.Remove(item).ConfigureAwait(false);
                 if (success)
@@ -91,7 +91,7 @@ namespace MediaManager.Media
         public async Task<bool> RemoveAll<TContentItem>() where TContentItem : IContentItem
         {
             IList<Task<bool>> tasks = new List<Task<bool>>();
-            foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
+            foreach (var provider in Providers.Where(x => x.Enabled).OfType<ILibraryProvider<TContentItem>>())
             {
                 tasks.Add(provider.RemoveAll());
             }
@@ -101,7 +101,7 @@ namespace MediaManager.Media
 
         public async Task<bool> Exists<TContentItem>(string id) where TContentItem : IContentItem
         {
-            foreach (var provider in Providers.OfType<ILibraryProvider<TContentItem>>())
+            foreach (var provider in Providers.Where(x => x.Enabled).OfType<ILibraryProvider<TContentItem>>())
             {
                 var success = await provider.Exists(id).ConfigureAwait(false);
                 if (success)

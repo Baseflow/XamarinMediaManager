@@ -78,23 +78,22 @@ namespace MediaManager.Media
             return providers;
         }
 
-        public virtual Task<IMediaItem> CreateMediaItem(string url)
+        public virtual async Task<IMediaItem> CreateMediaItem(string url)
         {
             var mediaItem = new MediaItem(url);
-            return UpdateMediaItem(mediaItem);
+            return await UpdateMediaItem(mediaItem).ConfigureAwait(false);
         }
 
-        public virtual Task<IMediaItem> CreateMediaItem(FileInfo file)
+        public virtual async Task<IMediaItem> CreateMediaItem(FileInfo file)
         {
-            return CreateMediaItem(file.FullName);
+            return await CreateMediaItem(file.FullName).ConfigureAwait(false);
         }
 
         public virtual async Task<IMediaItem> CreateMediaItemFromAssembly(string resourceName, Assembly assembly = null)
         {
-            if (assembly == null)
+            if (assembly == null && !TryFindAssembly(resourceName, out assembly))
             {
-                if (!TryFindAssembly(resourceName, out assembly))
-                    return null;
+                return null;
             }
 
             string path = null;
@@ -165,7 +164,7 @@ namespace MediaManager.Media
 
         public async Task<IMediaItem> GetMetadata(IMediaItem mediaItem)
         {
-            foreach (var provider in MetadataProviders)
+            foreach (var provider in MetadataProviders.Where(x => x.Enabled))
             {
                 var item = await provider.ProvideMetadata(mediaItem).ConfigureAwait(false);
                 if (item != null)
@@ -183,7 +182,7 @@ namespace MediaManager.Media
 
             if (image == null)
             {
-                foreach (var provider in ImageProviders)
+                foreach (var provider in ImageProviders.Where(x => x.Enabled))
                 {
                     image = await provider.ProvideImage(mediaItem).ConfigureAwait(false);
                     if (image != null)
@@ -196,7 +195,7 @@ namespace MediaManager.Media
         public async Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
         {
             object image = null;
-            foreach (var provider in VideoFrameProviders)
+            foreach (var provider in VideoFrameProviders.Where(x => x.Enabled))
             {
                 image = await provider.ProvideVideoFrame(mediaItem, timeFromStart).ConfigureAwait(false);
                 if (image != null)
