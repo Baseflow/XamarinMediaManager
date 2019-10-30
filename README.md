@@ -24,7 +24,7 @@ More documenatation and information is available on the [Wiki](https://github.co
 
 # Blogs
 
-* [Xamarin Blog](https://blog.xamarin.com/play-audio-and-video-with-the-mediamanager-plugin-for-xamarin/)
+* [Xamarin Blog](https://devblogs.microsoft.com/xamarin/play-audio-and-video-with-the-mediamanager-plugin-for-xamarin/)
 * [Baseflow Blog](https://baseflow.com/blogs/mobile-video-matters/)
 
 ## Installation
