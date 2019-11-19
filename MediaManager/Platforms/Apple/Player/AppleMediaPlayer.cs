@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -51,6 +51,8 @@ namespace MediaManager.Platforms.Apple.Player
         private IDisposable playbackBufferEmptyToken;
         private IDisposable presentationSizeToken;
 
+        private IDisposable timedMetaDataToken;
+
         public override event BeforePlayingEventHandler BeforePlaying;
         public override event AfterPlayingEventHandler AfterPlaying;
 
@@ -74,6 +76,8 @@ namespace MediaManager.Platforms.Apple.Player
             playbackBufferFullToken = Player.AddObserver("currentItem.playbackBufferFull", options, PlaybackBufferFullChanged);
             playbackBufferEmptyToken = Player.AddObserver("currentItem.playbackBufferEmpty", options, PlaybackBufferEmptyChanged);
             presentationSizeToken = Player.AddObserver("currentItem.presentationSize", options, PresentationSizeChanged);
+
+            timedMetaDataToken = Player.AddObserver("currentItem.timedMetadata", options, TimedMetaDataChanged);
         }
 
         private void PresentationSizeChanged(NSObservedChange obj)
@@ -82,6 +86,24 @@ namespace MediaManager.Platforms.Apple.Player
             {
                 VideoWidth = (int)Player.CurrentItem.PresentationSize.Width;
                 VideoHeight = (int)Player.CurrentItem.PresentationSize.Height;
+            }
+        }
+
+        private void TimedMetaDataChanged(NSObservedChange obj)
+        {
+            NSArray array = obj.NewValue as NSArray;
+            if (array != null && array.Count > 0)
+            {
+                var avMetadataItem = array.GetItem<AVMetadataItem>(0);
+                if (avMetadataItem != null && !string.IsNullOrEmpty(avMetadataItem.StringValue))
+                {
+                    var split = avMetadataItem.StringValue.Split(" - ");
+                    string artist = split.FirstOrDefault();
+                    string title = split.LastOrDefault();
+
+                    CrossMediaManager.Current.Queue.Current.Artist = artist;
+                    CrossMediaManager.Current.Queue.Current.Title = title;
+                }
             }
         }
 
