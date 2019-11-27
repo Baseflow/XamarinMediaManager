@@ -42,9 +42,16 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
             base.OnCreate();
 
-            PrepareMediaSession();
-            PrepareNotificationManager();
-
+            try
+            {
+                PrepareMediaSession();
+                PrepareNotificationManager();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
             MediaManager.StateChanged += MediaManager_StateChanged;
         }
 
