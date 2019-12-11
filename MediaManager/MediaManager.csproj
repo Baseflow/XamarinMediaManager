@@ -108,7 +108,7 @@
     <!--<PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.9.8" />
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.9.8" />-->
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.9.8" />
-    <PackageReference Include="Xamarin.Build.Download" Version="0.4.11" PrivateAssets="All" />
+    <PackageReference Include="Xamarin.Build.Download" Version="0.7.1" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('tizen')) ">
