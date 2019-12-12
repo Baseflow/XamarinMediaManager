@@ -156,7 +156,7 @@ namespace MediaManager
         }
 
         public AndroidMediaPlayer AndroidMediaPlayer => (AndroidMediaPlayer)MediaPlayer;
-        public SimpleExoPlayer Player => AndroidMediaPlayer.Player;
+        public SimpleExoPlayer Player => AndroidMediaPlayer?.Player;
 
         private IVolumeManager _volume;
         public override IVolumeManager Volume
@@ -206,7 +206,8 @@ namespace MediaManager
             set
             {
                 var oldPlaybackParameters = Player.PlaybackParameters;
-                Player.PlaybackParameters = new PlaybackParameters(value, oldPlaybackParameters.Pitch);
+                if(MediaSession != null)
+                    Player.PlaybackParameters = new PlaybackParameters(value, oldPlaybackParameters.Pitch);
             }
         }
 
@@ -319,9 +320,12 @@ namespace MediaManager
             set
             {
                 base.RepeatMode = value;
-                MediaController?.GetTransportControls()?.SetRepeatMode((int)value);
-                MediaSession?.SetRepeatMode((int)value);
-                Player.RepeatMode = (int)value;
+                if (MediaController != null && MediaSession != null)
+                {
+                    MediaController.GetTransportControls()?.SetRepeatMode((int)value);
+                    MediaSession.SetRepeatMode((int)value);
+                    Player.RepeatMode = (int)value;
+                }
             }
         }
 
