@@ -160,6 +160,7 @@ namespace MediaManager.Platforms.Apple.Player
             if (!succesfullNext)
             {
                 await Stop();
+                MediaManager.OnMediaListFinished(this, new MediaItemEventArgs(MediaManager.Queue.Current));
             }
         }
 

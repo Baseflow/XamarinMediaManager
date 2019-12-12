@@ -360,6 +360,7 @@ namespace MediaManager
         public event BufferedChangedEventHandler BufferedChanged;
         public event PositionChangedEventHandler PositionChanged;
 
+        public event MediaListFinishedEventHandler MediaListFinished;
         public event MediaItemFinishedEventHandler MediaItemFinished;
         public event MediaItemChangedEventHandler MediaItemChanged;
         public event MediaItemFailedEventHandler MediaItemFailed;
@@ -391,6 +392,7 @@ namespace MediaManager
             }
         }
 
+        internal void OnMediaListFinished(object sender, MediaItemEventArgs e) => MediaListFinished?.Invoke(sender, e);
         internal void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
         internal void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
 
