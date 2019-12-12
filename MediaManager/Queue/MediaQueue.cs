@@ -18,6 +18,7 @@ namespace MediaManager.Queue
         {
             MediaItems.CollectionChanged += MediaItems_CollectionChanged;
             MediaManager.PropertyChanged += MediaManager_PropertyChanged;
+            MediaManager.MediaItemFinished += MediaManager_MediaItemFinished;
         }
 
         private int shuffleKey = int.MinValue;
@@ -116,12 +117,16 @@ namespace MediaManager.Queue
 
         internal void OnQueueChanged(object s, QueueChangedEventArgs e)
         {
-            //TODO: Queue will only end when it is bigger than 1 because with 1 it would always be at the end right away.
-            if (Current != null && Count > 1 && !HasNext)
-                OnQueueEnded(this, new QueueEndedEventArgs());
-
             QueueChanged?.Invoke(s, e);
             MediaManager?.Notification?.UpdateNotification();
+        }
+
+        private void MediaManager_MediaItemFinished(object sender, MediaItemEventArgs e)
+        {
+            if (MediaItems == null || MediaItems.Count == 0) return;
+
+            if (MediaItems.Last() == e.MediaItem)
+                OnQueueEnded(this, new QueueEndedEventArgs(e.MediaItem));
         }
 
         public int Count => MediaItems.Count;
