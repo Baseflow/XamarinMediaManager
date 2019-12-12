@@ -206,7 +206,7 @@ namespace MediaManager
             set
             {
                 var oldPlaybackParameters = Player.PlaybackParameters;
-                if(MediaSession != null)
+                if (MediaSession != null)
                     Player.PlaybackParameters = new PlaybackParameters(value, oldPlaybackParameters.Pitch);
             }
         }

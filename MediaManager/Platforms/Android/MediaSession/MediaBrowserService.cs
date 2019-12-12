@@ -51,7 +51,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             {
                 Console.WriteLine(ex.Message);
             }
-            
+
             MediaManager.StateChanged += MediaManager_StateChanged;
         }
 
