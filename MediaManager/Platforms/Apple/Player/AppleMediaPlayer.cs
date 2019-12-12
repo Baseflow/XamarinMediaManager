@@ -224,14 +224,18 @@ namespace MediaManager.Platforms.Apple.Player
             if (Player?.CurrentItem?.Duration != CMTime.Indefinite)
                 scale = Player.CurrentItem.Duration.TimeScale;
 
-            await Player.SeekAsync(CMTime.FromSeconds(position.TotalSeconds, scale), CMTime.Zero, CMTime.Zero);
+            await Player?.SeekAsync(CMTime.FromSeconds(position.TotalSeconds, scale), CMTime.Zero, CMTime.Zero);
         }
 
         public override async Task Stop()
         {
-            Player.Pause();
-            await SeekTo(TimeSpan.Zero);
-            MediaManager.State = MediaPlayerState.Stopped;
+            if (Player != null)
+            {
+                Player.Pause();
+                await SeekTo(TimeSpan.Zero);
+            }
+            if (MediaManager != null)
+                MediaManager.State = MediaPlayerState.Stopped;
         }
 
         protected override void Dispose(bool disposing)
