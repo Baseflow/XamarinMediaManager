@@ -308,10 +308,10 @@ namespace MediaManager.Forms
             MediaManager.StateChanged -= MediaManager_StateChanged;
             MediaManager.MediaItemChanged -= MediaManager_MediaItemChanged;
 
-            MediaManager.Queue.QueueChanged += MediaQueue_QueueChanged;
+            MediaManager.Queue.QueueChanged -= MediaQueue_QueueChanged;
 
-            MediaManager.PropertyChanged += MediaManager_PropertyChanged;
-            MediaManager.MediaPlayer.PropertyChanged += MediaPlayer_PropertyChanged;
+            MediaManager.PropertyChanged -= MediaManager_PropertyChanged;
+            MediaManager.MediaPlayer.PropertyChanged -= MediaPlayer_PropertyChanged;
         }
     }
 }
