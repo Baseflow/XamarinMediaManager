@@ -12,7 +12,6 @@ namespace MediaManager.Playback
     public delegate void BufferedChangedEventHandler(object sender, BufferedChangedEventArgs e);
     public delegate void PositionChangedEventHandler(object sender, PositionChangedEventArgs e);
 
-    public delegate void MediaListFinishedEventHandler(object sender, MediaItemEventArgs e);
     public delegate void MediaItemFinishedEventHandler(object sender, MediaItemEventArgs e);
     public delegate void MediaItemChangedEventHandler(object sender, MediaItemEventArgs e);
     public delegate void MediaItemFailedEventHandler(object sender, MediaItemFailedEventArgs e);
@@ -138,8 +137,6 @@ namespace MediaManager.Playback
         event BufferedChangedEventHandler BufferedChanged;
 
         event PositionChangedEventHandler PositionChanged;
-
-        event MediaListFinishedEventHandler MediaListFinished;
 
         event MediaItemFinishedEventHandler MediaItemFinished;
 
