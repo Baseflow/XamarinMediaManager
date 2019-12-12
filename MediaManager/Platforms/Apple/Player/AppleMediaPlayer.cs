@@ -221,7 +221,7 @@ namespace MediaManager.Platforms.Apple.Player
         {
             var scale = TimeScale;
 
-            if (Player?.CurrentItem?.Duration != CMTime.Indefinite)
+            if (Player?.CurrentItem?.Duration != null && Player?.CurrentItem?.Duration != CMTime.Indefinite)
                 scale = Player.CurrentItem.Duration.TimeScale;
 
             await Player?.SeekAsync(CMTime.FromSeconds(position.TotalSeconds, scale), CMTime.Zero, CMTime.Zero);
