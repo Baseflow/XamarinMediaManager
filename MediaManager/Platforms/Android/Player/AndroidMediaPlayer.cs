@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
+using Android.OS;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Ext.Mediasession;
@@ -332,7 +333,11 @@ namespace MediaManager.Platforms.Android.Player
 
         public override Task SeekTo(TimeSpan position)
         {
-            Player.SeekTo((long)position.TotalMilliseconds);
+            Handler mainHandler = new Handler(Looper.MainLooper);
+            mainHandler.Post(() =>
+            {
+                Player.SeekTo((long)position.TotalMilliseconds);
+            });
             return Task.CompletedTask;
         }
 
