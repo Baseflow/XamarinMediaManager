@@ -1,5 +1,8 @@
-﻿using MediaManager.Notifications;
+﻿using System;
+using Foundation;
+using MediaManager.Notifications;
 using MediaPlayer;
+using UIKit;
 
 namespace MediaManager.Platforms.Apple.Notifications
 {
@@ -146,12 +149,47 @@ namespace MediaManager.Platforms.Apple.Notifications
             }
 
 #if __IOS__ || __TVOS__
-            var cover = mediaItem.AlbumImage as UIKit.UIImage;
+            object image = null;
+            try
+            {
+                if (!string.IsNullOrEmpty(mediaItem.ImageUri))
+                {
+                    if (mediaItem.ImageUri.StartsWith("http", StringComparison.CurrentCulture))
+                    {
+                        image = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(mediaItem.ImageUri)));
+                    }
+                    else
+                    {
+                        if (UIDevice.CurrentDevice.CheckSystemVersion(9,0))
+                        {
+                            image = UIImage.FromBundle(mediaItem.ImageUri);
+                        }
+                    }
+                }
+                if (image == null && !string.IsNullOrEmpty(mediaItem.AlbumImageUri))
+                {
+                    if (mediaItem.AlbumImageUri.StartsWith("http", StringComparison.CurrentCulture))
+                    {
+                        image = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(mediaItem.AlbumImageUri)));
+                    }
+                    else
+                    {
+                        if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
+                        {
+                            image = UIImage.FromBundle(mediaItem.AlbumImageUri);
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
-            if (cover != null)
+            if (image != null)
             {
                 //TODO: Why is this deprecated?
-                nowPlayingInfo.Artwork = new MPMediaItemArtwork(cover);
+                nowPlayingInfo.Artwork = new MPMediaItemArtwork((UIKit.UIImage)image);
             }
 #endif
             MPNowPlayingInfoCenter.DefaultCenter.NowPlaying = nowPlayingInfo;
