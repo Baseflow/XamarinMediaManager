@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using AVFoundation;
+using MediaManager.Library;
 using MediaManager.Media;
 using MediaManager.Notifications;
 using MediaManager.Platforms.Apple.Media;

@@ -280,6 +280,7 @@ namespace MediaManager
             if (ClearQueueOnPlay)
             {
                 Queue.Clear();
+                Queue.CurrentIndex = 0;
             }
 
             foreach (var item in mediaItems)
