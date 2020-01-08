@@ -119,13 +119,5 @@ namespace MediaManager
                     Player.Rate = value;
             }
         }
-
-        public override Task<IMediaItem> PrepareQueueForPlayback(IEnumerable<IMediaItem> mediaItems)
-        {
-            if (ClearQueueOnPlay)
-                Queue.CurrentIndex = 0;
-
-            return base.PrepareQueueForPlayback(mediaItems);
-        }
     }
 }
