@@ -44,7 +44,7 @@ namespace MediaManager.Platforms.Android.Media
         public Bitmap GetCurrentLargeIcon(IPlayer player, PlayerNotificationManager.BitmapCallback callback)
         {
             var mediaItem = MediaManager.Queue.ElementAtOrDefault(player.CurrentWindowIndex);
-            if (mediaItem != null && mediaItem.DisplayImage == null)
+            if (mediaItem != null && mediaItem.DisplayImage == null && !mediaItem.IsMetadataExtracted)
             {
                 Task.Run(async () =>
                 {
