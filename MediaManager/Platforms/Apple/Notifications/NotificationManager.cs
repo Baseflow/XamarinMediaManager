@@ -157,73 +157,73 @@ namespace MediaManager.Platforms.Apple.Notifications
             MPNowPlayingInfoCenter.DefaultCenter.NowPlaying = nowPlayingInfo;
         }
 
-        private MPRemoteCommandHandlerStatus SkipBackwardCommand(MPRemoteCommandEvent arg)
+        protected virtual MPRemoteCommandHandlerStatus SkipBackwardCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.StepBackward();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
-        private MPRemoteCommandHandlerStatus SkipForwardCommand(MPRemoteCommandEvent arg)
+        protected virtual MPRemoteCommandHandlerStatus SkipForwardCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.StepForward();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
-        private MPRemoteCommandHandlerStatus StopCommand(MPRemoteCommandEvent arg)
+        protected virtual MPRemoteCommandHandlerStatus StopCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.Stop();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
-        private MPRemoteCommandHandlerStatus SeekForwardCommand(MPRemoteCommandEvent arg)
+        protected virtual MPRemoteCommandHandlerStatus SeekForwardCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.StepForward();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
-        private MPRemoteCommandHandlerStatus SeekBackwardCommand(MPRemoteCommandEvent arg)
+        protected virtual MPRemoteCommandHandlerStatus SeekBackwardCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.StepBackward();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
-        private MPRemoteCommandHandlerStatus PreviousCommand(MPRemoteCommandEvent arg)
+        protected virtual MPRemoteCommandHandlerStatus PreviousCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.PlayPrevious();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
-        private MPRemoteCommandHandlerStatus PauseCommand(MPRemoteCommandEvent arg)
+        protected virtual MPRemoteCommandHandlerStatus PauseCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.Pause();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
-        private MPRemoteCommandHandlerStatus NextCommand(MPRemoteCommandEvent arg)
+        protected virtual MPRemoteCommandHandlerStatus NextCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.PlayNext();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
-        private MPRemoteCommandHandlerStatus ShuffleCommand(MPRemoteCommandEvent arg)
+        protected virtual MPRemoteCommandHandlerStatus ShuffleCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.ToggleShuffle();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
-        private MPRemoteCommandHandlerStatus RepeatCommand(MPRemoteCommandEvent arg)
+        protected virtual MPRemoteCommandHandlerStatus RepeatCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.ToggleRepeat();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
-        private MPRemoteCommandHandlerStatus PlayCommand(MPRemoteCommandEvent arg)
+        protected virtual MPRemoteCommandHandlerStatus PlayCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.Play();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
-        private MPRemoteCommandHandlerStatus PlayPauseCommand(MPRemoteCommandEvent arg)
+        protected virtual MPRemoteCommandHandlerStatus PlayPauseCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.PlayPause();
             return MPRemoteCommandHandlerStatus.Success;

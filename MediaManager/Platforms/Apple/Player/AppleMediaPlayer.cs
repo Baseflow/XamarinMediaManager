@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,7 +50,6 @@ namespace MediaManager.Platforms.Apple.Player
         private IDisposable playbackBufferFullToken;
         private IDisposable playbackBufferEmptyToken;
         private IDisposable presentationSizeToken;
-
         private IDisposable timedMetaDataToken;
 
         public override event BeforePlayingEventHandler BeforePlaying;
@@ -76,11 +75,10 @@ namespace MediaManager.Platforms.Apple.Player
             playbackBufferFullToken = Player.AddObserver("currentItem.playbackBufferFull", options, PlaybackBufferFullChanged);
             playbackBufferEmptyToken = Player.AddObserver("currentItem.playbackBufferEmpty", options, PlaybackBufferEmptyChanged);
             presentationSizeToken = Player.AddObserver("currentItem.presentationSize", options, PresentationSizeChanged);
-
             timedMetaDataToken = Player.AddObserver("currentItem.timedMetadata", options, TimedMetaDataChanged);
         }
 
-        private void PresentationSizeChanged(NSObservedChange obj)
+        protected virtual void PresentationSizeChanged(NSObservedChange obj)
         {
             if (Player.CurrentItem != null && !Player.CurrentItem.PresentationSize.IsEmpty)
             {
@@ -89,42 +87,49 @@ namespace MediaManager.Platforms.Apple.Player
             }
         }
 
-        private void TimedMetaDataChanged(NSObservedChange obj)
+        protected virtual void TimedMetaDataChanged(NSObservedChange obj)
         {
-            NSArray array = obj.NewValue as NSArray;
-            if (array != null && array.Count > 0)
+            if (!string.IsNullOrEmpty(MediaManager.Queue.Current.DisplayTitle) && !string.IsNullOrEmpty(MediaManager.Queue.Current.DisplaySubtitle))
+                return;
+
+            if (obj.NewValue is NSArray array && array.Count > 0)
             {
                 var avMetadataItem = array.GetItem<AVMetadataItem>(0);
                 if (avMetadataItem != null && !string.IsNullOrEmpty(avMetadataItem.StringValue))
                 {
                     var split = avMetadataItem.StringValue.Split(" - ");
-                    string artist = split.FirstOrDefault();
-                    string title = split.LastOrDefault();
+                    string displaySubtitle = split.FirstOrDefault();
+                    if (string.IsNullOrEmpty(MediaManager.Queue.Current.DisplaySubtitle))
+                        MediaManager.Queue.Current.DisplaySubtitle = displaySubtitle;
 
-                    CrossMediaManager.Current.Queue.Current.Artist = artist;
-                    CrossMediaManager.Current.Queue.Current.Title = title;
+                    if (split.Length > 1)
+                    {
+                        string displayTitle = split.LastOrDefault();
+                        if (string.IsNullOrEmpty(MediaManager.Queue.Current.DisplayTitle))
+                            MediaManager.Queue.Current.DisplayTitle = displayTitle;
+                    }
                 }
             }
         }
 
-        private void StatusChanged(NSObservedChange obj)
+        protected virtual void StatusChanged(NSObservedChange obj)
         {
             MediaManager.State = Player.Status.ToMediaPlayerState();
         }
 
-        private void PlaybackBufferEmptyChanged(NSObservedChange obj)
+        protected virtual void PlaybackBufferEmptyChanged(NSObservedChange obj)
         {
         }
 
-        private void PlaybackBufferFullChanged(NSObservedChange obj)
+        protected virtual void PlaybackBufferFullChanged(NSObservedChange obj)
         {
         }
 
-        private void PlaybackLikelyToKeepUpChanged(NSObservedChange obj)
+        protected virtual void PlaybackLikelyToKeepUpChanged(NSObservedChange obj)
         {
         }
 
-        private void ReasonForWaitingToPlayChanged(NSObservedChange obj)
+        protected virtual void ReasonForWaitingToPlayChanged(NSObservedChange obj)
         {
             var reason = Player.ReasonForWaitingToPlay;
             if (reason == null)
@@ -141,7 +146,7 @@ namespace MediaManager.Platforms.Apple.Player
             }
         }
 
-        private void LoadedTimeRangesChanged(NSObservedChange obj)
+        protected virtual void LoadedTimeRangesChanged(NSObservedChange obj)
         {
             var buffered = TimeSpan.Zero;
             if (Player?.CurrentItem != null && Player.CurrentItem.LoadedTimeRanges.Any())
@@ -155,25 +160,25 @@ namespace MediaManager.Platforms.Apple.Player
             }
         }
 
-        private void RateChanged(NSObservedChange obj)
+        protected virtual void RateChanged(NSObservedChange obj)
         {
             //TODO: Maybe set the rate from here
         }
 
-        private void TimeControlStatusChanged(NSObservedChange obj)
+        protected virtual void TimeControlStatusChanged(NSObservedChange obj)
         {
             if (Player.Status != AVPlayerStatus.Unknown)
                 MediaManager.State = Player.TimeControlStatus.ToMediaPlayerState();
         }
 
-        private void DidErrorOcurred(NSNotification obj)
+        protected virtual void DidErrorOcurred(NSNotification obj)
         {
             //TODO: Error should not be null after this or it will crash.
             var error = Player?.CurrentItem?.Error ?? new NSError();
             MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue?.Current, new NSErrorException(error), error?.LocalizedDescription));
         }
 
-        private async void DidFinishPlaying(NSNotification obj)
+        protected virtual async void DidFinishPlaying(NSNotification obj)
         {
             MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.Current));
 
@@ -281,6 +286,7 @@ namespace MediaManager.Platforms.Apple.Player
             playbackBufferFullToken?.Dispose();
             playbackBufferEmptyToken?.Dispose();
             presentationSizeToken?.Dispose();
+            timedMetaDataToken?.Dispose();
         }
     }
 }
