@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using AVFoundation;
+using MediaManager.Library;
 using MediaManager.Media;
 using MediaManager.Notifications;
 using MediaManager.Platforms.Apple.Media;
@@ -115,6 +118,14 @@ namespace MediaManager
                 if (AppleMediaPlayer?.Player != null)
                     Player.Rate = value;
             }
+        }
+
+        public override Task<IMediaItem> PrepareQueueForPlayback(IEnumerable<IMediaItem> mediaItems)
+        {
+            if (ClearQueueOnPlay)
+                Queue.CurrentIndex = 0;
+
+            return base.PrepareQueueForPlayback(mediaItems);
         }
     }
 }
