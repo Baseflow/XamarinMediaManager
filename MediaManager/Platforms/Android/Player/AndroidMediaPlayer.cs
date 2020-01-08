@@ -137,7 +137,7 @@ namespace MediaManager.Platforms.Android.Player
                 PlayerView.UseArtwork = false;
         }
 
-        protected int lastWindowIndex = 0;
+        protected int lastWindowIndex = -1;
 
         public override event BeforePlayingEventHandler BeforePlaying;
         public override event AfterPlayingEventHandler AfterPlaying;
@@ -199,6 +199,8 @@ namespace MediaManager.Platforms.Android.Player
                             //TODO: This means the whole list is finished. Should we fire an event?
                             break;
                         case Com.Google.Android.Exoplayer2.Player.StateIdle:
+                            lastWindowIndex = -1;
+                            break;
                         case Com.Google.Android.Exoplayer2.Player.StateBuffering:
                             //MediaManager.Buffered = TimeSpan.FromMilliseconds(Player.BufferedPosition);
                             break;
