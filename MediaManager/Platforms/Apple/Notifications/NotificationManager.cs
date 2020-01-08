@@ -122,11 +122,11 @@ namespace MediaManager.Platforms.Apple.Notifications
 
             var nowPlayingInfo = new MPNowPlayingInfo
             {
-                Title = mediaItem.Title,
+                Title = mediaItem.DisplayTitle,
                 AlbumTitle = mediaItem.Album,
                 AlbumTrackNumber = mediaItem.TrackNumber,
                 AlbumTrackCount = mediaItem.NumTracks,
-                Artist = mediaItem.Artist,
+                Artist = mediaItem.DisplaySubtitle,
                 Composer = mediaItem.Composer,
                 DiscNumber = mediaItem.DiscNumber,
                 Genre = mediaItem.Genre,
@@ -138,7 +138,7 @@ namespace MediaManager.Platforms.Apple.Notifications
 
             if (MediaManager.IsPlaying())
             {
-                nowPlayingInfo.PlaybackRate = 1f;
+                nowPlayingInfo.PlaybackRate = 1f; // MediaManager.Player.Rate?
             }
             else
             {
@@ -146,7 +146,7 @@ namespace MediaManager.Platforms.Apple.Notifications
             }
 
 #if __IOS__ || __TVOS__
-            var cover = mediaItem.AlbumImage as UIKit.UIImage;
+            var cover = mediaItem.DisplayImage as UIKit.UIImage;
 
             if (cover != null)
             {

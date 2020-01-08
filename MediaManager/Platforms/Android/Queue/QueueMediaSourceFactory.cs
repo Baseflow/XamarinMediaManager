@@ -22,7 +22,10 @@ namespace MediaManager.Platforms.Android.Queue
         public IMediaSource CreateMediaSource(MediaDescriptionCompat description)
         {
             //TODO: We should be able to know the exact type here
-            var mediaType = MediaManager.Extractor.GetMediaType(description.ToMediaItem());
+            var mediaItem = description.ToMediaItem();
+            var fileName = MediaManager.Extractor.GetFileName(mediaItem.MediaUri);
+            var fileExtension = MediaManager.Extractor.GetFileExtension(fileName);
+            var mediaType = MediaManager.Extractor.GetMediaType(fileExtension);
             return description?.ToMediaSource(mediaType);
         }
     }

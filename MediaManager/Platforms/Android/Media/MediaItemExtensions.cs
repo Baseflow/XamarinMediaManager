@@ -109,8 +109,7 @@ namespace MediaManager.Platforms.Android.Media
 
         public static MediaBrowserCompat.MediaItem ToMediaBrowserMediaItem(this IMediaItem item)
         {
-            var mediaItem = new MediaBrowserCompat.MediaItem(ToMediaDescription(item), MediaBrowserCompat.MediaItem.FlagPlayable);
-            return mediaItem;
+            return new MediaBrowserCompat.MediaItem(ToMediaDescription(item), MediaBrowserCompat.MediaItem.FlagPlayable);
         }
 
         public static IMediaItem ToMediaItem(this MediaDescriptionCompat mediaDescription)

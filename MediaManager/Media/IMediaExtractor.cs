@@ -14,6 +14,7 @@ namespace MediaManager.Media
         IList<string> ResourcePrefixes { get; }
         IList<string> VideoSuffixes { get; }
         IList<string> AudioSuffixes { get; }
+        IList<string> ImageSuffixes { get; }
         IList<string> HlsSuffixes { get; }
         IList<string> SmoothStreamingSuffixes { get; }
         IList<string> DashSuffixes { get; }
@@ -39,11 +40,13 @@ namespace MediaManager.Media
 
         Task<object> GetVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart);
 
-        MediaLocation GetMediaLocation(IMediaItem mediaItem);
+        MediaLocation GetMediaLocation(string url);
 
-        MediaType GetMediaType(IMediaItem mediaItem);
+        MediaType GetMediaType(string fileExtension);
 
-        string GetFileExtension(IMediaItem mediaItem);
+        string GetFileName(string url);
+
+        string GetFileExtension(string fileName);
 
         DownloadStatus GetDownloadStatus(IMediaItem mediaItem);
     }

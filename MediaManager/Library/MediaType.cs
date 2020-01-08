@@ -7,6 +7,7 @@
         Video,
         Dash,
         Hls,
-        SmoothStreaming
+        SmoothStreaming,
+        Image
     }
 }

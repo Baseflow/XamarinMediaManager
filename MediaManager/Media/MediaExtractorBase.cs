@@ -39,6 +39,10 @@ namespace MediaManager.Media
             ".3gp", ".aa", ".aac", ".aax", ".act", ".aiff", ".amr", ".ape", ".au", ".awb", ".dct", ".dss", ".dvf", ".flac", ".gsm", ".iklax", ".ivs", ".m4a", ".m4b", ".m4p", ".mmf", ".mp3", ".mpc", ".msv", ".nmf", ".nsf", ".ogg", ".oga,", ".mogg", ".opus", ".ra", ".rm", ".raw", ".sln", ".tta", ".voc", ".vox", ".wav", ".wma", ".wv", ".webm", ".8svx"
         };
 
+        public IList<string> ImageSuffixes { get; } = new List<string>() {
+            ".jpg", ".png", ".gif", ".webp", ".tiff", ".psd", ".raw", ".bmp", ".heif", ".indd", ".jpeg", ".svg", ".ai", ".eps", ".pdf"
+        };
+
         public IList<string> HlsSuffixes { get; } = new List<string>() {
             ".m3u8"
         };
@@ -131,21 +135,24 @@ namespace MediaManager.Media
 
         public virtual async Task<IMediaItem> UpdateMediaItem(IMediaItem mediaItem)
         {
+            if (mediaItem == null)
+                throw new ArgumentNullException(nameof(mediaItem));
+
             if (string.IsNullOrEmpty(mediaItem.FileName))
             {
-                mediaItem.FileName = GetFileName(mediaItem);
+                mediaItem.FileName = GetFileName(mediaItem.MediaUri);
             }
             if (string.IsNullOrEmpty(mediaItem.FileExtension))
             {
-                mediaItem.FileExtension = GetFileExtension(mediaItem);
+                mediaItem.FileExtension = GetFileExtension(mediaItem.FileName);
             }
             if (mediaItem.MediaLocation == MediaLocation.Unknown)
             {
-                mediaItem.MediaLocation = GetMediaLocation(mediaItem);
+                mediaItem.MediaLocation = GetMediaLocation(mediaItem.MediaUri);
             }
             if (mediaItem.MediaType == MediaType.Default)
             {
-                mediaItem.MediaType = GetMediaType(mediaItem);
+                mediaItem.MediaType = GetMediaType(mediaItem.FileExtension);
             }
             if (mediaItem.DownloadStatus == DownloadStatus.Unknown)
             {
@@ -175,6 +182,9 @@ namespace MediaManager.Media
 
         public async Task<object> GetMediaImage(IMediaItem mediaItem)
         {
+            if (mediaItem == null)
+                throw new ArgumentNullException(nameof(mediaItem));
+
             object image = null;
 
             if (mediaItem.IsMetadataExtracted)
@@ -206,52 +216,52 @@ namespace MediaManager.Media
 
         protected abstract Task<string> GetResourcePath(string resourceName);
 
-        public virtual string GetFileName(IMediaItem mediaItem)
+        public virtual string GetFileName(string url)
         {
-            if (string.IsNullOrEmpty(mediaItem?.MediaUri))
+            if (string.IsNullOrEmpty(url))
                 return string.Empty;
 
-            string url;
-            if (!Uri.TryCreate(mediaItem.MediaUri, UriKind.Absolute, out var uri))
-                uri = new Uri(mediaItem.MediaUri);
+            string fileName;
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+                uri = new Uri(url);
 
-            url = Path.GetFileName(uri.LocalPath);
-            if (string.IsNullOrEmpty(url))
-                url = uri.Segments.LastOrDefault();
+            fileName = Path.GetFileName(uri.LocalPath);
+            if (string.IsNullOrEmpty(fileName))
+                fileName = uri.Segments.LastOrDefault();
 
-            return url;
+            return fileName;
         }
 
-        public virtual string GetFileExtension(IMediaItem mediaItem)
+        public virtual string GetFileExtension(string fileName)
         {
-            var url = mediaItem?.MediaUri?.ToLower();
-            var fileName = mediaItem?.FileName;
-
-            if (string.IsNullOrEmpty(url) && string.IsNullOrEmpty(fileName))
+            if (string.IsNullOrEmpty(fileName))
                 return string.Empty;
+
+            fileName = fileName.ToLowerInvariant();
 
             var suffixes = VideoSuffixes.Union(AudioSuffixes).Union(HlsSuffixes).Union(DashSuffixes).Union(SmoothStreamingSuffixes);
 
             //Try to find the best match
             foreach (var item in suffixes)
             {
-                if (fileName.EndsWith(item) || url.EndsWith(item))
+                if (fileName.EndsWith(item))
                     return item;
             }
             //If no match available see if the url contains info
             foreach (var item in suffixes)
             {
-                if (fileName.Contains(item) || url.Contains(item))
+                if (fileName.Contains(item))
                     return item;
             }
-            return mediaItem?.FileExtension;
+            return fileName;
         }
 
-        public virtual MediaType GetMediaType(IMediaItem mediaItem)
+        public virtual MediaType GetMediaType(string fileExtension)
         {
-            var fileExtension = !string.IsNullOrEmpty(mediaItem?.FileExtension)
-                ? mediaItem.FileExtension
-                : GetFileExtension(mediaItem);
+            if (string.IsNullOrEmpty(fileExtension))
+                return MediaType.Default;
+
+            fileExtension = fileExtension.ToLowerInvariant();
 
             if (VideoSuffixes.Contains(fileExtension))
                 return MediaType.Video;
@@ -263,13 +273,18 @@ namespace MediaManager.Media
                 return MediaType.Dash;
             else if (SmoothStreamingSuffixes.Contains(fileExtension))
                 return MediaType.SmoothStreaming;
+            else if (ImageSuffixes.Contains(fileExtension))
+                return MediaType.Image;
 
             return MediaType.Default;
         }
 
-        public virtual MediaLocation GetMediaLocation(IMediaItem mediaItem)
+        public virtual MediaLocation GetMediaLocation(string url)
         {
-            var url = mediaItem?.MediaUri?.ToLower();
+            if (string.IsNullOrEmpty(url))
+                return MediaLocation.Unknown;
+
+            url = url.ToLowerInvariant();
 
             foreach (var item in RemotePrefixes)
             {
@@ -302,6 +317,9 @@ namespace MediaManager.Media
 
         public virtual DownloadStatus GetDownloadStatus(IMediaItem mediaItem)
         {
+            if (mediaItem == null)
+                throw new ArgumentNullException(nameof(mediaItem));
+
             switch (mediaItem.MediaLocation)
             {
                 case MediaLocation.Unknown:

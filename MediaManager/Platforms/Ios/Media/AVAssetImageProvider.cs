@@ -13,6 +13,8 @@ namespace MediaManager.Platforms.Ios.Media
 {
     public class AVAssetImageProvider : MediaExtractorProviderBase, IMediaItemImageProvider
     {
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
+
         public async Task<object> ProvideImage(IMediaItem mediaItem)
         {
             object image = null;
@@ -20,11 +22,19 @@ namespace MediaManager.Platforms.Ios.Media
             {
                 if (!string.IsNullOrEmpty(mediaItem.ImageUri))
                 {
-                    mediaItem.Image = image = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(mediaItem.ImageUri)));
+                    var location = MediaManager.Extractor.GetMediaLocation(mediaItem.ImageUri);
+                    if (location == MediaLocation.Resource)
+                        mediaItem.Image = image = UIImage.FromBundle(mediaItem.ImageUri);
+                    else
+                        mediaItem.Image = image = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(mediaItem.ImageUri)));
                 }
                 if (image == null && !string.IsNullOrEmpty(mediaItem.AlbumImageUri))
                 {
-                    mediaItem.AlbumImage = image = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(mediaItem.AlbumImageUri)));
+                    var location = MediaManager.Extractor.GetMediaLocation(mediaItem.AlbumImageUri);
+                    if (location == MediaLocation.Resource)
+                        mediaItem.AlbumImage = image = UIImage.FromBundle(mediaItem.AlbumImageUri);
+                    else
+                        mediaItem.AlbumImage = image = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(mediaItem.AlbumImageUri)));
                 }
                 if (image == null)
                 {
