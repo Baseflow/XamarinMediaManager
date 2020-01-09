@@ -89,7 +89,7 @@ namespace MediaManager.Platforms.Apple.Player
 
         protected virtual void TimedMetaDataChanged(NSObservedChange obj)
         {
-            if (!string.IsNullOrEmpty(MediaManager.Queue.Current.DisplayTitle) && !string.IsNullOrEmpty(MediaManager.Queue.Current.DisplaySubtitle))
+            if (!string.IsNullOrEmpty(MediaManager.Queue.Current?.DisplayTitle) && !string.IsNullOrEmpty(MediaManager.Queue.Current?.DisplaySubtitle))
                 return;
 
             if (obj.NewValue is NSArray array && array.Count > 0)
