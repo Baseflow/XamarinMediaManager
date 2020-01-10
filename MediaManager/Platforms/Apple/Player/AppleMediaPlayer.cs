@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -89,24 +89,19 @@ namespace MediaManager.Platforms.Apple.Player
 
         protected virtual void TimedMetaDataChanged(NSObservedChange obj)
         {
-            if (!string.IsNullOrEmpty(MediaManager.Queue.Current?.DisplayTitle) && !string.IsNullOrEmpty(MediaManager.Queue.Current?.DisplaySubtitle))
-                return;
-
             if (obj.NewValue is NSArray array && array.Count > 0)
             {
                 var avMetadataItem = array.GetItem<AVMetadataItem>(0);
                 if (avMetadataItem != null && !string.IsNullOrEmpty(avMetadataItem.StringValue))
                 {
                     var split = avMetadataItem.StringValue.Split(" - ");
-                    string displaySubtitle = split.FirstOrDefault();
-                    if (string.IsNullOrEmpty(MediaManager.Queue.Current.DisplaySubtitle))
-                        MediaManager.Queue.Current.DisplaySubtitle = displaySubtitle;
+                    string artist = split.FirstOrDefault();
+                    MediaManager.Queue.Current.Artist = artist;
 
                     if (split.Length > 1)
                     {
-                        string displayTitle = split.LastOrDefault();
-                        if (string.IsNullOrEmpty(MediaManager.Queue.Current.DisplayTitle))
-                            MediaManager.Queue.Current.DisplayTitle = displayTitle;
+                        string title = split.LastOrDefault();
+                        MediaManager.Queue.Current.Title = title;
                     }
                 }
             }
