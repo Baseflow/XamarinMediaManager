@@ -107,8 +107,11 @@ namespace MediaManager.Queue
             {
                 if (SetProperty(ref _currentIndex, value))
                 {
-                    OnQueueChanged(this, new QueueChangedEventArgs(Current));
-                    MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(Current));
+                    if (Current != null)
+                    {
+                        OnQueueChanged(this, new QueueChangedEventArgs(Current));
+                        MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(Current));
+                    }
                 }
             }
         }
