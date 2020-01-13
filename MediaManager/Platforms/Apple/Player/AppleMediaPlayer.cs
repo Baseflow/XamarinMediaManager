@@ -89,7 +89,7 @@ namespace MediaManager.Platforms.Apple.Player
 
         protected virtual void TimedMetaDataChanged(NSObservedChange obj)
         {
-            if (!string.IsNullOrEmpty(MediaManager.Queue.Current?.DisplayTitle) && !string.IsNullOrEmpty(MediaManager.Queue.Current?.DisplaySubtitle))
+            if (MediaManager.Queue.Current == null || MediaManager.Queue.Current.IsMetadataExtracted)
                 return;
 
             if (obj.NewValue is NSArray array && array.Count > 0)
@@ -98,15 +98,11 @@ namespace MediaManager.Platforms.Apple.Player
                 if (avMetadataItem != null && !string.IsNullOrEmpty(avMetadataItem.StringValue))
                 {
                     var split = avMetadataItem.StringValue.Split(" - ");
-                    string displaySubtitle = split.FirstOrDefault();
-                    if (string.IsNullOrEmpty(MediaManager.Queue.Current.DisplaySubtitle))
-                        MediaManager.Queue.Current.DisplaySubtitle = displaySubtitle;
+                    MediaManager.Queue.Current.Artist = split.FirstOrDefault();
 
                     if (split.Length > 1)
                     {
-                        string displayTitle = split.LastOrDefault();
-                        if (string.IsNullOrEmpty(MediaManager.Queue.Current.DisplayTitle))
-                            MediaManager.Queue.Current.DisplayTitle = displayTitle;
+                        MediaManager.Queue.Current.Title = split.LastOrDefault();
                     }
                 }
             }
