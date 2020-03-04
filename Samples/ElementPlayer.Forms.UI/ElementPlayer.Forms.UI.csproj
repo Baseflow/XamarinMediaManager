@@ -12,8 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="MvvmCross.Forms" Version="6.4.2" />
-    <PackageReference Include="Xamarin.Forms" Version="4.2.0.815419" />  
-    <PackageReference Include="Xamarin.Essentials" Version="1.4.0" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.0" />
   </ItemGroup>
 
   <ItemGroup>

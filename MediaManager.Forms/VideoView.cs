@@ -28,7 +28,7 @@ namespace MediaManager.Forms
             MediaManager.MediaPlayer.PropertyChanged += MediaPlayer_PropertyChanged;
         }
 
-        private void MediaPlayer_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected virtual void MediaPlayer_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -53,7 +53,7 @@ namespace MediaManager.Forms
             }
         }
 
-        private void MediaManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected virtual void MediaManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -77,29 +77,29 @@ namespace MediaManager.Forms
             }
         }
 
-        private void MediaQueue_QueueChanged(object sender, QueueChangedEventArgs e)
+        protected virtual void MediaQueue_QueueChanged(object sender, QueueChangedEventArgs e)
         {
             //var queue = MediaManager.MediaQueue.ToList();
             //if (Source != queue)
             //    Source = queue;
         }
 
-        private void MediaManager_MediaItemChanged(object sender, MediaItemEventArgs e)
+        protected virtual void MediaManager_MediaItemChanged(object sender, MediaItemEventArgs e)
         {
             Current = e.MediaItem;
         }
 
-        private void MediaManager_StateChanged(object sender, StateChangedEventArgs e)
+        protected virtual void MediaManager_StateChanged(object sender, StateChangedEventArgs e)
         {
             State = e.State;
         }
 
-        private void MediaManager_PositionChanged(object sender, PositionChangedEventArgs e)
+        protected virtual void MediaManager_PositionChanged(object sender, Playback.PositionChangedEventArgs e)
         {
             Position = e.Position;
         }
 
-        private void MediaManager_BufferedChanged(object sender, BufferedChangedEventArgs e)
+        protected virtual void MediaManager_BufferedChanged(object sender, BufferedChangedEventArgs e)
         {
             Buffered = e.Buffered;
         }
@@ -301,7 +301,7 @@ namespace MediaManager.Forms
 #endif
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             MediaManager.BufferedChanged -= MediaManager_BufferedChanged;
             MediaManager.PositionChanged -= MediaManager_PositionChanged;
