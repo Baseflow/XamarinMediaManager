@@ -104,10 +104,10 @@
     <Compile Include="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
     <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.9.8" />
-    <!--<PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.9.8" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.9.8" />-->
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.9.8" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.11.4" />
+    <!--<PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.11.4" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.11.4" />-->
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.11.4" />
     <PackageReference Include="Xamarin.Build.Download" Version="0.9.0" PrivateAssets="All" />
   </ItemGroup>
 

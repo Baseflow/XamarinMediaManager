@@ -100,7 +100,7 @@ namespace ElementPlayer.Core.ViewModels
             Log.Debug($"Total buffered time is {e.Buffered};");
         }
 
-        private void Current_PositionChanged(object sender, PositionChangedEventArgs e)
+        private void Current_PositionChanged(object sender, MediaManager.Playback.PositionChangedEventArgs e)
         {
             Log.Debug($"Current position is {e.Position};");
             RaisePropertyChanged(() => Position);
