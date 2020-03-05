@@ -26,7 +26,15 @@ namespace MediaManager.Platforms.Android.Player
         {
         }
 
-        public long SupportedPrepareActions => MediaSessionConnector.IPlaybackPreparer.Actions;
+        //public long SupportedPrepareActions => MediaSessionConnector.IPlaybackPreparer.Actions;
+        public long SupportedPrepareActions =>
+            PlaybackStateCompat.ActionPrepare |
+            PlaybackStateCompat.ActionPrepareFromMediaId |
+            PlaybackStateCompat.ActionPrepareFromSearch |
+            PlaybackStateCompat.ActionPrepareFromUri |
+            PlaybackStateCompat.ActionPlayFromMediaId |
+            PlaybackStateCompat.ActionPlayFromSearch |
+            PlaybackStateCompat.ActionPlayFromUri;
 
         public bool OnCommand(IPlayer p0, IControlDispatcher p1, string p2, Bundle p3, ResultReceiver p4)
         {

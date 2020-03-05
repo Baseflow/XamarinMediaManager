@@ -166,6 +166,8 @@ namespace MediaManager.Platforms.Android.Player
              .Build();
 
             Player.SetAudioAttributes(audioAttributes, true);
+            Player.SetHandleAudioBecomingNoisy(true);
+            Player.SetHandleWakeLock(true);
 
             PlayerEventListener = new PlayerEventListener()
             {
@@ -280,6 +282,7 @@ namespace MediaManager.Platforms.Android.Player
 
             PlaybackPreparer = new MediaSessionConnectorPlaybackPreparer(Player, MediaSource);
             MediaSessionConnector.SetPlayer(Player);
+            MediaSessionConnector.SetPlaybackPreparer(PlaybackPreparer);
         }
 
         public override async Task Play(IMediaItem mediaItem)
@@ -338,7 +341,7 @@ namespace MediaManager.Platforms.Android.Player
 
         public override Task Stop()
         {
-            Player.Stop();
+            Player.Stop(true);
             return Task.CompletedTask;
         }
 
