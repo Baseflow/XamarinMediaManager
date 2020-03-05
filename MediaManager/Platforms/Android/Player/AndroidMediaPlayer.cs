@@ -41,7 +41,6 @@ namespace MediaManager.Platforms.Android.Player
         protected DefaultBandwidthMeter BandwidthMeter { get; set; }
         protected AdaptiveTrackSelection.Factory TrackSelectionFactory { get; set; }
         protected DefaultTrackSelector TrackSelector { get; set; }
-        protected PlaybackController PlaybackController { get; set; }
 
         protected MediaSessionConnector MediaSessionConnector { get; set; }
         protected QueueNavigator QueueNavigator { get; set; }
@@ -158,7 +157,7 @@ namespace MediaManager.Platforms.Android.Player
             DashChunkSourceFactory = new DefaultDashChunkSource.Factory(DataSourceFactory);
             SsChunkSourceFactory = new DefaultSsChunkSource.Factory(DataSourceFactory);
 
-            Player = ExoPlayerFactory.NewSimpleInstance(Context);
+            Player = new SimpleExoPlayer.Builder(Context).Build();
             Player.VideoSizeChanged += Player_VideoSizeChanged;
 
             var audioAttributes = new Com.Google.Android.Exoplayer2.Audio.AudioAttributes.Builder()
@@ -266,8 +265,7 @@ namespace MediaManager.Platforms.Android.Player
             if (MediaSession == null)
                 throw new ArgumentNullException(nameof(MediaSession), $"{nameof(MediaSession)} cannot be null. Make sure the {nameof(MediaBrowserService)} sets it up");
 
-            PlaybackController = new PlaybackController();
-            MediaSessionConnector = new MediaSessionConnector(MediaSession, PlaybackController);
+            MediaSessionConnector = new MediaSessionConnector(MediaSession);
 
             QueueNavigator = new QueueNavigator(MediaSession);
             MediaSessionConnector.SetQueueNavigator(QueueNavigator);
@@ -281,7 +279,7 @@ namespace MediaManager.Platforms.Android.Player
             MediaSessionConnector.SetRatingCallback(RatingCallback);
 
             PlaybackPreparer = new MediaSessionConnectorPlaybackPreparer(Player, MediaSource);
-            MediaSessionConnector.SetPlayer(Player, PlaybackPreparer, null);
+            MediaSessionConnector.SetPlayer(Player);
         }
 
         public override async Task Play(IMediaItem mediaItem)

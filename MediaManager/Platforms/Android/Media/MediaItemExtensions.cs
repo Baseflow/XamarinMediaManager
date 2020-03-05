@@ -51,7 +51,7 @@ namespace MediaManager.Platforms.Android.Media
                 case MediaType.Audio:
                 case MediaType.Video:
                 case MediaType.Default:
-                    mediaSource = new ExtractorMediaSource.Factory(MediaManager.AndroidMediaPlayer.DataSourceFactory)
+                    mediaSource = new ProgressiveMediaSource.Factory(MediaManager.AndroidMediaPlayer.DataSourceFactory)
                         .SetTag(mediaDescription)
                         .CreateMediaSource(mediaUri);
                     break;
