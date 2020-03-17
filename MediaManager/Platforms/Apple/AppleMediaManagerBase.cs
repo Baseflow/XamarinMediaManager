@@ -97,6 +97,8 @@ namespace MediaManager
                 {
                     return TimeSpan.Zero;
                 }
+                if (Player.CurrentItem.Duration.IsIndefinite)
+                    return TimeSpan.Zero;
                 if (double.IsNaN(Player.CurrentItem.Duration.Seconds))
                 {
                     return TimeSpan.Zero;
