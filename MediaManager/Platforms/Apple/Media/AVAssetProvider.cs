@@ -79,7 +79,7 @@ namespace MediaManager.Platforms.Apple.Media
             var url = mediaItem.GetNSUrl();
             var imageGenerator = new AVAssetImageGenerator(AVAsset.FromUrl(url));
             imageGenerator.AppliesPreferredTrackTransform = true;
-            var cgImage = imageGenerator.CopyCGImageAtTime(new CMTime((long)timeFromStart.TotalMilliseconds, 1000000), out var actualTime, out var error);
+            var cgImage = imageGenerator.CopyCGImageAtTime(new CMTime((long)timeFromStart.TotalMilliseconds, 1000), out var actualTime, out var error);
             return Task.FromResult(cgImage as object);
         }
     }

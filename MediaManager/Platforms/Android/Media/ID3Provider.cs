@@ -133,7 +133,7 @@ namespace MediaManager.Platforms.Android.Media
             {
                 var metadataRetriever = await CreateMediaRetriever(mediaItem).ConfigureAwait(false);
 
-                image = metadataRetriever.GetFrameAtTime((long)timeFromStart.TotalMilliseconds);
+                image = metadataRetriever.GetFrameAtTime((long)(timeFromStart.TotalMilliseconds*1000));
 
                 metadataRetriever.Release();
             }
