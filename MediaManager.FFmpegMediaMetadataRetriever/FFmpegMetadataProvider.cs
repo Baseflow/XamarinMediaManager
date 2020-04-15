@@ -120,7 +120,7 @@ namespace MediaManager.FFmpegMediaMetadataRetriever
             {
                 var metadataRetriever = CreateMediaRetriever(mediaItem);
 
-                var bitmap = metadataRetriever.GetFrameAtTime((long)timeFromStart.TotalMilliseconds);
+                var bitmap = metadataRetriever.GetFrameAtTime((long)(timeFromStart.TotalMilliseconds * 1000));
 
                 metadataRetriever.Release();
                 return Task.FromResult(bitmap as object);
