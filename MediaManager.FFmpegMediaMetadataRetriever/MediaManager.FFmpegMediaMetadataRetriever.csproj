@@ -8,7 +8,6 @@
     <RootNamespace>MediaManager.FFmpegMediaMetadataRetriever</RootNamespace>
     <PackageId>Plugin.MediaManager.FFmpegMediaMetadataRetriever</PackageId>
     <Description>Cross platform Xamarin plugin to play and control Audio and Video</Description>
-    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
 
   <ItemGroup>

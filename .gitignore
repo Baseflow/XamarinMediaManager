@@ -24,7 +24,6 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
-.vscode/
 
 # Visual Studo 2015 cache/options directory
 .vs/
@@ -261,3 +260,5 @@ artifacts/
 
 # dotnet tools
 .store/
+
+.AssemblyAttributes
