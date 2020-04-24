@@ -6,6 +6,8 @@ using Windows.Media.Editing;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Streams;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace MediaManager.Platforms.Uap.Media
@@ -73,9 +75,15 @@ namespace MediaManager.Platforms.Uap.Media
                 var thumbnail = await file.GetThumbnailAsync(thumbnailMode);
                 if (thumbnail != null && thumbnail.Type == ThumbnailType.Image)
                 {
-                    BitmapSource bitmap = new BitmapImage();
-                    await bitmap.SetSourceAsync(thumbnail);
-                    image = bitmap;
+                    var _bitmapCreationTaskCompletionSource = new TaskCompletionSource<BitmapImage>();
+                    await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.High, async () =>
+                    {
+                        var bitmap = new BitmapImage();
+                        await bitmap.SetSourceAsync(thumbnail);
+                        _bitmapCreationTaskCompletionSource.TrySetResult(bitmap);
+                    });
+
+                    image = await _bitmapCreationTaskCompletionSource.Task;
                 }
             }
             return image;
@@ -88,12 +96,18 @@ namespace MediaManager.Platforms.Uap.Media
                 var file = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
                 var thumbnail = await GetThumbnailAsync(file, timeFromStart).ConfigureAwait(false);
 
-                var bitmapImage = new BitmapImage();
-                var randomAccessStream = new InMemoryRandomAccessStream();
-                await RandomAccessStream.CopyAsync(thumbnail, randomAccessStream);
-                randomAccessStream.Seek(0);
-                bitmapImage.SetSource(randomAccessStream);
-                return bitmapImage;
+                var _bitmapCreationTaskCompletionSource = new TaskCompletionSource<BitmapImage>();
+                await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.High, async () =>
+                {
+                    var bitmapImage = new BitmapImage();
+                    var randomAccessStream = new InMemoryRandomAccessStream();
+                    await RandomAccessStream.CopyAsync(thumbnail, randomAccessStream);
+                    randomAccessStream.Seek(0);
+                    await bitmapImage.SetSourceAsync(randomAccessStream);
+                    _bitmapCreationTaskCompletionSource.TrySetResult(bitmapImage);
+                });
+
+                return await _bitmapCreationTaskCompletionSource.Task;
             }
             return null;
         }
