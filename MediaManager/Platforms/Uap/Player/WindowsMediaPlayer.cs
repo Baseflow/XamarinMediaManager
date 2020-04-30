@@ -78,10 +78,10 @@ namespace MediaManager.Platforms.Uap.Player
                     playerView.Stretch = Windows.UI.Xaml.Media.Stretch.None;
                     break;
                 case VideoAspectMode.AspectFit:
-                    playerView.Stretch = Windows.UI.Xaml.Media.Stretch.UniformToFill;
+                    playerView.Stretch = Windows.UI.Xaml.Media.Stretch.Uniform;
                     break;
                 case VideoAspectMode.AspectFill:
-                    playerView.Stretch = Windows.UI.Xaml.Media.Stretch.Fill;
+                    playerView.Stretch = Windows.UI.Xaml.Media.Stretch.UniformToFill;
                     break;
                 default:
                     playerView.Stretch = Windows.UI.Xaml.Media.Stretch.None;
