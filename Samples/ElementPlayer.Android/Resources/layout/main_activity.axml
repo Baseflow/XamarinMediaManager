@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/coordinatorLayout1"
@@ -20,9 +20,9 @@
             android:layout_height="match_parent"
             local:behavior_hideable="false"
             local:behavior_peekHeight="56dp"
-            local:layout_behavior="android.support.design.widget.BottomSheetBehavior" />
-    </android.support.design.widget.CoordinatorLayout>
-    <android.support.design.widget.BottomNavigationView
+            local:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

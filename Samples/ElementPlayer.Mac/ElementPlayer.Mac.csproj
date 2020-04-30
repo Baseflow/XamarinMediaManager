@@ -98,13 +98,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MvvmCross">
-      <Version>6.4.2</Version>
+      <Version>6.5.0-alpha.163</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross.Plugin.Json">
-      <Version>6.4.2</Version>
+      <Version>6.5.0-alpha.163</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross.Plugin.Visibility">
-      <Version>6.4.2</Version>
+      <Version>6.5.0-alpha.163</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

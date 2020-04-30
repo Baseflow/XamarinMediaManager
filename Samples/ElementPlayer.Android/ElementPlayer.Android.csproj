@@ -90,19 +90,19 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MvvmCross">
-      <Version>6.4.2</Version>
+      <Version>6.5.0-alpha.163</Version>
     </PackageReference>
-    <PackageReference Include="MvvmCross.Droid.Support.V7.AppCompat">
-      <Version>6.4.2</Version>
+    <PackageReference Include="MvvmCross.DroidX.AppCompat">
+      <Version>6.5.0-alpha.154</Version>
     </PackageReference>
-    <PackageReference Include="MvvmCross.Droid.Support.V7.RecyclerView">
-      <Version>6.4.2</Version>
+    <PackageReference Include="MvvmCross.DroidX.RecyclerView">
+      <Version>6.5.0-alpha.163</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross.Plugin.Json">
-      <Version>6.4.2</Version>
+      <Version>6.5.0-alpha.163</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross.Plugin.Visibility">
-      <Version>6.4.2</Version>
+      <Version>6.5.0-alpha.163</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Core">
       <Version>1.2.0</Version>
@@ -115,7 +115,7 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Google.Android.Material" Version="1.0.0" />
     <PackageReference Include="Xamarin.AndroidX.Fragment">
-      <Version>1.2.3</Version>
+      <Version>1.2.4</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Media">
       <Version>1.1.0</Version>
@@ -138,7 +138,7 @@
     <PackageReference Include="Xamarin.AndroidX.RecyclerView">
       <Version>1.1.0</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.4" />
+    <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.5" />
     <PackageReference Include="Xamarin.AndroidX.Browser">
       <Version>1.2.0</Version>
     </PackageReference>
