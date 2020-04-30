@@ -90,19 +90,19 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MvvmCross">
-      <Version>6.5.0-alpha.163</Version>
+      <Version>6.5.0-alpha.166</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross.DroidX.AppCompat">
       <Version>6.5.0-alpha.154</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross.DroidX.RecyclerView">
-      <Version>6.5.0-alpha.163</Version>
+      <Version>6.5.0-alpha.166</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross.Plugin.Json">
-      <Version>6.5.0-alpha.163</Version>
+      <Version>6.5.0-alpha.166</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross.Plugin.Visibility">
-      <Version>6.5.0-alpha.163</Version>
+      <Version>6.5.0-alpha.166</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Core">
       <Version>1.2.0</Version>

@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MvvmCross.Forms">
-      <Version>6.5.0-alpha.163</Version>
+      <Version>6.5.0-alpha.166</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.657" />
     <PackageReference Include="Xamarin.Google.Android.Material" Version="1.0.0" />
