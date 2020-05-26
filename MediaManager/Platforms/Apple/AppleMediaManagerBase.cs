@@ -85,6 +85,10 @@ namespace MediaManager
                 {
                     return TimeSpan.Zero;
                 }
+                if (double.IsNaN(Player.CurrentTime.Seconds) || Player.CurrentTime.IsIndefinite)
+                {
+                    return TimeSpan.Zero;
+                }
                 return TimeSpan.FromSeconds(Player.CurrentTime.Seconds);
             }
         }
