@@ -424,5 +424,5 @@ If you want to disable more you could add: `NSAllowsLocalNetworking` or even `NS
 
 ## Building the source code
 
-* On Windows you need Visual Studio 2019 with the latest Xamarin, .NET Core and UWP installed.
+* On Windows you need Visual Studio 2019 with the latest Xamarin, .NET Core, UWP and Windows 10 SDK installed.
 * On Visual Studio for Mac 2019 multi-target is not supported. Therefor you need to compile from command line on a Mac. Simple go to the folder where the source code is and run: `msbuild MediaManager.sln /t:rebuild` to make a release build run: `msbuild MediaManager.sln /t:rebuild /p:Configuration=Release`. To restore your nuget packages run: `msbuild MediaManager.sln /t:restore`.
