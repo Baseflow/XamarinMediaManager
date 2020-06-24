@@ -18,7 +18,7 @@
     <RepositoryUrl>https://github.com/Baseflow/XamarinMediaManager</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>0.9.8</Version>
+    <Version>0.9.9</Version>
 
     <!--<Nullable>enable</Nullable>-->
     <LangVersion>8.0</LangVersion>
