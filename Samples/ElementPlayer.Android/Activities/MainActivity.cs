@@ -1,11 +1,11 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Android.Support.Design.Widget;
 using ElementPlayer.Core.ViewModels;
+using Google.Android.Material.BottomNavigation;
 using MediaManager;
 using MvvmCross;
-using MvvmCross.Droid.Support.V7.AppCompat;
+using MvvmCross.DroidX.AppCompat;
 using MvvmCross.Navigation;
 
 namespace ElementPlayer.Android.Activities
