@@ -5,8 +5,8 @@ using ElementPlayer.Core.ViewModels;
 using Google.Android.Material.BottomNavigation;
 using MediaManager;
 using MvvmCross;
-using MvvmCross.DroidX.AppCompat;
 using MvvmCross.Navigation;
+using MvvmCross.Platforms.Android.Views;
 
 namespace ElementPlayer.Android.Activities
 {
@@ -15,7 +15,7 @@ namespace ElementPlayer.Android.Activities
         LaunchMode = LaunchMode.SingleTop,
         Theme = "@style/AppTheme"
         )]
-    public class MainActivity : MvxAppCompatActivity<MainViewModel>
+    public class MainActivity : MvxActivity<MainViewModel>
     {
         private BottomNavigationView bottomNavigation;
 

@@ -1,6 +1,8 @@
 ﻿using Android.App;
 using Android.Content.PM;
-using MvvmCross.DroidX.AppCompat;
+using MvvmCross.Core;
+using MvvmCross.Platforms.Android.Core;
+using MvvmCross.Platforms.Android.Views;
 
 namespace ElementPlayer.Android
 {
@@ -12,7 +14,7 @@ namespace ElementPlayer.Android
         Theme = "@style/AppTheme.Splash",
         LaunchMode = LaunchMode.SingleTop,
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
-    public class SplashScreen : MvxSplashScreenAppCompatActivity<MvxAppCompatSetup<Core.App>, Core.App>
+    public class SplashScreen : MvxSplashScreenActivity<MvxAndroidSetup<Core.App>, Core.App>
     {
         public SplashScreen()
              : base(Resource.Layout.splash_screen)

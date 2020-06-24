@@ -2,9 +2,9 @@
 using Android.Views;
 using AndroidX.AppCompat.Widget;
 using ElementPlayer.Core.ViewModels;
-using MvvmCross.DroidX.AppCompat;
-using MvvmCross.DroidX.Fragments;
 using MvvmCross.Platforms.Android.Binding.BindingContext;
+using MvvmCross.Platforms.Android.Views;
+using MvvmCross.Platforms.Android.Views.Fragments;
 using MvvmCross.ViewModels;
 
 namespace ElementPlayer.Android.Fragments
@@ -16,11 +16,11 @@ namespace ElementPlayer.Android.Fragments
 
         protected abstract int FragmentId { get; }
 
-        public MvxAppCompatActivity ParentActivity
+        public MvxActivity ParentActivity
         {
             get
             {
-                return (MvxAppCompatActivity)Activity;
+                return (MvxActivity)Activity;
             }
         }
 
