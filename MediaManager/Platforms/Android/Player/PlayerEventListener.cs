@@ -25,7 +25,9 @@ namespace MediaManager.Platforms.Android.Player
         public Action<int> OnRepeatModeChangedImpl { get; set; }
         public Action OnSeekProcessedImpl { get; set; }
         public Action<bool> OnShuffleModeEnabledChangedImpl { get; set; }
-        public Action<Timeline, Java.Lang.Object, int> OnTimelineChangedImpl { get; set; }
+        public Action<Timeline, int> OnTimelineChangedImpl { get; set; }
+        public Action<bool> OnIsPlayingChangedImpl { get; set; }
+        public Action<int> OnPlaybackSuppressionReasonChangedImpl { get; set; }
 
         public void OnTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections)
         {
@@ -127,9 +129,19 @@ namespace MediaManager.Platforms.Android.Player
             OnShuffleModeEnabledChangedImpl?.Invoke(shuffleModeEnabled);
         }
 
-        public void OnTimelineChanged(Timeline timeline, Java.Lang.Object manifest, int reason)
+        public void OnTimelineChanged(Timeline timeline, int reason)
         {
-            OnTimelineChangedImpl?.Invoke(timeline, manifest, reason);
+            OnTimelineChangedImpl?.Invoke(timeline, reason);
+        }
+
+        public void OnIsPlayingChanged(bool isPlaying)
+        {
+            OnIsPlayingChangedImpl?.Invoke(isPlaying);
+        }
+
+        public void OnPlaybackSuppressionReasonChanged(int playbackSuppressionReason)
+        {
+            OnPlaybackSuppressionReasonChangedImpl?.Invoke(playbackSuppressionReason);
         }
     }
 }
