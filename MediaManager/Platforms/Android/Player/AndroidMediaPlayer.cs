@@ -51,6 +51,7 @@ namespace MediaManager.Platforms.Android.Player
         protected MediaSessionConnectorPlaybackPreparer PlaybackPreparer { get; set; }
         public PlayerEventListener PlayerEventListener { get; set; }
         protected RatingCallback RatingCallback { get; set; }
+        protected TimeSpan? PauseAt { get; set; }
 
         private SimpleExoPlayer _player;
         public SimpleExoPlayer Player
@@ -292,29 +293,51 @@ namespace MediaManager.Platforms.Android.Player
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
-        public override async Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? stopAt = null)
+        public override async Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? pauseAt = null)
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
-            IMediaSource mediaSource = null;
-            if (stopAt is TimeSpan endTime)
-            {
-                if (startAt != TimeSpan.Zero)
-                    mediaSource = mediaItem.ToClippingMediaSource(startAt, endTime);
-                else
-                    mediaSource = mediaItem.ToClippingMediaSource(endTime);
-            }
+            ResetPauseAt();
+            var mediaSource = mediaItem.ToMediaSource();
+            MediaSource.Clear();
+            MediaSource.AddMediaSource(mediaSource);
 
-            await Play(mediaSource);
-
-            if (startAt != TimeSpan.Zero && !(stopAt is TimeSpan))
+            Player.Prepare(MediaSource);
+            if (startAt != TimeSpan.Zero)
                 await SeekTo(startAt);
 
+            if (pauseAt.HasValue)
+            {
+                MediaManager.PositionChanged += MediaManager_PositionChanged;
+                PauseAt = pauseAt;
+            }
+
+            await Play();
+
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+        }
+        
+        private void MediaManager_PositionChanged(object sender, MediaManager.Playback.PositionChangedEventArgs e)
+        {
+            if (PauseAt.HasValue && e.Position > PauseAt.Value)
+            {
+                ResetPauseAt();
+                Pause();
+            }
+        }
+
+        private void ResetPauseAt()
+        {
+            if (PauseAt.HasValue)
+            {
+                MediaManager.PositionChanged -= MediaManager_PositionChanged;
+                PauseAt = null;
+            }
         }
 
         public virtual async Task Play(IMediaSource mediaSource)
         {
+            ResetPauseAt();
             MediaSource.Clear();
             MediaSource.AddMediaSource(mediaSource);
             Player.Prepare(MediaSource);

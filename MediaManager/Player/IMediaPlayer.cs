@@ -54,7 +54,7 @@ namespace MediaManager.Player
         /// Starts playing the MediaItem at a given time and stops at a specific time.
         /// Use TimeSpan.Zero for startAt to start at beginning of the MediaItem
         /// </summary>
-        Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? stopAt = null);
+        Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? pauseAt = null);
 
         /// <summary>
         /// Starts playing
