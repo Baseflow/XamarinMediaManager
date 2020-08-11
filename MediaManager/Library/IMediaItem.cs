@@ -186,5 +186,10 @@ namespace MediaManager.Library
         /// Standard location is Default which will make a guess based on the URI.
         /// </summary>
         MediaLocation MediaLocation { get; set; }
+
+        /// <summary>
+        /// Indicates if the MediaItem is being live streamed
+        /// </summary>
+        bool IsLive { get; set; }
     }
 }

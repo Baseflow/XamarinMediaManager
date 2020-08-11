@@ -328,5 +328,12 @@ namespace MediaManager.Library
                     MetadataUpdated?.Invoke(this, new MetadataChangedEventArgs(this));
             }
         }
+
+        private bool _isLive = false;
+        public bool IsLive
+        {
+            get => _isLive;
+            set => SetProperty(ref _isLive, value);
+        }
     }
 }

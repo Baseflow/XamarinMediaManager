@@ -233,6 +233,14 @@ namespace MediaManager.Platforms.Android.Player
                 {
                     if (isLoading)
                         MediaManager.Buffered = TimeSpan.FromMilliseconds(Player.BufferedPosition);
+                },
+                OnIsPlayingChangedImpl = (bool isPlaying) =>
+                {
+                    //TODO: Maybe call playing changed event
+                },
+                OnPlaybackSuppressionReasonChangedImpl = (int playbackSuppressionReason) =>
+                {
+                    //TODO: Maybe call event
                 }
             };
             Player.AddListener(PlayerEventListener);

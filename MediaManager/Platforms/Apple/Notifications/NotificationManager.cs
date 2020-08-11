@@ -135,7 +135,8 @@ namespace MediaManager.Platforms.Apple.Notifications
                 ElapsedPlaybackTime = MediaManager.Position.TotalSeconds,
                 PlaybackDuration = MediaManager.Duration.TotalSeconds,
                 PlaybackQueueIndex = MediaManager.Queue.CurrentIndex,
-                PlaybackQueueCount = MediaManager.Queue.Count
+                PlaybackQueueCount = MediaManager.Queue.Count,
+                IsLiveStream = mediaItem.IsLive
             };
 
             if (MediaManager.IsPlaying())
