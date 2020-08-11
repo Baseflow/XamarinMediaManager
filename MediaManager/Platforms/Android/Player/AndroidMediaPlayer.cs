@@ -167,7 +167,7 @@ namespace MediaManager.Platforms.Android.Player
 
             Player.SetAudioAttributes(audioAttributes, true);
             Player.SetHandleAudioBecomingNoisy(true);
-            Player.SetHandleWakeLock(true);
+            Player.SetWakeMode(C.WakeModeNetwork);
 
             PlayerEventListener = new PlayerEventListener()
             {
