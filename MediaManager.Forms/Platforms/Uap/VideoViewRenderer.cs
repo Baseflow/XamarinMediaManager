@@ -10,6 +10,7 @@ namespace MediaManager.Forms.Platforms.Uap
     public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Uap.Video.VideoView>
     {
         private MediaManager.Platforms.Uap.Video.VideoView _videoView;
+        private static IMediaManager MediaManager => CrossMediaManager.Windows;
 
         protected override void OnElementChanged(ElementChangedEventArgs<VideoView> args)
         {
@@ -33,10 +34,18 @@ namespace MediaManager.Forms.Platforms.Uap
         {
             if (_videoView != null)
             {
-                _videoView.Height = availableSize.Height;
+                if(!double.IsInfinity(availableSize.Height))
+                {
+                    _videoView.Height = availableSize.Height;
+                    _videoView.PlayerView.Height = availableSize.Height;
+                }
+                else
+                {
+                    _videoView.Height = MediaManager.MediaPlayer.VideoHeight > 0 ? MediaManager.MediaPlayer.VideoHeight : 300;
+                    _videoView.PlayerView.Height = MediaManager.MediaPlayer.VideoHeight > 0 ? MediaManager.MediaPlayer.VideoHeight : 300;
+                }
+                
                 _videoView.Width = availableSize.Width;
-
-                _videoView.PlayerView.Height = availableSize.Height;
                 _videoView.PlayerView.Width = availableSize.Width;
             }
             try
