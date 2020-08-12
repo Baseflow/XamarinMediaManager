@@ -304,19 +304,16 @@ namespace MediaManager.Platforms.Android.Player
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
-            IMediaSource mediaSource = null;
-            if (stopAt is TimeSpan endTime)
-            {
-                if (startAt != TimeSpan.Zero)
-                    mediaSource = mediaItem.ToClippingMediaSource(startAt, endTime);
-                else
-                    mediaSource = mediaItem.ToClippingMediaSource(endTime);
-            }
+            
+            var mediaSource = stopAt.HasValue ? mediaItem.ToClippingMediaSource(stopAt.Value) : mediaItem.ToMediaSource();
+            MediaSource.Clear();
+            MediaSource.AddMediaSource(mediaSource);
 
-            await Play(mediaSource);
-
-            if (startAt != TimeSpan.Zero && !(stopAt is TimeSpan))
+            Player.Prepare(MediaSource);
+            if (startAt != TimeSpan.Zero)
                 await SeekTo(startAt);
+
+            await Play();
 
             AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
         }

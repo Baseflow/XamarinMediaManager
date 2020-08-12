@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediaManager;
 using MediaManager.Library;
@@ -43,6 +44,7 @@ namespace ElementPlayer.Core.ViewModels
             await NavigationService.Navigate<PlayerViewModel>();
 
             await MediaManager.Play(mediaItem);
+            //await MediaManager.Play(mediaItem, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(35));
             //await MediaManager.Play(Mp3UrlList);
         }
     }
