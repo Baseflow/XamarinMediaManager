@@ -10,7 +10,7 @@
     <PackageId>Plugin.MediaManager.Forms</PackageId>
     <Description>Cross platform Xamarin plugin to play and control Audio and Video. This adds Xamarin.Forms specific features</Description>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
-    <UseWPF>true</UseWPF>
+    <UseWPF Condition=" '$(OS)' == 'Windows_NT' ">true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
