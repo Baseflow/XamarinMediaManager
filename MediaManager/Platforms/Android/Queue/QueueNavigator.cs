@@ -11,16 +11,17 @@ namespace MediaManager.Platforms.Android.Queue
 {
     public class QueueNavigator : TimelineQueueNavigator
     {
-        protected MediaSessionCompat _mediaSession;
+        protected MediaSessionCompat MediaSession { get; }
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
 
         public QueueNavigator(MediaSessionCompat mediaSession) : base(mediaSession)
         {
-            _mediaSession = mediaSession;
+            MediaSession = mediaSession;
         }
 
         public QueueNavigator(MediaSessionCompat mediaSession, int maxQueueSize) : base(mediaSession, maxQueueSize)
         {
+            MediaSession = mediaSession;
         }
 
         protected QueueNavigator(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
