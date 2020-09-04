@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MvvmCross" Version="6.5.0-alpha.201" />
-    <PackageReference Include="MvvmCross.Plugin.Json" Version="6.5.0-alpha.201" />
-    <PackageReference Include="MvvmCross.Plugin.Visibility" Version="6.5.0-alpha.201" />
+    <PackageReference Include="MvvmCross" Version="7.0.0" />
+    <PackageReference Include="MvvmCross.Plugin.Json" Version="7.0.0" />
+    <PackageReference Include="MvvmCross.Plugin.Visibility" Version="7.0.0" />
     <PackageReference Include="Xamarin.Forms" Version="4.7.0.968" />
   </ItemGroup>
 

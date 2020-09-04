@@ -18,8 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{6F888D07-C7FE-4257-9F3C-61EC1C1C39FA}"
 	ProjectSection(SolutionItems) = preProject
-		Samples\Directory.build.props = Samples\Directory.build.props
-		Samples\Directory.build.targets = Samples\Directory.build.targets
+		Samples\Directory.Build.props = Samples\Directory.Build.props
+		Samples\Directory.Build.targets = Samples\Directory.Build.targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElementPlayer.Android", "Samples\ElementPlayer.Android\ElementPlayer.Android.csproj", "{52381C0D-EAAA-42D6-BAE9-66657B9E0A21}"
