@@ -49,6 +49,7 @@ Add the [NuGet package](https://www.nuget.org/packages/Plugin.MediaManager/) to 
 |Tizen|Yes|4.0+|MediaPlayer|
 |Windows 10 UWP|Yes|10+|MediaPlayer|
 |Windows WPF|Yes|4.7.2+|MediaPlayer|
+|Windows WPFCore|Yes|3.0+|MediaPlayer|
 
 ## Usage
 
