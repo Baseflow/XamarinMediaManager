@@ -78,7 +78,7 @@ public class MainActivity : AppCompatActivity
 ```
 
 When tapping the notification, it will launch your activity with an intent. In most cases, you probably want to set `LaunchMode` on your `Activity` to `SingleTop`.
-That should bring your app back into focus when tapped.
+That should bring your app back into focus when tapped. [You can read more about it here](https://developer.android.com/guide/topics/manifest/activity-element.html#lmode)
 
 ```csharp
 [Activity(LaunchMode = LaunchMode.SingleTop)]
