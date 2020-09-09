@@ -77,6 +77,24 @@ public class MainActivity : AppCompatActivity
 }
 ```
 
+When tapping the notification, it will launch your activity with an intent. In most cases, you probably want to set `LaunchMode` on your `Activity` to `SingleTop`.
+That should bring your app back into focus when tapped.
+
+```csharp
+[Activity(LaunchMode = LaunchMode.SingleTop)]
+public class MainActivity : AppCompatActivity
+```
+
+If you want to handle when the app is opened via a notification tap, you can override `OnNewIntent` on your activity:
+
+```csharp
+protected override void OnNewIntent(Intent intent)
+{
+    base.OnNewIntent(intent);
+    // TODO: Handle app opened from notification tap.
+}
+```
+
 ### Play a single media item
 
 ```csharp
