@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MediaManager\MediaManager.csproj" />
-    <ProjectReference Include="..\Samples\ElementPlayer.Core\ElementPlayer.Core.csproj" />
+    <ProjectReference Include="..\..\MediaManager\MediaManager.csproj" />
+    <ProjectReference Include="..\..\Samples\ElementPlayer.Core\ElementPlayer.Core.csproj" />
   </ItemGroup>
 </Project>
