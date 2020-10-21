@@ -48,7 +48,8 @@ Add the [NuGet package](https://www.nuget.org/packages/Plugin.MediaManager/) to 
 |Xamarin.tvOS|Yes|10.0+|AVPlayer|
 |Tizen|Yes|4.0+|MediaPlayer|
 |Windows 10 UWP|Yes|10+|MediaPlayer|
-|Windows WPF|Yes|4.7.2+|MediaPlayer|
+|Windows WPF (.NET Framework)|Yes|4.7.2+|MediaPlayer|
+|Windows WPF (.NET Core)|Yes|3.1+|MediaPlayer|
 
 ## Usage
 

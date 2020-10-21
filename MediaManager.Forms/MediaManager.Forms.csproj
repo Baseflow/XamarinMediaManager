@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;xamarin.ios10;xamarin.mac20;xamarin.tvos10;monoandroid10.0;tizen40</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">uap10.0.17763;net472;$(TargetFrameworks)</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">uap10.0.17763;net472;netcoreapp3.1;$(TargetFrameworks)</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -12,6 +12,8 @@
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
     <UseWPF Condition=" '$(OS)' == 'Windows_NT' ">true</UseWPF>
   </PropertyGroup>
+
+  <Import Project="$(SolutionDir)netcore.targets" Condition=" $(TargetFramework.StartsWith('netcoreapp3.1'))" />
 
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.657" />
@@ -28,6 +30,12 @@
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) And '$(OS)' == 'Windows_NT' ">
+    <Compile Include="Platforms\Net\**\*.cs" />
+    <Compile Include="Platforms\Wpf\**\*.cs" />
+    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.5.0.657" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netcoreapp3')) And '$(OS)' == 'Windows_NT' ">
     <Compile Include="Platforms\Net\**\*.cs" />
     <Compile Include="Platforms\Wpf\**\*.cs" />
     <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.5.0.657" />
@@ -93,7 +101,7 @@
     <Compile Include="Platforms\Tizen\**\*.cs" />
     <Compile Include="Platforms\Xamarin\**\*.cs" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\MediaManager\MediaManager.csproj" />
   </ItemGroup>
@@ -103,5 +111,4 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.mac')) ">
     <Reference Include="netstandard" />
   </ItemGroup>
-
 </Project>

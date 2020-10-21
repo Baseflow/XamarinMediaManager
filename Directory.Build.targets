@@ -35,7 +35,7 @@
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
   </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework.StartsWith('netcoreapp'))">
-    <DefineConstants>$(DefineConstants);NETCOREAPP</DefineConstants>
+    <DefineConstants>$(DefineConstants);NETCOREAPP;NET;WPF;XAML</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework.StartsWith('tizen'))">
     <DefineConstants>$(DefineConstants);TIZEN</DefineConstants>
