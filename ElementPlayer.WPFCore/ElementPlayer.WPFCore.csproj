@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MvvmCross.Platforms.Wpf" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MediaManager\MediaManager.csproj" />
     <ProjectReference Include="..\Samples\ElementPlayer.Core\ElementPlayer.Core.csproj" />
   </ItemGroup>
-
 </Project>
