@@ -31,13 +31,13 @@ namespace MediaManager.Platforms.Ios.Media
                 UserRating = item.Rating,
                 Id = item.PersistentID.ToString()
             };
-            
+
             if (item.ReleaseDate != null)
                 output.Date = (DateTime)item.ReleaseDate;
-            
+
             if (item.Artwork != null)
                 output.Image = item.Artwork.ImageWithSize(new CGSize(300, 300));
-            
+
             if (output.Date != null)
                 output.Year = output.Date.Year;
 #elif TVOS
@@ -62,7 +62,7 @@ namespace MediaManager.Platforms.Ios.Media
 #endif
             return output;
         }
-        
+
         public static IEnumerable<IMediaItem> ToMediaItems(this IEnumerable<MPMediaItem> items)
         {
 #if IOS

@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace ElementPlayer.WPFCore
+﻿namespace ElementPlayer.WPFCore
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

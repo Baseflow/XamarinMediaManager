@@ -34,7 +34,7 @@ namespace MediaManager.Forms.Platforms.Uap
         {
             if (_videoView != null)
             {
-                if(!double.IsInfinity(availableSize.Height))
+                if (!double.IsInfinity(availableSize.Height))
                 {
                     _videoView.Height = availableSize.Height;
                     _videoView.PlayerView.Height = availableSize.Height;
@@ -44,7 +44,7 @@ namespace MediaManager.Forms.Platforms.Uap
                     _videoView.Height = MediaManager.MediaPlayer.VideoHeight > 0 ? MediaManager.MediaPlayer.VideoHeight : 300;
                     _videoView.PlayerView.Height = MediaManager.MediaPlayer.VideoHeight > 0 ? MediaManager.MediaPlayer.VideoHeight : 300;
                 }
-                
+
                 _videoView.Width = availableSize.Width;
                 _videoView.PlayerView.Width = availableSize.Width;
             }

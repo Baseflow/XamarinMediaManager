@@ -304,7 +304,7 @@ namespace MediaManager.Platforms.Android.Player
         {
             BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
 
-            
+
             var mediaSource = stopAt.HasValue ? mediaItem.ToClippingMediaSource(stopAt.Value) : mediaItem.ToMediaSource();
             MediaSource.Clear();
             MediaSource.AddMediaSource(mediaSource);

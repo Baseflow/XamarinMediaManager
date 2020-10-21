@@ -59,9 +59,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.Reactive", "Me
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.FFmpegMediaMetadataRetriever", "MediaManager.FFmpegMediaMetadataRetriever\MediaManager.FFmpegMediaMetadataRetriever.csproj", "{00D077AA-5CED-422E-91C7-3D515086DC22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElementPlayer.Forms.WPFCore", "Samples\ElementPlayer.Forms.WPFCore\ElementPlayer.Forms.WPFCore.csproj", "{311FC5DB-E938-405C-ACA7-D74AC11B505E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElementPlayer.Forms.WPFCore", "Samples\ElementPlayer.Forms.WPFCore\ElementPlayer.Forms.WPFCore.csproj", "{311FC5DB-E938-405C-ACA7-D74AC11B505E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElementPlayer.WPFCore", "Samples\ElementPlayer.WPFCore\ElementPlayer.WPFCore.csproj", "{62642DB1-7FCF-455E-AAC0-7B9FE4764A5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElementPlayer.WPFCore", "Samples\ElementPlayer.WPFCore\ElementPlayer.WPFCore.csproj", "{62642DB1-7FCF-455E-AAC0-7B9FE4764A5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -607,7 +607,6 @@ Global
 		{311FC5DB-E938-405C-ACA7-D74AC11B505E}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{311FC5DB-E938-405C-ACA7-D74AC11B505E}.Debug|x86.Build.0 = Debug|Any CPU
 		{311FC5DB-E938-405C-ACA7-D74AC11B505E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{311FC5DB-E938-405C-ACA7-D74AC11B505E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{311FC5DB-E938-405C-ACA7-D74AC11B505E}.Release|ARM.ActiveCfg = Release|Any CPU
 		{311FC5DB-E938-405C-ACA7-D74AC11B505E}.Release|ARM.Build.0 = Release|Any CPU
 		{311FC5DB-E938-405C-ACA7-D74AC11B505E}.Release|ARM64.ActiveCfg = Release|Any CPU
@@ -635,7 +634,6 @@ Global
 		{62642DB1-7FCF-455E-AAC0-7B9FE4764A5B}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{62642DB1-7FCF-455E-AAC0-7B9FE4764A5B}.Debug|x86.Build.0 = Debug|Any CPU
 		{62642DB1-7FCF-455E-AAC0-7B9FE4764A5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62642DB1-7FCF-455E-AAC0-7B9FE4764A5B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62642DB1-7FCF-455E-AAC0-7B9FE4764A5B}.Release|ARM.ActiveCfg = Release|Any CPU
 		{62642DB1-7FCF-455E-AAC0-7B9FE4764A5B}.Release|ARM.Build.0 = Release|Any CPU
 		{62642DB1-7FCF-455E-AAC0-7B9FE4764A5B}.Release|ARM64.ActiveCfg = Release|Any CPU

@@ -34,12 +34,6 @@ namespace MediaManager
         public Timer Timer { get; protected set; } = new Timer(TimerInterval);
 
         public static double TimerInterval { get; set; } = 1000;
-        [Obsolete("Use StepSizeForward and StepSizeBackward properties instead.", true)]
-        public virtual TimeSpan StepSize
-        {
-            get => throw new NotImplementedException("This property is obsolete. Use StepSizeForwards and StepSizeBackwards properties instead.");
-            set => throw new NotImplementedException("This property is obsolete. Use StepSizeForwards and StepSizeBackwards properties instead.");
-        }
 
         protected TimeSpan _stepSizeForward = TimeSpan.FromSeconds(10);
         public virtual TimeSpan StepSizeForward
