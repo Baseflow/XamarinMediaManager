@@ -393,7 +393,12 @@ namespace MediaManager
         }
 
         internal void OnMediaItemFinished(object sender, MediaItemEventArgs e) => MediaItemFinished?.Invoke(sender, e);
-        internal void OnPositionChanged(object sender, PositionChangedEventArgs e) => PositionChanged?.Invoke(sender, e);
+
+        internal void OnPositionChanged(object sender, PositionChangedEventArgs e)
+        {
+            PositionChanged?.Invoke(sender, e);
+            Notification?.UpdateNotification();
+        }
 
         internal void OnStateChanged(object sender, StateChangedEventArgs e)
         {

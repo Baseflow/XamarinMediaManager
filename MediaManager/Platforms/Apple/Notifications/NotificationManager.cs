@@ -1,4 +1,5 @@
-﻿using MediaManager.Notifications;
+﻿using System;
+using MediaManager.Notifications;
 using MediaPlayer;
 
 namespace MediaManager.Platforms.Apple.Notifications
@@ -90,6 +91,9 @@ namespace MediaManager.Platforms.Apple.Notifications
 
                     CommandCenter.ChangeShuffleModeCommand.Enabled = true;
                     CommandCenter.ChangeShuffleModeCommand.AddTarget(ShuffleCommand);
+
+                    CommandCenter.ChangePlaybackPositionCommand.Enabled = true;
+                    CommandCenter.ChangePlaybackPositionCommand.AddTarget(PlaybackPositionCommand);
                 }
                 else
                 {
@@ -108,6 +112,8 @@ namespace MediaManager.Platforms.Apple.Notifications
                     CommandCenter.ChangeRepeatModeCommand.Enabled = false;
 
                     CommandCenter.ChangeShuffleModeCommand.Enabled = false;
+
+                    CommandCenter.ChangePlaybackPositionCommand.Enabled = false;
                 }
             }
         }
@@ -181,12 +187,14 @@ namespace MediaManager.Platforms.Apple.Notifications
         protected virtual MPRemoteCommandHandlerStatus SeekForwardCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.StepForward();
+            UpdateNotification();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
         protected virtual MPRemoteCommandHandlerStatus SeekBackwardCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.StepBackward();
+            UpdateNotification();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
@@ -211,6 +219,19 @@ namespace MediaManager.Platforms.Apple.Notifications
         protected virtual MPRemoteCommandHandlerStatus ShuffleCommand(MPRemoteCommandEvent arg)
         {
             MediaManager.ToggleShuffle();
+            return MPRemoteCommandHandlerStatus.Success;
+        }
+
+        protected virtual MPRemoteCommandHandlerStatus PlaybackPositionCommand(MPRemoteCommandEvent arg)
+        {
+            if (!(arg is MPChangePlaybackPositionCommandEvent e))
+            {
+                return MPRemoteCommandHandlerStatus.CommandFailed;
+            }
+
+            MediaManager.SeekTo(TimeSpan.FromSeconds(e.PositionTime));
+
+            UpdateNotification();
             return MPRemoteCommandHandlerStatus.Success;
         }
 
