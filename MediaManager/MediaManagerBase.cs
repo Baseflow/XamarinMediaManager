@@ -19,9 +19,7 @@ namespace MediaManager
     {
         public MediaManagerBase()
         {
-            Timer.AutoReset = true;
-            Timer.Elapsed += Timer_Elapsed;
-            Timer.Start();
+            InitTimer();
         }
 
         private bool _isInitialized = true;
@@ -85,6 +83,14 @@ namespace MediaManager
         public virtual void Init()
         {
             IsInitialized = true;
+            InitTimer();
+        }
+
+        private void InitTimer()
+        {
+            Timer.AutoReset = true;
+            Timer.Elapsed += Timer_Elapsed;
+            Timer.Start();
         }
 
         public abstract IMediaPlayer MediaPlayer { get; set; }
