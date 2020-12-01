@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -256,6 +256,7 @@ namespace MediaManager.Platforms.Apple.Player
             {
                 Player.Pause();
                 await SeekTo(TimeSpan.Zero);
+                Player.ReplaceCurrentItemWithPlayerItem(null); // Needed for stop buffering
             }
             if (MediaManager != null)
                 MediaManager.State = MediaPlayerState.Stopped;
