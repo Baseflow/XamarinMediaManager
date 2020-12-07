@@ -83,12 +83,15 @@ namespace MediaManager
         public virtual void Init()
         {
             IsInitialized = true;
-            InitTimer();
         }
 
-        private void InitTimer()
+        public void InitTimer()
         {
-            Timer.AutoReset = true;
+            Timer = new Timer(TimerInterval)
+            {
+                AutoReset = true,
+                Enabled = true
+            };
             Timer.Elapsed += Timer_Elapsed;
             Timer.Start();
         }
