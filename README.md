@@ -98,7 +98,7 @@ protected override void OnNewIntent(Intent intent)
 
 ### Disposing
 
-The player can be disposed via `CrossMediaManager.Current.Dispose()`. Make sure to call `CrossMediaManager.Current.Init()` if you used dispose before opening another video.
+The player can be disposed via `CrossMediaManager.Current.Dispose()`. Make sure to call `CrossMediaManager.Current.InitTimer()` if you used dispose before opening another video.
 
 ### Play a single media item
 
