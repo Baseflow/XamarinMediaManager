@@ -87,6 +87,11 @@ namespace MediaManager
 
         public void InitTimer()
         {
+            if (Timer?.Enabled == true)
+            {
+                return;
+            }
+
             Timer = new Timer(TimerInterval)
             {
                 AutoReset = true,
