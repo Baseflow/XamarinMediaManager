@@ -44,7 +44,10 @@ namespace MediaManager.Media
         };
 
         public IList<string> HlsSuffixes { get; } = new List<string>() {
-            ".m3u8"
+            ".m3u8",
+            "manifest(format=m3u8-aapl)",
+            "manifest(format=m3u8-aapl-v3)",
+            "manifest(format=m3u8-aapl-v3,audio-only=false)"
         };
 
         public IList<string> SmoothStreamingSuffixes { get; } = new List<string>() {
@@ -53,7 +56,8 @@ namespace MediaManager.Media
         };
 
         public IList<string> DashSuffixes { get; } = new List<string>() {
-            ".mpd"
+            ".mpd",
+            "manifest(format=mpd-time-csf)"
         };
 
         private IList<IMediaExtractorProvider> _providers;
