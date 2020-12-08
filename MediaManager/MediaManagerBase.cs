@@ -83,6 +83,7 @@ namespace MediaManager
         public virtual void Init()
         {
             IsInitialized = true;
+            InitTimer();
         }
 
         public void InitTimer()
