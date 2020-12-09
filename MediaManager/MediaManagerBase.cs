@@ -86,7 +86,7 @@ namespace MediaManager
             InitTimer();
         }
 
-        public void InitTimer()
+        public virtual void InitTimer()
         {
             if (Timer?.Enabled == true)
             {

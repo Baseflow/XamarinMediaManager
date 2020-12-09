@@ -109,6 +109,7 @@ namespace MediaManager
         public override void Init()
         {
             EnsureInit();
+            InitTimer();
         }
 
         public async Task EnsureInit()
