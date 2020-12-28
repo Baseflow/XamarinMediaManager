@@ -49,11 +49,6 @@
     <Compile Include="Platforms\Mac\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.tvos')) ">
-    <None Remove="Platforms\Ios\**\*.cs" />
-    <Compile Include="Platforms\Ios\**\*.cs" />
-  </ItemGroup>
-
   <ItemGroup Condition=" $(TargetFramework.StartsWith('monoandroid')) ">
     <None Remove="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Android\**\*.cs" />
