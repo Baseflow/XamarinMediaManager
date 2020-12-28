@@ -1,7 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;xamarin.ios10;xamarin.mac20;xamarin.tvos10;monoandroid10.0;tizen40</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">uap10.0.17763;net472;netcoreapp3.1;$(TargetFrameworks)</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;xamarin.ios10;xamarin.mac20;xamarin.tvos10;monoandroid10.0;tizen40;netcoreapp3.1;uap10.0.18362;net472</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -24,13 +23,13 @@
     <None Include="readme.txt" pack="true" PackagePath="." />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) And '$(OS)' == 'Windows_NT' ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
     <Compile Include="Platforms\Net\**\*.cs" />
     <Compile Include="Platforms\Wpf\**\*.cs" />
     <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.5.0.657" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netcoreapp3')) And '$(OS)' == 'Windows_NT' ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netcoreapp3'))">
     <Compile Include="Platforms\Net\**\*.cs" />
     <Compile Include="Platforms\Wpf\**\*.cs" />
     <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.5.0.657" />
