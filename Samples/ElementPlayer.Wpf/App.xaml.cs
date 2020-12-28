@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using MediaManager;
 
 namespace ElementPlayer.Wpf
 {
@@ -7,5 +8,9 @@ namespace ElementPlayer.Wpf
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            CrossMediaManager.Current.Init();
+        }
     }
 }
