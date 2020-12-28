@@ -1,5 +1,7 @@
-﻿using MvvmCross.Forms.Platforms.Uap.Core;
+﻿using MediaManager;
+using MvvmCross.Forms.Platforms.Uap.Core;
 using MvvmCross.Forms.Platforms.Uap.Views;
+using Windows.ApplicationModel.Activation;
 
 namespace ElementPlayer.Forms.UWP
 {
@@ -9,9 +11,16 @@ namespace ElementPlayer.Forms.UWP
         {
             InitializeComponent();
         }
+
+        protected override void OnLaunched(LaunchActivatedEventArgs activationArgs)
+        {
+            CrossMediaManager.Current.Init();
+
+            base.OnLaunched(activationArgs);
+        }
     }
 
-    public abstract class PlaygroundApp : MvxWindowsApplication<MvxFormsWindowsSetup<Core.App, FormsApp>, Core.App, FormsApp, MainPage>
+    public abstract class ElementPlayerApp : MvxWindowsApplication<MvxFormsWindowsSetup<Core.App, FormsApp>, Core.App, FormsApp, MainPage>
     {
     }
 }
