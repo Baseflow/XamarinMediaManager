@@ -1,16 +1,14 @@
-﻿using System.Windows;
-using MediaManager;
+﻿using MvvmCross.Core;
+using MvvmCross.Platforms.Wpf.Views;
 
 namespace ElementPlayer.Wpf
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public partial class App : MvxApplication
     {
-        public App()
+        protected override void RegisterSetup()
         {
-            CrossMediaManager.Current.Init();
+            base.RegisterSetup();
+            this.RegisterSetupType<ElementPlayer.Wpf.MvxWpfSetup<ElementPlayer.Core.App>>();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using MediaManager;
-using MvvmCross.Core;
+﻿using MvvmCross.Core;
 using MvvmCross.Forms.Platforms.Wpf.Core;
 
 namespace ElementPlayer.Forms.WPFCore
@@ -12,8 +11,6 @@ namespace ElementPlayer.Forms.WPFCore
         protected override void RegisterSetup()
         {
             this.RegisterSetupType<MvxFormsWpfSetup<Core.App, FormsApp>>();
-
-            CrossMediaManager.Current.Init();
         }
     }
 }

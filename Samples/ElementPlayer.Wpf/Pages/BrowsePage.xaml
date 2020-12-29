@@ -1,0 +1,21 @@
+﻿<views:MvxWpfView x:Class="ElementPlayer.Wpf.Pages.BrowsePage"
+                  xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:local="clr-namespace:ElementPlayer.Wpf.Pages"
+                  xmlns:viewModels="clr-namespace:ElementPlayer.Core.ViewModels;assembly=ElementPlayer.Core"
+                  x:TypeArguments="viewModels:BrowseViewModel"
+                  mc:Ignorable="d"
+                  d:DesignHeight="450"
+                  d:DesignWidth="800">
+
+    <views:MvxWpfView.Content>
+        <StackPanel Orientation="Vertical">
+            <Image Source="{Binding Image}"
+                   HorizontalAlignment="Stretch"
+                   Height="200" />
+        </StackPanel>
+    </views:MvxWpfView.Content>
+</views:MvxWpfView>

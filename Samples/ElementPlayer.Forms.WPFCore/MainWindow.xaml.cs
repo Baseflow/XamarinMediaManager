@@ -11,6 +11,7 @@ namespace ElementPlayer.Forms.WPFCore
         public MainWindow()
         {
             InitializeComponent();
+            CrossMediaManager.Current.Init();
         }
     }
 }

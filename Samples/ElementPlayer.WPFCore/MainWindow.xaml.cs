@@ -1,9 +1,10 @@
-﻿namespace ElementPlayer.WPFCore
+﻿using MvvmCross.Platforms.Wpf.Presenters.Attributes;
+using MvvmCross.Platforms.Wpf.Views;
+
+namespace ElementPlayer.WpfCore
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    [MvxWindowPresentation(Identifier = nameof(MainWindow), Modal = false)]
+    public partial class MainWindow : MvxWindow
     {
         public MainWindow()
         {
