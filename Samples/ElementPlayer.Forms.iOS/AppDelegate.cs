@@ -1,18 +1,18 @@
-﻿
-using Foundation;
+﻿using Foundation;
+using MediaManager;
 using MvvmCross.Forms.Platforms.Ios.Core;
 using UIKit;
 
 namespace ElementPlayer.Forms.iOS
 {
-    // The UIApplicationDelegate for the application. This class is responsible for launching the 
-    // User Interface of the application, as well as listening (and optionally responding) to 
+    // The UIApplicationDelegate for the application. This class is responsible for launching the
+    // User Interface of the application, as well as listening (and optionally responding) to
     // application events from iOS.
     [Register("AppDelegate")]
     public partial class AppDelegate : MvxFormsApplicationDelegate<MvxFormsIosSetup<Core.App, FormsApp>, Core.App, FormsApp>
     {
         //
-        // This method is invoked when the application has loaded and is ready to run. In this 
+        // This method is invoked when the application has loaded and is ready to run. In this
         // method you should instantiate the window, load the UI into it and then make the window
         // visible.
         //
@@ -24,6 +24,13 @@ namespace ElementPlayer.Forms.iOS
             UINavigationBar.Appearance.TintColor = UIColor.FromRGB(255, 255, 255);
 
             return base.FinishedLaunching(app, options);
+        }
+
+        protected override void RegisterSetup()
+        {
+            CrossMediaManager.Current.Init();
+
+            base.RegisterSetup();
         }
     }
 }

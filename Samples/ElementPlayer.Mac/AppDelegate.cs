@@ -1,5 +1,6 @@
 ﻿using AppKit;
 using Foundation;
+using MediaManager;
 
 namespace ElementPlayer.Mac
 {
@@ -8,6 +9,7 @@ namespace ElementPlayer.Mac
     {
         public AppDelegate()
         {
+            CrossMediaManager.Current.Init();
         }
 
         public override void DidFinishLaunching(NSNotification notification)
