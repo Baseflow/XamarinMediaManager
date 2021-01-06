@@ -105,13 +105,11 @@ namespace MediaManager.Queue
             get => _currentIndex;
             set
             {
-                if (SetProperty(ref _currentIndex, value))
+                SetProperty(ref _currentIndex, value);
+                if (Current != null)
                 {
-                    if (Current != null)
-                    {
-                        OnQueueChanged(this, new QueueChangedEventArgs(Current));
-                        MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(Current));
-                    }
+                    OnQueueChanged(this, new QueueChangedEventArgs(Current));
+                    MediaManager.OnMediaItemChanged(this, new MediaItemEventArgs(Current));
                 }
             }
         }
