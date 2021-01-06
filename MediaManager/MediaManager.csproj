@@ -1,6 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;xamarin.ios10;xamarin.mac20;xamarin.tvos10;monoandroid10.0;tizen40;netcoreapp3.1;uap10.0.18362;net472</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;xamarin.ios10;xamarin.mac20;xamarin.tvos10;monoandroid10.0;tizen40</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">uap10.0.17763;net472;netcoreapp3.1;$(TargetFrameworks)</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -25,7 +26,7 @@
     <None Include="readme.txt" pack="true" PackagePath="." />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4'))">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) And '$(OS)' == 'Windows_NT'">
     <None Remove="Platforms\Wpf\**\*.cs" />
     <Compile Include="Platforms\Wpf\**\*.cs" />
     <Reference Include="WindowsBase" />
@@ -34,12 +35,12 @@
     <Reference Include="System.Xaml" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netcoreapp3'))">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netcoreapp3')) And '$(OS)' == 'Windows_NT'">
     <None Remove="Platforms\Wpf\**\*.cs" />
     <Compile Include="Platforms\Wpf\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) And '$(OS)' == 'Windows_NT'">
     <Compile Include="Platforms\Uap\**\*.cs" />
     <Page Include="Platforms\Uap\**\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
     <None Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
@@ -63,13 +64,17 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.tvos')) ">
     <None Remove="Platforms\Apple\**\*.cs" />
     <None Remove="Platforms\Ios\**\*.cs" />
+    <None Remove="Platforms\Tvos\**\*.cs" />
     <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Ios\**\*.cs" />
+    <Compile Include="Platforms\Tvos\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.watchos')) ">
     <None Remove="Platforms\Apple\**\*.cs" />
+    <None Remove="Platforms\Watchos\**\*.cs" />
     <Compile Include="Platforms\Apple\**\*.cs" />
+    <Compile Include="Platforms\Watchos\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('monoandroid')) ">
@@ -80,7 +85,6 @@
     <!--<PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.11.8" />
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.11.8" />-->
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.11.8" />
-    <PackageReference Include="Xamarin.Build.Download" Version="0.10.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('tizen')) ">
