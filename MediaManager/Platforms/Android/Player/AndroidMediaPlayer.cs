@@ -138,9 +138,6 @@ namespace MediaManager.Platforms.Android.Player
 
         protected int lastWindowIndex = -1;
 
-        public override event BeforePlayingEventHandler BeforePlaying;
-        public override event AfterPlayingEventHandler AfterPlaying;
-
         protected virtual void Initialize()
         {
             if (RequestHeaders?.Count > 0 && RequestHeaders.TryGetValue("User-Agent", out var userAgent))
@@ -184,11 +181,11 @@ namespace MediaManager.Platforms.Android.Player
                 },
                 OnTracksChangedImpl = (trackGroups, trackSelections) =>
                 {
-                    BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(MediaManager.Queue.Current, this));
+                    InvokeBeforePlaying(this, new MediaPlayerEventArgs(MediaManager.Queue.Current, this));
 
                     MediaManager.Queue.CurrentIndex = Player.CurrentWindowIndex;
 
-                    AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(MediaManager.Queue.Current, this));
+                    InvokeAfterPlaying(this, new MediaPlayerEventArgs(MediaManager.Queue.Current, this));
                 },
                 OnPlayerStateChangedImpl = (bool playWhenReady, int playbackState) =>
                 {
@@ -295,14 +292,14 @@ namespace MediaManager.Platforms.Android.Player
 
         public override async Task Play(IMediaItem mediaItem)
         {
-            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeBeforePlaying(this, new MediaPlayerEventArgs(mediaItem, this));
             await Play(mediaItem.ToMediaSource());
-            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeAfterPlaying(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
         public override async Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? stopAt = null)
         {
-            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeBeforePlaying(this, new MediaPlayerEventArgs(mediaItem, this));
 
 
             var mediaSource = stopAt.HasValue ? mediaItem.ToClippingMediaSource(stopAt.Value) : mediaItem.ToMediaSource();
@@ -315,7 +312,7 @@ namespace MediaManager.Platforms.Android.Player
 
             await Play();
 
-            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeAfterPlaying(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
         public virtual async Task Play(IMediaSource mediaSource)

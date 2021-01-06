@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -51,9 +51,6 @@ namespace MediaManager.Platforms.Apple.Player
         private IDisposable playbackBufferEmptyToken;
         private IDisposable presentationSizeToken;
         private IDisposable timedMetaDataToken;
-
-        public override event BeforePlayingEventHandler BeforePlaying;
-        public override event AfterPlayingEventHandler AfterPlaying;
 
         protected virtual void Initialize()
         {
@@ -194,14 +191,14 @@ namespace MediaManager.Platforms.Apple.Player
 
         public override async Task Play(IMediaItem mediaItem)
         {
-            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeBeforePlaying(this, new MediaPlayerEventArgs(mediaItem, this));
             await Play(mediaItem.ToAVPlayerItem());
-            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeAfterPlaying(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
         public override async Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? stopAt = null)
         {
-            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeBeforePlaying(this, new MediaPlayerEventArgs(mediaItem, this));
 
             if (stopAt is TimeSpan endTime)
             {
@@ -218,7 +215,7 @@ namespace MediaManager.Platforms.Apple.Player
             if (startAt != TimeSpan.Zero)
                 await SeekTo(startAt);
 
-            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeAfterPlaying(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
         protected virtual async void OnPlayerBoundaryReached()

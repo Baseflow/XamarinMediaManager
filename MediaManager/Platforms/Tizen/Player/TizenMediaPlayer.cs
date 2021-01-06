@@ -100,14 +100,14 @@ namespace MediaManager.Platforms.Tizen.Player
 
         public override async Task Play(IMediaItem mediaItem)
         {
-            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeBeforePlaying(this, new MediaPlayerEventArgs(mediaItem, this));
             await Play(mediaItem.ToMediaSource());
-            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeAfterPlaying(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
         public override async Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? stopAt = null)
         {
-            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeBeforePlaying(this, new MediaPlayerEventArgs(mediaItem, this));
 
             //TODO: Implement stopAt
 
@@ -116,7 +116,7 @@ namespace MediaManager.Platforms.Tizen.Player
             if (startAt != TimeSpan.Zero)
                 await SeekTo(startAt);
 
-            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeAfterPlaying(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
         public virtual async Task Play(MediaSource mediaSource)

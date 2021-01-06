@@ -50,9 +50,6 @@ namespace MediaManager.Platforms.Uap.Player
             set => SetProperty(ref _player, value);
         }
 
-        public override event BeforePlayingEventHandler BeforePlaying;
-        public override event AfterPlayingEventHandler AfterPlaying;
-
         private MediaPlaybackList _mediaPlaybackList;
         public MediaPlaybackList MediaPlaybackList
         {
@@ -173,7 +170,7 @@ namespace MediaManager.Platforms.Uap.Player
 
         public override async Task Play(IMediaItem mediaItem)
         {
-            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeBeforePlaying(this, new MediaPlayerEventArgs(mediaItem, this));
 
             MediaPlaybackList.Items.Clear();
 
@@ -188,12 +185,12 @@ namespace MediaManager.Platforms.Uap.Player
             }
             await Play(MediaPlaybackList);
 
-            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeAfterPlaying(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
         public override async Task Play(IMediaItem mediaItem, TimeSpan startAt, TimeSpan? stopAt = null)
         {
-            BeforePlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeBeforePlaying(this, new MediaPlayerEventArgs(mediaItem, this));
 
             MediaPlaybackList.Items.Clear();
 
@@ -208,7 +205,7 @@ namespace MediaManager.Platforms.Uap.Player
             }
             await Play(MediaPlaybackList);
 
-            AfterPlaying?.Invoke(this, new MediaPlayerEventArgs(mediaItem, this));
+            InvokeAfterPlaying(this, new MediaPlayerEventArgs(mediaItem, this));
         }
 
         public virtual async Task Play(IMediaPlaybackSource source)

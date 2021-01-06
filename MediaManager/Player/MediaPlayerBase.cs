@@ -79,8 +79,18 @@ namespace MediaManager.Player
 
         public abstract void UpdateVideoPlaceholder(object value);
 
-        public abstract event BeforePlayingEventHandler BeforePlaying;
-        public abstract event AfterPlayingEventHandler AfterPlaying;
+        public event BeforePlayingEventHandler BeforePlaying;
+        public event AfterPlayingEventHandler AfterPlaying;
+
+        public void InvokeBeforePlaying(object sender, MediaPlayerEventArgs e)
+        {
+            BeforePlaying?.Invoke(sender, e);
+        }
+
+        public void InvokeAfterPlaying(object sender, MediaPlayerEventArgs e)
+        {
+            AfterPlaying?.Invoke(sender, e);
+        }
 
         public abstract Task Pause();
         public abstract Task Play(IMediaItem mediaItem);
