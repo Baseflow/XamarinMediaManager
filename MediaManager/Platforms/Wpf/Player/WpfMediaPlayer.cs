@@ -83,7 +83,7 @@ namespace MediaManager.Platforms.Wpf.Player
             //TODO: Implement placeholder
         }
 
-        public void Initialize()
+        public virtual void Initialize()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate
             {
@@ -103,29 +103,29 @@ namespace MediaManager.Platforms.Wpf.Player
             });
         }
 
-        private void Player_MediaFailed(object sender, System.Windows.ExceptionRoutedEventArgs e)
+        protected virtual void Player_MediaFailed(object sender, System.Windows.ExceptionRoutedEventArgs e)
         {
             MediaManager.State = MediaPlayerState.Failed;
             MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue.Current, e.ErrorException, e.ErrorException.Message));
         }
 
-        private void Player_BufferingEnded(object sender, EventArgs e)
+        protected virtual void Player_BufferingEnded(object sender, EventArgs e)
         {
             MediaManager.Buffered = TimeSpan.FromMilliseconds(Player.BufferingProgress);
         }
 
-        private void Player_BufferingStarted(object sender, EventArgs e)
+        protected virtual void Player_BufferingStarted(object sender, EventArgs e)
         {
             MediaManager.State = MediaPlayerState.Buffering;
             MediaManager.Buffered = TimeSpan.FromMilliseconds(Player.BufferingProgress);
         }
 
-        private void Player_MediaOpened(object sender, EventArgs e)
+        protected virtual void Player_MediaOpened(object sender, EventArgs e)
         {
             MediaManager.State = MediaPlayerState.Playing;
         }
 
-        private void Player_MediaEnded(object sender, EventArgs e)
+        protected virtual void Player_MediaEnded(object sender, EventArgs e)
         {
             MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.Current));
         }

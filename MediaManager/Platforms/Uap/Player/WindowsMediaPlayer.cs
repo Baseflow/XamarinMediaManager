@@ -103,7 +103,7 @@ namespace MediaManager.Platforms.Uap.Player
                 PlayerView.PlayerView.PosterSource = imageSource;
         }
 
-        public void Initialize()
+        public virtual void Initialize()
         {
             Player = new MediaPlayer();
             Player.AudioCategory = MediaPlayerAudioCategory.Media;
@@ -121,43 +121,43 @@ namespace MediaManager.Platforms.Uap.Player
             Player.PlaybackSession.SeekCompleted += PlaybackSession_SeekCompleted;
         }
 
-        private void Player_MediaOpened(MediaPlayer sender, object args)
+        protected virtual void Player_MediaOpened(MediaPlayer sender, object args)
         {
 
         }
 
-        private void PlaybackSession_SeekCompleted(MediaPlaybackSession sender, object args)
+        protected virtual void PlaybackSession_SeekCompleted(MediaPlaybackSession sender, object args)
         {
             //TODO: Maybe use this?
         }
 
-        private void PlaybackSession_NaturalVideoSizeChanged(MediaPlaybackSession sender, object args)
+        protected virtual void PlaybackSession_NaturalVideoSizeChanged(MediaPlaybackSession sender, object args)
         {
             VideoHeight = (int)sender.NaturalVideoHeight;
             VideoWidth = (int)sender.NaturalVideoWidth;
         }
 
-        private void PlaybackSession_PositionChanged(MediaPlaybackSession sender, object args)
+        protected virtual void PlaybackSession_PositionChanged(MediaPlaybackSession sender, object args)
         {
             //TODO: Maybe use this?
         }
 
-        private void PlaybackSession_BufferingProgressChanged(MediaPlaybackSession sender, object args)
+        protected virtual void PlaybackSession_BufferingProgressChanged(MediaPlaybackSession sender, object args)
         {
             MediaManager.Buffered = TimeSpan.FromMilliseconds(sender.BufferingProgress);
         }
 
-        private void PlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
+        protected virtual void PlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
         {
             MediaManager.State = sender.PlaybackState.ToMediaPlayerState();
         }
 
-        private void Player_MediaFailed(MediaPlayer sender, MediaPlayerFailedEventArgs args)
+        protected virtual void Player_MediaFailed(MediaPlayer sender, MediaPlayerFailedEventArgs args)
         {
             MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue.Current, new Exception(args.ErrorMessage), args.ErrorMessage));
         }
 
-        private void Player_MediaEnded(MediaPlayer sender, object args)
+        protected virtual void Player_MediaEnded(MediaPlayer sender, object args)
         {
             MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.Current));
         }

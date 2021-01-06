@@ -250,7 +250,7 @@ namespace MediaManager.Platforms.Android.Player
             }
         }
 
-        private void Player_VideoSizeChanged(object sender, Com.Google.Android.Exoplayer2.Video.VideoSizeChangedEventArgs e)
+        protected virtual void Player_VideoSizeChanged(object sender, Com.Google.Android.Exoplayer2.Video.VideoSizeChangedEventArgs e)
         {
             VideoWidth = e.Width;
             VideoHeight = e.Height;

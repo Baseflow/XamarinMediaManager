@@ -55,7 +55,7 @@ namespace MediaManager.Platforms.Tizen.Player
             //TODO: Implement placeholder
         }
 
-        protected virtual void Initialize()
+        public virtual void Initialize()
         {
             Player = new TizenPlayer();
             Player.ErrorOccurred += Player_ErrorOccurred;
@@ -64,23 +64,23 @@ namespace MediaManager.Platforms.Tizen.Player
             Player.BufferingProgressChanged += Player_BufferingProgressChanged;
         }
 
-        private void Player_BufferingProgressChanged(object sender, BufferingProgressChangedEventArgs e)
+        protected virtual void Player_BufferingProgressChanged(object sender, BufferingProgressChangedEventArgs e)
         {
             //TODO: Percent is not correct here
             MediaManager.Buffered = TimeSpan.FromMilliseconds(e.Percent);
         }
 
-        private void Player_PlaybackCompleted(object sender, EventArgs e)
+        protected virtual void Player_PlaybackCompleted(object sender, EventArgs e)
         {
             MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.Current));
         }
 
-        private void Player_PlaybackInterrupted(object sender, PlaybackInterruptedEventArgs e)
+        protected virtual void Player_PlaybackInterrupted(object sender, PlaybackInterruptedEventArgs e)
         {
 
         }
 
-        private void Player_ErrorOccurred(object sender, PlayerErrorOccurredEventArgs e)
+        protected virtual void Player_ErrorOccurred(object sender, PlayerErrorOccurredEventArgs e)
         {
             MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue.Current, new Exception(e.ToString()), e.ToString()));
         }
@@ -88,9 +88,6 @@ namespace MediaManager.Platforms.Tizen.Player
         public override IVideoView VideoView { get; set; }
 
         public VideoView PlayerView => VideoView as VideoView;
-
-        public override event BeforePlayingEventHandler BeforePlaying;
-        public override event AfterPlayingEventHandler AfterPlaying;
 
         public override Task Pause()
         {
