@@ -1,4 +1,5 @@
-﻿using Android.Support.V4.Media.Session;
+﻿using System;
+using Android.Support.V4.Media.Session;
 using MediaManager.Player;
 
 namespace MediaManager.Platforms.Android.Playback
@@ -31,6 +32,7 @@ namespace MediaManager.Platforms.Android.Playback
 
                 case PlaybackStateCompat.StateNone:
                 case PlaybackStateCompat.StateError:
+                    return MediaPlayerState.Failed;
                 case PlaybackStateCompat.StateStopped:
                     return MediaPlayerState.Stopped;
 
