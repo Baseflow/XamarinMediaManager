@@ -31,10 +31,11 @@ namespace MediaManager.Platforms.Android.Playback
                     return MediaPlayerState.Buffering;
 
                 case PlaybackStateCompat.StateNone:
-                case PlaybackStateCompat.StateError:
-                    return MediaPlayerState.Failed;
                 case PlaybackStateCompat.StateStopped:
                     return MediaPlayerState.Stopped;
+
+                case PlaybackStateCompat.StateError:
+                    return MediaPlayerState.Failed;
 
                 default:
                     return MediaPlayerState.Stopped;
