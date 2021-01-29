@@ -24,9 +24,9 @@ namespace MediaManager.Platforms.Ios.Media
                 {
                     var location = MediaManager.Extractor.GetMediaLocation(mediaItem.DisplayImageUri);
                     if (location == MediaLocation.Resource)
-                        mediaItem.Image = image = UIImage.FromBundle(mediaItem.DisplayImageUri);
+                        mediaItem.DisplayImage = image = UIImage.FromBundle(mediaItem.DisplayImageUri);
                     else
-                        mediaItem.Image = image = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(mediaItem.DisplayImageUri)));
+                        mediaItem.DisplayImage = image = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(mediaItem.DisplayImageUri)));
                 }
                 if (image == null && !string.IsNullOrEmpty(mediaItem.AlbumImageUri))
                 {
