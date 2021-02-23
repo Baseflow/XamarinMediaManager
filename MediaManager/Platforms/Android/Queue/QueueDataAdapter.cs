@@ -69,12 +69,12 @@ namespace MediaManager.Platforms.Android.Queue
 
                         //move when new is before old
                         if (newBeginIndex < oldBeginIndex)
-                            for (int i = 0; i > e.NewItems.Count; i++)
+                            for (int i = 0; i < e.NewItems.Count; i++)
                                 _mediaSource.MoveMediaSource(oldEndIndex, newBeginIndex);
 
                         //move when new is after old
                         else if (newBeginIndex > oldBeginIndex)
-                            for (int i = 0; i > e.NewItems.Count; i++)
+                            for (int i = 0; i < e.NewItems.Count; i++)
                                 _mediaSource.MoveMediaSource(oldBeginIndex, newEndIndex);
                     }
                     else
@@ -92,7 +92,7 @@ namespace MediaManager.Platforms.Android.Queue
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
                     if (e.NewItems.Count > 1)
                     {
-                        for (int i = 0; i > e.NewItems.Count; i++)
+                        for (int i = 0; i < e.NewItems.Count; i++)
                             _mediaSource.RemoveMediaSource(e.OldStartingIndex);
                     }
                     else
