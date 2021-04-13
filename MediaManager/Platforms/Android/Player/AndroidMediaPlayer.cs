@@ -136,6 +136,14 @@ namespace MediaManager.Platforms.Android.Player
                 PlayerView.UseArtwork = false;
         }
 
+        public override void UpdateIsFullWindow(bool isFullWindow)
+        {
+            if (PlayerView == null)
+                return;
+
+            //TODO: Implement isFullWindow
+        }
+
         protected int lastWindowIndex = -1;
 
         protected virtual void Initialize()

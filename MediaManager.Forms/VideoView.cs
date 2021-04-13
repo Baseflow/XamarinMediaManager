@@ -47,6 +47,9 @@ namespace MediaManager.Forms
                 case nameof(MediaPlayer.VideoPlaceholder):
                     if (MediaPlayer.VideoPlaceholder is ImageSource imageSource)
                         VideoPlaceholder = imageSource;
+                    break;           
+                case nameof(MediaPlayer.IsFullWindow):
+                        IsFullWindow = MediaPlayer.IsFullWindow;
                     break;
                 default:
                     break;
@@ -150,7 +153,10 @@ namespace MediaManager.Forms
             BindableProperty.Create(nameof(Speed), typeof(float), typeof(VideoView), 1.0f, propertyChanged: OnSpeedPropertyChanged, defaultValueCreator: x => MediaManager.Speed);
 
         public static readonly BindableProperty VideoPlaceholderProperty =
-            BindableProperty.Create(nameof(VideoPlaceholder), typeof(ImageSource), typeof(VideoView), null, propertyChanged: OnVideoPlaceholderPropertyChanged, defaultValueCreator: x => MediaManager.MediaPlayer.VideoPlaceholder?.ToImageSource());
+            BindableProperty.Create(nameof(VideoPlaceholder), typeof(ImageSource), typeof(VideoView), null, propertyChanged: OnVideoPlaceholderPropertyChanged, defaultValueCreator: x => MediaManager.MediaPlayer.VideoPlaceholder?.ToImageSource());              
+        
+        public static readonly BindableProperty IsFullWindowProperty =
+            BindableProperty.Create(nameof(IsFullWindow), typeof(bool), typeof(VideoView), false, propertyChanged: OnIsFullWindowPropertyChanged, defaultValueCreator: x => MediaManager.MediaPlayer.IsFullWindow);
 
         public VideoAspectMode VideoAspect
         {
@@ -246,6 +252,12 @@ namespace MediaManager.Forms
         {
             get { return (ImageSource)GetValue(VideoPlaceholderProperty); }
             set { SetValue(VideoPlaceholderProperty, value); }
+        }        
+        
+        public bool IsFullWindow
+        {
+            get { return (bool)GetValue(IsFullWindowProperty); }
+            set { SetValue(IsFullWindowProperty, value); }
         }
 
         private static async void OnSourcePropertyChanged(BindableObject bindable, object oldValue, object newValue)
@@ -299,6 +311,11 @@ namespace MediaManager.Forms
             if (newValue is Xamarin.Forms.ImageSource imageSource)
                 MediaManager.MediaPlayer.VideoPlaceholder = await imageSource.ToNative().ConfigureAwait(false);
 #endif
+        }
+
+        private static void OnIsFullWindowPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            MediaManager.MediaPlayer.IsFullWindow = (bool)newValue;
         }
 
         public virtual void Dispose()

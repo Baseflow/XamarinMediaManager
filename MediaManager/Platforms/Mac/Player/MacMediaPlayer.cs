@@ -66,5 +66,13 @@ namespace MediaManager.Platforms.Mac.Player
 
             //TODO: Implement placeholder
         }
+
+        public override void UpdateIsFullWindow(bool isFullWindow)
+        {
+            if (PlayerView == null)
+                return;
+
+            //TODO: Implement isFullWindow
+        }
     }
 }

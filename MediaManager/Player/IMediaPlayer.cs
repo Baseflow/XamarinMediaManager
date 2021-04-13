@@ -45,6 +45,8 @@ namespace MediaManager.Player
 
         object VideoPlaceholder { get; set; }
 
+        bool IsFullWindow { get; set; }
+
         /// <summary>
         /// Starts playing the MediaItem
         /// </summary>

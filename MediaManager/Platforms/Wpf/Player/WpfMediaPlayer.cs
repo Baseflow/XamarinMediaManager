@@ -83,6 +83,14 @@ namespace MediaManager.Platforms.Wpf.Player
             //TODO: Implement placeholder
         }
 
+        public override void UpdateIsFullWindow(bool isFullWindow)
+        {
+            if (PlayerView == null)
+                return;
+
+            //TODO: Implement isFullWindow
+        }
+
         public virtual void Initialize()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate

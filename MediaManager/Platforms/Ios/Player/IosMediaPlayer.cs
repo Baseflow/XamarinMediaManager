@@ -86,6 +86,14 @@ namespace MediaManager.Platforms.Ios.Player
             }
         }
 
+        public override void UpdateIsFullWindow(bool isFullWindow)
+        {
+            if (PlayerView == null)
+                return;
+
+            //TODO: Implement isFullWindow
+        }
+
         protected override void Initialize()
         {
             base.Initialize();

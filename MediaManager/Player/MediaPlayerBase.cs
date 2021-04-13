@@ -21,6 +21,7 @@ namespace MediaManager.Player
             UpdateVideoAspect(VideoAspect);
             UpdateShowPlaybackControls(ShowPlaybackControls);
             UpdateVideoPlaceholder(VideoPlaceholder);
+            UpdateIsFullWindow(IsFullWindow);
         }
 
         protected VideoAspectMode _videoAspect;
@@ -77,7 +78,20 @@ namespace MediaManager.Player
             }
         }
 
+        private bool _isFullWindow;
+        public virtual bool IsFullWindow
+        {
+            get => _isFullWindow;
+            set
+            {
+                if (SetProperty(ref _isFullWindow, value))
+                    UpdateIsFullWindow(value);
+            }
+        }
+
         public abstract void UpdateVideoPlaceholder(object value);
+
+        public abstract void UpdateIsFullWindow(bool value);
 
         public event BeforePlayingEventHandler BeforePlaying;
         public event AfterPlayingEventHandler AfterPlaying;
