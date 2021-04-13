@@ -70,6 +70,11 @@ namespace MediaManager.Playback
         bool AutoPlay { get; set; }
 
         /// <summary>
+        /// Indicates if the Player is in full screen
+        /// </summary>
+        bool IsFullWindow { get; set; }
+
+        /// <summary>
         /// Will keep the screen on when set to true and a VideoView is on the screen and playing
         /// </summary>
         bool KeepScreenOn { get; set; }

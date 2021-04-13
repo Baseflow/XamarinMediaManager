@@ -65,6 +65,9 @@ namespace MediaManager.Forms
                     break;
                 case nameof(MediaManager.AutoPlay):
                     AutoPlay = MediaManager.AutoPlay;
+                    break;                
+                case nameof(MediaManager.IsFullWindow):
+                    IsFullWindow = MediaManager.IsFullWindow;
                     break;
                 case nameof(MediaManager.RepeatMode):
                     Repeat = MediaManager.RepeatMode;
@@ -316,7 +319,7 @@ namespace MediaManager.Forms
         private static void OnIsFullWindowPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             MediaManager.MediaPlayer.IsFullWindow = (bool)newValue;
-        }
+        }        
 
         public virtual void Dispose()
         {
