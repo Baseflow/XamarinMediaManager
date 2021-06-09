@@ -141,7 +141,11 @@ namespace MediaManager.Platforms.Android.Player
             if (PlayerView == null)
                 return;
 
-            //TODO: Implement isFullWindow
+            //Player.VideoScalingMode = C.VideoScalingModeScaleToFit;
+            if(isFullWindow)
+                PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeFill;
+            else
+                PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeFit;
         }
 
         protected int lastWindowIndex = -1;
