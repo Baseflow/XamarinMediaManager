@@ -227,7 +227,6 @@ namespace MediaManager.Platforms.Apple.Player
         public virtual async Task Play(AVPlayerItem playerItem)
         {
             Player.ActionAtItemEnd = AVPlayerActionAtItemEnd.None;
-            //Player.ReplaceCurrentItemWithPlayerItem(playerItem);
             Player.RemoveAllItems();
             Player.InsertItem(playerItem, null);
             await Play();
