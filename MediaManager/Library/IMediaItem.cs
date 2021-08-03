@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using MediaManager.Media;
 
 namespace MediaManager.Library
@@ -191,5 +192,10 @@ namespace MediaManager.Library
         /// Indicates if the MediaItem is being live streamed
         /// </summary>
         bool IsLive { get; set; }
+        
+        /// <summary>
+        /// Holds data for in memory media
+        /// </summary>
+        Stream Data { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Android.Graphics;
 using Android.OS;
 using Android.Support.V4.Media;
@@ -6,8 +7,10 @@ using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Source.Dash;
 using Com.Google.Android.Exoplayer2.Source.Hls;
 using Com.Google.Android.Exoplayer2.Source.Smoothstreaming;
+using Com.Google.Android.Exoplayer2.Upstream;
 using MediaManager.Library;
 using MediaManager.Platforms.Android.Player;
+using Uri = Android.Net.Uri;
 
 namespace MediaManager.Platforms.Android.Media
 {
@@ -18,7 +21,14 @@ namespace MediaManager.Platforms.Android.Media
         public static IMediaSource ToMediaSource(this IMediaItem mediaItem)
         {
             var mediaDescription = mediaItem.ToMediaDescription();
-            return ToMediaSource(mediaDescription, mediaItem.MediaType);
+
+            if (mediaItem.MediaLocation != MediaLocation.InMemory)
+                return ToMediaSource(mediaDescription, mediaItem.MediaType);
+
+            var factory = CreateDataSourceFactory(mediaItem);
+            return new ProgressiveMediaSource.Factory(factory)
+                .SetTag(mediaDescription)
+                .CreateMediaSource(Uri.Empty);
         }
 
         public static ClippingMediaSource ToClippingMediaSource(this IMediaItem mediaItem, TimeSpan stopAt)
@@ -88,7 +98,7 @@ namespace MediaManager.Platforms.Android.Media
         {
             var description = new MediaDescriptionCompat.Builder()
                 .SetMediaId(item?.Id)
-                .SetMediaUri(global::Android.Net.Uri.Parse(item?.MediaUri))
+                .SetMediaUri(string.IsNullOrEmpty(item?.MediaUri) ? global::Android.Net.Uri.Empty :global::Android.Net.Uri.Parse(item?.MediaUri))
                 .SetTitle(item?.DisplayTitle)
                 .SetSubtitle(item?.DisplaySubtitle)
                 .SetDescription(item?.DisplayDescription)
@@ -194,6 +204,21 @@ namespace MediaManager.Platforms.Android.Media
             item.Year = Convert.ToInt32(mediaMetadata.GetLong(MediaMetadataCompat.MetadataKeyYear));
             item.IsMetadataExtracted = true;
             return item;
+        }
+        
+        private static IDataSourceFactory CreateDataSourceFactory(IMediaItem mediaItem)
+        {
+            //TODO: use own datasource factory that works with stream instead of bytes
+            using var memStream = new MemoryStream();
+            if (mediaItem.Data.CanSeek)
+            {
+                mediaItem.Data.Seek(0, SeekOrigin.Begin);
+            }
+
+            mediaItem.Data.CopyTo(memStream);
+            var bytes = memStream.ToArray();
+            var factory = new ByteArrayDataSourceFactory(bytes);
+            return factory;
         }
     }
 }
