@@ -585,7 +585,7 @@
       {
         "name": "Beats (wav)",
         "uri": "inMemory:ElementPlayer.Core.Assets.beats.wav",
-        "extension": "wav"
+        "mimetype": "audio/wav"
       }
     ]
   }
