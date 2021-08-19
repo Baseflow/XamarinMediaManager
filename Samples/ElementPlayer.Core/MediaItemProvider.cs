@@ -58,6 +58,7 @@ namespace ElementPlayer.Core
                             mediaItem.Data = typeof(MediaItemProvider).Assembly.GetManifestResourceStream(mediaItem.MediaUri.Substring(9));
                             mediaItem.MediaUri = string.Empty;
                             mediaItem.MediaLocation = MediaLocation.InMemory;
+                            mediaItem.MimeType = sample.MimeType.ToMimeType();
                         }
 
                         items.Add(mediaItem);

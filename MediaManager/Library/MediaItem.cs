@@ -344,5 +344,13 @@ namespace MediaManager.Library
             get => _data;
             set => SetProperty(ref _data, value);
         }
+
+        private MimeType _mimeType;
+
+        public MimeType MimeType
+        {
+            get => _mimeType;
+            set => SetProperty(ref _mimeType, value);
+        }
     }
 }
