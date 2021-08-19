@@ -16,6 +16,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Assets\beats.wav" />
     <EmbeddedResource Include="Assets\media.exolist.json" />
+    <EmbeddedResource Include="Assets\sample-mp4-file.mp4" />
   </ItemGroup>
 
   <ItemGroup>
