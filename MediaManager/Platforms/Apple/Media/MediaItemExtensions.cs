@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AVFoundation;
+using CoreFoundation;
 using Foundation;
 using MediaManager.Library;
 using MediaManager.Media;
+using MediaManager.Platforms.Apple.Player;
+using UniformTypeIdentifiers;
 
 namespace MediaManager.Platforms.Apple.Media
 {
@@ -36,6 +39,10 @@ namespace MediaManager.Platforms.Apple.Media
             {
                 asset = AVUrlAsset.Create(NSUrl.FromString(mediaItem.MediaUri), GetOptionsWithHeaders(RequestHeaders));
             }
+            else if (mediaItem.MediaLocation == MediaLocation.InMemory)
+            {
+                asset = CreateInMemoryAsset(mediaItem);
+            }
             else
             {
                 asset = AVAsset.FromUrl(NSUrl.FromString(mediaItem.MediaUri));
@@ -60,6 +67,16 @@ namespace MediaManager.Platforms.Apple.Media
             ));
 
             return options;
+        }
+
+        private static AVAsset CreateInMemoryAsset(IMediaItem mediaItem)
+        {
+            var resourceLoader = new StreamResourceLoaderDelegate(mediaItem.Data, UTType.CreateFromMimeType(mediaItem.MimeType.ToMimeTypeString()));
+            var url = new NSUrl(string.Empty);
+            var asset = new AVUrlAsset(url);
+            asset.ResourceLoader.SetDelegate(resourceLoader, DispatchQueue.MainQueue);
+
+            return asset;
         }
     }
 }
