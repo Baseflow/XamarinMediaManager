@@ -97,9 +97,9 @@ namespace MediaManager.Media
             return await CreateMediaItem(file.FullName).ConfigureAwait(false);
         }
 
-        public Task<IMediaItem> CreateMediaItem(Stream data)
+        public Task<IMediaItem> CreateMediaItem(Stream data, MimeType mimeType)
         {
-            var mediaItem = new MediaItem {MediaLocation = MediaLocation.InMemory, Data = data};
+            var mediaItem = new MediaItem {MediaLocation = MediaLocation.InMemory, Data = data, MimeType = mimeType, MediaUri = string.Empty};
 
             return UpdateMediaItem(mediaItem);
         }

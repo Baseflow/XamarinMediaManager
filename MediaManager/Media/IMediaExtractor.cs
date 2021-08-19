@@ -32,7 +32,7 @@ namespace MediaManager.Media
 
         Task<IMediaItem> CreateMediaItem(FileInfo file);
         
-        Task<IMediaItem> CreateMediaItem(Stream data);
+        Task<IMediaItem> CreateMediaItem(Stream data, MimeType mimeType);
 
         Task<IMediaItem> UpdateMediaItem(IMediaItem mediaItem);
 

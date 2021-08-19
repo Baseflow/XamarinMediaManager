@@ -259,9 +259,9 @@ namespace MediaManager
             return mediaItem;
         }
 
-        public virtual async Task<IMediaItem> Play(Stream data)
+        public virtual async Task<IMediaItem> Play(Stream data, MimeType mimeType)
         {
-            var mediaItem = await Extractor.CreateMediaItem(data).ConfigureAwait(false);
+            var mediaItem = await Extractor.CreateMediaItem(data, mimeType).ConfigureAwait(false);
             var mediaItemToPlay = await PrepareQueueForPlayback(mediaItem);
 
             await PlayAsCurrent(mediaItemToPlay);
