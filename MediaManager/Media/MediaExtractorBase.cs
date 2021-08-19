@@ -97,6 +97,13 @@ namespace MediaManager.Media
             return await CreateMediaItem(file.FullName).ConfigureAwait(false);
         }
 
+        public Task<IMediaItem> CreateMediaItem(Stream data)
+        {
+            var mediaItem = new MediaItem {MediaLocation = MediaLocation.InMemory, Data = data};
+
+            return UpdateMediaItem(mediaItem);
+        }
+
         public virtual async Task<IMediaItem> CreateMediaItemFromAssembly(string resourceName, Assembly assembly = null)
         {
             if (assembly == null && !TryFindAssembly(resourceName, out assembly))

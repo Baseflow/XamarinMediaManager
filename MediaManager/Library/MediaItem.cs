@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using MediaManager.Media;
 
 namespace MediaManager.Library
@@ -334,6 +335,14 @@ namespace MediaManager.Library
         {
             get => _isLive;
             set => SetProperty(ref _isLive, value);
+        }
+
+        private Stream _data;
+
+        public Stream Data
+        {
+            get => _data;
+            set => SetProperty(ref _data, value);
         }
     }
 }

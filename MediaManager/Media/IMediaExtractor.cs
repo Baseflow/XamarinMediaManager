@@ -31,6 +31,8 @@ namespace MediaManager.Media
         Task<IMediaItem> CreateMediaItemFromResource(string resourceName);
 
         Task<IMediaItem> CreateMediaItem(FileInfo file);
+        
+        Task<IMediaItem> CreateMediaItem(Stream data);
 
         Task<IMediaItem> UpdateMediaItem(IMediaItem mediaItem);
 

@@ -101,5 +101,6 @@ namespace MediaManager
         /// <param name="cacheName"></param>
         /// <returns></returns>
         Task<IMediaItem> Play(Stream stream, string cacheName);
+        Task<IMediaItem> Play(Stream stream);
     }
 }

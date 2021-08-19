@@ -52,6 +52,13 @@ namespace ElementPlayer.Core
                             mediaItem.MediaType = MediaType.SmoothStreaming;
                         else if (mediaItem.FileExtension == "m3u8" || mediaItem.MediaUri.EndsWith(".m3u8"))
                             mediaItem.MediaType = MediaType.Hls;
+                        
+                        if (mediaItem.MediaUri.StartsWith("inMemory:"))
+                        {
+                            mediaItem.Data = typeof(MediaItemProvider).Assembly.GetManifestResourceStream(mediaItem.MediaUri.Substring(9));
+                            mediaItem.MediaUri = string.Empty;
+                            mediaItem.MediaLocation = MediaLocation.InMemory;
+                        }
 
                         items.Add(mediaItem);
                     }

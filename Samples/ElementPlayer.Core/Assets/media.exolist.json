@@ -578,5 +578,15 @@
         "spherical_stereo_mode": "top_bottom"
       }
     ]
+  },
+  {
+    "name": "InMemory",
+    "samples": [
+      {
+        "name": "Beats (wav)",
+        "uri": "inMemory:ElementPlayer.Core.Assets.beats.wav",
+        "extension": "wav"
+      }
+    ]
   }
 ]
