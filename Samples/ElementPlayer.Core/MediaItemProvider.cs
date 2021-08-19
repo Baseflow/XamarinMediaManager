@@ -56,7 +56,7 @@ namespace ElementPlayer.Core
                         if (mediaItem.MediaUri.StartsWith("inMemory:"))
                         {
                             mediaItem.Data = typeof(MediaItemProvider).Assembly.GetManifestResourceStream(mediaItem.MediaUri.Substring(9));
-                            mediaItem.MediaUri = "";
+                            mediaItem.MediaUri = string.Empty;
                             mediaItem.MediaLocation = MediaLocation.InMemory;
                         }
 

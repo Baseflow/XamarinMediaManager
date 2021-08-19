@@ -16,7 +16,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Assets\beats.wav" />
     <EmbeddedResource Include="Assets\media.exolist.json" />
-    <None Remove="Assets\beats.wav" />
   </ItemGroup>
 
   <ItemGroup>

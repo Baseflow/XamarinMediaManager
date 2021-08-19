@@ -10,7 +10,6 @@ using Com.Google.Android.Exoplayer2.Source.Smoothstreaming;
 using Com.Google.Android.Exoplayer2.Upstream;
 using MediaManager.Library;
 using MediaManager.Platforms.Android.Player;
-using Uri = Android.Net.Uri;
 
 namespace MediaManager.Platforms.Android.Media
 {
@@ -28,7 +27,7 @@ namespace MediaManager.Platforms.Android.Media
             var factory = CreateDataSourceFactory(mediaItem);
             return new ProgressiveMediaSource.Factory(factory)
                 .SetTag(mediaDescription)
-                .CreateMediaSource(Uri.Empty);
+                .CreateMediaSource(global::Android.Net.Uri.Empty);
         }
 
         public static ClippingMediaSource ToClippingMediaSource(this IMediaItem mediaItem, TimeSpan stopAt)
