@@ -166,9 +166,22 @@ namespace MediaManager.Platforms.Apple.Player
 
         protected virtual void DidErrorOcurred(NSNotification obj)
         {
-            //TODO: Error should not be null after this or it will crash.
-            var error = Player?.CurrentItem?.Error ?? new NSError();
-            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue?.Current, new NSErrorException(error), error?.LocalizedDescription));
+            Exception exception = null;
+            string message = null;
+            
+            var error = Player?.CurrentItem?.Error;
+            if(error != null)
+            {
+                exception = new NSErrorException(error);
+                message = error.LocalizedDescription;
+            }
+            else
+            {
+                message = obj?.ToString() ?? "MediaItem failed with unknown reason";
+                exception = new ApplicationException(message);
+            }            
+
+            MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue?.Current, exception, message));
         }
 
         protected virtual async void DidFinishPlaying(NSNotification obj)
