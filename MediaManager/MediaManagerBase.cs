@@ -12,6 +12,7 @@ using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Queue;
 using MediaManager.Volume;
+using Timer = System.Timers.Timer;
 
 namespace MediaManager
 {

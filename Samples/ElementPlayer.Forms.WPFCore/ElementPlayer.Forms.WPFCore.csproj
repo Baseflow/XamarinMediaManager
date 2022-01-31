@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MvvmCross.Forms.Platforms.Wpf" Version="7.1.2" />
-    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.7.0.968" />
+    <PackageReference Include="MvvmCross.Forms.Platforms.Wpf" Version="8.0.2" />
+    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="5.0.0.2012" />
   </ItemGroup>
 
   <ItemGroup>

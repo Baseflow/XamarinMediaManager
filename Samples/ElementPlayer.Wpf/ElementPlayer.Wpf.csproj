@@ -128,16 +128,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf">
-      <Version>1.1.19</Version>
+      <Version>1.1.39</Version>
     </PackageReference>
     <PackageReference Include="MvvmCross.Platforms.Wpf">
-      <Version>7.1.2</Version>
+      <Version>8.0.2</Version>
     </PackageReference>
     <PackageReference Include="MaterialDesignColors">
-      <Version>1.2.7</Version>
+      <Version>2.0.4</Version>
     </PackageReference>
     <PackageReference Include="MaterialDesignThemes">
-      <Version>3.2.0</Version>
+      <Version>4.3.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />
