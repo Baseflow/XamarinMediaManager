@@ -92,7 +92,11 @@ namespace MediaManager
                 sessionIntent = new Intent(Context, activity.GetType());
             else
                 sessionIntent = Context.PackageManager.GetLaunchIntentForPackage(Context.PackageName);
-            return PendingIntent.GetActivity(Context, 0, sessionIntent, 0);
+
+            PendingIntentFlags flag = 0;
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.M) flag = PendingIntentFlags.Immutable;
+
+            return PendingIntent.GetActivity(Context, 0, sessionIntent, flag);
         }
 
         public override Dictionary<string, string> RequestHeaders
