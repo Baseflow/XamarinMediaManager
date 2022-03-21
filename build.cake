@@ -83,7 +83,7 @@ Task("ResolveBuildTools")
 {
     var vsWhereSettings = new VSWhereLatestSettings
     {
-        IncludePrerelease = true,
+        IncludePrerelease = false,
         Requires = "Component.Xamarin"
     };
     
