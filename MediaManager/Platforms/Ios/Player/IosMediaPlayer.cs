@@ -86,6 +86,17 @@ namespace MediaManager.Platforms.Ios.Player
             }
         }
 
+        public override void UpdateIsFullWindow(bool isFullWindow)
+        {
+            if (PlayerView == null)
+                return;
+
+            if(isFullWindow)
+                PlayerView.PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
+            else
+                PlayerView.PlayerViewController.VideoGravity = AVLayerVideoGravity.ResizeAspect;
+        }
+
         protected override void Initialize()
         {
             base.Initialize();

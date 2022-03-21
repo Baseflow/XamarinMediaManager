@@ -160,6 +160,13 @@ namespace MediaManager
         {
             get => _autoPlay;
             set => SetProperty(ref _autoPlay, value);
+        }        
+        
+        private bool _isFullWindow = false;
+        public bool IsFullWindow
+        {
+            get => _isFullWindow;
+            set => SetProperty(ref _isFullWindow, value);
         }
 
         private bool _retryPlayOnFailed = true;

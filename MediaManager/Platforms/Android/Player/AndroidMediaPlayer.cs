@@ -136,6 +136,18 @@ namespace MediaManager.Platforms.Android.Player
                 PlayerView.UseArtwork = false;
         }
 
+        public override void UpdateIsFullWindow(bool isFullWindow)
+        {
+            if (PlayerView == null)
+                return;
+
+            //Player.VideoScalingMode = C.VideoScalingModeScaleToFit;
+            if(isFullWindow)
+                PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeFill;
+            else
+                PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeFit;
+        }
+
         protected int lastWindowIndex = -1;
 
         protected virtual void Initialize()

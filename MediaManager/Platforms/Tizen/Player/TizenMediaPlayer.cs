@@ -55,6 +55,14 @@ namespace MediaManager.Platforms.Tizen.Player
             //TODO: Implement placeholder
         }
 
+        public override void UpdateIsFullWindow(bool isFullWindow)
+        {
+            if (PlayerView == null)
+                return;
+
+            //TODO: Implement isFullWindow
+        }
+
         public virtual void Initialize()
         {
             Player = new TizenPlayer();

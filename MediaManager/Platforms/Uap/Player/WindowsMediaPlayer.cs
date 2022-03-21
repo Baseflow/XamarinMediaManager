@@ -103,6 +103,14 @@ namespace MediaManager.Platforms.Uap.Player
                 PlayerView.PlayerView.PosterSource = imageSource;
         }
 
+        public override void UpdateIsFullWindow(bool isFullWindow)
+        {
+            if (PlayerView == null)
+                return;
+
+            PlayerView.PlayerView.IsFullWindow = isFullWindow;
+        }
+
         public virtual void Initialize()
         {
             Player = new MediaPlayer();
