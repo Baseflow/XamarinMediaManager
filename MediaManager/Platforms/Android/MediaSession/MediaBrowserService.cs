@@ -71,17 +71,6 @@ namespace MediaManager.Platforms.Android.MediaSession
                         IsForeground = false;
                     }
                     break;
-                case global::MediaManager.Player.MediaPlayerState.Loading:
-                case global::MediaManager.Player.MediaPlayerState.Buffering:
-                case global::MediaManager.Player.MediaPlayerState.Playing:
-                    if (!IsForeground)
-                    {
-                        //PlayerNotificationManager?.SetOngoing(true);
-                        PlayerNotificationManager?.Invalidate();
-
-                        IsForeground = true;
-                    }
-                    break;
                 case global::MediaManager.Player.MediaPlayerState.Paused:
                     if (IsForeground)
                     {
@@ -121,12 +110,6 @@ namespace MediaManager.Platforms.Android.MediaSession
 
             //Needed for enabling the notification as a mediabrowser.
             NotificationListener = new NotificationListener();
-            NotificationListener.OnNotificationStartedImpl = (notificationId, notification) =>
-            {
-                ContextCompat.StartForegroundService(ApplicationContext, new Intent(ApplicationContext, Java.Lang.Class.FromType(typeof(MediaBrowserService))));
-                StartForeground(notificationId, notification);
-                IsForeground = true;
-            };
             NotificationListener.OnNotificationCancelledImpl = (notificationId, dismissedByUser) =>
             {
                 StopForeground(dismissedByUser);
@@ -134,6 +117,15 @@ namespace MediaManager.Platforms.Android.MediaSession
 
                 StopSelf();
                 IsForeground = false;
+            };
+            NotificationListener.OnNotificationPostedImpl = (notificationId, notification, ongoing) =>
+            {
+                if (ongoing && !IsForeground)
+                {
+                    ContextCompat.StartForegroundService(ApplicationContext, new Intent(ApplicationContext, Java.Lang.Class.FromType(typeof(MediaBrowserService))));
+                    StartForeground(notificationId, notification);
+                    IsForeground = true;
+                }
             };
 
             PlayerNotificationManager.SetFastForwardIncrementMs((long)MediaManager.StepSizeForward.TotalMilliseconds);
