@@ -21,6 +21,10 @@
         /// <summary>
         /// Used for media that is added to the native system. For example Assets and raw folder on Android, and Resources folder on iOS
         /// </summary>
-        Resource
+        Resource,
+        /// <summary>
+        /// Used for media that is loaded in-memory.
+        /// </summary>
+        InMemory
     }
 }

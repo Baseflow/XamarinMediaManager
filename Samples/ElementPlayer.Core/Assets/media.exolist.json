@@ -578,5 +578,20 @@
         "spherical_stereo_mode": "top_bottom"
       }
     ]
+  },
+  {
+    "name": "InMemory",
+    "samples": [
+      {
+        "name": "Beats (wav)",
+        "uri": "inMemory:ElementPlayer.Core.Assets.beats.wav",
+        "mimetype": "audio/wav"
+      },
+      {
+        "name": "Sample video (mp4)",
+        "uri": "inMemory:ElementPlayer.Core.Assets.sample-mp4-file.mp4",
+        "mimetype": "video/mpeg"
+      }
+    ]
   }
 ]

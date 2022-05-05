@@ -44,6 +44,9 @@ namespace ElementPlayer.Core.Assets
 
         [JsonProperty("spherical_stereo_mode", NullValueHandling = NullValueHandling.Ignore)]
         public string SphericalStereoMode { get; set; }
+        
+        [JsonProperty("mimetype", NullValueHandling = NullValueHandling.Ignore)]
+        public string MimeType { get; set; }
     }
 
     public partial class Playlist

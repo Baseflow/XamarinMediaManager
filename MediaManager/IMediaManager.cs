@@ -101,5 +101,13 @@ namespace MediaManager
         /// <param name="cacheName"></param>
         /// <returns></returns>
         Task<IMediaItem> Play(Stream stream, string cacheName);
+        
+        /// <summary>
+        /// Plays media from a Stream.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="mimeType"></param>
+        /// <returns></returns>
+        Task<IMediaItem> Play(Stream stream, MimeType mimeType);
     }
 }
