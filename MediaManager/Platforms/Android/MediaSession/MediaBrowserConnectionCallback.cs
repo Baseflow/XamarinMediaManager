@@ -1,5 +1,4 @@
-﻿using System;
-using Android.Runtime;
+﻿using Android.Runtime;
 using Android.Support.V4.Media;
 
 namespace MediaManager.Platforms.Android.MediaSession

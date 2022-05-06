@@ -1,5 +1,4 @@
-﻿using System;
-using MediaManager.Forms.Platforms.Uap;
+﻿using MediaManager.Forms.Platforms.Uap;
 using Windows.Foundation;
 using Windows.UI.Xaml.Media;
 using Xamarin.Forms.Platform.UWP;

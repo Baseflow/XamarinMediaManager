@@ -1,5 +1,4 @@
-﻿using MediaManager;
-using MvvmCross.ViewModels;
+﻿using MvvmCross.ViewModels;
 
 namespace ElementPlayer.WpfCore
 {

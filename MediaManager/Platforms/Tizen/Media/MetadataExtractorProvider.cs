@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using MediaManager.Library;
+﻿using MediaManager.Library;
 using MediaManager.Media;
 using Tizen.Multimedia;
 

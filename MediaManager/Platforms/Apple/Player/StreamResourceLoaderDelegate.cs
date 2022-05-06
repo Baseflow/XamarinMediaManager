@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Text;
 using AVFoundation;
 using Foundation;
@@ -7,7 +5,8 @@ using UniformTypeIdentifiers;
 
 namespace MediaManager.Platforms.Apple.Player
 {
-    public class StreamResourceLoaderDelegate : AVAssetResourceLoaderDelegate {
+    public class StreamResourceLoaderDelegate : AVAssetResourceLoaderDelegate
+    {
         private readonly Stream _stream;
         private readonly UTType _type;
 
@@ -33,7 +32,7 @@ namespace MediaManager.Platforms.Apple.Player
                 _stream.Seek(offset, SeekOrigin.Begin);
             }
 
-            var remainingBytes = (int) _stream.Length - offset;
+            var remainingBytes = (int)_stream.Length - offset;
             var bytesToRead = Math.Min(remainingBytes, Convert.ToInt32(loadingRequest.DataRequest.RequestedLength));
 
             using (var reader = new BinaryReader(_stream, Encoding.UTF8, true))

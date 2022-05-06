@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using MediaManager.Library;
+﻿using MediaManager.Library;
 using MediaManager.Media;
 using MediaManager.Platforms.Uap.Media;
 using MediaManager.Platforms.Uap.Video;

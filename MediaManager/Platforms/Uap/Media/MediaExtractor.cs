@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using MediaManager.Media;
+﻿using MediaManager.Media;
 
 namespace MediaManager.Platforms.Uap.Media
 {

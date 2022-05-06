@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using MediaManager.Library;
 
 namespace MediaManager.Media
@@ -31,7 +28,7 @@ namespace MediaManager.Media
         Task<IMediaItem> CreateMediaItemFromResource(string resourceName);
 
         Task<IMediaItem> CreateMediaItem(FileInfo file);
-        
+
         Task<IMediaItem> CreateMediaItem(Stream data, MimeType mimeType);
 
         Task<IMediaItem> UpdateMediaItem(IMediaItem mediaItem);

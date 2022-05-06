@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Android.Graphics;
+﻿using Android.Graphics;
 using Android.OS;
 using Android.Support.V4.Media;
 using Com.Google.Android.Exoplayer2.Source;
@@ -97,7 +95,7 @@ namespace MediaManager.Platforms.Android.Media
         {
             var description = new MediaDescriptionCompat.Builder()
                 .SetMediaId(item?.Id)
-                .SetMediaUri(string.IsNullOrEmpty(item?.MediaUri) ? global::Android.Net.Uri.Empty :global::Android.Net.Uri.Parse(item?.MediaUri))
+                .SetMediaUri(string.IsNullOrEmpty(item?.MediaUri) ? global::Android.Net.Uri.Empty : global::Android.Net.Uri.Parse(item?.MediaUri))
                 .SetTitle(item?.DisplayTitle)
                 .SetSubtitle(item?.DisplaySubtitle)
                 .SetDescription(item?.DisplayDescription)
@@ -204,7 +202,7 @@ namespace MediaManager.Platforms.Android.Media
             item.IsMetadataExtracted = true;
             return item;
         }
-        
+
         private static IDataSourceFactory CreateDataSourceFactory(IMediaItem mediaItem)
         {
             //TODO: use own datasource factory that works with stream instead of bytes

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MediaManager
+﻿namespace MediaManager
 {
     public static class CollectionExtensions
     {

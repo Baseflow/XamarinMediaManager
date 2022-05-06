@@ -1,5 +1,4 @@
-﻿using System;
-using AVKit;
+﻿using AVKit;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -51,8 +50,8 @@ namespace MediaManager.Platforms.Ios.Video
 
             if (oldNsValue == null || newNsValue == null) return;
 
-            var oldValue = ((NSValue) oldNsValue).CGRectValue;
-            var newValue = ((NSValue) newNsValue).CGRectValue;
+            var oldValue = ((NSValue)oldNsValue).CGRectValue;
+            var newValue = ((NSValue)newNsValue).CGRectValue;
 
             if (oldValue == CGRect.Empty || oldValue == CGRect.Null || oldValue.Equals(newValue)) return;
 

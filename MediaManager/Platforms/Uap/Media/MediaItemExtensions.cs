@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using MediaManager.Library;
+﻿using MediaManager.Library;
 using MediaManager.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
@@ -18,7 +15,7 @@ namespace MediaManager.Platforms.Uap.Media
             {
                 var storageFile = await StorageFile.GetFileFromPathAsync(mediaItem.MediaUri);
                 return MediaSource.CreateFromStorageFile(storageFile);
-            } 
+            }
             else if (mediaItem.MediaLocation == MediaLocation.InMemory)
                 return MediaSource.CreateFromStream(mediaItem.Data.AsRandomAccessStream(), mediaItem.MimeType.ToMimeTypeString());
             else

@@ -1,6 +1,5 @@
 ﻿using MediaManager;
 using MvvmCross.Commands;
-using MvvmCross.Logging;
 using MvvmCross.Navigation;
 
 namespace ElementPlayer.Core.ViewModels

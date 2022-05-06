@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using CoreGraphics;
+﻿using CoreGraphics;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;

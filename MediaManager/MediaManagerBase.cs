@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Timers;
 using MediaManager.Library;
 using MediaManager.Media;
@@ -161,8 +157,8 @@ namespace MediaManager
         {
             get => _autoPlay;
             set => SetProperty(ref _autoPlay, value);
-        }        
-        
+        }
+
         private bool _isFullWindow = false;
         public bool IsFullWindow
         {

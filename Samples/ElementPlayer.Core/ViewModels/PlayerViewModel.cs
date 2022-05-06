@@ -6,7 +6,6 @@ using MediaManager.Media;
 using MediaManager.Playback;
 using MediaManager.Player;
 using MvvmCross.Commands;
-using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using Xamarin.Forms;
 

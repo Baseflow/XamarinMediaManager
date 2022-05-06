@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MediaManager.Video
+﻿namespace MediaManager.Video
 {
     public interface IVideoView : IDisposable
     {

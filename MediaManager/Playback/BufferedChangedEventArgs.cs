@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MediaManager.Playback
+﻿namespace MediaManager.Playback
 {
     public class BufferedChangedEventArgs : EventArgs
     {

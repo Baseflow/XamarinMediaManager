@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using MediaManager.Library;
+﻿using MediaManager.Library;
 
 namespace MediaManager.Media
 {

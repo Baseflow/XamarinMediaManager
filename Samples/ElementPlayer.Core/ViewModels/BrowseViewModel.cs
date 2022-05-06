@@ -2,7 +2,6 @@
 using ElementPlayer.Core.Assets;
 using MediaManager;
 using MvvmCross.Commands;
-using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 

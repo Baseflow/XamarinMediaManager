@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AVFoundation;
+﻿using AVFoundation;
 using CoreMedia;
 using Foundation;
 using MediaManager.Library;
@@ -168,9 +164,9 @@ namespace MediaManager.Platforms.Apple.Player
         {
             Exception exception = null;
             string message = null;
-            
+
             var error = Player?.CurrentItem?.Error;
-            if(error != null)
+            if (error != null)
             {
                 exception = new NSErrorException(error);
                 message = error.LocalizedDescription;
@@ -179,7 +175,7 @@ namespace MediaManager.Platforms.Apple.Player
             {
                 message = obj?.ToString() ?? "MediaItem failed with unknown reason";
                 exception = new ApplicationException(message);
-            }            
+            }
 
             MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue?.Current, exception, message));
         }

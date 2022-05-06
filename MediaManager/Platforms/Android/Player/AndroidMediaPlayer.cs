@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Android.Content;
+﻿using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Support.V4.Media.Session;
@@ -142,7 +139,7 @@ namespace MediaManager.Platforms.Android.Player
                 return;
 
             //Player.VideoScalingMode = C.VideoScalingModeScaleToFit;
-            if(isFullWindow)
+            if (isFullWindow)
                 PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeFill;
             else
                 PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeFit;

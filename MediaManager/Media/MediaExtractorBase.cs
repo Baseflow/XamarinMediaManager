@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using MediaManager.Library;
 
 namespace MediaManager.Media
@@ -99,7 +95,7 @@ namespace MediaManager.Media
 
         public Task<IMediaItem> CreateMediaItem(Stream data, MimeType mimeType)
         {
-            var mediaItem = new MediaItem {MediaLocation = MediaLocation.InMemory, Data = data, MimeType = mimeType, MediaUri = string.Empty};
+            var mediaItem = new MediaItem { MediaLocation = MediaLocation.InMemory, Data = data, MimeType = mimeType, MediaUri = string.Empty };
 
             return UpdateMediaItem(mediaItem);
         }

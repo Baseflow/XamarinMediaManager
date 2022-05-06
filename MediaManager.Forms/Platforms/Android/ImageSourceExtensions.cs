@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
 using Xamarin.Forms;

@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Platform.Tizen;
 
 namespace MediaManager.Forms

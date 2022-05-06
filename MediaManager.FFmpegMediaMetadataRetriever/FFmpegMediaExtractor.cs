@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MediaManager.Media;
+﻿using MediaManager.Media;
 using MediaManager.Platforms.Android.Media;
 
 namespace MediaManager.FFmpegMediaMetadataRetriever

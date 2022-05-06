@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MediaManager.Volume
+﻿namespace MediaManager.Volume
 {
     public class VolumeChangedEventArgs : EventArgs
     {

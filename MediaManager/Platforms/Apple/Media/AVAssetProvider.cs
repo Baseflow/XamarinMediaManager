@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AVFoundation;
+﻿using AVFoundation;
 using CoreMedia;
 using MediaManager.Library;
 using MediaManager.Media;

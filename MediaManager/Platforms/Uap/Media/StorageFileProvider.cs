@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using MediaManager.Library;
+﻿using MediaManager.Library;
 using MediaManager.Media;
 using Windows.Media.Editing;
 using Windows.Storage;

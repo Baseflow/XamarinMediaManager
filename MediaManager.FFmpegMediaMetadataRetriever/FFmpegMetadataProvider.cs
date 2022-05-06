@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Android.Graphics;
+﻿using Android.Graphics;
 using MediaManager.Library;
 using MediaManager.Media;
 using MediaMetadataRetriever = Wseemann.Media.FFmpegMediaMetadataRetriever;

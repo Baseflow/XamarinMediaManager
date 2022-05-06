@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MediaManager.Library
+﻿namespace MediaManager.Library
 {
     public interface IRadio : IContentItem
     {

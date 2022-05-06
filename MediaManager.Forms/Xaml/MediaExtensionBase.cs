@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using MediaManager.Player;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MediaManager.Library
+﻿namespace MediaManager.Library
 {
     public class Album : ContentItem, IAlbum
     {
