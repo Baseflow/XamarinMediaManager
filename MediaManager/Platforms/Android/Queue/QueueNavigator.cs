@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Android.Runtime;
+﻿using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Com.Google.Android.Exoplayer2;
@@ -30,7 +28,7 @@ namespace MediaManager.Platforms.Android.Queue
 
         public override MediaDescriptionCompat GetMediaDescription(IPlayer player, int windowIndex)
         {
-            return MediaManager.Queue.ElementAtOrDefault(windowIndex)?.ToMediaDescription();
+            return MediaManager.Queue.ElementAtOrDefault(windowIndex)?.ToMediaDescription() ?? new MediaDescriptionCompat.Builder().Build();
         }
     }
 }
