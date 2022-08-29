@@ -129,7 +129,10 @@ namespace MediaManager.Platforms.Android.MediaSession
 
             PlayerNotificationManager.SetFastForwardIncrementMs((long)MediaManager.StepSizeForward.TotalMilliseconds);
             PlayerNotificationManager.SetRewindIncrementMs((long)MediaManager.StepSizeBackward.TotalMilliseconds);
-            PlayerNotificationManager.SetNotificationListener(NotificationListener);
+
+            //TODO: not sure why this is broken? Maybe in the binding
+            //PlayerNotificationManager.SetNotificationListener(NotificationListener);
+
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
             //PlayerNotificationManager.SetOngoing(true);
             PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.Notification.ShowPlayPauseControls);
@@ -170,7 +173,10 @@ namespace MediaManager.Platforms.Android.MediaSession
             MediaDescriptionAdapter = null;
 
             // Service is being killed, so make sure we release our resources
-            PlayerNotificationManager.SetNotificationListener(null);
+
+            //TODO: Enable again
+            //PlayerNotificationManager.SetNotificationListener(null);
+
             PlayerNotificationManager.SetPlayer(null);
             PlayerNotificationManager.Dispose();
             PlayerNotificationManager = null;

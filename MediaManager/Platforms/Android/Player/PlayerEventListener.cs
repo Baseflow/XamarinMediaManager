@@ -2,10 +2,11 @@
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
+using static Com.Google.Android.Exoplayer2.IPlayer;
 
 namespace MediaManager.Platforms.Android.Player
 {
-    public class PlayerEventListener : Java.Lang.Object, IPlayerEventListener
+    public class PlayerEventListener : Java.Lang.Object, IEventListener
     {
         public PlayerEventListener()
         {

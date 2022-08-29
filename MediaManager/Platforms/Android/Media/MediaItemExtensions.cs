@@ -203,7 +203,7 @@ namespace MediaManager.Platforms.Android.Media
             return item;
         }
 
-        private static IDataSourceFactory CreateDataSourceFactory(IMediaItem mediaItem)
+        private static IDataSource.IFactory CreateDataSourceFactory(IMediaItem mediaItem)
         {
             //TODO: use own datasource factory that works with stream instead of bytes
             using var memStream = new MemoryStream();
