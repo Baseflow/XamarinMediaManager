@@ -45,7 +45,7 @@ namespace MediaManager
 
         private static IMediaManager CreateMediaManager()
         {
-#if NETSTANDARD
+#if NET6
             return null;
 #else
 #pragma warning disable IDE0022 // Use expression body for methods

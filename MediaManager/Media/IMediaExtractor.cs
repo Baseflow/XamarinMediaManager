@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 using MediaManager.Library;
+using DownloadStatus = MediaManager.Library.DownloadStatus;
 
 namespace MediaManager.Media
 {

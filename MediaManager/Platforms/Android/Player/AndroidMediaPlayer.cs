@@ -19,6 +19,7 @@ using MediaManager.Platforms.Android.Queue;
 using MediaManager.Platforms.Android.Video;
 using MediaManager.Player;
 using MediaManager.Video;
+using VideoView = MediaManager.Platforms.Android.Video.VideoView;
 
 namespace MediaManager.Platforms.Android.Player
 {

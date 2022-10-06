@@ -32,8 +32,6 @@
     
     <IsTestProject>$(MSBuildProjectName.Contains('UnitTest'))</IsTestProject>
     <IsLibraryProject>$(MSBuildProjectName.Contains('MediaManager'))</IsLibraryProject>
-
-    <DisableExtraReferences>true</DisableExtraReferences>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -48,6 +46,7 @@
 
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild Condition=" '$(IsTestProject)' != 'true'">true</GeneratePackageOnBuild>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsTestProject)' != 'true' and'$(TF_BUILD)' == 'true'">
@@ -63,19 +62,6 @@
   <ItemGroup Condition="'$(IsLibraryProject)' == 'true'">
     <None Include="$(MSBuildThisFileDirectory)\LICENSE" Pack="true" PackagePath="\" />
     <None Include="$(MSBuildThisFileDirectory)\icon.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(IsTestProject)' != 'true' and '$(SourceLinkEnabled)' != 'false' and '$(IsLibraryProject)' == 'true'">
-    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <TargetFrameworkMonikerAssemblyAttributesPath>$([System.IO.Path]::Combine('$(IntermediateOutputPath)','$(TargetFrameworkMoniker).AssemblyAttributes$(DefaultLanguageSourceExtension)'))</TargetFrameworkMonikerAssemblyAttributesPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <EmbeddedFiles Include="$(GeneratedAssemblyInfoFile)"/>
   </ItemGroup>
 
   <ItemGroup>

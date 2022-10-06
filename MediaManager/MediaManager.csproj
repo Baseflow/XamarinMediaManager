@@ -1,7 +1,21 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFrameworks>net6.0;net6.0-ios;net6.0-android33.0</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
+
+    <!--
     <TargetFrameworks>netstandard2.0;xamarin.ios10;xamarin.mac20;xamarin.tvos10;monoandroid12.0;tizen40</TargetFrameworks>
     <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">uap10.0.18362;net472;netcoreapp3.1;$(TargetFrameworks)</TargetFrameworks>
+    -->
+
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</TargetPlatformMinVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+
+    <SingleProject>true</SingleProject>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -9,14 +23,11 @@
     <RootNamespace>MediaManager</RootNamespace>
     <PackageId>Plugin.MediaManager</PackageId>
     <Description>Cross platform Xamarin plugin to play and control Audio and Video</Description>
-    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('uap')) And '$(OS)' == 'Windows_NT'">
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net6.0-windows')) And '$(OS)' == 'Windows_NT'">
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
   </PropertyGroup>
-
-  <Import Project="$(SolutionDir)netcore.targets" Condition=" $(TargetFramework.StartsWith('netcoreapp3.1'))" />
 
   <ItemGroup>
     <Compile Remove="Platforms\**\*.cs" />
@@ -41,28 +52,29 @@
     <Compile Include="Platforms\Wpf\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) And '$(OS)' == 'Windows_NT'">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-windows')) And '$(OS)' == 'Windows_NT'">
     <Compile Include="Platforms\Uap\**\*.cs" />
     <Page Include="Platforms\Uap\**\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
     <None Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
     <Compile Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls" Version="7.1.2" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.ios')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-ios')) ">
     <None Remove="Platforms\Apple\**\*.cs" />
     <None Remove="Platforms\Ios\**\*.cs" />
     <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Ios\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.mac')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-maccatalyst')) ">
     <None Remove="Platforms\Apple\**\*.cs" />
     <None Remove="Platforms\Mac\**\*.cs" />
     <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Mac\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.tvos')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-tvos')) ">
     <None Remove="Platforms\Apple\**\*.cs" />
     <None Remove="Platforms\Ios\**\*.cs" />
     <None Remove="Platforms\Tvos\**\*.cs" />
@@ -71,24 +83,24 @@
     <Compile Include="Platforms\Tvos\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.watchos')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-watchos')) ">
     <None Remove="Platforms\Apple\**\*.cs" />
     <None Remove="Platforms\Watchos\**\*.cs" />
     <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Watchos\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('monoandroid')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-android')) ">
     <None Remove="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Android\**\*.cs" />
     <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.14.6" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.18.3" />
     <!--<PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.11.8" />
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.11.8" />-->
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.14.6" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.18.3" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('tizen')) ">
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-tizen')) ">
     <None Remove="Platforms\Tizen\**\*.cs" />
     <Compile Include="Platforms\Tizen\**\*.cs" />
   </ItemGroup>
