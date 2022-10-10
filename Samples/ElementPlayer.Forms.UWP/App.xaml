@@ -1,7 +1,0 @@
-﻿<local:ElementPlayerApp x:Class="ElementPlayer.Forms.UWP.App"
-                        xmlns:mvx="using:MvvmCross.Forms.Platforms.Uap.Views"
-                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                        xmlns:local="using:ElementPlayer.Forms.UWP"
-                        RequestedTheme="Light">
-</local:ElementPlayerApp>
