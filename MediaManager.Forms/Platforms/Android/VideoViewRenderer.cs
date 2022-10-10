@@ -1,14 +1,17 @@
 ﻿using Android.Content;
 using MediaManager.Forms;
 using MediaManager.Forms.Platforms.Android;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
+using Microsoft.Maui.Controls.Compatibility;
+using Microsoft.Maui.Controls.Compatibility.Platform.Android.AppCompat;
+using Microsoft.Maui.Controls.Platform;
+
+using ExtAndroid = Microsoft.Maui.Controls.Compatibility.Platform.Android;
 
 [assembly: ExportRenderer(typeof(VideoView), typeof(VideoViewRenderer))]
 namespace MediaManager.Forms.Platforms.Android
 {
     [global::Android.Runtime.Preserve(AllMembers = true)]
-    public class VideoViewRenderer : Xamarin.Forms.Platform.Android.AppCompat.ViewRenderer<VideoView, MediaManager.Platforms.Android.Video.VideoView>
+    public class VideoViewRenderer : ViewRenderer<VideoView, MediaManager.Platforms.Android.Video.VideoView>
     {
         private MediaManager.Platforms.Android.Video.VideoView _videoView;
 
@@ -39,7 +42,7 @@ namespace MediaManager.Forms.Platforms.Android
         protected override void UpdateBackgroundColor()
         {
             base.UpdateBackgroundColor();
-            Control?.SetShutterBackgroundColor(Element.BackgroundColor.ToAndroid());
+            Control?.SetShutterBackgroundColor(Microsoft.Maui.Controls.Compatibility.Platform.Android.ColorExtensions.ToAndroid(Element.BackgroundColor));
         }
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)

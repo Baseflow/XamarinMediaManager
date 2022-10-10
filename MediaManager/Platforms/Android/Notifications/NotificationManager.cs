@@ -58,7 +58,7 @@ namespace MediaManager.Platforms.Android.Notifications
             set
             {
                 base.ShowNavigationControls = value;
-                PlayerNotificationManager?.SetUseNavigationActions(ShowNavigationControls);
+               // PlayerNotificationManager?.SetUseNavigationActions(ShowNavigationControls);
             }
         }
 
@@ -72,11 +72,11 @@ namespace MediaManager.Platforms.Android.Notifications
 
                 if (ShowNavigationControls && MediaManager.Queue.Count > 1)
                 {
-                    PlayerNotificationManager.SetUseNavigationActions(true);
+                    //PlayerNotificationManager.SetUseNavigationActions(true);
                 }
                 else
                 {
-                    PlayerNotificationManager.SetUseNavigationActions(false);
+                    //PlayerNotificationManager.SetUseNavigationActions(false);
                 }
                 PlayerNotificationManager.Invalidate();
             }

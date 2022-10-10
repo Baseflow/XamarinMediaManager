@@ -1,7 +1,6 @@
 ﻿using CoreGraphics;
+using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
 using UIKit;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.iOS;
 
 namespace MediaManager.Forms
 {

@@ -2,11 +2,11 @@
 using Com.Google.Android.Exoplayer2;
 using Com.Google.Android.Exoplayer2.Source;
 using Com.Google.Android.Exoplayer2.Trackselection;
-using static Com.Google.Android.Exoplayer2.IPlayer;
+//using static Com.Google.Android.Exoplayer2.IPlayer;
 
 namespace MediaManager.Platforms.Android.Player
 {
-    public class PlayerEventListener : Java.Lang.Object, IEventListener
+    public class PlayerEventListener : Java.Lang.Object, Com.Google.Android.Exoplayer2.IPlayer.IListener // IEventListener
     {
         public PlayerEventListener()
         {
@@ -16,6 +16,10 @@ namespace MediaManager.Platforms.Android.Player
         {
         }
 
+        //TODO: .net6 implement events
+
+
+        /*
         public Action<TrackGroupArray, TrackSelectionArray> OnTracksChangedImpl { get; set; }
         public Action<int> OnPositionDiscontinuityImpl { get; set; }
         public Action<bool, int> OnPlayerStateChangedImpl { get; set; }
@@ -84,7 +88,7 @@ namespace MediaManager.Platforms.Android.Player
                         }
                     }
                 }
-            }*/
+            }
 
             OnTracksChangedImpl?.Invoke(trackGroups, trackSelections);
         }
@@ -142,6 +146,6 @@ namespace MediaManager.Platforms.Android.Player
         public void OnPlaybackSuppressionReasonChanged(int playbackSuppressionReason)
         {
             OnPlaybackSuppressionReasonChangedImpl?.Invoke(playbackSuppressionReason);
-        }
+        }*/
     }
 }

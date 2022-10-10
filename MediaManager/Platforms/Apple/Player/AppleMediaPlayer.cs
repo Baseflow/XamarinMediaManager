@@ -121,7 +121,8 @@ namespace MediaManager.Platforms.Apple.Player
         protected virtual void ReasonForWaitingToPlayChanged(NSObservedChange obj)
         {
             var reason = Player.ReasonForWaitingToPlay;
-            if (reason == null)
+            //TODO: flags are not in .net6?
+            /*if (reason == null)
             {
             }
             else if (reason == AVPlayer.WaitingToMinimizeStallsReason)
@@ -132,7 +133,7 @@ namespace MediaManager.Platforms.Apple.Player
             }
             else if (reason == AVPlayer.WaitingWithNoItemToPlayReason)
             {
-            }
+            }*/
         }
 
         protected virtual void LoadedTimeRangesChanged(NSObservedChange obj)

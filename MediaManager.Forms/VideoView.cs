@@ -4,7 +4,6 @@ using MediaManager.Playback;
 using MediaManager.Player;
 using MediaManager.Queue;
 using MediaManager.Video;
-using Xamarin.Forms;
 
 namespace MediaManager.Forms
 {
@@ -485,8 +484,8 @@ namespace MediaManager.Forms
 
         private static async void OnVideoPlaceholderPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-#if !NETSTANDARD
-            if (newValue is Xamarin.Forms.ImageSource imageSource)
+#if !NET6
+            if (newValue is ImageSource imageSource)
                 MediaManager.MediaPlayer.VideoPlaceholder = await imageSource.ToNative().ConfigureAwait(false);
 #endif
         }

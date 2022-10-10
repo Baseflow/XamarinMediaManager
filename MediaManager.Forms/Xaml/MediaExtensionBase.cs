@@ -1,7 +1,5 @@
 ﻿using System.Windows.Input;
 using MediaManager.Player;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace MediaManager.Forms.Xaml
 {

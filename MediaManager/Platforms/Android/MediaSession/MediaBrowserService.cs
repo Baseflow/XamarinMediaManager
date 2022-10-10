@@ -100,12 +100,11 @@ namespace MediaManager.Platforms.Android.MediaSession
         protected virtual void PrepareNotificationManager()
         {
             MediaDescriptionAdapter = new MediaDescriptionAdapter();
-            PlayerNotificationManager = Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.CreateWithNotificationChannel(
+            PlayerNotificationManager = new Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.Builder(
                 this,
-                ChannelId,
-                Resource.String.exo_download_notification_channel_name,
                 ForegroundNotificationId,
-                MediaDescriptionAdapter);
+                ChannelId,
+                MediaDescriptionAdapter).Build();
 
             //Needed for enabling the notification as a mediabrowser.
             NotificationListener = new NotificationListener();
@@ -127,8 +126,8 @@ namespace MediaManager.Platforms.Android.MediaSession
                 }
             };
 
-            PlayerNotificationManager.SetFastForwardIncrementMs((long)MediaManager.StepSizeForward.TotalMilliseconds);
-            PlayerNotificationManager.SetRewindIncrementMs((long)MediaManager.StepSizeBackward.TotalMilliseconds);
+            //PlayerNotificationManager.SetFastForwardIncrementMs((long)MediaManager.StepSizeForward.TotalMilliseconds);
+            //PlayerNotificationManager.SetRewindIncrementMs((long)MediaManager.StepSizeBackward.TotalMilliseconds);
 
             //TODO: not sure why this is broken? Maybe in the binding
             //PlayerNotificationManager.SetNotificationListener(NotificationListener);
@@ -136,7 +135,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
             //PlayerNotificationManager.SetOngoing(true);
             PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.Notification.ShowPlayPauseControls);
-            PlayerNotificationManager.SetUseNavigationActions(MediaManager.Notification.ShowNavigationControls);
+            //PlayerNotificationManager.SetUseNavigationActions(MediaManager.Notification.ShowNavigationControls);
             PlayerNotificationManager.SetSmallIcon(MediaManager.NotificationIconResource);
 
             //Must be called to start the connection

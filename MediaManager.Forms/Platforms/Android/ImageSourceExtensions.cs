@@ -1,8 +1,7 @@
 ﻿using System.IO;
 using Android.Content;
 using Android.Graphics;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
+using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 
 namespace MediaManager.Forms
 {

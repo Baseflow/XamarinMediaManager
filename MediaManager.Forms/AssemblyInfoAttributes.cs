@@ -1,5 +1,5 @@
 ﻿
-[assembly: Xamarin.Forms.Internals.Preserve(AllMembers = true)]
+[assembly: Microsoft.Maui.Controls.Internals.Preserve(AllMembers = true)]
 
 #if NETSTANDARD
 [assembly: Xamarin.Forms.XmlnsPrefix("http://baseflow.com/mediamanager", "mm")]

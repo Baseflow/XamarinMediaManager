@@ -11,7 +11,7 @@
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net5'))">
     <DefineConstants>$(DefineConstants);NET;NET5</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.Equals('net6'))">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
     <DefineConstants>$(DefineConstants);NET;NET6</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net6.0-windows'))">

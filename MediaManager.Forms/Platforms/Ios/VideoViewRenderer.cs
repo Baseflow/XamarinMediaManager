@@ -1,6 +1,7 @@
 ﻿using MediaManager.Forms.Platforms.iOS;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.iOS;
+using Microsoft.Maui.Controls.Compatibility;
+using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
+using Microsoft.Maui.Controls.Platform;
 
 [assembly: ExportRenderer(typeof(MediaManager.Forms.VideoView), typeof(VideoViewRenderer))]
 namespace MediaManager.Forms.Platforms.iOS
