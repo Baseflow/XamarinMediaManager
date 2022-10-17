@@ -103,8 +103,10 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager = new Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.Builder(
                 this,
                 ForegroundNotificationId,
-                ChannelId,
-                MediaDescriptionAdapter).Build();
+                ChannelId)
+                .SetMediaDescriptionAdapter(MediaDescriptionAdapter)
+                .SetNotificationListener(NotificationListener)
+                .Build();
 
             //Needed for enabling the notification as a mediabrowser.
             NotificationListener = new NotificationListener();
@@ -128,9 +130,6 @@ namespace MediaManager.Platforms.Android.MediaSession
 
             //PlayerNotificationManager.SetFastForwardIncrementMs((long)MediaManager.StepSizeForward.TotalMilliseconds);
             //PlayerNotificationManager.SetRewindIncrementMs((long)MediaManager.StepSizeBackward.TotalMilliseconds);
-
-            //TODO: not sure why this is broken? Maybe in the binding
-            //PlayerNotificationManager.SetNotificationListener(NotificationListener);
 
             PlayerNotificationManager.SetMediaSessionToken(SessionToken);
             //PlayerNotificationManager.SetOngoing(true);
