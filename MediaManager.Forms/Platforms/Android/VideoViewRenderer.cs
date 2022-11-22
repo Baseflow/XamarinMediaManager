@@ -5,8 +5,6 @@ using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Controls.Compatibility.Platform.Android.AppCompat;
 using Microsoft.Maui.Controls.Platform;
 
-using ExtAndroid = Microsoft.Maui.Controls.Compatibility.Platform.Android;
-
 [assembly: ExportRenderer(typeof(VideoView), typeof(VideoViewRenderer))]
 namespace MediaManager.Forms.Platforms.Android
 {

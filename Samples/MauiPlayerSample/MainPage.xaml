@@ -4,35 +4,13 @@
             xmlns:mm="clr-namespace:MediaManager.Forms;assembly=MediaManager.Forms"
              x:Class="MauiPlayerSample.MainPage">
 
-    <ScrollView>
-        <VerticalStackLayout
+    <VerticalStackLayout
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
 
-            <mm:VideoView BackgroundColor="Red" VerticalOptions="FillAndExpand" VideoAspect="AspectFit" ShowControls="True" VideoPlaceholder="xamarin_logo.png" IsFullWindow="True" />
+        <mm:VideoView BackgroundColor="Red" HorizontalOptions="FillAndExpand" HeightRequest="100" VideoAspect="AspectFit" ShowControls="True" AutoPlay="True" Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" />
 
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
-
-        </VerticalStackLayout>
-    </ScrollView>
+    </VerticalStackLayout>
 
 </ContentPage>
