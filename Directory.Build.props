@@ -3,9 +3,6 @@
     <Copyright>Copyright (c) Baseflow</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Baseflow/XamarinMediaManager</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/Baseflow/XamarinMediaManager/develop/icon.png</PackageIconUrl>
-    <!--<PackageIcon>icon.png</PackageIcon>
-    <PackageIconFullPath>$(MSBuildThisFileDirectory)icon.png</PackageIconFullPath>-->
     <Authors>Martijn van Dijk</Authors>
     <Owners>Martijn van Dijk</Owners>
     <PackageTags>xamarin, android, plugin, MediaManager, media, audio, video</PackageTags>
@@ -65,7 +62,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Roslynator.Analyzers" Version="4.1.1">
+    <PackageReference Include="Roslynator.Analyzers" Version="4.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

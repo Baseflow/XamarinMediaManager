@@ -176,10 +176,8 @@ namespace MediaManager.Platforms.Android.Player
             Player.SetHandleAudioBecomingNoisy(true);
             Player.SetWakeMode(C.WakeModeNetwork);
 
-            PlayerEventListener = new PlayerEventListener();
-            /*
+            PlayerEventListener = new PlayerEventListener()
             {
-                
                 OnPlayerErrorImpl = (ExoPlaybackException exception) =>
                 {
                     switch (exception.Type)
@@ -191,7 +189,7 @@ namespace MediaManager.Platforms.Android.Player
                     }
                     MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue.Current, exception, exception.Message));
                 },
-                OnTracksChangedImpl = (trackGroups, trackSelections) =>
+                OnTracksChangedImpl = (tracks) =>
                 {
                     InvokeBeforePlaying(this, new MediaPlayerEventArgs(MediaManager.Queue.Current, this));
 
@@ -219,7 +217,7 @@ namespace MediaManager.Platforms.Android.Player
                             break;
                     }
                 },
-                OnPositionDiscontinuityImpl = (int reason) =>
+                OnPositionDiscontinuityImpl = (IPlayer.PositionInfo oldPosition, IPlayer.PositionInfo newPosition, int reason) =>
                 {
                     switch (reason)
                     {
@@ -245,12 +243,8 @@ namespace MediaManager.Platforms.Android.Player
                 OnIsPlayingChangedImpl = (bool isPlaying) =>
                 {
                     //TODO: Maybe call playing changed event
-                },
-                OnPlaybackSuppressionReasonChangedImpl = (int playbackSuppressionReason) =>
-                {
-                    //TODO: Maybe call event
                 }
-            };*/
+            };
             Player.AddListener(PlayerEventListener);
 
             ConnectMediaSession();

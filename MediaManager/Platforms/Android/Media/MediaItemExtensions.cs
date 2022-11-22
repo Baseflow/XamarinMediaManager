@@ -217,8 +217,9 @@ namespace MediaManager.Platforms.Android.Media
 
             mediaItem.Data.CopyTo(memStream);
             var bytes = memStream.ToArray();
-            var factory = new ByteArrayDataSourceFactory(bytes);
-            return factory;
+            //TODO: Fix
+            //var factory = new ByteArrayDataSourceFactory(bytes);
+            return null;
         }
     }
 }
