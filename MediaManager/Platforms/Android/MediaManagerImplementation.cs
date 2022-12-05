@@ -89,6 +89,10 @@ namespace MediaManager
             else
                 sessionIntent = Context.PackageManager.GetLaunchIntentForPackage(Context.PackageName);
 
+            //var pendingIntentFlags = (Build.VERSION.SdkInt >= BuildVersionCodes.S)
+            //    ? PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Mutable
+            //    : PendingIntentFlags.UpdateCurrent;
+
             PendingIntentFlags flag = 0;
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.M)
                 flag = PendingIntentFlags.Immutable;
