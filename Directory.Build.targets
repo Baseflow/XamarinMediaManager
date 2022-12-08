@@ -14,19 +14,19 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
     <DefineConstants>$(DefineConstants);NET;NET7</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.EndsWith('-windows'))">
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'" >
     <DefineConstants>$(DefineConstants);NETFX_CORE;XAML;WINDOWS;WINDOWS_UWP;UWP</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.EndsWith('-ios'))">
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
     <DefineConstants>$(DefineConstants);MONO;UIKIT;COCOA;APPLE;IOS</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.EndsWith('-mac'))">
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
     <DefineConstants>$(DefineConstants);MONO;COCOA;APPLE;MAC</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.EndsWith('-tvos'))">
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tvos'">
     <DefineConstants>$(DefineConstants);MONO;COCOA;APPLE;TVOS</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.EndsWith('-watchos'))">
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'watchos'">
     <DefineConstants>$(DefineConstants);MONO;COCOA;APPLE;WATCHOS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
@@ -38,7 +38,7 @@
   <PropertyGroup Condition="$(TargetFramework.EndsWith('netcoreapp'))">
     <DefineConstants>$(DefineConstants);NETCOREAPP;NET;WPF;XAML</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.EndsWith('net6.0-tizen'))">
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">
     <DefineConstants>$(DefineConstants);TIZEN</DefineConstants>
     <TargetFrameworkIdentifier>Tizen</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v6.5</TargetFrameworkVersion>

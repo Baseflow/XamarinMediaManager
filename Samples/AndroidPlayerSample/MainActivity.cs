@@ -17,6 +17,7 @@ namespace AndroidPlayerSample
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            //CrossMediaManager.Current.Init(this);
             SetContentView(Resource.Layout.activity_main);
 
             Toolbar toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);

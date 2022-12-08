@@ -25,7 +25,7 @@
     <Description>Cross platform Xamarin plugin to play and control Audio and Video</Description>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('net6.0-windows')) And '$(OS)' == 'Windows_NT'">
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows' And '$(OS)' == 'Windows_NT'">
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
   </PropertyGroup>
 
@@ -37,28 +37,28 @@
     <None Include="readme.txt" pack="true" PackagePath="." />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-windows')) And '$(OS)' == 'Windows_NT'">
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows' And '$(OS)' == 'Windows_NT'">
     <Compile Include="Platforms\Uap\**\*.cs" />
     <Page Include="Platforms\Uap\**\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
     <None Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
     <Compile Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-ios')) ">
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
     <None Remove="Platforms\Apple\**\*.cs" />
     <None Remove="Platforms\Ios\**\*.cs" />
     <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Ios\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-maccatalyst')) ">
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
     <None Remove="Platforms\Apple\**\*.cs" />
     <None Remove="Platforms\Mac\**\*.cs" />
     <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Mac\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-tvos')) ">
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tvos'" >
     <None Remove="Platforms\Apple\**\*.cs" />
     <None Remove="Platforms\Ios\**\*.cs" />
     <None Remove="Platforms\Tvos\**\*.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="Platforms\Tvos\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-watchos')) ">
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'watchos'">
     <None Remove="Platforms\Apple\**\*.cs" />
     <None Remove="Platforms\Watchos\**\*.cs" />
     <Compile Include="Platforms\Apple\**\*.cs" />
@@ -78,13 +78,13 @@
     <None Remove="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Android\**\*.cs" />
     <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.18.6" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.18.8" />
     <!--<PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.11.8" />
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.11.8" />-->
-    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.18.6" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.18.8" />
   </ItemGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net6.0-tizen')) ">
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">
     <None Remove="Platforms\Tizen\**\*.cs" />
     <Compile Include="Platforms\Tizen\**\*.cs" />
   </ItemGroup>

@@ -2,15 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <mediamanager.platforms.android.video.VideoView
+        android:id="@+id/exoplayerview_activity_video"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:focusable="true"
         android:layout_centerInParent="true"
-        android:text="Hello World!" />
+        local:show_timeout="5000"
+        local:fastforward_increment="1000"
+        local:rewind_increment="1000" />
 
 </RelativeLayout>
