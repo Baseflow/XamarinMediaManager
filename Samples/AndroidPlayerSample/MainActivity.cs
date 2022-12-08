@@ -1,4 +1,5 @@
-﻿using MediaManager;
+﻿using Android.Media.Midi;
+using MediaManager;
 
 namespace AndroidPlayerSample
 {
@@ -13,6 +14,13 @@ namespace AndroidPlayerSample
             SetContentView(Resource.Layout.activity_main);
 
             CrossMediaManager.Current.Init(this);
+            CrossMediaManager.Current.MediaPlayer.ShowPlaybackControls = true;
+            CrossMediaManager.Current.AutoPlay = true;
+
+            var videoView = FindViewById<MediaManager.Platforms.Android.Video.VideoView>(Resource.Id.exoplayerview_activity_video);
+            CrossMediaManager.Current.MediaPlayer.VideoView = videoView;
+
+            CrossMediaManager.Current.Play("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
         }
     }
 }

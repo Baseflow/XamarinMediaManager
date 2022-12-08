@@ -20,7 +20,6 @@ namespace MediaManager.Player
 
     public interface IMediaPlayer : IDisposable, INotifyPropertyChanged
     {
-
         //TODO: Maybe introduce a source property to find the current playing item
         //IMediaItem Source { get; internal set; }
 

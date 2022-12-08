@@ -5,7 +5,7 @@
              x:Class="MauiPlayerSample.MainPage">
 
 
-        <mm:VideoView BackgroundColor="Red" HorizontalOptions="FillAndExpand" HeightRequest="100" VideoAspect="AspectFit" ShowControls="True" AutoPlay="True" Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" />
+        <mm:VideoView BackgroundColor="Red" HorizontalOptions="FillAndExpand" HeightRequest="300" VideoAspect="AspectFit" ShowControls="True" AutoPlay="True" Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" />
 
 
 </ContentPage>
