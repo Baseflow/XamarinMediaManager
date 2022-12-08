@@ -25,5 +25,3 @@ jobs:
       run: dotnet build $SOLUTION --configuration Release --no-restore
     - name: Create the package
       run: dotnet pack $SOLUTION --configuration Release
-    - name: Publish the package to Nuget.org
-      run: dotnet nuget push **\*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.PUBLISH_TO_NUGET_ORG}} --skip-duplicate
