@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.FFmpegMediaMet
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiPlayerSample", "Samples\MauiPlayerSample\MauiPlayerSample.csproj", "{B3EDACB8-FD89-45CF-968E-A367470E6DE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidPlayerSample", "Samples\AndroidPlayerSample\AndroidPlayerSample.csproj", "{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -258,12 +260,55 @@ Global
 		{B3EDACB8-FD89-45CF-968E-A367470E6DE8}.Release|x86.ActiveCfg = Release|Any CPU
 		{B3EDACB8-FD89-45CF-968E-A367470E6DE8}.Release|x86.Build.0 = Release|Any CPU
 		{B3EDACB8-FD89-45CF-968E-A367470E6DE8}.Release|x86.Deploy.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|ARM.Build.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|ARM.Deploy.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|ARM64.Deploy.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|iPhone.Deploy.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|iPhoneSimulator.Deploy.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|x64.Build.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|x64.Deploy.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|x86.Build.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Debug|x86.Deploy.0 = Debug|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|ARM.ActiveCfg = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|ARM.Build.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|ARM.Deploy.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|ARM64.Build.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|ARM64.Deploy.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|iPhone.Build.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|iPhone.Deploy.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|x64.ActiveCfg = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|x64.Build.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|x64.Deploy.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|x86.ActiveCfg = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|x86.Build.0 = Release|Any CPU
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4}.Release|x86.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B3EDACB8-FD89-45CF-968E-A367470E6DE8} = {6F888D07-C7FE-4257-9F3C-61EC1C1C39FA}
+		{94E94DDC-CA38-4FB2-8C83-95ADE78465E4} = {6F888D07-C7FE-4257-9F3C-61EC1C1C39FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {71F856D1-F12F-4E77-9ECB-5DCAC2CAC99F}
