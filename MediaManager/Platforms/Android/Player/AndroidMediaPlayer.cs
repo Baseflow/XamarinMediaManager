@@ -178,15 +178,8 @@ namespace MediaManager.Platforms.Android.Player
 
             PlayerEventListener = new PlayerEventListener()
             {
-                OnPlayerErrorImpl = (ExoPlaybackException exception) =>
+                OnPlayerErrorImpl = (PlaybackException exception) =>
                 {
-                    switch (exception.Type)
-                    {
-                        case ExoPlaybackException.TypeRenderer:
-                        case ExoPlaybackException.TypeSource:
-                        case ExoPlaybackException.TypeUnexpected:
-                            break;
-                    }
                     MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue.Current, exception, exception.Message));
                 },
                 OnTracksChangedImpl = (tracks) =>
@@ -217,7 +210,7 @@ namespace MediaManager.Platforms.Android.Player
                             break;
                     }
                 },
-                OnPositionDiscontinuityImpl = (IPlayer.PositionInfo oldPosition, IPlayer.PositionInfo newPosition, int reason) =>
+                OnPositionDiscontinuityImpl = (int reason) =>
                 {
                     switch (reason)
                     {
