@@ -8,7 +8,7 @@ jobs:
   build:
 
     env:
-      SOLUTION: 'ExoPlayer.sln'
+      SOLUTION: 'MediaManager.sln'
 
     runs-on: windows-latest
 
