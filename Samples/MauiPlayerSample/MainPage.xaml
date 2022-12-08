@@ -4,13 +4,8 @@
             xmlns:mm="clr-namespace:MediaManager.Forms;assembly=MediaManager.Forms"
              x:Class="MauiPlayerSample.MainPage">
 
-    <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
 
         <mm:VideoView BackgroundColor="Red" HorizontalOptions="FillAndExpand" HeightRequest="100" VideoAspect="AspectFit" ShowControls="True" AutoPlay="True" Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" />
 
-    </VerticalStackLayout>
 
 </ContentPage>

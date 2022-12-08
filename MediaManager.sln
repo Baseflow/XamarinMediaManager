@@ -18,7 +18,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{6F888D07-C7FE-4257-9F3C-61EC1C1C39FA}"
 	ProjectSection(SolutionItems) = preProject
 		Samples\Directory.Build.props = Samples\Directory.Build.props
-		Samples\Directory.Build.targets = Samples\Directory.Build.targets
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.Forms", "MediaManager.Forms\MediaManager.Forms.csproj", "{A1F6D7D2-D6D3-4FF2-87E7-D0CEF41D0653}"
@@ -31,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.Reactive", "Me
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.FFmpegMediaMetadataRetriever", "MediaManager.FFmpegMediaMetadataRetriever\MediaManager.FFmpegMediaMetadataRetriever.csproj", "{00D077AA-5CED-422E-91C7-3D515086DC22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiPlayerSample", "Samples\MauiPlayerSample\MauiPlayerSample.csproj", "{B3EDACB8-FD89-45CF-968E-A367470E6DE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiPlayerSample", "Samples\MauiPlayerSample\MauiPlayerSample.csproj", "{B3EDACB8-FD89-45CF-968E-A367470E6DE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -14,31 +14,31 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
     <DefineConstants>$(DefineConstants);NET;NET7</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('net6.0-windows'))">
+  <PropertyGroup Condition="$(TargetFramework.EndsWith('-windows'))">
     <DefineConstants>$(DefineConstants);NETFX_CORE;XAML;WINDOWS;WINDOWS_UWP;UWP</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('net6.0-ios'))">
+  <PropertyGroup Condition="$(TargetFramework.EndsWith('-ios'))">
     <DefineConstants>$(DefineConstants);MONO;UIKIT;COCOA;APPLE;IOS</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('net6.0-mac'))">
+  <PropertyGroup Condition="$(TargetFramework.EndsWith('-mac'))">
     <DefineConstants>$(DefineConstants);MONO;COCOA;APPLE;MAC</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('net6.0-tvos'))">
+  <PropertyGroup Condition="$(TargetFramework.EndsWith('-tvos'))">
     <DefineConstants>$(DefineConstants);MONO;COCOA;APPLE;TVOS</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('net6.0-watchos'))">
+  <PropertyGroup Condition="$(TargetFramework.EndsWith('-watchos'))">
     <DefineConstants>$(DefineConstants);MONO;COCOA;APPLE;WATCHOS</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('net6.0-android'))">
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
     <DefineConstants>$(DefineConstants);MONO;ANDROID</DefineConstants>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('netcoreapp'))">
+  <PropertyGroup Condition="$(TargetFramework.EndsWith('netcoreapp'))">
     <DefineConstants>$(DefineConstants);NETCOREAPP;NET;WPF;XAML</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('net6.0-tizen'))">
+  <PropertyGroup Condition="$(TargetFramework.EndsWith('net6.0-tizen'))">
     <DefineConstants>$(DefineConstants);TIZEN</DefineConstants>
     <TargetFrameworkIdentifier>Tizen</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v6.5</TargetFrameworkVersion>
