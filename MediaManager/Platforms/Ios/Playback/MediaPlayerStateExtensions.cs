@@ -1,7 +1,7 @@
 ﻿using AVFoundation;
 using MediaManager.Player;
 
-namespace MediaManager.Platforms.Apple.Playback
+namespace MediaManager.Platforms.Ios.Playback
 {
     public static class MediaPlayerStateExtensions
     {

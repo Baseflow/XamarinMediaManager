@@ -3,10 +3,10 @@ using CoreFoundation;
 using Foundation;
 using MediaManager.Library;
 using MediaManager.Media;
-using MediaManager.Platforms.Apple.Player;
+using MediaManager.Platforms.Ios.Player;
 using UniformTypeIdentifiers;
 
-namespace MediaManager.Platforms.Apple.Media
+namespace MediaManager.Platforms.Ios.Media
 {
     public static class MediaItemExtensions
     {

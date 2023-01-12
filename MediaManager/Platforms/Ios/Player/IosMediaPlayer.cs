@@ -1,5 +1,5 @@
 ﻿using AVFoundation;
-using MediaManager.Platforms.Apple.Player;
+using MediaManager.Platforms.Ios.Player;
 using MediaManager.Platforms.Ios.Video;
 using MediaManager.Player;
 using MediaManager.Video;

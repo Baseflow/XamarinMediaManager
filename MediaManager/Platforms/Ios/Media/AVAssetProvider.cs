@@ -3,7 +3,7 @@ using CoreMedia;
 using MediaManager.Library;
 using MediaManager.Media;
 
-namespace MediaManager.Platforms.Apple.Media
+namespace MediaManager.Platforms.Ios.Media
 {
     public class AVAssetProvider : MediaExtractorProviderBase, IMediaItemMetadataProvider, IMediaItemVideoFrameProvider
     {

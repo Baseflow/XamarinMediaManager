@@ -4,8 +4,8 @@ using MediaManager.Platforms.Uap.Media;
 using MediaManager.Platforms.Uap.Video;
 using MediaManager.Player;
 using MediaManager.Video;
+using Microsoft.UI.Xaml.Media;
 using Windows.Media.Playback;
-using Windows.UI.Xaml.Media;
 using MediaPlayerState = MediaManager.Player.MediaPlayerState;
 
 namespace MediaManager.Platforms.Uap.Player
@@ -70,16 +70,16 @@ namespace MediaManager.Platforms.Uap.Player
             switch (videoAspectMode)
             {
                 case VideoAspectMode.None:
-                    playerView.Stretch = Windows.UI.Xaml.Media.Stretch.None;
+                    playerView.Stretch = Microsoft.UI.Xaml.Media.Stretch.None;
                     break;
                 case VideoAspectMode.AspectFit:
-                    playerView.Stretch = Windows.UI.Xaml.Media.Stretch.Uniform;
+                    playerView.Stretch = Microsoft.UI.Xaml.Media.Stretch.Uniform;
                     break;
                 case VideoAspectMode.AspectFill:
-                    playerView.Stretch = Windows.UI.Xaml.Media.Stretch.UniformToFill;
+                    playerView.Stretch = Microsoft.UI.Xaml.Media.Stretch.UniformToFill;
                     break;
                 default:
-                    playerView.Stretch = Windows.UI.Xaml.Media.Stretch.None;
+                    playerView.Stretch = Microsoft.UI.Xaml.Media.Stretch.None;
                     break;
             }
         }

@@ -308,7 +308,8 @@ namespace MediaManager.Forms
 
         private static async void OnVideoPlaceholderPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-#if !NET6
+            //TODO: Add mac and Windows
+#if ANDROID || IOS
             if (newValue is ImageSource imageSource)
                 MediaManager.MediaPlayer.VideoPlaceholder = await imageSource.ToNative().ConfigureAwait(false);
 #endif

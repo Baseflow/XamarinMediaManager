@@ -1,7 +1,7 @@
 ﻿using Foundation;
 using MediaManager.Media;
 
-namespace MediaManager.Platforms.Apple.Media
+namespace MediaManager.Platforms.Ios.Media
 {
     public class AppleMediaExtractor : MediaExtractorBase, IMediaExtractor
     {

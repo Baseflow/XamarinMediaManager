@@ -1,11 +1,11 @@
 ﻿using AVFoundation;
 using MediaManager.Volume;
 
-namespace MediaManager.Platforms.Apple.Volume
+namespace MediaManager.Platforms.Ios.Volume
 {
     public class VolumeManager : VolumeManagerBase, IVolumeManager
     {
-        protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Ios;
         protected AVQueuePlayer Player => MediaManager.Player;
 
         public VolumeManager()

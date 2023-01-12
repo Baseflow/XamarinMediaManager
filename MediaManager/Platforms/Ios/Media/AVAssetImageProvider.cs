@@ -2,14 +2,14 @@
 using Foundation;
 using MediaManager.Library;
 using MediaManager.Media;
-using MediaManager.Platforms.Apple.Media;
+using MediaManager.Platforms.Ios.Media;
 using UIKit;
 
 namespace MediaManager.Platforms.Ios.Media
 {
     public class AVAssetImageProvider : MediaExtractorProviderBase, IMediaItemImageProvider
     {
-        protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Ios;
 
         public async Task<object> ProvideImage(IMediaItem mediaItem)
         {

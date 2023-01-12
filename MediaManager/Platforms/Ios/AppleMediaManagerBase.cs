@@ -1,10 +1,10 @@
 ﻿using AVFoundation;
 using MediaManager.Media;
 using MediaManager.Notifications;
-using MediaManager.Platforms.Apple.Media;
-using MediaManager.Platforms.Apple.Notifications;
-using MediaManager.Platforms.Apple.Player;
-using MediaManager.Platforms.Apple.Volume;
+using MediaManager.Platforms.Ios.Media;
+using MediaManager.Platforms.Ios.Notifications;
+using MediaManager.Platforms.Ios.Player;
+using MediaManager.Platforms.Ios.Volume;
 using MediaManager.Player;
 using MediaManager.Volume;
 

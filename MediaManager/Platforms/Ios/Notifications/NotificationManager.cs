@@ -1,7 +1,7 @@
 ﻿using MediaManager.Notifications;
 using MediaPlayer;
 
-namespace MediaManager.Platforms.Apple.Notifications
+namespace MediaManager.Platforms.Ios.Notifications
 {
     public class NotificationManager : NotificationManagerBase
     {
@@ -10,7 +10,7 @@ namespace MediaManager.Platforms.Apple.Notifications
             Enabled = true;
         }
 
-        protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Ios;
         protected MPRemoteCommandCenter CommandCenter = MPRemoteCommandCenter.Shared;
 
         public override bool Enabled

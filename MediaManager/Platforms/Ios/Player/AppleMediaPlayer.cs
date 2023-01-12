@@ -3,15 +3,15 @@ using CoreMedia;
 using Foundation;
 using MediaManager.Library;
 using MediaManager.Media;
-using MediaManager.Platforms.Apple.Media;
-using MediaManager.Platforms.Apple.Playback;
+using MediaManager.Platforms.Ios.Media;
+using MediaManager.Platforms.Ios.Playback;
 using MediaManager.Player;
 
-namespace MediaManager.Platforms.Apple.Player
+namespace MediaManager.Platforms.Ios.Player
 {
     public abstract class AppleMediaPlayer : MediaPlayerBase, IMediaPlayer<AVQueuePlayer>
     {
-        protected MediaManagerImplementation MediaManager = CrossMediaManager.Apple;
+        protected MediaManagerImplementation MediaManager = CrossMediaManager.Ios;
 
         public AppleMediaPlayer()
         {

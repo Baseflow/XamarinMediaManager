@@ -1,9 +1,9 @@
-using System.Text;
+﻿using System.Text;
 using AVFoundation;
 using Foundation;
 using UniformTypeIdentifiers;
 
-namespace MediaManager.Platforms.Apple.Player
+namespace MediaManager.Platforms.Ios.Player
 {
     public class StreamResourceLoaderDelegate : AVAssetResourceLoaderDelegate
     {
