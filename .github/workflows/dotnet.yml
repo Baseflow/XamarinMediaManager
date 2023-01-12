@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.3.0
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -24,7 +26,5 @@ jobs:
       run: dotnet workload install maui
     - name: Install dependencies
       run: dotnet restore $SOLUTION
-    - name: Build
-      run: dotnet build $SOLUTION --configuration Release --no-restore
-    - name: Create the package
-      run: dotnet pack $SOLUTION --configuration Release
+    - name: Build & Package
+      run: msbuild $SOLUTION -p:Configuration=Release -p:RestorePackages=false
