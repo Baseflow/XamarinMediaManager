@@ -1,7 +1,7 @@
 name: Dotnet Publish
 on:
   push:
-    branches: [ develop, main ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -13,6 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1.3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -21,7 +23,7 @@ jobs:
       run: dotnet workload install maui
     - name: Install dependencies
       run: dotnet restore $SOLUTION
-    - name: Build
-      run: dotnet build $SOLUTION --configuration Release --no-restore
-    - name: Create the package
-      run: dotnet pack $SOLUTION --configuration Release
+    - name: Build & Package
+      run: msbuild $SOLUTION -p:Configuration=Release -p:RestorePackages=false
+    - name: Publish the package to Nuget.org
+      run: dotnet nuget push **\*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.PUBLISH_TO_NUGET_ORG}} --skip-duplicate
