@@ -7,7 +7,7 @@
     <AssemblyName>MediaManager.FFmpegMediaMetadataRetriever</AssemblyName>
     <RootNamespace>MediaManager.FFmpegMediaMetadataRetriever</RootNamespace>
     <PackageId>Plugin.MediaManager.FFmpegMediaMetadataRetriever</PackageId>
-    <Description>Cross platform Xamarin plugin to play and control Audio and Video</Description>
+    <Description>Cross platform .NET plugin to play and control Audio and Video</Description>
   </PropertyGroup>
 
   <ItemGroup>

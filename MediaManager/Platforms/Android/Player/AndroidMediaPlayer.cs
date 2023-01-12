@@ -155,7 +155,7 @@ namespace MediaManager.Platforms.Android.Player
             else
                 UserAgent = Util.GetUserAgent(Context, Context.PackageName);
 
-            HttpDataSourceFactory = new DefaultHttpDataSource.Factory().SetUserAgent(UserAgent);
+            HttpDataSourceFactory = new DefaultHttpDataSource.Factory().SetUserAgent(UserAgent).SetAllowCrossProtocolRedirects(true);
             UpdateRequestHeaders();
 
             MediaSource = new ConcatenatingMediaSource();

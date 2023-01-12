@@ -11,11 +11,9 @@ namespace MauiPlayerSample
             InitializeComponent();
         }
 
-        protected override void OnAppearing()
+        private async void Button_Clicked(object sender, EventArgs e)
         {
-            base.OnAppearing();
-
-            //CrossMediaManager.Current.Play("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+            await CrossMediaManager.Current.Play("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
         }
     }
 }

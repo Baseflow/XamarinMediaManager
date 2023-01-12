@@ -7,7 +7,7 @@ using MediaManager.Video;
 namespace MediaManager.Platforms.Android.Video
 {
     [Register("mediamanager.platforms.android.video.VideoView")]
-    public class VideoView : PlayerView, IVideoView
+    public class VideoView : StyledPlayerView, IVideoView
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
 

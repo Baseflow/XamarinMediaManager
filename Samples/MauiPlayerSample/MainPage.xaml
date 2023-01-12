@@ -1,11 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:mm="clr-namespace:MediaManager.Forms;assembly=MediaManager.Forms"
+             xmlns:mm="clr-namespace:MediaManager.Forms;assembly=MediaManager.Forms"
              x:Class="MauiPlayerSample.MainPage">
 
-
-        <mm:VideoView BackgroundColor="Red" HorizontalOptions="FillAndExpand" HeightRequest="300" VideoAspect="AspectFit" ShowControls="True" AutoPlay="True" Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" />
-
-
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical">
+            <Button Text="Play" Clicked="Button_Clicked" />
+            <mm:VideoView BackgroundColor="Transparent" VerticalOptions="FillAndExpand" VideoAspect="AspectFit" ShowControls="True" IsFullWindow="True" Source="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" />
+        </StackLayout>
+    </ContentPage.Content>
+    
 </ContentPage>

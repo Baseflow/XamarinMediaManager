@@ -22,7 +22,7 @@
     <AssemblyName>MediaManager</AssemblyName>
     <RootNamespace>MediaManager</RootNamespace>
     <PackageId>Plugin.MediaManager</PackageId>
-    <Description>Cross platform Xamarin plugin to play and control Audio and Video</Description>
+    <Description>Cross platform .NET Xamarin plugin to play and control Audio and Video</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows' And $([MSBuild]::IsOSPlatform('windows'))">
