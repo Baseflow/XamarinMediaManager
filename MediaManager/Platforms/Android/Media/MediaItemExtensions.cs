@@ -57,22 +57,22 @@ namespace MediaManager.Platforms.Android.Media
                 case MediaType.Video:
                 case MediaType.Default:
                     return new ProgressiveMediaSource.Factory(MediaManager.AndroidMediaPlayer.DataSourceFactory).CreateMediaSource(BuildMediaItem(mediaDescription));
-                case MediaType.Dash:
-                    if (MediaManager.AndroidMediaPlayer.DashChunkSourceFactory == null)
-                        throw new ArgumentNullException(nameof(AndroidMediaPlayer.DashChunkSourceFactory));
+                //case MediaType.Dash:
+                //    if (MediaManager.AndroidMediaPlayer.DashChunkSourceFactory == null)
+                //        throw new ArgumentNullException(nameof(AndroidMediaPlayer.DashChunkSourceFactory));
 
-                    return new DashMediaSource.Factory(MediaManager.AndroidMediaPlayer.DashChunkSourceFactory, MediaManager.AndroidMediaPlayer.DataSourceFactory)
-                        .CreateMediaSource(BuildMediaItem(mediaDescription));
-                case MediaType.Hls:
-                    return new HlsMediaSource.Factory(MediaManager.AndroidMediaPlayer.DataSourceFactory)
-                        .SetAllowChunklessPreparation(true)
-                        .CreateMediaSource(BuildMediaItem(mediaDescription));
-                case MediaType.SmoothStreaming:
-                    if (MediaManager.AndroidMediaPlayer.SsChunkSourceFactory == null)
-                        throw new ArgumentNullException(nameof(AndroidMediaPlayer.SsChunkSourceFactory));
+                //    return new DashMediaSourceFactory(MediaManager.AndroidMediaPlayer.DashChunkSourceFactory, MediaManager.AndroidMediaPlayer.DataSourceFactory)
+                //        .CreateMediaSource(BuildMediaItem(mediaDescription));
+                //case MediaType.Hls:
+                //    return new HlsMediaSourceFactory(MediaManager.AndroidMediaPlayer.DataSourceFactory)
+                //        .SetAllowChunklessPreparation(true)
+                //        .CreateMediaSource(BuildMediaItem(mediaDescription));
+                //case MediaType.SmoothStreaming:
+                //    if (MediaManager.AndroidMediaPlayer.SsChunkSourceFactory == null)
+                //        throw new ArgumentNullException(nameof(AndroidMediaPlayer.SsChunkSourceFactory));
 
-                    return new SsMediaSource.Factory(MediaManager.AndroidMediaPlayer.SsChunkSourceFactory, MediaManager.AndroidMediaPlayer.DataSourceFactory)
-                        .CreateMediaSource(BuildMediaItem(mediaDescription));
+                //    return new SsMediaSourceFactory(MediaManager.AndroidMediaPlayer.SsChunkSourceFactory, MediaManager.AndroidMediaPlayer.DataSourceFactory)
+                //        .CreateMediaSource(BuildMediaItem(mediaDescription));
                 default:
                     throw new ArgumentNullException(nameof(mediaType));
             }
@@ -197,7 +197,7 @@ namespace MediaManager.Platforms.Android.Media
             return item;
         }
 
-        private static IDataSource.IFactory CreateDataSourceFactory(IMediaItem mediaItem)
+        private static IDataSourceFactory CreateDataSourceFactory(IMediaItem mediaItem)
         {
             //TODO: use own datasource factory that works with stream instead of bytes
             using var memStream = new MemoryStream();

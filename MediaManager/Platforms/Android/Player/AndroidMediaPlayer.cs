@@ -32,7 +32,7 @@ namespace MediaManager.Platforms.Android.Player
 
         protected string UserAgent { get; set; }
         protected DefaultHttpDataSource.Factory HttpDataSourceFactory { get; set; }
-        public IDataSource.IFactory DataSourceFactory { get; set; }
+        public IDataSourceFactory DataSourceFactory { get; set; }
         public DefaultDashChunkSource.Factory DashChunkSourceFactory { get; set; }
         public DefaultSsChunkSource.Factory SsChunkSourceFactory { get; set; }
 

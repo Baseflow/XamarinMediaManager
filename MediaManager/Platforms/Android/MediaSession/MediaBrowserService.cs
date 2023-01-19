@@ -100,6 +100,16 @@ namespace MediaManager.Platforms.Android.MediaSession
         protected virtual void PrepareNotificationManager()
         {
             MediaDescriptionAdapter = new MediaDescriptionAdapter();
+
+            // Create notification channel for media controls.
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                var channel = new NotificationChannel(ChannelId, "MediaManager", NotificationImportance.Low);
+                var nm = (NotificationManager)GetSystemService(NotificationService);
+                nm.CreateNotificationChannel(channel);
+            }
+
+
             PlayerNotificationManager = new Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.Builder(
                 this,
                 ForegroundNotificationId,

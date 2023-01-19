@@ -10,7 +10,7 @@ using Com.Google.Android.Exoplayer2.Video;
 
 namespace MediaManager.Platforms.Android.Player
 {
-    public class PlayerEventListener : Java.Lang.Object, Com.Google.Android.Exoplayer2.IPlayer.IListener // IEventListener
+    public class PlayerEventListener : Java.Lang.Object, Com.Google.Android.Exoplayer2.IPlayerListener // IEventListener
     {
         public PlayerEventListener()
         {
@@ -22,11 +22,11 @@ namespace MediaManager.Platforms.Android.Player
 
         public Action<AudioAttributes> OnAudioAttributesChangedImpl { get; set; }
         public Action<int> OnAudioSessionIdChangedImpl { get; set; }
-        public Action<IPlayer.Commands> OnAvailableCommandsChangedImpl { get; set; }
+        public Action<PlayerCommands> OnAvailableCommandsChangedImpl { get; set; }
         public Action<CueGroup> OnCuesImpl { get; set; }
         public Action<DeviceInfo> OnDeviceInfoChangedImpl { get; set; }
         public Action<int, bool> OnDeviceVolumeChangedImpl { get; set; }
-        public Action<IPlayer, IPlayer.Events> OnEventsImpl { get; set; }
+        public Action<IPlayer, PlayerEvents> OnEventsImpl { get; set; }
         public Action<bool> OnIsLoadingChangedImpl { get; set; }
         public Action<bool> OnIsPlayingChangedImpl { get; set; }
         public Action<bool> OnLoadingChangedImpl { get; set; }
@@ -68,7 +68,7 @@ namespace MediaManager.Platforms.Android.Player
             OnAudioSessionIdChangedImpl?.Invoke(audioSessionId);
         }
 
-        public void OnAvailableCommandsChanged(IPlayer.Commands availableCommands)
+        public void OnAvailableCommandsChanged(PlayerCommands availableCommands)
         {
             OnAvailableCommandsChangedImpl?.Invoke(availableCommands);
         }
@@ -88,7 +88,7 @@ namespace MediaManager.Platforms.Android.Player
             OnDeviceVolumeChangedImpl?.Invoke(volume, muted);
         }
 
-        public void OnEvents(IPlayer player, IPlayer.Events events)
+        public void OnEvents(IPlayer player, PlayerEvents events)
         {
             OnEventsImpl?.Invoke(player, events);
         }
