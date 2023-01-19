@@ -52,6 +52,8 @@ namespace MediaManager
             }
         }
 
+        public string NotificationChannel { get; set; } = "MediaManager";
+
         private MediaSessionCompat _mediaSession;
         public MediaSessionCompat MediaSession
         {

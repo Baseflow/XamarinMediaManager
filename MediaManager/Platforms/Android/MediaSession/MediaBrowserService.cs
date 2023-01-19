@@ -104,7 +104,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             // Create notification channel for media controls.
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
-                var channel = new NotificationChannel(ChannelId, "MediaManager", NotificationImportance.Low);
+                var channel = new NotificationChannel(ChannelId, MediaManager.NotificationChannel, NotificationImportance.Low);
                 var nm = (NotificationManager)GetSystemService(NotificationService);
                 nm.CreateNotificationChannel(channel);
             }
