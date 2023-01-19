@@ -1,4 +1,5 @@
-<resources>
+﻿<resources>
     <string name="app_name">AndroidPlayerSample</string>
-    <string name="app_text">Hello, Android!</string>
+    <string name="action_settings">Settings</string>
 </resources>
+
