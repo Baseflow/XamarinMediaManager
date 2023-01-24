@@ -202,6 +202,7 @@ namespace MediaManager.Platforms.Android.Player
             {
                 OnPlayerErrorImpl = (PlaybackException exception) =>
                 {
+                    MediaManager.Logger?.LogError($"MediaItemFailed: {exception}");
                     MediaManager.OnMediaItemFailed(this, new MediaItemFailedEventArgs(MediaManager.Queue.Current, exception, exception.Message));
                 },
                 OnTracksChangedImpl = (tracks) =>

@@ -65,6 +65,7 @@ namespace MediaManager.Platforms.Android.MediaSession
                     if (IsForeground && MediaController.PlaybackState.State == PlaybackStateCompat.StateNone)
                     {
                         //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundRemove);
+                        MediaManager.Logger?.LogInfo($"Stopping foreground service, {e.State}");
                         StopForeground(true);
                         StopSelf();
                         IsForeground = false;
@@ -74,6 +75,7 @@ namespace MediaManager.Platforms.Android.MediaSession
                     if (IsForeground)
                     {
                         //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundDetach);
+                        MediaManager.Logger?.LogInfo("Stopping foreground service, MediaPlayerState.Paused");
                         StopForeground(false);
                         //PlayerNotificationManager?.SetOngoing(false);
                         PlayerNotificationManager?.Invalidate();
@@ -122,6 +124,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             NotificationListener = new NotificationListener();
             NotificationListener.OnNotificationCancelledImpl = (notificationId, dismissedByUser) =>
             {
+                MediaManager.Logger?.LogInfo($"Stopping foreground service, Notification cancelled. DismissedByUser: {dismissedByUser}");
                 StopForeground(dismissedByUser);
                 //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundRemove);
 
@@ -163,6 +166,7 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         public override async void OnTaskRemoved(Intent rootIntent)
         {
+            MediaManager.Logger?.LogInfo($"Stopping foreground service, Task removed");
             StopForeground(true);
             await MediaManager.Stop();
             base.OnTaskRemoved(rootIntent);
@@ -172,6 +176,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
             //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundDetach);
 
+            MediaManager.Logger?.LogInfo($"Stopping foreground service, MediaBrowserService destroyed");
             StopForeground(true);
             MediaManager.StateChanged -= MediaManager_StateChanged;
 

@@ -33,6 +33,8 @@ namespace MediaManager
         IMediaExtractor Extractor { get; set; }
 
         IMediaQueue Queue { get; set; }
+        
+        ILogger Logger { get; set; }
 
         void Init();
 
