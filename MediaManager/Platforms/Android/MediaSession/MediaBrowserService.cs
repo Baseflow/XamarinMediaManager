@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
+using AndroidX.Core.App;
 using AndroidX.Core.Content;
 using AndroidX.Media;
 using AndroidX.Media.Session;
@@ -100,10 +101,9 @@ namespace MediaManager.Platforms.Android.MediaSession
         protected virtual void PrepareNotificationManager()
         {
             MediaDescriptionAdapter = new MediaDescriptionAdapter();
-            PlayerNotificationManager = new Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.Builder(
-                this,
-                ForegroundNotificationId,
-                ChannelId)
+            PlayerNotificationManager = new Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.Builder(this, ForegroundNotificationId, ChannelId)
+                .SetChannelNameResourceId(Resource.String.XamarinMediaManagerName)
+                .SetChannelDescriptionResourceId(Resource.String.XamarinMediaManagerDescription)
                 .SetMediaDescriptionAdapter(MediaDescriptionAdapter)
                 .SetNotificationListener(NotificationListener)
                 .Build();
@@ -136,10 +136,10 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.SetUsePlayPauseActions(MediaManager.Notification.ShowPlayPauseControls);
             //PlayerNotificationManager.SetUseNavigationActions(MediaManager.Notification.ShowNavigationControls);
             PlayerNotificationManager.SetSmallIcon(MediaManager.NotificationIconResource);
+            PlayerNotificationManager.SetPriority(NotificationCompat.PriorityLow);
 
             //Must be called to start the connection
             (MediaManager.Notification as Notifications.NotificationManager).Player = MediaManager.Player;
-            //PlayerNotificationManager.SetPlayer(MediaManager.AndroidMediaPlayer.Player);
         }
 
         public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)
