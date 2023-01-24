@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0-ios</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <CreatePackage>false</CreatePackage>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <CreatePackage>false</CreatePackage>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MediaManager\MediaManager.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon167.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon167.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon29.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon29.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon1024.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon1024.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon60.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon60.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon76.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon76.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon58.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon58.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon40.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon40.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon80.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon80.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <Link>Assets.xcassets\AppIcon.appiconset\Contents.json</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon87.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon87.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon120.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon120.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon152.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon152.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon20.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon20.png</Link>
+    </ImageAsset>
+    <ImageAsset Update="Assets.xcassets\AppIcon.appiconset\Icon180.png">
+      <Link>Assets.xcassets\AppIcon.appiconset\Icon180.png</Link>
+    </ImageAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Update="Resources\LaunchScreen.xib">
+      <Link>Resources\LaunchScreen.xib</Link>
+    </InterfaceDefinition>
+  </ItemGroup>
+</Project>
