@@ -1,10 +1,10 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
-using AndroidX.Core.App;
 using AndroidX.Core.Content;
 using AndroidX.Media;
 using AndroidX.Media.Session;
@@ -66,7 +66,7 @@ namespace MediaManager.Platforms.Android.MediaSession
                     if (IsForeground && MediaController.PlaybackState.State == PlaybackStateCompat.StateNone)
                     {
                         //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundRemove);
-                        StopForeground(true);
+                        StopForeground(StopForegroundFlags.Remove);
                         StopSelf();
                         IsForeground = false;
                     }
@@ -75,7 +75,7 @@ namespace MediaManager.Platforms.Android.MediaSession
                     if (IsForeground)
                     {
                         //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundDetach);
-                        StopForeground(false);
+                        StopForeground(StopForegroundFlags.Detach);
                         //PlayerNotificationManager?.SetOngoing(false);
                         PlayerNotificationManager?.Invalidate();
                         IsForeground = false;
@@ -101,7 +101,19 @@ namespace MediaManager.Platforms.Android.MediaSession
         protected virtual void PrepareNotificationManager()
         {
             MediaDescriptionAdapter = new MediaDescriptionAdapter();
-            PlayerNotificationManager = new Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.Builder(this, ForegroundNotificationId, ChannelId)
+
+            // Create notification channel for media controls.
+            //if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            //{
+            //    var channel = new NotificationChannel(ChannelId, MediaManager.NotificationChannel, NotificationImportance.Low);
+            //    var nm = (NotificationManager)GetSystemService(NotificationService);
+            //    nm.CreateNotificationChannel(channel);
+            //}
+
+            PlayerNotificationManager = new Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.Builder(
+                this,
+                ForegroundNotificationId,
+                ChannelId)
                 .SetChannelNameResourceId(Resource.String.XamarinMediaManagerName)
                 .SetChannelDescriptionResourceId(Resource.String.XamarinMediaManagerDescription)
                 .SetMediaDescriptionAdapter(MediaDescriptionAdapter)
@@ -112,7 +124,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             NotificationListener = new NotificationListener();
             NotificationListener.OnNotificationCancelledImpl = (notificationId, dismissedByUser) =>
             {
-                StopForeground(dismissedByUser);
+                StopForeground(dismissedByUser ? StopForegroundFlags.Remove : StopForegroundFlags.Detach);
                 //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundRemove);
 
                 StopSelf();
@@ -123,7 +135,7 @@ namespace MediaManager.Platforms.Android.MediaSession
                 if (ongoing && !IsForeground)
                 {
                     ContextCompat.StartForegroundService(ApplicationContext, new Intent(ApplicationContext, Java.Lang.Class.FromType(typeof(MediaBrowserService))));
-                    StartForeground(notificationId, notification);
+                    StartForeground(notificationId, notification, ForegroundService.TypeMediaPlayback);
                     IsForeground = true;
                 }
             };
@@ -140,6 +152,7 @@ namespace MediaManager.Platforms.Android.MediaSession
 
             //Must be called to start the connection
             (MediaManager.Notification as Notifications.NotificationManager).Player = MediaManager.Player;
+            //PlayerNotificationManager.SetPlayer(MediaManager.AndroidMediaPlayer.Player);
         }
 
         public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)
@@ -153,7 +166,7 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         public override async void OnTaskRemoved(Intent rootIntent)
         {
-            StopForeground(true);
+            StopForeground(StopForegroundFlags.Remove);
             await MediaManager.Stop();
             base.OnTaskRemoved(rootIntent);
         }
@@ -162,7 +175,7 @@ namespace MediaManager.Platforms.Android.MediaSession
         {
             //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundDetach);
 
-            StopForeground(true);
+            StopForeground(StopForegroundFlags.Remove);
             MediaManager.StateChanged -= MediaManager_StateChanged;
 
             (MediaManager.Notification as Notifications.NotificationManager).Player = null;
