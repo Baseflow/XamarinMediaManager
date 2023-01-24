@@ -20,6 +20,10 @@ namespace AndroidPlayerSample
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
+
+            CrossMediaManager.Android.LoadControlSettings.DefaultBufferForPlaybackMs = 500;
+            CrossMediaManager.Android.LoadControlSettings.DefaultBufferForPlaybackMs = 500;
+            
             CrossMediaManager.Current.Init(this);
             CrossMediaManager.Current.Notification.ShowNavigationControls = true;
             CrossMediaManager.Current.MediaPlayer.ShowPlaybackControls = true;

@@ -171,14 +171,14 @@ namespace MediaManager.Platforms.Android.Player
             var loadControl = new DefaultLoadControl.Builder()
                 .SetAllocator(new DefaultAllocator(true, C.DefaultBufferSegmentSize))
                 .SetBufferDurationsMs(
-                    5 * 60 * 1000, // minBuffer in ms
-                    10 * 60 * 1000, // maxBuffer in ms
+                    MediaManager.LoadControlSettings.MinBufferMs,
+                    MediaManager.LoadControlSettings.MaxBufferMs,
                     
-                    DefaultLoadControl.DefaultBufferForPlaybackMs * 3, // buffer for playback
-                    DefaultLoadControl.DefaultBufferForPlaybackAfterRebufferMs // buffer for playback affer rebuffer
+                    MediaManager.LoadControlSettings.DefaultBufferForPlaybackMs, // buffer for playback
+                    MediaManager.LoadControlSettings.DefaultBufferForPlaybackAfterRebufferMs // buffer for playback affer rebuffer
                 )
-                .SetTargetBufferBytes(DefaultLoadControl.DefaultTargetBufferBytes)
-                .SetPrioritizeTimeOverSizeThresholds(true)
+                .SetTargetBufferBytes(MediaManager.LoadControlSettings.TargetBufferBytes)
+                .SetPrioritizeTimeOverSizeThresholds(MediaManager.LoadControlSettings.PrioritizeTimeOverSizeTresholds)
                 
                 .Build();
 
