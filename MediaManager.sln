@@ -26,9 +26,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaManager.FFmpegMediaMet
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiPlayerSample", "Samples\MauiPlayerSample\MauiPlayerSample.csproj", "{B3EDACB8-FD89-45CF-968E-A367470E6DE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidPlayerSample", "Samples\AndroidPlayerSample\AndroidPlayerSample.csproj", "{4A4E5999-39A4-4AE6-89D6-FE1ABCDD064A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AndroidPlayerSample", "Samples\AndroidPlayerSample\AndroidPlayerSample.csproj", "{4A4E5999-39A4-4AE6-89D6-FE1ABCDD064A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IosPlayerSample", "Samples\IosPlayerSample\IosPlayerSample.csproj", "{09F5F4AF-47FA-452F-A5E8-154A34E92D46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IosPlayerSample", "Samples\IosPlayerSample\IosPlayerSample.csproj", "{09F5F4AF-47FA-452F-A5E8-154A34E92D46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -311,7 +311,6 @@ Global
 		{09F5F4AF-47FA-452F-A5E8-154A34E92D46}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{09F5F4AF-47FA-452F-A5E8-154A34E92D46}.Debug|x86.Build.0 = Debug|Any CPU
 		{09F5F4AF-47FA-452F-A5E8-154A34E92D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09F5F4AF-47FA-452F-A5E8-154A34E92D46}.Release|Any CPU.Build.0 = Release|Any CPU
 		{09F5F4AF-47FA-452F-A5E8-154A34E92D46}.Release|ARM.ActiveCfg = Release|Any CPU
 		{09F5F4AF-47FA-452F-A5E8-154A34E92D46}.Release|ARM.Build.0 = Release|Any CPU
 		{09F5F4AF-47FA-452F-A5E8-154A34E92D46}.Release|ARM64.ActiveCfg = Release|Any CPU
