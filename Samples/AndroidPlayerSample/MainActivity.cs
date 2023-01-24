@@ -71,12 +71,12 @@ namespace AndroidPlayerSample
         }
 
         public IList<string> Mp3UrlList => new[]{
-            "https://www.pcorgan.com/mp3/Caen%20-%20Jan%20Mulder%20-%20Wie%20maar%20de%20goede%20God%20laat%20zorgen%20-%20Toccata%20-%20Koraal%20-%20mf-fff.mp3",
-            "https://www.pcorgan.com/mp3/Kampen%20II%20-%20Feike%20Asma%20-%20Ps%2072%20-%20Ped%20Pr16%20Sb16%20Oct8%20Ged8%20Oct4%20Bw-P%20Rw%20Sexq%20Fl4%20Hp8%20Pr8%20Oct4%20Q3%20Fl2%20Hw%20Tert%20Pr8%20Oct4%20Q3%20Oct2%20Tr8%20Rw-Hw%20Bw%20All-Car-Fl1-Dulc-Tr8.mp3",
+            "https://www.pcorgan.com/mp3/Kampen%20II%20-%20G.F.Handel,%20Jan%20Mulder%20-%20Hornpipe,%20k%20Wil%20U,%20o%20God,%20mijn%20dank%20betalen.mp3",
+            "https://www.pcorgan.com/mp3/KampenIII%20-%20Cor%20van%20Dijk%20-%20Ps%2081v3%20-%20Ped%20Sub16%20Ged8%20Oct8%20Rw-P%20Rw%20Pr8%20Oct4%20GedQ3%20Fl2%20Hw%20Tromp8%20Bv-Hw%20Bv%20Tromp8.mp3",
             "https://www.pcorgan.com/mp3/Kampen3%20-%20Peter%20de%20Wilde%20-%20Ps%20121v1%20-%20A%20Bd16%20Hp8%20Fl4%20B%20Ped%20Sb16%20Gd8%20Hw-P%20Rw%20Hp8%20GdQ3%20Trem%20Hw%20Hp8%20Fl4%20Bw%20Tr8.mp3",
             "https://www.pcorgan.com/mp3/Caen%20-%20Marco%20den%20Toom%20-%20Psalm%20134%20-%20Ped%20Sb16%20Pos-P%20GO%20Bd16%20M8%20Gb8%20Cornet%20Pos-GO%20Pos%20Um8%20CdN8%20Rec-P%20Rec%20VC8%20VdG8%20Fl4.mp3",
 
-            "https://www.pcorgan.com/mp3/Caen%20Surround%20-%20Feike%20Asma%20-%20Wat%20de%20toekomst%20brenge%20moge%20-%20Ped%20Soub16%20Viol8%20R-P%20GO%20Gamb8%20Bd8%20Fl4%20R-GO%20Pos%20Cromorne%20Rec%20VdG8%20VC8.mp3"
+            "https://www.pcorgan.com/mp3/KampenVol3%20-%20Jan%20Mulder%20-%20Vaste%20Rots%20van%20mijn%20behoud%20-%20Koraal,%20divertimento%20en%20Koraal.mp3"
             };
     }
 
