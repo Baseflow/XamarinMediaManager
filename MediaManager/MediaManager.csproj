@@ -77,7 +77,7 @@
   <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
     <None Remove="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Android\**\*.cs" />
-    <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
+    <AndroidResource Include="Platforms\Android\Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.18.8" />
     <!--<PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.11.8" />
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.11.8" />-->

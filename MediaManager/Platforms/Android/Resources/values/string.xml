@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="XamarinMediaManagerName">Xamarin Media Manager</string>
+    <string name="XamarinMediaManagerDescription">Media player for .NET MAUI</string>
+</resources>
