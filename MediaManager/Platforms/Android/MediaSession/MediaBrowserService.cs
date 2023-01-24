@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Media;
@@ -136,7 +137,7 @@ namespace MediaManager.Platforms.Android.MediaSession
                 if (ongoing && !IsForeground)
                 {
                     ContextCompat.StartForegroundService(ApplicationContext, new Intent(ApplicationContext, Java.Lang.Class.FromType(typeof(MediaBrowserService))));
-                    StartForeground(notificationId, notification);
+                    StartForeground(notificationId, notification, ForegroundService.TypeMediaPlayback);
                     IsForeground = true;
                 }
             };
