@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using Android;
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
@@ -14,7 +15,7 @@ using MediaManager.Platforms.Android.Media;
 
 namespace MediaManager.Platforms.Android.MediaSession
 {
-    [Service(Exported = true, Enabled = true)]
+    [Service(Exported = true, Enabled = true, ForegroundServiceType = ForegroundService.TypeMediaPlayback)]
     [IntentFilter(new[] { global::Android.Service.Media.MediaBrowserService.ServiceInterface })]
     public class MediaBrowserService : MediaBrowserServiceCompat
     {
@@ -106,21 +107,13 @@ namespace MediaManager.Platforms.Android.MediaSession
             MediaDescriptionAdapter = new MediaDescriptionAdapter();
 
             // Create notification channel for media controls.
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-            {
-                var channel = new NotificationChannel(ChannelId, MediaManager.NotificationChannel, NotificationImportance.Low);
-                var nm = (NotificationManager)GetSystemService(NotificationService);
-                nm.CreateNotificationChannel(channel);
-            }
+            // if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            // {
+            //     var channel = new NotificationChannel(ChannelId, MediaManager.NotificationChannel, NotificationImportance.Low);
+            //     var nm = (NotificationManager)GetSystemService(NotificationService);
+            //     nm.CreateNotificationChannel(channel);
+            // }
 
-
-            PlayerNotificationManager = new Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.Builder(
-                this,
-                ForegroundNotificationId,
-                ChannelId)
-                .SetMediaDescriptionAdapter(MediaDescriptionAdapter)
-                .SetNotificationListener(NotificationListener)
-                .Build();
 
             //Needed for enabling the notification as a mediabrowser.
             NotificationListener = new NotificationListener();
@@ -139,9 +132,23 @@ namespace MediaManager.Platforms.Android.MediaSession
                 {
                     ContextCompat.StartForegroundService(ApplicationContext, new Intent(ApplicationContext, Java.Lang.Class.FromType(typeof(MediaBrowserService))));
                     StartForeground(notificationId, notification, ForegroundService.TypeMediaPlayback);
+                    MediaManager.Logger?.LogInfo("Starting foreground service");
                     IsForeground = true;
                 }
             };
+            
+            PlayerNotificationManager = new Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.Builder(
+                this,
+                ForegroundNotificationId,
+                ChannelId)
+                .SetChannelNameResourceId(Resource.String.XamarinMediaManagerDescription)
+                .SetChannelDescriptionResourceId(Resource.String.XamarinMediaManagerDescription)
+
+                .SetMediaDescriptionAdapter(MediaDescriptionAdapter)
+                .SetNotificationListener(NotificationListener)
+                .Build();
+
+            
 
             //PlayerNotificationManager.SetFastForwardIncrementMs((long)MediaManager.StepSizeForward.TotalMilliseconds);
             //PlayerNotificationManager.SetRewindIncrementMs((long)MediaManager.StepSizeBackward.TotalMilliseconds);

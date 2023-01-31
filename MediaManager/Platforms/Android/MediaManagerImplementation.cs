@@ -53,8 +53,6 @@ namespace MediaManager
             }
         }
 
-        public string NotificationChannel { get; set; } = "MediaManager";
-
         public LoadControlSettings LoadControlSettings { get; } = new LoadControlSettings();
         
         private MediaSessionCompat _mediaSession;
