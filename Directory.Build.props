@@ -15,7 +15,7 @@
     <RepositoryUrl>https://github.com/Baseflow/XamarinMediaManager</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>1.2.2-xamarin</Version>
+    <Version>1.2.3-xamarin</Version>
 
     <!--<Nullable>enable</Nullable>-->
     <ImplicitUsings>enable</ImplicitUsings>
