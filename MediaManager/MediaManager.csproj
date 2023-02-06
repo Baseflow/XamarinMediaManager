@@ -79,10 +79,10 @@
     <None Remove="Platforms\Android\**\*.cs" />
     <Compile Include="Platforms\Android\**\*.cs" />
     <AndroidResource Include="Platforms\Android\Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
-    <PackageReference Include="Xamarin.Plugins.Android.ExoPlayer" Version="2.18.9" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.18.9-xamarin.1" />
     <!--<PackageReference Include="Xam.Plugins.Android.ExoPlayer.Cast" Version="2.11.8" />
     <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Leanback" Version="2.11.8" />-->
-    <PackageReference Include="Xamarin.Plugins.Android.ExoPlayer.MediaSession" Version="2.18.9" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.MediaSession" Version="2.18.9-xamarin.1" />
   </ItemGroup>
 
   <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">
