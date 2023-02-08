@@ -59,7 +59,6 @@
   <ItemGroup Condition="'$(IsLibraryProject)' == 'true'">
     <None Include="$(MSBuildThisFileDirectory)\LICENSE" Pack="true" PackagePath="\" />
     <None Include="$(MSBuildThisFileDirectory)\icon.png" Pack="true" PackagePath="\" />
-    <None Include="$(MSBuildThisFileDirectory)\readme.txt" pack="true" PackagePath="." />
     <None Include="$(MSBuildThisFileDirectory)\readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
