@@ -1,11 +1,10 @@
-name: Dotnet CI build
+name: Dotnet build & publish
 
 on:
   push:
-    branches: [ "develop" ]
-  pull_request:
     branches: [ develop, main ]
-
+  pull_request:
+    branches: [ develop ]
 jobs:
   build:
 
@@ -26,5 +25,8 @@ jobs:
       run: dotnet workload install maui
     - name: Install dependencies
       run: dotnet restore $SOLUTION
-    - name: Build & Package
-      run: msbuild $SOLUTION -p:Configuration=Release -p:RestorePackages=false
+    - name: Build
+      run: msbuild $SOLUTION -p:Configuration=Release -p:RestorePackages=false -verbosity:minimal
+    - name: Publish
+      if: startsWith(github.ref, 'refs/heads/main')
+      run: dotnet nuget push artifacts\*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.PUBLISH_TO_NUGET_ORG}} --skip-duplicate
