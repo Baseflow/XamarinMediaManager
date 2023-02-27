@@ -89,7 +89,7 @@ namespace MediaManager.Platforms.Android.MediaSession
 
         protected virtual void PrepareMediaSession()
         {
-            var mediaSession = MediaManager.MediaSession = new MediaSessionCompat(this, nameof(MediaBrowserService));
+            var mediaSession = MediaManager.MediaSession = new MediaSessionCompat(this, MediaBrowserManager.ServiceType.Name);
             mediaSession.SetSessionActivity(MediaManager.SessionActivityPendingIntent);
             mediaSession.Active = true;
 
@@ -135,7 +135,7 @@ namespace MediaManager.Platforms.Android.MediaSession
             {
                 if (ongoing && !IsForeground)
                 {
-                    ContextCompat.StartForegroundService(ApplicationContext, new Intent(ApplicationContext, Java.Lang.Class.FromType(typeof(MediaBrowserService))));
+                    ContextCompat.StartForegroundService(ApplicationContext, new Intent(ApplicationContext, MediaBrowserManager.ServiceType));
                     StartForeground(notificationId, notification, ForegroundService.TypeMediaPlayback);
                     IsForeground = true;
                 }

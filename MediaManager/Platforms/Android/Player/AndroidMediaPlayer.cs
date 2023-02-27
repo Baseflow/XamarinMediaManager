@@ -265,7 +265,7 @@ namespace MediaManager.Platforms.Android.Player
         public virtual void ConnectMediaSession()
         {
             if (MediaSession == null)
-                throw new ArgumentNullException(nameof(MediaSession), $"{nameof(MediaSession)} cannot be null. Make sure the {nameof(MediaBrowserService)} sets it up");
+                throw new ArgumentNullException(nameof(MediaSession), $"{nameof(MediaSession)} cannot be null. Make sure the {nameof(MediaBrowserManager.ServiceType)} sets it up");
 
             MediaSessionConnector = new MediaSessionConnector(MediaSession);
 
