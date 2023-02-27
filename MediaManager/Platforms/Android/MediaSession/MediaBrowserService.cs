@@ -14,7 +14,7 @@ using MediaManager.Platforms.Android.Media;
 
 namespace MediaManager.Platforms.Android.MediaSession
 {
-    [Service(Exported = true, Enabled = true)]
+    [Service(Exported = true, Enabled = true, ForegroundServiceType = ForegroundService.TypeMediaPlayback)]
     [IntentFilter(new[] { global::Android.Service.Media.MediaBrowserService.ServiceInterface })]
     public class MediaBrowserService : MediaBrowserServiceCompat
     {
@@ -177,29 +177,37 @@ namespace MediaManager.Platforms.Android.MediaSession
             //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundDetach);
 
             StopForeground(StopForegroundFlags.Remove);
-            MediaManager.StateChanged -= MediaManager_StateChanged;
 
-            (MediaManager.Notification as Notifications.NotificationManager).Player = null;
+            if (MediaManager != null)
+            {
+                MediaManager.StateChanged -= MediaManager_StateChanged;
 
-            MediaDescriptionAdapter.Dispose();
-            MediaDescriptionAdapter = null;
+                if (MediaManager.Notification is Notifications.NotificationManager notificationManager)
+                    notificationManager.Player = null;
 
-            // Service is being killed, so make sure we release our resources
+                MediaDescriptionAdapter?.Dispose();
+                MediaDescriptionAdapter = null;
 
-            //TODO: Enable again
-            //PlayerNotificationManager.SetNotificationListener(null);
+                // Service is being killed, so make sure we release our resources
 
-            PlayerNotificationManager.SetPlayer(null);
-            PlayerNotificationManager.Dispose();
-            PlayerNotificationManager = null;
+                //TODO: Enable again
+                //PlayerNotificationManager.SetNotificationListener(null);
 
-            NotificationListener.Dispose();
-            NotificationListener = null;
+                PlayerNotificationManager?.SetPlayer(null);
+                PlayerNotificationManager?.Dispose();
+                PlayerNotificationManager = null;
 
-            MediaManager.MediaSession.Active = false;
-            MediaManager.MediaSession.Release();
-            //MediaManager.MediaSession.Dispose();
-            MediaManager.MediaSession = null;
+                NotificationListener?.Dispose();
+                NotificationListener = null;
+
+                if (MediaManager.MediaSession != null)
+                {
+                    MediaManager.MediaSession.Active = false;
+                    MediaManager.MediaSession.Release();
+                    //MediaManager.MediaSession.Dispose();
+                    MediaManager.MediaSession = null;
+                }
+            }
 
             IsForeground = false;
             base.OnDestroy();
