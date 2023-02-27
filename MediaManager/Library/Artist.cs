@@ -59,7 +59,13 @@
         public IList<IAlbum> Albums
         {
             get => _albums;
-            set => SetProperty(ref _albums, value);
+            set
+            {
+                if (SetProperty(ref _albums, value))
+                {
+                    OnPropertyChanged(nameof(AllTracks));
+                }
+            }
         }
 
         private IList<IMediaItem> _topTracks = new List<IMediaItem>();

@@ -8,7 +8,7 @@ namespace MediaManager.FFmpegMediaMetadataRetriever
     public class FFmpegMetadataProvider : MediaExtractorProviderBase, IMediaItemMetadataProvider, IMediaItemImageProvider, IMediaItemVideoFrameProvider
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
-        protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
+        protected IDictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
 
         public Task<IMediaItem> ProvideMetadata(IMediaItem mediaItem)
         {

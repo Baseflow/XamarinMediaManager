@@ -4,10 +4,6 @@ using MediaManager.Video;
 
 namespace MediaManager.Player
 {
-    public delegate void BeforePlayingEventHandler(object sender, MediaPlayerEventArgs e);
-
-    public delegate void AfterPlayingEventHandler(object sender, MediaPlayerEventArgs e);
-
     public interface IMediaPlayer<TPlayer, TPlayerView> : IMediaPlayer<TPlayer> where TPlayer : class where TPlayerView : class, IVideoView
     {
         TPlayerView PlayerView { get; }
@@ -80,8 +76,8 @@ namespace MediaManager.Player
         /// </summary>
         //RepeatMode RepeatMode { get; set; }
 
-        event BeforePlayingEventHandler BeforePlaying;
+        event EventHandler<MediaPlayerEventArgs> BeforePlaying;
 
-        event AfterPlayingEventHandler AfterPlaying;
+        event EventHandler<MediaPlayerEventArgs> AfterPlaying;
     }
 }

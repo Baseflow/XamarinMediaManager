@@ -4,8 +4,6 @@
     {
         public Playlist()
         {
-            if (CreatedAt == null)
-                CreatedAt = DateTime.Now;
         }
 
         private string _uri;
@@ -64,7 +62,7 @@
             set => SetProperty(ref _rating, value);
         }
 
-        private DateTime _createdAt;
+        private DateTime _createdAt = DateTime.Now;
         public DateTime CreatedAt
         {
             get => _createdAt;
@@ -113,7 +111,13 @@
         public IList<IMediaItem> MediaItems
         {
             get => _mediaItems;
-            set => SetProperty(ref _mediaItems, value);
+            set
+            {
+                if (SetProperty(ref _mediaItems, value))
+                {
+                    OnPropertyChanged(nameof(TotalTime));
+                }
+            }
         }
     }
 }

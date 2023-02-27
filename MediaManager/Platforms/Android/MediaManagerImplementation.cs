@@ -99,7 +99,7 @@ namespace MediaManager
             return PendingIntent.GetActivity(Context, 0, sessionIntent, pendingIntentFlags);
         }
 
-        public override Dictionary<string, string> RequestHeaders
+        public override IDictionary<string, string> RequestHeaders
         {
             get => base.RequestHeaders;
             set

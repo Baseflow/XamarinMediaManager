@@ -10,7 +10,6 @@ namespace MediaManager.Platforms.Android.Notifications
 
         public NotificationManager()
         {
-
         }
 
         public PlayerNotificationManager PlayerNotificationManager { get; set; }
@@ -18,10 +17,7 @@ namespace MediaManager.Platforms.Android.Notifications
         private IPlayer _player;
         internal IPlayer Player
         {
-            get
-            {
-                return _player;
-            }
+            get => _player;
             set
             {
                 _player = value;

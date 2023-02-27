@@ -40,7 +40,7 @@ namespace MediaManager.Platforms.Ios.Media
                 //AVMetadata.CommonKeyType
             };
 
-            var url = mediaItem.GetNSUrl();
+            using var url = mediaItem.GetNSUrl();
 
             var asset = AVAsset.FromUrl(url);
             await asset.LoadValuesTaskAsync(assetsToLoad.ToArray()).ConfigureAwait(false);
@@ -72,7 +72,7 @@ namespace MediaManager.Platforms.Ios.Media
 
         public Task<object> ProvideVideoFrame(IMediaItem mediaItem, TimeSpan timeFromStart)
         {
-            var url = mediaItem.GetNSUrl();
+            using var url = mediaItem.GetNSUrl();
             var imageGenerator = new AVAssetImageGenerator(AVAsset.FromUrl(url));
             imageGenerator.AppliesPreferredTrackTransform = true;
             var cgImage = imageGenerator.CopyCGImageAtTime(new CMTime((long)timeFromStart.TotalMilliseconds, 1000), out var actualTime, out var error);

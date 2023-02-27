@@ -54,7 +54,7 @@ namespace MediaManager.Platforms.Uap.Volume
 
         public override float Balance { get; set; }
 
-        public override event VolumeChangedEventHandler VolumeChanged;
+        public override event EventHandler<VolumeChangedEventArgs> VolumeChanged;
 
         private void Player_IsMutedChanged(Windows.Media.Playback.MediaPlayer sender, object args)
         {

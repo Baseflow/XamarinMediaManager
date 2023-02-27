@@ -44,14 +44,14 @@ namespace MediaManager
             set => SetProperty(ref _stepSizeBackward, value);
         }
 
-        protected Dictionary<string, string> _requestHeaders = new Dictionary<string, string>();
-        public virtual Dictionary<string, string> RequestHeaders
+        protected IDictionary<string, string> _requestHeaders = new Dictionary<string, string>();
+        public virtual IDictionary<string, string> RequestHeaders
         {
             get => _requestHeaders;
             set => SetProperty(ref _requestHeaders, value);
         }
 
-        protected IMediaLibrary _library;
+        private IMediaLibrary _library;
         public virtual IMediaLibrary Library
         {
             get
@@ -64,17 +64,17 @@ namespace MediaManager
             set => SetProperty(ref _library, value);
         }
 
-        protected IMediaQueue _mediaQueue;
+        private IMediaQueue _queue;
         public virtual IMediaQueue Queue
         {
             get
             {
-                if (_mediaQueue == null)
-                    _mediaQueue = new MediaQueue();
+                if (_queue == null)
+                    _queue = new MediaQueue();
 
-                return _mediaQueue;
+                return _queue;
             }
-            set => SetProperty(ref _mediaQueue, value);
+            set => SetProperty(ref _queue, value);
         }
 
         public virtual void Init()
@@ -90,6 +90,7 @@ namespace MediaManager
                 return;
             }
 
+            Timer?.Dispose();
             Timer = new Timer(TimerInterval)
             {
                 AutoReset = true,
@@ -159,7 +160,7 @@ namespace MediaManager
             set => SetProperty(ref _autoPlay, value);
         }
 
-        private bool _isFullWindow = false;
+        private bool _isFullWindow;
         public bool IsFullWindow
         {
             get => _isFullWindow;
@@ -246,7 +247,7 @@ namespace MediaManager
             //TODO: Probably better to do everything in memory. On Android use ByteArrayDataSource
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), cacheName);
             var fileStream = File.Create(path);
-            await stream.CopyToAsync(fileStream);
+            await stream.CopyToAsync(fileStream).ConfigureAwait(false);
             fileStream.Close();
 
             var mediaItem = await Extractor.CreateMediaItem(path).ConfigureAwait(false);
@@ -392,13 +393,13 @@ namespace MediaManager
             return seekTo;
         }
 
-        public event StateChangedEventHandler StateChanged;
-        public event BufferedChangedEventHandler BufferedChanged;
-        public event PositionChangedEventHandler PositionChanged;
+        public event EventHandler<StateChangedEventArgs> StateChanged;
+        public event EventHandler<BufferedChangedEventArgs> BufferedChanged;
+        public event EventHandler<PositionChangedEventArgs> PositionChanged;
 
-        public event MediaItemFinishedEventHandler MediaItemFinished;
-        public event MediaItemChangedEventHandler MediaItemChanged;
-        public event MediaItemFailedEventHandler MediaItemFailed;
+        public event EventHandler<MediaItemEventArgs> MediaItemFinished;
+        public event EventHandler<MediaItemEventArgs> MediaItemChanged;
+        public event EventHandler<MediaItemFailedEventArgs> MediaItemFailed;
 
         protected IMediaItem _currentSource;
 
@@ -445,7 +446,7 @@ namespace MediaManager
             Notification?.UpdateNotification();
         }
 
-        protected TimeSpan _previousPosition = new TimeSpan();
+        private TimeSpan _previousPosition = new TimeSpan();
         protected TimeSpan PreviousPosition
         {
             get => _previousPosition;

@@ -78,7 +78,7 @@ namespace MediaManager.Platforms.Android.Media
             }
         }
 
-        public static Com.Google.Android.Exoplayer2.MediaItem BuildMediaItem(MediaDescriptionCompat mediaDescription)
+        public static Com.Google.Android.Exoplayer2.MediaItem BuildMediaItem(this MediaDescriptionCompat mediaDescription)
         {
             return new Com.Google.Android.Exoplayer2.MediaItem.Builder()
                         .SetTag(mediaDescription)
@@ -97,11 +97,12 @@ namespace MediaManager.Platforms.Android.Media
 
             //It should be better to only set the uri to prevent loading images into memory
             if (!string.IsNullOrEmpty(item?.DisplayImageUri))
+            {
                 description.SetIconUri(global::Android.Net.Uri.Parse(item?.DisplayImageUri));
+            }
             else
             {
-                var image = item?.DisplayImage as Bitmap;
-                if (image != null)
+                if (item?.DisplayImage is Bitmap image)
                     description.SetIconBitmap(image);
             }
 
@@ -115,39 +116,41 @@ namespace MediaManager.Platforms.Android.Media
 
         public static IMediaItem ToMediaItem(this MediaDescriptionCompat mediaDescription)
         {
-            var item = new MediaItem(mediaDescription.MediaUri.ToString());
-            //item.Advertisement = mediaDescription.
-            //item.Album = mediaDescription.
-            //item.AlbumArt = mediaDescription.
-            //item.AlbumArtist = mediaDescription.
-            //item.AlbumArtUri = mediaDescription.
-            //item.Art = mediaDescription.
-            //item.Artist = mediaDescription.
-            //item.ArtUri = mediaDescription.
-            //item.Author = mediaDescription.
-            //item.Compilation = mediaDescription.
-            //item.Composer = mediaDescription.
-            //item.Date = mediaDescription.
-            //item.DiscNumber = mediaDescription.
-            //item.DisplayDescription = mediaDescription.
-            item.DisplayImage = mediaDescription.IconBitmap;
-            item.DisplayImageUri = mediaDescription.IconUri.ToString();
-            item.DisplaySubtitle = mediaDescription.Subtitle;
-            item.DisplayTitle = mediaDescription.Title;
-            //item.DownloadStatus = mediaDescription.
-            //item.Duration = mediaDescription.
-            item.Extras = mediaDescription.Extras;
-            //item.Genre = mediaDescription.
-            item.Id = mediaDescription.MediaId;
-            //item.MediaUri = mediaDescription.MediaUri.ToString();
-            //item.NumTracks = mediaDescription.
-            //item.Rating = mediaDescription.
-            item.Title = mediaDescription.Title;
-            //item.TrackNumber = mediaDescription.
-            //item.UserRating = mediaDescription.
-            //item.Writer = mediaDescription.
-            //item.Year = mediaDescription.
-            item.IsMetadataExtracted = true;
+            var item = new MediaItem(mediaDescription.MediaUri.ToString())
+            {
+                //item.Advertisement = mediaDescription.
+                //item.Album = mediaDescription.
+                //item.AlbumArt = mediaDescription.
+                //item.AlbumArtist = mediaDescription.
+                //item.AlbumArtUri = mediaDescription.
+                //item.Art = mediaDescription.
+                //item.Artist = mediaDescription.
+                //item.ArtUri = mediaDescription.
+                //item.Author = mediaDescription.
+                //item.Compilation = mediaDescription.
+                //item.Composer = mediaDescription.
+                //item.Date = mediaDescription.
+                //item.DiscNumber = mediaDescription.
+                //item.DisplayDescription = mediaDescription.
+                DisplayImage = mediaDescription.IconBitmap,
+                DisplayImageUri = mediaDescription.IconUri.ToString(),
+                DisplaySubtitle = mediaDescription.Subtitle,
+                DisplayTitle = mediaDescription.Title,
+                //item.DownloadStatus = mediaDescription.
+                //item.Duration = mediaDescription.
+                Extras = mediaDescription.Extras,
+                //item.Genre = mediaDescription.
+                Id = mediaDescription.MediaId,
+                //item.MediaUri = mediaDescription.MediaUri.ToString();
+                //item.NumTracks = mediaDescription.
+                //item.Rating = mediaDescription.
+                Title = mediaDescription.Title,
+                //item.TrackNumber = mediaDescription.
+                //item.UserRating = mediaDescription.
+                //item.Writer = mediaDescription.
+                //item.Year = mediaDescription.
+                IsMetadataExtracted = true
+            };
             return item;
         }
 

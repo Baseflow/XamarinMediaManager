@@ -6,7 +6,7 @@ namespace MediaManager.Media
     {
         public Task<IMediaItem> ProvideMetadata(IMediaItem mediaItem)
         {
-            return null;
+            return Task.FromResult<IMediaItem>(null);
         }
     }
 }

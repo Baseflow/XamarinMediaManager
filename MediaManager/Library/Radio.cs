@@ -4,8 +4,6 @@
     {
         public Radio()
         {
-            if (CreatedAt == null)
-                CreatedAt = DateTime.Now;
         }
 
         private string _uri;
@@ -64,7 +62,7 @@
             set => SetProperty(ref _rating, value);
         }
 
-        private DateTime _createdAt;
+        private DateTime _createdAt = DateTime.Now;
         public DateTime CreatedAt
         {
             get => _createdAt;

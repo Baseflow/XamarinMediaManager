@@ -16,7 +16,7 @@ namespace MediaManager.Library
             MediaUri = uri;
         }
 
-        public event MetadataUpdatedEventHandler MetadataUpdated;
+        public event EventHandler<MetadataChangedEventArgs> MetadataUpdated;
 
         private string _advertisement;
         public string Advertisement
@@ -29,49 +29,93 @@ namespace MediaManager.Library
         public string Album
         {
             get => _album;
-            set => SetProperty(ref _album, value);
+            set
+            {
+                if (SetProperty(ref _album, value))
+                {
+                    OnPropertyChanged(nameof(DisplaySubtitle));
+                }
+            }
         }
 
-        private object _albumArt;
+        private object _albumImage;
         public object AlbumImage
         {
-            get => _albumArt;
-            set => SetProperty(ref _albumArt, value);
+            get => _albumImage;
+            set
+            {
+                if (SetProperty(ref _albumImage, value))
+                {
+                    OnPropertyChanged(nameof(DisplayImage));
+                }
+            }
         }
 
         private string _albumArtist;
         public string AlbumArtist
         {
             get => _albumArtist;
-            set => SetProperty(ref _albumArtist, value);
+            set
+            {
+                if (SetProperty(ref _albumArtist, value))
+                {
+                    OnPropertyChanged(nameof(DisplaySubtitle));
+                    OnPropertyChanged(nameof(DisplayDescription));
+                }
+            }
         }
 
-        private string _albumArtUri;
+        private string _albumImageUri;
         public string AlbumImageUri
         {
-            get => _albumArtUri;
-            set => SetProperty(ref _albumArtUri, value);
+            get => _albumImageUri;
+            set
+            {
+                if (SetProperty(ref _albumImageUri, value))
+                {
+                    OnPropertyChanged(nameof(DisplayImageUri));
+                }
+            }
         }
 
         private object _art;
         public object Image
         {
             get => _art;
-            set => SetProperty(ref _art, value);
+            set
+            {
+                if (SetProperty(ref _art, value))
+                {
+                    OnPropertyChanged(nameof(DisplayImage));
+                }
+            }
         }
 
         private string _artist;
         public string Artist
         {
             get => _artist;
-            set => SetProperty(ref _artist, value);
+            set
+            {
+                if (SetProperty(ref _artist, value))
+                {
+                    OnPropertyChanged(nameof(DisplaySubtitle));
+                    OnPropertyChanged(nameof(DisplayDescription));
+                }
+            }
         }
 
-        private string _artUri;
+        private string _imageUri;
         public string ImageUri
         {
-            get => _artUri;
-            set => SetProperty(ref _artUri, value);
+            get => _imageUri;
+            set
+            {
+                if (SetProperty(ref _imageUri, value))
+                {
+                    OnPropertyChanged(nameof(DisplayImageUri));
+                }
+            }
         }
 
         private string _author;
@@ -315,13 +359,10 @@ namespace MediaManager.Library
             set => SetProperty(ref _mediaLocation, value);
         }
 
-        private bool _isMetadataExtracted = false;
+        private bool _isMetadataExtracted;
         public bool IsMetadataExtracted
         {
-            get
-            {
-                return _isMetadataExtracted;
-            }
+            get => _isMetadataExtracted;
             set
             {
                 if (SetProperty(ref _isMetadataExtracted, value))
@@ -329,7 +370,7 @@ namespace MediaManager.Library
             }
         }
 
-        private bool _isLive = false;
+        private bool _isLive;
         public bool IsLive
         {
             get => _isLive;

@@ -8,7 +8,7 @@ namespace MediaManager.Platforms.Android.Media
     public class ID3Provider : MediaExtractorProviderBase, IMediaItemMetadataProvider, IMediaItemImageProvider, IMediaItemVideoFrameProvider
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
-        protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
+        protected IDictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
 
         public async Task<IMediaItem> ProvideMetadata(IMediaItem mediaItem)
         {

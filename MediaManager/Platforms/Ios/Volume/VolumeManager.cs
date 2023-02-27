@@ -12,7 +12,7 @@ namespace MediaManager.Platforms.Ios.Volume
         {
         }
 
-        public override event VolumeChangedEventHandler VolumeChanged;
+        public override event EventHandler<VolumeChangedEventArgs> VolumeChanged;
 
         public override int CurrentVolume
         {

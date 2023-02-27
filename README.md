@@ -183,7 +183,7 @@ void ToggleShuffle();
 ### Retrieve and set information
 
 ```csharp
-Dictionary<string, string> RequestHeaders { get; set; }
+IDictionary<string, string> RequestHeaders { get; set; }
 TimeSpan StepSizeForward { get; set; }
 TimeSpan StepSizeBackward { get; set; }
 MediaPlayerState State { get; }

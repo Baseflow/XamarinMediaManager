@@ -3,8 +3,6 @@ using MediaManager.Media;
 
 namespace MediaManager.Library
 {
-    public delegate void MetadataUpdatedEventHandler(object sender, MetadataChangedEventArgs e);
-
     public interface IMediaItem : IContentItem
     {
         /// <summary>
@@ -18,7 +16,7 @@ namespace MediaManager.Library
         /// <summary>
         /// Raised when MediaItem is updated
         /// </summary>
-        event MetadataUpdatedEventHandler MetadataUpdated;
+        event EventHandler<MetadataChangedEventArgs> MetadataUpdated;
 
         /// <summary>
         /// The metadata for a int typed value to retrieve the information about whether the media is an advertisement.

@@ -41,9 +41,9 @@ namespace MediaManager.Queue
             OnQueueChanged(this, new QueueChangedEventArgs(Current));
         }
 
-        public event QueueEndedEventHandler QueueEnded;
-
-        public event QueueChangedEventHandler QueueChanged;
+        public event EventHandler<QueueEndedEventArgs> QueueEnded;
+        
+        public event EventHandler<QueueChangedEventArgs> QueueChanged;
 
         public ObservableCollection<IMediaItem> MediaItems { get; protected set; } = new ObservableCollection<IMediaItem>();
 

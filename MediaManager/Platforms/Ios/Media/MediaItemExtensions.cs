@@ -10,7 +10,7 @@ namespace MediaManager.Platforms.Ios.Media
 {
     public static class MediaItemExtensions
     {
-        public static Dictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
+        public static IDictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
 
         public static NSUrl GetNSUrl(this IMediaItem mediaItem)
         {

@@ -26,7 +26,7 @@ namespace MediaManager.Platforms.Android.Player
     public class AndroidMediaPlayer : MediaPlayerBase, IMediaPlayer<SimpleExoPlayer, VideoView>
     {
         protected MediaManagerImplementation MediaManager => CrossMediaManager.Android;
-        protected Dictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
+        protected IDictionary<string, string> RequestHeaders => MediaManager.RequestHeaders;
         protected Context Context => MediaManager.Context;
         protected MediaSessionCompat MediaSession => MediaManager.MediaSession;
 
@@ -90,21 +90,13 @@ namespace MediaManager.Platforms.Android.Player
             if (PlayerView == null)
                 return;
 
-            switch (videoAspectMode)
+            PlayerView.ResizeMode = videoAspectMode switch
             {
-                case VideoAspectMode.None:
-                    PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeZoom;
-                    break;
-                case VideoAspectMode.AspectFit:
-                    PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeFit;
-                    break;
-                case VideoAspectMode.AspectFill:
-                    PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeFill;
-                    break;
-                default:
-                    PlayerView.ResizeMode = AspectRatioFrameLayout.ResizeModeZoom;
-                    break;
-            }
+                VideoAspectMode.None => AspectRatioFrameLayout.ResizeModeZoom,
+                VideoAspectMode.AspectFit => AspectRatioFrameLayout.ResizeModeFit,
+                VideoAspectMode.AspectFill => AspectRatioFrameLayout.ResizeModeFill,
+                _ => AspectRatioFrameLayout.ResizeModeZoom,
+            };
         }
 
         public override void UpdateShowPlaybackControls(bool showPlaybackControls)
@@ -131,7 +123,9 @@ namespace MediaManager.Platforms.Android.Player
                 PlayerView.DefaultArtwork = new BitmapDrawable(Context.Resources, bmp);
             }
             else
+            {
                 PlayerView.UseArtwork = false;
+            }
         }
 
         public override void UpdateIsFullWindow(bool isFullWindow)

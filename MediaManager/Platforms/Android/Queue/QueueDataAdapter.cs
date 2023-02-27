@@ -76,7 +76,10 @@ namespace MediaManager.Platforms.Android.Queue
                                 _mediaSource.MoveMediaSource(oldBeginIndex, newEndIndex);
                     }
                     else
+                    {
                         _mediaSource.MoveMediaSource(e.OldStartingIndex, e.NewStartingIndex);
+                    }
+
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
                     if (e.OldItems.Count > 1)

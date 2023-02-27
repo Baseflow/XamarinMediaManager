@@ -7,6 +7,6 @@
         public abstract float Balance { get; set; }
         public abstract bool Muted { get; set; }
 
-        public abstract event VolumeChangedEventHandler VolumeChanged;
+        public abstract event EventHandler<VolumeChangedEventArgs> VolumeChanged;
     }
 }

@@ -9,7 +9,7 @@ namespace MediaManager.Media
         }
 
         //TODO: Implement to return always on first result find
-        public bool ReturnOnFirstResult { get; set; } = false;
+        public bool ReturnOnFirstResult { get; set; }
 
         private IList<ILibraryProvider> _providers;
         public IList<ILibraryProvider> Providers

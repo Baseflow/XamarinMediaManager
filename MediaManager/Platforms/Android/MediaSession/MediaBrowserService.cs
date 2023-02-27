@@ -22,8 +22,12 @@ namespace MediaManager.Platforms.Android.MediaSession
         protected MediaDescriptionAdapter MediaDescriptionAdapter { get; set; }
         protected PlayerNotificationManager PlayerNotificationManager
         {
-            get => (MediaManager.Notification as Notifications.NotificationManager).PlayerNotificationManager;
-            set => (MediaManager.Notification as Notifications.NotificationManager).PlayerNotificationManager = value;
+            get => (MediaManager.Notification as Notifications.NotificationManager)?.PlayerNotificationManager;
+            set
+            {
+                if (MediaManager.Notification is Notifications.NotificationManager notificationManager)
+                    notificationManager.PlayerNotificationManager = value;
+            }
         }
         protected MediaControllerCompat MediaController => MediaManager.MediaController;
 
@@ -122,22 +126,24 @@ namespace MediaManager.Platforms.Android.MediaSession
                 .Build();
 
             //Needed for enabling the notification as a mediabrowser.
-            NotificationListener = new NotificationListener();
-            NotificationListener.OnNotificationCancelledImpl = (notificationId, dismissedByUser) =>
+            NotificationListener = new NotificationListener
             {
-                StopForeground(dismissedByUser ? StopForegroundFlags.Remove : StopForegroundFlags.Detach);
-                //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundRemove);
-
-                StopSelf();
-                IsForeground = false;
-            };
-            NotificationListener.OnNotificationPostedImpl = (notificationId, notification, ongoing) =>
-            {
-                if (ongoing && !IsForeground)
+                OnNotificationCancelledImpl = (notificationId, dismissedByUser) =>
                 {
-                    ContextCompat.StartForegroundService(ApplicationContext, new Intent(ApplicationContext, MediaBrowserManager.ServiceType));
-                    StartForeground(notificationId, notification, ForegroundService.TypeMediaPlayback);
-                    IsForeground = true;
+                    StopForeground(dismissedByUser ? StopForegroundFlags.Remove : StopForegroundFlags.Detach);
+                    //ServiceCompat.StopForeground(this, ServiceCompat.StopForegroundRemove);
+
+                    StopSelf();
+                    IsForeground = false;
+                },
+                OnNotificationPostedImpl = (notificationId, notification, ongoing) =>
+                {
+                    if (ongoing && !IsForeground)
+                    {
+                        ContextCompat.StartForegroundService(ApplicationContext, new Intent(ApplicationContext, MediaBrowserManager.ServiceType));
+                        StartForeground(notificationId, notification, ForegroundService.TypeMediaPlayback);
+                        IsForeground = true;
+                    }
                 }
             };
 
@@ -152,7 +158,8 @@ namespace MediaManager.Platforms.Android.MediaSession
             PlayerNotificationManager.SetPriority(NotificationCompat.PriorityLow);
 
             //Must be called to start the connection
-            (MediaManager.Notification as Notifications.NotificationManager).Player = MediaManager.Player;
+            if (MediaManager.Notification is Notifications.NotificationManager notificationManager)
+                notificationManager.Player = MediaManager.Player;
             //PlayerNotificationManager.SetPlayer(MediaManager.AndroidMediaPlayer.Player);
         }
 

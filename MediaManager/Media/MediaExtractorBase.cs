@@ -7,7 +7,7 @@ namespace MediaManager.Media
 {
     public abstract class MediaExtractorBase : IMediaExtractor
     {
-        protected Dictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
+        protected IDictionary<string, string> RequestHeaders => CrossMediaManager.Current.RequestHeaders;
 
         public IList<string> RemotePrefixes { get; } = new List<string>() {
             "http",

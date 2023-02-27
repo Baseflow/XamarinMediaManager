@@ -69,12 +69,12 @@
             set => SetProperty(ref _releaseDate, value);
         }
 
-        private TimeSpan _duration;
+        private TimeSpan _duration = TimeSpan.Zero;
         public virtual TimeSpan Duration
         {
             get
             {
-                if (_duration == null)
+                if (_duration == TimeSpan.Zero)
                 {
                     //Return the total of all media items when no value is set
                     var totalDuration = new TimeSpan();
@@ -97,7 +97,13 @@
         public IList<IMediaItem> MediaItems
         {
             get => _mediaItems;
-            set => SetProperty(ref _mediaItems, value);
+            set
+            {
+                if (SetProperty(ref _mediaItems, value))
+                {
+                    OnPropertyChanged(nameof(Duration));
+                }
+            }
         }
     }
 }

@@ -34,18 +34,18 @@ namespace MediaManager
 
         public AVQueuePlayer Player => ((AppleMediaPlayer)MediaPlayer).Player;
 
-        private IMediaExtractor _mediaExtractor;
+        private IMediaExtractor _extractor;
         public override IMediaExtractor Extractor
         {
             get
             {
-                if (_mediaExtractor == null)
+                if (_extractor == null)
                 {
-                    _mediaExtractor = new AppleMediaExtractor();
+                    _extractor = new AppleMediaExtractor();
                 }
-                return _mediaExtractor;
+                return _extractor;
             }
-            set => SetProperty(ref _mediaExtractor, value);
+            set => SetProperty(ref _extractor, value);
         }
 
         private IVolumeManager _volume;

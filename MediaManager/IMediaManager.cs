@@ -24,7 +24,7 @@ namespace MediaManager
         /// <summary>
         /// Gets or sets the request headers.
         /// </summary>
-        Dictionary<string, string> RequestHeaders { get; set; }
+        IDictionary<string, string> RequestHeaders { get; set; }
 
         INotificationManager Notification { get; set; }
 

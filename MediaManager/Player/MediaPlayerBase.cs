@@ -91,8 +91,8 @@ namespace MediaManager.Player
 
         public abstract void UpdateIsFullWindow(bool value);
 
-        public event BeforePlayingEventHandler BeforePlaying;
-        public event AfterPlayingEventHandler AfterPlaying;
+        public event EventHandler<MediaPlayerEventArgs> BeforePlaying;
+        public event EventHandler<MediaPlayerEventArgs> AfterPlaying;
 
         public void InvokeBeforePlaying(object sender, MediaPlayerEventArgs e)
         {

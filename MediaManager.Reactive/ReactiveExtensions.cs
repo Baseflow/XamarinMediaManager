@@ -13,15 +13,15 @@ namespace MediaManager.Reactive
         {
 
 
-            State = Observable.FromEventPattern<StateChangedEventHandler, StateChangedEventArgs>(
+            State = Observable.FromEventPattern<EventHandler<StateChangedEventArgs>, StateChangedEventArgs>(
                     h => CrossMediaManager.Current.StateChanged += h, h => CrossMediaManager.Current.StateChanged -= h)
                 .Select(pattern => pattern.EventArgs.State);
 
-            Position = Observable.FromEventPattern<PositionChangedEventHandler, PositionChangedEventArgs>(
+            Position = Observable.FromEventPattern<EventHandler<PositionChangedEventArgs>, PositionChangedEventArgs>(
                     h => CrossMediaManager.Current.PositionChanged += h, h => CrossMediaManager.Current.PositionChanged -= h)
                 .Select(pattern => pattern.EventArgs.Position);
 
-            Buffered = Observable.FromEventPattern<BufferedChangedEventHandler, BufferedChangedEventArgs>(
+            Buffered = Observable.FromEventPattern<EventHandler<BufferedChangedEventArgs>, BufferedChangedEventArgs>(
                     h => CrossMediaManager.Current.BufferedChanged += h, h => CrossMediaManager.Current.BufferedChanged -= h)
                 .Select(pattern => pattern.EventArgs.Buffered);
         }

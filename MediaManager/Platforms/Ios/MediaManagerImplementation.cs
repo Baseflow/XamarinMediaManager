@@ -9,7 +9,7 @@ namespace MediaManager
         {
         }
 
-        protected bool _keepScreenOn;
+        private bool _keepScreenOn;
         public override bool KeepScreenOn
         {
             get

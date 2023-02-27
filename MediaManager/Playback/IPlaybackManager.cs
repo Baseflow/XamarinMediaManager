@@ -6,14 +6,6 @@ using MediaManager.Queue;
 
 namespace MediaManager.Playback
 {
-    public delegate void StateChangedEventHandler(object sender, StateChangedEventArgs e);
-    public delegate void BufferedChangedEventHandler(object sender, BufferedChangedEventArgs e);
-    public delegate void PositionChangedEventHandler(object sender, PositionChangedEventArgs e);
-
-    public delegate void MediaItemFinishedEventHandler(object sender, MediaItemEventArgs e);
-    public delegate void MediaItemChangedEventHandler(object sender, MediaItemEventArgs e);
-    public delegate void MediaItemFailedEventHandler(object sender, MediaItemFailedEventArgs e);
-
     public interface IPlaybackManager : INotifyPropertyChanged
     {
         /// <summary>
@@ -140,16 +132,16 @@ namespace MediaManager.Playback
         /// <param name="position"></param>
         Task SeekTo(TimeSpan position);
 
-        event StateChangedEventHandler StateChanged;
+        event EventHandler<StateChangedEventArgs> StateChanged;
 
-        event BufferedChangedEventHandler BufferedChanged;
+        event EventHandler<BufferedChangedEventArgs> BufferedChanged;
 
-        event PositionChangedEventHandler PositionChanged;
+        event EventHandler<PositionChangedEventArgs> PositionChanged;
 
-        event MediaItemFinishedEventHandler MediaItemFinished;
+        event EventHandler<MediaItemEventArgs> MediaItemFinished;
 
-        event MediaItemChangedEventHandler MediaItemChanged;
+        event EventHandler<MediaItemEventArgs> MediaItemChanged;
 
-        event MediaItemFailedEventHandler MediaItemFailed;
+        event EventHandler<MediaItemFailedEventArgs> MediaItemFailed;
     }
 }

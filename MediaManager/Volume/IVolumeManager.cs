@@ -2,14 +2,12 @@
 
 namespace MediaManager.Volume
 {
-    public delegate void VolumeChangedEventHandler(object sender, VolumeChangedEventArgs e);
-
     public interface IVolumeManager : INotifyPropertyChanged
     {
         /// <summary>
         /// Raised when the volume changes
         /// </summary>
-        event VolumeChangedEventHandler VolumeChanged;
+        event EventHandler<VolumeChangedEventArgs> VolumeChanged;
 
         /// <summary>
         /// The volume for the current MediaPlayer 
