@@ -49,7 +49,9 @@ namespace MediaManager.Platforms.Android.Volume
                     CurrentVolume = 0;
                 }
                 else
+                {
                     CurrentVolume = preMutedVolume;
+                }
 
                 VolumeChanged?.Invoke(this, new VolumeChangedEventArgs(CurrentVolume, Muted));
             }

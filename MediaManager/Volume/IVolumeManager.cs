@@ -10,7 +10,7 @@ namespace MediaManager.Volume
         event EventHandler<VolumeChangedEventArgs> VolumeChanged;
 
         /// <summary>
-        /// The volume for the current MediaPlayer 
+        /// The volume for the current MediaPlayer
         /// Valid values are 0 - MaxVolume
         /// </summary>
         int CurrentVolume { get; set; }

@@ -9,12 +9,9 @@
 #if ANDROID
             if (image is Android.Graphics.Bitmap bitmap)
                 return bitmap.ToImageSource();
-#elif IOS
+#elif IOS || MACCATALYST
             if (image is UIKit.UIImage uIImage)
                 return uIImage.ToImageSource();
-            if (image is CoreGraphics.CGImage cgImage)
-                return cgImage.ToImageSource();
-#elif MAC
             if (image is CoreGraphics.CGImage cgImage)
                 return cgImage.ToImageSource();
 #elif UWP
@@ -24,12 +21,5 @@
 #endif
             return null;
         }
-
-#if TVOS
-        public static Task<object> ToNative(this ImageSource imageSource)
-        {
-            return null;
-        }
-#endif
     }
 }

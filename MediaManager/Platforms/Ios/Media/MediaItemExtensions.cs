@@ -33,7 +33,7 @@ namespace MediaManager.Platforms.Ios.Media
                     asset = AVAsset.FromUrl(NSUrl.FromFilename(mediaItem.MediaUri));
                 }
             }
-            else if (RequestHeaders != null && RequestHeaders.Any())
+            else if (RequestHeaders?.Any() == true)
             {
                 asset = AVUrlAsset.Create(NSUrl.FromString(mediaItem.MediaUri), GetOptionsWithHeaders(RequestHeaders));
             }

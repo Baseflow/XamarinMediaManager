@@ -76,12 +76,12 @@
             set => SetProperty(ref _updatedAt, value);
         }
 
-        private TimeSpan _totalTime;
+        private TimeSpan _totalTime = TimeSpan.Zero;
         public virtual TimeSpan TotalTime
         {
             get
             {
-                if (_totalTime == null)
+                if (_totalTime == TimeSpan.Zero)
                 {
                     //Return the total of all media items when no value is set
                     var totalTime = new TimeSpan();

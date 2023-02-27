@@ -13,10 +13,6 @@ namespace MediaManager.Platforms.Ios.Player
     {
         protected MediaManagerImplementation MediaManager = CrossMediaManager.Ios;
 
-        public AppleMediaPlayer()
-        {
-        }
-
         private AVQueuePlayer _player;
         public AVQueuePlayer Player
         {
@@ -73,7 +69,7 @@ namespace MediaManager.Platforms.Ios.Player
 
         protected virtual void PresentationSizeChanged(NSObservedChange obj)
         {
-            if (Player.CurrentItem != null && !Player.CurrentItem.PresentationSize.IsEmpty)
+            if (Player.CurrentItem?.PresentationSize.IsEmpty == false)
             {
                 VideoWidth = (int)Player.CurrentItem.PresentationSize.Width;
                 VideoHeight = (int)Player.CurrentItem.PresentationSize.Height;
@@ -82,7 +78,7 @@ namespace MediaManager.Platforms.Ios.Player
 
         protected virtual void TimedMetaDataChanged(NSObservedChange obj)
         {
-            if (MediaManager.Queue.Current == null || MediaManager.Queue.Current.IsMetadataExtracted)
+            if (MediaManager.Queue.Current?.IsMetadataExtracted != false)
                 return;
 
             if (obj.NewValue is NSArray array && array.Count > 0)
@@ -143,8 +139,8 @@ namespace MediaManager.Platforms.Ios.Player
             {
                 buffered =
                     TimeSpan.FromSeconds(
-                        Player.CurrentItem.LoadedTimeRanges.Select(
-                            tr => tr.CMTimeRangeValue.Start.Seconds + tr.CMTimeRangeValue.Duration.Seconds).Max());
+                        Player.CurrentItem.LoadedTimeRanges.Max(
+                            tr => tr.CMTimeRangeValue.Start.Seconds + tr.CMTimeRangeValue.Duration.Seconds));
 
                 MediaManager.Buffered = buffered;
             }

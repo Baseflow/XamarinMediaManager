@@ -10,7 +10,7 @@ namespace MediaManager.Platforms.Ios.Media
         {
             if (item == null)
                 return null;
-#if IOS || MACCATALYST
+
             var output = new MediaItem
             {
                 MediaType = item.MediaType.ToMediaType(),
@@ -37,39 +37,15 @@ namespace MediaManager.Platforms.Ios.Media
 
             if (output.Date != null)
                 output.Year = output.Date.Year;
-#elif TVOS
-            var output = new MediaItem();
-            //TODO: something like this?
-            /*
-            output.MediaType = item.ValueForKey(MPMediaItem.MediaTypeProperty);
-            output.Album = item.ValueForProperty(MPMediaItem.AlbumTitleProperty).ToString();
-            output.Artist = item.Artist,
-            output.Compilation = null,
-            output.Composer = item.Composer,
-            output.Duration = TimeSpan.FromSeconds(item.PlaybackDuration),
-            output.Genre = item.Genre,
-            output.Title = item.Title,
-            output.AlbumArtist = item.AlbumArtist,
-            output.DiscNumber = item.DiscNumber,
-            output.MediaUri = item.AssetURL.ToString(),
-            output.NumTracks = item.AlbumTrackCount,
-            output.UserRating = item.Rating,
-            output.Id = item.PersistentID.ToString()*/
 
-#endif
             return output;
         }
 
         public static IEnumerable<IMediaItem> ToMediaItems(this IEnumerable<MPMediaItem> items)
         {
-#if IOS || MACCATALYST
             return items
-                .Where(i => i.AssetURL != null && i.IsCloudItem == false && i.HasProtectedAsset == false)
+                .Where(i => i.AssetURL != null && !i.IsCloudItem && !i.HasProtectedAsset)
                 .Select(i => i.ToMediaItem());
-#elif TVOS
-            return items
-                .Select(i => i.ToMediaItem());
-#endif
         }
     }
 }

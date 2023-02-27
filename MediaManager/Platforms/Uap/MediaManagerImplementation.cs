@@ -15,7 +15,6 @@ namespace MediaManager
     {
         public MediaManagerImplementation()
         {
-
         }
 
         private IMediaPlayer _mediaPlayer;
@@ -57,7 +56,6 @@ namespace MediaManager
             }
             set => SetProperty(ref _extractor, value);
         }
-
 
         private INotificationManager _notification;
         public override INotificationManager Notification

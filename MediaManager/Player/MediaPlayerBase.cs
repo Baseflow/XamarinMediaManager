@@ -89,7 +89,7 @@ namespace MediaManager.Player
 
         public abstract void UpdateVideoPlaceholder(object value);
 
-        public abstract void UpdateIsFullWindow(bool value);
+        public abstract void UpdateIsFullWindow(bool isFullWindow);
 
         public event EventHandler<MediaPlayerEventArgs> BeforePlaying;
         public event EventHandler<MediaPlayerEventArgs> AfterPlaying;

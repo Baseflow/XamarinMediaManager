@@ -13,9 +13,7 @@ namespace MediaManager.Platforms.Ios.Media
         {
             var providers = base.CreateProviders();
             providers.Add(new AVAssetProvider());
-#if __IOS__ || __TVOS__
             providers.Add(new Ios.Media.AVAssetImageProvider());
-#endif
             return providers;
         }
 

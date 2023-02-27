@@ -163,11 +163,11 @@ namespace MediaManager.Platforms.Android.MediaSession
             //PlayerNotificationManager.SetPlayer(MediaManager.AndroidMediaPlayer.Player);
         }
 
-        public override StartCommandResult OnStartCommand(Intent startIntent, StartCommandFlags flags, int startId)
+        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
-            if (startIntent != null)
+            if (intent != null)
             {
-                MediaButtonReceiver.HandleIntent(MediaManager.MediaSession, startIntent);
+                MediaButtonReceiver.HandleIntent(MediaManager.MediaSession, intent);
             }
             return StartCommandResult.Sticky;
         }

@@ -78,13 +78,13 @@ namespace MediaManager.Library
             }
         }
 
-        private object _art;
+        private object _image;
         public object Image
         {
-            get => _art;
+            get => _image;
             set
             {
-                if (SetProperty(ref _art, value))
+                if (SetProperty(ref _image, value))
                 {
                     OnPropertyChanged(nameof(DisplayImage));
                 }

@@ -22,9 +22,9 @@ namespace MediaManager.Platforms.Android.Queue
         {
         }
 
-        public void Add(int index, MediaDescriptionCompat description)
+        public void Add(int position, MediaDescriptionCompat description)
         {
-            MediaManager.Queue.Insert(index, description.ToMediaItem());
+            MediaManager.Queue.Insert(position, description.ToMediaItem());
         }
 
         public MediaDescriptionCompat GetMediaDescription(int index)
@@ -32,14 +32,14 @@ namespace MediaManager.Platforms.Android.Queue
             return MediaManager.Queue.ElementAtOrDefault(index)?.ToMediaDescription();
         }
 
-        public void Move(int oldIndex, int newIndex)
+        public void Move(int from, int to)
         {
-            MediaManager.Queue.Move(oldIndex, newIndex);
+            MediaManager.Queue.Move(from, to);
         }
 
-        public void Remove(int index)
+        public void Remove(int position)
         {
-            MediaManager.Queue.RemoveAt(index);
+            MediaManager.Queue.RemoveAt(position);
         }
 
         private void MediaQueue_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -67,13 +67,17 @@ namespace MediaManager.Platforms.Android.Queue
 
                         //move when new is before old
                         if (newBeginIndex < oldBeginIndex)
+                        {
                             for (int i = 0; i < e.NewItems.Count; i++)
                                 _mediaSource.MoveMediaSource(oldEndIndex, newBeginIndex);
+                        }
 
                         //move when new is after old
                         else if (newBeginIndex > oldBeginIndex)
+                        {
                             for (int i = 0; i < e.NewItems.Count; i++)
                                 _mediaSource.MoveMediaSource(oldBeginIndex, newEndIndex);
+                        }
                     }
                     else
                     {
@@ -88,7 +92,10 @@ namespace MediaManager.Platforms.Android.Queue
                             _mediaSource.RemoveMediaSource(e.OldStartingIndex);
                     }
                     else
+                    {
                         _mediaSource.RemoveMediaSource(e.OldStartingIndex);
+                    }
+
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
                     if (e.NewItems.Count > 1)
@@ -97,7 +104,9 @@ namespace MediaManager.Platforms.Android.Queue
                             _mediaSource.RemoveMediaSource(e.OldStartingIndex);
                     }
                     else
+                    {
                         _mediaSource.RemoveMediaSource(e.OldStartingIndex);
+                    }
 
                     for (int i = e.NewItems.Count - 1; i >= 0; i--)
                     {

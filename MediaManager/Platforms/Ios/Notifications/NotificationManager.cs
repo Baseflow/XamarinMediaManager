@@ -153,15 +153,12 @@ namespace MediaManager.Platforms.Ios.Notifications
                 nowPlayingInfo.PlaybackRate = 0f;
             }
 
-#if __IOS__ || __TVOS__
-            var cover = mediaItem.DisplayImage as UIKit.UIImage;
-
-            if (cover != null)
+            if (mediaItem.DisplayImage is UIKit.UIImage cover)
             {
                 //TODO: Why is this deprecated?
                 nowPlayingInfo.Artwork = new MPMediaItemArtwork(cover);
             }
-#endif
+
             MPNowPlayingInfoCenter.DefaultCenter.NowPlaying = nowPlayingInfo;
         }
 
@@ -223,7 +220,7 @@ namespace MediaManager.Platforms.Ios.Notifications
 
         protected virtual MPRemoteCommandHandlerStatus PlaybackPositionCommand(MPRemoteCommandEvent arg)
         {
-            if (!(arg is MPChangePlaybackPositionCommandEvent e))
+            if (arg is not MPChangePlaybackPositionCommandEvent e)
             {
                 return MPRemoteCommandHandlerStatus.CommandFailed;
             }
