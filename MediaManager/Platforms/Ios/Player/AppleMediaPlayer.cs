@@ -228,6 +228,7 @@ namespace MediaManager.Platforms.Ios.Player
         {
             await Pause();
             Player.RemoveTimeObserver(playbackTimeObserver);
+            playbackTimeObserver = null;
         }
 
         public virtual async Task Play(AVPlayerItem playerItem)
@@ -276,7 +277,10 @@ namespace MediaManager.Platforms.Ios.Player
             });
 
             if (playbackTimeObserver != null)
+            {
                 Player.RemoveTimeObserver(playbackTimeObserver);
+                playbackTimeObserver = null;
+            }
 
             rateToken?.Dispose();
             statusToken?.Dispose();
