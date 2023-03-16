@@ -141,7 +141,14 @@ namespace MediaManager.Platforms.Android.MediaSession
                     if (ongoing && !IsForeground)
                     {
                         ContextCompat.StartForegroundService(ApplicationContext, new Intent(ApplicationContext, MediaBrowserManager.ServiceType));
-                        StartForeground(notificationId, notification, ForegroundService.TypeMediaPlayback);
+                        if (Build.VERSION.SdkInt >= BuildVersionCodes.S)
+                        {
+                            StartForeground(notificationId, notification, ForegroundService.TypeMediaPlayback);
+                        }
+                        else
+                        {
+                            StartForeground(notificationId, notification);
+                        }
                         IsForeground = true;
                     }
                 }
