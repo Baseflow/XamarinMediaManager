@@ -190,7 +190,12 @@ namespace MediaManager.Platforms.Android.Player
                     {
                         case Com.Google.Android.Exoplayer2.Player.StateEnded:
                             if (!Player.HasNext)
+                            {
                                 MediaManager.OnMediaItemFinished(this, new MediaItemEventArgs(MediaManager.Queue.Current));
+                                // Fix for bug #703 - Repeat queue items does not work on android
+                                // https://github.com/Baseflow/XamarinMediaManager/issues/703
+                                MediaManager.PlayNext();
+                            }
                             //TODO: This means the whole list is finished. Should we fire an event?
                             break;
                         case Com.Google.Android.Exoplayer2.Player.StateIdle:
