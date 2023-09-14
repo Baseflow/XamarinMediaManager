@@ -299,6 +299,9 @@ namespace MediaManager
 
             Queue.CurrentIndex = Queue.IndexOf(mediaItem);
 
+            if (this.IsStopped())
+                MediaController.GetTransportControls().Prepare();
+
             MediaController.GetTransportControls().SkipToQueueItem(Queue.IndexOf(mediaItem));
             return true;
         }
