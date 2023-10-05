@@ -290,20 +290,9 @@ namespace MediaManager
             return false;
         }
 
-        public override async Task<bool> PlayQueueItem(IMediaItem mediaItem)
+        public override Task<bool> PlayQueueItem(IMediaItem mediaItem)
         {
-            await EnsureInit();
-
-            if (mediaItem == null || !Queue.Contains(mediaItem))
-                return false;
-
-            Queue.CurrentIndex = Queue.IndexOf(mediaItem);
-
-            if (this.IsStopped())
-                MediaController.GetTransportControls().Prepare();
-
-            MediaController.GetTransportControls().SkipToQueueItem(Queue.IndexOf(mediaItem));
-            return true;
+            return PlayQueueItem(Queue.IndexOf(mediaItem));
         }
 
         public override async Task<bool> PlayQueueItem(int index)
@@ -315,6 +304,9 @@ namespace MediaManager
                 return false;
 
             Queue.CurrentIndex = index;
+
+            if (this.IsStopped())
+                MediaController.GetTransportControls().Prepare();
 
             MediaController.GetTransportControls().SkipToQueueItem(index);
             return true;
